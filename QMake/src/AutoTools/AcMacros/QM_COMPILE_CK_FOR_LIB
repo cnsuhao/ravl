@@ -144,21 +144,12 @@ AC_DEFUN([QM_COMPILE_CK_FOR_LIB],
             LIB_CPPFLAGS=""
          fi
          prereqlibs=""
-dnl JFi:Extend to allow dependencies on pkgconf specified libraries
          for prereqlib in $9
          do
-            eval new_prereqlib="\$with_${prereqlib}_lnklibs"
-            new_prereqlib=`echo $new_prereqlib | $SED 's/^-l//' | $SED 's/^lib//'`
             TRACE_INDENT="     "
-            trace 3 Appending -l$new_prereqlib to link line
-            prereqlibs=$prereqlibs" -l"$new_prereqlib
-            eval new_prereqlibpath=\$with_${prereqlib}_libpath
-            if ( test "X$new_prereqlibpath" != X )
-            then
-               TRACE_INDENT="     "
-               trace 3 Appending -L$new_prereqlibpath to LDFLAGS
-               LIB_LDFLAGS=$LIB_LDFLAGS" "-L$new_prereqlibpath
-            fi
+            eval new_prereqlib="\$${prereqlib}_LIBS"
+            trace 3 Appending $new_prereqlib to link line
+            prereqlibs="$prereqlibs $new_prereqlib"
          done
          TRACE_INDENT="     "
          preserve_LDFLAGS=$LDFLAGS

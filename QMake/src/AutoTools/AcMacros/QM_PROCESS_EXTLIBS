@@ -155,6 +155,38 @@ AC_DEFUN([QM_PROCESS_EXTLIBS],
           # Expand the librarys'pre-requisites to include the pre-requisites
           # for the  pre-requisites, etc.
           #
+          # First, we need to sanitise the pre-requisite lists: if we are
+          # using pkg-config for a library, that will deliver the list of
+          # libraries needed for that package; we do not therefore need to
+          # consider any known pre-requisites. i
+          #
+          # So.. nullify the pre-requisites of any external libraries that
+          # are being specified via pkg-config
+          #
+          trace 2 Nullifying pre-requisites for pkg-config specified libraries
+          for lib in $KnownLibs
+          do
+             TRACE_INDENT="     "
+             trace 6 Processing $lib
+             eval pkgconf=\$with_${lib}_pkgconf
+             if ( test x$pkgconf != x -a x$pkgconf != xnotset )
+             then
+                TRACE_INDENT="          "
+                trace 6 Use of pkg-config identified
+                eval prereq=\$with_${lib}_prq
+                if ( test "x$prereq" != x )
+                then
+                   TRACE_INDENT="          "
+                   trace 4 Nullifying pre-requisites of $lib
+                   TRACE_INDENT="               "
+                   trace 6 Pre-requisites were $prereq
+                   eval with_${lib}_prq=\"\"
+                fi
+             fi
+          done
+
+          # Now we can expand the remaining pre-requisites lists.
+          #
           # Method: For each library, add the pre-requisites of its direct
           # pre-requisites. Repeat this process until we make no further
           # changes.
@@ -234,8 +266,7 @@ AC_DEFUN([QM_PROCESS_EXTLIBS],
                           TRACE_INDENT="          "
                           trace 6 Library $lib disabled
                           ;;
-                'check')
-                          eval prereq=\$with_${lib}_prq
+                'check' ) eval prereq=\$with_${lib}_prq
                           for prql in $prereq
                           do
                              TRACE_INDENT="          "
@@ -250,7 +281,7 @@ AC_DEFUN([QM_PROCESS_EXTLIBS],
                              esac
                           done
                           ;;
-                'needed')
+                'needed' )
                           eval prereq=\$with_${lib}_prq
                           for prql in $prereq
                           do
@@ -270,8 +301,7 @@ AC_DEFUN([QM_PROCESS_EXTLIBS],
                              esac
                           done
                           ;;
-                'yes')
-                          eval prereq=\$with_${lib}_prq
+                'yes' )   eval prereq=\$with_${lib}_prq
                           for prql in $prereq
                           do
                              TRACE_INDENT="          "
@@ -319,205 +349,120 @@ AC_DEFUN([QM_PROCESS_EXTLIBS],
 
           # Check for all helper libraries being used.
           #
+          LeftToDo="$KnownLibs"
+          #
           # First see if each of the libraries exist and error out if the
           # missing libs were specified as needed (either from the cmd-line
           # or from dependencies)
           #
-          trace 2 Test availability of libraries
-          AS_FOR([LIB], [lib], [$KnownLibs],
-                 [eval lib_enablement=\$use_${lib}
-                  dnl Should really be using the macro LIB here instead of
-                  dnl ${lib} (as per instructions for AS_FOR). Problem is
-                  dnl that it gets expanded only as $lib not ${lib} which
-                  dnl causes problems on the next lines. Ignoring defined
-                  dnl convention currently works in this case; but...
-                  dnl We have to use AS_FOR rather than a manual for here as
-                  dnl the first  call to check for a library/header brings in
-                  dnl additional code to ensure the pre-requisites of the
-                  dnl check are available. If we do not use the AS_FOR, this
-                  dnl code gets put in the for loop body and is thus multiply
-                  dnl executed. Unfortunately, there is only an undocumented
-                  dnl _AC_.... macro that can be used to bring in this 
-                  dnl prerequisite checking code so we can't use that to
-                  dnl bring these checks in at a more useful place.
+          # Test for the pkg-config specified libraries and virtual packages
+          # before testing for those specified for a compilation test. This
+          # allows the later compilation test to use a pkg-config library (or
+          # a virtual package) as a pre-requisite. Processing the pkg-config
+          # files first allows the use of a pkg-config file to overrule the
+          # default settings for a compile-test library or a virtual package.
+          #
+          trace 2 Test availability of pkg-config specified libraries and virtual packages
+          for lib in $KnownLibs
+          do
+            eval lib_enablement=\$use_${lib}
+            eval pkgconf=\$with_${lib}_pkgconf
+            if ( test x$pkgconf != x -a x$pkgconf != xnotset )
+            then
+               case $lib_enablement in
+                  'check' )    AC_MSG_CHECKING(pkg-config for $lib)
+                               PKG_CHECK_EXISTS([$pkgconf],
+                                                [AS_VAR_SET([use_${lib}],[present])
+                                                 AS_VAR_SET([${lib}_CFLAGS],
+                                                            [`$PKG_CONFIG --cflags $pkgconf 2>/dev/null `]
+                                                           )
+                                                 AS_VAR_SET([${lib}_LIBS],
+                                                            [`$PKG_CONFIG --libs $pkgconf 2>/dev/null`]
+                                                           )
+                                                 AC_MSG_RESULT([yes])
+                                                ],
+                                                [AS_VAR_SET([use_${lib}],[missing])
+                                                 AC_MSG_RESULT([no])
+                                                ]
+                                               )
+                               ;;
+                  'needed' )   AC_MSG_CHECKING(pkg-config for $lib)
+                               PKG_CHECK_EXISTS([$pkgconf],
+                                                [AS_VAR_SET([use_${lib}],[present])
+                                                 AS_VAR_SET([${lib}_CFLAGS],
+                                                            [`$PKG_CONFIG --cflags $pkgconf 2>/dev/null `]
+                                                           )
+                                                 AS_VAR_SET([${lib}_LIBS],
+                                                            [`$PKG_CONFIG --libs $pkgconf 2>/dev/null`]
+                                                           )
+                                                 AC_MSG_RESULT([yes])
+                                                ],
+                                                [AC_MSG_FAILURE([Library $lib is unavailable and a prerequisite of a selected library])
+                                                ]
+                                               )
+                               ;;
+                  'yes' )      AC_MSG_CHECKING(pkg-config for $lib)
+                               PKG_CHECK_EXISTS([$pkgconf],
+                                                [AS_VAR_SET([use_${lib}],[present])
+                                                 AS_VAR_SET([${lib}_CFLAGS],
+                                                            [`$PKG_CONFIG --cflags $pkgconf 2>/dev/null `]
+                                                           )
+                                                 AS_VAR_SET([${lib}_LIBS],
+                                                            [`$PKG_CONFIG --libs $pkgconf 2>/dev/null`]
+                                                           )
+                                                 AC_MSG_RESULT([yes])
+                                                ],
+                                                [AC_MSG_FAILURE([Required library $lib is unavailable])
+                                                ]
+                                               )
+                               ;;
+                  'no' )       ;;
+                  'blocked' )  ;;
+                  * )          trace 1 "Assert - Should not fall through here"
+                               ;;
+               esac
+               LeftToDo=`echo " $LeftToDo " | $SED "s/ $lib / /"`
+               if ( test X$DBG != X && test $DBG -ge 3 )
+               then
+                  eval testwith=\$with_${lib}_fn
+                  eval prereq="\$with_${lib}_prq"
+                  eval lnklibs=\$with_${lib}_lnklibs
+                  eval loc=\$with_${lib}_libpath
+                  eval hdr=\$with_${lib}_hdr
+                  eval inc=\$with_${lib}_inc
+                  eval lib_enablement=\$use_${lib}
+                  TRACE_INDENT="     "
+                  trace 3 $lib:$testwith:$prereq:$lnklibs:$loc:$hdr:$pkgconf:$inc:$lib_enablement
+               fi
+            else
+               eval virtual=\$with_${lib}_virtual
+               if ( test X$virtual == Xyes )
+               then
+                  # Virtual package
+                  eval lib_enablement=\$use_${lib}
+                  case $lib_enablement in
+                     'check' | 'needed' | 'yes' )
+                                  AS_VAR_SET([use_${lib}], [present])
+                                  # Assume present if wanted (as something
+                                  # virtual can hardly be missing) but note
+                                  # that abscence of prerequisites can later
+                                  # cause the library to become regarded as
+                                  # missing.
+                                  ;;
+                     'no' )       ;;
+                     'blocked' )  ;;
+                     * )          trace 1 "Assert - Should never fall through here"
+                                  ;;
+                  esac
+                  eval prereq="\$with_${lib}_prq"
+                  TRACE_INDENT="     "
+                  trace 3 $lib:Virtual:$prereq:$lib_enablement
+                  LeftToDo=`echo " $LeftToDo " | $SED "s/ $lib / /"`
+               fi
+            fi
+          done
 
-                  eval pkgconf=\$with_${lib}_pkgconf
-                  # Test for pkg-config before testing for a virtual library
-                  # as this allows use of a pkg-config file to overrule the
-                  # default settings for a virtual package.
-                  AS_IF([test x$pkgconf != x -a x$pkgconf != xnotset],
-                        [AS_CASE([$lib_enablement],
-                                 [check],   [AC_MSG_CHECKING(pkg-config for LIB)
-                                             PKG_CHECK_EXISTS([$pkgconf],
-                                                              [AS_VAR_SET([use_${lib}],
-                                                                          [present]
-                                                                         )
-                                                               AS_VAR_SET([${lib}_CFLAGS],
-                                                                          [`$PKG_CONFIG --cflags $pkgconf 2>/dev/null `]
-                                                                         )
-                                                               AS_VAR_SET([${lib}_LIBS],
-                                                                          [`$PKG_CONFIG --libs $pkgconf 2>/dev/null`]
-                                                                         )
-                                                               AC_MSG_RESULT([yes])
-                                                              ],
-                                                              [AS_VAR_SET([use_${lib}],
-                                                                          [missing]
-                                                                         )
-                                                               AC_MSG_RESULT([no])
-                                                              ]
-                                                            )
-                                            ],
-                                 [needed],  [AC_MSG_CHECKING(pkg-config for LIB)
-                                             PKG_CHECK_EXISTS([$pkgconf],
-                                                              [AS_VAR_SET([use_${lib}],
-                                                                          [present]
-                                                                         )
-                                                               AS_VAR_SET([${lib}_CFLAGS],
-                                                                          [`$PKG_CONFIG --cflags $pkgconf 2>/dev/null `]
-                                                                         )
-                                                               AS_VAR_SET([${lib}_LIBS],
-                                                                          [`$PKG_CONFIG --libs $pkgconf 2>/dev/null`]
-                                                                         )
-                                                               AC_MSG_RESULT([yes])
-                                                              ],
-                                                              [AC_MSG_FAILURE([Library $lib is unavailable and a prerequisite of a selected library])
-                                                              ]
-                                                             )
-                                            ],
-                                 [yes],     [AC_MSG_CHECKING(pkg-config for LIB)
-                                             PKG_CHECK_EXISTS([$pkgconf],
-                                                              [AS_VAR_SET([use_${lib}],
-                                                                          [present]
-                                                                         )
-                                                               AS_VAR_SET([${lib}_CFLAGS],
-                                                                          [`$PKG_CONFIG --cflags $pkgconf 2>/dev/null `]
-                                                                         )
-                                                               AS_VAR_SET([${lib}_LIBS],
-                                                                          [`$PKG_CONFIG --libs $pkgconf 2>/dev/null`]
-                                                                         )
-                                                               AC_MSG_RESULT([yes])
-                                                              ],
-                                                              [AC_MSG_FAILURE([Required library $lib is unavailable])
-                                                              ]
-                                                             )
-                                            ],
-                                 [no],      [:],
-                                 [blocked], [:],
-                                 [trace 1 "Assert - Should not fall through here"]
-                                )
-                                if ( test X$DBG != X && test $DBG -ge 3 )
-                                then
-                                   eval testwith=\$with_${lib}_fn
-                                   eval prereq=\$with_${lib}_prq
-                                   eval lnklibs=\$with_${lib}_lnklibs
-                                   eval loc=\$with_${lib}_libpath
-                                   eval hdr=\$with_${lib}_hdr
-                                   eval inc=\$with_${lib}_inc
-                                   eval lib_enablement=\$use_${lib}
-                                   TRACE_INDENT="     "
-                                   trace 3 $lib:$testwith:$prereq:$lnklibs:$loc:$hdr:$pkgconf:$inc:$lib_enablement
-                                fi
-                        ],
-                        [eval virtual=\$with_${lib}_virtual
-                         AS_IF([test X$virtual != Xyes],
-                               [# Not configured via pkg-config nor virtual
-                                # Must need a compile check
-                                eval testwith=\$with_${lib}_fn
-                                eval lnklibs=\$with_${lib}_lnklibs
-                                lnklibs=`echo $lnklibs | $SED 's/^-l//'`
-                                eval loc=\$with_${lib}_libpath
-                                eval hdr=\$with_${lib}_hdr
-                                eval inc=\$with_${lib}_inc
-                                eval prereq=\$with_${lib}_prq
-                                AS_CASE([$lib_enablement],
-                                        [check],  [QM_COMPILE_CK_FOR_LIB([$lib],
-                                                                         [$lnklibs], 
-                                                                         [$testwith], 
-                                                                         [$loc],
-                                                                         [$hdr],
-                                                                         [$inc],
-                                                                         [AS_VAR_SET([use_${lib}],
-                                                                                     [present]
-                                                                                    )
-                                                                         ],
-                                                                         [AS_VAR_SET([use_${lib}],
-                                                                                     [missing]
-                                                                                    )
-                                                                         ],
-                                                                         [$prereq]dnl
-                                                                        )dnl
-                                                  ],
-                                        [needed], [QM_COMPILE_CK_FOR_LIB([$lib],
-                                                                         [$lnklibs], 
-                                                                         [$testwith], 
-                                                                         [$loc],
-                                                                         [$hdr],
-                                                                         [$inc],
-                                                                         [AS_VAR_SET([use_${lib}],
-                                                                                     [present]
-                                                                                    )
-                                                                         ],
-                                                                         [AC_MSG_FAILURE([Library $lib is unavailable and a prerequisite of a selected library])],
-                                                                         [$prereq]dnl
-                                                                        )dnl
-                                                  ],
-                                        [yes],    [QM_COMPILE_CK_FOR_LIB([$lib],
-                                                                         [$lnklibs], 
-                                                                         [$testwith], 
-                                                                         [$loc],
-                                                                         [$hdr],
-                                                                         [$inc],
-                                                                         [AS_VAR_SET([use_${lib}],
-                                                                                     [present]
-                                                                                    )
-                                                                         ],
-                                                                         [AC_MSG_FAILURE([Required library $lib is unavailable])],
-                                                                         [$prereq]dnl
-                                                                        )dnl
-                                                   ],
-                                        [no],      [:],
-                                        [blocked], [:],
-                                        [trace 1 "Assert - Should never fall through here"]
-                                       )
-                                if ( test X$DBG != X && test $DBG -ge 3 )
-                                then
-                                   eval lnklibs=\$with_${lib}_lnklibs
-                                   eval lib_enablement=\$use_${lib}
-                                   eval pkgconf=\$with_${lib}_pkgconf
-                                   TRACE_INDENT="     "
-                                   trace 3 $lib:$testwith:$prereq:$lnklibs:$loc:$hdr:$inc:$pkgconf:$lib_enablement
-                                fi
-                               ],
-                               [# Virtual package
-                                eval lib_enablement=\$use_${lib}
-                                AS_CASE([$lib_enablement],
-                                        [check | needed | yes],  [AS_VAR_SET([use_${lib}],
-                                                                             [present]
-                                                                            )
-                                                                  # Assume present if wanted (as
-                                                                  # something virtual can hardly
-                                                                  # be missing) but note that
-                                                                  # abscence of prerequisites can
-                                                                  # later cause the library to 
-                                                                  # become regarded as missing.
-                                                                  ],                                
-                                        [no],                     [:],
-                                        [blocked],                [:],
-                                        [trace 1 "Assert - Should never fall through here"]
-                                       )
-                                eval prereq=\$with_${lib}_prq
-                                TRACE_INDENT="     "
-                                trace 3 $lib:Virtual:$prereq:$lib_enablement
-                               ]
-                              )
-                        ]
-                       )
-                 ]
-                )
-
-
-
-          # FFMPEG is a special case:
+          # FFMPEG virtual package is a special case:
           #
           # At one point in its development; 25/2/8, FFMPEG changed the
           # location of its header files. Unfortunately, this was not done
@@ -1021,6 +966,32 @@ AC_DEFUN([QM_PROCESS_EXTLIBS],
 
 
 
+          # Finally, we can now test the availability of the libraries that
+          # need a compilation check. This list is all the KnownLibs minus the
+          # pkg-config specified packages and the virtual packages, in fact,
+          # just what we've been paring LeftToDo down to.
+          #
+          trace 2 Test availability of compilation-check external libraries
+
+          RecentlyProcessed="Force first iteration (if someting in LeftToDo)"
+          while ( test "x$RecentlyProcessed" != x -a "x$LeftToDo" != x )
+          do
+             RecentlyProcessed=""
+             for lib in $LeftToDo
+             do
+                 QM_CK_COMPILE_CK_LIB([$lib])
+             done
+          done
+
+          if ( test "x$LeftToDo" != x )
+          then
+             AC_MSG_FAILURE([Cannot process libraries @<:@$LeftToDo@:>@])
+          fi
+
+
+
+
+
           # Now propogate which libraries are blocked by their prerequisites
           # not being present. To do this, repeatedly pass until we get no
           # more alterations. As per the code for finding blockages on the
@@ -1033,6 +1004,11 @@ AC_DEFUN([QM_PROCESS_EXTLIBS],
           # the code checking for the individual libraries. (The error is
           # generated when the prerequisite library is found to be missing as
           # it knows it is required for another library)
+          #
+          # This section is really just for virtual packages, those packages
+          # specified by pkg-config have no pre-requisites; and those libraries
+          # for which we have performed a compilation test will have failed at
+          # that stage if any pre-requisites are missing.
           #
           trace 2 Block libraries dependent on missing libraries
           change_made=true
