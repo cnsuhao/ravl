@@ -14,7 +14,7 @@
 #include "Ravl/TypeName.hh"
 #include "Ravl/SysLog.hh"
 
-#define DPDEBUG 1
+#define DPDEBUG 0
 #if DPDEBUG
 #define ONDEBUG(x) x
 #else
