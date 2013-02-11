@@ -29,16 +29,16 @@ namespace RavlAudioN {
     
     MelCepstrumC(IntT numCepstrum,IntT specSize);
     //: Constructor.
-    // numCepstrum - Number of cepstrum co-efficients to generate.
-    // specSize - Number of spectrum co-effience at input.
+    // numCepstrum - Number of cepstrum coefficients to generate.
+    // specSize - Number of spectrum coefficients at input.
     
     void Init(IntT numCepstrum,IntT specSize);
     //: Initialise tables.
-    // numCepstrum - Number of cepstrum co-efficients to generate.
-    // specSize - Number of spectrum co-effience at input.
+    // numCepstrum - Number of cepstrum coefficients to generate.
+    // specSize - Number of spectrum coefficients at input.
     
     SArray1dC<RealT> Apply(const SArray1dC<RealT> &melSpectrum);
-    //: Compute mel cepstrum from mel spectrum parmiters.
+    //: Compute mel cepstrum from mel spectrum parameters.
     
   protected:
     SArray1dC<SArray1dC<RealT> > filters;
