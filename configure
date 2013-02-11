@@ -2195,52 +2195,6 @@ fi
 
 } # ac_fn_cxx_try_cpp
 
-# ac_fn_c_try_link LINENO
-# -----------------------
-# Try to link conftest.$ac_ext, and return whether this succeeded.
-ac_fn_c_try_link ()
-{
-  as_lineno=${as_lineno-"$1"} as_lineno_stack=as_lineno_stack=$as_lineno_stack
-  rm -f conftest.$ac_objext conftest$ac_exeext
-  if { { ac_try="$ac_link"
-case "(($ac_try" in
-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-  *) ac_try_echo=$ac_try;;
-esac
-eval ac_try_echo="\"\$as_me:${as_lineno-$LINENO}: $ac_try_echo\""
-$as_echo "$ac_try_echo"; } >&5
-  (eval "$ac_link") 2>conftest.err
-  ac_status=$?
-  if test -s conftest.err; then
-    grep -v '^ *+' conftest.err >conftest.er1
-    cat conftest.er1 >&5
-    mv -f conftest.er1 conftest.err
-  fi
-  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
-  test $ac_status = 0; } && {
-	 test -z "$ac_c_werror_flag" ||
-	 test ! -s conftest.err
-       } && test -s conftest$ac_exeext && {
-	 test "$cross_compiling" = yes ||
-	 $as_test_x conftest$ac_exeext
-       }; then :
-  ac_retval=0
-else
-  $as_echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-	ac_retval=1
-fi
-  # Delete the IPA/IPO (Inter Procedural Analysis/Optimization) information
-  # created by the PGI compiler (conftest_ipa8_conftest.oo), as it would
-  # interfere with the next link command; also delete a directory that is
-  # left behind by Apple's compiler.  We do this before executing the actions.
-  rm -rf conftest.dSYM conftest_ipa8_conftest.oo
-  eval $as_lineno_stack; test "x$as_lineno_stack" = x && { as_lineno=; unset as_lineno;}
-  as_fn_set_status $ac_retval
-
-} # ac_fn_c_try_link
-
 # ac_fn_c_check_header_compile LINENO HEADER VAR INCLUDES
 # -------------------------------------------------------
 # Tests whether HEADER exists and can be compiled using the include files in
@@ -2313,6 +2267,52 @@ fi
   as_fn_set_status $ac_retval
 
 } # ac_fn_c_try_run
+
+# ac_fn_c_try_link LINENO
+# -----------------------
+# Try to link conftest.$ac_ext, and return whether this succeeded.
+ac_fn_c_try_link ()
+{
+  as_lineno=${as_lineno-"$1"} as_lineno_stack=as_lineno_stack=$as_lineno_stack
+  rm -f conftest.$ac_objext conftest$ac_exeext
+  if { { ac_try="$ac_link"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval ac_try_echo="\"\$as_me:${as_lineno-$LINENO}: $ac_try_echo\""
+$as_echo "$ac_try_echo"; } >&5
+  (eval "$ac_link") 2>conftest.err
+  ac_status=$?
+  if test -s conftest.err; then
+    grep -v '^ *+' conftest.err >conftest.er1
+    cat conftest.er1 >&5
+    mv -f conftest.er1 conftest.err
+  fi
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; } && {
+	 test -z "$ac_c_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest$ac_exeext && {
+	 test "$cross_compiling" = yes ||
+	 $as_test_x conftest$ac_exeext
+       }; then :
+  ac_retval=0
+else
+  $as_echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	ac_retval=1
+fi
+  # Delete the IPA/IPO (Inter Procedural Analysis/Optimization) information
+  # created by the PGI compiler (conftest_ipa8_conftest.oo), as it would
+  # interfere with the next link command; also delete a directory that is
+  # left behind by Apple's compiler.  We do this before executing the actions.
+  rm -rf conftest.dSYM conftest_ipa8_conftest.oo
+  eval $as_lineno_stack; test "x$as_lineno_stack" = x && { as_lineno=; unset as_lineno;}
+  as_fn_set_status $ac_retval
+
+} # ac_fn_c_try_link
 cat >config.log <<_ACEOF
 This file contains any messages produced by compilers while
 running configure, to aid debugging if configure makes a mistake.
@@ -2670,6 +2670,11 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 # This code may be redistributed under the terms of the GNU General
 # Public License (GPL). See the gpl.licence file for details or
 # see http://www.gnu.org/copyleft/gpl.html
+
+
+
+
+
 
 
 
@@ -15036,6 +15041,38 @@ fi
           # Expand the librarys'pre-requisites to include the pre-requisites
           # for the  pre-requisites, etc.
           #
+          # First, we need to sanitise the pre-requisite lists: if we are
+          # using pkg-config for a library, that will deliver the list of
+          # libraries needed for that package; we do not therefore need to
+          # consider any known pre-requisites. i
+          #
+          # So.. nullify the pre-requisites of any external libraries that
+          # are being specified via pkg-config
+          #
+          trace 2 Nullifying pre-requisites for pkg-config specified libraries
+          for lib in $KnownLibs
+          do
+             TRACE_INDENT="     "
+             trace 6 Processing $lib
+             eval pkgconf=\$with_${lib}_pkgconf
+             if ( test x$pkgconf != x -a x$pkgconf != xnotset )
+             then
+                TRACE_INDENT="          "
+                trace 6 Use of pkg-config identified
+                eval prereq=\$with_${lib}_prq
+                if ( test "x$prereq" != x )
+                then
+                   TRACE_INDENT="          "
+                   trace 4 Nullifying pre-requisites of $lib
+                   TRACE_INDENT="               "
+                   trace 6 Pre-requisites were $prereq
+                   eval with_${lib}_prq=\"\"
+                fi
+             fi
+          done
+
+          # Now we can expand the remaining pre-requisites lists.
+          #
           # Method: For each library, add the pre-requisites of its direct
           # pre-requisites. Repeat this process until we make no further
           # changes.
@@ -15115,8 +15152,7 @@ fi
                           TRACE_INDENT="          "
                           trace 6 Library $lib disabled
                           ;;
-                'check')
-                          eval prereq=\$with_${lib}_prq
+                'check' ) eval prereq=\$with_${lib}_prq
                           for prql in $prereq
                           do
                              TRACE_INDENT="          "
@@ -15131,7 +15167,7 @@ fi
                              esac
                           done
                           ;;
-                'needed')
+                'needed' )
                           eval prereq=\$with_${lib}_prq
                           for prql in $prereq
                           do
@@ -15157,8 +15193,7 @@ See \`config.log' for more details." "$LINENO" 5; }
                              esac
                           done
                           ;;
-                'yes')
-                          eval prereq=\$with_${lib}_prq
+                'yes' )   eval prereq=\$with_${lib}_prq
                           for prql in $prereq
                           do
                              TRACE_INDENT="          "
@@ -15214,64 +15249,65 @@ fi
 
           # Check for all helper libraries being used.
           #
+          LeftToDo="$KnownLibs"
+          #
           # First see if each of the libraries exist and error out if the
           # missing libs were specified as needed (either from the cmd-line
           # or from dependencies)
           #
-          trace 2 Test availability of libraries
+          # Test for the pkg-config specified libraries and virtual packages
+          # before testing for those specified for a compilation test. This
+          # allows the later compilation test to use a pkg-config library (or
+          # a virtual package) as a pre-requisite. Processing the pkg-config
+          # files first allows the use of a pkg-config file to overrule the
+          # default settings for a compile-test library or a virtual package.
+          #
+          trace 2 Test availability of pkg-config specified libraries and virtual packages
           for lib in $KnownLibs
-do :
-  eval lib_enablement=\$use_${lib}
-
-                  eval pkgconf=\$with_${lib}_pkgconf
-                  # Test for pkg-config before testing for a virtual library
-                  # as this allows use of a pkg-config file to overrule the
-                  # default settings for a virtual package.
-                  if test x$pkgconf != x -a x$pkgconf != xnotset; then :
-  case $lib_enablement in #(
-  check) :
-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking pkg-config for $lib" >&5
+          do
+            eval lib_enablement=\$use_${lib}
+            eval pkgconf=\$with_${lib}_pkgconf
+            if ( test x$pkgconf != x -a x$pkgconf != xnotset )
+            then
+               case $lib_enablement in
+                  'check' )    { $as_echo "$as_me:${as_lineno-$LINENO}: checking pkg-config for $lib" >&5
 $as_echo_n "checking pkg-config for $lib... " >&6; }
-                                             if test -n "$PKG_CONFIG" && \
+                               if test -n "$PKG_CONFIG" && \
     { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"\$pkgconf\""; } >&5
   ($PKG_CONFIG --exists --print-errors "$pkgconf") 2>&5
   ac_status=$?
   $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
   test $ac_status = 0; }; then
-  eval "use_${lib}=present
-                                                                         "
-                                                               eval "${lib}_CFLAGS=\`\$PKG_CONFIG --cflags \$pkgconf 2>/dev/null \`
-                                                                         "
-                                                               eval "${lib}_LIBS=\`\$PKG_CONFIG --libs \$pkgconf 2>/dev/null\`
-                                                                         "
-                                                               { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+  eval "use_${lib}=present"
+                                                 eval "${lib}_CFLAGS=\`\$PKG_CONFIG --cflags \$pkgconf 2>/dev/null \`
+                                                           "
+                                                 eval "${lib}_LIBS=\`\$PKG_CONFIG --libs \$pkgconf 2>/dev/null\`
+                                                           "
+                                                 { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 $as_echo "yes" >&6; }
 
 else
-  eval "use_${lib}=missing
-                                                                         "
-                                                               { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+  eval "use_${lib}=missing"
+                                                 { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
 $as_echo "no" >&6; }
 
 
 fi
-                                             ;; #(
-  needed) :
-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking pkg-config for $lib" >&5
+                               ;;
+                  'needed' )   { $as_echo "$as_me:${as_lineno-$LINENO}: checking pkg-config for $lib" >&5
 $as_echo_n "checking pkg-config for $lib... " >&6; }
-                                             if test -n "$PKG_CONFIG" && \
+                               if test -n "$PKG_CONFIG" && \
     { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"\$pkgconf\""; } >&5
   ($PKG_CONFIG --exists --print-errors "$pkgconf") 2>&5
   ac_status=$?
   $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
   test $ac_status = 0; }; then
-  eval "use_${lib}=present
-                                                                         "
-                                                               eval "${lib}_CFLAGS=\`\$PKG_CONFIG --cflags \$pkgconf 2>/dev/null \`
-                                                                         "
-                                                               eval "${lib}_LIBS=\`\$PKG_CONFIG --libs \$pkgconf 2>/dev/null\`
-                                                                         "
-                                                               { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+  eval "use_${lib}=present"
+                                                 eval "${lib}_CFLAGS=\`\$PKG_CONFIG --cflags \$pkgconf 2>/dev/null \`
+                                                           "
+                                                 eval "${lib}_LIBS=\`\$PKG_CONFIG --libs \$pkgconf 2>/dev/null\`
+                                                           "
+                                                 { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 $as_echo "yes" >&6; }
 
 else
@@ -15282,23 +15318,21 @@ See \`config.log' for more details." "$LINENO" 5; }
 
 
 fi
-                                             ;; #(
-  yes) :
-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking pkg-config for $lib" >&5
+                               ;;
+                  'yes' )      { $as_echo "$as_me:${as_lineno-$LINENO}: checking pkg-config for $lib" >&5
 $as_echo_n "checking pkg-config for $lib... " >&6; }
-                                             if test -n "$PKG_CONFIG" && \
+                               if test -n "$PKG_CONFIG" && \
     { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"\$pkgconf\""; } >&5
   ($PKG_CONFIG --exists --print-errors "$pkgconf") 2>&5
   ac_status=$?
   $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
   test $ac_status = 0; }; then
-  eval "use_${lib}=present
-                                                                         "
-                                                               eval "${lib}_CFLAGS=\`\$PKG_CONFIG --cflags \$pkgconf 2>/dev/null \`
-                                                                         "
-                                                               eval "${lib}_LIBS=\`\$PKG_CONFIG --libs \$pkgconf 2>/dev/null\`
-                                                                         "
-                                                               { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+  eval "use_${lib}=present"
+                                                 eval "${lib}_CFLAGS=\`\$PKG_CONFIG --cflags \$pkgconf 2>/dev/null \`
+                                                           "
+                                                 eval "${lib}_LIBS=\`\$PKG_CONFIG --libs \$pkgconf 2>/dev/null\`
+                                                           "
+                                                 { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 $as_echo "yes" >&6; }
 
 else
@@ -15309,587 +15343,54 @@ See \`config.log' for more details." "$LINENO" 5; }
 
 
 fi
-                                             ;; #(
-  no) :
-    : ;; #(
-  blocked) :
-    : ;; #(
-  *) :
-    trace 1 "Assert - Should not fall through here"
-                                 ;;
-esac
-                                if ( test X$DBG != X && test $DBG -ge 3 )
-                                then
-                                   eval testwith=\$with_${lib}_fn
-                                   eval prereq=\$with_${lib}_prq
-                                   eval lnklibs=\$with_${lib}_lnklibs
-                                   eval loc=\$with_${lib}_libpath
-                                   eval hdr=\$with_${lib}_hdr
-                                   eval inc=\$with_${lib}_inc
-                                   eval lib_enablement=\$use_${lib}
-                                   TRACE_INDENT="     "
-                                   trace 3 $lib:$testwith:$prereq:$lnklibs:$loc:$hdr:$pkgconf:$inc:$lib_enablement
-                                fi
-
-else
-  eval virtual=\$with_${lib}_virtual
-                         if test X$virtual != Xyes; then :
-  # Not configured via pkg-config nor virtual
-                                # Must need a compile check
-                                eval testwith=\$with_${lib}_fn
-                                eval lnklibs=\$with_${lib}_lnklibs
-                                lnklibs=`echo $lnklibs | $SED 's/^-l//'`
-                                eval loc=\$with_${lib}_libpath
-                                eval hdr=\$with_${lib}_hdr
-                                eval inc=\$with_${lib}_inc
-                                eval prereq=\$with_${lib}_prq
-                                case $lib_enablement in #(
-  check) :
-
-         trace 5 Checking for library:
-         TRACE_INDENT="     "
-         trace 5 "[$lib]"
-         TRACE_INDENT="     "
-         trace 5 "[$lnklibs]"
-         TRACE_INDENT="     "
-         trace 5 "[$testwith]"
-         TRACE_INDENT="     "
-         trace 5 "[$loc]"
-         TRACE_INDENT="     "
-         trace 5 "[$hdr]"
-         TRACE_INDENT="     "
-         trace 5 "[$inc]"
-         TRACE_INDENT="     "
-         trace 5 Code...
-         TRACE_INDENT="     "
-         trace 5 Code...
-         TRACE_INDENT="     "
-         stripspaces=$prereq
-         # As $prereq                                                                         will have acquired trailing characters from m4 substitutions
-         trace 5 "[$stripspaces]"
-         if ( test "X$loc" != X )
-         then
-            TRACE_INDENT="     "
-            trace 3 Setting LDFLAGS for library to -L$loc
-            LIB_LDFLAGS=-L$loc
-         else
-            LIB_LDFLAGS=""
-         fi
-         if ( test "X$inc" != X )
-         then
-            TRACE_INDENT="     "
-            trace 3 Setting CPPFLAGS for library to -I$inc
-            LIB_CPPFLAGS=-I$inc
-         else
-            LIB_CPPFLAGS=""
-         fi
-         prereqlibs=""
-         for prereqlib in $prereq
-         do
-            eval new_prereqlib="\$with_${prereqlib}_lnklibs"
-            new_prereqlib=`echo $new_prereqlib | $SED 's/^-l//' | $SED 's/^lib//'`
-            TRACE_INDENT="     "
-            trace 3 Appending -l$new_prereqlib to link line
-            prereqlibs=$prereqlibs" -l"$new_prereqlib
-            eval new_prereqlibpath=\$with_${prereqlib}_libpath
-            if ( test "X$new_prereqlibpath" != X )
-            then
-               TRACE_INDENT="     "
-               trace 3 Appending -L$new_prereqlibpath to LDFLAGS
-               LIB_LDFLAGS=$LIB_LDFLAGS" "-L$new_prereqlibpath
-            fi
-         done
-         TRACE_INDENT="     "
-         preserve_LDFLAGS=$LDFLAGS
-         preserve_CPPFLAGS=$CPPFLAGS
-         LDFLAGS=$LIB_LDFLAGS
-         CPPFLAGS=$LIB_CPPFLAGS
-         trace 3 Checking for fn $testwith in library $lnklibs
-         as_ac_Lib=`$as_echo "ac_cv_lib_$lnklibs''_$testwith" | $as_tr_sh`
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $testwith in -l$lnklibs" >&5
-$as_echo_n "checking for $testwith in -l$lnklibs... " >&6; }
-if { as_var=$as_ac_Lib; eval "test \"\${$as_var+set}\" = set"; }; then :
-  $as_echo_n "(cached) " >&6
-else
-  ac_check_lib_save_LIBS=$LIBS
-LIBS="-l$lnklibs $prereqlibs $LIBS"
-cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-/* Override any GCC internal prototype to avoid an error.
-   Use char because int might match the return type of a GCC
-   builtin and then its argument prototype would still apply.  */
-#ifdef __cplusplus
-extern "C"
-#endif
-char $testwith ();
-int
-main ()
-{
-return $testwith ();
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
-  eval "$as_ac_Lib=yes"
-else
-  eval "$as_ac_Lib=no"
-fi
-rm -f core conftest.err conftest.$ac_objext \
-    conftest$ac_exeext conftest.$ac_ext
-LIBS=$ac_check_lib_save_LIBS
-fi
-eval ac_res=\$$as_ac_Lib
-	       { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_res" >&5
-$as_echo "$ac_res" >&6; }
-eval as_val=\$$as_ac_Lib
-   if test "x$as_val" = x""yes; then :
-  found=true
-else
-  found=false
-fi
-
-         if ( test X$found = Xtrue )
-         then
-            if ( test X"$hdr" != X )
-            then
-               for hf in $hdr
-               do
-                  if ( test X$found = Xtrue )
-                  then
-                     TRACE_INDENT="     "
-                     trace 3 Checking for header file $hf
-                     as_ac_Header=`$as_echo "ac_cv_header_$hf" | $as_tr_sh`
-ac_fn_c_check_header_compile "$LINENO" "$hf" "$as_ac_Header" "$ac_includes_default
-
-"
-eval as_val=\$$as_ac_Header
-   if test "x$as_val" = x""yes; then :
-  found=true
-else
-  found=false
-fi
-
-
-                  fi
-               done
-            fi
-         fi
-         CPPFLAGS=$preserve_CPPFLAGS
-         LDFLAGS=$preserve_LDFLAGS
-         if ( test X$found = Xtrue )
-         then
-            TRACE_INDENT="     "
-            trace 4 Library package $lib found
-            fix_expan=$lib
-            eval "${fix_expan}_CFLAGS=\$LIB_CPPFLAGS"
-            if ( test X$LIB_LDFLAGS != X )
-            then
-               LIB_LDFLAGS=$LIB_LDFLAGS" -l$lnklibs"
+                               ;;
+                  'no' )       ;;
+                  'blocked' )  ;;
+                  * )          trace 1 "Assert - Should not fall through here"
+                               ;;
+               esac
+               LeftToDo=`echo " $LeftToDo " | $SED "s/ $lib / /"`
+               if ( test X$DBG != X && test $DBG -ge 3 )
+               then
+                  eval testwith=\$with_${lib}_fn
+                  eval prereq="\$with_${lib}_prq"
+                  eval lnklibs=\$with_${lib}_lnklibs
+                  eval loc=\$with_${lib}_libpath
+                  eval hdr=\$with_${lib}_hdr
+                  eval inc=\$with_${lib}_inc
+                  eval lib_enablement=\$use_${lib}
+                  TRACE_INDENT="     "
+                  trace 3 $lib:$testwith:$prereq:$lnklibs:$loc:$hdr:$pkgconf:$inc:$lib_enablement
+               fi
             else
-               LIB_LDFLAGS=-l$lnklibs
+               eval virtual=\$with_${lib}_virtual
+               if ( test X$virtual == Xyes )
+               then
+                  # Virtual package
+                  eval lib_enablement=\$use_${lib}
+                  case $lib_enablement in
+                     'check' | 'needed' | 'yes' )
+                                  eval "use_${lib}=present"
+                                  # Assume present if wanted (as something
+                                  # virtual can hardly be missing) but note
+                                  # that abscence of prerequisites can later
+                                  # cause the library to become regarded as
+                                  # missing.
+                                  ;;
+                     'no' )       ;;
+                     'blocked' )  ;;
+                     * )          trace 1 "Assert - Should never fall through here"
+                                  ;;
+                  esac
+                  eval prereq="\$with_${lib}_prq"
+                  TRACE_INDENT="     "
+                  trace 3 $lib:Virtual:$prereq:$lib_enablement
+                  LeftToDo=`echo " $LeftToDo " | $SED "s/ $lib / /"`
+               fi
             fi
-            if ( test "X$prereqlibs" != X )
-            then
-               LIB_LDFLAGS=$LIB_LDFLAGS" "$prereqlibs
-            fi
-            eval "${fix_expan}_LIBS=\$LIB_LDFLAGS"
-            eval "use_${lib}=present
-                                                                                    "
+          done
 
-         else
-            TRACE_INDENT="     "
-            trace 3 Library package $lib not found
-            eval "use_${lib}=missing
-                                                                                    "
-
-         fi
-
-                                                           ;; #(
-  needed) :
-
-         trace 5 Checking for library:
-         TRACE_INDENT="     "
-         trace 5 "[$lib]"
-         TRACE_INDENT="     "
-         trace 5 "[$lnklibs]"
-         TRACE_INDENT="     "
-         trace 5 "[$testwith]"
-         TRACE_INDENT="     "
-         trace 5 "[$loc]"
-         TRACE_INDENT="     "
-         trace 5 "[$hdr]"
-         TRACE_INDENT="     "
-         trace 5 "[$inc]"
-         TRACE_INDENT="     "
-         trace 5 Code...
-         TRACE_INDENT="     "
-         trace 5 Code...
-         TRACE_INDENT="     "
-         stripspaces=$prereq
-         # As $prereq                                                                         will have acquired trailing characters from m4 substitutions
-         trace 5 "[$stripspaces]"
-         if ( test "X$loc" != X )
-         then
-            TRACE_INDENT="     "
-            trace 3 Setting LDFLAGS for library to -L$loc
-            LIB_LDFLAGS=-L$loc
-         else
-            LIB_LDFLAGS=""
-         fi
-         if ( test "X$inc" != X )
-         then
-            TRACE_INDENT="     "
-            trace 3 Setting CPPFLAGS for library to -I$inc
-            LIB_CPPFLAGS=-I$inc
-         else
-            LIB_CPPFLAGS=""
-         fi
-         prereqlibs=""
-         for prereqlib in $prereq
-         do
-            eval new_prereqlib="\$with_${prereqlib}_lnklibs"
-            new_prereqlib=`echo $new_prereqlib | $SED 's/^-l//' | $SED 's/^lib//'`
-            TRACE_INDENT="     "
-            trace 3 Appending -l$new_prereqlib to link line
-            prereqlibs=$prereqlibs" -l"$new_prereqlib
-            eval new_prereqlibpath=\$with_${prereqlib}_libpath
-            if ( test "X$new_prereqlibpath" != X )
-            then
-               TRACE_INDENT="     "
-               trace 3 Appending -L$new_prereqlibpath to LDFLAGS
-               LIB_LDFLAGS=$LIB_LDFLAGS" "-L$new_prereqlibpath
-            fi
-         done
-         TRACE_INDENT="     "
-         preserve_LDFLAGS=$LDFLAGS
-         preserve_CPPFLAGS=$CPPFLAGS
-         LDFLAGS=$LIB_LDFLAGS
-         CPPFLAGS=$LIB_CPPFLAGS
-         trace 3 Checking for fn $testwith in library $lnklibs
-         as_ac_Lib=`$as_echo "ac_cv_lib_$lnklibs''_$testwith" | $as_tr_sh`
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $testwith in -l$lnklibs" >&5
-$as_echo_n "checking for $testwith in -l$lnklibs... " >&6; }
-if { as_var=$as_ac_Lib; eval "test \"\${$as_var+set}\" = set"; }; then :
-  $as_echo_n "(cached) " >&6
-else
-  ac_check_lib_save_LIBS=$LIBS
-LIBS="-l$lnklibs $prereqlibs $LIBS"
-cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-/* Override any GCC internal prototype to avoid an error.
-   Use char because int might match the return type of a GCC
-   builtin and then its argument prototype would still apply.  */
-#ifdef __cplusplus
-extern "C"
-#endif
-char $testwith ();
-int
-main ()
-{
-return $testwith ();
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
-  eval "$as_ac_Lib=yes"
-else
-  eval "$as_ac_Lib=no"
-fi
-rm -f core conftest.err conftest.$ac_objext \
-    conftest$ac_exeext conftest.$ac_ext
-LIBS=$ac_check_lib_save_LIBS
-fi
-eval ac_res=\$$as_ac_Lib
-	       { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_res" >&5
-$as_echo "$ac_res" >&6; }
-eval as_val=\$$as_ac_Lib
-   if test "x$as_val" = x""yes; then :
-  found=true
-else
-  found=false
-fi
-
-         if ( test X$found = Xtrue )
-         then
-            if ( test X"$hdr" != X )
-            then
-               for hf in $hdr
-               do
-                  if ( test X$found = Xtrue )
-                  then
-                     TRACE_INDENT="     "
-                     trace 3 Checking for header file $hf
-                     as_ac_Header=`$as_echo "ac_cv_header_$hf" | $as_tr_sh`
-ac_fn_c_check_header_compile "$LINENO" "$hf" "$as_ac_Header" "$ac_includes_default
-
-"
-eval as_val=\$$as_ac_Header
-   if test "x$as_val" = x""yes; then :
-  found=true
-else
-  found=false
-fi
-
-
-                  fi
-               done
-            fi
-         fi
-         CPPFLAGS=$preserve_CPPFLAGS
-         LDFLAGS=$preserve_LDFLAGS
-         if ( test X$found = Xtrue )
-         then
-            TRACE_INDENT="     "
-            trace 4 Library package $lib found
-            fix_expan=$lib
-            eval "${fix_expan}_CFLAGS=\$LIB_CPPFLAGS"
-            if ( test X$LIB_LDFLAGS != X )
-            then
-               LIB_LDFLAGS=$LIB_LDFLAGS" -l$lnklibs"
-            else
-               LIB_LDFLAGS=-l$lnklibs
-            fi
-            if ( test "X$prereqlibs" != X )
-            then
-               LIB_LDFLAGS=$LIB_LDFLAGS" "$prereqlibs
-            fi
-            eval "${fix_expan}_LIBS=\$LIB_LDFLAGS"
-            eval "use_${lib}=present
-                                                                                    "
-
-         else
-            TRACE_INDENT="     "
-            trace 3 Library package $lib not found
-            { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error "Library $lib is unavailable and a prerequisite of a selected library
-See \`config.log' for more details." "$LINENO" 5; }
-         fi
-
-                                                           ;; #(
-  yes) :
-
-         trace 5 Checking for library:
-         TRACE_INDENT="     "
-         trace 5 "[$lib]"
-         TRACE_INDENT="     "
-         trace 5 "[$lnklibs]"
-         TRACE_INDENT="     "
-         trace 5 "[$testwith]"
-         TRACE_INDENT="     "
-         trace 5 "[$loc]"
-         TRACE_INDENT="     "
-         trace 5 "[$hdr]"
-         TRACE_INDENT="     "
-         trace 5 "[$inc]"
-         TRACE_INDENT="     "
-         trace 5 Code...
-         TRACE_INDENT="     "
-         trace 5 Code...
-         TRACE_INDENT="     "
-         stripspaces=$prereq
-         # As $prereq                                                                         will have acquired trailing characters from m4 substitutions
-         trace 5 "[$stripspaces]"
-         if ( test "X$loc" != X )
-         then
-            TRACE_INDENT="     "
-            trace 3 Setting LDFLAGS for library to -L$loc
-            LIB_LDFLAGS=-L$loc
-         else
-            LIB_LDFLAGS=""
-         fi
-         if ( test "X$inc" != X )
-         then
-            TRACE_INDENT="     "
-            trace 3 Setting CPPFLAGS for library to -I$inc
-            LIB_CPPFLAGS=-I$inc
-         else
-            LIB_CPPFLAGS=""
-         fi
-         prereqlibs=""
-         for prereqlib in $prereq
-         do
-            eval new_prereqlib="\$with_${prereqlib}_lnklibs"
-            new_prereqlib=`echo $new_prereqlib | $SED 's/^-l//' | $SED 's/^lib//'`
-            TRACE_INDENT="     "
-            trace 3 Appending -l$new_prereqlib to link line
-            prereqlibs=$prereqlibs" -l"$new_prereqlib
-            eval new_prereqlibpath=\$with_${prereqlib}_libpath
-            if ( test "X$new_prereqlibpath" != X )
-            then
-               TRACE_INDENT="     "
-               trace 3 Appending -L$new_prereqlibpath to LDFLAGS
-               LIB_LDFLAGS=$LIB_LDFLAGS" "-L$new_prereqlibpath
-            fi
-         done
-         TRACE_INDENT="     "
-         preserve_LDFLAGS=$LDFLAGS
-         preserve_CPPFLAGS=$CPPFLAGS
-         LDFLAGS=$LIB_LDFLAGS
-         CPPFLAGS=$LIB_CPPFLAGS
-         trace 3 Checking for fn $testwith in library $lnklibs
-         as_ac_Lib=`$as_echo "ac_cv_lib_$lnklibs''_$testwith" | $as_tr_sh`
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $testwith in -l$lnklibs" >&5
-$as_echo_n "checking for $testwith in -l$lnklibs... " >&6; }
-if { as_var=$as_ac_Lib; eval "test \"\${$as_var+set}\" = set"; }; then :
-  $as_echo_n "(cached) " >&6
-else
-  ac_check_lib_save_LIBS=$LIBS
-LIBS="-l$lnklibs $prereqlibs $LIBS"
-cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-/* Override any GCC internal prototype to avoid an error.
-   Use char because int might match the return type of a GCC
-   builtin and then its argument prototype would still apply.  */
-#ifdef __cplusplus
-extern "C"
-#endif
-char $testwith ();
-int
-main ()
-{
-return $testwith ();
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
-  eval "$as_ac_Lib=yes"
-else
-  eval "$as_ac_Lib=no"
-fi
-rm -f core conftest.err conftest.$ac_objext \
-    conftest$ac_exeext conftest.$ac_ext
-LIBS=$ac_check_lib_save_LIBS
-fi
-eval ac_res=\$$as_ac_Lib
-	       { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_res" >&5
-$as_echo "$ac_res" >&6; }
-eval as_val=\$$as_ac_Lib
-   if test "x$as_val" = x""yes; then :
-  found=true
-else
-  found=false
-fi
-
-         if ( test X$found = Xtrue )
-         then
-            if ( test X"$hdr" != X )
-            then
-               for hf in $hdr
-               do
-                  if ( test X$found = Xtrue )
-                  then
-                     TRACE_INDENT="     "
-                     trace 3 Checking for header file $hf
-                     as_ac_Header=`$as_echo "ac_cv_header_$hf" | $as_tr_sh`
-ac_fn_c_check_header_compile "$LINENO" "$hf" "$as_ac_Header" "$ac_includes_default
-
-"
-eval as_val=\$$as_ac_Header
-   if test "x$as_val" = x""yes; then :
-  found=true
-else
-  found=false
-fi
-
-
-                  fi
-               done
-            fi
-         fi
-         CPPFLAGS=$preserve_CPPFLAGS
-         LDFLAGS=$preserve_LDFLAGS
-         if ( test X$found = Xtrue )
-         then
-            TRACE_INDENT="     "
-            trace 4 Library package $lib found
-            fix_expan=$lib
-            eval "${fix_expan}_CFLAGS=\$LIB_CPPFLAGS"
-            if ( test X$LIB_LDFLAGS != X )
-            then
-               LIB_LDFLAGS=$LIB_LDFLAGS" -l$lnklibs"
-            else
-               LIB_LDFLAGS=-l$lnklibs
-            fi
-            if ( test "X$prereqlibs" != X )
-            then
-               LIB_LDFLAGS=$LIB_LDFLAGS" "$prereqlibs
-            fi
-            eval "${fix_expan}_LIBS=\$LIB_LDFLAGS"
-            eval "use_${lib}=present
-                                                                                    "
-
-         else
-            TRACE_INDENT="     "
-            trace 3 Library package $lib not found
-            { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error "Required library $lib is unavailable
-See \`config.log' for more details." "$LINENO" 5; }
-         fi
-
-                                                            ;; #(
-  no) :
-    : ;; #(
-  blocked) :
-    : ;; #(
-  *) :
-    trace 1 "Assert - Should never fall through here"
-                                        ;;
-esac
-                                if ( test X$DBG != X && test $DBG -ge 3 )
-                                then
-                                   eval lnklibs=\$with_${lib}_lnklibs
-                                   eval lib_enablement=\$use_${lib}
-                                   eval pkgconf=\$with_${lib}_pkgconf
-                                   TRACE_INDENT="     "
-                                   trace 3 $lib:$testwith:$prereq:$lnklibs:$loc:$hdr:$inc:$pkgconf:$lib_enablement
-                                fi
-
-else
-  # Virtual package
-                                eval lib_enablement=\$use_${lib}
-                                case $lib_enablement in #(
-  check | needed | yes) :
-    eval "use_${lib}=present
-                                                                            "
-                                                                  # Assume present if wanted (as
-                                                                  # something virtual can hardly
-                                                                  # be missing) but note that
-                                                                  # abscence of prerequisites can
-                                                                  # later cause the library to
-                                                                  # become regarded as missing.
-                                                                   ;; #(
-  no) :
-    : ;; #(
-  blocked) :
-    : ;; #(
-  *) :
-    trace 1 "Assert - Should never fall through here"
-                                        ;;
-esac
-                                eval prereq=\$with_${lib}_prq
-                                TRACE_INDENT="     "
-                                trace 3 $lib:Virtual:$prereq:$lib_enablement
-
-
-fi
-
-
-fi
-
-
-done
-
-
-
-          # FFMPEG is a special case:
+          # FFMPEG virtual package is a special case:
           #
           # At one point in its development; 25/2/8, FFMPEG changed the
           # location of its header files. Unfortunately, this was not done
@@ -16462,6 +15963,656 @@ See \`config.log' for more details." "$LINENO" 5; }
 
 
 
+          # Finally, we can now test the availability of the libraries that
+          # need a compilation check. This list is all the KnownLibs minus the
+          # pkg-config specified packages and the virtual packages, in fact,
+          # just what we've been paring LeftToDo down to.
+          #
+          trace 2 Test availability of compilation-check external libraries
+
+          RecentlyProcessed="Force first iteration (if someting in LeftToDo)"
+          while ( test "x$RecentlyProcessed" != x -a "x$LeftToDo" != x )
+          do
+             RecentlyProcessed=""
+             for lib in $LeftToDo
+             do
+                 trace 5 Seeing if we can do the compilation check for $lib
+          lib=$lib
+
+          eval lib_enablement=\$use_${lib}
+
+
+          if test "$lib_enablement" == check -o  "$lib_enablement" == needed -o  "$lib_enablement" == yes; then :
+  # We need to check if this lib exists
+                 eval prereqs="\$with_${lib}_prq"
+                 process_now=yes
+                 if ( test "x$prereqs" != x )
+                 then
+                    TRACE_INDENT="     "
+                    trace 4 Checking we know the status of all the pre-requisites of $lib [$prereqs]
+                    for prq in $prereqs
+                    do
+                       eval prq_state=\$use_${prq}
+                       case "$prq_state" in
+                          present )     TRACE_INDENT="          "
+                                        trace 6 $prq is present
+                                        ;;
+                          no )          case $lib_enablement in
+                                           check )  TRACE_INDENT="          "
+                                                    trace 6 $prq is disabled, disabling $lib
+                                                    use_${lib}=blocked
+                                                    LeftToDo=`echo " $LeftToDo " | $SED "s/ $lib / /"`
+                                                    RecentlyProcessed="$RecentlyProcessed $lib"
+                                                    process_now=no
+                                                    break
+                                                    ;;
+                                           needed ) { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Library $lib is a pre-requisite of a selected library but is unavailable due to a disabled pre-requisite
+See \`config.log' for more details." "$LINENO" 5; }
+                                                    ;;
+                                           yes )    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Required library $lib is unavailable due to a disabled pre-requisite
+See \`config.log' for more details." "$LINENO" 5; }
+                                                    ;;
+                                        esac
+                                        ;;
+                          missing )     case $lib_enablement in
+                                           check )  TRACE_INDENT="          "
+                                                    trace 6 $prq is not available, disabling $lib
+                                                    use_${lib}=blocked
+                                                    LeftToDo=`echo " $LeftToDo " | $SED "s/ $lib / /"`
+                                                    RecentlyProcessed="$RecentlyProcessed $lib"
+                                                    process_now=no
+                                                    break
+                                                    ;;
+                                           needed ) { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Library $lib is a pre-requisite of a selected library but is unavailable due to a missing pre-requisite
+See \`config.log' for more details." "$LINENO" 5; }
+                                                    ;;
+                                           yes )    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Required library $lib is unavailable due to a missing pre-requisite
+See \`config.log' for more details." "$LINENO" 5; }
+                                                    ;;
+                                        esac
+                                        ;;
+                          blocked )     case $lib_enablement in
+                                           check )  TRACE_INDENT="          "
+                                                    trace 6 $prq is blocked, disabling $lib
+                                                    use_${lib}=blocked
+                                                    LeftToDo=`echo " $LeftToDo " | $SED "s/ $lib / /"`
+                                                    RecentlyProcessed="$RecentlyProcessed $lib"
+                                                    process_now=no
+                                                    break
+                                                    ;;
+                                           needed ) { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Library $lib is a pre-requisite of a selected library but is unavailable due to a missing pre-requisite
+See \`config.log' for more details." "$LINENO" 5; }
+                                                    ;;
+                                           yes )    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Required library $lib is unavailable due to a missing pre-requisite
+See \`config.log' for more details." "$LINENO" 5; }
+                                                    ;;
+                                        esac
+                                        ;;
+                          check | needed | yes )
+                                        TRACE_INDENT="          "
+                                        trace 6 $prq has not yet been checked, cannot check $lib at the moment
+                                        process_now=no
+                                        # Do not break in case we can
+                                        # mark the library as blocked
+                                        # by dint of another pre-req.
+                                        ;;
+                          * )           case $lib_enablement in
+                                           check )  TRACE_INDENT="          "
+                                                    trace 1 Assert - unrecognised state for prerequisite $prq, disabling $lib
+                                                    use_${lib}=blocked
+                                                    LeftToDo=`echo " $LeftToDo " | $SED "s/ $lib / /"`
+                                                    RecentlyProcessed="$RecentlyProcessed $lib"
+                                                    process_now=no
+                                                    break
+                                                    ;;
+                                           needed ) { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Library $lib is a prerequisite of a selected library but is unavailable due to a indeterminate pre-requisite state
+See \`config.log' for more details." "$LINENO" 5; }
+                                                    ;;
+                                           yes )    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Required library $lib is unavailable due to a indeterminate pre-requisite state
+See \`config.log' for more details." "$LINENO" 5; }
+                                                    ;;
+                                        esac
+                                        ;;
+                       esac
+                    done
+                 fi
+                 if test "x$process_now" != xno; then :
+  eval testwith=\$with_${lib}_fn
+                        eval lnklibs=\$with_${lib}_lnklibs
+                        lnklibs=`echo $lnklibs | $SED 's/^-l//'`
+                        eval loc=\$with_${lib}_libpath
+                        eval hdr=\$with_${lib}_hdr
+                        eval inc=\$with_${lib}_inc
+                        case $lib_enablement in #(
+  check) :
+
+         trace 5 Checking for library:
+         TRACE_INDENT="     "
+         trace 5 "[$lib]"
+         TRACE_INDENT="     "
+         trace 5 "[$lnklibs]"
+         TRACE_INDENT="     "
+         trace 5 "[$testwith]"
+         TRACE_INDENT="     "
+         trace 5 "[$loc]"
+         TRACE_INDENT="     "
+         trace 5 "[$hdr]"
+         TRACE_INDENT="     "
+         trace 5 "[$inc]"
+         TRACE_INDENT="     "
+         trace 5 Code...
+         TRACE_INDENT="     "
+         trace 5 Code...
+         TRACE_INDENT="     "
+         stripspaces=$prereqs
+         # As $prereqs                                                                 will have acquired trailing characters from m4 substitutions
+         trace 5 "[$stripspaces]"
+         if ( test "X$loc" != X )
+         then
+            TRACE_INDENT="     "
+            trace 3 Setting LDFLAGS for library to -L$loc
+            LIB_LDFLAGS=-L$loc
+         else
+            LIB_LDFLAGS=""
+         fi
+         if ( test "X$inc" != X )
+         then
+            TRACE_INDENT="     "
+            trace 3 Setting CPPFLAGS for library to -I$inc
+            LIB_CPPFLAGS=-I$inc
+         else
+            LIB_CPPFLAGS=""
+         fi
+         prereqlibs=""
+         for prereqlib in $prereqs
+         do
+            TRACE_INDENT="     "
+            eval new_prereqlib="\$${prereqlib}_LIBS"
+            trace 3 Appending $new_prereqlib to link line
+            prereqlibs="$prereqlibs $new_prereqlib"
+         done
+         TRACE_INDENT="     "
+         preserve_LDFLAGS=$LDFLAGS
+         preserve_CPPFLAGS=$CPPFLAGS
+         LDFLAGS=$LIB_LDFLAGS
+         CPPFLAGS=$LIB_CPPFLAGS
+         trace 3 Checking for fn $testwith in library $lnklibs
+         as_ac_Lib=`$as_echo "ac_cv_lib_$lnklibs''_$testwith" | $as_tr_sh`
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $testwith in -l$lnklibs" >&5
+$as_echo_n "checking for $testwith in -l$lnklibs... " >&6; }
+if { as_var=$as_ac_Lib; eval "test \"\${$as_var+set}\" = set"; }; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-l$lnklibs $prereqlibs $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char $testwith ();
+int
+main ()
+{
+return $testwith ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  eval "$as_ac_Lib=yes"
+else
+  eval "$as_ac_Lib=no"
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+eval ac_res=\$$as_ac_Lib
+	       { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_res" >&5
+$as_echo "$ac_res" >&6; }
+eval as_val=\$$as_ac_Lib
+   if test "x$as_val" = x""yes; then :
+  found=true
+else
+  found=false
+fi
+
+         if ( test X$found = Xtrue )
+         then
+            if ( test X"$hdr" != X )
+            then
+               for hf in $hdr
+               do
+                  if ( test X$found = Xtrue )
+                  then
+                     TRACE_INDENT="     "
+                     trace 3 Checking for header file $hf
+                     as_ac_Header=`$as_echo "ac_cv_header_$hf" | $as_tr_sh`
+ac_fn_c_check_header_compile "$LINENO" "$hf" "$as_ac_Header" "$ac_includes_default
+
+"
+eval as_val=\$$as_ac_Header
+   if test "x$as_val" = x""yes; then :
+  found=true
+else
+  found=false
+fi
+
+
+                  fi
+               done
+            fi
+         fi
+         CPPFLAGS=$preserve_CPPFLAGS
+         LDFLAGS=$preserve_LDFLAGS
+         if ( test X$found = Xtrue )
+         then
+            TRACE_INDENT="     "
+            trace 4 Library package $lib found
+            fix_expan=$lib
+            eval "${fix_expan}_CFLAGS=\$LIB_CPPFLAGS"
+            if ( test X$LIB_LDFLAGS != X )
+            then
+               LIB_LDFLAGS=$LIB_LDFLAGS" -l$lnklibs"
+            else
+               LIB_LDFLAGS=-l$lnklibs
+            fi
+            if ( test "X$prereqlibs" != X )
+            then
+               LIB_LDFLAGS=$LIB_LDFLAGS" "$prereqlibs
+            fi
+            eval "${fix_expan}_LIBS=\$LIB_LDFLAGS"
+            eval "use_${lib}=present
+                                                                            "
+
+         else
+            TRACE_INDENT="     "
+            trace 3 Library package $lib not found
+            eval "use_${lib}=missing
+                                                                            "
+
+         fi
+
+                                                   ;; #(
+  needed) :
+
+         trace 5 Checking for library:
+         TRACE_INDENT="     "
+         trace 5 "[$lib]"
+         TRACE_INDENT="     "
+         trace 5 "[$lnklibs]"
+         TRACE_INDENT="     "
+         trace 5 "[$testwith]"
+         TRACE_INDENT="     "
+         trace 5 "[$loc]"
+         TRACE_INDENT="     "
+         trace 5 "[$hdr]"
+         TRACE_INDENT="     "
+         trace 5 "[$inc]"
+         TRACE_INDENT="     "
+         trace 5 Code...
+         TRACE_INDENT="     "
+         trace 5 Code...
+         TRACE_INDENT="     "
+         stripspaces=$prereqs
+         # As $prereqs                                                                 will have acquired trailing characters from m4 substitutions
+         trace 5 "[$stripspaces]"
+         if ( test "X$loc" != X )
+         then
+            TRACE_INDENT="     "
+            trace 3 Setting LDFLAGS for library to -L$loc
+            LIB_LDFLAGS=-L$loc
+         else
+            LIB_LDFLAGS=""
+         fi
+         if ( test "X$inc" != X )
+         then
+            TRACE_INDENT="     "
+            trace 3 Setting CPPFLAGS for library to -I$inc
+            LIB_CPPFLAGS=-I$inc
+         else
+            LIB_CPPFLAGS=""
+         fi
+         prereqlibs=""
+         for prereqlib in $prereqs
+         do
+            TRACE_INDENT="     "
+            eval new_prereqlib="\$${prereqlib}_LIBS"
+            trace 3 Appending $new_prereqlib to link line
+            prereqlibs="$prereqlibs $new_prereqlib"
+         done
+         TRACE_INDENT="     "
+         preserve_LDFLAGS=$LDFLAGS
+         preserve_CPPFLAGS=$CPPFLAGS
+         LDFLAGS=$LIB_LDFLAGS
+         CPPFLAGS=$LIB_CPPFLAGS
+         trace 3 Checking for fn $testwith in library $lnklibs
+         as_ac_Lib=`$as_echo "ac_cv_lib_$lnklibs''_$testwith" | $as_tr_sh`
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $testwith in -l$lnklibs" >&5
+$as_echo_n "checking for $testwith in -l$lnklibs... " >&6; }
+if { as_var=$as_ac_Lib; eval "test \"\${$as_var+set}\" = set"; }; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-l$lnklibs $prereqlibs $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char $testwith ();
+int
+main ()
+{
+return $testwith ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  eval "$as_ac_Lib=yes"
+else
+  eval "$as_ac_Lib=no"
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+eval ac_res=\$$as_ac_Lib
+	       { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_res" >&5
+$as_echo "$ac_res" >&6; }
+eval as_val=\$$as_ac_Lib
+   if test "x$as_val" = x""yes; then :
+  found=true
+else
+  found=false
+fi
+
+         if ( test X$found = Xtrue )
+         then
+            if ( test X"$hdr" != X )
+            then
+               for hf in $hdr
+               do
+                  if ( test X$found = Xtrue )
+                  then
+                     TRACE_INDENT="     "
+                     trace 3 Checking for header file $hf
+                     as_ac_Header=`$as_echo "ac_cv_header_$hf" | $as_tr_sh`
+ac_fn_c_check_header_compile "$LINENO" "$hf" "$as_ac_Header" "$ac_includes_default
+
+"
+eval as_val=\$$as_ac_Header
+   if test "x$as_val" = x""yes; then :
+  found=true
+else
+  found=false
+fi
+
+
+                  fi
+               done
+            fi
+         fi
+         CPPFLAGS=$preserve_CPPFLAGS
+         LDFLAGS=$preserve_LDFLAGS
+         if ( test X$found = Xtrue )
+         then
+            TRACE_INDENT="     "
+            trace 4 Library package $lib found
+            fix_expan=$lib
+            eval "${fix_expan}_CFLAGS=\$LIB_CPPFLAGS"
+            if ( test X$LIB_LDFLAGS != X )
+            then
+               LIB_LDFLAGS=$LIB_LDFLAGS" -l$lnklibs"
+            else
+               LIB_LDFLAGS=-l$lnklibs
+            fi
+            if ( test "X$prereqlibs" != X )
+            then
+               LIB_LDFLAGS=$LIB_LDFLAGS" "$prereqlibs
+            fi
+            eval "${fix_expan}_LIBS=\$LIB_LDFLAGS"
+            eval "use_${lib}=present
+                                                                            "
+
+         else
+            TRACE_INDENT="     "
+            trace 3 Library package $lib not found
+            { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Library $lib is unavailable and a prerequisite of a selected library
+See \`config.log' for more details." "$LINENO" 5; }
+         fi
+
+                                                   ;; #(
+  yes) :
+
+         trace 5 Checking for library:
+         TRACE_INDENT="     "
+         trace 5 "[$lib]"
+         TRACE_INDENT="     "
+         trace 5 "[$lnklibs]"
+         TRACE_INDENT="     "
+         trace 5 "[$testwith]"
+         TRACE_INDENT="     "
+         trace 5 "[$loc]"
+         TRACE_INDENT="     "
+         trace 5 "[$hdr]"
+         TRACE_INDENT="     "
+         trace 5 "[$inc]"
+         TRACE_INDENT="     "
+         trace 5 Code...
+         TRACE_INDENT="     "
+         trace 5 Code...
+         TRACE_INDENT="     "
+         stripspaces=$prereqs
+         # As $prereqs                                                                 will have acquired trailing characters from m4 substitutions
+         trace 5 "[$stripspaces]"
+         if ( test "X$loc" != X )
+         then
+            TRACE_INDENT="     "
+            trace 3 Setting LDFLAGS for library to -L$loc
+            LIB_LDFLAGS=-L$loc
+         else
+            LIB_LDFLAGS=""
+         fi
+         if ( test "X$inc" != X )
+         then
+            TRACE_INDENT="     "
+            trace 3 Setting CPPFLAGS for library to -I$inc
+            LIB_CPPFLAGS=-I$inc
+         else
+            LIB_CPPFLAGS=""
+         fi
+         prereqlibs=""
+         for prereqlib in $prereqs
+         do
+            TRACE_INDENT="     "
+            eval new_prereqlib="\$${prereqlib}_LIBS"
+            trace 3 Appending $new_prereqlib to link line
+            prereqlibs="$prereqlibs $new_prereqlib"
+         done
+         TRACE_INDENT="     "
+         preserve_LDFLAGS=$LDFLAGS
+         preserve_CPPFLAGS=$CPPFLAGS
+         LDFLAGS=$LIB_LDFLAGS
+         CPPFLAGS=$LIB_CPPFLAGS
+         trace 3 Checking for fn $testwith in library $lnklibs
+         as_ac_Lib=`$as_echo "ac_cv_lib_$lnklibs''_$testwith" | $as_tr_sh`
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $testwith in -l$lnklibs" >&5
+$as_echo_n "checking for $testwith in -l$lnklibs... " >&6; }
+if { as_var=$as_ac_Lib; eval "test \"\${$as_var+set}\" = set"; }; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-l$lnklibs $prereqlibs $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char $testwith ();
+int
+main ()
+{
+return $testwith ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  eval "$as_ac_Lib=yes"
+else
+  eval "$as_ac_Lib=no"
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+eval ac_res=\$$as_ac_Lib
+	       { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_res" >&5
+$as_echo "$ac_res" >&6; }
+eval as_val=\$$as_ac_Lib
+   if test "x$as_val" = x""yes; then :
+  found=true
+else
+  found=false
+fi
+
+         if ( test X$found = Xtrue )
+         then
+            if ( test X"$hdr" != X )
+            then
+               for hf in $hdr
+               do
+                  if ( test X$found = Xtrue )
+                  then
+                     TRACE_INDENT="     "
+                     trace 3 Checking for header file $hf
+                     as_ac_Header=`$as_echo "ac_cv_header_$hf" | $as_tr_sh`
+ac_fn_c_check_header_compile "$LINENO" "$hf" "$as_ac_Header" "$ac_includes_default
+
+"
+eval as_val=\$$as_ac_Header
+   if test "x$as_val" = x""yes; then :
+  found=true
+else
+  found=false
+fi
+
+
+                  fi
+               done
+            fi
+         fi
+         CPPFLAGS=$preserve_CPPFLAGS
+         LDFLAGS=$preserve_LDFLAGS
+         if ( test X$found = Xtrue )
+         then
+            TRACE_INDENT="     "
+            trace 4 Library package $lib found
+            fix_expan=$lib
+            eval "${fix_expan}_CFLAGS=\$LIB_CPPFLAGS"
+            if ( test X$LIB_LDFLAGS != X )
+            then
+               LIB_LDFLAGS=$LIB_LDFLAGS" -l$lnklibs"
+            else
+               LIB_LDFLAGS=-l$lnklibs
+            fi
+            if ( test "X$prereqlibs" != X )
+            then
+               LIB_LDFLAGS=$LIB_LDFLAGS" "$prereqlibs
+            fi
+            eval "${fix_expan}_LIBS=\$LIB_LDFLAGS"
+            eval "use_${lib}=present
+                                                                            "
+
+         else
+            TRACE_INDENT="     "
+            trace 3 Library package $lib not found
+            { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Required library $lib is unavailable
+See \`config.log' for more details." "$LINENO" 5; }
+         fi
+
+                                                    ;; #(
+  *) :
+    trace 1 "Assert - Should never fall through here"
+                                ;;
+esac
+                        LeftToDo=`echo " $LeftToDo " | $SED "s/ $lib / /"`
+                        RecentlyProcessed="$RecentlyProcessed $lib"
+
+
+fi
+else
+                  # We do not need to check for existance of this library; trace why
+                 case $lib_enablement in
+                    'no' )      TRACE_INDENT="     "
+                                trace 6 $lib is disabled, not checking for existance
+                                ;;
+                    'blocked' ) TRACE_INDENT="     "
+                                trace 6 $lib is blocked by a pre-requisite
+                                ;;
+                    * )         TRACE_INDENT="     "
+                                trace 1 "Assert - curious lib_enablement"
+                                ;;
+                 esac
+                 LeftToDo=`echo " $LeftToDo " | $SED "s/ $lib / /"`
+                 RecentlyProcessed="$RecentlyProcessed $lib"
+
+
+fi
+          # Strip unnecessary spaces from LeftToDo
+          LeftToDo=`echo " $LeftToDo " | $SED "s/  */ /g;s/^ //;s/ $//"`
+
+
+             done
+          done
+
+          if ( test "x$LeftToDo" != x )
+          then
+             { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Cannot process libraries [$LeftToDo]
+See \`config.log' for more details." "$LINENO" 5; }
+          fi
+
+
+
+
+
           # Now propogate which libraries are blocked by their prerequisites
           # not being present. To do this, repeatedly pass until we get no
           # more alterations. As per the code for finding blockages on the
@@ -16474,6 +16625,11 @@ See \`config.log' for more details." "$LINENO" 5; }
           # the code checking for the individual libraries. (The error is
           # generated when the prerequisite library is found to be missing as
           # it knows it is required for another library)
+          #
+          # This section is really just for virtual packages, those packages
+          # specified by pkg-config have no pre-requisites; and those libraries
+          # for which we have performed a compilation test will have failed at
+          # that stage if any pre-requisites are missing.
           #
           trace 2 Block libraries dependent on missing libraries
           change_made=true
