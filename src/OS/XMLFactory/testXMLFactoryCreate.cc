@@ -27,15 +27,19 @@ namespace RavlN {
     
     TestClassC(const XMLFactoryContextC &factory);
 
-    IntT Value() const {
-      return m_value;
-    }
+    IntT Value() const
+    { return m_value; }
 
     //! Handle to model.
     typedef RavlN::SmartPtrC<TestClassC> RefT;
 
+    //! Access ref to sibling.
+    const RefT &OtherTest() const
+    { return m_otherTest; }
+
   protected:
     int m_value;
+    RefT m_otherTest;
   };
   
   TestClassC::TestClassC(const XMLFactoryContextC &factory)
@@ -44,6 +48,9 @@ namespace RavlN {
     
     // Read value from context, default to 10 if not specified.
     m_value = factory.AttributeInt("value", 10);
+    if(factory.AttributeBool("loadOther",false)) {
+      factory.UseComponent("Other",m_otherTest);
+    }
   }
   
   //need to declare stream operators too
@@ -94,9 +101,12 @@ namespace RavlN {
 
      BigClassC(const XMLFactoryContextC &factory);
 
-     IntT Value() const {
-       return m_testClass->Value();
-     }
+     IntT Value() const
+     { return m_testClass->Value(); }
+
+     //! Access test class.
+     const TestClassC &TestClass() const
+     { return *m_testClass; }
 
      //! Handle to model.
      typedef RavlN::SmartPtrC<BigClassC> RefT;
@@ -161,7 +171,8 @@ int main()
       "<Config verbose=\"false\" checkConfig=\"true\" >\n"
       "  <Test typename=\"RavlN::TestClassC\" value=\"0\" />\n"
       "  <Big typename=\"RavlN::BigClassC\" >"
-      "        <Test typename=\"RavlN::TestClassC\" value=\"1\" />"
+      "      <Other typename=\"RavlN::TestClassC\" value=\"2\" />"
+      "      <Test typename=\"RavlN::TestClassC\" value=\"1\" loadOther=\"True\" />"
       "  </Big>"
       "</Config>\n");
   
@@ -171,17 +182,19 @@ int main()
   
   RavlN::XMLFactoryHC factory("test.xml", xmlTree);
   
-  RavlN::SysLog(RavlN::SYSLOG_DEBUG, "Requesting component 'Test' ");
+  RavlDebug("Requesting component 'Test' ");
   
   // If we have a use component
   RavlN::TestClassC::RefT testClass1;
   if (!factory.UseComponent("Test", testClass1)) {
-    SysLog(RavlN::SYSLOG_ERR, "Failed to find instance. ");
+    RavlError( "Failed to find instance. ");
+    return 1;
   }
 
   RavlN::TestClassC::RefT testClass2;
   if (!factory.UseComponent("Test", testClass2)) {
-    SysLog(RavlN::SYSLOG_ERR, "Failed to find instance. ");
+    RavlError( "Failed to find instance. ");
+    return 1;
   }
 
   RavlInfo("1: %d, 2 %d", testClass1->Value(), testClass2->Value());
@@ -189,12 +202,26 @@ int main()
   /*
    * Create a new big class...
    */
-  RavlN::BigClassC::RefT bigClass;
-  if(!factory.CreateComponent("Big", bigClass)) {
-    SysLog(RavlN::SYSLOG_ERR, "Failed to create big class. ");
+  RavlN::BigClassC::RefT bigClass1;
+  if(!factory.CreateComponent("Big", bigClass1)) {
+    RavlError( "Failed to create big class. ");
+    return 1;
   }
-  RavlInfo("Test: %d, Big %d", testClass1->Value(), bigClass->Value());
+  RavlInfo("Test: %d, Big %d", testClass1->Value(), bigClass1->Value());
+
+  RavlN::BigClassC::RefT bigClass2;
+  if(!factory.CreateComponent("Big", bigClass2)) {
+    RavlError( "Failed to create big class. ");
+    return 1;
+  }
+
+  if(bigClass1->TestClass().OtherTest() == bigClass2->TestClass().OtherTest()) {
+    RavlError("Child not duplicated!");
+    RavlInfo("Test: %p, Big %p", (void *) bigClass1->TestClass().OtherTest().BodyPtr(),
+        (void *) bigClass2->TestClass().OtherTest().BodyPtr());
+    return 1;
+  }
 
 
-
+  return 0;
 }
