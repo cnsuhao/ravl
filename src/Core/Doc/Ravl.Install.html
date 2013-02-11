@@ -43,26 +43,27 @@
       <li> Make sure you use the appropriate commands depending on your shell
       (C or bash).  Decide on a place for the installation and define the
       environment variable <code>RAVL_INSTALLATION</code> accordingly.  This
-      can optionally point to an existing directory.  For C shell:
+      can optionally point to an existing directory. 
 
+        <ul>
+          <li><p><b> bash shell:</b></p>
+            <pre>
+export RAVL_INSTALLATION=~/RavlProject
+mkdir -p $RAVL_INSTALLATION/src
+cd $RAVL_INSTALLATION/src</pre></li>
+
+          <li> <p><b>C shell:</b></p>
         <pre>
 setenv RAVL_INSTALLATION ~/RavlProject
 mkdir -p $RAVL_INSTALLATION/src
-cd $RAVL_INSTALLATION/src</pre>
-
-        <p>or for bash shell:</p>
-
-        <pre>
-export RAVL_INSTALLATION=~/RavlProject
-mkdir -p $RAVL_INSTALLATION/src
-cd $RAVL_INSTALLATION/src</pre>
+cd $RAVL_INSTALLATION/src</pre></li>
+        </ul>
       </li>
-
       <li>Download the source code:
-    <pre>
+        <pre>
 git clone git://ravl.git.sourceforge.net/gitroot/ravl/ravl
 cd ravl
-</pre>
+        </pre>
       </li>
 
       <li> Select the relevant <code>config.local</code> file from
@@ -71,10 +72,10 @@ cd ravl
 <pre>
 $RAVL_INSTALLATION/src/ravl/src/QMake/config.arc</pre> 
 
-        For a standard Linux installation on a 32-bit machine the returned
-        string should be <code>linux</code>, and so the required config file
-        is <code>config.local.linux</code> (<code>config.local.linux64</code>
-        for a 64-bit machine).  (If the script generates an error message you
+        For a standard Linux installation on a 64-bit machine the returned
+        string should be <code>linux64</code>, and so the required config file
+        is <code>config.local.linux64</code> (<code>config.local.linux</code>
+        for a 32-bit machine).  (If the script generates an error message you
         will need to hack it to match your installation.  Sorry.)  In what
         follows the config file is referred to as
         <code>config.local.xxx</code>.  Then:
@@ -155,6 +156,17 @@ rehash</pre>
 
     <ul>
       <li>
+        <p><b>bash users</b>: Put the following alias and variable settings
+        for compilation (modified if appropriate) in your <code>.bashrc</code>
+          file (use <code>linux</code> in place of <code>linux64</code> on 32-bit machines):</p>
+
+        <pre>
+export RAVL_INSTALLATION=~/RavlProject
+export PROJECT_OUT=~/ProjOut
+export PATH=${PATH}:${PROJECT_OUT}/lib/RAVL/linux64/bin:${RAVL_INSTALLATION}/bin
+</pre>
+      </li>
+      <li>
         <p><b>C shell users</b>: Put the following alias and variable settings
         for compilation (modified as appropriate) in your <code>.cshrc</code>
         file:</p>
@@ -162,20 +174,9 @@ rehash</pre>
         <pre>
 setenv RAVL_INSTALLATION ~/RavlProject
 setenv PROJECT_OUT ~/ProjOut
-setenv PATH  ${PATH}:${PROJECT_OUT}/lib/RAVL/linux/bin:${RAVL_INSTALLATION}/bin
+setenv PATH  ${PATH}:${PROJECT_OUT}/lib/RAVL/linux64/bin:${RAVL_INSTALLATION}/bin
 rehash
 </pre></li>
-      <li>
-        <p><b>bash users</b>: Put the following alias and variable settings
-        for compilation (modified if appropriate) in your <code>.bashrc</code>
-        file:</p>
-
-        <pre>
-export RAVL_INSTALLATION=~/RavlProject
-export PROJECT_OUT=~/ProjOut
-export PATH=${PATH}:${PROJECT_OUT}/lib/RAVL/linux/bin:${RAVL_INSTALLATION}/bin
-</pre>
-      </li>
     </ul> 
     <p>Notes:</p>
     <ul>
@@ -204,7 +205,7 @@ export PATH=${PATH}:${PROJECT_OUT}/lib/RAVL/linux/bin:${RAVL_INSTALLATION}/bin
     <address><a href="mailto:w.christmas@surrey.ac.uk">Bill Christmas</a></address>
 <!-- Created: Fri Dec 23 09:31:09 GMT 2005 -->
 <!-- hhmts start -->
-Last modified: Mon Jun 11 11:06:51 BST 2012
+Last modified: Mon Feb 11 10:08:38 GMT 2013
 <!-- hhmts end -->
   </body>
 </html>
