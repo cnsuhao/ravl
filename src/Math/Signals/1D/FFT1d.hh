@@ -39,13 +39,13 @@ namespace RavlN {
     
     Array1dC<ComplexC> Apply(const Array1dC<ComplexC> &dat);
     //: Apply transform to array.
-    // Note, only the first 'n' byte of dat are proccessed.
+    // Note, only the first 'n' byte of dat are processed.
     // if the array is shorter than the given length, an
     // exception 'ErrorOutOfRangeC' will be thrown.
     
     Array1dC<ComplexC> Apply(const Array1dC<RealT> &dat);
     //: Apply transform to real array 
-    // Note, only the first 'n' byte of dat are proccessed.
+    // Note, only the first 'n' byte of dat are processed.
     // if the array is shorter than the given length, an
     // exception 'ErrorOutOfRangeC' will be thrown.
     
@@ -90,14 +90,14 @@ namespace RavlN {
     Array1dC<ComplexC> Apply(const Array1dC<ComplexC> &dat)
       { return Body().Apply(dat); }
     //: Apply transform to array.
-    // Note, only the first 'n' byte of dat are proccessed.
+    // Note, only the first 'n' byte of dat are processed.
     // if the array is shorter than the given length, an
     // exception 'ErrorOutOfRangeC' will be thrown.
     
     Array1dC<ComplexC> Apply(const Array1dC<RealT> &dat)
       { return Body().Apply(dat); }
     //: Apply transform to real array 
-    // Note, only the first 'n' byte of dat are proccessed.
+    // Note, only the first 'n' byte of dat are processed.
     // if the array is shorter than the given length, an
     // exception 'ErrorOutOfRangeC' will be thrown.
     

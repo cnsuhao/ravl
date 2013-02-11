@@ -21,7 +21,7 @@ HEADERS =  Sample.hh SampleIter.hh SampleVector.hh SampleLabel.hh \
  SampleReal.hh SampleStreamFromSample.hh ProcessVectorFunction.hh \
  ProcessVectorLabelFunction.hh FunctionSlice.hh FunctionConcatenate.hh \
  FunctionCascade.hh SampleStreamVectorLabel.hh DataSetIO.hh FieldInfo.hh \
- TestFunctions.hh
+ TestFunctions.hh FunctionExpand.hh
 
 SOURCES =  SampleVector.cc SampleLabel.cc DataSetBase.cc Function.cc \
  Function1.cc Designer.cc DesignFunctionUnsupervised.cc \
@@ -29,7 +29,8 @@ SOURCES =  SampleVector.cc SampleLabel.cc DataSetBase.cc Function.cc \
  SampleStreamVector.cc DataSetVectorLabelWeight.cc SampleVectorFloat.cc \
  SampleStreamVectorFloat.cc SampleReal.cc FunctionSlice.cc \
  FunctionConcatenate.cc FunctionCascade.cc SampleStreamVectorLabel.cc \
- SampleIO.cc DataSetIO.cc FieldInfo.cc TestFunctions.cc
+ SampleIO.cc DataSetIO.cc FieldInfo.cc TestFunctions.cc \
+ FunctionExpand.cc
 
 MAINS = doDataSet.cc exPlotTestFunctions.cc
 

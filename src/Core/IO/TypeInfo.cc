@@ -24,6 +24,15 @@ namespace RavlN {
     Types()[typeInfo.name()] = DPTypeInfoC(*this); 
   }
   
+  //: Move 'count' elements from input to output.
+  // return number of elements actually moved.
+
+  UIntT DPTypeInfoBodyC::Move(DPIPortBaseC &iport,DPOPortBaseC &oport,UIntT count) const
+  {
+    RavlAssertMsg(0,"abstract method"); // Abstract function called.
+    return 0;
+  }
+
   /////////////////////////////
   //: Create instance of the type with the default constructor.
   

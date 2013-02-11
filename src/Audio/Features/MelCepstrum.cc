@@ -13,7 +13,7 @@
 #include "Ravl/SArray1dIter2.hh"
 #include "Ravl/SArray1dIter.hh"
 
-#define DODEBUG 1
+#define DODEBUG 0
 #if DODEBUG
 #define ONDEBUG(x) x
 #else

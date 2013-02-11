@@ -31,6 +31,14 @@ namespace RavlN {
   FunctionSliceBodyC::FunctionSliceBodyC()
   {}
   
+  //: Construct from XML factory
+
+  FunctionSliceBodyC::FunctionSliceBodyC(const XMLFactoryContextC &factory)
+    : FunctionBodyC(factory),
+      m_indexRange(factory.AttributeUInt("minIndex",0),
+                   factory.AttributeUInt("maxIndex",0))
+  {}
+
   //: Default constructor.
   
   FunctionSliceBodyC::FunctionSliceBodyC(UIntT inputSize, const IndexRangeC & indexRange)
@@ -75,7 +83,7 @@ namespace RavlN {
     // FIXME: Can do this lots more efficiently
     VectorC vec(m_indexRange.Size());
     IndexC index = m_indexRange.Min();
-    for(SArray1dIterC<RealT>vecIt(vec);vecIt;vecIt++) {
+    for(SArray1dIterC<RealT> vecIt(vec);vecIt;vecIt++) {
       *vecIt = data[index];
       index++;
     }

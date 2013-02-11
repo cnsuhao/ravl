@@ -49,9 +49,11 @@ int main(int nargs,char **argv) {
 
     // now lets setup an output port
     DPOPortC<SampleElemC<1,Int16T> > out;
-    if(!OpenOSequence(out,odev,format,verbose)) {
-      cerr << "Failed to open output : " << odev << "\n";
-      return 1;
+    if(!odev.IsEmpty()) {
+      if(!OpenOSequence(out,odev,format,verbose)) {
+        cerr << "Failed to open output : " << odev << "\n";
+        return 1;
+      }
     }
 
 
@@ -70,10 +72,12 @@ int main(int nargs,char **argv) {
     cout << "\nSample rate is " << sampleRate << " and sample bits is " << sampleBits << "\n\n" ;
 
     // now lets read data from file and play to device
-    out.SetAttr("samplerate",sampleRate) ;
+    if(out.IsValid())
+      out.SetAttr("samplerate",sampleRate) ;
     SampleElemC<1,Int16T>  sample;
     while (in.Get(sample)) {
-      out.Put(sample) ; // play sample
+      if(out.IsValid())
+        out.Put(sample) ; // play sample
     }
   } else {
     // open the input port
@@ -83,12 +87,13 @@ int main(int nargs,char **argv) {
       return 1;
     }
 
-
-    // now lets setup an output port
     DPOPortC<SampleElemC<2,Int16T> > out;
-    if(!OpenOSequence(out,odev,format,verbose)) {
-      cerr << "Failed to open output : " << odev << "\n";
-      return 1;
+    if(!odev.IsEmpty()) {
+    // now lets setup an output port
+      if(!OpenOSequence(out,odev,format,verbose)) {
+        cerr << "Failed to open output : " << odev << "\n";
+        return 1;
+      }
     }
 
 
@@ -107,10 +112,12 @@ int main(int nargs,char **argv) {
     cout << "\nSample rate is " << sampleRate << " and sample bits is " << sampleBits << "\n\n" ;
 
     // now lets read data from file and play to device
-    out.SetAttr("samplerate",sampleRate) ;
+    if(out.IsValid())
+      out.SetAttr("samplerate",sampleRate) ;
     SampleElemC<2,Int16T>  sample;
     while (in.Get(sample)) {
-      out.Put(sample) ; // play sample
+      if(out.IsValid())
+        out.Put(sample) ; // play sample
     }
   }
   

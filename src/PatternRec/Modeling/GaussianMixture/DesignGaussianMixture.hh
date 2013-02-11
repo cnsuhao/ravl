@@ -22,7 +22,7 @@ namespace RavlN {
   
   //! userlevel=Develop
   //: Computes normal parameters of a set of unlabelled data using EM algorithm
-  // This function estimates a PDF as a Gausian mixture.
+  // This function estimates a PDF as a Gaussian mixture.
   // It can be constructed from a set of data points.  The parameters
   // of the gaussians are then estimated using the Expectation Maximisation
   // algorithm (Dempster et al (1977) J. Royal Statistical Society Series B, 39:1-38).
@@ -31,8 +31,7 @@ namespace RavlN {
     : public DesignFunctionUnsupervisedBodyC
   {
   public:
-    DesignGaussianMixtureBodyC()
-    {}
+    DesignGaussianMixtureBodyC();
     //: Default constructor.
     
     DesignGaussianMixtureBodyC(UIntT mixes, bool isDiagonal,const DesignClusterC &initCluster = DesignClusterC());
@@ -84,7 +83,7 @@ namespace RavlN {
   
   //! userlevel=Normal
   //: Computes normal parameters of a set of unlabelled data using EM algorithm
-  // This function estimates a PDF as a Gausian mixture.
+  // This function estimates a PDF as a Gaussian mixture.
   // It can be constructed from a set of data points.  The parameters
   // of the gaussians are then estimated using the Expectation Maximisation
   // algorithm (Dempster et al (1977) J. Royal Statistical Society Series B, 39:1-38).

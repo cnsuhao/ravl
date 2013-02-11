@@ -33,6 +33,17 @@ namespace RavlN {
     return false;
   }
 
+  //: Plot values against their index, optional dataName will appear in the legend
+
+  bool Plot2dC::Plot(const SArray1dC<RealT> & data, const StringC & dataName) {
+    SArray1dC<Point2dC> pnts(data.Size());
+    for(unsigned i = 0;i < data.Size();i++) {
+      pnts[i] = Point2dC(i,data[i]);
+    }
+    return Plot(pnts,dataName);
+  }
+
+
   bool Plot2dC::Plot(const SArray1dC<Point2dC> & data,
           ImageC<ByteRGBValueC> & image,
           const IndexRange2dC & rec,
@@ -66,8 +77,8 @@ namespace RavlN {
 
   bool Plot2dC::Plot(const RCHashC<StringC, CollectionC<Point2dC> > & data,
             ImageC<ByteRGBValueC> & image,
-            const IndexRange2dC & rec) {
-
+            const IndexRange2dC & rec)
+  {
       FilenameC filename("/tmp/plot.png");
       filename = filename.MkTemp(6);
       SetOutput(filename, rec);

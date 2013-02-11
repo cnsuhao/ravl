@@ -74,7 +74,7 @@ namespace RavlN {
     UIntT maxWriteSeq;  // Maximum length sequences that can be written. 
     bool verbose;
 
-    // Stuff specificly for writting streams.
+    // Stuff specifically for writing streams.
     bool gotEOS;
     StringC fileTempl;
     StringC playListFile;
@@ -83,7 +83,7 @@ namespace RavlN {
   //! userlevel=Develop
   //: Input Stream Composition.
   // This class takes a number of elements from other streams
-  // and generates a composite.
+  // and combines them into a single stream
   
   template<class DataT>
   class CompositeIStreamBodyC 

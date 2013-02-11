@@ -4,18 +4,17 @@
 # General Public License (LGPL). See the lgpl.licence file for details or
 # see http://www.gnu.org/copyleft/lesser.html
 # file-header-ends-here
-#! rcsid="$Id$"
 #! file="Ravl/OS/IO/defs.mk"
 
 PACKAGE=Ravl/DP
 
 HEADERS=FileSequence.hh SequenceIO.hh FileListIO.hh CompositeStream.hh \
  FileFormatComposite.hh  PlayList.hh  SubSequenceSpec.hh EditSpec.hh  \
- FileFormatDynamic.hh DynamicLink.hh DynamicIO.hh
+ FileFormatDynamic.hh DynamicLink.hh ProcessPlayList.hh DynamicIO.hh
 
 SOURCES=FileSequence.cc SequenceIO.cc FileListIO.cc CompositeStream.cc  \
  FileFormatComposite.cc  PlayList.cc  SubSequenceSpec.cc EditSpec.cc \
- FileFormatDynamic.cc DynamicLink.cc 
+ FileFormatDynamic.cc DynamicLink.cc ProcessPlayList.cc 
 
 MUSTLINK=RavlOSIOMustLink.cc
 

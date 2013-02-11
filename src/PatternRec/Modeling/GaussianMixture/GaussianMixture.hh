@@ -25,8 +25,7 @@ namespace RavlN {
     : public Function1BodyC
   {
   public:
-    GaussianMixtureBodyC()
-    {}
+    GaussianMixtureBodyC();
     //: Default constructor.
     
     GaussianMixtureBodyC(const SArray1dC<MeanCovarianceC> & params, const SArray1dC<RealT> & weights, bool isDiagonal);

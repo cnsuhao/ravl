@@ -7,7 +7,6 @@
 #ifndef RAVLAUDIO_FEATUREEXTACTOR_HEADER
 #define RAVLAUDIO_FEATUREEXTACTOR_HEADER 1
 /////////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! author="Charles Galambos"
 //! docentry="Ravl.API.Audio.Feature Extraction"
 //! lib=RavlAudioFeatures
@@ -39,7 +38,7 @@ namespace RavlAudioN {
 		     IntT frameSize,      // Size of a frame.
 		     RealRangeC freqRange,// Range of frequencies.
 		     IntT numMelFilters,  // Number of mel spectrum filters.
-		     IntT numCep,         // Number of ceptstrum co-efficents to compute.
+		     IntT numCep,         // Number of ceptstrum coefficients to compute.
 		     RealT preEmphasis    // Amount of pre-emphasis.
 		     );
     //: Constructor.
@@ -77,7 +76,7 @@ namespace RavlAudioN {
 		 IntT frameSize = 512,     // Size of a frame.
 		 RealRangeC freqRange = RealRangeC(133.333334,6855.4976),// Range of frequencies.
 		 IntT numMelFilters = 40,  // Number of mel spectrum filters.
-		 IntT numCep = 13,         // Number of ceptstrum co-efficents to compute.
+		 IntT numCep = 13,         // Number of ceptstrum coefficients to compute.
 		 RealT preEmphasis = 0.97  // Pre emphasis alpha value.
 		 )
       : DPEntityC(*new FeatureMFCCBodyC(sampleRate,frameRate,frameSize,freqRange,numMelFilters,numCep,preEmphasis) )
