@@ -37,7 +37,9 @@ namespace RavlImageN {
     RealT maxSep;   // Max separation between edge pair to be ridge (pixels)
     RealT overlap;  // Min overlap of edges to be ridge (fraction of edge length)
     IntT  minLen;   // Min line length to be included (currently both PPHT and ridge finding)
+    ImageC<RealT> image;
     ImageC<ByteRGBValueC> canvas;
+    SArray1dC<LinePP2dC> ridgeArray;
 
   public:
     WhiteLineDetectorBodyC();
@@ -73,6 +75,11 @@ namespace RavlImageN {
     //: Returns input image with lines overlaid
     // Yellow lines are candidate edges; red lines are detected white lines
 
+    SArray1dC<RealT> MeanStrength();
+    //: Returns mean grey-level value of line
+
+    SArray1dC<RealT> MedianStrength();
+    //: Returns median grey-level value of line
   };
   
   //! userlevel=Normal
@@ -123,6 +130,14 @@ namespace RavlImageN {
     { return Body().Image(); }
     //: Returns input image with lines overlaid
     // Yellow lines are candidate edges; red lines are detected white lines
+
+    SArray1dC<RealT> MeanStrength()
+    { return Body().MeanStrength(); }
+    //: Returns mean grey-level value of line
+
+    SArray1dC<RealT> MedianStrength()
+    { return Body().MedianStrength(); }
+    //: Returns median grey-level value of line
 
   protected:
     WhiteLineDetectorC(WhiteLineDetectorBodyC &bod)
