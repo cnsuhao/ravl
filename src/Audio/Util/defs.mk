@@ -17,7 +17,7 @@ SOURCES=AudioIO.cc WindowSignal.cc  Segment.cc Transcription.cc \
 
 PLIB=RavlAudioUtil
 
-USESLIBS=RavlIO
+USESLIBS=RavlIO RavlXMLFactory
 
 EHT= Ravl.API.Audio.IO.html
 

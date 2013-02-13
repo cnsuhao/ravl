@@ -259,7 +259,7 @@ namespace RavlN {
           RavlError("Invalid index %d in '%s' from '%s' ", ind, it->c_str(), str.c_str());
           return false;
         }
-        if (ind >= gVecSize) {
+        if ((size_t)ind >= gVecSize) {
           RavlError("Index out of range %d  in '%s' from '%s' ", ind, it->c_str(), str.c_str());
           return false;
         }

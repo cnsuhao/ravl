@@ -19,6 +19,8 @@
 #include "Ravl/DList.hh"
 #include "Ravl/DLIter.hh"
 #include "Ravl/CDLIter.hh"
+#include "Ravl/SysLog.hh"
+#include "Ravl/DP/Plug.hh"
 
 namespace RavlN {
 
