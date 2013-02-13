@@ -13,10 +13,16 @@ namespace RavlN {
   DPNetworkC::DPNetworkC(const XMLFactoryContextC &factory)
   {
     factory.UseComponentGroup("Components",m_components);
+    for(unsigned i = 0;i < m_components.Size();i++) {
+
+    }
+#if 0
     factory.UseComponentGroup("IPlugs",m_iplugs);
     factory.UseComponentGroup("OPlugs",m_oplugs);
     factory.UseComponentGroup("IPorts",m_iports);
     factory.UseComponentGroup("OPorts",m_oports);
+#endif
+    Setup(factory);
   }
 
   DListC<DPIPlugBaseC> DPNetworkC::IPlugs() const {

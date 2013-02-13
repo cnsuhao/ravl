@@ -13,7 +13,7 @@ HEADERS=XMLFactory.hh XMLFactoryRegister.hh XMLFactoryAutoStart.hh \
  ConfigParameter.hh
 
 SOURCES=XMLFactory.cc XMLFactoryRegister.cc XMLFactoryAutoStart.cc \
- ConfigParameter.cc
+ ConfigParameter.cc DPStreamOpSetup.cc
 
 MUSTLINK=LinkXMLFactory.cc
 

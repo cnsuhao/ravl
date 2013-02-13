@@ -19,6 +19,8 @@
 #include "Ravl/DList.hh"
 
 namespace RavlN {
+
+  class XMLFactoryContextC;
   
   //! userlevel=Develop
   //: Abstract stream operation.
@@ -38,6 +40,9 @@ namespace RavlN {
     
     DPStreamOpBodyC(BinIStreamC &in);
     //: Binary stream constructor.
+
+    void Setup(const XMLFactoryContextC &factory);
+    //: Setup using an xml factory.
 
     virtual StringC OpName() const;
     //: Op type name.
