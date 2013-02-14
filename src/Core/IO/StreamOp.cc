@@ -205,4 +205,9 @@ namespace RavlN {
   DP_REGISTER_CONVERSION(DPOStreamOp5,1);
 
 
+  static DPStreamOpC DPStreamOp6(const DPStreamOpBodyC::RefT &bod)
+  { return DPStreamOpC(bod.BodyPtr()); }
+
+  DP_REGISTER_CONVERSION(DPStreamOp6,1);
+
 }

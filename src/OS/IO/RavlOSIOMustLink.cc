@@ -12,11 +12,13 @@
 
 namespace RavlN {
   
-  extern void IncludeFileFormatComposite();
-    
+  void IncludeFileFormatComposite();
+  void LinkDPNetwork();
+
   void RavlOSIOMustLink() {
     //InitFileFormatDynamic();
     IncludeFileFormatComposite();
+    LinkDPNetwork();
   }
   
 }

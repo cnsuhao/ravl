@@ -43,6 +43,8 @@ namespace RavlN {
 
     void Setup(const XMLFactoryContextC &factory);
     //: Setup using an xml factory.
+    // This can only be called after the class is constructed
+    // and the IPlugs,OPlugs,IPorts and OPorts methods are functional.
 
     virtual StringC OpName() const;
     //: Op type name.
@@ -79,6 +81,9 @@ namespace RavlN {
 
     virtual bool Dump(std::ostream &strm) const;
     //: Dump information about the stream op.
+
+    typedef RavlN::SmartPtrC<DPStreamOpBodyC> RefT;
+    //: Handle to class
   };
 
   //! userlevel=Normal
@@ -101,6 +106,16 @@ namespace RavlN {
     // If object is not a DPStreamOpC then an invalid handle will
     // be created.
     
+    DPStreamOpC(const RCAbstractC &bod)
+     : DPEntityC(dynamic_cast<const DPStreamOpBodyC *>(bod.BodyPtr()))
+    {}
+    //: Construct from an abstract handle
+    // This handle will be invalid if handle types don't match.
+
+    DPStreamOpC(const DPStreamOpBodyC *bod)
+      : DPEntityC(bod)
+    {}
+    //: Body ptr constructor.
   protected:
     DPStreamOpC(DPStreamOpBodyC &bod)
       : DPEntityC(bod)

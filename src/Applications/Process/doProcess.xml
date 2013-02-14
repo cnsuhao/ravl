@@ -3,7 +3,11 @@
 
 <Config verbose="false" >
   
-  <Process typename="RavlAudioN::WindowSignalFloatC" >
+  <Process typename="RavlN::DPNetworkC" >
+    <Components>
+      <Proc typename="RavlAudioN::WindowSignalFloatC" exportIPlug="In1" exportIPort="Out1" >
+      </Proc>
+    </Components>
   </Process>
   
 </Config>

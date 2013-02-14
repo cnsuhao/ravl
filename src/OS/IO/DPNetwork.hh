@@ -25,7 +25,7 @@ namespace RavlN {
   class DPNetworkC
    : public DPStreamOpBodyC
   {
-  protected:
+  public:
     DPNetworkC();
     //: Default constructor.
     // Creates an empty network
@@ -48,12 +48,12 @@ namespace RavlN {
     typedef SmartPtrC<DPNetworkC> RefT;
     //: Handle to network.
 
-  public:
+  protected:
     CollectionC<RCAbstractC> m_components;
     DListC<DPIPlugBaseC> m_iplugs;
-    DListC<DPIPlugBaseC> m_oplugs;
+    DListC<DPOPlugBaseC> m_oplugs;
     DListC<DPIPortBaseC> m_iports;
-    DListC<DPIPortBaseC> m_oports;
+    DListC<DPOPortBaseC> m_oports;
   };
 }
 
