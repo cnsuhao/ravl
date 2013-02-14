@@ -96,7 +96,7 @@ namespace RavlN {
       : FuncLinearCoeffC(*new FuncLinearBodyC(inSize,outSize))
     {}
     //: Construct a linear function with given input and output size.
-    // The transform itsself is left undefined.
+    // The transform its self is left undefined.
     
     FuncLinearC(const MatrixC &proj,const VectorC &offset)
       : FuncLinearCoeffC(*new FuncLinearBodyC(proj,offset))

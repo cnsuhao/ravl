@@ -182,9 +182,10 @@ namespace RavlN {
   {}
   
   //: Setup virtual constructor.
-  // As this is an abstract class its not really needed, but its usefull to
+  // As this is an abstract class its not really needed, but its useful to
   // have an example of how it should work here.
   
   //RAVL_INITVIRTUALCONSTRUCTOR(FunctionBodyC);
   
+
 }

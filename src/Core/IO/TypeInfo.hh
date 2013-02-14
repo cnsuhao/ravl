@@ -309,6 +309,7 @@ namespace RavlN {
           break;
         if(!toport.Put(tmp))
           break;
+        ret++;
       }
       return ret;
     }

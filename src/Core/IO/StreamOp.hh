@@ -76,7 +76,10 @@ namespace RavlN {
 
     virtual bool GetIPort(const StringC &name,DPIPortBaseC &port);
     //: Get input
-};
+
+    virtual bool Dump(std::ostream &strm) const;
+    //: Dump information about the stream op.
+  };
 
   //! userlevel=Normal
   //: Abstract stream operation.
@@ -172,13 +175,17 @@ namespace RavlN {
   public:
     DPIStreamOpBodyC()
       : DPIPortBodyC<OutT>("Out1")
-    {}
+    {
+      DPEntityBodyC::SetEntityName("Out1");
+    }
     //: Default constructor.
     
     DPIStreamOpBodyC(const DPIPortC<InT> &nin)
       : DPIPortBodyC<OutT>("Out1"),
         input(nin)
-    {}
+    {
+      DPEntityBodyC::SetEntityName("Out1");
+    }
     //: Constructor.
     
     DPIStreamOpBodyC(std::istream &in) 
@@ -224,7 +231,8 @@ namespace RavlN {
 
     virtual DListC<DPIPlugBaseC> IPlugs() const {
       DListC<DPIPlugBaseC> lst = DPStreamOpBodyC::IPlugs();
-      lst.InsLast(DPIPlugC<InT>(input,"In1",DPEntityC((DPEntityBodyC &)*this)));
+      DPIPlugC<InT> plug(input,"In1",DPEntityC((DPEntityBodyC &)*this));
+      lst.InsLast(plug);
       return lst;
     }
     //: Input plugs.

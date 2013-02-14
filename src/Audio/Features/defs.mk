@@ -16,7 +16,7 @@ HEADERS=MelSpectrum.hh MelCepstrum.hh PreEmphasis.hh FeatureMFCC.hh VectorDelta0
 
 # LabelFeatures.hh
 
-SOURCES=MelSpectrum.cc MelCepstrum.cc FeatureMFCC.cc VectorDelta012.cc 
+SOURCES=MelSpectrum.cc MelCepstrum.cc PreEmphasis.cc FeatureMFCC.cc VectorDelta012.cc 
 # LabelFeatures.cc
 
 PLIB=RavlAudioFeatures
@@ -28,3 +28,5 @@ TESTEXES=testAudioFeatures.cc
 EXAMPLES= exFeatureMFCC.cc
 
 PROGLIBS=RavlOSIO RavlDevAudio.opt  RavlAudioIO RavlAudioFile.opt
+
+MUSTLINK= linkRavlAudioFeatures.cc

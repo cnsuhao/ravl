@@ -187,9 +187,16 @@ namespace RavlAudioN {
   // This could be optimised for converting blocks of data. Later
 
   static Int16T Sample2Int16ToInt16(const SampleElemC < 2, Int16T> &samp)
-  {
-    return(Int16T) (((IntT) samp.channel[0] + (IntT) samp.channel[1]) / 2);
-  }
+  { return(Int16T) (((IntT) samp.channel[0] + (IntT) samp.channel[1]) / 2); }
+
+  static Int16T Sample1Int16ToInt16(const SampleElemC < 1, Int16T> &samp)
+  { return(Int16T) samp.channel[0]; }
+
+  static float SampleFloatToFloat(const SampleElemC < 1, float> &samp)
+  { return samp.channel[0]; }
+
+  static RealT SampleRealToReal(const SampleElemC < 1, RealT> &samp)
+  { return samp.channel[0]; }
 
 #if 0
   static SampleElemC < 2, Int16T> Int16ToSample2Int16(const Int16T &samp)
@@ -231,12 +238,11 @@ namespace RavlAudioN {
   DP_REGISTER_CONVERSION_NAMED(Sample1RealToUByte, 2, "SampleElemC<1,UByteT> Sample1RealToUByte (const SampleElemC<1,RealT> & sample ) ");
   DP_REGISTER_CONVERSION_NAMED(Sample2RealToUByte, 2, "SampleElemC<2,UByteT> Sample1RealToUByte (const SampleElemC<2,RealT> & sample ) ");
 
-
-  //DP_REGISTER_CONVERSION_NAMED(ConvInt8ToInt16,1,"Int16T RavlAudioN::Convert(const SByteT &)");
-  //DP_REGISTER_CONVERSION_NAMED(ConvInt16ToInt,1,"IntT RavlAudioN::Convert(const Int16T &)");
-  //DP_REGISTER_CONVERSION_NAMED(ConvFloat2Real,1,"RealT RavlAudioN::Convert(const FloatT &)");
+  DP_REGISTER_CONVERSION(SampleFloatToFloat,1);
+  DP_REGISTER_CONVERSION(SampleRealToReal,1);
 
   DP_REGISTER_CONVERSION(Sample2Int16ToInt16, 2);
+  DP_REGISTER_CONVERSION(Sample1Int16ToInt16, 1);
 
   // register ascii output
   FileFormatStreamC <SampleElemC < 2, Int16T> > FileFormatStream_SampleElem_2_Int16T;

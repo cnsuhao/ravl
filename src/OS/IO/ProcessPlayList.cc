@@ -4,6 +4,7 @@
 #include "Ravl/DP/SequenceIO.hh"
 #include "Ravl/DP/Plug.hh"
 #include "Ravl/DP/TypeInfo.hh"
+#include "Ravl/StrStream.hh"
 
 namespace RavlN {
 
@@ -11,6 +12,20 @@ namespace RavlN {
   ProcessPlayListC::ProcessPlayListC()
    : m_verbose(false)
   {}
+
+  //! Constructor
+  ProcessPlayListC::ProcessPlayListC(const PlayListC &playList,
+                                     const DPStreamOpC &process,
+                                     const StringC &outputTemplate,
+                                     bool verbose)
+   : m_inputName("In1"),
+     m_outputName("Out1"),
+     m_process(process),
+     m_playList(playList),
+     m_outputTemplate(outputTemplate),
+     m_verbose(verbose)
+  {}
+
 
   //! Process list.
   bool ProcessPlayListC::ProcessList()
@@ -28,6 +43,11 @@ namespace RavlN {
   //! Process a single file.
   bool ProcessPlayListC::Process(const SubSequenceSpecC &seqSpec) {
 
+    if(!m_process.IsValid()) {
+      RavlError("No process provided.");
+      return false;
+    }
+
     FilenameC fn = seqSpec.Filename();
     FilenameC pc = fn.PathComponent();
     FilenameC nc = fn.NameComponent();
@@ -37,24 +57,33 @@ namespace RavlN {
     outputName.gsub("%p",pc);
     outputName.gsub("%n",nc);
     outputName.gsub("%b",bc);
+    outputName.gsub("%f",fn);
 
     DPIPortBaseC isource;
     DPIPlugBaseC iplug;
-    m_process.GetIPlug(m_inputName,iplug);
+
+    if(!m_process.GetIPlug(m_inputName,iplug)) {
+      RavlError("Failed to find input '%s' ",m_inputName.c_str());
+      for(DLIterC<DPIPlugBaseC> it(m_process.IPlugs());it;it++) {
+        RavlDebug(" IPlug '%s' ",it->EntityName().c_str());
+      }
+      return false;
+    }
+    RavlAssert(iplug.IsValid());
 
     DPSeekCtrlC seekControl;
     if(!OpenISequenceBase(isource,seekControl,seqSpec.Filename(),seqSpec.FileFormat(),iplug.InputType(),m_verbose)) {
       RavlError("Failed to open input '%s'",seqSpec.Filename().c_str());
       return false;
     }
-
+    RavlAssert(isource.IsValid());
     if(!iplug.ConnectPort(isource)) {
       RavlError("Failed to connect port.");
       return false;
     }
 
     DPIPortBaseC pullPort;
-    if(!m_process.GetIPort(m_ouputName,pullPort)) {
+    if(!m_process.GetIPort(m_outputName,pullPort)) {
       RavlError("Failed to get output");
       return false;
     }
@@ -63,7 +92,7 @@ namespace RavlN {
 
     DPSeekCtrlC seekControlO;
     if(!OpenOSequenceBase(pushPort,seekControl,outputName,"",pullPort.InputType(),m_verbose)) {
-      RavlError("Failed to open output '%s'",seqSpec.Filename().c_str());
+      RavlError("Failed to open output '%s' for type '%s' ",outputName.c_str(),RavlN::TypeName(pullPort.InputType()));
       return false;
     }
 
@@ -85,11 +114,22 @@ namespace RavlN {
       }
     }
 
+    Int64T count = 0;
     if(seqSpec.LastFrame() == RavlConstN::maxInt) {
-      while(theType.Move(pullPort,pushPort,32) != 0) ;
+      RavlDebug("Processing whole sequence");
+      while(1) {
+        UIntT n = theType.Move(pullPort,pushPort,32);
+        if(n == 0)
+          break;
+        count += n;
+      }
     } else {
+      RavlDebug("Processing sub sequence");
       // FIXME:- THe sequence length of the output and input need not match.
-      theType.Move(pullPort,pushPort,seqSpec.Range().Size());
+      count = theType.Move(pullPort,pushPort,seqSpec.Range().Size());
+    }
+    if(m_verbose) {
+      RavlInfo("Processed %s frames.",RavlN::StringOf(count).c_str());
     }
 
     return true;

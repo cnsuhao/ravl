@@ -6,13 +6,13 @@
 // file-header-ends-here
 #ifndef RAVLAUDIO_MELCEPSTRUM_HEADER
 #define RAVLAUDIO_MELCEPSTRUM_HEADER 1
-//! rcsid="$Id$"
 //! lib=RavlAudioFeatures
 //! docentry="Ravl.API.Audio.Feature Extraction"
 //! author="Charles Galambos"
 //! file="Ravl/Audio/Features/MelCepstrum.hh"
 
 #include "Ravl/SArray1d.hh"
+#include "Ravl/DP/Process.hh"
 
 namespace RavlAudioN {
   using namespace RavlN;
@@ -20,13 +20,18 @@ namespace RavlAudioN {
   //! userlevel=Normal
   //: Compute mel cepstrum from the mel spectrum.
   
-  class MelCepstrumC {
+  class MelCepstrumC
+    : public DPProcessBodyC<SArray1dC<RealT>,SArray1dC<RealT> >
+  {
   public:
     MelCepstrumC();
     //: Default constructor.
     // This does not create any filters. Init(...) must be called
     // before any processing is done with Apply().
     
+    MelCepstrumC(const XMLFactoryContextC &factory);
+    //: XMLFactory constructor.
+
     MelCepstrumC(IntT numCepstrum,IntT specSize);
     //: Constructor.
     // numCepstrum - Number of cepstrum coefficients to generate.
@@ -41,6 +46,7 @@ namespace RavlAudioN {
     //: Compute mel cepstrum from mel spectrum parameters.
     
   protected:
+    UIntT m_numCepstrum;
     SArray1dC<SArray1dC<RealT> > filters;
   };
 }

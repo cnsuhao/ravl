@@ -165,6 +165,10 @@ namespace RavlAudioN {
     
     IntT GetArray(SArray1dC<DataT> &data) {
       IntT size = data.Size() * sizeof(DataT);
+      if(data.Size() == 0) {
+        RavlIssueError("Attempt to read 0 bytes");
+        return 0;
+      }
       if(!this->Read(&(data[0]),size))
         return 0;
       return size / sizeof(DataT);

@@ -7,7 +7,6 @@
 #ifndef RAVL_FUNCTION_HEADER
 #define RAVL_FUNCTION_HEADER 1
 ///////////////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! lib=RavlPatternRec
 //! author="Charles Galambos, based on code by Robert Crida"
 //! docentry="Ravl.API.Pattern Recognition.Functions"

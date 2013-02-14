@@ -16,6 +16,7 @@
 #include "Ravl/RCAbstract.hh"
 #include "Ravl/TypeName.hh"
 #include "Ravl/VirtualConstructor.hh"
+#include "Ravl/DP/Converter.hh"
 
 #if RAVL_HAVE_ANSICPPHEADERS
 #include <typeinfo>
@@ -128,6 +129,19 @@ namespace RavlN {
   }
   //: Save to a stream.
   // Uses virtual constructor.
+
+
+  /////////////////////////////////////////////
+
+  static RCAbstractC ConvertDPEntityPtr2Abstract(const DPEntityBodyC::RefT &ptr)
+  {
+    if(ptr.IsValid())
+      return RCAbstractC(*ptr.BodyPtr());
+    return RCAbstractC();
+  }
+
+  DP_REGISTER_CONVERSION(ConvertDPEntityPtr2Abstract,1);
+
 
   
 }

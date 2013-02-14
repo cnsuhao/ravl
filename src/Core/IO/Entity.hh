@@ -17,9 +17,10 @@
 
 #include "Ravl/RCHandleV.hh"
 #include "Ravl/String.hh"
+#include "Ravl/SmartPtr.hh"
 
 namespace RavlN {
-  
+  class XMLFactoryContextC;
   class DPEntityC;
   
   std::istream &operator>>(std::istream &strm,DPEntityC &obj);
@@ -40,6 +41,9 @@ namespace RavlN {
     DPEntityBodyC(const DPEntityBodyC &oth);
     //: Copy constructor.
 
+    DPEntityBodyC(const XMLFactoryContextC &factory);
+    //: XMLFactory constructor.
+
     DPEntityBodyC(const StringC &aName);
     //: Construct from a name
 
@@ -49,6 +53,10 @@ namespace RavlN {
     DPEntityBodyC(BinIStreamC &in);
     //: Binary stream constructor.
     
+    void Setup(const XMLFactoryContextC &factory);
+    //: Factory constructor.
+    // You must include RavlXMLFactory to use
+
     virtual bool Save(std::ostream &out) const; 
     //: Save to std::ostream.  
     
@@ -66,6 +74,8 @@ namespace RavlN {
     { return m_entityName; }
     //: Get name for entity.
 
+    typedef SmartPtrC<DPEntityBodyC> RefT;
+    //: Handle to DPEntityC.
   protected:
     StringC m_entityName;
   };
@@ -98,7 +108,12 @@ namespace RavlN {
 
     DPEntityC(const RCAbstractC &abst);
     //: Constructor from an abstract handle.
-    
+
+    DPEntityC(const SmartPtrC<DPEntityBodyC> &ptr)
+      : RCHandleVC<DPEntityBodyC>(ptr.BodyPtr())
+    {}
+    //: Convert from ptr.
+
     DPEntityC(std::istream &in);
     //: Load from stream using virtual constructor.
 

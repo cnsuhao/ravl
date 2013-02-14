@@ -28,15 +28,21 @@ namespace RavlN {
     //! Constructor
     ProcessPlayListC();
 
+    //! Constructor
+    ProcessPlayListC(const PlayListC &playList,const DPStreamOpC &process,const StringC &outputTemplate,bool verbose);
+
+
     //! Process list.
     bool ProcessList();
 
     //! Process a single file.
     bool Process(const SubSequenceSpecC &seqSpec);
 
+    //! Handle to class
+    typedef SmartPtrC<ProcessPlayListC> RefT;
   protected:
     StringC m_inputName;
-    StringC m_ouputName;
+    StringC m_outputName;
     DPStreamOpC m_process;
     PlayListC m_playList;
     StringC m_outputTemplate;

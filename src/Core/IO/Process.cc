@@ -14,6 +14,29 @@
 
 namespace RavlN {
 
+  //: Default constructor.
+
+  DPProcessBaseBodyC::DPProcessBaseBodyC()
+  {}
+
+  //: Stream constructor.
+
+  DPProcessBaseBodyC::DPProcessBaseBodyC(std::istream &in)
+    : DPEntityBodyC(in)
+  {}
+
+  //: Binary stream constructor.
+
+  DPProcessBaseBodyC::DPProcessBaseBodyC(BinIStreamC &in)
+    : DPEntityBodyC(in)
+  {}
+
+  //: Copy constructor.
+
+  DPProcessBaseBodyC::DPProcessBaseBodyC(const DPProcessBaseBodyC &oth)
+    : DPEntityBodyC(oth)
+  {}
+
   //: Save to std::ostream.
   
   bool DPProcessBaseBodyC::Save(std::ostream &out) const 

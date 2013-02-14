@@ -81,6 +81,7 @@ namespace RavlAudioN {
     SArray1dC<float> ffilter(rfilter.Size());
     for(unsigned i = 0;i < rfilter.Size();i++)
       ffilter[i] = rfilter[i];
+    filter = ffilter;
     return true;
   }
 
@@ -122,22 +123,28 @@ namespace RavlAudioN {
   }
 
   // ------------------------------------------------------------------------------
-  
+
+  //: Default constructor.
+  WindowSignalFloatC::WindowSignalFloatC()
+   : DPEntityC(true)
+  {}
+
   //: Construct window function
   WindowSignalFloatC::WindowSignalFloatC(RAWindowSignalT sigType,UIntT size,UIntT frameSeperation)
-   : DPEntityC(true),
+   : DPEntityC(new WindowSignalBodyC<float,float,float>(sigType,size,frameSeperation)),
      WindowSignalC<float,float,float>(sigType,size,frameSeperation)
-  {
-
-  }
+  {}
 
   //: Construct from an xml file.
   WindowSignalFloatC::WindowSignalFloatC(const XMLFactoryContextC &factory)
-  : DPEntityC(true),
-    WindowSignalC<float,float,float>(String2WindowType(factory.AttributeString("windowType","Ramp")),
-                                     factory.AttributeUInt("windowSize",512),
-                                     factory.AttributeUInt("frameStep",256))
+  : DPEntityC(new WindowSignalBodyC<float,float,float>(String2WindowType(factory.AttributeString("windowType","Ramp")),
+      factory.AttributeUInt("windowSize",512),
+      factory.AttributeUInt("frameStep",256)))
   {}
 
+  void LinkWindowSignal()
+  {}
+
+  static RavlN::XMLFactoryRegisterHandleConvertC<WindowSignalFloatC,DPIStreamOpC<float,SArray1dC<float> > > g_registerWindowSignalFloat("RavlAudioN::WindowSignalFloatC");
 
 }

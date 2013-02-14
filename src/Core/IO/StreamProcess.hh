@@ -26,13 +26,10 @@ namespace RavlN {
     : public DPStreamOpBodyC
   {
   public:
-    DPStreamProcessBodyC()
-    {}
+    DPStreamProcessBodyC();
     //: Default constructor.
 
-    DPStreamProcessBodyC(const StringC &name)
-      : procname(name)
-    {}
+    DPStreamProcessBodyC(const StringC &name);
     //: Construct a stream process.
     
     virtual DListC<DPIPlugBaseC> IPlugs() const;

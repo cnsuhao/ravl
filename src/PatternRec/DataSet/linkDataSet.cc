@@ -12,6 +12,7 @@ namespace RavlN {
   extern void LinkFunctionCascade();
   extern void LinkConcatenate();
   extern void LinkFunctionExpand();
+  extern void LinkDPProcessFunction();
 
   void LinkDataSet() {
     linkDataSetVectorLabel();
@@ -19,6 +20,7 @@ namespace RavlN {
     LinkFunctionCascade();
     LinkConcatenate();
     LinkFunctionExpand();
+    LinkDPProcessFunction();
   }
 
 

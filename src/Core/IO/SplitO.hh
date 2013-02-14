@@ -41,7 +41,11 @@ namespace RavlN {
     DPSplitOBodyC()
     {}
     //: Constructor.
-    
+
+    DPSplitOBodyC(const XMLFactoryContextC &factory)
+    { DPOPlugBaseBodyC::Setup(factory); }
+    //: Constructor.
+
     DPSplitOBodyC(const DPOPortC<DataT> &aport)
     { ports.InsLast(aport); }
     //: Construct with an OPortC.
@@ -109,7 +113,12 @@ namespace RavlN {
     {}
     //: Constructor.
     // Creates a new splitter.
-    
+
+    DPSplitOC(const XMLFactoryContextC &factory)
+    : DPEntityC(*new DPSplitOBodyC<DataT>(factory))
+    {}
+    //: XMLFactory constructor
+
     DPSplitOC()
       : DPEntityC(true)
     {}

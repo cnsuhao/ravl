@@ -33,17 +33,20 @@ namespace RavlN {
 
     PlayListBodyC(const DListC<EditSpecC> &lst);
     //: Constructor from a plain list.
-    
-    PlayListBodyC(istream &is);
+
+    PlayListBodyC(const DListC<StringC> &lst);
+    //: Constructor from a plain list of filenames.
+
+    PlayListBodyC(std::istream &is);
     //: stream constructor.
     
     PlayListBodyC(BinIStreamC &is);
     //: binary stream constructor.
     
-    bool Save(ostream &os) const;
+    bool Save(std::ostream &os) const;
     //: Save to a ostream.
 
-    bool Load(istream &is);
+    bool Load(std::istream &is);
     //: Load from an ostream.
     
     bool Save(BinOStreamC &os) const;
@@ -84,7 +87,7 @@ namespace RavlN {
     { return edits; }
     //: Access array of edits.
 
-    void Dump(ostream &out);
+    void Dump(std::ostream &out);
     //: Dump debug info about play list.
     
   protected:
@@ -125,7 +128,12 @@ namespace RavlN {
       : RCHandleC<PlayListBodyC>(*new PlayListBodyC(lst))
     {}
     //: List constructor.
-    
+
+    PlayListC(const DListC<StringC> &lst)
+      : RCHandleC<PlayListBodyC>(*new PlayListBodyC(lst))
+    {}
+    //: Constructor from a plain list of filenames
+
     void UpdateRangeIndex()
     { Body().UpdateRangeIndex(); }
     //: Go through EditSpecs, and update the insert ranges.

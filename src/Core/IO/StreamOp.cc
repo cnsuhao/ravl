@@ -9,6 +9,8 @@
 //! file="Ravl/Core/IO/StreamOp.cc"
 
 #include "Ravl/DP/StreamOp.hh"
+#include "Ravl/DP/Converter.hh"
+#include "Ravl/Complex.hh"
 
 namespace RavlN {
 
@@ -136,5 +138,71 @@ namespace RavlN {
     return false;
   }
 
-  
+  //: Dump information about the stream op.
+  bool DPStreamOpBodyC::Dump(std::ostream &strm) const {
+    //....
+
+    return true;
+  }
+
+
+  static DPEntityBodyC::RefT DPStreamOp0(const DPStreamOpC &bod)
+  { return bod.BodyPtr(); }
+
+  DP_REGISTER_CONVERSION(DPStreamOp0,1);
+
+  static DPStreamOpC DPIStreamOp1(const DPIStreamOpC<float,float> &bod)
+  { return bod; }
+
+  DP_REGISTER_CONVERSION(DPIStreamOp1,1);
+
+  static DPStreamOpC DPIStreamOp2(const DPIStreamOpC<float,SArray1dC<float> > &bod)
+  { return bod; }
+
+  DP_REGISTER_CONVERSION(DPIStreamOp2,1);
+
+  static DPStreamOpC DPIStreamOp3(const DPIStreamOpC<SArray1dC<float>,SArray1dC<float> > &bod)
+  { return bod; }
+
+  DP_REGISTER_CONVERSION(DPIStreamOp3,1);
+
+  static DPStreamOpC DPIStreamOp4(const DPIStreamOpC<SArray1dC<RealT>,SArray1dC<RealT> > &bod)
+  { return bod; }
+
+  DP_REGISTER_CONVERSION(DPIStreamOp4,1);
+
+
+  static DPStreamOpC DPIStreamOp5(const DPIStreamOpC<SArray1dC<ComplexC>,SArray1dC<RealT> > &bod)
+  { return bod; }
+
+  DP_REGISTER_CONVERSION(DPIStreamOp5,1);
+
+  static DPStreamOpC DPOStreamOp1(const DPOStreamOpC<float,float> &bod)
+  { return bod; }
+
+  DP_REGISTER_CONVERSION(DPOStreamOp1,1);
+
+
+  static DPStreamOpC DPOStreamOp2(const DPOStreamOpC<float,SArray1dC<float> > &bod)
+  { return bod; }
+
+  DP_REGISTER_CONVERSION(DPOStreamOp2,1);
+
+  static DPStreamOpC DPOStreamOp3(const DPOStreamOpC<SArray1dC<float>,SArray1dC<float> > &bod)
+  { return bod; }
+
+  DP_REGISTER_CONVERSION(DPOStreamOp3,1);
+
+  static DPStreamOpC DPOStreamOp4(const DPOStreamOpC<SArray1dC<RealT>,SArray1dC<RealT> > &bod)
+  { return bod; }
+
+  DP_REGISTER_CONVERSION(DPOStreamOp4,1);
+
+
+  static DPStreamOpC DPOStreamOp5(const DPOStreamOpC<SArray1dC<ComplexC>,SArray1dC<RealT> > &bod)
+  { return bod; }
+
+  DP_REGISTER_CONVERSION(DPOStreamOp5,1);
+
+
 }

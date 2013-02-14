@@ -13,7 +13,6 @@
 //! author="Charles Galambos"
 //! docentry="Ravl.API.Core.Data Processing.Internal" 
 //! date="06/07/1998"
-//! rcsid="$Id$"
 //! userlevel=Default
 
 #include "Ravl/DP/StreamOp.hh"

@@ -7,7 +7,6 @@
 #ifndef RAVLAUDIO_VECTORDELTA012_HEADER
 #define RAVLAUDIO_VECTORDELTA012_HEADER 1
 //! author="Charles Galambos"
-//! rcsid="$Id$"
 //! lib=RavlAudioFeatures
 //! docentry="Ravl.API.Audio.Feature Extraction"
 //! file="Ravl/Audio/Features/VectorDelta012.hh"
@@ -15,6 +14,7 @@
 #include "Ravl/FixedQueue.hh"
 #include "Ravl/Types.hh"
 #include "Ravl/Vector.hh"
+#include "Ravl/DP/Process.hh"
 
 namespace RavlAudioN {
   using namespace RavlN;
@@ -25,15 +25,24 @@ namespace RavlAudioN {
   // output feature vector. <br>
   // Note: This adds a 2 frame delay to the data.
   
-  class VectorDelta012C {
+  class VectorDelta012C
+    : public DPProcessBodyC<VectorC,VectorC>
+  {
   public:
     VectorDelta012C(UIntT fawFeatures,const VectorC &mean = VectorC());
     //: Constructor
     
+    VectorDelta012C(const XMLFactoryContextC &context);
+    //: XML factory constructor
+
     VectorC Apply(const VectorC &rawFeatures);
     //: Compute feature vector.
     
+    typedef SmartPtrC<VectorDelta012C> RefT;
+    //: Handle to this class.
   protected:
+    void Init(UIntT numFeatures,const VectorC &mean = VectorC());
+
     FixedQueueC<VectorC> samples;
     FixedQueueC<VectorC> delta1;
     UIntT features;

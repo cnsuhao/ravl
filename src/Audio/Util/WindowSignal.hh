@@ -81,7 +81,12 @@ namespace RavlAudioN {
       : WindowSignalBaseC(sigType,frameSize),
 	frameSep(frameSeperation),
 	blocks((frameSize / frameSeperation)+1)
-    { Generate(filter); }
+    {
+      RavlAssert(frameSize > 0);
+      RavlAssert(frameSeperation > 0);
+      Generate(filter);
+      RavlAssert(filter.Size() > 0);
+    }
     //: Constructor.
     // sigType - Type of window to use. <br>
     // frameSize - Size of output frame in samples.<br>
@@ -92,7 +97,10 @@ namespace RavlAudioN {
 	frameSep(frameSeperation),
 	blocks((nfilter.Size() / frameSeperation)+1),
 	filter(nfilter)
-    {}
+    {
+      RavlAssert(frameSeperation > 0);
+      RavlAssert(filter.Size() > 0);
+    }
     //: Constructor.
     // nfilter - Filter to use. <br>
     // frameSeperation - Separation of successive frames in samples.
@@ -118,7 +126,8 @@ namespace RavlAudioN {
     }
     //: Get next frame.
 
-    virtual bool Get(SArray1dC<OutT> &buff) { 
+    virtual bool Get(SArray1dC<OutT> &buff) {
+      RavlAssert(filter.Size() > 0);
       buff = SArray1dC<OutT>(filter.Size());
       if(blocks.IsEmpty()) { // First block ?
 	SArray1dC<InT> tmp(filter.Size());
@@ -226,6 +235,9 @@ namespace RavlAudioN {
    : public WindowSignalC<float,float,float>
   {
   public:
+    WindowSignalFloatC();
+    //: Default constructor.
+
     WindowSignalFloatC(RAWindowSignalT sigType,UIntT size,UIntT frameSeperation);
     //: Construct window function
 

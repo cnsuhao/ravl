@@ -13,6 +13,7 @@
 #include "Ravl/SArray1dIter2.hh"
 #include "Ravl/Array1dIter.hh"
 #include "Ravl/Array1dIter2.hh"
+#include "Ravl/XMLFactoryRegister.hh"
 
 #define DODEBUG 0
 #if DODEBUG
@@ -35,7 +36,21 @@ namespace RavlAudioN {
   {
     InitFilters(sampleRate,frameSize,freqRange,nfilters);
   }
+
+  //: XMLFactory constructor.
   
+  MelSpectrumC::MelSpectrumC(const XMLFactoryContextC &factory)
+   : DPProcessBodyC<SArray1dC<RealT>,SArray1dC<RealT> >(factory)
+  {
+    RealT sampleRate = factory.AttributeReal("sampleRate",8000);
+    IntT frameSize = factory.AttributeUInt("frameSize",512);
+    IntT nfilters = factory.AttributeUInt("numberOfFilter",14);
+    RealRangeC freqRange(factory.AttributeReal("minFrequency",133.333334),
+                         factory.AttributeReal("maxFrequency",6855.4976)
+                         );
+    InitFilters(sampleRate,frameSize,freqRange,nfilters);
+  }
+
   //: Compute mel spectrum from power spectrum
   
   SArray1dC<RealT> MelSpectrumC::Apply(const SArray1dC<RealT> &powerSpectrum) {
@@ -51,14 +66,15 @@ namespace RavlAudioN {
     return ret;
   }
   
-  //: Initiaise filters.
+  //: Initialise filters.
   // Frequency's is in Hz.
   
-  bool MelSpectrumC::InitFilters(RealT sampleRate,IntT frameSize,RealRangeC freqRange,IntT numFilters) {    
+  bool MelSpectrumC::InitFilters(RealT sampleRate,IntT frameSize,RealRangeC freqRange,IntT numFilters)
+  {
     // Compute edge values for filters.
     
     RealT dfreq = sampleRate / frameSize;
-    ONDEBUG(cerr << "DFreq=" << dfreq << "\n");
+    ONDEBUG(std::cerr << "DFreq=" << dfreq << "\n");
     SArray1dC<RealT> edges(numFilters+2);
     {
       RealRangeC melRng(Lin2Mel(freqRange.Min()),Lin2Mel(freqRange.Max()));
@@ -114,4 +130,10 @@ namespace RavlAudioN {
     return true;
   }
   
+  void LinkMelSpectrum()
+  {}
+
+  static RavlN::XMLFactoryRegisterConvertC<MelSpectrumC,DPProcessBodyC<SArray1dC<RealT>,SArray1dC<RealT> > > g_registerVectorDelta012("RavlAudioN::MelSpectrumC");
+
+
 }
