@@ -111,7 +111,7 @@ AC_DEFUN([QM_CK_COMPILE_CK_LIB],
                           no )          case $lib_enablement in
                                            check )  TRACE_INDENT="          "
                                                     trace 6 $prq is disabled, disabling $lib
-                                                    use_${lib}=blocked
+                                                    eval use_${lib}=blocked
                                                     LeftToDo=`echo " $LeftToDo " | $SED "s/ $lib / /"`
                                                     RecentlyProcessed="$RecentlyProcessed $lib"
                                                     process_now=no
@@ -126,7 +126,7 @@ AC_DEFUN([QM_CK_COMPILE_CK_LIB],
                           missing )     case $lib_enablement in
                                            check )  TRACE_INDENT="          "
                                                     trace 6 $prq is not available, disabling $lib
-                                                    use_${lib}=blocked
+                                                    eval use_${lib}=blocked
                                                     LeftToDo=`echo " $LeftToDo " | $SED "s/ $lib / /"`
                                                     RecentlyProcessed="$RecentlyProcessed $lib"
                                                     process_now=no
@@ -141,7 +141,7 @@ AC_DEFUN([QM_CK_COMPILE_CK_LIB],
                           blocked )     case $lib_enablement in
                                            check )  TRACE_INDENT="          "
                                                     trace 6 $prq is blocked, disabling $lib
-                                                    use_${lib}=blocked
+                                                    eval use_${lib}=blocked
                                                     LeftToDo=`echo " $LeftToDo " | $SED "s/ $lib / /"`
                                                     RecentlyProcessed="$RecentlyProcessed $lib"
                                                     process_now=no
@@ -164,7 +164,7 @@ AC_DEFUN([QM_CK_COMPILE_CK_LIB],
                           * )           case $lib_enablement in
                                            check )  TRACE_INDENT="          "
                                                     trace 1 Assert - unrecognised state for prerequisite $prq, disabling $lib
-                                                    use_${lib}=blocked
+                                                    eval use_${lib}=blocked
                                                     LeftToDo=`echo " $LeftToDo " | $SED "s/ $lib / /"`
                                                     RecentlyProcessed="$RecentlyProcessed $lib"
                                                     process_now=no
