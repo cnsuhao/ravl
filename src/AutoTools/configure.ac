@@ -552,12 +552,6 @@ dnl  2 Name of a function in the library that can be used as a test call
 dnl  3 Space separated list of dependancies of the library. Specify the Ravl
 dnl    name of the library - e.g. for dependancies on Zlib specify Zlib not 
 dnl    -lz or z. 
-dnl    *** N.B. ***
-dnl         Dependancies on libraries reliant on pkg-config for their
-dnl         location are not supported. I.E. if library A depends on
-dnl         library B, library B must be specified here as a manual
-dnl         check if library A is also specified as a manual check.
-dnl         JFi:ToDo:Fix this limitation
 dnl  4 Link line entry for the library - i.e. -l<libname>
 dnl  5 Name(s) of header files needed to use the library (only really need to
 dnl    provide one for a specimin test unless it is know that sub-sets of the
