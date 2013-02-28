@@ -181,8 +181,7 @@ AC_DEFUN([QM_CK_COMPILE_CK_LIB],
                  fi
                  AS_IF([test "x$process_now" != xno],
                        [eval testwith=\$with_${lib}_fn
-                        eval lnklibs=\$with_${lib}_lnklibs
-                        lnklibs=`echo $lnklibs | $SED 's/^-l//'`
+                        eval lnklibs="\$with_${lib}_lnklibs"
                         eval loc=\$with_${lib}_libpath
                         eval hdr=\$with_${lib}_hdr
                         eval inc=\$with_${lib}_inc

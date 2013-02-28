@@ -130,16 +130,16 @@ AC_DEFUN([QM_COMPILE_CK_FOR_LIB],
          if ( test "X$4" != X )
          then
             TRACE_INDENT="     "
-            trace 3 Setting LDFLAGS for library to -L$4
-            LIB_LDFLAGS=-L$4
+            trace 3 Setting LDFLAGS for library to $4
+            LIB_LDFLAGS=$4
          else
             LIB_LDFLAGS=""
          fi
          if ( test "X$6" != X )
          then
             TRACE_INDENT="     "
-            trace 3 Setting CPPFLAGS for library to -I$6
-            LIB_CPPFLAGS=-I$6
+            trace 3 Setting CPPFLAGS for library to $6
+            LIB_CPPFLAGS=$6
          else
             LIB_CPPFLAGS=""
          fi
@@ -154,12 +154,14 @@ AC_DEFUN([QM_COMPILE_CK_FOR_LIB],
          TRACE_INDENT="     "
          preserve_LDFLAGS=$LDFLAGS
          preserve_CPPFLAGS=$CPPFLAGS
-         LDFLAGS=$LIB_LDFLAGS
+         preserve_LIBS=$LIBS
          CPPFLAGS=$LIB_CPPFLAGS
-         trace 3 Checking for fn $3 in library $2
-         AC_CHECK_LIB([$2], [$3], [found=true], [found=false], [$prereqlibs])
+         LIBS="$LIB_LDFLAGS $2 $prereqlibs"
+         AC_MSG_CHECKING([for fn $3 in library $2])
+         AC_LINK_IFELSE([AC_LANG_PROGRAM([],[$3 ();])], [found=true], [found=false])
          if ( test X$found = Xtrue )
          then
+            AC_MSG_RESULT([yes])
             if ( test X"$5" != X )
             then
                for hf in $5 
@@ -176,9 +178,12 @@ AC_DEFUN([QM_COMPILE_CK_FOR_LIB],
                   fi
                done
             fi
+         else
+            AC_MSG_RESULT([no])
          fi
          CPPFLAGS=$preserve_CPPFLAGS
          LDFLAGS=$preserve_LDFLAGS
+         LIBS=$preserve_LIBS
          if ( test X$found = Xtrue )
          then
             TRACE_INDENT="     "
@@ -187,9 +192,9 @@ AC_DEFUN([QM_COMPILE_CK_FOR_LIB],
             AS_VAR_SET(${fix_expan}_CFLAGS, [$LIB_CPPFLAGS])
             if ( test X$LIB_LDFLAGS != X )
             then
-               LIB_LDFLAGS=$LIB_LDFLAGS" -l$2"
+               LIB_LDFLAGS=$LIB_LDFLAGS" $2"
             else
-               LIB_LDFLAGS=-l$2
+               LIB_LDFLAGS=$2
             fi
             if ( test "X$prereqlibs" != X )
             then
