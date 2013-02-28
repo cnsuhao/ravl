@@ -191,7 +191,7 @@ AC_DEFUN([QM_DEFINE_EXTLIB_CC],
                                       [Declare the location of the $1 library and enable its functionality]
                                      )
                       ],
-                      [case $with_$1-library in
+                      [case $with_$1_library in
                         'n' | 'N' | 'no' | 'No' | 'NO' )
                                           use_$1=no
                                           with_$1_library=no
@@ -217,7 +217,7 @@ AC_DEFUN([QM_DEFINE_EXTLIB_CC],
                                       [Declare the location of the $1 header files and enable their functionality]
                                      )
                       ],
-                      [case $with_$1-include in
+                      [case $with_$1_include in
                         'n' | 'N' | 'no' | 'No' | 'NO' )
                                           use_$1=no
                                           with_$1_include=no
