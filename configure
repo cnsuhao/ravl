@@ -3219,51 +3219,83 @@ $as_echo_n "checking pkg-config for QMake... " >&6; }
                                 #  "      "  = ${datadir}/QMake
                                 QMAKE_CONFIGFILES=`$PKG_CONFIG --variable=sysconfdir $with_QMake_pkgconf 2>/dev/null`/QMake
                                 # "        "     = ${sysconfdir}/QMake
-                                { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
-$as_echo "yes" >&6; }
-                              else
-                                # No user preference, use highest version
-                                InstalledVer=`$PKG_CONFIG --modversion $with_QMake_pkgconf 2>/dev/null`
-                                sedPattern='/^\([0-9][0-9]*\)\.\([0-9][0-9]*\)\.\([0-9][0-9]*\) *$'
-                                                                InstalledMajor=`echo $InstalledVer | $SED -n "$sedPattern/s//\1/p"`
-                                InstalledMinor=`echo $InstalledVer | $SED -n "$sedPattern/s//\2/p"`
-                                InstalledPatch=`echo $InstalledVer | $SED -n "$sedPattern/s//\3/p"`
-                                if ( test "x$PACKAGE_NAME" != xQMake )
+                                QMAKE_CFG=$QMAKE_CONFIGFILES/Config.QMake
+                                if ( test X$WORKING_QMAKE == X || test X$QMAKE_CONFIGFILES == X )
                                 then
-                                  LocalVer=`$SED  -n '/^PACKAGE_VERSION *= *'\''\([0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\)'\'' *$/s//\1/p' $srcdir/QMake/configure`
-                                                                                                                                        # The '\'' put a single ' in the search pattern.
+                                  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Required QMake is unavailable
+See \`config.log' for more details." "$LINENO" 5; }
                                 else
-                                  LocalVer=$PACKAGE_VERSION
-                                fi
-                                sedPattern='/^\([0-9][0-9]*\)\.\([0-9][0-9]*\)\.\([0-9][0-9]*\) *$'
-                                                                LocalMajor=`echo $LocalVer | $SED -n "$sedPattern/s//\1/p"`
-                                LocalMinor=`echo $LocalVer | $SED -n "$sedPattern/s//\2/p"`
-                                LocalPatch=`echo $LocalVer | $SED -n "$sedPattern/s//\3/p"`
-                                if ( test $LocalMajor -gt $InstalledMajor \
-                                          || ( test $LocalMajor -eq $InstalledMajor \
-                                                    && ( test $LocalMinor -gt $InstalledMinor \
-                                                              || ( test $LocalMinor -eq $InstalledMinor \
-                                                                        -a $LocalPatch -ge $InstalledPatch \
-                                                                 ) \
-                                                       ) \
-                                             ) \
-                                   )
-                                then
-                                  # Local (supplied with client product) is latest version, use this.
-                                  WORKING_QMAKE=uselocal
-                                  { $as_echo "$as_me:${as_lineno-$LINENO}: result: older" >&5
-$as_echo "older" >&6; }
-                                else
-                                  # Installed version is latest, use that
-                                  WORKING_QMAKE=`$PKG_CONFIG --variable=datadir $with_QMake_pkgconf 2>/dev/null`/QMake
-                                  #  "      "  = ${datadir}/QMake
-                                  QMAKE_CONFIGFILES=`$PKG_CONFIG --variable=sysconfdir $with_QMake_pkgconf 2>/dev/null`/QMake
-                                  # "        "     = ${sysconfdir}/QMake
                                   { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 $as_echo "yes" >&6; }
                                 fi
-                                trace 4 Installed QMake version $InstalledMajor.$InstalledMinor.$InstalledPatch
-                                trace 4 Local QMake version $LocalMajor.$LocalMinor.$LocalPatch
+                              else
+                                # No user preference, use highest version
+                                InstalledVer=`$PKG_CONFIG --modversion $with_QMake_pkgconf 2>/dev/null`
+                                if ( test X$InstalledVer != X )
+                                then
+                                  sedPattern='/^\([0-9][0-9]*\)\.\([0-9][0-9]*\)\.\([0-9][0-9]*\) *$'
+                                                                    InstalledMajor=`echo $InstalledVer | $SED -n "$sedPattern/s//\1/p"`
+                                  InstalledMinor=`echo $InstalledVer | $SED -n "$sedPattern/s//\2/p"`
+                                  InstalledPatch=`echo $InstalledVer | $SED -n "$sedPattern/s//\3/p"`
+                                  if ( test "x$PACKAGE_NAME" != xQMake )
+                                  then
+                                    LocalVer=`$SED  -n '/^PACKAGE_VERSION *= *'\''\([0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\)'\'' *$/s//\1/p' $srcdir/QMake/configure`
+                                                                                                                                                # The '\'' put a single ' in the search pattern.
+                                  else
+                                    LocalVer=$PACKAGE_VERSION
+                                  fi
+                                  sedPattern='/^\([0-9][0-9]*\)\.\([0-9][0-9]*\)\.\([0-9][0-9]*\) *$'
+                                                                    LocalMajor=`echo $LocalVer | $SED -n "$sedPattern/s//\1/p"`
+                                  LocalMinor=`echo $LocalVer | $SED -n "$sedPattern/s//\2/p"`
+                                  LocalPatch=`echo $LocalVer | $SED -n "$sedPattern/s//\3/p"`
+                                  if ( test $LocalMajor -gt $InstalledMajor \
+                                            || ( test $LocalMajor -eq $InstalledMajor \
+                                                      && ( test $LocalMinor -gt $InstalledMinor \
+                                                                || ( test $LocalMinor -eq $InstalledMinor \
+                                                                          -a $LocalPatch -ge $InstalledPatch \
+                                                                   ) \
+                                                         ) \
+                                               ) \
+                                     )
+                                  then
+                                    # Local (supplied with client product) is latest version, use this.
+                                    WORKING_QMAKE=uselocal
+                                    { $as_echo "$as_me:${as_lineno-$LINENO}: result: older" >&5
+$as_echo "older" >&6; }
+                                  else
+                                    # Installed version is latest, use that
+                                    WORKING_QMAKE=`$PKG_CONFIG --variable=datadir $with_QMake_pkgconf 2>/dev/null`/QMake
+                                    #  "      "  = ${datadir}/QMake
+                                    if ( test X$WORKING_QMAKE == X || test X$QMAKE_CONFIGFILES == X )
+                                    then
+                                      { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Unable to determine datadir of installed QMake.
+See \`config.log' for more details." "$LINENO" 5; }
+                                    fi
+                                    QMAKE_CONFIGFILES=`$PKG_CONFIG --variable=sysconfdir $with_QMake_pkgconf 2>/dev/null`/QMake
+                                    # "        "     = ${sysconfdir}/QMake
+                                    if ( test X$WORKING_QMAKE == X || test X$QMAKE_CONFIGFILES == X )
+                                    then
+                                      { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Unable to determine sysconfdir of installed QMake.
+See \`config.log' for more details." "$LINENO" 5; }
+                                    fi
+                                    QMAKE_CFG=$QMAKE_CONFIGFILES/Config.QMake
+                                    { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+                                  fi
+                                  trace 4 Installed QMake version $InstalledMajor.$InstalledMinor.$InstalledPatch
+                                  trace 4 Local QMake version $LocalMajor.$LocalMinor.$LocalPatch
+                                else
+                                  # No existing version, use Local
+                                  WORKING_QMAKE=uselocal
+                                  { $as_echo "$as_me:${as_lineno-$LINENO}: result: local" >&5
+$as_echo "local" >&6; }
+                                fi
                               fi
 
 else
@@ -3303,6 +3335,12 @@ fi
              # from the source included with the project distribution.
              WORKING_QMAKE=\$\(PROJECT_OUT\)/share/QMake
              QMAKE_CONFIGFILES=\$\(PROJECT_OUT\)/QMake
+             if ( test "x$PACKAGE_NAME" == xQMake )
+             then
+               QMAKE_CFG=`pwd`/Config.QMake
+             else
+               QMAKE_CFG=`cd ../..; pwd`/QMake/Config.QMake
+             fi
 
              # We will also need to stage this copy as part of the project build, so add
              # LocalQMake to the target for the required QMake builds
@@ -3597,8 +3635,8 @@ fi
           # can check for what we're about to use...)
 
           # Is there an existing QMake installation to prime the pumps?
-          if test -f $QMAKE_CONFIGFILES/Config.QMake; then :
-  trace 2 Reading configuration from $QMAKE_CONFIGFILES/Config.QMake
+          if test -f $QMAKE_CFG; then :
+  trace 2 Reading configuration from $QMAKE_CFG
 
                  # We are using an existing QMake so we can use the locations
                  # of the support programs as already determined by
@@ -3609,7 +3647,7 @@ fi
                  # config file
                  if ( test x$USER_SED = x )
                  then
-                    OriginalSetting=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^SED=\(.*\)/\1/p'`
+                    OriginalSetting=`cat $QMAKE_CFG | $SED -n 's/^SED=\(.*\)/\1/p'`
                     if ( test x$OriginalSetting != x )
                     then
                        SED=$OriginalSetting
@@ -3627,7 +3665,7 @@ fi
 
                  if ( test "x$AR" = x )
                  then
-                    AR=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^AR=\(.*\)/\1/p'`
+                    AR=`cat $QMAKE_CFG | $SED -n 's/^AR=\(.*\)/\1/p'`
                  else
                     # Remember the user setting so we output it to
                     # Config.Project.
@@ -3636,7 +3674,7 @@ fi
 
                  if ( test x$AWK = x )
                  then
-                    AWK=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^AWK=\(.*\)/\1/p'`
+                    AWK=`cat $QMAKE_CFG | $SED -n 's/^AWK=\(.*\)/\1/p'`
                  else
                     # Remember the user setting so we output it to
                     # Config.Project.
@@ -3645,7 +3683,7 @@ fi
 
                  if ( test x$CC = x )
                  then
-                    CC=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^CC=\(.*\)/\1/p'`
+                    CC=`cat $QMAKE_CFG | $SED -n 's/^CC=\(.*\)/\1/p'`
                  else
                     # Remember the user setting so we output it to
                     # Config.Project.
@@ -3654,7 +3692,7 @@ fi
 
                  if ( test x$CPP = x )
                  then
-                    CPP=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^CPP=\(.*\)/\1/p'`
+                    CPP=`cat $QMAKE_CFG | $SED -n 's/^CPP=\(.*\)/\1/p'`
                  else
                     # Remember the user setting so we output it to
                     # Config.Project.
@@ -3663,7 +3701,7 @@ fi
 
                  if ( test x$CXX = x )
                  then
-                    CXX=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^CXX=\(.*\)/\1/p'`
+                    CXX=`cat $QMAKE_CFG | $SED -n 's/^CXX=\(.*\)/\1/p'`
                  else
                     # Remember the user setting so we output it to
                     # Config.Project.
@@ -3672,7 +3710,7 @@ fi
 
                  if ( test x$CXXCPP = x )
                  then
-                    CXXCPP=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^CXXCPP=\(.*\)/\1/p'`
+                    CXXCPP=`cat $QMAKE_CFG | $SED -n 's/^CXXCPP=\(.*\)/\1/p'`
                  else
                     # Remember the user setting so we output it to
                     # Config.Project.
@@ -3681,7 +3719,7 @@ fi
 
                  if ( test x$EXPR = x )
                  then
-                    EXPR=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^EXPR=\(.*\)/\1/p'`
+                    EXPR=`cat $QMAKE_CFG | $SED -n 's/^EXPR=\(.*\)/\1/p'`
                  else
                     # Remember the user setting so we output it to
                     # Config.Project.
@@ -3690,7 +3728,7 @@ fi
 
                  if ( test x$GREP = x )
                  then
-                    GREP=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^GREP=\(.*\)/\1/p'`
+                    GREP=`cat $QMAKE_CFG | $SED -n 's/^GREP=\(.*\)/\1/p'`
                  else
                     # Remember the user setting so we output it to
                     # Config.Project.
@@ -3699,7 +3737,7 @@ fi
 
                  if ( test x$LD = x )
                  then
-                    LD=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^LD=\(.*\)/\1/p'`
+                    LD=`cat $QMAKE_CFG | $SED -n 's/^LD=\(.*\)/\1/p'`
                  else
                     # Remember the user setting so we output it to
                     # Config.Project.
@@ -3708,7 +3746,7 @@ fi
 
                  if ( test x$MAKE = x )
                  then
-                    MAKE=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^MAKE=\(.*\)/\1/p'`
+                    MAKE=`cat $QMAKE_CFG | $SED -n 's/^MAKE=\(.*\)/\1/p'`
                  else
                     # Remember the user setting so we output it to
                     # Config.Project.
@@ -3720,7 +3758,7 @@ fi
                  # config file
                  if ( test x$USER_PKG_CONFIG = x )
                  then
-                    OriginalSetting=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^PKG_CONFIG=\(.*\)/\1/p'`
+                    OriginalSetting=`cat $QMAKE_CFG | $SED -n 's/^PKG_CONFIG=\(.*\)/\1/p'`
                     if ( test x$OriginalSetting != x )
                     then
                        PKG_CONFIG=$OriginalSetting
@@ -3730,7 +3768,7 @@ fi
 
                  if ( test x$SORT = x )
                  then
-                    SORT=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^SORT=\(.*\)/\1/p'`
+                    SORT=`cat $QMAKE_CFG | $SED -n 's/^SORT=\(.*\)/\1/p'`
                  else
                     # Remember the user setting so we output it to
                     # Config.Project.
@@ -3739,7 +3777,7 @@ fi
 
                  if ( test x$TR = x )
                  then
-                    TR=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^TR=\(.*\)/\1/p'`
+                    TR=`cat $QMAKE_CFG | $SED -n 's/^TR=\(.*\)/\1/p'`
                  else
                     # Remember the user setting so we output it to
                     # Config.Project.
@@ -3753,7 +3791,7 @@ fi
                  if ( test x$USER_with_rpath = x )
                  then
                     # QMake settings not overridden, so check what they were
-                    with_rpath=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^USE_LIBPATHSWITCH=\(.*\)/\1/p'`
+                    with_rpath=`cat $QMAKE_CFG | $SED -n 's/^USE_LIBPATHSWITCH=\(.*\)/\1/p'`
                     if ( test x$with_rpath != Y )
                     then
                        # QMake didn't enable it so don't consider it from
@@ -3764,7 +3802,7 @@ fi
 
                                                                     if ( test x$GET_CWD = x )
                  then
-                    GET_CWD=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^GET_CWD=\(.*\)/\1/p'`
+                    GET_CWD=`cat $QMAKE_CFG | $SED -n 's/^GET_CWD=\(.*\)/\1/p'`
                  else
                     USER_GET_CWD=$GET_CWD
                  fi
@@ -5828,8 +5866,8 @@ $as_echo "$MAKE" >&6; }
              fi
           else
              # User specified a full path to make (in MAKE environment variable)
-             { $as_echo "$as_me:${as_lineno-$LINENO}: checking $$MAKE specified make utility" >&5
-$as_echo_n "checking $$MAKE specified make utility... " >&6; }
+             { $as_echo "$as_me:${as_lineno-$LINENO}: checking \$MAKE specified make utility" >&5
+$as_echo_n "checking \$MAKE specified make utility... " >&6; }
              if ( test -x $MAKE )
              then
                 VER_STRING=`"$MAKE" -v 2>&1 </dev/null`
@@ -5846,7 +5884,7 @@ $as_echo "$MAKE" >&6; }
 $as_echo "unexecutable" >&6; }
                 { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error "$$MAKE does not specify a usable make utility
+as_fn_error "\$MAKE does not specify a usable make utility
 See \`config.log' for more details." "$LINENO" 5; }
              fi
           fi
