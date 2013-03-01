@@ -64,9 +64,9 @@ dnl                                  variable by the macro.
 dnl       CONFIGURE_CCFLAGS          Receives any user supplied CCFLAGS
 dnl                                  to preserve them so they may be used
 dnl                                  by QMake for all builds.
-dnl       QMAKE_CONFIGFILES          Primed (by calling the QM_LOCATE_QMAKE
+dnl       QMAKE_CFG                  Primed (by calling the QM_LOCATE_QMAKE
 dnl                                  macro) with the location of QMake's
-dnl                                  configuration files.
+dnl                                  configuration file.
 dnl       with_rpath                 Dependant on configuration, this var may
 dnl                                  be primed by call to the QM_CHOSE_RPATH
 dnl                                  macro made by this macro; or it may be
@@ -137,8 +137,8 @@ AC_DEFUN([QM_LOCATE_KEY_TOOLS],
           # can check for what we're about to use...)
 
           # Is there an existing QMake installation to prime the pumps?
-          AS_IF([test -f $QMAKE_CONFIGFILES/Config.QMake],
-                [trace 2 Reading configuration from $QMAKE_CONFIGFILES/Config.QMake
+          AS_IF([test -f $QMAKE_CFG],
+                [trace 2 Reading configuration from $QMAKE_CFG
 
                  # We are using an existing QMake so we can use the locations
                  # of the support programs as already determined by 
@@ -149,7 +149,7 @@ AC_DEFUN([QM_LOCATE_KEY_TOOLS],
                  # config file
                  if ( test x$USER_SED = x )
                  then
-                    OriginalSetting=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^SED=\(.*\)/\1/p'`
+                    OriginalSetting=`cat $QMAKE_CFG | $SED -n 's/^SED=\(.*\)/\1/p'`
                     if ( test x$OriginalSetting != x )
                     then
                        SED=$OriginalSetting
@@ -167,7 +167,7 @@ AC_DEFUN([QM_LOCATE_KEY_TOOLS],
           
                  if ( test "x$AR" = x )
                  then
-                    AR=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^AR=\(.*\)/\1/p'`
+                    AR=`cat $QMAKE_CFG | $SED -n 's/^AR=\(.*\)/\1/p'`
                  else
                     # Remember the user setting so we output it to 
                     # Config.Project.
@@ -176,7 +176,7 @@ AC_DEFUN([QM_LOCATE_KEY_TOOLS],
 
                  if ( test x$AWK = x )
                  then
-                    AWK=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^AWK=\(.*\)/\1/p'`
+                    AWK=`cat $QMAKE_CFG | $SED -n 's/^AWK=\(.*\)/\1/p'`
                  else
                     # Remember the user setting so we output it to 
                     # Config.Project.
@@ -185,7 +185,7 @@ AC_DEFUN([QM_LOCATE_KEY_TOOLS],
      
                  if ( test x$CC = x )
                  then
-                    CC=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^CC=\(.*\)/\1/p'`
+                    CC=`cat $QMAKE_CFG | $SED -n 's/^CC=\(.*\)/\1/p'`
                  else
                     # Remember the user setting so we output it to 
                     # Config.Project.
@@ -199,7 +199,7 @@ AC_DEFUN([QM_LOCATE_KEY_TOOLS],
 
                  if ( test x$CPP = x )
                  then
-                    CPP=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^CPP=\(.*\)/\1/p'`
+                    CPP=`cat $QMAKE_CFG | $SED -n 's/^CPP=\(.*\)/\1/p'`
                  else
                     # Remember the user setting so we output it to  
                     # Config.Project.
@@ -209,7 +209,7 @@ AC_DEFUN([QM_LOCATE_KEY_TOOLS],
                
                  if ( test x$CXX = x )
                  then
-                    CXX=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^CXX=\(.*\)/\1/p'`
+                    CXX=`cat $QMAKE_CFG | $SED -n 's/^CXX=\(.*\)/\1/p'`
                  else
                     # Remember the user setting so we output it to 
                     # Config.Project.
@@ -219,7 +219,7 @@ AC_DEFUN([QM_LOCATE_KEY_TOOLS],
      
                  if ( test x$CXXCPP = x )
                  then
-                    CXXCPP=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^CXXCPP=\(.*\)/\1/p'`
+                    CXXCPP=`cat $QMAKE_CFG | $SED -n 's/^CXXCPP=\(.*\)/\1/p'`
                  else
                     # Remember the user setting so we output it to 
                     # Config.Project.
@@ -229,7 +229,7 @@ AC_DEFUN([QM_LOCATE_KEY_TOOLS],
      
                  if ( test x$EXPR = x )
                  then
-                    EXPR=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^EXPR=\(.*\)/\1/p'`
+                    EXPR=`cat $QMAKE_CFG | $SED -n 's/^EXPR=\(.*\)/\1/p'`
                  else
                     # Remember the user setting so we output it to 
                     # Config.Project.
@@ -238,7 +238,7 @@ AC_DEFUN([QM_LOCATE_KEY_TOOLS],
      
                  if ( test x$GREP = x )
                  then
-                    GREP=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^GREP=\(.*\)/\1/p'`
+                    GREP=`cat $QMAKE_CFG | $SED -n 's/^GREP=\(.*\)/\1/p'`
                  else
                     # Remember the user setting so we output it to
                     # Config.Project.
@@ -247,7 +247,7 @@ AC_DEFUN([QM_LOCATE_KEY_TOOLS],
      
                  if ( test x$LD = x )
                  then
-                    LD=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^LD=\(.*\)/\1/p'`
+                    LD=`cat $QMAKE_CFG | $SED -n 's/^LD=\(.*\)/\1/p'`
                  else
                     # Remember the user setting so we output it to 
                     # Config.Project.
@@ -256,7 +256,7 @@ AC_DEFUN([QM_LOCATE_KEY_TOOLS],
      
                  if ( test x$MAKE = x )
                  then
-                    MAKE=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^MAKE=\(.*\)/\1/p'`
+                    MAKE=`cat $QMAKE_CFG | $SED -n 's/^MAKE=\(.*\)/\1/p'`
                  else
                     # Remember the user setting so we output it to 
                     # Config.Project.
@@ -268,7 +268,7 @@ AC_DEFUN([QM_LOCATE_KEY_TOOLS],
                  # config file
                  if ( test x$USER_PKG_CONFIG = x )
                  then
-                    OriginalSetting=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^PKG_CONFIG=\(.*\)/\1/p'`
+                    OriginalSetting=`cat $QMAKE_CFG | $SED -n 's/^PKG_CONFIG=\(.*\)/\1/p'`
                     if ( test x$OriginalSetting != x )
                     then
                        PKG_CONFIG=$OriginalSetting
@@ -278,7 +278,7 @@ AC_DEFUN([QM_LOCATE_KEY_TOOLS],
 
                  if ( test x$SORT = x )
                  then
-                    SORT=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^SORT=\(.*\)/\1/p'`
+                    SORT=`cat $QMAKE_CFG | $SED -n 's/^SORT=\(.*\)/\1/p'`
                  else
                     # Remember the user setting so we output it to 
                     # Config.Project.
@@ -287,7 +287,7 @@ AC_DEFUN([QM_LOCATE_KEY_TOOLS],
      
                  if ( test x$TR = x )
                  then
-                    TR=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^TR=\(.*\)/\1/p'`
+                    TR=`cat $QMAKE_CFG | $SED -n 's/^TR=\(.*\)/\1/p'`
                  else
                     # Remember the user setting so we output it to 
                     # Config.Project.
@@ -301,7 +301,7 @@ AC_DEFUN([QM_LOCATE_KEY_TOOLS],
                  if ( test x$USER_with_rpath = x )
                  then
                     # QMake settings not overridden, so check what they were
-                    with_rpath=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^USE_LIBPATHSWITCH=\(.*\)/\1/p'`
+                    with_rpath=`cat $QMAKE_CFG | $SED -n 's/^USE_LIBPATHSWITCH=\(.*\)/\1/p'`
                     if ( test x$with_rpath != Y )
                     then
                        # QMake didn't enable it so don't consider it from
@@ -315,7 +315,7 @@ AC_DEFUN([QM_LOCATE_KEY_TOOLS],
                  dnl USER_GET_CWD variable yet
                  if ( test x$GET_CWD = x )
                  then
-                    GET_CWD=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^GET_CWD=\(.*\)/\1/p'`
+                    GET_CWD=`cat $QMAKE_CFG | $SED -n 's/^GET_CWD=\(.*\)/\1/p'`
                  else
                     USER_GET_CWD=$GET_CWD
                  fi
