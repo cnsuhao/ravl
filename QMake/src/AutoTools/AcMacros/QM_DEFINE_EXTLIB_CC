@@ -867,6 +867,7 @@ AC_DEFUN([QM_DEFINE_EXTLIB_CC],
           if ( test X$use_$1 = X )
           then
              use_$1=check
+             UnconfiguredLibs=$UnconfiguredLibs" "$1
           else
              ConfiguredLibs=$ConfiguredLibs" "$1
           fi

@@ -58,9 +58,12 @@ dnl                                  the inclusion of the debug function
 dnl                                  "trace" in any code calling this macro.
 dnl                                  A suitable trace function is defined in
 dnl                                  the QMake AcMacros/QM_Debug_fn file.
-dnl       KnownLibs                  List of the external libs that have been
-dnl                                  declared. It is this list of libraries
-dnl                                  that this macro will process.
+dnl       LibsToProcess              List of the external libs that need
+dnl                                  processing. For QMake; this will be all
+dnl                                  the declared libs ($KnownLibs). For a
+dnl                                  project; this will be only the packages
+dnl                                  that the user has configured on the
+dnl                                  command line ($ConfiguredLibs).
 dnl       PKG_CONFIG                 Standard substitution variable pointing
 dnl                                  to the pkg-configure utility
 dnl       SED                        Standard substitution variable pointing
@@ -130,7 +133,7 @@ AC_DEFUN([QM_PROCESS_EXTLIBS],
           if ( test X$DBG != X && test $DBG -ge 3 )
           then
              trace 3 Declared libraries
-             for lib in $KnownLibs
+             for lib in $LibsToProcess
              do
                 eval testwith=\$with_${lib}_fn
                 eval prereq=\$with_${lib}_prq
@@ -164,7 +167,7 @@ AC_DEFUN([QM_PROCESS_EXTLIBS],
           # are being specified via pkg-config
           #
           trace 2 Nullifying pre-requisites for pkg-config specified libraries
-          for lib in $KnownLibs
+          for lib in $LibsToProcess
           do
              TRACE_INDENT="     "
              trace 6 Processing $lib
@@ -197,7 +200,7 @@ AC_DEFUN([QM_PROCESS_EXTLIBS],
              TRACE_INDENT="     "
              trace 2 Iterating...
              change_made=false
-             for lib in $KnownLibs
+             for lib in $LibsToProcess
              do
                 TRACE_INDENT="          "
                 trace 4 Processing library $lib...
@@ -258,7 +261,7 @@ AC_DEFUN([QM_PROCESS_EXTLIBS],
              TRACE_INDENT="     "
              trace 2 Iterating...
              change_made=false
-             for lib in $KnownLibs
+             for lib in $LibsToProcess
              do
                 eval lib_enablement=\$use_${lib}
                 case $lib_enablement in
@@ -349,7 +352,7 @@ AC_DEFUN([QM_PROCESS_EXTLIBS],
 
           # Check for all helper libraries being used.
           #
-          LeftToDo="$KnownLibs"
+          LeftToDo="$LibsToProcess"
           #
           # First see if each of the libraries exist and error out if the
           # missing libs were specified as needed (either from the cmd-line
@@ -363,7 +366,7 @@ AC_DEFUN([QM_PROCESS_EXTLIBS],
           # default settings for a compile-test library or a virtual package.
           #
           trace 2 Test availability of pkg-config specified libraries and virtual packages
-          for lib in $KnownLibs
+          for lib in $LibsToProcess
           do
             eval lib_enablement=\$use_${lib}
             eval pkgconf=\$with_${lib}_pkgconf
@@ -964,12 +967,14 @@ AC_DEFUN([QM_PROCESS_EXTLIBS],
           # As libffmpeg is a virtual package, its CFLAGS get set later as a
           # concatenation of the constitutent packages.
 
+          # Sanitise LeftToDo (drop duplicated and lead/trailing spaces)
+          LeftToDo=`echo " $LeftToDo " | $SED "s/  */ /g;s/^ //;s/ $//"`
 
 
           # Finally, we can now test the availability of the libraries that
-          # need a compilation check. This list is all the KnownLibs minus the
-          # pkg-config specified packages and the virtual packages, in fact,
-          # just what we've been paring LeftToDo down to.
+          # need a compilation check. This list is all the LibsToProcess minus
+          # the pkg-config specified packages and the virtual packages, in
+          # fact, just what we've been paring LeftToDo down to.
           #
           trace 2 Test availability of compilation-check external libraries
 
@@ -1017,7 +1022,7 @@ AC_DEFUN([QM_PROCESS_EXTLIBS],
              TRACE_INDENT="     "
              trace 2 Iterating...
              change_made=false
-             for lib in $KnownLibs
+             for lib in $LibsToProcess
              do
                 eval lib_enablement=\$use_${lib}
                 case $lib_enablement in

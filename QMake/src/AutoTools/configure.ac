@@ -17,6 +17,7 @@ m4_include([./AcMacros/QM_CHOOSE_RPATH])
 m4_include([./AcMacros/QM_CK_COMPILE_CK_LIB])
 m4_include([./AcMacros/QM_COMPILE_CK_FOR_LIB])
 m4_include([./AcMacros/QM_Debug_Fn])
+m4_include([./AcMacros/QM_DEFINE_ALL_EXTLIBS])
 m4_include([./AcMacros/QM_DEFINE_EXTLIB_CC])
 m4_include([./AcMacros/QM_DEFINE_EXTLIB_PC])
 m4_include([./AcMacros/QM_DEFINE_VIRTUAL_EXTLIB])
@@ -201,6 +202,93 @@ AC_SUBST([XARGS])
 
 
 
+# Define all external libs known to QMake
+#
+QM_DEFINE_ALL_EXTLIBS()
+
+
+
+# Now determine which external libraries are actually available
+#
+LibsToProcess=$KnownLibs
+QM_PROCESS_EXTLIBS()
+
+# OpenCV is a special case, we need to post-process its include path
+if test x$use_OpenCV=xpresent
+then
+   # Add extra include directory for OpenCV so as to prevent any confusion over
+   # the inclusion of opencv/xx.h (previously, Ravl code included the OpenCV
+   # headers by specifying the opencv sub-dir; this was at odds with what the
+   # .pc file was set up to expect the user to do). To combat this, we add the
+   # parent directory (of the opencv directory) to the include path.
+   OpenCV_CFLAGS=`echo "$OpenCV_CFLAGS " | $SED '/\(-I@<:@^ @:>@*\)\/opencv /s//\1\/opencv \1 /g'`
+   dnl sed command is '/\(-I[^ ]*\)\/opencv /s//\1\/opencv \1 /g'
+fi
+
+
+# Check for programs that are regarded as RESOURCES
+
+AC_PATH_PROG([SWIG],[swig])
+AS_IF([test "X$SWIG" != X], [ RESOURCES+="Swig "])
+AC_SUBST([SWIG])
+
+
+# Check for common system functions that appear in different system libraries 
+# dependant on the platform in use
+
+# dlopen is usually in libdl but can vary (e.g. for BSD it's in libc)
+AC_SEARCH_LIBS([dlopen],
+               [dl],
+               [if ( test "X$ac_cv_search_dlopen" != "Xnone required" )
+                then
+                        DynLink_LIBS="$ac_cv_search_dlopen"
+                else
+                        DynLink_LIBS=""
+                fi
+                RESOURCES+="DynLink "
+               ],
+               [AC_MSG_WARN([Cannot find a working dlopen function])],
+               []
+              )
+AC_SUBST([DynLink_LIBS])
+
+
+# Process Architecture specific issues
+QM_SET_ARC
+AC_SUBST([ARC])
+trace 3 Host OS is $host_os, CPU is $host_cpu
+case X$host_cpu in
+   Xi386* | Xi486* | Xi586* | Xi686* )
+                 trace 3 Non-SSE 32-bit x86
+                 # Case currently empty but we need to add some further 
+                 # testing to see if SSE is actually usable (some platforms
+                 # come back as i686 when in fact they are running on a P4
+dnl#JFi:ToDo-Improve SSE processing + add cmd-line switches for user control
+                 ;;
+   Xi786* )
+                 # i786 equates to Intel P4. Even Athlon XPs come back as i686
+                 # from config.guess/sub
+
+                 trace 3 Enabling SSE2 support as we are on a P4.
+                 RESOURCES+="USE_SSE2 "
+                 ;;
+   Xx86_64* )  
+                 # 64 bit 'x86' architecture - includes both AMD & Intel but
+                 # not Itanium
+
+                 trace 3 64-bit x86 supports SSE2
+                 RESOURCES+="USE_SSE2 "
+                 ;;
+   * )
+                 # Catch all case for tracing purposes
+                 trace 3 Non-x86 chip \($host_cpu\) so no SSE support
+esac
+
+
+
+
+
+
 #
 # Create proforma Config.QMake.in
 #
@@ -334,9 +422,86 @@ echo >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 
 
+# Known external libraries and resource programs
+echo \# External resources >> ./Config.QMake.in
+echo >> ./Config.QMake.in
+echo RESOURCES=@RESOURCES@ >> ./Config.QMake.in
+AC_SUBST([RESOURCES])
+echo >> ./Config.QMake.in
 
-QM_SET_ARC
-AC_SUBST([ARC])
+# Now output the location of the individual external libs. Calculate RESOURCES
+# as we go (based on the libraries we can use)
+#
+echo \# Location details for external libraries >> ./Config.QMake.in
+echo >> ./Config.QMake.in
+trace 2 Calculating RESOURCES settings from library availability
+trace 3 \(Initial value of RESOURCES "@<:@$RESOURCES@:>@"\)
+for lib in $KnownLibs
+do
+   eval lib_enablement=\$use_${lib}
+   case $lib_enablement in
+    'blocked' | 'missing' )
+                   TRACE_INDENT="     "
+                   trace 3 ${lib} $lib_enablement
+                   ;;
+    'no' )
+                   TRACE_INDENT="     "
+                   trace 3 ${lib} discarded
+                   ;;
+    'check' | 'yes' )
+                   trace 1 Assertion: --with-${lib} should not equal ${lib_enablement} here!
+                   ;;
+    'present' )
+                   if ( test "$with_rpath" = 'Y' )
+                   then
+                      eval setting=\$${lib}_LIBS
+                      setting=`echo $setting | $SED 's/-L *\(@<:@^ @:>@@<:@^ @:>@*\)/\$(LIBPATHSWITCH)\=\1 -L\1/g'`
+dnl                   # The sed command is actually:
+dnl                   #    's/-L *\([^ ][^ ]*\)\$(LIBPATHSWITCH)\=\1 -L\1/g'
+dnl                   # the square brackets having been substituted to prevent
+dnl                   # m4 removing them. 
+                      # The sed command looks for:
+                      #
+                      #        -L<optional spaces><something><space> 
+                      # 
+                      # if this pattern is found, each and every occurrence is
+                      # replaced by the following:
+                      #
+                      #       $(LIBPATHSWITCH)=<something> -L<something>
+                      #
+                      # <something> being the substring found in the original
+                      # fragment.
+                      eval ${lib}_LIBS=\$setting
+                   fi
+                   TRACE_INDENT="     "
+                   trace 3 RESOURCES+=${lib}
+                   RESOURCES+="${lib} "
+                   # Put the placeholders into Config.QMake.in so we record the
+                   # flags associated with the libraries that we can use
+                   eval virtual=\$with_${lib}_virtual
+                   if ( test x$virtual = xyes )
+                   then
+                      cflags=""
+                      libs=""
+                      eval prereqs=\$with_${lib}_prq
+                      for p in $prereqs
+                      do
+                         cflags="$cflags @${p}_CFLAGS@"
+                         libs="$libs @${p}_LIBS@"
+                      done
+                      echo ${lib}_CFLAGS=$cflags >> Config.QMake.in
+                      echo ${lib}_LIBS=$libs >> Config.QMake.in
+                      echo >> ./Config.QMake.in
+                   else
+                      echo ${lib}_CFLAGS=@${lib}_CFLAGS@ >> Config.QMake.in
+                      echo ${lib}_LIBS=@${lib}_LIBS@ >> Config.QMake.in
+                      echo >> ./Config.QMake.in
+                   fi
+                   ;;
+   esac
+done
+
+
 
 
 
