@@ -6,7 +6,6 @@ dnl#JFi:ToDo-Investigate position of 32 v 64 bit lib paths
 dnl#JFi:ToDo-Investigate position of shared v static pkg-config results
 dnl#JFi:ToDo-Extend --with-${lib} to specify location/name of .pc
 dnl#JFi:ToDo-Extend --with-${lib}-pkgconf to specify path for known .pc
-dnl#JFi:ToDo-Allow compile check with pre-requisites specified by pkg-config
 
 # Initialisation
 AC_PREREQ([2.65])
@@ -30,6 +29,7 @@ m4_include([../../QMake/src/AutoTools/AcMacros/QM_CHOOSE_RPATH])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_CK_COMPILE_CK_LIB])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_COMPILE_CK_FOR_LIB])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_Debug_Fn])
+m4_include([../../QMake/src/AutoTools/AcMacros/QM_DEFINE_ALL_EXTLIBS])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_DEFINE_EXTLIB_CC])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_DEFINE_EXTLIB_PC])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_DEFINE_VIRTUAL_EXTLIB])
@@ -83,20 +83,6 @@ QM_LOCATE_KEY_TOOLS
 
 
    
-# We need to configure the QMake source supplied with Ravl as (even if we
-# are not using it for the Ravl build) 
-#
-# N.B.
-#                              ************
-#
-# The actual configure will be carried out only at the end of this script
-# Do not rely on Config.QMake, etc. being available until then.
-#
-#                              ************
-#
-AC_CONFIG_SUBDIRS([QMake])
-
-
 
 
 
@@ -420,313 +406,160 @@ trace 2 Initial checks complete, now processing external libraries
 
 # Define all Ravl Helper libraries and their associated cmd-line options
 #
+QM_DEFINE_ALL_EXTLIBS()
 
-dnl
-dnl Declare external helper libraries (i.e. those outside of RAVL) here: 
-dnl
-dnl
-dnl First declare all those libraries implemented via pkg-config
-dnl
-dnl Parameters are:
-dnl
-dnl  1 Ravl name for library. The name used for RESOURCES and also for 
-dnl    LIB_CFLAGS, LIB_LIBS, etc. used in Config.Project and the .def files.
-dnl  2 Name by which pkg-config knows the library. Can be over-ridden by 
-dnl    --with-<lib>-pkgconf
-dnl
-dnl                 Name,              pkg-config
-dnl
+# Declare the Ravl libraries that are dependant on the particular external
+# libraries
 dnl Modern versions of FireWire support currently unsupported by Ravl. Drop
-dnl for now. Would still work for the old depreciated versions of FireWire
-dnl (rev 1.X of the libs, Linux kernel <2.6.37)
+dnl completely for now. Would still work for the old depreciated versions of
+dnl FireWire (rev 1.X of the libs, Linux kernel <2.6.37)
 dnl
-dnl Uncomment the next two lines to re-add libdc1394
-dnl QM_DEFINE_EXTLIB_PC([libdc1394],       [libdc1394])
+dnl Uncomment the next line to re-add libdc1394
 dnl libdc1394_RavlLib=libRavlImgIO1394dc
 dnl
 AC_SUBST([libdc1394_SUPPORT])
 dnl On re-instatement, drop the following 2 lines 
 libdc1394_SUPPORT=""
+BrokenLibs="$BrokenLibs libdc1394"
 echo libdc1394=@libdc1394_SUPPORT@ >> ./ExtPkgSupp.$$
 dnl
-dnl Similarly, uncomment the next two lines to re-instate libavc1394
-dnl QM_DEFINE_EXTLIB_PC([libavc1394],      [libavc1394])
+dnl Similarly, uncomment the next line to re-instate libavc1394
 dnl libavc1394_RavlLib=libRavlFireWire
 dnl
 AC_SUBST([libavc1394_SUPPORT])
 dnl and drop the following 2 lines on restore
+BrokenLibs="$BrokenLibs libavc1394"
 libavc1394_SUPPORT=""
 echo libavc1394=@libavc1394_SUPPORT@ >> ./ExtPkgSupp.$$
 dnl
-QM_DEFINE_EXTLIB_PC([libAudioFile],    [audiofile])
 libAudioFile_RavlLib=libRavlAudioFile
 AC_SUBST([libAudioFile_SUPPORT])
 dnl Modern versions of libAVIFile currently unsupported by Ravl. Drop for now:
 dnl To re-instate, replace these 3 lines
 AC_SUBST([avifile_SUPPORT])
 avifile_SUPPORT=""
-echo avifile_SUPPORT=@avifile_SUPPORT@ >> ./ExtPkgSupp.$$
-dnl with the un-commented version of these 3
-dnl QM_DEFINE_EXTLIB_PC([avifile],         [avifile])
-dnl avifile_RavlLib=libRavlAVIFile
+BrokenLibs="$BrokenLibs avifile"
+dnl with the un-commented version of these 2
 dnl AC_SUBST([avifile_SUPPORT])
+dnl avifile_RavlLib=libRavlAVIFile
+echo avifile_SUPPORT=@avifile_SUPPORT@ >> ./ExtPkgSupp.$$
 dnl
-QM_DEFINE_EXTLIB_PC([libCurl],         [libcurl])
 libCurl_RavlLib=libRavlURLIO
 AC_SUBST([libCurl_SUPPORT])
-QM_DEFINE_EXTLIB_PC([libDV],           [libdv])
 libDV_RavlLib=libRavlDV
 AC_SUBST([libDV_SUPPORT])
-QM_DEFINE_EXTLIB_PC([FFMPEGCDEC],      [libavcodec])
 AC_SUBST([FFMPEGCDEC_SUPPORT])
-QM_DEFINE_EXTLIB_PC([FFMPEGCONT],      [libavformat])
 AC_SUBST([FFMPEGCONT_SUPPORT])
-QM_DEFINE_EXTLIB_PC([FFMPEGSWS],       [libswscale])
 AC_SUBST([FFMPEGSWS_SUPPORT])
-QM_DEFINE_EXTLIB_PC([FFMPEGUTIL],      [libavutil])
 AC_SUBST([FFMPEGUTIL_SUPPORT])
 dnl     Ravl wants FFMPEG as only a single entity (libffmpeg). To support this,
 dnl     this script will (later) define libffmpeg as a virtual package
-QM_DEFINE_EXTLIB_PC([iksemel],         [iksemel])
 iksemel_RavlLib=libRavlXMPPIksemel
 AC_SUBST([iksemel_SUPPORT])
-QM_DEFINE_EXTLIB_PC([libglade2],       [libglade-2.0])
 libglade2_RavlLib=libRavlLibGlade
 AC_SUBST([libglade2_SUPPORT])
-QM_DEFINE_EXTLIB_PC([LibGnome],        [libgnome-2.0])
 LibGnome_RavlLib=libRavlGUIGnome
 AC_SUBST([LibGnome_SUPPORT])
-QM_DEFINE_EXTLIB_PC([libGTK2],         [gtk+-2.0])
 AC_SUBST([libGTK2_SUPPORT])
 dnl     The absence of libGTK2 will block the inclusion of some other libraries'
 dnl     Ravl functionality (e.g. libRavlLibGlade, libRavlGUIGnome, etc.) but is
 dnl     not solely responsible for the inclusion any Ravl libraries itself.
-QM_DEFINE_EXTLIB_PC([GTKGLExt],        [gtkglext-1.0])
 AC_SUBST([GTKGLExt_SUPPORT])
 dnl     GTKGLExt does not relate directly to a Ravl library but it does add more
 dnl     functionality to GUI3D and its absence blocks libRavlGUIOpenSceneGraph.
-QM_DEFINE_EXTLIB_PC([Loudmouth],       [loudmouth-1.0])
 Loudmouth_RavlLib=libRavlXMPPLoudmouth
 AC_SUBST([Loudmouth_SUPPORT])
-QM_DEFINE_EXTLIB_PC([OpenCV],          [opencv])
 OpenCV_RavlLib=libRavlOpenCV
 AC_SUBST([OpenCV_SUPPORT])
-QM_DEFINE_EXTLIB_PC([libPNG],          [libpng])
 AC_SUBST([libPNG_SUPPORT])
-QM_DEFINE_EXTLIB_PC([PortAudio],          [portaudio-2.0])
 PortAudio_RavlLib=libRavlPortAudio
 AC_SUBST([PortAudio_SUPPORT])
-QM_DEFINE_EXTLIB_PC([libGL],           [gl])
 AC_SUBST([libGL_SUPPORT])
-QM_DEFINE_EXTLIB_PC([libGLU],          [glu])
 AC_SUBST([libGLU_SUPPORT])
 dnl     Ravl sometimes wants libGL and libGLU as a single entity (OpenGL),
 dnl     this configure script facilitates this by setting up an OpenGL
 dnl     virtual lib. Singly, neither libGL or libGLU will cause Ravl to loose
 dnl     a library in their absence, hence no Ravl-lib definition (although
 dnl     the absence of libGL can block libRavlGUIOpenSceneGraph)
-QM_DEFINE_EXTLIB_PC([OpenSceneGraph],  [openscenegraph])
 AC_SUBST([OpenSceneGraph_SUPPORT])
 dnl     OpenSceneGraph does not relate directly to a Ravl library but it is a
 dnl     required resource in the cvsspSoftware internal extensions to Ravl.
-QM_DEFINE_EXTLIB_PC([OpenSceneGraphGTK],  [osgGtk-1.0])
 OpenSceneGraphGTK_RavlLib=libRavlGUIOpenSceneGraph
 AC_SUBST([OpenSceneGraphGTK_SUPPORT])
-QM_DEFINE_EXTLIB_PC([RLog],            [librlog])
 RLog_RavlLib=libRavlRLog
 AC_SUBST([RLog_SUPPORT])
-QM_DEFINE_EXTLIB_PC([devVideo4Linux2], [libv4l2])
 devVideo4Linux2_RavlLib=libRavlImgIOV4L2
 AC_SUBST([devVideo4Linux2_SUPPORT])
-QM_DEFINE_EXTLIB_PC([ZeroMQ], [libzmq])
 ZeroMQ_RavLib=libRavlZmq
 AC_SUBST([ZeroMQ_SUPPORT])
 dnl 
-dnl Now define those libraries needing manual compilation checks:
+dnl Now for those libraries needing manual compilation checks:
 dnl
-dnl Parameters are:
-dnl
-dnl  1 Ravl name for library. The name used for RESOURCES and also for 
-dnl    LIB_CFLAGS, LIB_LIBS, etc. used in Config.Project and the .def files.
-dnl  2 Name of a function in the library that can be used as a test call
-dnl  3 Space separated list of dependancies of the library. Specify the Ravl
-dnl    name of the library - e.g. for dependancies on Zlib specify Zlib not 
-dnl    -lz or z. 
-dnl  4 Link line entry for the library - i.e. -l<libname>
-dnl  5 Name(s) of header files needed to use the library (only really need to
-dnl    provide one for a specimin test unless it is know that sub-sets of the
-dnl    header files are regularly seen in the wild). If specifying multiple
-dnl    headers, provide a space seperated list. 
-dnl
-dnl                 Name,          Fn,                 Deps,   -l,           .h
-dnl
-QM_DEFINE_EXTLIB_CC([blas],        [sgemm_],           [],     [-lblas],     [])
-dnl# Define BLAS support. This is a bit of a bodge as we should be testing for
-dnl# more Fortran functionality/configurataion here than we currently do. The
-dnl# problem with performing that testing is that the required autotools macros
-dnl# would mandate a Fortran compiler be present even when LAPACK support is 
-dnl# omitted. 
-dnl# An example of the type of extra testing we should be performing comes from
-dnl# the fact that, dependant on the toolset in use, Fortran functions may be
-dnl# upper or lowercase; with or without a trailing underscore. By rights, we
-dnl# should use AC_F77_FUNC(sgemm) to return the correct name of that BLAS
-dnl# function and test for that rather than the hard coded lowercase_ form that
-dnl# we test for here. Other Fortran related checking we should be doing here
-dnl# includes determining any FLIBS setting that may be required (by calling
-dnl# AC_F77_LIBRARY_LDFLAGS) and using the AC_F77_DUMMY_MAIN macro.
-dnl# In addition to all this, we are only looking for -lblas. In fact, this is
-dnl# one of many libraries that may provide blas functionality (some boxes may
-dnl# even provide direct support that needs no other library). These libraries
-dnl# may be added at a later date on an as-needed basis. In the meantime, using
-dnl# the --with-blas-library switch will provide support.
-dnl
-dnl                 Name,          Fn,                 Deps,   -l,           .h
-dnl 
-QM_DEFINE_EXTLIB_CC([GLUT],        [glutInit],         [],     [-lglut],     [GL/glut.h])
+# GLUT not directly used by Ravl
 AC_SUBST([GLUT_SUPPORT])
-QM_DEFINE_EXTLIB_CC([LibJasper],   [jas_init],         [],     [-ljasper],   [jasper/jasper.h])
 LibJasper_RavlLib=libRavlImgIOJasper
 AC_SUBST([LibJasper_SUPPORT])
-QM_DEFINE_EXTLIB_CC([JPEG],        [jpeg_read_header], [],     [-ljpeg],     [jpeglib.h])
 AC_SUBST([JPEG_SUPPORT])
-dnl# JPEG check will support either the standard or jpeg-turbo library as they
-dnl# are a straight substitution for each other
-dnl
-dnl                 Name,          Fn,                 Deps,   -l,           .h
-dnl 
-QM_DEFINE_EXTLIB_CC([LAPACK],      [dgetri_],          [blas], [-llapack],   [])
-LAPACK_RavlLib="RavlLapack RavlLapackWraps"
+LAPACK_RavlLib="libRavlLapack libRavlLapackWraps"
 AC_SUBST([LAPACK_SUPPORT])
-dnl# As for BLAS, the above definition for LAPACK should be performing more
-dnl# involved Fortran testing (and utilising the extra checking that should have
-dnl# been carried out for the BLAS library). However, to prevent the requirement
-dnl# of a Fortran compiler, even if we are not builing LAPACK into Ravl, we do
-dnl# not do the extra testing. In addition, there is a further problem in that
-dnl# the Ravl wrapper layer has not been coded to cope with anything other than
-dnl# lowercase_ function names. Even if we were correctly using the AC_F77_FUNC
-dnl# macro, more work would be required to enable true portability.
-dnl
-dnl                 Name,          Fn,                 Deps,   -l,           .h
-dnl 
-QM_DEFINE_EXTLIB_CC([posixThreads],[pthread_self],     [],     [-lpthread],  [pthread.h])
 AC_SUBST([posixThreads_SUPPORT])
-QM_DEFINE_EXTLIB_CC([LibTIFF],     [TIFFGetVersion],   [Zlib], [-ltiff],     [])
 AC_SUBST([LibTIFF_SUPPORT])
-QM_DEFINE_EXTLIB_CC([Zlib],        [zlibCompileFlags], [],     [-lz],        [])
 Zlib_RavlLib=libRavlZLib
 AC_SUBST([Zlib_SUPPORT])
 
 dnl Virtual Pkgs
-QM_DEFINE_VIRTUAL_EXTLIB([libffmpeg], [FFMPEGCDEC FFMPEGCONT FFMPEGSWS FFMPEGUTIL])
 libffmpeg_RavlLib="libRavlLibFFmpeg"
 AC_SUBST([libffmpeg_SUPPORT])
-QM_DEFINE_VIRTUAL_EXTLIB([OpenGL], [libGL libGLU])
 OpenGL_RavlLib="libRavlDPDisplay3d libRavlGUI3D"
 AC_SUBST([OpenGL_SUPPORT])
 
 
-dnl#JFi:Develop code to prime these by ./configure
+dnl#  Following detail optional Ravl libs that depend on external libs not
+dnl#  currently supported by the QMake configure script
 dnl#
-dnl# Developer notes:
-dnl#
-dnl#   -l entries are from original .def files and may now not be wholly 
-dnl#      accurate (reflect current release of the library).
-dnl#   -l entry (and 5 params for _HELPER call) do not necessarily mean
-dnl#      pkg-config isn't supported
-dnl#   _HELPER_PC or _HELPER_CC rather than _HELPER_xC imply the method to use
-dnl#   When adding support for these, remember to update the .def file to remove
-dnl#   the $(error call
-dnl#
-dnl#
-dnl#   N.B.
-dnl#
-dnl#      When adding these, remember to remove the XXX_SUPPORT="" settings
-dnl#
-dnl# Priorities
-dnl#                Name,          Fn,                 Deps,   -l,           .h
-dnl#
-dnl#  ..._EXTLIB_CC([Socket],      [socket],           [],     [-lsocket],   [sys/socket.h])
-dnl#
-dnl#  ..._EXTLIB_CC([NetDB],       [gethostbyname_r],  [],     [-lnsr],      [netdb.h])
-dnl#
-dnl#
-dnl#
-dnl# Less so
-dnl#                Name,          Fn,                 Deps,   -l,           .h
-dnl#
-dnl#  ..._EXTLIB_CC([dvdread],     [TBA],              [],     [-ldvdread],  [])
 dnl#      dvdread_RavlLib=libRavlDVDRead
 dnl#      libRavlDVDRead also inhibited by lack of libmpeg2
 dnl#
-dnl#  ..._EXTLIB_xC([libClipStationPro], [],           [],     [-ldvsoem],   [])
 dnl#      libClipStationPro_RavlLib=CSPDriver
 dnl#
-dnl#  ..._EXTLIB_xC([LibGd],       [],                 [],     [-lgd],       [])
 dnl#      LibGd_RavlLib=RavlImgGd
 dnl#
-dnl#  ..._EXTLIB_xC([libmcrypt],   [],                 [],     [-lmcrypt],   [])
+dnl#      libmkl_RavlLib=RavlIntelMKL
+dnl#
 dnl#      libmcrypt_RavlLib=RavlCrypto
 dnl#
-dnl#  ..._EXTLIB_xC([libmpeg2],    [],                 [],     [-lmpeg2],    [])
 dnl#      libmpeg2_RavlLib=RavlLibMPEG2
 dnl#      Also inhibits libRavlDVDRead on its absence
 dnl#
-dnl#  ..._EXTLIB_xC([LibPython],   [],                 [],     [],           [])
 dnl#      LibPython_RavlLib=RavlPython
-dnl#     May have to use:
-dnl#       PYTHON_VERSION = $(shell python -c "import distutils.sysconfig; print distutils.sysconfig.get_config_var('VERSION')")
-dnl#       PYTHON_INCLUDE = $(shell python -c "import distutils.sysconfig; print distutils.sysconfig.get_python_inc()")
-dnl#       PYTHON_LIB = python$(PYTHON_VERSION)
 dnl#
-dnl#  ..._EXTLIB_xC([NumPy],       [],                 [Python], [],         [])
 dnl#      NumPy_RavlLib=RavlNumPy
-dnl#     May have to call Python to check for module availability.
 dnl#  
-dnl#  ..._EXTLIB_xC([SwigPython],  [],                 [Python Swig], [],    [])
 dnl#      SwigPython_RavlLib="RavlPythonSwig RavlPythonSwig2"
 dnl#  
 dnl#
-dnl# More or less dead
-dnl#                Name,          Fn,                 Deps,   -l,           .h
+dnl# Settings for external libs that are more or less dead
 dnl#
-dnl#  ..._EXTLIB_xC([libehs],      [],                 [],     [-lpme -lehs], [])
 dnl#      libehs_RavlLib=RavlEHS
 dnl#
-dnl#  ..._EXTLIB_xC([libGuppi],    [],                 [],     [-lguppitank `gnome-config libguppi --libs`], [])
 dnl#      libGuppi_RavlLib="RavlDPGraph RavlGuppi"
 dnl#
-dnl#  ..._EXTLIB_xC([libmkl],      [],                 [posixThreads Math], [-lmkl_ia32 -lguide], [])
-dnl#      libmkl_RavlLib=RavlIntelMKL
-dnl#
-dnl#  ..._EXTLIB_xC([libmpeg],     [],                 [],     [-lmpeg],     [])
 dnl#      libmpeg_RavlLib=RavlMPEG
 dnl#
-dnl#  ..._EXTLIB_xC([uEyeSDK],     [],                 [],     [-lueye_api], [])
 dnl#      uEyeSDK_RavlLib=RavlImgIOuEye
 dnl#      Also need to set uEyeSDK_CFLAGS=-D__LINUX__
 dnl#
-dnl#  ..._EXTLIB_xC([UUIdTheo],    [],                 [],     [-luuid],     [])
 dnl#      UUIdTheo_RavlLib=RavlUUId
 dnl#  
 dnl#
-dnl# Needed?
-dnl#                Name,          Fn,                 Deps,   -l,           .h
-dnl#
-dnl#  ..._EXTLIB_xC([x11],         [],                 [],     [],           [])
-dnl#  
-dnl#
-dnl# OS Specific
-dnl#                Name,          Fn,                 Deps,   -l,           .h
-dnl#
-dnl#  ..._EXTLIB_xC([SGIVL],       [],                 [],     [-lvl -ldmedia], [])
+dnl# Settings for OS specific externals
+dnl# 
 dnl#      SGIVL_RavlLib=RavlDMedia
 dnl#
-dnl#  ..._EXTLIB_xC([LibDirectShow], [],               [],     [],           [])
 dnl#      LibDirectShow_RavlLib=RavlDirectShow
 dnl#
-dnl#  ..._EXTLIB_xC([posixRT],     [],                 [],     [-lrt],       [])
-dnl#     Currently no use by Ravl, hence no LibposixRT_RavlLib and no interim variable defines below
-dnl#
+dnl#     posixRT - Currently no use by Ravl, hence no LibposixRT_RavlLib and no
+dnl#     interim variable defines below
 dnl#
 dnl#   Mac OSX Support:
 dnl#     Currently global MacOSX REQUIRES flag. 
@@ -734,22 +567,7 @@ dnl#
 dnl#     RavlMacOSXVideoCapture depends on RavlMacOSXRunLoop and all libraries
 dnl#     Already use MacOSXVideoCapture_SUPPORT later in this script, so this needs to be kept in mind
 dnl#
-dnl#                Name,          Fn,                 Deps,   -l,           .h
-dnl#
-dnl#    ...XTLIB_xC([MacOSXFoundation], [],            [],     [-framework Foundation], [])
 dnl#      MacOSXFoundation_RavlLib=RavlMacOSXRunLoop
-dnl#
-dnl#    ...XTLIB_xC([MacOSXQuartzCore], [],            [],     [-framework QuartzCore], [])
-dnl#
-dnl#    ...XTLIB_xC([MacOSXQTKit], [],                 [],     [-framework QTKit], [])
-dnl#
-dnl#    ...XTLIB_xC([ObjC],        [],                 [],     [-lobjc],     [])
-dnl#
-dnl#
-dnl# Dropped
-dnl#
-dnl#    CPPUnit CUDA DMedia FFTW glib {GNU}ReadLine JavaScript libmpeg Math 
-dnl#    Perl5 php libptp2 QtTestRunner SQLite3 Sys system Xaw Xerces Xt 
 dnl#
 dnl# In the meantime...
 dnl#
@@ -837,6 +655,125 @@ dnl# To re-instate (for linux only)
 dnl#     REQUIRES+=Meteor1  Meteor1_SUPPORT=RavlImgIOMeteor1
 
 
+# If debugging, output what libraries are defined
+if ( test X$DBG != X && test $DBG -ge 3 )
+then
+   trace 3 Defined libraries
+   for lib in $KnownLibs
+   do
+      eval testwith=\$with_${lib}_fn
+      eval prereq=\$with_${lib}_prq
+      eval lnklibs=\$with_${lib}_lnklibs
+      eval loc=\$with_${lib}_libpath
+      eval hdr=\$with_${lib}_hdr
+      eval inc=\$with_${lib}_inc
+      eval pkgconf=\$with_${lib}_pkgconf
+      eval lib_enablement=\$use_${lib} 
+      TRACE_INDENT="     "
+      eval virtual=\$with_${lib}_virtual
+      AS_IF([test X$virtual = Xyes],
+            [# Virtual package
+             trace 3 $lib:Virtual:$prereq:$lib_enablement
+            ],
+            [trace 3 $lib:$testwith:$prereq:$lnklibs:$loc:$hdr:$inc:$pkgconf:$lib_enablement
+            ]
+           )
+   done
+fi
+
+
+# Default, from QMake's configuration, those libraries that the user has not
+# explicitly configured.
+# 
+# First extract the list of RESOURCES configured into QMake
+QMAKE_RESOURCES=`cat $QMAKE_CFG | $SED -n 's/^RESOURCES=\(.*\)/\1/p'`
+trace 6 QMake Resources: @<:@$QMAKE_RESOURCES@:>@
+#
+# Now reconcile those with the user configured list
+CheckOverride=""
+for lib in $ConfiguredLibs
+do
+   if ( test x`$EXPR " $QMAKE_RESOURCES " : ".* \($lib\) .*"` == "x$lib" )
+   then
+      # Configured lib in QMake RESOURCE configuration, we may need to override
+      # this setting later
+      CheckOverride="$CheckOverride $lib"
+   fi
+done
+
+# Now prime the un-configured packages
+#
+for lib in $UnconfiguredLibs
+do
+   if ( test x`$EXPR " $QMAKE_RESOURCES " : ".* \($lib\) .*"` != "x$lib" )
+   then
+      # Lib not available
+      eval "use_${lib}=missing"
+      eval "${lib}_CFLAGS="
+      eval "${lib}_LIBS="
+   else
+      # Inherit QMake configuration settings
+      eval "use_${lib}=present"
+      QMakeSetting=`cat $QMAKE_CFG | $SED -n "s/^${lib}_CFLAGS=\(.*\)/\1/p"`
+      eval "${lib}_CFLAGS=\$QMakeSetting"
+      QMakeSetting=`cat $QMAKE_CFG | $SED -n "s/^${lib}_LIBS=\(.*\)/\1/p"`
+      eval "${lib}_LIBS=\$QMakeSetting"
+      # We give no consideration to package pre-requisites here. If we inherit
+      # from the QMake configuration, we inherit the package with the original
+      # pre-requisite package(s). For example, if we inherit libTIFF, we inherit
+      # it with the originally configured libZ regardless of if the user has
+      # configured Ravl to use a different libZ. This is consitent with those
+      # packages that are specified by pkg-configure as there is no way to
+      # influence what dependant libraries they bring in (libGnome will use
+      # whatever JPEG library it was set to use by the Gnome developers, even
+      # if we configure Ravl to link with JPEGturbo)..
+   fi
+done
+
+# Need to drop the RESOURCES Ravl cannot currently cope with
+for lib in $BrokenLibs
+do
+   trace 6 Considering Broken lib: @<:@$lib@:>@
+   if ( test x`$EXPR " $QMAKE_RESOURCES " : ".* \($lib\) .*"` == "x$lib" )
+   then
+      eval "use_${lib}=missing"
+      eval "${lib}_CFLAGS="
+      eval "${lib}_LIBS="
+      CheckOverride="$CheckOverride $lib"
+      trace 6 Broken lib @<:@$lib@:>@ removed
+   fi
+done
+
+
+# If debugging, output what library definitions are after reading in the
+# unconfigured packages
+if ( test X$DBG != X && test $DBG -ge 3 )
+then
+   trace 3 Defaulted libraries
+   for lib in $KnownLibs
+   do
+      eval testwith=\$with_${lib}_fn
+      eval prereq=\$with_${lib}_prq
+      eval lnklibs=\$with_${lib}_lnklibs
+      eval loc=\$with_${lib}_libpath
+      eval hdr=\$with_${lib}_hdr
+      eval inc=\$with_${lib}_inc
+      eval pkgconf=\$with_${lib}_pkgconf
+      eval lib_enablement=\$use_${lib} 
+      TRACE_INDENT="     "
+      eval virtual=\$with_${lib}_virtual
+      AS_IF([test X$virtual = Xyes],
+            [# Virtual package
+             trace 3 $lib:Virtual:$prereq:$lib_enablement
+            ],
+            [trace 3 $lib:$testwith:$prereq:$lnklibs:$loc:$hdr:$inc:$pkgconf:$lib_enablement
+            ]
+           )
+   done
+fi
+
+# Now process the libraries the user has explicitly configured.
+LibsToProcess=$ConfiguredLibs
 QM_PROCESS_EXTLIBS()
 
 # OpenCV is a special case, we need to post-process its include path
@@ -908,6 +845,28 @@ AC_SUBST([DynLink_LIBS])
 
 
 
+# Now check if we need to disallow any RESOURCES inherited from the QMake
+# configuration
+#
+if ( test "x$CheckOverride" != x )
+then
+   # We have some QMake RESOURCES that the user re-configured, we need to
+   # check they are still available
+   for lib in $CheckOverride
+   do
+      eval "lib_enablement=\$use_${lib}" 
+      if ( test $lib_enablement != present )
+      then
+         # package is no longer enabled, must override QMake RESOURCES
+         ResetRESOURCES=yes
+         QMAKE_RESOURCES=`echo " $QMAKE_RESOURCES "  | $SED "s/ $lib / /"`
+      fi
+   done
+   if ( test x$ResetRESOURCES == xyes )
+   then
+      RESOURCES="$RESOURCES $QMAKE_RESOURCES"
+   fi
+fi
 
 
 
@@ -929,8 +888,8 @@ echo >> ./Config.Project.in
 
 # Provide locations for QMake to work with
 echo \# Location to which to build >> ./Config.Project.in
-echo PROJECT_OUT=@abs_top_builddir@ >> ./Config.Project.in
-echo INSTALLHOME=@abs_top_builddir@ >> ./Config.Project.in
+echo PROJECT_OUT=@abs_builddir@ >> ./Config.Project.in
+echo INSTALLHOME=@abs_builddir@ >> ./Config.Project.in
 echo >> ./Config.Project.in
 echo \# Location for transient build files >> ./Config.Project.in
 echo LOCALTMP=\$\(PROJECT_OUT\)/transient >> ./Config.Project.in
@@ -1278,7 +1237,14 @@ echo >> ./Config.Project.in
 echo >> ./Config.Project.in
 echo \# List of resources available to Ravl >> ./Config.Project.in
 echo >> ./Config.Project.in
-echo "RESOURCES=@RESOURCES@" >> ./Config.Project.in
+if ( test x$ResetRESOURCES == xyes )
+then
+   # We need to override the QMake base level of RESOURCES
+   echo "RESOURCES=@RESOURCES@" >> ./Config.Project.in
+else
+   # We can supplement the QMake settings
+   echo "RESOURCES+=@RESOURCES@" >> ./Config.Project.in
+fi
 echo >> ./Config.Project.in
 
 # Declare where external executables used by Ravl may be found
@@ -1311,16 +1277,289 @@ ALL_EXTERNAL_LIBS+=" "$DynLink_LIBS
 ALL_EXTERNAL_CFLAGS+=" "$DynLink_CFLAGS
 
 
+# Apply any "rpath" setting to the user-configured libraries
 #
-# Now set RESOURCES & ALL_EXTERNAL_xxxS based on the libraries we can use
-# Also output each external library's <Lib>_CFLAGS and <Lib>_LIBS definition
-# to Config.Project
-#
+if ( test "$with_rpath" = 'Y' )
+then
+  for lib in $ConfiguredLibs
+  do
+    # Virtual libraries pick up their configuration from their real
+    # counterparts. We therefore only need to massage the _LIBS setting here
+    # for non-virtual libraries.
+    eval virtual=\$with_${lib}_virtual
+    if ( test x$virtual != xyes )
+    then
+      eval lib_enablement=\$use_${lib}
+      case $lib_enablement in
+        'blocked' | 'missing' )
+                   TRACE_INDENT="     "
+                   trace 3 ${lib} $lib_enablement
+                   ;;
+        'no' )
+                   TRACE_INDENT="     "
+                   trace 3 ${lib} discarded
+                   ;;
+        'check' | 'yes' )
+                   trace 1 Assertion: --with-${lib} should not equal ${lib_enablement} here!
+                   ;;
+        'present' )
+                   eval setting=\$${lib}_LIBS
+                   TRACE_INDENT="     "
+                   trace 3 Applying rpath to $lib
+                   TRACE_INDENT="     "
+                   trace 5 Changing _LIBS from:
+                   TRACE_INDENT="     "
+                   trace 5 $setting
+                   setting=`echo $setting | $SED 's/-L *\(@<:@^ @:>@@<:@^ @:>@*\)/\$(LIBPATHSWITCH)\=\1 -L\1/g'`
+dnl                # The sed command is actually:
+dnl                #    's/-L *\([^ ][^ ]*\)\$(LIBPATHSWITCH)\=\1 -L\1/g'
+dnl                # the square brackets having been substituted to prevent
+dnl                # m4 removing them. 
+                   # The sed command looks for:
+                   #
+                   #        -L<optional spaces><something><space> 
+                   # 
+                   # if this pattern is found, each and every occurrence is
+                   # replaced by the following:
+                   #
+                   #       $(LIBPATHSWITCH)=<something> -L<something>
+                   #
+                   # <something> being the substring found in the original
+                   # fragment.
+                   TRACE_INDENT="     "
+                   trace 5 to:
+                   TRACE_INDENT="     "
+                   trace 5 $setting
+                   eval ${lib}_LIBS=\$setting
+                   ;;
+      esac
+    fi
+  done
+fi
+
 echo >> ./Config.Project.in
 echo \# List of external libraries available to Ravl >> ./Config.Project.in
+
+# We need to amend the rpath setting for the unconfigured libs if the user has
+# changed the setting.
+#
+# if with_rpath != QMake_rpath | LIBPATHSWITCH changed
+#   if QMake_rpath=no
+#     # Add in new rpath setting
+#     for lib in $UnconfiguredLibs
+#     do
+#       # Virtual libraries pick up their configuration from their real
+#       # counterparts. We therefore only need to massage the _LIBS setting here
+#       # for non-virtual libraries.
+#       eval virtual=\$with_${lib}_virtual
+#       if ( test x$virtual != xyes )
+#       then
+#         eval lib_enablement=\$use_${lib}
+#         case $lib_enablement in
+#           'blocked' | 'missing' )
+#                      TRACE_INDENT="     "
+#                      trace 3 ${lib} $lib_enablement
+#                      ;;
+#           'no' )
+#                      TRACE_INDENT="     "
+#                      trace 3 ${lib} discarded
+#                      ;;
+#           'check' | 'yes' )
+#                      trace 1 Assertion: --with-${lib} should not equal ${lib_enablement} here!
+#                      ;;
+#           'present' )
+#                      eval setting=\$${lib}_LIBS
+#                      setting=`echo $setting | $SED 's/-L *\(@<:@^ @:>@@<:@^ @:>@*\)/\$(LIBPATHSWITCH)\=\1 -L\1/g'`
+#dnl                   # The sed command is actually:
+#dnl                   #    's/-L *\([^ ][^ ]*\)\$(LIBPATHSWITCH)\=\1 -L\1/g'
+#dnl                   # the square brackets having been substituted to prevent
+#dnl                   # m4 removing them. 
+#                      # The sed command looks for:
+#                      #
+#                      #        -L<optional spaces><something><space> 
+#                      # 
+#                      # if this pattern is found, each and every occurrence is
+#                      # replaced by the following:
+#                      #
+#                      #       $(LIBPATHSWITCH)=<something> -L<something>
+#                      #
+#                      # <something> being the substring found in the original
+#                      # fragment.
+#                      eval ${lib}_LIBS=\$setting
+#                      echo ${lib}_LIBS=@${lib}_LIBS@ >> Config.Project.in
+#                      echo >> ./Config.Project.in
+#                      ;;
+#         esac
+#       fi
+#     done
+#   else
+#     # Strip existing setting; add any new setting and output the amended
+#     # _LIBS entry
+#     for lib in $UnconfiguredLibs
+#     do
+#       # Virtual libraries pick up their configuration from their real
+#       # counterparts. We therefore only need to massage the _LIBS setting here
+#       # for non-virtual libraries.
+#       eval virtual=\$with_${lib}_virtual
+#       if ( test x$virtual != xyes )
+#       then
+#         eval lib_enablement=\$use_${lib}
+#         case $lib_enablement in
+#           'blocked' | 'missing' )
+#                      TRACE_INDENT="     "
+#                      trace 3 ${lib} $lib_enablement
+#                      ;;
+#           'no' )
+#                      TRACE_INDENT="     "
+#                      trace 3 ${lib} discarded
+#                      ;;
+#           'check' | 'yes' )
+#                      trace 1 Assertion: --with-${lib} should not equal ${lib_enablement} here!
+#                      ;;
+#           'present' )
+#                      # First remove the old setting
+#                      setting=......
+#                      if LIBPATHSWITCH changed
+#                        # Add in new switch
+#                        setting=`echo $setting | $SED 's/-L *\(@<:@^ @:>@@<:@^ @:>@*\)/\$(LIBPATHSWITCH)\=\1 -L\1/g'`
+#dnl                     # The sed command is actually:
+#dnl                     #    's/-L *\([^ ][^ ]*\)\$(LIBPATHSWITCH)\=\1 -L\1/g'
+#dnl                     # the square brackets having been substituted to prevent
+#dnl                     # m4 removing them. 
+#                        # The sed command looks for:
+#                        #
+#                        #        -L<optional spaces><something><space> 
+#                        # 
+#                        # if this pattern is found, each and every occurrence is
+#                        # replaced by the following:
+#                        #
+#                        #       $(LIBPATHSWITCH)=<something> -L<something>
+#                        #
+#                        # <something> being the substring found in the original
+#                        # fragment.
+#                      fi
+#                      eval ${lib}_LIBS=\$setting
+#                      echo ${lib}_LIBS=@${lib}_LIBS@ >> Config.Project.in
+#                      echo >> ./Config.Project.in
+#                      ;;
+#         esac
+#       fi
+#     done
+#   fi
+# fi
+
+
+# Recalculate all virtual packages to pick up any changes made to the real
+# libraries
+for lib in $KnownLibs
+do
+  eval virtual=\$with_${lib}_virtual
+  if ( test x$virtual = xyes )
+  then
+    eval lib_enablement=\$use_${lib}
+    case $lib_enablement in
+      'blocked' | 'missing' )
+                   TRACE_INDENT="     "
+                   trace 3 ${lib} $lib_enablement
+                   ;;
+      'no' )
+                   TRACE_INDENT="     "
+                   trace 3 ${lib} discarded
+                   ;;
+      'check' | 'yes' )
+                   trace 1 Assertion: --with-${lib} should not equal ${lib_enablement} here!
+                   ;;
+      'present' )
+                   TRACE_INDENT="     "
+                   trace 3 Checking settings for virtual library $lib
+                   cflags=""
+                   libs=""
+                   eval prereqs=\$with_${lib}_prq
+                   for p in $prereqs
+                   do
+                     cflags="$cflags @${p}_CFLAGS@"
+                     libs="$libs @${p}_LIBS@"
+                   done
+                   need_newline=no
+                   eval original_cflags=\$${lib}_CFLAGS
+                   if ( test "$original_cflags" != "$cflags" )
+                   then
+                     TRACE_INDENT="     "
+                     trace 5 Changing CFLAGS from:
+                     TRACE_INDENT="     "
+                     trace 5 $original_cflags
+                     TRACE_INDENT="     "
+                     trace 5 to:
+                     TRACE_INDENT="     "
+                     trace 5 $cflags
+                     echo ${lib}_CFLAGS=$cflags >> Config.Project.in
+                     need_newline=yes
+                   fi
+                   eval original_libs=\$${lib}_LIBS
+                   if ( test "$original_libs" != "$libs" )
+                   then
+                     TRACE_INDENT="     "
+                     trace 5 Changing LIBS from:
+                     TRACE_INDENT="     "
+                     trace 5 $original_libs
+                     TRACE_INDENT="     "
+                     trace 5 to:
+                     TRACE_INDENT="     "
+                     trace 5 $libs
+                     echo ${lib}_LIBS=$libs >> Config.Project.in
+                     need_newline=yes
+                   fi
+                   if ( test $need_newline == yes )
+                   then
+                     echo >> ./Config.Project.in
+                   fi
+                   ;;
+    esac
+  fi
+done
+
+
+# Now set RESOURCES and output each external library's <Lib>_CFLAGS and 
+# <Lib>_LIBS definition to Config.Project for those libraries the user has
+# configured
+#
 echo >> ./Config.Project.in
 trace 2 Calculating RESOURCES settings from library availability
 trace 3 \(Initial value of RESOURCES "@<:@$RESOURCES@:>@"\)
+for lib in $ConfiguredLibs
+do
+   eval lib_enablement=\$use_${lib}
+   case $lib_enablement in
+    'blocked' | 'missing' )
+                   TRACE_INDENT="     "
+                   trace 3 ${lib} $lib_enablement
+                   ;;
+    'no' )
+                   TRACE_INDENT="     "
+                   trace 3 ${lib} discarded
+                   ;;
+    'check' | 'yes' )
+                   trace 1 Assertion: --with-${lib} should not equal ${lib_enablement} here!
+                   ;;
+    'present' )
+                   TRACE_INDENT="     "
+                   trace 3 RESOURCES+=${lib}
+                   RESOURCES+="${lib} "
+                   # Put the placeholders into Config.Project.in so we record the
+                   # flags associated with the libraries that we can use
+                   echo ${lib}_CFLAGS=@${lib}_CFLAGS@ >> Config.Project.in
+                   echo ${lib}_LIBS=@${lib}_LIBS@ >> Config.Project.in
+                   echo >> ./Config.Project.in
+                   ;;
+   esac
+done
+trace 3 RESOURCES now "@<:@$RESOURCES@:>@"
+
+# Need to calculate ALL_EXTERNAL_xxxS based on the libraries that Ravl can
+# use. We need to include not just those libraries specifically configured
+# by the user, but also those already configured by any existing QMake
+# configuration. 
+#
 for lib in $KnownLibs
 do
    eval lib_enablement=\$use_${lib}
@@ -1337,63 +1576,17 @@ do
                    trace 1 Assertion: --with-${lib} should not equal ${lib_enablement} here!
                    ;;
     'present' )
-                   if ( test "$with_rpath" = 'Y' )
-                   then
-                      eval setting=\$${lib}_LIBS
-                      setting=`echo $setting | $SED 's/-L *\(@<:@^ @:>@@<:@^ @:>@*\)/\$(LIBPATHSWITCH)\=\1 -L\1/g'`
-dnl                   # The sed command is actually:
-dnl                   #    's/-L *\([^ ][^ ]*\)\$(LIBPATHSWITCH)\=\1 -L\1/g'
-dnl                   # the square brackets having been substituted to prevent
-dnl                   # m4 removing them. 
-                      # The sed command looks for:
-                      #
-                      #        -L<optional spaces><something><space> 
-                      # 
-                      # if this pattern is found, each and every occurrence is
-                      # replaced by the following:
-                      #
-                      #       $(LIBPATHSWITCH)=<something> -L<something>
-                      #
-                      # <something> being the substring found in the original
-                      # fragment.
-                      eval ${lib}_LIBS=\$setting
-                   fi
+                   eval liblist=\$${lib}_LIBS
                    TRACE_INDENT="     "
-                   trace 3 RESOURCES+=${lib}
-                   RESOURCES+="${lib} "
-                   # Put the placeholders into Config.Project.in so we record the
-                   # flags associated with the libraries that we can use
-                   eval virtual=\$with_${lib}_virtual
-                   if ( test x$virtual = xyes )
-                   then
-                      cflags=""
-                      libs=""
-                      eval prereqs=\$with_${lib}_prq
-                      for p in $prereqs
-                      do
-                         cflags="$cflags @${p}_CFLAGS@"
-                         libs="$libs @${p}_LIBS@"
-                      done
-                      echo ${lib}_CFLAGS=$cflags >> Config.Project.in
-                      echo ${lib}_LIBS=$libs >> Config.Project.in
-                      # No need to update ALL_EXTERNAL_xxxS here as these
-                      # variables already receive the settings for the
-                      # prerequisites when those libraries themselves are
-                      # processed .
-                      echo >> ./Config.Project.in
-                   else
-                      echo ${lib}_CFLAGS=@${lib}_CFLAGS@ >> Config.Project.in
-                      echo ${lib}_LIBS=@${lib}_LIBS@ >> Config.Project.in
-                      echo >> ./Config.Project.in
-                      eval liblist=\$${lib}_LIBS
-                      ALL_EXTERNAL_LIBS+=" "$liblist
-                      eval cflglist=\$${lib}_CFLAGS
-                      ALL_EXTERNAL_CFLAGS+=" "$cflglist
-                   fi
+                   trace 3 ALL_EXTERNAL_LIBS += $liblist
+                   ALL_EXTERNAL_LIBS+=" "$liblist
+                   eval cflglist=\$${lib}_CFLAGS
+                   TRACE_INDENT="     "
+                   trace 3 ALL_EXTERNAL_CFLAGS += $cfglist
+                   ALL_EXTERNAL_CFLAGS+=" "$cflglist
                    ;;
    esac
 done
-trace 3 RESOURCES now "@<:@$RESOURCES@:>@"
 trace 3 ALL_EXTERNAL_LIBS now "@<:@$ALL_EXTERNAL_LIBS@:>@"
 trace 3 ALL_EXTERNAL_CFLAGS now "@<:@$ALL_EXTERNAL_CFLAGS@:>@"
 
@@ -1409,7 +1602,8 @@ echo >> ./Config.Project.in
 echo >> ./Config.Project.in
 
 # Process Ravl libraries that depend on the presence of particular external
-# libraries
+# libraries. We need to process all libraries that Ravl will use, not just
+# those specifically configured by the user.
 for lib in $KnownLibs
 do
    eval lib_enablement=\$use_${lib}
@@ -1853,7 +2047,7 @@ AC_SUBST([ALL_EXTERNAL_LIBS])
 AC_SUBST([ALL_EXTERNAL_CFLAGS])
 
 dnl Create Makefiles and *.Project files
-AC_CONFIG_FILES([Config.Project])
-AC_CONFIG_FILES([Targets.Project:src/AutoTools/Targets.Project.in])
-AC_CONFIG_FILES([Makefile:src/AutoTools/Makefile.in])
+AC_CONFIG_FILES([../../Config.Project:Config.Project.in])
+AC_CONFIG_FILES([../../Targets.Project:Targets.Project.in])
+AC_CONFIG_FILES([../../Makefile:Makefile.in])
 AC_OUTPUT

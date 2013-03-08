@@ -5,9 +5,9 @@
 # Public License (GPL). See the gpl.licence file for details or
 # see http://www.gnu.org/copyleft/gpl.html
 
-SOURCEHOME=@abs_top_srcdir@/src
+SOURCEHOME=@abs_srcdir@/src
 
-PROJECT_OUT=@abs_top_builddir@
+PROJECT_OUT=@abs_builddir@
 
 WORKING_QMAKE=@WORKING_QMAKE@
 
@@ -56,7 +56,7 @@ debugshared: qmake
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=debug SHAREDBUILD=1 NOEXEBUILD=1 libbuild
 
 dist:
-	$(MAKE) -C @abs_top_srcdir@ -f $(WORKING_QMAKE)/Makefiles/Dist.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project dist
+	$(MAKE) -C @abs_srcdir@ -f $(WORKING_QMAKE)/Makefiles/Dist.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project dist
 
 doc: qmake
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/.. -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) PROJECT_NAME=Ravl PROJECT_DESC="RAVL, Recognition And Vision Library" fulldoc
@@ -190,7 +190,7 @@ installsingleoptshared:
 
 
 installQMake:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -f @abs_top_builddir@/QMake/Makefile STAGING=@abs_top_builddir@/QMake STRIP_SWITCH=$(STRIP_SWITCH) install
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -f @abs_builddir@/QMake/Makefile STAGING=@abs_builddir@/QMake STRIP_SWITCH=$(STRIP_SWITCH) install
 
 opt: qmake
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=opt NOEXEBUILD=1 libbuild
@@ -231,20 +231,20 @@ qmake: @NeededQMake@
 # QMake when only a new copy for installation (QMake) will be needed.
 
 QMake:
-	$(MAKE) -f @abs_top_builddir@/QMake/Makefile STAGING=@abs_top_builddir@/QMake
-# Stage, under @abs_top_builddir@/QMake, a version of QMake ready for a
+	$(MAKE) -f @abs_builddir@/QMake/Makefile STAGING=@abs_builddir@/QMake
+# Stage, under @abs_builddir@/QMake, a version of QMake ready for a
 # standard install (one that will run when the makefiles are installed
 # under $(datadir)/QMake/Makefiles).
 
 LocalQMake: 
-	$(MAKE) -f @abs_top_builddir@/QMake/Makefile DESTDIR=staged bindir=@abs_top_builddir@/share/QMake/bin \
-                         datadir=@abs_top_builddir@/share sysconfdir=@abs_top_builddir@ STAGING=@abs_top_builddir@/share/QMake
-	$(SHOWIT)if [ ! -f @abs_top_builddir@/share/QMake/bin/Validate ]; \
+	$(MAKE) -f @abs_builddir@/QMake/Makefile DESTDIR=staged bindir=@abs_builddir@/share/QMake/bin \
+                         datadir=@abs_builddir@/share sysconfdir=@abs_builddir@ STAGING=@abs_builddir@/share/QMake
+	$(SHOWIT)if [ ! -f @abs_builddir@/share/QMake/bin/Validate ]; \
                  then \
-                   if [ ! -h @abs_top_builddir@/share/QMake/bin/Validate ]; \
+                   if [ ! -h @abs_builddir@/share/QMake/bin/Validate ]; \
                    then \
-                     cd @abs_top_builddir@/share/QMake/bin; \
-                     $(LN_S) @abs_top_builddir@/bin/Validate Validate; \
+                     cd @abs_builddir@/share/QMake/bin; \
+                     $(LN_S) @abs_builddir@/bin/Validate Validate; \
                    fi \
                  fi
 # Stage QMake under the Ravl build directory in a form that will run from
@@ -469,7 +469,7 @@ uninstallpkgconf:
          fi
 
 uninstallQMake:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -f @abs_top_builddir@/QMake/Makefile uninstall
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -f @abs_builddir@/QMake/Makefile uninstall
 
 uninstallRavl.def:
 	@if [ -f $(ABS_DESTDIR)$(datadir)/QMake/Projects/Ravl/libdep/Ravl.def ] ; \
