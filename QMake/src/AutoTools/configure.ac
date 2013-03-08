@@ -232,6 +232,10 @@ AC_PATH_PROG([SWIG],[swig])
 AS_IF([test "X$SWIG" != X], [ RESOURCES+="Swig "])
 AC_SUBST([SWIG])
 
+# We already know we have Perl as that is a pre-requisite of QMake that we
+# have already checked for. So, add it to RESOURCES
+RESOURCES+="PERL "
+
 
 # Check for common system functions that appear in different system libraries 
 # dependant on the platform in use
