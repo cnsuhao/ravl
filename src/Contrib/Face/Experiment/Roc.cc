@@ -18,6 +18,7 @@
 #include "Ravl/OS/Filename.hh"
 #include "Ravl/IO.hh"
 #include "Ravl/OS/Date.hh"
+#include "Ravl/Sums1d2.hh"
 
 #define DODEBUG 0
 #if DODEBUG
@@ -28,7 +29,6 @@
 
 namespace RavlN {
   namespace FaceN {
-
 
     using namespace RavlImageN;
 
@@ -468,15 +468,16 @@ namespace RavlN {
     
     // Get the false rejection rate at a given false acceptance rate and the corresponding threshold used
 
-    bool RocBodyC::FalseRejection(RealT faRate, RealT & frRate, RealT & threshold) const {
+    bool RocBodyC::FalseRejection(RealT faRate, RealT & frRate, RealT & threshold) const
+    {
 
-      if(faRate < 0.0 || faRate > 1.0) {
+      if (faRate < 0.0 || faRate > 1.0) {
         RavlError("Supplied FA rate must be between 0 and 1!");
         return false;
       }
 
       // Check it is sorted
-      if(!sorted) {
+      if (!sorted) {
         return false;
       }
 
@@ -486,7 +487,6 @@ namespace RavlN {
       frRate = res.FR();
       return true;
     }
-
 
     RealHistogram1dC RocBodyC::Histogram(bool forClients) const
     {
@@ -638,7 +638,7 @@ namespace RavlN {
       filename = filename.MkTemp(6);
 
       // plot to that file
-      if(!Plot(maxFa, maxFr, title, filename)) {
+      if (!Plot(maxFa, maxFr, title, filename)) {
         RavlError("Failed to make plot.");
         return false;
       }
@@ -646,20 +646,19 @@ namespace RavlN {
       RavlN::Sleep(1.0);
 
       // load image
-      if(!Load(filename, image)) {
+      if (!Load(filename, image)) {
         RavlError("Failed to load image.");
         return false;
       }
 
       // delete file
-      if(!filename.Remove()) {
+      if (!filename.Remove()) {
         RavlError("Failed to remove image");
         return false;
       }
 
       return true;
     }
-
 
     bool RocBodyC::PlotScoreHistogram(const StringC & title, const StringC & filename) const
     {
@@ -707,7 +706,6 @@ namespace RavlN {
       return true;
     }
 
-
     bool RocBodyC::PlotScoreHistogram(const StringC & title, RavlImageN::ImageC<RavlImageN::ByteRGBValueC> & image) const
     {
       // tmp file name
@@ -738,7 +736,6 @@ namespace RavlN {
 
     }
 
-
     /*
      * Get the maximum score in the ROC
      */
@@ -756,7 +753,7 @@ namespace RavlN {
     }
 
     /*
-     * Get the maximum score in the ROC
+     * Get the minimum FR score
      */
     RealT RocBodyC::MinFRScore() const
     {
@@ -767,7 +764,7 @@ namespace RavlN {
       DListC<ClaimT> r = claims.Copy();
       r.Reverse();
       for (DLIterC<ClaimT> it(r); it; it++) {
-        if (!it.Data().Data2())
+        if (!it.Data().Data1())
           continue;
         return it.Data().Data2();
       }
@@ -831,6 +828,23 @@ namespace RavlN {
       return true;
     }
 
+    // Compue the stats of the two distributions
+    Tuple2C<MeanVarianceC, MeanVarianceC> RocBodyC::DistributionStats() const
+    {
+
+      Sums1d2C client;
+      Sums1d2C impostor;
+
+      for (DLIterC<ClaimT> it(claims); it; it++) {
+        // we have a client
+        if (it.Data().Data1()) {
+          client += it.Data().Data2();
+        } else {
+          impostor += it.Data().Data2();
+        }
+      }
+      return Tuple2C<MeanVarianceC, MeanVarianceC>(client.MeanVariance(), impostor.MeanVariance());
+    }
 
     void LinkROC()
     {
