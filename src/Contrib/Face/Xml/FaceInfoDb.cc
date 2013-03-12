@@ -1,7 +1,6 @@
 // This file is part of OmniSoft, Pattern recognition software
 // Copyright (C) 2003, Omniperception Ltd.
 // file-header-ends-here
-//! rcsid="$Id$"
 //! lib=RavlFace
 //! file="Ravl.Contrib.Face/FaceInfoDb.cc"
 
@@ -73,8 +72,6 @@ namespace RavlN {
 
     void FaceInfoDbC::init(DListC<StringC> & dbNames)
     {
-
-      HashC<StringC, bool> clientHsh;
       ExpandKnownDatabases2(dbNames);
       for (DLIterC < StringC > it(dbNames); it; it++) {
         FaceInfoDbC db;

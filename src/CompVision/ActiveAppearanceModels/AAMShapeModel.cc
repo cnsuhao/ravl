@@ -4,7 +4,6 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-//! rcsid="$Id$"
 //! lib=RavlAAM
 //! file="Ravl/CompVision/ActiveAppearanceModels/AAMShapeModel.cc"
 
@@ -25,7 +24,8 @@
 #include "Ravl/SArray1dIter3.hh"
 #include "Ravl/PatternRec/FuncMeanProjection.hh"
 #include "Ravl/Array1dIter2.hh"
-#include "Ravl/OS/SysLog.hh"
+#include "Ravl/SysLog.hh"
+
 
 #define DODEBUG 1
 #if DODEBUG
@@ -176,8 +176,7 @@ namespace RavlImageN {
     //: Do some initial processing, needed for some models.
 
     if(!ComputeMean(sample)) {
-      if(m_verbose)
-        SysLog(SYSLOG_ERR) << "Failed to compute sample mean.";
+      RavlError("Failed to compute sample mean for shape model. Sample size:%u ",(unsigned) sample.Size());
       return false;
     }
 
