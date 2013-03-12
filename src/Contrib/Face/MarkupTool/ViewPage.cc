@@ -38,7 +38,13 @@ namespace RavlN {
     /////////////////////////////////////
 
     ViewPageBodyC::ViewPageBodyC(FaceInfoDbC & db, SightingSetC & sightingSet, bool autoScale) :
-        LBoxBodyC(true), faceDb(db), m_sightingSet(sightingSet), m_autoScale(autoScale), canvas(800, 800), m_markupMode(false)
+        LBoxBodyC(true),
+        faceDb(db),
+        m_sightingSet(sightingSet),
+        m_autoScale(autoScale),
+        canvas(800, 800),
+        m_markupMode(false),
+        m_prevSelected(25)
     {
 
     }
@@ -64,10 +70,11 @@ namespace RavlN {
       ButtonC save = ButtonR("Save", *this, &ViewPageBodyC::SaveButton);
       ButtonC moveButton = ButtonR("Move", *this, &ViewPageBodyC::MoveButton);
 
-      ButtonC deleteButton = ButtonR("Delete", *this, &ViewPageBodyC::DeleteButton);
+      ButtonC deleteButton = ButtonR("Delete", *this, &ViewPageBodyC::DeleteSelected, true);
       ButtonC saveSelectedButton = ButtonR("Save Selected", *this, &ViewPageBodyC::SaveSelectedButton);
       ButtonC renameButton = ButtonR("Rename", *this, &ViewPageBodyC::RenameSelected);
       ButtonC autoMergeSightingButton = ButtonR("Auto Merge Sighting", *this, &ViewPageBodyC::AutoMergeSighting);
+      m_createSightingButton = ButtonR("Create Sighting", *this, &ViewPageBodyC::CreateSighting);
 
       //: Make the tree store
       SArray1dC<AttributeTypeC> types(3);
@@ -77,7 +84,9 @@ namespace RavlN {
       treeStore = TreeStoreC(types);
       UpdateTreeStore();
       treeView = TreeViewC(treeStore);
-      treeView.SetAttribute("ID", "editable", "1", false);
+      treeView.SetAttribute(0, "editable", "1", false);
+      treeView.SetAttribute(0, "sortable", "1", false);
+      treeView.SetAttribute(1, "sortable", "1", false);
       treeView.SetAttribute(1, "resizable", "1", false);
       ConnectRef(treeView.SelectionChanged(), *this, &ViewPageBodyC::SelectRow);
       ConnectRef(m_sightingMode.SigClicked(), *this, &ViewPageBodyC::SightingMode);
@@ -105,7 +114,7 @@ namespace RavlN {
       //: This is the layout
       LabelC dateLabel("Capture Date");
       Add(VBox(PackInfoC(HBox(PackInfoC(VBox(PackInfoC(canvas, true)
-          + HBox(save + saveSelectedButton + deleteButton + moveButton + m_sightingMode + autoMergeSightingButton)),
+          + HBox(save + saveSelectedButton + deleteButton + moveButton + m_sightingMode + m_createSightingButton + autoMergeSightingButton)),
           true) + PackInfoC(ScrolledAreaC(treeView, 350, 30), false)),
           true)
           + PackInfoC(HBox(LabelC("Path") + imagepath + HBox(dateLabel + date)), false)
@@ -127,9 +136,11 @@ namespace RavlN {
       m_fileSelectorMoveSelected = FileSelectorC("File to move faces to", "*.xml");
       ConnectRef(m_fileSelectorMoveSelected.Selected(), *this, &ViewPageBodyC::MoveSelected);
 
+      m_createSightingButton.SetState(GTK_STATE_INSENSITIVE);
+
       Init();
 
-      LoadData();
+      LoadData(faceDb.Keys().First());
 
       // Create window
       return LBoxBodyC::Create();
@@ -140,15 +151,8 @@ namespace RavlN {
 
       MutexLockC lock(m_mutex);
 
-      // lets get a list of all our faceids and point the iterator to the first
-      faceIds = faceDb.Keys();
-      iter = DLIterC<StringC>(faceIds);
-
       // reset the selected list
       m_selected.Empty();
-      for (DLIterC<StringC> it(faceIds); it; it++) {
-        m_selected.Insert(*it, false);
-      }
 
       // Sort out the sighting set
       if (!UpdateSightingSet()) {
@@ -166,6 +170,7 @@ namespace RavlN {
 
       SightingSetC sightingSet;
 
+
       // Go through the sighting set currently held in memory
       for (DArray1dIterC<SightingC> it(m_sightingSet); it; it++) {
         bool first = true;
@@ -173,6 +178,7 @@ namespace RavlN {
         SightingC sighting("whocares");
 
         // Go through all the faces in the sightings
+
         for (DLIterC<StringC> faceIt(it.Data().FaceIds()); faceIt; faceIt++) {
 
           // Is the face in the database, if not just skip it
@@ -189,12 +195,13 @@ namespace RavlN {
           }
 
           // Check that the ID of the face is the same of the sighting being created
+          // If it isn't this is usually because a sighting has been mis-marked up.
+          // For now I do not fix it, I just remove the face from the sighting
           if (faceDb[*faceIt].ActualId() != actualId) {
-            rWarning("Eek, different actual ids in sighting.  This shouldn't happen! %s %s %s",
-                actualId.data(),
+            rWarning("Different actual ids in sighting.  Sighting ID '%s'; Face ID '%s'.  Removing face from sighting.",
                 faceDb[*faceIt].ActualId().data(),
                 faceIt.Data().data());
-            continue;
+             continue;
           }
 
           // OK looks like we are OK to add the face to sighting
@@ -205,6 +212,7 @@ namespace RavlN {
         if (sighting.FaceIds().Size() > 0) {
           sightingSet.Append(sighting);
         }
+
       }
 
       // reset the internal data structure
@@ -220,7 +228,7 @@ namespace RavlN {
 
     bool ViewPageBodyC::SaveData()
     {
-      rDebug("Saving face '%s'", iter.Data().data());
+      //rDebug("Saving face '%s'", iter.Data().data());
       FaceInfoC info = faceDb[*iter];
 
       //: The eye positions might of changed
@@ -236,7 +244,7 @@ namespace RavlN {
           rDebug("Changed position of %s", feature.Description().data());
           info.FeatureSet().Set(it.Key(), it.Data().Position());
         } else {
-          rDebug("No need to save point '%s'", feature.Description().data());
+          //rDebug("No need to save point '%s'", feature.Description().data());
         }
 
       }
@@ -248,20 +256,27 @@ namespace RavlN {
     //: Load in data in the main data viewer page
     //////////////////////////////////////////////
 
-    bool ViewPageBodyC::LoadData()
+    bool ViewPageBodyC::LoadData(const StringC & faceId)
     {
 
       //: Check iter is pointing at sensible stuff
-      if (!faceDb.IsElm(*iter)) {
-        //RavlIssueWarning("WARNING: selected image not held in database.\n");
+      if (!faceDb.IsElm(faceId)) {
+        RavlError("Face not '%s' in database.\n", StringOf(faceId).data());
         return false;
       }
 
-      rDebug("Loading face '%s'", iter.Data().data());
+      bool selected = m_selected.IsElm(faceId);
+      RavlDebug("Subject '%s'; FaceId '%s'; Selected %d", faceDb[faceId].ActualId().data(), faceId.data(), (int)selected);
+
+      iter = DLIterC<StringC>(faceDb.Keys());
+      for (; iter.IsElm(); iter++) {
+        if (*iter == faceId)
+          break;
+      }
 
       //: Load in the image from file
       ///////////////////////////////
-      FaceInfoC info = faceDb[*iter];
+      FaceInfoC info = faceDb[faceId];
       ImageC<ByteRGBValueC> im;
       if (!Load(info.OrigImage(), im)) {
         rWarning("Image unable to be loaded %s", info.OrigImage().data());
@@ -297,7 +312,7 @@ namespace RavlN {
           UIntT id = 0;
           m_markupPoints.Empty();
           for (HashIterC<IntT, ImagePointFeatureC> it(info.FeatureSet().FeatureIterator()); it; it++) {
-            rDebug("Displaying point '%s'", it.Data().Description().data());
+            //rDebug("Displaying point '%s'", it.Data().Description().data());
             MarkupPoint2dC mup(id, 1, it.Data().Location(), MP2DS_CrossHair);
             fm.Markup().InsLast(mup);
             m_markupPoints.Insert(it.Key(), mup);
@@ -336,7 +351,7 @@ namespace RavlN {
       //imageSize.Text(imageInfo);
 
       //: Set the image path
-      imagepath.Text(faceDb[*iter].OrigImage());
+      imagepath.Text(faceDb[faceId].OrigImage());
 
       //: Check whether image has glasses
       if (info.Glasses() == "no")
@@ -379,7 +394,7 @@ namespace RavlN {
           iter.Nth(0);
         }
       }
-      LoadData();
+      LoadData(*iter);
       return true;
     }
 
@@ -434,10 +449,8 @@ namespace RavlN {
       rInfo("Saving selected data to file '%s'", filename.data());
 
       FaceInfoDbC newDb;
-      for (HashIterC<StringC, bool> it(m_selected); it; it++) {
-        if (it.Data()) {
-          newDb.Insert(it.Key(), faceDb[it.Key()]);
-        }
+      for (HashIterC<StringC, TreeModelIterC> it(m_selected); it; it++) {
+        newDb.Insert(it.Key(), faceDb[it.Key()]);
       }
 
       if (!FaceN::Save(filename, newDb)) {
@@ -450,24 +463,71 @@ namespace RavlN {
 
     //////////////////////////////////////////////
 
-    bool ViewPageBodyC::DeleteButton()
+    bool ViewPageBodyC::DeleteSelected(bool removeFromDatabase)
     {
       MutexLockC lock(m_mutex);
 
-      FaceInfoDbC newDb;
-      for (HashIterC<StringC, FaceInfoC> it(faceDb); it; it++) {
-        if (!m_selected[it.Key()]) {
-          newDb.Insert(it.Key(), it.Data());
+      RCHashC<StringC, TreeModelIterC> withChildren;
+      for (HashIterC<StringC, TreeModelIterC> it(m_selected); it; it++) {
+
+        if (!faceDb.IsElm(it.Key())) {
+          rWarning("Face not in database");
+          return false;
+        }
+
+        // Delete it from database
+        if(removeFromDatabase)
+          faceDb.Del(it.Key());
+
+        // need to delete from tree
+        if (it.Data().HasChildren()) {
+          withChildren.Insert(it.Key(), it.Data());
+
+        } else {
+          treeStore.GUIDeleteRow(it.Data());
         }
       }
 
-      faceDb = newDb;
+      for (HashIterC<StringC, TreeModelIterC> it(withChildren); it; it++) {
 
-      Init();
+        // it might not have any children anymore
+        if (!it.Data().HasChildren()) {
+          treeStore.GUIDeleteRow(it.Data());
+          continue;
+        }
 
-      treeStore.GUIEmpty();
-      UpdateTreeStore();
-      LoadData();
+        // Urm what to do here
+        TreeModelIterC childIt = it.Data().Children();
+
+        StringC id;
+        if (!treeStore.GetValue(childIt, 0, id)) {
+          continue;
+        }
+
+        StringC faceId;
+        if (!treeStore.GetValue(childIt, 1, faceId)) {
+          continue;
+        }
+
+        bool selected;
+        if (!treeStore.GetValue(childIt, 2, selected)) {
+          continue;
+        }
+
+        treeStore.GUISetValue(it.Data(), 0, id);
+        treeStore.GUISetValue(it.Data(), 1, faceId);
+        treeStore.GUISetValue(it.Data(), 2, selected);
+
+        treeStore.DeleteRow(childIt);
+
+      }
+
+      lock.Unlock();
+      Init(); // this resets the sighting set
+
+      //treeStore.GUIEmpty();
+      //UpdateTreeStore();
+      LoadData(faceDb.Keys().First());
       return true;
     }
 
@@ -484,15 +544,14 @@ namespace RavlN {
         return false; // none selected, do not do anything
       }
       SaveData();
+
       if (!treeStore.GetValue(selected.First(), 1, faceId))
         return false; // had trouble getting value, do nothing
-      for (iter.First(); iter; iter++) {
-        if (iter.Data() == faceId) {
-          LoadData();
-          return true;
-        }
-      }
-      return false;
+
+      // put it into our cache of recently selected
+      m_prevSelected.Insert(faceId, selected.First());
+      return LoadData(faceId);
+
     }
 
     bool ViewPageBodyC::ProcessKeyboard(GdkEventKey *KeyEvent)
@@ -547,8 +606,19 @@ namespace RavlN {
         StringC faceId;
         if (!treeStore.GetValue(selected.First(), 1, faceId))
           return false; // had trouble getting value, do nothing
-        m_selected[faceId] = !m_selected[faceId];
-        treeStore.SetValue(selected.First(), 2, m_selected[faceId]);
+        bool selectedBox;
+        if (!treeStore.GetValue(selected.First(), 2, selectedBox))
+          return false;
+
+        if (selectedBox) {
+          treeStore.SetValue(selected.First(), 2, false);
+          if (m_selected.IsElm(faceId)) {
+            m_selected.Del(faceId);
+          }
+        } else {
+          treeStore.SetValue(selected.First(), 2, true);
+          m_selected.Insert(faceId, selected.First());
+        }
 
       }
 
@@ -577,12 +647,12 @@ namespace RavlN {
             //: do the first row
             treeStore.GUISetValue(iter1, 0, faceIt.Data().ActualId());
             treeStore.GUISetValue(iter1, 1, faceIt.Data().FaceId());
-            treeStore.GUISetValue(iter1, 2, m_selected[faceIt.Data().FaceId()]);
+            treeStore.GUISetValue(iter1, 2, m_selected.IsElm(faceIt.Data().FaceId()));
             for (faceIt++; faceIt; faceIt++) {
               treeStore.AppendRow(iter2, iter1);
               treeStore.GUISetValue(iter2, 0, faceIt.Data().ActualId());
               treeStore.GUISetValue(iter2, 1, faceIt.Data().FaceId());
-              treeStore.GUISetValue(iter2, 2, m_selected[faceIt.Data().FaceId()]);
+              treeStore.GUISetValue(iter2, 2, m_selected.IsElm(faceIt.Data().FaceId()));
             }
 
           }
@@ -604,7 +674,7 @@ namespace RavlN {
             FaceInfoC faceInfo = faceDb[faceIt.Data()];
             treeStore.GUISetValue(iter1, 0, faceInfo.ActualId());
             treeStore.GUISetValue(iter1, 1, faceInfo.FaceId());
-            treeStore.GUISetValue(iter1, 2, m_selected[faceInfo.FaceId()]);
+            treeStore.GUISetValue(iter1, 2, m_selected.IsElm(faceInfo.FaceId()));
             for (faceIt++; faceIt; faceIt++) {
 
               if (!faceDb.IsElm(faceIt.Data())) {
@@ -615,7 +685,7 @@ namespace RavlN {
               treeStore.AppendRow(iter2, iter1);
               treeStore.GUISetValue(iter2, 0, faceInfo.ActualId());
               treeStore.GUISetValue(iter2, 1, faceInfo.FaceId());
-              treeStore.GUISetValue(iter2, 2, m_selected[faceInfo.FaceId()]);
+              treeStore.GUISetValue(iter2, 2, m_selected.IsElm(faceInfo.FaceId()));
             }
 
           }
@@ -663,7 +733,7 @@ namespace RavlN {
       FaceInfoDbC newDb;
       for (HashIterC<StringC, FaceInfoC> it(faceDb); it; it++) {
 
-        if (m_selected[it.Key()]) {
+        if (m_selected.IsElm(it.Key())) {
           rInfo("Renaming from '%s' to '%s'", it.Key().data(), to.data());
           faceDb[it.Key()].ActualId() = to;
         }
@@ -672,7 +742,7 @@ namespace RavlN {
       m_selected.Empty();
       treeStore.GUIEmpty();
       UpdateTreeStore();
-      LoadData();
+      LoadData(*iter);
 
       return true;
     }
@@ -686,11 +756,17 @@ namespace RavlN {
         return false;
       }
 
+      if(m_sightingMode.GUIIsActive()) {
+        m_createSightingButton.GUISetState(GTK_STATE_NORMAL);
+      } else {
+        m_createSightingButton.SetState(GTK_STATE_INSENSITIVE);
+      }
+
       // We need a complete refresh if we have changed mode
 
       treeStore.GUIEmpty();
       UpdateTreeStore();
-      LoadData();
+      LoadData(faceDb.Keys().First());
       return true;
 
     }
@@ -712,10 +788,68 @@ namespace RavlN {
       return true;
     }
 
+    //: Create a new sighting out of the selected faces
+    bool ViewPageBodyC::CreateSighting()
+    {
+      RavlInfo("Create a new sighting!");
+
+      // Next we need to add faces as a new sighting
+      StringC unknownId = "0:0";
+      SightingC newSighting(unknownId);
+      TreeModelIterC newRow;
+      TreeModelIterC newerRow;
+      treeStore.AppendRow(newRow);
+      bool first = true;
+      for (HashIterC<StringC, TreeModelIterC> it(m_selected); it; it++) {
+
+        // check it exists
+        if (!faceDb.IsElm(it.Key())) {
+          rWarning("Face ID not in database.");
+          continue;
+        }
+
+        rInfo("Adding face id '%s'", it.Key().data());
+        newSighting.AddFaceId(it.Key());
+        faceDb[it.Key()].ActualId() = unknownId;
+
+        if (first) {
+          treeStore.GUISetValue(newRow, 0, unknownId);
+          treeStore.GUISetValue(newRow, 1, it.Key());
+          treeStore.GUISetValue(newRow, 2, false);
+          first = false;
+
+        } else {
+
+          treeStore.AppendRow(newerRow, newRow);
+          treeStore.GUISetValue(newerRow, 0, unknownId);
+          treeStore.GUISetValue(newerRow, 1, it.Key());
+          treeStore.GUISetValue(newerRow, 2, false);
+        }
+
+      }
+
+      // First lets delete them from the current sighting set
+      if (!m_sightingSet.DeleteFaceIds(newSighting.FaceIds())) {
+        rWarning("Failed to delete all the face ids.  Going to continue anyway.");
+      }
+
+      if (!m_sightingSet.Append(newSighting)) {
+        rWarning("Failed to append new sighting");
+      }
+
+      // Deleted the selected entries from the tree view
+      // However we do not want to delete the entries from the database
+      DeleteSelected(false);
+
+      LoadData(faceDb.Keys().First());
+      return true;
+    }
+
     // Show file dialog when Move button selected
     bool ViewPageBodyC::MoveButton()
     {
       m_fileSelectorMoveSelected.GUIShow();
+
       return true;
     }
 
@@ -725,19 +859,21 @@ namespace RavlN {
 
       rInfo("Moving faces to selected to file '%s'", filename.data());
 
+      FilenameC fname(filename);
       FaceInfoDbC faceInfoDb;
-      if (!Load(filename, faceInfoDb)) {
-        AlertBox("Failed to load database", &Manager.GetRootWindow());
-        return false;
-      }
-      rInfo("Loaded '%s' with %d subjects and %d faces", filename.data(), faceInfoDb.NoClients(), faceInfoDb.NoFaces());
-
-      for (HashIterC<StringC, bool> it(m_selected); it; it++) {
-        if (it.Data()) {
-          rInfo("Adding subject '%s' and face id '%s'", faceDb[it.Key()].ActualId().data(), it.Key().data());
-          faceInfoDb.Insert(it.Key(), faceDb[it.Key()]);
-          faceDb.Del(it.Key()); // And remove from our database!
+      if (fname.Exists()) {
+        if (!Load(filename, faceInfoDb)) {
+          AlertBox("Failed to load database", &Manager.GetRootWindow());
+          return false;
         }
+        rInfo("Loaded '%s' with %d subjects and %d faces", filename.data(), faceInfoDb.NoClients(), faceInfoDb.NoFaces());
+      } else {
+        rInfo("Saving to new XML file'%s'", filename.data());
+      }
+
+      for (HashIterC<StringC, TreeModelIterC> it(m_selected); it; it++) {
+        rInfo("Adding subject '%s' and face id '%s'", faceDb[it.Key()].ActualId().data(), it.Key().data());
+        faceInfoDb.Insert(it.Key(), faceDb[it.Key()]);
       }
 
       rInfo("Saving to '%s' with %d subjects and %d faces", filename.data(), faceInfoDb.NoClients(), faceInfoDb.NoFaces());
@@ -746,11 +882,7 @@ namespace RavlN {
         return false;
       }
 
-      Init();
-      treeStore.GUIEmpty();
-      UpdateTreeStore();
-      LoadData();
-      return true;
+      return DeleteSelected();
     }
 
   }

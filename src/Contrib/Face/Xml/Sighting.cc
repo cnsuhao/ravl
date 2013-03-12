@@ -17,7 +17,7 @@ namespace RavlN {
     using namespace RavlN;
 
     SightingBodyC::SightingBodyC(const StringC & id) :
-        actualId(id)
+        m_actualId(id)
     {
     }
 
@@ -30,7 +30,7 @@ namespace RavlN {
       if (!xml)
         return;
 
-      xml.GetAttrib("id", actualId);
+      xml.GetAttrib("id", m_actualId);
 
       //: The next tag is the actual id
       while (xml && xml.PeekTag(strType) != XMLEndTag) {
@@ -53,9 +53,15 @@ namespace RavlN {
 
     bool SightingBodyC::AddFaceId(const StringC & faceid)
     {
-      list.InsLast(faceid);
+      m_faceIds.InsLast(faceid);
       return true;
     }
+
+    bool SightingBodyC::DeleteFaceId(const StringC & faceId) {
+
+         return m_faceIds.Del(faceId);
+
+       }
 
     XMLOStreamC &SightingBodyC::SaveXML(XMLOStreamC &xml) const
     {
@@ -66,13 +72,13 @@ namespace RavlN {
       // Start tag
       xml.StartTag("Sighting");
 
-      xml.SetAttrib("id", actualId);
+      xml.SetAttrib("id", m_actualId);
 
       // Write child tags
       xml.StartContents();
 
       //: All the paths to the images
-      for (DLIterC < StringC > it(list); it; it++) {
+      for (DLIterC < StringC > it(m_faceIds); it; it++) {
         xml.StartTag("faceid");
         xml << *it;
         xml.EndTag();
@@ -83,6 +89,9 @@ namespace RavlN {
 
       return xml;
     }
+
+
+
 
     XMLIStreamC &operator>>(XMLIStreamC &xml, SightingC &data)
     {
