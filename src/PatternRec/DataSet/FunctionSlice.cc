@@ -45,7 +45,7 @@ namespace RavlN {
     : FunctionBodyC(inputSize, indexRange.Size()),
       m_indexRange(indexRange)
   { 
-    RavlAssertMsg(indexRange.Size() < (IntT)inputSize, "Oops.  Slice bigger than vector");
+    RavlAssertMsg(indexRange.Size() <= (IntT)inputSize, "Oops.  Slice bigger than vector");
   }
   
   //: Load from stream.
