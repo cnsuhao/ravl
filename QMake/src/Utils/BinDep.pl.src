@@ -70,9 +70,9 @@ sub PrintHelp {
         if ($found) { # Located library - use full path
           push @Output, $found . " " ;
         }
-        else { # Library not found - keep -l form
+        else { # Library not found - drop
           $returnCode=-1;
-          push @Output, @Find[$#Find] . " " ;
+          # push @Output, @Find[$#Find] . " " ;
           print stderr "Error - could not locate library @Find[$#Find].\n";
         }
       }
