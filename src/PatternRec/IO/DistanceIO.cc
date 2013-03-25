@@ -30,8 +30,8 @@ namespace RavlN {
 
   static TypeNameC type1(typeid(DistanceC),"RavlN::DistanceC");
   
-  FileFormatStreamC<DistanceC> FileFormatStream_Distance;
-  FileFormatBinStreamC<DistanceC> FileFormatBinStream_Distance;
+  static FileFormatStreamC<DistanceC> FileFormatStream_Distance;
+  static FileFormatBinStreamC<DistanceC> FileFormatBinStream_Distance;
   
   Function1C Distance2Function1(const DistanceC &dist)
   { return dist; }
@@ -43,8 +43,8 @@ namespace RavlN {
   
   static TypeNameC type2(typeid(DistanceMahalanobisC),"RavlN::DistanceMahalanobisC");
   
-  FileFormatStreamC<DistanceMahalanobisC> FileFormatStream_DistanceMahalanobis;
-  FileFormatBinStreamC<DistanceMahalanobisC> FileFormatBinStream_DistanceMahalanobis;
+  static FileFormatStreamC<DistanceMahalanobisC> FileFormatStream_DistanceMahalanobis;
+  static FileFormatBinStreamC<DistanceMahalanobisC> FileFormatBinStream_DistanceMahalanobis;
 
   DistanceC DistanceMahalanobis2Distance(const DistanceMahalanobisC &dist)
   { return dist; }
@@ -89,8 +89,8 @@ namespace RavlN {
   
   static TypeNameC type6(typeid(DistanceRobustC),"RavlN::DistanceRobustC");
 
-  FileFormatStreamC<DistanceRobustC> FileFormatStream_DistanceRobusts;
-  FileFormatBinStreamC<DistanceRobustC> FileFormatBinStream_DistanceRobust;
+  static FileFormatStreamC<DistanceRobustC> FileFormatStream_DistanceRobusts;
+  static FileFormatBinStreamC<DistanceRobustC> FileFormatBinStream_DistanceRobust;
   
   DistanceC DistanceRobust2Distance(const DistanceRobustC &dist)
   { return dist; }

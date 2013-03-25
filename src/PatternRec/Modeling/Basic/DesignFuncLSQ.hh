@@ -25,8 +25,7 @@ namespace RavlN {
     : public DesignFunctionSupervisedBodyC
   {
   public:
-    DesignFuncLSQBodyC()
-    {}
+    DesignFuncLSQBodyC();
     //: Default constructor.
     
     DesignFuncLSQBodyC(const XMLFactoryContextC &factory);
