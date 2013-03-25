@@ -19,14 +19,25 @@ namespace RavlN {
   extern RandomMersenneTwisterC twister;
   // The default variable of generators.
 
-  static RandomGaussC rg;
+  static RandomGaussC g_rg;
   
   //: Default.
   
   RandomGaussC::RandomGaussC() 
-   : iset(false)
+   : iset(false),
+     gset(0),
+     gasdev(0)
   {}
   
+  //: Construct with seed.
+
+  RandomGaussC::RandomGaussC(UIntT seed)
+   : twister(seed),
+     iset(false),
+     gset(0),
+     gasdev(0)
+  {}
+
   //: Generate the next value.
   
   float RandomGaussC::Generate(RandomMersenneTwisterC& generator) {
@@ -49,7 +60,7 @@ namespace RavlN {
   
   float  RandomGauss() {
     MTWriteLockC lock(1);
-    return rg.Generate(twister);
+    return g_rg.Generate(twister);
   }
   
 }
