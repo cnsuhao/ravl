@@ -35,8 +35,8 @@ namespace RavlN {
   
   static TypeNameC type1(typeid(ClassifierC),"RavlN::ClassifierC");
   
-  FileFormatStreamC<ClassifierC> FileFormatStream_Classifier;
-  FileFormatBinStreamC<ClassifierC> FileFormatBinStream_Classifier;
+  static FileFormatStreamC<ClassifierC> FileFormatStream_Classifier;
+  static FileFormatBinStreamC<ClassifierC> FileFormatBinStream_Classifier;
 
   //:- ClassifierNearestNeighbourC ------------------------------------------------------------------
   
@@ -48,8 +48,8 @@ namespace RavlN {
   
   static TypeNameC type2(typeid(ClassifierNearestNeighbourC),"RavlN::ClassifierNearestNeighbourC");
   
-  FileFormatStreamC<ClassifierNearestNeighbourC> FileFormatStream_ClassifierNearestNeighbour;
-  FileFormatBinStreamC<ClassifierNearestNeighbourC> FileFormatBinStream_ClassifierNearestNeighbour;
+  static FileFormatStreamC<ClassifierNearestNeighbourC> FileFormatStream_ClassifierNearestNeighbour;
+  static FileFormatBinStreamC<ClassifierNearestNeighbourC> FileFormatBinStream_ClassifierNearestNeighbour;
   
   //:- ClassifierKNearestNeighbourC ------------------------------------------------------------------
   
@@ -61,8 +61,8 @@ namespace RavlN {
   
   static TypeNameC type3(typeid(ClassifierKNearestNeighbourC),"RavlN::ClassifierKNearestNeighbourC");
   
-  FileFormatStreamC<ClassifierKNearestNeighbourC> FileFormatStream_ClassifierKNearestNeighbour;
-  FileFormatBinStreamC<ClassifierKNearestNeighbourC> FileFormatBinStream_ClassifierKNearestNeighbour;
+  static FileFormatStreamC<ClassifierKNearestNeighbourC> FileFormatStream_ClassifierKNearestNeighbour;
+  static FileFormatBinStreamC<ClassifierKNearestNeighbourC> FileFormatBinStream_ClassifierKNearestNeighbour;
   
   //:- ClassifierAverageNearestNeighbourC ------------------------------------------------------------------
 
@@ -74,8 +74,8 @@ namespace RavlN {
   
   static TypeNameC type5(typeid(ClassifierAverageNearestNeighbourC),"RavlN::ClassifierAverageNearestNeighbourC");
   
-  FileFormatStreamC<ClassifierAverageNearestNeighbourC> FileFormatStream_ClassifierAverageNearestNeighbour;
-  FileFormatBinStreamC<ClassifierAverageNearestNeighbourC> FileFormatBinStream_ClassifierAverageNearestNeighbour;
+  static FileFormatStreamC<ClassifierAverageNearestNeighbourC> FileFormatStream_ClassifierAverageNearestNeighbour;
+  static FileFormatBinStreamC<ClassifierAverageNearestNeighbourC> FileFormatBinStream_ClassifierAverageNearestNeighbour;
   
   //:- ClassifierDiscriminantFunctionC ------------------------------------------------------------------
   
@@ -87,8 +87,8 @@ namespace RavlN {
   
   static TypeNameC type6(typeid(ClassifierDiscriminantFunctionC),"RavlN::ClassifierDiscriminantFunctionC");
   
-  FileFormatStreamC<ClassifierDiscriminantFunctionC> FileFormatStream_ClassifierDiscriminantFunction;
-  FileFormatBinStreamC<ClassifierDiscriminantFunctionC> FileFormatBinStream_ClassifierDiscriminantFunction;
+  static FileFormatStreamC<ClassifierDiscriminantFunctionC> FileFormatStream_ClassifierDiscriminantFunction;
+  static FileFormatBinStreamC<ClassifierDiscriminantFunctionC> FileFormatBinStream_ClassifierDiscriminantFunction;
 
   
   

@@ -22,10 +22,10 @@ namespace RavlN {
   
   static TypeNameC type1(typeid(GaussianMixtureC),"RavlN::GaussianMixtureC");
   
-  FileFormatStreamC<GaussianMixtureC> FileFormatStream_GaussianMixture;
-  FileFormatBinStreamC<GaussianMixtureC> FileFormatBinStream_GaussianMixture;
+  static FileFormatStreamC<GaussianMixtureC> FileFormatStream_GaussianMixture;
+  static FileFormatBinStreamC<GaussianMixtureC> FileFormatBinStream_GaussianMixture;
   
-  FunctionC GaussianMixture2Function(const GaussianMixtureC &func)
+  static FunctionC GaussianMixture2Function(const GaussianMixtureC &func)
   { return func; }
   
   DP_REGISTER_CONVERSION_NAMED(GaussianMixture2Function ,1,
