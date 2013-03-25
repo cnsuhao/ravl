@@ -78,8 +78,10 @@ namespace RavlAudioN {
       return typeid(void);
     }
     int channels = devInfo->maxInputChannels;
-    if(channels == 0)
+    if(channels == 0) {
+      ONDEBUG(RavlWarning("No channels found."));
       return typeid(void);
+    }
     
     int reqChannels = Channels(obj_type);
 
@@ -307,12 +309,18 @@ namespace RavlAudioN {
       PaDeviceIndex ind;
       if(forInput) {
         ind = Pa_GetDefaultInputDevice();
+        if(ind < 0) {
+          RavlWarning("AudioPort failed to find default input device");
+          // Failed to find appropriate device.
+          return 0;
+        }
       } else {
         ind = Pa_GetDefaultOutputDevice();
-      }
-      if(ind < 0) {
-        // Failed to find appropriate device.
-        return 0;
+        if(ind < 0) {
+          RavlWarning("AudioPort failed to find default output device");
+          // Failed to find appropriate device.
+          return 0;
+        }
       }
       devId = ind;
       return Pa_GetDeviceInfo(ind);
@@ -330,6 +338,7 @@ namespace RavlAudioN {
         return xdevInfo;
       }
     }
+
     RavlInfo("Failed to find device '%s'. Available devices are: ",devName.c_str());
     for(int i = 0;i < numDevices;i++) {
       const PaDeviceInfo *xdevInfo = 0;
