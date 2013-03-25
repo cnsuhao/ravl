@@ -60,7 +60,7 @@ namespace RavlN {
     
     RealT EuclidDistance(const FPointC<N> & i) const 
     { return this->EuclideanDistance(i); }
-    //: Returns the distance of two indexes in Euclid metric.
+    //!deprecated: Returns the distance of two indexes in Euclid metric.
     // Identical to EuclideanDistance, which should be used in new code.
     
     bool IsReal() const
