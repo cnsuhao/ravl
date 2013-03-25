@@ -118,6 +118,14 @@ namespace RavlAudioN {
 
     if(err != paNoError) {
       RavlError("Failed to open output. Error: %s ",Pa_GetErrorText (err));
+      if(err == paUnanticipatedHostError) {
+        const PaHostErrorInfo *lastHostError = Pa_GetLastHostErrorInfo();
+        RavlError(" APIId:%u Code:%d Error text:%s ",
+            (unsigned) lastHostError->hostApiType,
+            (int) lastHostError->errorCode ,
+            lastHostError->errorText);
+      }
+
       return false;
     }
 
@@ -187,8 +195,10 @@ namespace RavlAudioN {
       err = Pa_IsFormatSupported( 0, &ioParameters, rate);
     }
     lock.Unlock();
-    if(err != paNoError)
-       return false;
+    if(err != paNoError) {
+      RavlWarning("Failed to set sample rate.");
+      return false;
+    }
     m_sampleRate = rate;
     return true;
   }
