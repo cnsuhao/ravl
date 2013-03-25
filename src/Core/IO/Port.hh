@@ -230,7 +230,7 @@ namespace RavlN {
     
     virtual IntT GetArray(SArray1dC<DataT> &data);
     //: Get an array of data from stream.
-    // returns the number of elements succesfully processed.
+    // returns the number of elements successfully processed.
     // NB. This need NOT be overridden in client classes 
     // unless fast handling of arrays of data elements is required.
     
