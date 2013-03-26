@@ -16,13 +16,13 @@
 //! file="Ravl/Image/Base/DrawSymbol.hh"
 //! example=exDraw.cc
 
-#include "DrawCircle.hh"
-#include "DrawCross.hh"
-#include "DrawEllipse.hh"
-#include "DrawFrame.hh"
-#include "DrawLine.hh"
-#include "DrawMask.hh"
-#include "DrawPolygon.hh"
-#include "Font.hh"
+#include "Ravl/Image/DrawCircle.hh"
+#include "Ravl/Image/DrawCross.hh"
+#include "Ravl/Image/DrawEllipse.hh"
+#include "Ravl/Image/DrawFrame.hh"
+#include "Ravl/Image/DrawLine.hh"
+#include "Ravl/Image/DrawMask.hh"
+#include "Ravl/Image/DrawPolygon.hh"
+#include "Ravl/Image/Font.hh"
 
 #endif
