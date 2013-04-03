@@ -42,9 +42,12 @@ namespace RavlAudioN {
   
   class WindowSignalBaseC {
   public:
-    WindowSignalBaseC(RAWindowSignalT winType,UIntT size);
+    WindowSignalBaseC(RAWindowSignalT winType,UIntT size,UIntT frameSeperation);
     //: Constructor.
     
+    WindowSignalBaseC(const XMLFactoryContextC &factory);
+    //: XML factory constructor.
+
     bool Generate(SArray1dC<RealT> &filter);
     //: Generate the filter.
 
@@ -66,6 +69,7 @@ namespace RavlAudioN {
   protected:
     RAWindowSignalT winType;
     UIntT winSize;
+    UIntT frameSep;
   };
   
   //! userlevel=Develop
@@ -78,10 +82,10 @@ namespace RavlAudioN {
   {
   public:
     WindowSignalBodyC(RAWindowSignalT sigType,UIntT frameSize,UIntT frameSeperation)
-      : WindowSignalBaseC(sigType,frameSize),
-	frameSep(frameSeperation),
+      : WindowSignalBaseC(sigType,frameSize,frameSeperation),
 	blocks((frameSize / frameSeperation)+1)
     {
+
       RavlAssert(frameSize > 0);
       RavlAssert(frameSeperation > 0);
       Generate(filter);
@@ -93,8 +97,7 @@ namespace RavlAudioN {
     // frameSeperation - Separation of successive frames in samples.<br>
     
     WindowSignalBodyC(const SArray1dC<RealT> &nfilter,UIntT frameSeperation)
-      : WindowSignalBaseC(RAWCustom,nfilter.Size()),
-	frameSep(frameSeperation),
+      : WindowSignalBaseC(RAWCustom,nfilter.Size(),frameSeperation),
 	blocks((nfilter.Size() / frameSeperation)+1),
 	filter(nfilter)
     {
@@ -105,7 +108,19 @@ namespace RavlAudioN {
     // nfilter - Filter to use. <br>
     // frameSeperation - Separation of successive frames in samples.
     
+    WindowSignalBodyC(const XMLFactoryContextC &factory)
+     : WindowSignalBaseC(factory),
+       blocks((winSize / frameSep)+1)
+    {
+      DPStreamOpBodyC::Setup(factory);
+      Generate(filter);
+      RavlAssert(frameSep > 0);
+      RavlAssert(filter.Size() > 0);
+    }
+    //: XMLFactory constructor
+
     bool GetBlock(SArray1dC<InT> &blk) {
+      RavlAssert(this->input.IsValid());
       UIntT n = this->input.GetArray(blk);
       while(n < blk.Size() && !this->input.IsGetEOS()) {
 	SArray1dC<InT> tmp = blk.From(n);
@@ -176,7 +191,6 @@ namespace RavlAudioN {
     //: Access filter.
     
   protected:
-    UIntT frameSep;
     FixedQueueC<SArray1dC<InT> > blocks; 
     SArray1dC<FilterT> filter;
   };
@@ -209,7 +223,14 @@ namespace RavlAudioN {
     //: Constructor.
     // nfilter - Filter to use. <br>
     // frameSeperation - Separation of successive frames in samples.
-    
+
+    WindowSignalC(const XMLFactoryContextC &factory)
+      : DPEntityC(*new WindowSignalBodyC<InT,OutT,FilterT>(factory))
+    {}
+    //: Constructor.
+    // nfilter - Filter to use. <br>
+    // frameSeperation - Separation of successive frames in samples.
+
   protected:
     WindowSignalBodyC<InT,OutT,FilterT> &Body()
     { return dynamic_cast<WindowSignalBodyC<InT,OutT,FilterT> &>(DPEntityC::Body()); }

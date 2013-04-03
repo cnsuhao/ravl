@@ -48,11 +48,20 @@ namespace RavlAudioN {
 
   //: Constructor.
   
-  WindowSignalBaseC::WindowSignalBaseC(RAWindowSignalT nwinType,UIntT nsize)
+  WindowSignalBaseC::WindowSignalBaseC(RAWindowSignalT nwinType,UIntT nsize,UIntT frameSeperation)
     : winType(nwinType),
-      winSize(nsize)
+      winSize(nsize),
+      frameSep(frameSeperation)
   {}
+
+  //: XML factory constructor.
   
+  WindowSignalBaseC::WindowSignalBaseC(const XMLFactoryContextC &factory)
+   : winType(String2WindowType(factory.AttributeString("windowType","Ramp"))),
+     winSize(factory.AttributeUInt("windowSize",512)),
+     frameSep(factory.AttributeUInt("frameStep",256))
+  {}
+
   //: Generate the filter.
   
   bool WindowSignalBaseC::Generate(SArray1dC<RealT> &filter) {
@@ -131,16 +140,15 @@ namespace RavlAudioN {
 
   //: Construct window function
   WindowSignalFloatC::WindowSignalFloatC(RAWindowSignalT sigType,UIntT size,UIntT frameSeperation)
-   : DPEntityC(new WindowSignalBodyC<float,float,float>(sigType,size,frameSeperation)),
-     WindowSignalC<float,float,float>(sigType,size,frameSeperation)
+   : DPEntityC(new WindowSignalBodyC<float,float,float>(sigType,size,frameSeperation))
   {}
 
   //: Construct from an xml file.
   WindowSignalFloatC::WindowSignalFloatC(const XMLFactoryContextC &factory)
-  : DPEntityC(new WindowSignalBodyC<float,float,float>(String2WindowType(factory.AttributeString("windowType","Ramp")),
-      factory.AttributeUInt("windowSize",512),
-      factory.AttributeUInt("frameStep",256)))
-  {}
+  : DPEntityC(new WindowSignalBodyC<float,float,float>(factory))
+  {
+
+  }
 
   void LinkWindowSignal()
   {}

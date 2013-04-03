@@ -98,7 +98,7 @@ namespace RavlAudioN {
     ONDEBUG(RavlDebug("ProbeSave(), Checking file type. %s for '%s' ",RavlN::TypeName(obj_type),filename.c_str()));
 
     StringC devType = ExtractDevice(filename);
-    RavlDebug("Got type %s ",devType.c_str());
+    ONDEBUG(RavlDebug("Got type %s ",devType.c_str()));
     if(devType != "PORTAUDIO") {
       ONDEBUG(RavlDebug("Not recognised."));
       return typeid(void);
