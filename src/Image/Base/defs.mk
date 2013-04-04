@@ -23,7 +23,7 @@ HEADERS=ImageRectangle.hh Image.hh \
  ScaleValues.hh Reflect.hh \
  RGBcYUV.hh ImageConv.hh \
  Font.hh PSFFont.h \
- DrawFrame.hh DrawCross.hh DrawMask.hh \
+ DrawSymbol.hh DrawFrame.hh DrawCross.hh DrawMask.hh \
  DrawLine.hh DrawCircle.hh DrawPolygon.hh  DrawEllipse.hh\
  Deinterlace.hh BilinearInterpolation.hh \
  YCbCrBT601Value.hh ByteYCbCrBT601Value.hh UInt16YCbCrBT601Value.hh \

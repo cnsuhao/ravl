@@ -59,7 +59,7 @@ namespace RavlImageN {
     //: Is this a valid font.
     
     Index2dC Center(const StringC &text) const;
-    //: Get the offset to the center of the string.
+    //: Get the offset to the centre of the string.
     
     Index2dC Size(const StringC &text) const;
     //: Compute the size of image required to render 'text'.
@@ -115,17 +115,36 @@ namespace RavlImageN {
   template<class DataT>
   void DrawTextCenter(const FontC &font,
 		const DataT &value,
-		const Index2dC &center,
+		const Index2dC &centre,
 		const StringC &text,
 		ImageC<DataT> &image) 
   { 
     RavlAssert(font.IsValid());
-    DrawText(font,value,center - font.Center(text),text,image); 
+    DrawText(font,value,centre - font.Center(text),text,image); 
   }
   //: Draw text on image, centred.  
-  // Text is centred on "center".
+  // Text is centred on "centre".
 
 
+  template<class DataT>
+  void DrawText(ImageC<DataT> &image,
+                const DataT &value,
+		const Index2dC &offset,
+		const StringC &text
+		) 
+  { DrawText(DefaultFont(), value, offset, text, image); }
+  //: Draw text on image.  
+  // Text is positioned below and to right of "offset", using the default font.
+
+  template<class DataT>
+  void DrawTextCenter(ImageC<DataT> &image,
+                const DataT &value,
+		const Index2dC &centre,
+		const StringC &text
+		) 
+  { DrawTextCenter(DefaultFont(), value, centre, text, image); }
+  //: Draw text on image, centred.  
+  // Text is centred on "centre", using the default font.
 }
 
 #endif

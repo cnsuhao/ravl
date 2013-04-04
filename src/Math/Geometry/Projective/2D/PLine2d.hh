@@ -59,8 +59,9 @@ namespace RavlN {
     //: Constructs the projective line passing through the Euclidian
     //: point 'p' and the Euclidian line direction vector 'v'.
 
-    PLine2dC(const LinePP2dC & l);
+    PLine2dC(const LinePP2dC & l, RealT s=1);
     //: Constructs the projective line from the Euclidian line 'l'.
+    // s is the projective scale for the line endpoints
 
     inline PLine2dC(RealT p1, RealT p2, RealT p3)
       : PPointLine2dC(p1, p2, p3)
