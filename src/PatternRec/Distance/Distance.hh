@@ -7,7 +7,6 @@
 #ifndef RAVL_DISTANCE_HEADER 
 #define RAVL_DISTANCE_HEADER 1
 //////////////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! lib=RavlPatternRec
 //! docentry="Ravl.API.Pattern Recognition.Distance"
 //! file="Ravl/PatternRec/Distance/Distance.hh"
@@ -25,8 +24,7 @@ namespace RavlN {
     : public Function1BodyC
   {
   public:
-    DistanceBodyC()
-    {}
+    DistanceBodyC();
     //: Default constructor.
 
     DistanceBodyC(const XMLFactoryContextC &factory);
