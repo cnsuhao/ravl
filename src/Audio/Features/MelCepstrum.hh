@@ -45,6 +45,8 @@ namespace RavlAudioN {
     SArray1dC<RealT> Apply(const SArray1dC<RealT> &melSpectrum);
     //: Compute mel cepstrum from mel spectrum parameters.
     
+    typedef RavlN::SmartPtrC<MelCepstrumC> RefT;
+    //: Handle to classs
   protected:
     UIntT m_numCepstrum;
     SArray1dC<SArray1dC<RealT> > filters;
