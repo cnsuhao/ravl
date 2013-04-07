@@ -24,10 +24,7 @@ namespace RavlN {
     : public DesignClusterBodyC
   {
   public:
-    DesignKMeansBodyC(UIntT nk,const DistanceC &distanceMetric = DistanceSqrEuclideanC())
-      : distance(distanceMetric),
-	k(nk)
-    {}
+    DesignKMeansBodyC(UIntT nk,const DistanceC &distanceMetric = DistanceSqrEuclideanC());
     //: Constructor.
     
     DesignKMeansBodyC(istream &strm);
