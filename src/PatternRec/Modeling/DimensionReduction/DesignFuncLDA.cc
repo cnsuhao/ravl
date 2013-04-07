@@ -20,7 +20,7 @@
 #pragma instantiate RavlN::DPIPortBodyC<RavlN::Tuple2C<RavlN::VectorC,RavlN::StringC> > 
 #endif
 
-#define DODEBUG 0
+#define DODEBUG 1
 #if DODEBUG
 #define ONDEBUG(x) x
 #else
@@ -40,7 +40,9 @@ namespace RavlN {
   //: Load from stream.
   
   DesignFuncLDABodyC::DesignFuncLDABodyC(istream &strm) 
-    : DesignFuncReduceBodyC(strm)
+    : DesignFuncReduceBodyC(strm),
+      forceHimDim(false),
+      classSamp(0)
   {
     strm >> mean >> lda;
     classSamp = 0;
@@ -49,7 +51,9 @@ namespace RavlN {
   //: Load from binary stream.
   
   DesignFuncLDABodyC::DesignFuncLDABodyC(BinIStreamC &strm)
-    : DesignFuncReduceBodyC(strm)
+    : DesignFuncReduceBodyC(strm),
+      forceHimDim(false),
+      classSamp(0)
   {
     strm >> mean >> lda;
     classSamp = 0;
@@ -69,7 +73,7 @@ namespace RavlN {
   bool DesignFuncLDABodyC::Save(BinOStreamC &out) const {
     if(!DesignFuncReduceBodyC::Save(out))
       return false;
-    out << " " << mean << " " << lda;
+    out << mean << lda;
     return true;
   }
 
@@ -97,7 +101,7 @@ namespace RavlN {
       
     DesignFuncPCAC pca(varPreserved);
     FunctionC pcaFunc = pca.Apply(inVecsPca);
-    ONDEBUG(cerr << "Dimensionality reduction using PCA from"  << pcaFunc.InputSize() << " to " <<   pcaFunc.OutputSize() << endl);
+    ONDEBUG(cerr << "Dimensionality reduction. Preserving " << varPreserved << ", using PCA from "  << pcaFunc.InputSize() << " to " <<   pcaFunc.OutputSize() << endl);
     mean = pca.Mean();
     SampleC<VectorC> outPca = pcaFunc.Apply(inVecsPca);
 
