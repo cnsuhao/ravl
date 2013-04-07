@@ -45,7 +45,7 @@ int main(int nargs, char **argv) {
     ClassifierC classifier;
     RavlInfo( "Loading classifier from '%s'", classifierFile.data());
     if (!Load(classifierFile, classifier)) {
-      SysLog(SYSLOG_ERR, "Trouble loading classifier");
+      RavlError("Trouble loading classifier");
       return 1;
     }
 
@@ -54,7 +54,7 @@ int main(int nargs, char **argv) {
     // FIXME: Still want to use Load/Save instead
     DataSetVectorLabelC testDataSet;
     if (!LoadDataSetVectorLabel(testDataSetFile, testDataSet)) {
-      SysLog(SYSLOG_ERR, "Trouble loading dataset from file '%s'", testDataSetFile.data());
+      RavlError("Trouble loading dataset from file '%s'", testDataSetFile.data());
       return 1;
     }
     // Modify data set if requested
@@ -91,8 +91,8 @@ int main(int nargs, char **argv) {
     RavlInfo( "The probability of miss-classification is %0.4f ", pmc);
 
   } catch (const RavlN::ExceptionC &exc) {
-    SysLog(SYSLOG_ERR, "Exception:%s", exc.Text());
+    RavlError("Exception:%s", exc.Text());
   } catch (...) {
-    SysLog(SYSLOG_ERR, "Unknown exception");
+    RavlError("Unknown exception");
   }
 }
