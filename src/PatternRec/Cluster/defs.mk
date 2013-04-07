@@ -24,4 +24,10 @@ LIBDEPS=RavlPatternRecCluster.def
 
 USESLIBS=RavlPatternRec
 
+PROGLIBS= RavlPatternRecIO  RavlGnuPlot.opt
+
+MAINS= doCluster.cc
+
 EXAMPLES=exKMeansCluster.cc exFuzzyCMeansCluster.cc exDesignMeanShiftCluster.cc
+
+TESTEXES= testPatternRecCluster.cc
