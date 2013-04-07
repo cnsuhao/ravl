@@ -4,11 +4,11 @@ HEADERS=
 
 SOURCES=
 
-MAINS=doProcess.cc
+MAINS=doBatchProcess.cc
 
-PROGLIBS= RavlOSIO RavlPatternRec RavlAudioFeatures RavlAudioFile RavlAudioIO
+PROGLIBS= RavlOSIO RavlPatternRec RavlAudioFeatures RavlAudioFile RavlAudioIO RavlSignal1
 
-AUXFILES= doProcess.xml
+AUXFILES= doBatchProcess.xml
 
 AUXDIR=share/Ravl
 
