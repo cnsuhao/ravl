@@ -31,6 +31,17 @@
 
 namespace RavlN {
   
+  //: Constructor.
+  // k is the size of the kernel
+  // ntermiter is the minimum distance the cluster centre is moved before terminating iteration.
+
+  DesignMeanShiftClusterBodyC::DesignMeanShiftClusterBodyC(RealT nk,RealT ntermiter,const DistanceC &distanceMetric)
+    : distance(distanceMetric),
+      k(nk),
+      termiter(ntermiter)
+  {}
+
+
   //: Load from stream.
   
   DesignMeanShiftClusterBodyC::DesignMeanShiftClusterBodyC(istream &strm) 

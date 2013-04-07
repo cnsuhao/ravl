@@ -57,13 +57,23 @@ namespace RavlN {
     
     virtual bool Reset();
     //: Reset the designer to an initial state
-    
+
+    bool IsVerbose() const
+    { return m_verbose; }
+    //: Test if we're in verbose mode.
+
+    void SetVerbose(bool verbose)
+    { m_verbose = verbose; }
+    //: Set verbose mode.
+
+  protected:
+    bool m_verbose;
   };
 
   //! userlevel=Normal
   //: Designer base class.
   // Abstract Function designer. This is provided to allow the tweeking 
-  // of design paramiters to be automated
+  // of design parameters to be automated
   
   class DesignerC
     : public RCHandleVC<DesignerBodyC>
@@ -121,11 +131,17 @@ namespace RavlN {
     { Body().ParameterLimits(defaultValues,min,max,names); }
     //: Get the default parameter values and their limits.
 
-
     bool Reset()
     { return Body().Reset(); }
     //: Reset the designer to an initial state
 
+    bool IsVerbose() const
+    { return Body().IsVerbose(); }
+    //: Test if we're in verbose mode.
+
+    void SetVerbose(bool verbose)
+    { Body().SetVerbose(verbose); }
+    //: Set verbose mode.
     
   };
   

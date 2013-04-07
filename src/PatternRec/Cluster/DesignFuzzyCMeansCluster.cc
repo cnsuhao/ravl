@@ -19,19 +19,28 @@ namespace RavlN {
   
   DesignFuzzyCMeansClusterBodyC::DesignFuzzyCMeansClusterBodyC (UIntT numClasses, const DistanceC &distance, RealT m)
     : sizeY(numClasses),
+      sizeX(0),
       _distance(distance),
-      _m(m)
+      _m(m),
+      _initialised(false)
   {}
   
   DesignFuzzyCMeansClusterBodyC::DesignFuzzyCMeansClusterBodyC (istream &in)
-    : DesignClusterBodyC(in)
+    : DesignClusterBodyC(in),
+      sizeY(0),
+      sizeX(0),
+      _m(0),
+      _initialised(false)
   { in >> _centres >> _distance >> _m; }
 
   DesignFuzzyCMeansClusterBodyC::DesignFuzzyCMeansClusterBodyC (const DesignFuzzyCMeansClusterBodyC &oth)
     : DesignClusterBodyC(oth),
+      sizeY(oth.sizeY),
+      sizeX(oth.sizeX),
       _centres(oth._centres.Copy()),
       _distance(oth._distance),
-      _m(oth._m)
+      _m(oth._m),
+      _initialised(false)
   {}
   
   RCBodyVC & DesignFuzzyCMeansClusterBodyC::Copy () const
