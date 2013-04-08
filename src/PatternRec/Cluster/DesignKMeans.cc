@@ -123,7 +123,10 @@ namespace RavlN {
   SArray1dC<VectorC> DesignKMeansBodyC::FindMeans(const SampleC<VectorC> &in) {
     if(m_verbose)
       RavlDebug("DesignKMeansBodyC::Apply(), Called with %zu vectors. K=%u ",(size_t) in.Size(),k);
-    //cerr << "DesignKMeansBodyC::Apply(), Called with " << in.Size() << " vectors. K=" << k << "\n");
+    if(k == 0) {
+      RavlWarning("Asked to find 0 means, returning empty set.");
+      return SArray1dC<VectorC>();
+    }
     SArray1dC<VectorC> means(k);
     if(in.Size() == 0) {
       RavlError("DesignKMeansBodyC::Apply(), WARNING: No data samples given. ");
@@ -144,15 +147,19 @@ namespace RavlN {
     HSetC<UIntT> used;
     UIntT index,dim;
     dim = in.First().Size();
-    
+    if(m_verbose)
+      RavlDebug("Vector size %u ",(unsigned) dim);
+
     for(SArray1dIterC<VectorC> it(means);it;it++) {
-      do {
+      while(1) {
 	index = RandomInt() % in.Size();
 	if(used[index])
 	  continue;
 	*it = in[index].Copy();
+        RavlAssert(it->Size() == dim);
 	used += index;
-      } while(0);
+	break;
+      }
     }
     
     // Reassign according to distance.
@@ -181,9 +188,12 @@ namespace RavlN {
       
       for(SampleIterC<VectorC> it(in);it;it++) {
 	mit.First();
+        RavlAssert(mit->Size() == dim);
+	RavlAssert(it->Size() == dim);
 	RealT minDist = distance.Measure(*mit,*it);
 	index = 0;
 	for(mit++;mit;mit++) {
+	  RavlAssert(mit->Size() == dim);
 	  RealT dist =  distance.Measure(*mit,*it);
 	  if(dist < minDist) {
 	    minDist = dist;
@@ -208,6 +218,7 @@ namespace RavlN {
 	  index = RandomInt() % in.Size();
 	  uit.Data3() = (in[index]).Copy();
 	}
+        RavlAssert(uit.Data3().Size() == dim);
 	uit.Data1().Fill(0);
 	uit.Data2() = 0;
       }
