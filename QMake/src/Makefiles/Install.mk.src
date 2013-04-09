@@ -538,9 +538,9 @@ insScripts:
             fi ;\
             if [ X$(QMAKE_INFO) != X ] ;\
             then \
-               echo $(INSTALL) $(patsubst %,$(INSTALLHOME)/bin/utils/$(VAR)$(SHARED_LIB_POSTFIX)/bin/%, $(SCRIPTS)) $(ABS_DESTDIR)$(bindir) ; \
+               echo $(INSTALL) $(patsubst %,$(INSTALLHOME)/bin/%, $(SCRIPTS)) $(ABS_DESTDIR)$(bindir) ; \
             fi ;\
-            $(INSTALL) $(patsubst %,$(INSTALLHOME)/bin/utils/$(VAR)$(SHARED_LIB_POSTFIX)/bin/%, $(SCRIPTS)) $(ABS_DESTDIR)$(bindir) ; \
+            $(INSTALL) $(patsubst %,$(INSTALLHOME)/bin/%, $(SCRIPTS)) $(ABS_DESTDIR)$(bindir) ; \
             RET=$$? ;\
             if [ $$RET -ne 0 ] ;\
             then \
