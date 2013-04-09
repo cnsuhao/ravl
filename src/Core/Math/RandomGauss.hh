@@ -7,7 +7,6 @@
 #ifndef RAVL_RANDOMGAUSS_HEADER
 #define RAVL_RANDOMGAUSS_HEADER 1
 ///////////////////////////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! userlevel=Normal
 //! file="Ravl/Core/Math/RandomGauss.hh"
 //! lib=RavlCore
@@ -28,6 +27,9 @@ namespace RavlN {
   public:
     RandomGaussC();
     //: Default.
+
+    RandomGaussC(UIntT seed);
+    //: Construct with seed.
 
     float Generate(RandomMersenneTwisterC& generator);
     //: Generate with external generator

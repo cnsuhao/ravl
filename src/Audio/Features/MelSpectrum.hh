@@ -16,6 +16,7 @@
 #include "Ravl/Math.hh"
 #include "Ravl/Array1d.hh"
 #include "Ravl/SArray1d.hh"
+#include "Ravl/DP/Process.hh"
 
 namespace RavlAudioN {
   using namespace RavlN;
@@ -24,13 +25,17 @@ namespace RavlAudioN {
   //: Compute the mel spectrum from a power spectrum.
   
   class MelSpectrumC
+    : public DPProcessBodyC<SArray1dC<RealT>,SArray1dC<RealT> >
   {
   public:
     MelSpectrumC();
     //: Default constructor.
     // This does not construct any filters. InitFilters must be called
     // before Apply.
-    
+
+    MelSpectrumC(const XMLFactoryContextC &factory);
+    //: XMLFactory constructor.
+
     MelSpectrumC(RealT sampleRate,IntT frameSize,RealRangeC freqRange,IntT numFilters = 40);
     //: Constructor
     // Frequency's is in Hz.
@@ -44,12 +49,15 @@ namespace RavlAudioN {
     
     RealT Lin2Mel(RealT f)
     { return 2595.0 * Log10(1 + (f / 700.0)); } 
-    //: Map linear frequencys to mel frequencies.
+    //: Map linear frequencies to mel frequencies.
 
     RealT Mel2Lin(RealT f)
     { return 700.0 * (Pow(10.0,f / 2595.0) - 1.0); } 
-    //: Map mel frequencys to linear frequencies.
+    //: Map mel frequencies to linear frequencies.
     
+    typedef SmartPtrC<MelSpectrumC> RefT;
+    //: Handle to this class.
+
   protected:
     SArray1dC<Array1dC<RealT> > filters; // Filter bank.    
   };

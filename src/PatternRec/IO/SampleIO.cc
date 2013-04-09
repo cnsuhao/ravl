@@ -27,11 +27,11 @@ namespace RavlN {
   static TypeNameC type4(typeid(SampleLabelC),"RavlN::SampleLabelC");
   static TypeNameC type5(typeid(SArray1dC<VectorC>),"RavlN::SArray1dC<VectorC>");
   
-  FileFormatStreamC<SampleC<UIntT> > FileFormatStream_SampelC_UIntT;
-  FileFormatStreamC<SampleC<VectorC> > FileFormatStream_SampelC_VectorC;
+  static FileFormatStreamC<SampleC<UIntT> > FileFormatStream_SampelC_UIntT;
+  static FileFormatStreamC<SampleC<VectorC> > FileFormatStream_SampelC_VectorC;
   
-  FileFormatBinStreamC<SampleC<UIntT> > FileFormatBinStream_SampelC_UIntT;
-  FileFormatBinStreamC<SampleC<VectorC> > FileFormatBinStream_SampelC_VectorC;
+  static FileFormatBinStreamC<SampleC<UIntT> > FileFormatBinStream_SampelC_UIntT;
+  static FileFormatBinStreamC<SampleC<VectorC> > FileFormatBinStream_SampelC_VectorC;
   
   SampleC<VectorC> SampleVectorClassToTemplate(const SampleVectorC &sv)
   { return const_cast<SampleC<VectorC> &>((SampleC<VectorC> &)sv); }

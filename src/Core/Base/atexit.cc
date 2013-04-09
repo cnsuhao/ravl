@@ -51,9 +51,6 @@ extern "C" {
 
 #else
 namespace RavlN {
-  int foobar_or_some_such_silly_name;
-
-
 }
 
 #endif

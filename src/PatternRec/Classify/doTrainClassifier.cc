@@ -36,12 +36,12 @@ int main(int nargs, char **argv) {
   RavlN::SetResourceRoot(installDir);
   StringC configFile = opts.String("c", RavlN::Resource("Ravl/PatternRec", "classifier.xml"),
       "Classifier config file.");
-  StringC classifierType = opts.String("classifier", "KNN", "The type of classifier to train [KNN|GMM|SVM|SVMOneClass].");
+  StringC classifierType = opts.String("classifier", "KNN", "The type of classifier to train [KNN|GMM|SVM|NN2|LR|SVMOneClass].");
   bool doMetaDesign = opts.Boolean("md",false,"Do meta design, optimise the design parameters ");
   StringC trainingDataSetFile = opts.String("dset", "", "The data set to train on");
   StringC validationDataSetFile = opts.String("validation", "", "If supplied, use this data set to perform validation whilst training.");
   bool equaliseSamples = opts.Boolean("eq", "Make sure we have an equal number of samples per class");
-  bool noshuffle = opts.Boolean("noshuffle", "Do not shuffle, i.e. default is not to shuffle.");
+  bool noshuffle = opts.Boolean("noshuffle", "Do not shuffle, i.e. default is to shuffle.");
   UIntT samplesPerClass = opts.Int("n", 0, "The number of samples per class");
   DListC<StringC> featuresList = opts.List("features", "Use only these features");
   DataSetNormaliseT normaliseType = (DataSetNormaliseT)opts.Int("normalise",doMetaDesign ? 0 : 1, "Normalise sample (0 - none, 1 - mean, 2- scale)");

@@ -37,7 +37,8 @@ SOURCES=Entity.cc Process.cc Port.cc SPort.cc SPortAttach.cc ProcInfo.cc \
  AttributeValueTypes.cc AttributeCtrlXML.cc AttributeSet.cc \
  ByteFileIO.cc ByteStream.cc SByteStream.cc AttributeCtrlInternal.cc \
  AttributeCtrlUpdateSignal.cc PrintIOInfo.cc FileFormatByteFile.cc \
- CoreIO.cc FileFormatBinStreamMeta.cc FileFormatStreamMeta.cc 
+ CoreIO.cc FileFormatBinStreamMeta.cc FileFormatStreamMeta.cc ProcIStream.cc \
+ ProcOStream.cc 
 
 MUSTLINK= linkCoreIO.cc
 # ProcInfo.cc

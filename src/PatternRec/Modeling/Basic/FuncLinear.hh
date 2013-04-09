@@ -55,7 +55,7 @@ namespace RavlN {
     //: Expand vector to linear coefficients.
     
     virtual UIntT NumberCoeffs(UIntT inputSize) const;
-    //: Calculate the number of coefficents for a given input size.
+    //: Calculate the number of coefficients for a given input size.
     
     virtual VectorC Apply(const VectorC &data) const;
     //: Apply function to 'data'
@@ -96,7 +96,7 @@ namespace RavlN {
       : FuncLinearCoeffC(*new FuncLinearBodyC(inSize,outSize))
     {}
     //: Construct a linear function with given input and output size.
-    // The transform itsself is left undefined.
+    // The transform its self is left undefined.
     
     FuncLinearC(const MatrixC &proj,const VectorC &offset)
       : FuncLinearCoeffC(*new FuncLinearBodyC(proj,offset))

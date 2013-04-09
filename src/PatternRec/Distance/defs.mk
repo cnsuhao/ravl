@@ -12,10 +12,12 @@ DESCRIPTION = Pattern Recognition Toolbox
 PACKAGE = Ravl/PatternRec
 
 HEADERS=Distance.hh DistanceEuclidean.hh DistanceMax.hh DistanceCityBlock.hh \
- DistanceMahalanobis.hh DistanceSqrEuclidean.hh DistanceRobust.hh DistanceChi2.hh
+ DistanceMahalanobis.hh DistanceSqrEuclidean.hh DistanceRobust.hh DistanceChi2.hh \
+ DistanceCorrelation.hh
 
 SOURCES=Distance.cc DistanceEuclidean.cc DistanceMax.cc DistanceCityBlock.cc \
- DistanceMahalanobis.cc DistanceSqrEuclidean.cc DistanceRobust.cc DistanceChi2.cc
+ DistanceMahalanobis.cc DistanceSqrEuclidean.cc DistanceRobust.cc DistanceChi2.cc \
+ DistanceCorrelation.cc
 
 #LIBDEPS=RavlPatternRecDistance.def
 

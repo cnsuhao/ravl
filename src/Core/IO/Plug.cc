@@ -11,7 +11,44 @@
 #include "Ravl/DP/Plug.hh"
 
 namespace RavlN {
+
+
+  DPPlugBaseBodyC::DPPlugBaseBodyC()
+    : m_hold(true)
+  {}
+  //: Default constructor.
+
+  DPPlugBaseBodyC::DPPlugBaseBodyC(const DPEntityC &nhold)
+    : m_hold(nhold)
+  {}
+  //: Constructor.
+
+  DPPlugBaseBodyC::DPPlugBaseBodyC(const StringC &nPlugId,const DPEntityC &nhold)
+    : DPEntityBodyC(nPlugId),
+      m_hold(nhold)
+  {
+    SetEntityName(nPlugId);
+    RavlAssert(EntityName() == nPlugId);
+  }
+  //: Constructor.
+
+  // ------------------------------------------------------------------------
   
+  DPIPlugBaseBodyC::DPIPlugBaseBodyC()
+  {}
+  //: Default constructor.
+
+  DPIPlugBaseBodyC::DPIPlugBaseBodyC(const DPEntityC &nhold)
+    : DPPlugBaseBodyC(nhold)
+  {}
+  //: Constructor.
+
+  DPIPlugBaseBodyC::DPIPlugBaseBodyC(const StringC &nPlugId,const DPEntityC &nhold)
+    : DPPlugBaseBodyC(nPlugId,nhold)
+  {
+    RavlAssert(EntityName() == nPlugId);
+  }
+
   //: Set port.
   
   bool DPIPlugBaseBodyC::ConnectPort(const DPIPortBaseC &port) {
@@ -25,7 +62,25 @@ namespace RavlN {
   { return typeid(void); }
   
   ////////////////////////////////////////////////////////////////
+
+
+  DPOPlugBaseBodyC::DPOPlugBaseBodyC()
+  {}
+  //: Default constructor.
+
+  DPOPlugBaseBodyC::DPOPlugBaseBodyC(const DPEntityC &nhold)
+    : DPPlugBaseBodyC(nhold)
+  {}
+  //: Constructor.
   
+  DPOPlugBaseBodyC::DPOPlugBaseBodyC(const StringC &nPlugId,const DPEntityC &nhold)
+    : DPPlugBaseBodyC(nPlugId,nhold)
+  {
+    RavlAssert(EntityName() == nPlugId);
+  }
+  //: Constructor.
+
+
   //: Set port.
   
   bool DPOPlugBaseBodyC::ConnectPort(const DPOPortBaseC &port) {

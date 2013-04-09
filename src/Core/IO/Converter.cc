@@ -88,11 +88,21 @@ namespace RavlN {
 
   static StringC ConvReal2String(const RealT &v)
   { return StringC(v); }
-  
+
+  static SArray1dC<RealT> ConvSArray1d_Float2Array1dC_Real(const SArray1dC<float> &arr)
+  {
+    SArray1dC<RealT> ret(arr.Size());
+    for(unsigned i = 0;i < ret.Size();i++)
+      ret[i] = arr[i];
+    return ret;
+  }
+
   DP_REGISTER_CONVERSION_NAMED(ConvByte2Int,1,"IntT RavlN::Convert(const ByteT &)");
   DP_REGISTER_CONVERSION_NAMED(ConvInt162Int,1,"IntT RavlN::Convert(const Int16T &)");
   DP_REGISTER_CONVERSION_NAMED(ConvInt2Real,1,"RealT RavlN::Convert(const IntT &)");
   DP_REGISTER_CONVERSION_NAMED(ConvInt2String,1,"StringC RavlN::Convert(const IntT &)");
   DP_REGISTER_CONVERSION_NAMED(ConvReal2String,1,"StringC RavlN::Convert(const RealT &)");
+  DP_REGISTER_CONVERSION(ConvSArray1d_Float2Array1dC_Real,1);
   
+
 }

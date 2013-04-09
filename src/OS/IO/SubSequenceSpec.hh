@@ -33,11 +33,15 @@ namespace RavlN {
     : public RCBodyVC
   {
   public:
-    SubSequenceSpecBodyC()
-    {}
+    SubSequenceSpecBodyC();
     //: Default constructor.
 
-    SubSequenceSpecBodyC(const StringC &nfn,IndexC nfirstFrame = 0,IndexC nlastFrame = RavlConstN::maxInt,IntT nchannelId = 0, const StringC &fmt = StringC(),bool nsingle =false);
+    SubSequenceSpecBodyC(const StringC &nfn,
+                         IndexC nfirstFrame = 0,
+                         IndexC nlastFrame = RavlConstN::maxInt,
+                         IntT nchannelId = 0,
+                         const StringC &fmt = StringC(),
+                         bool nsingle =false);
     //: Constructor.
 
     SubSequenceSpecBodyC(istream &is);

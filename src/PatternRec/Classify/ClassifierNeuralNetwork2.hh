@@ -7,7 +7,6 @@
 #ifndef RAVL_ClassifierNeuralNetwork22_HEADER
 #define RAVL_ClassifierNeuralNetwork22_HEADER 1
 ///////////////////////////////////////////////////////////////////////
-//! rcsid="$Id: ClassifierNeuralNetwork2.hh,v 1.8 2005/12/06 17:16:49 plugger Exp $"
 //! author="Charles Galambos"
 //! docentry="Ravl.API.Pattern Recognition.Classifier"
 //! lib=RavlPatternRec
@@ -16,7 +15,6 @@
 #include "Ravl/PatternRec/Classifier.hh"
 #include "Ravl/DList.hh"
 #include "Ravl/String.hh"
-#include "Ravl/fann/fann.h"
 
 namespace RavlN {
 

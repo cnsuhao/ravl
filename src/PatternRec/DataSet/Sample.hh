@@ -93,6 +93,10 @@ namespace RavlN {
     // on the sample may effect the contents of the original array. <br>
     // The number of items appended is returned.
     
+    bool RemoveLast()
+    { return DArray1dC<DataT>::RemoveLast(); }
+    //: Remove last element from the array.
+
     IndexC operator+=(const DataT & dat)
     { return Append(dat); }
     //: Indentical to Append().

@@ -24,7 +24,7 @@
 #include "Ravl/GUI/FileSelector.hh"
 #include "Ravl/GUI/ToggleButton.hh"
 #include "Ravl/Threads/Mutex.hh"
-
+#include "Ravl/Cache.hh"
 
 namespace RavlN {
   namespace FaceN {
@@ -51,10 +51,8 @@ namespace RavlN {
       bool SaveData();
       //: Save data
 
-      bool LoadData();
+      bool LoadData(const StringC & faceId);
       //: Load data
-
-
 
       bool NextPrevButton(IntT & v);
 
@@ -79,7 +77,7 @@ namespace RavlN {
       bool SaveSelected(const StringC & filename);
       //: Just save the XML which have been selected
 
-      bool DeleteButton();
+      bool DeleteSelected(bool removeFromDatabase=true);
       //: Save the xml file
 
       bool RenameSelected();
@@ -92,6 +90,9 @@ namespace RavlN {
 
       //: Attempt to perform an automatic merging of the sightings
       bool AutoMergeSighting();
+
+      //: Create a new sighting out of the selected faces
+      bool CreateSighting();
 
       // Show file dialog when Move button selected
       bool MoveButton();
@@ -109,13 +110,12 @@ namespace RavlN {
       bool m_autoScale;
       //: Do we want to scale the images
 
-      DListC<StringC> faceIds;
-      //: A list of all the face ids to display
-
       DLIterC<StringC> iter;
       //: The iterator which points at the image we are looking at
 
-      RCHashC<StringC, bool>m_selected;
+      StringC m_currentFaceId;
+
+      RCHashC<StringC, TreeModelIterC>m_selected;
 
       StringC faceDbFile;
       //: The faceDb file to save as
@@ -137,6 +137,7 @@ namespace RavlN {
       RadioButtonC glasses;
       RadioButtonC unknown;
       ToggleButtonC m_sightingMode;
+      ButtonC m_createSightingButton;
 
       //: Pose
       TextEntryC textEntryPose;
@@ -154,6 +155,7 @@ namespace RavlN {
       MutexC m_mutex;
 
       TreeModelIterC m_lastParent;
+      CacheC<StringC, TreeModelIterC> m_prevSelected;
 
       friend class ViewPageC;
 

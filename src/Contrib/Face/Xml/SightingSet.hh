@@ -28,6 +28,9 @@ namespace RavlN {
       SightingSetC();
       //: Constructor
 
+      // Delete some face ids from the sighting set
+      bool DeleteFaceIds(const DListC<StringC> & faceIds);
+
     protected:
 
       SightingSetC(XMLIStreamC& xml);

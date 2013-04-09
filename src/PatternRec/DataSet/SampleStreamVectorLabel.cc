@@ -18,10 +18,6 @@
 #include "Ravl/DP/Func2Proc21.hh"
 #include "Ravl/PatternRec/ProcessVectorLabelFunction.hh"
 
-#if RAVL_COMPILER_MIPSPRO 
-#pragma instantiate RavlN::DPIPortBodyC<RavlN::VectorC>
-#endif
-
 
 #define DODEBUG 1
 #if DODEBUG

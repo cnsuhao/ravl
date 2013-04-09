@@ -4,7 +4,6 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-//! rcsid="$Id: FunctionConcatenate.cc 4106 2004-03-18 16:30:45Z kier $"
 //! lib=RavlPatternRec
 //! author="Charles Galambos"
 //! file="Ravl/PatternRec/Modeling/Basic/FunctionConcatenate.cc"
@@ -17,12 +16,7 @@
 #include "Ravl/TypeName.hh"
 #include "Ravl/config.h"
 #include "Ravl/SArray1dIter.hh"
-
-#if RAVL_COMPILER_MIPSPRO 
-#include "Ravl/VirtualConstructor.hh"
-#pragma instantiate RavlN::FunctionConcatenateBodyC* RavlN::VCLoad(RavlN::BinIStreamC&,RavlN::FunctionConcatenateBodyC*)
-#pragma instantiate RavlN::FunctionConcatenateBodyC* RavlN::VCLoad(std::istream &,RavlN::FunctionConcatenateBodyC*)
-#endif 
+#include "Ravl/XMLFactoryRegister.hh"
 
 namespace RavlN {
 
@@ -30,24 +24,21 @@ namespace RavlN {
   
   FunctionConcatenateBodyC::FunctionConcatenateBodyC()
   {}
-  
+
+  //: Construct from XML factory
+
+  FunctionConcatenateBodyC::FunctionConcatenateBodyC(const XMLFactoryContextC &factory)
+  {
+    factory.UseComponentGroup("Functions",m_functions);
+    ComputeSizes();
+  }
+
   //: Default constructor.
   
   FunctionConcatenateBodyC::FunctionConcatenateBodyC(const SArray1dC<FunctionC> & functions)
     : m_functions(functions)
   { 
-    
-    UIntT inputSize = 0;
-    UIntT outputSize = 0;
-    
-    // work out the input and output size
-    for(SArray1dIterC<FunctionC>it(functions);it;it++) {
-      inputSize += it.Data().InputSize();
-      outputSize += it.Data().OutputSize();
-    }
-    
-    InputSize(inputSize);
-    OutputSize(outputSize);
+    ComputeSizes();
   }
 
   FunctionConcatenateBodyC::FunctionConcatenateBodyC(const FunctionC & function1, const FunctionC & function2)
@@ -55,8 +46,7 @@ namespace RavlN {
   {
     m_functions[0] = function1;
     m_functions[1] = function2;
-    InputSize(m_functions[0].InputSize() + m_functions[1].InputSize());
-    OutputSize(m_functions[0].OutputSize()+ m_functions[1].OutputSize());
+    ComputeSizes();
   }
 
   FunctionConcatenateBodyC::FunctionConcatenateBodyC(const FunctionC & function1, const FunctionC & function2, const FunctionC &function3)
@@ -65,10 +55,24 @@ namespace RavlN {
     m_functions[0] = function1;
     m_functions[1] = function2;
     m_functions[2] = function3;
-    InputSize(m_functions[0].InputSize()+m_functions[1].InputSize() + m_functions[2].InputSize());
-    OutputSize(m_functions[0].OutputSize()+m_functions[1].OutputSize()+m_functions[2].OutputSize());
+    ComputeSizes();
   }
   
+  //! Compute input and output sizes.
+  void FunctionConcatenateBodyC::ComputeSizes() {
+    UIntT inputSize = 0;
+    UIntT outputSize = 0;
+
+    // work out the input and output size
+    for(SArray1dIterC<FunctionC> it(m_functions);it;it++) {
+      inputSize += it.Data().InputSize();
+      outputSize += it.Data().OutputSize();
+    }
+
+    InputSize(inputSize);
+    OutputSize(outputSize);
+  }
+
   
   //: Load from stream.
   
@@ -111,7 +115,7 @@ namespace RavlN {
     UIntT inputIndex = 0;
     UIntT outputIndex = 0;
 
-    for(SArray1dIterC<FunctionC>it(m_functions);it;it++) {
+    for(SArray1dIterC<FunctionC> it(m_functions);it;it++) {
 
       // do first level projection
       UIntT vecSize = it.Data().InputSize();      
@@ -141,6 +145,12 @@ namespace RavlN {
   
   
   RAVL_INITVIRTUALCONSTRUCTOR_FULL(FunctionConcatenateBodyC,FunctionConcatenateC,FunctionC);
+
+  void LinkConcatenate()
+  {}
+
+  static RavlN::XMLFactoryRegisterHandleC<RavlN::FunctionConcatenateC> g_registerXMLFactoryFunctionCascade("RavlN::FunctionConcatenateC");
+
   //FileFormatStreamC <FunctionConcatenateC> FileFormatStream_FunctionConcatenateC;
   //FileFormatBinStreamC <FunctionConcatenateC> FileFormatBinStream_FunctionConcatenateC;
   //static TypeNameC typenameFunctionConcatenate(typeid(FunctionConcatenateC),"FunctionConcatenateC");

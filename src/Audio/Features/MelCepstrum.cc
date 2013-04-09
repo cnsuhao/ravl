@@ -12,8 +12,9 @@
 #include "Ravl/StdConst.hh"
 #include "Ravl/SArray1dIter2.hh"
 #include "Ravl/SArray1dIter.hh"
+#include "Ravl/XMLFactoryRegister.hh"
 
-#define DODEBUG 1
+#define DODEBUG 0
 #if DODEBUG
 #define ONDEBUG(x) x
 #else
@@ -30,16 +31,29 @@ namespace RavlAudioN {
   {}
   
   //: Constructor.
-  // numCepstrum - Number of cepstrum co-efficients to generate.
-  // specSize - Number of spectrum co-effience at input.
+  // numCepstrum - Number of cepstrum coefficients to generate.
+  // specSize - Number of spectrum coefficients at input.
   
-  MelCepstrumC::MelCepstrumC(IntT numCepstrum,IntT specSize) {
+  MelCepstrumC::MelCepstrumC(IntT numCepstrum,IntT specSize)
+  {
     Init(numCepstrum,specSize);
   }
   
+  //: XMLFactory constructor.
+
+  MelCepstrumC::MelCepstrumC(const XMLFactoryContextC &factory)
+   : DPProcessBodyC<SArray1dC<RealT>,SArray1dC<RealT> >(factory),
+     m_numCepstrum(factory.AttributeInt("numCepstrum",13))
+  {
+    // Preinitialise things?
+    IntT specSize  = factory.AttributeInt("specSize",0);
+    if(specSize != 0)
+      Init(m_numCepstrum,specSize);
+  }
+
   //: Initialise tables.
-  // numCepstrum - Number of cepstrum co-efficients to generate.
-  // specSize - Number of spectrum co-effience at input.
+  // numCepstrum - Number of cepstrum coefficients to generate.
+  // specSize - Number of spectrum coefficients at input.
   
   void MelCepstrumC::Init(IntT numCepstrum,IntT specSize) {
     ONDEBUG(cerr << "MelCepstrumC::Init(), numCepstrum=" << numCepstrum << " Spec size=" << specSize << "\n");
@@ -59,9 +73,15 @@ namespace RavlAudioN {
     }
   }
   
-  //: Compute mel cepstrum from mel spectrum parmiters.
+  //: Compute mel cepstrum from mel spectrum parameters.
   
-  SArray1dC<RealT> MelCepstrumC::Apply(const SArray1dC<RealT> &melSpectrum) {
+  SArray1dC<RealT> MelCepstrumC::Apply(const SArray1dC<RealT> &melSpectrum)
+  {
+    // Do we need to setup?
+    if(filters.Size() == 0) {
+      Init(m_numCepstrum,melSpectrum.Size());
+    }
+
     SArray1dC<RealT> ret(filters.Size());
     SArray1dC<RealT> logSpec(melSpectrum);
     for(SArray1dIter2C<RealT,RealT> sit(logSpec,melSpectrum);sit;sit++) {
@@ -70,14 +90,11 @@ namespace RavlAudioN {
       else
         sit.Data1() = -1.0e+6;
     }
-    
+
+    // Apply filters, this does the DCT
     for(SArray1dIter2C<RealT,SArray1dC<RealT> > it(ret,filters);it;it++) {
       RealT sum = 0;
       SArray1dIter2C<RealT,RealT> fit(logSpec,it.Data2());
-#if 0
-      sum += fit.Data1() * fit.Data2() * 0.5;
-      fit++;
-#endif
       for(;fit;fit++)
         sum += fit.Data1() * fit.Data2();
       it.Data1() = sum;
@@ -85,6 +102,11 @@ namespace RavlAudioN {
     return ret;
   }
   
+  void LinkMelCepstrum()
+  {}
+
+  static RavlN::XMLFactoryRegisterConvertC<MelCepstrumC,DPProcessBodyC<SArray1dC<RealT>,SArray1dC<RealT> > > g_registerVectorDelta012("RavlAudioN::MelCepstrumC");
+
 }
 
 

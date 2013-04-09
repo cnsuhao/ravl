@@ -11,6 +11,8 @@
 #include "Ravl/Image/DrawCircle.hh"
 #include "Ravl/Image/Font.hh"
 #include "Ravl/Image/ImageConv.hh"
+#include "Ravl/SArray1dIter2.hh"
+
 //! lib=RavlImageProc
 
 using namespace RavlN;
@@ -36,6 +38,7 @@ WhiteLineDetectorBodyC::WhiteLineDetectorBodyC()
 }
 
 SArray1dC<LinePP2dC> WhiteLineDetectorBodyC::Apply(const ImageC<RealT> &img) {
+  image = img;
   canvas = RealRGBImageCT2ByteRGBImageCT(RealImageCT2RealRGBImageCT(img));
   ImageC<RealT> fImg = gFilter.Apply(img);
 
@@ -105,9 +108,36 @@ SArray1dC<LinePP2dC> WhiteLineDetectorBodyC::Apply(const ImageC<RealT> &img) {
   }
   for (DLIterC<LinePP2dC> r(ridges); r; r++)  DrawLine(canvas, red, *r);
 
-  SArray1dC<LinePP2dC> ridgeArray(ridges.Size());
+  ridgeArray = SArray1dC<LinePP2dC>(ridges.Size());
   for (SArray1dIterC<LinePP2dC>i(ridgeArray); i; ++i) 
     *i = ridges.PopFirst();
 
   return ridgeArray;
+}
+
+
+
+SArray1dC<RealT> WhiteLineDetectorBodyC::MeanStrength() {
+  SArray1dC<RealT> strength(ridgeArray.Size());
+  for (SArray1dIter2C<LinePP2dC,RealT> i(ridgeArray, strength); i; ++i) {
+    IntT c=0;
+    for (Line2dIterC j(i.Data1()); j; j++, ++c) {
+      i.Data2() += image[*j];
+    }
+    i.Data2() /= c;
+  }
+  return strength;
+}
+
+
+SArray1dC<RealT> WhiteLineDetectorBodyC::MedianStrength() {
+  SArray1dC<RealT> strength(ridgeArray.Size());
+  for (SArray1dIter2C<LinePP2dC,RealT> i(ridgeArray, strength); i; ++i) {
+    DListC<RealT> lineList;
+    for (Line2dIterC j(i.Data1()); j; j++) {
+      lineList += image[*j];
+    }
+    i.Data2() = lineList.Nth(lineList.Size()/2);
+  }
+  return strength;
 }

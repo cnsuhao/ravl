@@ -54,7 +54,6 @@ namespace RavlGUIN {
   
   RealRange2dC MarkupPolygon2dBodyC::Extent(GUIMarkupCanvasBodyC &mv) const {
     RealRange2dC rextent;
-    bool polyOk = true;
     bool isFirst = true;
     
     // Work out extent of this polygon allowing for dodgy points.
@@ -63,7 +62,6 @@ namespace RavlGUIN {
       Point2dC &dir = *it;
       if(IsNan(dir[0]) || IsNan(dir[1]) || IsInf(dir[0]) || IsInf(dir[1])) {
         //RavlSysLog(SYSLOG_ERR) << "MarkupPolygon2dBodyC::Extent, Illegal polygon : " << poly;
-        polyOk = false;
         continue;
       }
       if(isFirst) {

@@ -7,7 +7,6 @@
 #ifndef RAVL_DESIGNKMEANS_HEADER
 #define RAVL_DESIGNKMEANS_HEADER 1
 //! author="Charles Galambos"
-//! rcsid="$Id$"
 //! lib=RavlPatternRec
 //! docentry="Ravl.API.Pattern Recognition.Cluster;Ravl.API.Pattern Recognition.Classifier.DesignClassifier"
 //! example=exKMeansCluster.cc
@@ -19,16 +18,13 @@
 namespace RavlN {
   
   //! userlevel=Develop
-  //: Design a k means classifer.
+  //: Design a k means classifier.
   
   class DesignKMeansBodyC
     : public DesignClusterBodyC
   {
   public:
-    DesignKMeansBodyC(UIntT nk,const DistanceC &distanceMetric = DistanceSqrEuclideanC())
-      : distance(distanceMetric),
-	k(nk)
-    {}
+    DesignKMeansBodyC(UIntT nk,const DistanceC &distanceMetric = DistanceSqrEuclideanC());
     //: Constructor.
     
     DesignKMeansBodyC(istream &strm);
@@ -44,7 +40,7 @@ namespace RavlN {
     //: Writes object to stream, can be loaded using constructor
 
     virtual FunctionC Apply(const SampleC<VectorC> &in);
-    //: Create a clasifier.
+    //: Create a classifier.
     
     virtual FunctionC Apply(const SampleC<VectorC> &in,const SampleC<RealT> &weight);
     //: Create function from the given data, and sample weights.
@@ -71,7 +67,7 @@ namespace RavlN {
   };
 
   //! userlevel=Normal
-  //: Design a k means classifer.
+  //: Design a k means classifier.
   
   class DesignKMeansC 
     : public  DesignClusterC

@@ -14,6 +14,9 @@
 
 namespace RavlN {
 
+  DistanceSqrEuclideanBodyC::DistanceSqrEuclideanBodyC()
+  {}
+
   //: XMLFactoryC constructor.
   
   DistanceSqrEuclideanBodyC::DistanceSqrEuclideanBodyC(const XMLFactoryContextC &factory)

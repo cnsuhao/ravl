@@ -10,6 +10,7 @@
 
 #include "Ravl/PatternRec/SampleIO.hh"
 #include "Ravl/IO.hh"
+#include "Ravl/SysLog.hh"
 #include "Ravl/OS/Filename.hh"
 
 #define DODEBUG 0
@@ -52,7 +53,7 @@ namespace RavlN {
     // Open output file and check all OK!
     FilenameC fname(filename);
     if (!fname.Exists()) {
-      SysLog(SYSLOG_ERR, "Dataset file does not exist for loadin '%s'", fname.data());
+      RavlError("Dataset file does not exist for loading '%s'", fname.data());
       return false;
     }
 
@@ -103,7 +104,7 @@ namespace RavlN {
 
     // No point if empty sample size
     if (sample.Size() < 1) {
-      SysLog(SYSLOG_ERR, "No samples to save to file '%s'", filename.data());
+      RavlError("No samples to save to file '%s'", filename.data());
       return false;
     }
 
@@ -112,7 +113,7 @@ namespace RavlN {
 
       // check dimensions match
       if (sample.First().Size() != sample.FieldInfo().Size()) {
-        SysLog(SYSLOG_ERR, "Samples dimension does not match number of headings");
+        RavlError("Samples dimension does not match number of headings");
         return false;
       }
 

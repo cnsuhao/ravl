@@ -16,6 +16,16 @@
 
 namespace RavlN {
 
+  DPStreamProcessBodyC::DPStreamProcessBodyC()
+  {}
+  //: Default constructor.
+
+  DPStreamProcessBodyC::DPStreamProcessBodyC(const StringC &name)
+    : procname(name)
+  {}
+  //: Construct a stream process.
+
+
   //: Input plugs.
   
   DListC<DPIPlugBaseC> DPStreamProcessBodyC::IPlugs() const {

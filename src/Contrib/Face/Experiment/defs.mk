@@ -28,7 +28,7 @@ PLIB = RavlFace
 LIBDEPS= 
 
 USESLIBS= RavlMath RavlImageProc RavlCore RavlIO RavlImage RavlOS \
- RavlXMLFactory RavlRLog RavlGnuPlot
+ RavlXMLFactory RavlRLog RavlGnuPlot RavlPatternRec
 
 PROGLIBS = RavlExtImgIO.opt RavlPatternRec RavlPatternRecIO
 

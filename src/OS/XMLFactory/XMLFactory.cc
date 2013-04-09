@@ -483,7 +483,8 @@ namespace RavlN {;
       
   //: lookup child in tree.
   // Returns true and updates parameter 'child' if child is found.
-  bool XMLFactoryContextC::ChildContext(const StringC &key,XMLFactoryContextC &child) const {
+  bool XMLFactoryContextC::ChildContext(const StringC &key,XMLFactoryContextC &child) const
+  {
     if(!m_iNode.IsValid())
       return false;
     XMLFactoryNodeC::RefT childNode;
@@ -493,6 +494,20 @@ namespace RavlN {;
     child = XMLFactoryContextC(Factory(),*childNode);
     return true;
   }
+
+  //: lookup child in tree.
+  // Returns true and updates parameter 'child' if child is found.
+
+  bool XMLFactoryContextC::CreateContext(const StringC &key,XMLFactoryContextC &child) const
+  {
+    XMLTreeC childXML;
+    if(!Node().Child(key,childXML))
+      return false;
+    child = XMLFactoryContextC(Factory(),*new XMLFactoryNodeC(childXML,INode()));
+    return true;
+  }
+
+
 
   //! Set factory to use.
   

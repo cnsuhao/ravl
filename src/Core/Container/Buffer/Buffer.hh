@@ -37,7 +37,7 @@ namespace RavlN {
     BufferBodyC(SizeT nsize,const DataT &defaultVal)
       : SizeBufferAccessC<DataT>(new DataT[nsize.V()],nsize),
         deletable(true)
-    { Fill(defaultVal); }
+    { this->Fill(defaultVal); }
     //: Constructor a buffer of 'nsize' items, with default value.
     
     BufferBodyC(SizeT nsize)

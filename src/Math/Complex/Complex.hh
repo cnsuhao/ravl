@@ -14,7 +14,6 @@
 //! date="26/01/1994"
 //! example=exComplx.cc
 //! docentry="Ravl.API.Math"
-//! rcsid="$Id$"
 
 #include "Ravl/Types.hh"
 #include "Ravl/StdMath.hh"
@@ -64,8 +63,12 @@ namespace RavlN {
     { return im; }
     //: Imaginary part
     
+    inline RealT    Mag2() const
+    { return re*re + im*im; }
+    //: Magnitude squared
+
     inline RealT    Mag() const
-    { return Sqrt(re*re + im*im); }
+    { return Sqrt(Mag2()); }
     //: Magnitude
 
     inline RealT    Arg() const

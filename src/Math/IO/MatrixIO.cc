@@ -5,7 +5,6 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 /////////////////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! lib=RavlMathIO
 //! file="Ravl/Math/IO/MatrixIO.cc"
 
@@ -16,6 +15,7 @@
 #include "Ravl/DP/FileFormatStream.hh"
 #include "Ravl/DP/FileFormatBinStream.hh"
 #include "Ravl/XMLFactoryRegister.hh"
+#include "Ravl/DP/Converter.hh"
 
 namespace RavlN {
   static TypeNameC type1(typeid(MatrixC),"RavlN::MatrixC");
@@ -108,6 +108,15 @@ namespace RavlN {
   static FileFormatBinStreamC<SArray1dC<MatrixC> > FileFormatBinStream_SArray1dC_Matrix;
   static FileFormatBinStreamC<SArray1dC<VectorC> > FileFormatBinStream_SArray1dC_Vector;
   static FileFormatBinStreamC<SArray1dC<VectorMatrixC> > FileFormatBinStream_SArray1dC_VectorMatrix;
+
+  static VectorC SArray1d_RealT2Vector(const SArray1dC<RealT> &vec)
+  { return VectorC(vec); }
+
+  static SArray1dC<RealT> Vector2SArray1d(const VectorC &vec)
+  { return vec; }
+
+  DP_REGISTER_CONVERSION(SArray1d_RealT2Vector,1);
+  DP_REGISTER_CONVERSION(Vector2SArray1d,1);
 
   void InitMatrixIO()
   {}

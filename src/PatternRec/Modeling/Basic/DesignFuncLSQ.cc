@@ -30,7 +30,12 @@
 #endif
 
 namespace RavlN {
-  
+
+  DesignFuncLSQBodyC::DesignFuncLSQBodyC()
+   : order(0),
+     orthogonal(true)
+  {}
+
   //: Create least squares designer.
   
   DesignFuncLSQBodyC::DesignFuncLSQBodyC(UIntT norder,bool northogonal) 
@@ -319,12 +324,13 @@ namespace RavlN {
 
 
   ////////////////////////////////////////////////////////////////////////
+
   static RavlN::XMLFactoryRegisterHandleConvertC<DesignFuncLSQC, DesignFunctionSupervisedC> g_registerXMLFactoryDesignFuncLSQ("RavlN::DesignFuncLSQC");
   
   RAVL_INITVIRTUALCONSTRUCTOR_FULL(DesignFuncLSQBodyC,DesignFuncLSQC,DesignFunctionSupervisedC);
   
   void linkDesignFuncLSQ()
-    {}
+  {}
 
 
 }

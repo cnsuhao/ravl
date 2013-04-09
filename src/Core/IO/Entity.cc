@@ -16,6 +16,7 @@
 #include "Ravl/RCAbstract.hh"
 #include "Ravl/TypeName.hh"
 #include "Ravl/VirtualConstructor.hh"
+#include "Ravl/DP/Converter.hh"
 
 #if RAVL_HAVE_ANSICPPHEADERS
 #include <typeinfo>
@@ -27,8 +28,32 @@
 
 namespace RavlN {
   
-  ///// DPEntityBC /////////////////////////////////////////////////////////
+  ///// DPEntityC /////////////////////////////////////////////////////////
+
+  DPEntityBodyC::DPEntityBodyC()
+  {}
+
+  DPEntityBodyC::DPEntityBodyC(const DPEntityBodyC &oth)
+    : RCBodyVC (oth),
+      m_entityName(oth.m_entityName)
+  {}
+  //: Copy constructor.
+
+  DPEntityBodyC::DPEntityBodyC(const StringC &aName)
+   : m_entityName(aName)
+  {}
+  //: Construct from a name
+
+  DPEntityBodyC::DPEntityBodyC(std::istream &in)
+    : RCBodyVC(in)
+  {}
+  //: Stream constructor.
   
+  DPEntityBodyC::DPEntityBodyC(BinIStreamC &in)
+    : RCBodyVC(in)
+  {}
+  //: Binary stream constructor.
+
   
   bool DPEntityBodyC::Save(std::ostream &out) const  { 
     return RCBodyVC::Save(out);
@@ -43,7 +68,7 @@ namespace RavlN {
   //: Creat a copy of this object.
   
   RCBodyVC &DPEntityBodyC::Copy() const {
-    cerr << "DPEntityBodyC::Copy(). WARNING:Copy not implemented for " << typeid(*this).name() << "\n";
+    std::cerr << "DPEntityBodyC::Copy(). WARNING:Copy not implemented for " << typeid(*this).name() << "\n";
     return * new DPEntityBodyC();
   }
   
@@ -65,7 +90,7 @@ namespace RavlN {
     : RCHandleVC<DPEntityBodyC>(RAVL_VIRTUALCONSTRUCTOR(strm,DPEntityBodyC))
   {}
 
-  // This isn't really nessary, but is here as an example for making a class
+  // This isn't really necessary, but is here as an example for making a class
   // with a virtual constructor.
   
   RAVL_INITVIRTUALCONSTRUCTOR(DPEntityBodyC);
@@ -77,5 +102,46 @@ namespace RavlN {
     : RCHandleVC<DPEntityBodyC>(abst) 
   { CheckHandleType(Body()); }
   
+  std::istream &operator>>(std::istream &strm,DPEntityC &obj) {
+    obj = DPEntityC(strm);
+    return strm;
+  }
+  //: Load from a stream.
+  // Uses virtual constructor.
+
+  std::ostream &operator<<(std::ostream &out,const DPEntityC &obj) {
+    obj.Save(out);
+    return out;
+  }
+  //: Save to a stream.
+  // Uses virtual constructor.
+
+  BinIStreamC &operator>>(BinIStreamC &strm,DPEntityC &obj) {
+    obj = DPEntityC(strm);
+    return strm;
+  }
+  //: Load from a binary stream.
+  // Uses virtual constructor.
+
+  BinOStreamC &operator<<(BinOStreamC &out,const DPEntityC &obj) {
+    obj.Save(out);
+    return out;
+  }
+  //: Save to a stream.
+  // Uses virtual constructor.
+
+
+  /////////////////////////////////////////////
+
+  static RCAbstractC ConvertDPEntityPtr2Abstract(const DPEntityBodyC::RefT &ptr)
+  {
+    if(ptr.IsValid())
+      return RCAbstractC(*ptr.BodyPtr());
+    return RCAbstractC();
+  }
+
+  DP_REGISTER_CONVERSION(ConvertDPEntityPtr2Abstract,1);
+
+
   
 }

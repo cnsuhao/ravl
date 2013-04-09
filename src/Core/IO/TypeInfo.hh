@@ -52,6 +52,10 @@ namespace RavlN {
     virtual RCWrapAbstractC Create(std::istream &strm) const;
     //: Create instance of the type from stream constructor.
 
+    virtual UIntT Move(DPIPortBaseC &iport,DPOPortBaseC &oport,UIntT count = 1) const;
+    //: Move 'count' elements from input to output.
+    // return number of elements actually moved.
+
     virtual bool Put(DPOPortBaseC &port,const RCWrapAbstractC &obj);
     //: Put generic object to port.
     // Will throw ExceptionErrorCastC if types aren't correct, or in debug mode
@@ -149,7 +153,12 @@ namespace RavlN {
     inline RCWrapAbstractC Create(std::istream &in) const
     { return Body().Create(in); }
     //: Create instance of the type with the default constructor.
-    
+
+    inline UIntT Move(DPIPortBaseC &iport,DPOPortBaseC &oport,UIntT count = 1) const
+    { return Body().Move(iport,oport,count); }
+    //: Move 'count' elements from input to output.
+    // return number of elements actually moved.
+
     inline bool Put(DPOPortBaseC &port,const RCWrapAbstractC &obj)
     { return Body().Put(port,obj); }
     //: Put generic object to port.
@@ -275,6 +284,38 @@ namespace RavlN {
     // Will throw ExceptionErrorCastC if types aren't correct, or in debug mode
     // an assert may fail.
     
+    virtual UIntT Move(DPIPortBaseC &iport,DPOPortBaseC &oport,UIntT count = 1) const
+    {
+      RavlAlwaysAssert(iport.IsValid());
+      RavlAlwaysAssert(oport.IsValid());
+      DPIPortC<DataT> tiport(iport);
+      if(!tiport.IsValid()) {
+        RavlAssert(0);
+        throw ExceptionErrorCastC("DPTypeInfoInstBodyC::Get(), ",
+                                  typeid(iport.InputType()),
+                                  typeid(DataT));
+      }
+      DPOPortC<DataT> toport(oport);
+      if(!toport.IsValid()) {
+        RavlAssert(0);
+        throw ExceptionErrorCastC("DPTypeInfoInstBodyC::Put(), 1",
+                                  typeid(oport.OutputType()),
+                                  typeid(DataT));
+      }
+      UIntT ret = 0;
+      for(unsigned i = 0;i < count;i++) {
+        DataT tmp;
+        if(!tiport.Get(tmp))
+          break;
+        if(!toport.Put(tmp))
+          break;
+        ret++;
+      }
+      return ret;
+    }
+    //: move 'count' elements from the input port to the output port.
+    // returns the number of elements actually moved.
+
     virtual DPIPipeBaseC CreateIPipe(const DPEntityC &hold = DPEntityC(true)) const
     { return DPIPipeC<DataT>(hold); }
     //: Create an input pipe

@@ -121,7 +121,7 @@ namespace RavlN {
     //: Output stream for timecode
     
     friend std::istream &operator>>(std::istream &s, TimeCodeC &inds);
-    //: Input stream fot timecode
+    //: Input stream for timecode
 
     friend BinOStreamC & operator << (BinOStreamC & s, const TimeCodeC & tc ); 
     //: Write time code to a binary stream in the form: frameNo frameRate
@@ -184,7 +184,7 @@ namespace RavlN {
     //: Absolute frame count of timecode
     
     RealT frameRate;
-    //: Refrence frame rate.
+    //: Reference frame rate.
 
   };
   

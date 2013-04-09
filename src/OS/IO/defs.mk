@@ -10,17 +10,19 @@ PACKAGE=Ravl/DP
 
 HEADERS=FileSequence.hh SequenceIO.hh FileListIO.hh CompositeStream.hh \
  FileFormatComposite.hh  PlayList.hh  SubSequenceSpec.hh EditSpec.hh  \
- FileFormatDynamic.hh DynamicLink.hh DynamicIO.hh
+ FileFormatDynamic.hh DynamicLink.hh ProcessPlayList.hh DPNetwork.hh \
+ DynamicIO.hh
 
 SOURCES=FileSequence.cc SequenceIO.cc FileListIO.cc CompositeStream.cc  \
  FileFormatComposite.cc  PlayList.cc  SubSequenceSpec.cc EditSpec.cc \
- FileFormatDynamic.cc DynamicLink.cc 
+ FileFormatDynamic.cc DynamicLink.cc ProcessPlayList.cc DPNetwork.cc \
+ DPStreamOpSetup.cc
 
 MUSTLINK=RavlOSIOMustLink.cc
 
 PLIB=RavlOSIO
 
-USESLIBS=RavlOS RavlIO DynLink 
+USESLIBS=RavlOS RavlIO DynLink RavlXMLFactory
 
 TESTEXES= testSequenceIO.cc
 

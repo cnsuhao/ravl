@@ -15,6 +15,7 @@
 #include "Ravl/RealRange2d.hh"
 #include "Ravl/IndexRange2d.hh"
 #include "Ravl/SysLog.hh"
+#include "Ravl/SArray1d.hh"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -76,6 +77,8 @@ namespace RavlN {
   
   static TypeNameC type17(typeid(RealRange2dC),"RavlN::RealRange2dC");
   static TypeNameC type18(typeid(IndexRange2dC),"RavlN::IndexRange2dC");
+  static TypeNameC type20(typeid(SArray1dC<RealT>),"RavlN::SArray1dC<RealT>");
+  static TypeNameC type21(typeid(SArray1dC<FloatT>),"RavlN::SArray1dC<FloatT>");
   
   const char *TypeName(const char *name) { 
     MTReadLockC lock;
