@@ -46,7 +46,24 @@ int main(int argc, char **argv)
   // Load in all the XML files into one master one!
   FaceInfoDbC faceInfoDb(db);
   rInfo("Loaded Face XML file '%s' with '%d' subjects and '%d' faces", db.data(), faceInfoDb.NoClients(), faceInfoDb.NoFaces());
-  rInfo("All OK!");
+
+  for (HashIterC<StringC, FaceInfoC> it(faceInfoDb); it; it++) {
+    FilenameC filename(it.Data().OrigImage());
+    if (!filename.Exists()) {
+      rError("Image file '%s' does not exist!", it.Data().OrigImage().data());
+      continue;
+    }
+    if (it.Data().FeatureSet().Position("LeftEyeCentre") == Point2dC()) {
+      rError("Trouble with left-eye centre with face %s", it.Data().FaceId().data());
+      continue;
+    }
+    if (it.Data().FeatureSet().Position("RightEyeCentre") == Point2dC()) {
+      rError("Trouble with left-eye centre with face %s", it.Data().FaceId().data());
+      continue;
+    }
+  }
+
+  rInfo("All checked out OK!");
   return 0;
 }
 
