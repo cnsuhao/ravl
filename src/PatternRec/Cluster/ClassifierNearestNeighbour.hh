@@ -7,7 +7,6 @@
 #ifndef RAVL_NEARESTNEIGHBOUR_HEADER
 #define RAVL_NEARESTNEIGHBOUR_HEADER 1
 /////////////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! lib=RavlPatternRec
 //! author="Charles Galambos"
 //! userlevel=Normal
@@ -56,7 +55,27 @@ namespace RavlN {
 
     virtual UIntT Classify(const VectorC &data) const;
     //: Classifier vector 'data' return the most likely label.
+
+    const DistanceC &DistanceMetric() const
+    { return distanceMetric; }
+    //: Distance metric to use.
     
+    const SampleVectorC &Vectors() const
+    { return vectors; }
+    //: Access vectors
+
+    const SampleLabelC &Labels() const
+    { return vlabels; }
+    //: Access labels
+
+    SampleVectorC &Vectors()
+    { return vectors; }
+    //: Access vectors
+
+    SampleLabelC &Labels()
+    { return vlabels; }
+    //: Access labels
+
   protected:    
     DistanceC distanceMetric; // Distance metric to use.
     SampleVectorC vectors;
@@ -96,6 +115,12 @@ namespace RavlN {
     ClassifierNearestNeighbourC(BinIStreamC &strm);
     //: Load from binary stream.
 
+    ClassifierNearestNeighbourC(const ClassifierC &classifier)
+     : ClassifierC(dynamic_cast<const ClassifierNearestNeighbourBodyC *>(classifier.BodyPtr()))
+    {}
+    //: Base class constructor.
+    // Will create an invalid handle if classes don't match
+
   protected:
     ClassifierNearestNeighbourC(ClassifierNearestNeighbourBodyC &bod)
       : ClassifierC(bod)
@@ -116,7 +141,27 @@ namespace RavlN {
     //: Access body.
     
   public:
+
+    const DistanceC &DistanceMetric() const
+    { return Body().DistanceMetric(); }
+    //: Distance metric used.
     
+    const SampleVectorC &Vectors() const
+    { return Body().Vectors(); }
+    //: Access vectors
+
+    SampleVectorC &Vectors()
+    { return Body().Vectors(); }
+    //: Access vectors
+
+    const SampleLabelC &Labels() const
+    { return Body().Labels(); }
+    //: Access labels
+
+    SampleLabelC &Labels()
+    { return Body().Labels(); }
+    //: Access labels
+
   };
   
   

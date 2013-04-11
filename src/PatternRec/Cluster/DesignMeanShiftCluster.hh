@@ -26,11 +26,7 @@ namespace RavlN {
     : public DesignClusterBodyC
   {
   public:
-    DesignMeanShiftClusterBodyC(RealT nk,RealT ntermiter = 1.0,const DistanceC &distanceMetric = DistanceSqrEuclideanC())
-      : distance(distanceMetric),
-	k(nk),
-	termiter(ntermiter)
-    {}
+    DesignMeanShiftClusterBodyC(RealT nk,RealT ntermiter = 1.0,const DistanceC &distanceMetric = DistanceSqrEuclideanC());
     //: Constructor.
     // k is the size of the kernel
     // ntermiter is the minimum distance the cluster centre is moved before terminating iteration.
@@ -114,8 +110,9 @@ namespace RavlN {
     DesignMeanShiftClusterC(RealT k,RealT ntermiter = 1.0,const DistanceC &distanceMetric = DistanceSqrEuclideanC())
       : DesignClusterC(*new DesignMeanShiftClusterBodyC(k,ntermiter,distanceMetric))
     {}
-    //: Default constructor.
-    // Creates an invalid constructor.
+    //: Constructor.
+    //!param: k - size of the kernel
+    //!param: ntermiter - minimum distance the cluster centre is moved before terminating iteration.
     
     DesignMeanShiftClusterC(istream &strm);
     //: Load from stream.

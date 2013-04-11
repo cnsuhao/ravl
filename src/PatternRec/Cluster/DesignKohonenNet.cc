@@ -21,6 +21,7 @@ namespace RavlN {
   DesignKohonenNetBodyC::DesignKohonenNetBodyC (UIntT Sx, UIntT Sy, UIntT cycles, const DistanceC &distance)
     : _distance(distance), 
       _labels(Sx*Sy),
+      _neighbours(0),
       _rangeX(Sx*Sy), 
       _rangeY(Sx*Sy),
       _initialised(false)
@@ -48,7 +49,14 @@ namespace RavlN {
   }
 
   DesignKohonenNetBodyC::DesignKohonenNetBodyC (istream &in)
-    : DesignClusterBodyC(in)
+    : DesignClusterBodyC(in),
+      _Sx(0),
+      _Sy(0),
+      _alpha(1.0),
+      _neighbours(0),
+      _cycles(0),
+      _cyclesSoFar(0),
+      _initialised(false)
   {
     in >> _weights >> _distance >> _labels >> _rangeX >> _rangeY >> _Sx >> _Sy >> _neighbours; 
   }
@@ -58,8 +66,10 @@ namespace RavlN {
       _weights(oth._weights.Copy()),
       _distance(oth._distance),
       _labels(oth._labels.Copy()),
+      _neighbours(oth._neighbours),
       _rangeX(oth._rangeX.Copy()),
-      _rangeY(oth._rangeY.Copy())
+      _rangeY(oth._rangeY.Copy()),
+      _initialised(false)
   {
     _Sx = oth._Sx;
     _Sy = oth._Sy;

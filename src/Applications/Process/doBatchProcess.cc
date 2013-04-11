@@ -26,7 +26,7 @@ int main(int nargs, char **argv) {
 
   StringC installDir = opts.String("i", PROJECT_OUT, "Install directory.");
   RavlN::SetResourceRoot(installDir);
-  StringC configFile = opts.String("c", RavlN::Resource("Ravl", "doProcess.xml"),
+  StringC configFile = opts.String("c", RavlN::Resource("Ravl", "doBatchProcess.xml"),
       "Classifier config file.");
   DListC<StringC> fileList = opts.List("fl","File list");
   StringC playListFile = opts.String("pl","","Play list file");

@@ -4,10 +4,9 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-#ifndef RAVLSIGNAL_REALCEPSTRAL
-#define RAVLSIGNAL_REALCEPSTRAL 1
+#ifndef RAVL_REALCEPSTRAL
+#define RAVL_REALCEPSTRAL 1
 /////////////////////////////////////////////
-//! rcsid="$Id$"
 //! userlevel=Normal
 //! docentry="Ravl.API.Math.Signals.1D"
 //! lib=RavlMath
@@ -17,19 +16,27 @@
 #include "Ravl/Array1d.hh"
 #include "Ravl/Types.hh"
 #include "Ravl/FFT1d.hh"
+#include "Ravl/DP/Process.hh"
 
 namespace RavlN {
   
   //: Compute the real cepstral 
   
-  class RealCepstralC {
+  class RealCepstralC
+    : public DPProcessBodyC<SArray1dC<RealT>,SArray1dC<RealT> >
+  {
   public:
+    RealCepstralC(const XMLFactoryContextC &factory);
+    //: Factory constructor.
+
     RealCepstralC(SizeT size);
     //: Constructor.
 
     Array1dC<RealT> Apply(const Array1dC<RealT> &data);
-    //: Compute the real cepstral of data.
+    //: Compute the real cepstral of time series data.
 
+    typedef SmartPtrC<RealCepstralC> RefT;
+    //: Handle to this process.
   protected:
     FFT1dC fft;
     FFT1dC ifft;

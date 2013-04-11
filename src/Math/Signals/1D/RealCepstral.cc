@@ -13,6 +13,7 @@
 #include "Ravl/RealCepstral.hh"
 #include "Ravl/Array1dIter2.hh"
 #include "Ravl/Array1dIter.hh"
+#include "Ravl/XMLFactoryRegister.hh"
 
 namespace RavlN {
 
@@ -23,11 +24,22 @@ namespace RavlN {
       ifft(size,true)
   {}
   
+  //: Factory constructor.
+
+  RealCepstralC::RealCepstralC(const XMLFactoryContextC &factory)
+   : DPProcessBodyC<SArray1dC<RealT>,SArray1dC<RealT> >(factory)
+  {}
+
+
   //: Compute the real cepstral of data.
   
   Array1dC<RealT> RealCepstralC::Apply(const Array1dC<RealT> &data) {
+    if(!fft.IsValid()) {
+      fft = FFT1dC(data.Size());
+      ifft = FFT1dC(data.Size(),true);
+    }
     Array1dC<ComplexC> res = fft.Apply(data); // Compute FFT
-    // Log of magintude.
+    // Log of magnitude.
     for(Array1dIterC<ComplexC> it(res);it;it++) {
       it.Data().Re() = Log(it.Data().Mag() + 0.00000000001);
       it.Data().Im() = 0;
@@ -41,4 +53,9 @@ namespace RavlN {
     }
     return ret;
   }
+
+  void LinkRealCepstral()
+  {}
+
+  static XMLFactoryRegisterConvertC<RealCepstralC,DPProcessBodyC<SArray1dC<RealT>,SArray1dC<RealT> > > g_register("RavlN::RealCepstralC");
 }

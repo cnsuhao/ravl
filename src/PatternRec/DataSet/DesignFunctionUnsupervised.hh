@@ -26,8 +26,7 @@ namespace RavlN {
     : public DesignerBodyC
   {
   public:
-    DesignFunctionUnsupervisedBodyC()
-    {}
+    DesignFunctionUnsupervisedBodyC();
     //: Default constructor.
     
     DesignFunctionUnsupervisedBodyC(std::istream &strm);

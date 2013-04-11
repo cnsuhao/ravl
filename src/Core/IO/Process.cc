@@ -11,6 +11,7 @@
 //! file="Ravl/Core/IO/Process.cc"
 
 #include "Ravl/DP/Process.hh"
+#include "Ravl/DP/Converter.hh"
 
 namespace RavlN {
 
@@ -89,5 +90,32 @@ namespace RavlN {
     : DPEntityC(RAVL_VIRTUALCONSTRUCTOR(strm,DPProcessBaseBodyC))
   {}
 
+  //////////////////////////////////////////////////////////
+
+  static DPEntityBodyC::RefT Conv2Base(const DPProcessBaseBodyC::RefT &aProc) {
+    return aProc.BodyPtr();
+  }
+
+  static DPProcessBaseBodyC::RefT Conv2BaseArrReal(const DPProcessBodyC<SArray1dC<RealT>,SArray1dC<RealT> >::RefT &aProc) {
+    return aProc.BodyPtr();
+  }
+  static DPProcessBaseBodyC::RefT Conv2BaseArrFloat(const DPProcessBodyC<SArray1dC<float>,SArray1dC<float> >::RefT &aProc) {
+    return aProc.BodyPtr();
+  }
+
+  static DPProcessC<SArray1dC<float>,SArray1dC<float> > Conv2HandleArrFloat(const DPProcessBodyC<SArray1dC<float>,SArray1dC<float> >::RefT &aProc) {
+    return DPProcessC<SArray1dC<float>,SArray1dC<float> >(*aProc);
+  }
+
+  static DPProcessC<SArray1dC<RealT>,SArray1dC<RealT> > Conv2HandleArrReal(const DPProcessBodyC<SArray1dC<RealT>,SArray1dC<RealT> >::RefT &aProc)
+  {
+    return DPProcessC<SArray1dC<RealT>,SArray1dC<RealT> >(*aProc);
+  }
+
+  DP_REGISTER_CONVERSION(Conv2Base,1);
+  DP_REGISTER_CONVERSION(Conv2BaseArrReal,1);
+  DP_REGISTER_CONVERSION(Conv2BaseArrFloat,1);
+  DP_REGISTER_CONVERSION(Conv2HandleArrFloat,1);
+  DP_REGISTER_CONVERSION(Conv2HandleArrReal,1);
 }
 

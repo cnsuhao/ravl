@@ -18,7 +18,7 @@ PLIB=RavlAudioUtil
 
 MUSTLINK= linkRavlAudioUtil.cc
 
-USESLIBS=RavlIO RavlXMLFactory
+USESLIBS=RavlIO RavlOSIO RavlXMLFactory
 
 EHT= Ravl.API.Audio.IO.html
 

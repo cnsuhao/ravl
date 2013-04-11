@@ -15,7 +15,8 @@ HEADERS=FileSequence.hh SequenceIO.hh FileListIO.hh CompositeStream.hh \
 
 SOURCES=FileSequence.cc SequenceIO.cc FileListIO.cc CompositeStream.cc  \
  FileFormatComposite.cc  PlayList.cc  SubSequenceSpec.cc EditSpec.cc \
- FileFormatDynamic.cc DynamicLink.cc ProcessPlayList.cc DPNetwork.cc
+ FileFormatDynamic.cc DynamicLink.cc ProcessPlayList.cc DPNetwork.cc \
+ DPStreamOpSetup.cc
 
 MUSTLINK=RavlOSIOMustLink.cc
 

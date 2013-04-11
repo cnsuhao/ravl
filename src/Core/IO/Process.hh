@@ -287,7 +287,6 @@ namespace RavlN {
     {}
     //: Copy constructor.
 
-  protected:  
     DPProcessC(DPProcessBodyC<InT,OutT> &bod)
       : DPProcessBaseC(bod)
     {}
@@ -297,7 +296,7 @@ namespace RavlN {
       : DPProcessBaseC(bod)
     {}
     //: Body constructor.
-
+  protected:
     inline DPProcessBodyC<InT,OutT> &Body() 
     { return dynamic_cast<DPProcessBodyC<InT,OutT> & > (DPEntityC::Body()); }
     //: Access body.

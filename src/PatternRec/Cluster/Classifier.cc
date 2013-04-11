@@ -10,6 +10,7 @@
 
 #include "Ravl/PatternRec/Classifier.hh"
 #include "Ravl/SArray1dIter2.hh"
+#include "Ravl/PatternRec/SampleIter.hh"
 
 namespace RavlN {
 
@@ -48,6 +49,16 @@ namespace RavlN {
   UIntT ClassifierBodyC::Classify(const VectorC &data) const {
     RavlAssertMsg(0,"ClassifierBodyC::Classifier(), Abstract method called. ");
     return 0;
+  }
+
+  //: Classify each vector in the set
+
+  SampleC<UIntT> ClassifierBodyC::Classify(const SampleC<VectorC> &data) const {
+    SampleC<UIntT> ret(data.Size());
+    for(SampleIterC<VectorC> it(data);it;it++) {
+      ret.Append(Classify(*it));
+    }
+    return ret;
   }
   
   //: Generate a probability for each label.

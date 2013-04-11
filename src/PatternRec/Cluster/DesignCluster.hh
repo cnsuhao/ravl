@@ -7,7 +7,6 @@
 #ifndef RAVL_DESIGNCLUSTER_HEADER
 #define RAVL_DESIGNCLUSTER_HEADER 1
 //! author="Charles Galambos"
-//! rcsid="$Id$"
 //! lib=RavlPatternRec
 //! docentry="Ravl.API.Pattern Recognition.Cluster;Ravl.API.Pattern Recognition.Classifier.DesignClassifier"
 //! file="Ravl/PatternRec/Cluster/DesignCluster.hh"
@@ -18,14 +17,13 @@
 namespace RavlN {
   
   //! userlevel=Develop
-  //: Design a k means classifer.
+  //: Design a cluster classifier.
   
   class DesignClusterBodyC
     : public DesignClassifierUnsupervisedBodyC
   {
   public:
-    DesignClusterBodyC()
-    {}
+    DesignClusterBodyC();
     //: Constructor.
     
     DesignClusterBodyC(istream &strm);
@@ -50,7 +48,7 @@ namespace RavlN {
   };
 
   //! userlevel=Normal
-  //: Design a k means classifer.
+  //: Design a cluster classifier.
   
   class DesignClusterC 
     : public DesignClassifierUnsupervisedC

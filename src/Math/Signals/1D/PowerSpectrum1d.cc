@@ -11,6 +11,7 @@
 #include "Ravl/StdMath.hh"
 #include "Ravl/PowerSpectrum1d.hh"
 #include "Ravl/Array1dIter2.hh"
+#include "Ravl/XMLFactoryRegister.hh"
 #include "ccmath/ccmath.h"
 
 namespace RavlN {
@@ -25,13 +26,23 @@ namespace RavlN {
   
   //: Constructor
   
-  PowerSpectrum1dC::PowerSpectrum1dC(IntT size)
-    : fft(size)
+  PowerSpectrum1dC::PowerSpectrum1dC(IntT size,bool useWindow)
+    : m_useWindow(useWindow),
+      fft(size)
+  {}
+
+  //: Constructor.
+  PowerSpectrum1dC::PowerSpectrum1dC(const XMLFactoryContextC &factory)
+   : m_useWindow(factory.AttributeBool("useWindow",true))
   {}
 
   //: Compute the power spectrum of data.
   
   Array1dC<RealT> PowerSpectrum1dC::Apply(const Array1dC<RealT> &data) {
+    if(!m_useWindow)
+      return PowerSpectrumSimple(data);
+    if(fft.IsValid())
+      fft = FFT1dC(data.Size());
     UIntT size = data.Size();
     IndexC mid = data.IMin() + (size/2);
     //cerr << "Size=" << size <<" Mid=" << mid << " Rem=" << rem << "\n";
@@ -80,7 +91,7 @@ namespace RavlN {
     
     wss *= size/2; // Because we only sum half the spectrum.
     //cerr << "wss:" << wss << "\n";
-    // Compute the magintude.
+    // Compute the magnitude.
     Array1dC<RealT> mag(fftres.Size() / 2);
     Array1dIter2C<RealT,ComplexC> ita(mag,fftres);
     ita.Data1() = (Sqr(ita.Data2().Re()) + Sqr(ita.Data2().Im())) / (wss * 2);
@@ -92,5 +103,8 @@ namespace RavlN {
     return mag;
   }
 
-  
+  static XMLFactoryRegisterConvertC<PowerSpectrum1dC,DPProcessBodyC<SArray1dC<RealT>,SArray1dC<RealT> > > g_regiserPowerSpectrum1d("RavlN::PowerSpectrum1dC");
+
+  void LinkPowerSpectrum1d()
+  {}
 }

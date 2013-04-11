@@ -11,6 +11,7 @@
 #include "Ravl/DP/TypeConverter.hh"
 #include "Ravl/GraphBestRoute.hh"
 #include "Ravl/MTLocks.hh"
+#include "Ravl/TypeName.hh"
 
 #define DODEBUG 0
 #if DODEBUG
@@ -152,6 +153,54 @@ namespace RavlN {
     return ret;
   }
   
+  //: Convert an port to a new type if possible
+  // Returns true and sets 'result' if operation succeeded.
+  bool TypeConverterBodyC::ConvertIPort(const DPIPortBaseC &orgPort,const std::type_info &dataType,DPIPortBaseC &result)
+  {
+    if(dataType == orgPort.InputType()) {
+      result = orgPort;
+      return true;
+    }
+    DListC<DPConverterBaseC> conv = SystemTypeConverter().FindConversion(orgPort.InputType(),dataType);
+    if(conv.IsEmpty()) {
+      RavlWarning("Failed to find conversion from '%s' to '%s'",
+          RavlN::TypeName(orgPort.InputType()),
+          RavlN::TypeName(dataType)
+          );
+      return false;
+    }
+    //RavlDebug("Building conversion. ");
+    DPIPortBaseC convPort = orgPort;
+    for(DLIterC<DPConverterBaseC> it(conv);it;it++)
+      convPort = it->CreateIStream(convPort);
+    RavlAssert(convPort.IsValid());
+    result = convPort;
+    return true;
+  }
+
+  //: Convert an port to a new type if possible
+  // Returns true and sets 'result' if operation succeeded.
+  bool TypeConverterBodyC::ConvertOPort(const DPOPortBaseC &orgPort,const std::type_info &dataType,DPOPortBaseC &result)
+  {
+    if(dataType == orgPort.OutputType()) {
+      result = orgPort;
+      return true;
+    }
+    DListC<DPConverterBaseC> conv = SystemTypeConverter().FindConversion(orgPort.OutputType(),dataType);
+    if(conv.IsEmpty()) {
+      RavlWarning("Failed to find conversion from '%s' to '%s'",
+          RavlN::TypeName(dataType),
+          RavlN::TypeName(orgPort.OutputType()));
+      return false;
+    }
+    DPOPortBaseC convPort = orgPort;
+    for(DLIterC<DPConverterBaseC> it(conv);it;it++)
+      convPort = it->CreateOStream(convPort);
+    result = convPort;
+    return true;
+
+  }
+
   
   RealT TypeConverterBodyC::EdgeEval(const DPConverterBaseC &edge)  { 
     ONDEBUG(std::cout << "Edge cost " << edge.Cost() << " : " << edge.ArgType(0).name() << " " << edge.Output().name() << std::endl);

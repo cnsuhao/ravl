@@ -36,7 +36,7 @@ int main(int nargs, char **argv) {
   RavlN::SetResourceRoot(installDir);
   StringC configFile = opts.String("c", RavlN::Resource("Ravl/PatternRec", "classifier.xml"),
       "Classifier config file.");
-  StringC classifierType = opts.String("classifier", "KNN", "The type of classifier to train [KNN|GMM|SVM|SVMOneClass].");
+  StringC classifierType = opts.String("classifier", "KNN", "The type of classifier to train [KNN|GMM|SVM|NN2|LR|SVMOneClass].");
   bool doMetaDesign = opts.Boolean("md",false,"Do meta design, optimise the design parameters ");
   StringC trainingDataSetFile = opts.String("dset", "", "The data set to train on");
   StringC validationDataSetFile = opts.String("validation", "", "If supplied, use this data set to perform validation whilst training.");

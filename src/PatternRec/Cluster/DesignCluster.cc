@@ -28,6 +28,11 @@
 
 namespace RavlN {
   
+  //! Constructor
+
+  DesignClusterBodyC::DesignClusterBodyC()
+  {}
+
   //: Load from stream.
   
   DesignClusterBodyC::DesignClusterBodyC(istream &strm)

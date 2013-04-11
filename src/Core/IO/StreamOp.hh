@@ -17,6 +17,7 @@
 #include "Ravl/DP/Port.hh"
 #include "Ravl/DP/Plug.hh"
 #include "Ravl/DList.hh"
+#include "Ravl/SysLog.hh"
 
 namespace RavlN {
 
@@ -78,6 +79,46 @@ namespace RavlN {
 
     virtual bool GetIPort(const StringC &name,DPIPortBaseC &port);
     //: Get input
+
+    bool GetOPort(const StringC &name,DPOPortBaseC &port,const std::type_info &dataType);
+    //: Get output as specified type
+
+    bool GetIPort(const StringC &name,DPIPortBaseC &port,const std::type_info &dataType);
+    //: Get input as specified type
+
+    template<typename TypeT>
+    bool GetIPort(const StringC &name,DPIPortC<TypeT> &thePort) {
+      DPIPortBaseC itmp;
+      if(!GetIPort(name,itmp,typeid(TypeT)))
+        return false;
+      RavlAssert(itmp.IsValid());
+      DPIPortC<TypeT> aPort(itmp);
+      if(!aPort.IsValid()) {
+        RavlError("Unexpected type '%s', expecting '%s' ",itmp.InputType().name(),typeid(TypeT).name());
+        return false;
+      }
+      thePort = aPort;
+      RavlAssert(thePort.IsValid());
+      return true;
+    }
+    //: Get input port.
+
+    template<typename TypeT>
+    bool GetOPort(const StringC &name,DPOPortC<TypeT> &thePort) {
+      DPOPortBaseC otmp;
+      if(!GetOPort(name,otmp,typeid(TypeT)))
+        return false;
+      RavlAssert(otmp.IsValid());
+      DPOPortC<TypeT> aPort(otmp);
+      if(!aPort.IsValid()) {
+        RavlError("Unexpected type '%s', expecting '%s' ",otmp.OutputType().name(),typeid(TypeT).name());
+        return false;
+      }
+      thePort = aPort;
+      RavlAssert(thePort.IsValid());
+      return true;
+    }
+    //: Get input port.
 
     virtual bool Dump(std::ostream &strm) const;
     //: Dump information about the stream op.
@@ -175,6 +216,20 @@ namespace RavlN {
     { return Body().GetIPort(name,port); }
     //: Get input
 
+    template<typename TypeT>
+    bool GetIPort(const StringC &name,DPIPortC<TypeT> &thePort)
+    { return Body().GetIPort(name,thePort); }
+    //: Get input port.
+
+    template<typename TypeT>
+    bool GetOPort(const StringC &name,DPOPortC<TypeT> &thePort)
+    { return Body().GetOPort(name,thePort); }
+    //: Get output port.
+
+    bool Dump(std::ostream &strm) const
+    { return Body().Dump(strm); }
+    //: Dump information about the stream op.
+
   };
 
   
@@ -269,7 +324,7 @@ namespace RavlN {
     
     virtual void Input(const DPIPortC<InT> &ins) {
       input = ins; 
-      this->ReparentAttributeCtrl(input); // Make sure changed signals are changed appropriately.
+      this->ReparentAttributeCtrl(input); // Make sure changed signals are updated appropriately.
     }
     //: Setup input port.
   }; 

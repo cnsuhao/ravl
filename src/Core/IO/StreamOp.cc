@@ -9,8 +9,17 @@
 //! file="Ravl/Core/IO/StreamOp.cc"
 
 #include "Ravl/DP/StreamOp.hh"
-#include "Ravl/DP/Converter.hh"
+#include "Ravl/DP/TypeConverter.hh"
 #include "Ravl/Complex.hh"
+#include "Ravl/TypeName.hh"
+#include "Ravl/SysLog.hh"
+
+#define DODEBUG 1
+#if DODEBUG
+#define ONDEBUG(x) x
+#else
+#define ONDEBUG(x)
+#endif
 
 namespace RavlN {
 
@@ -96,9 +105,22 @@ namespace RavlN {
     DListC<DPIPlugBaseC> plugs = IPlugs();
     for(DLIterC<DPIPlugBaseC> it(plugs);it;it++) {
       if(it->EntityName() == name) {
-        return it->ConnectPort(port);
+        DPIPortBaseC matchedPort;
+        if(!SystemTypeConverter().ConvertIPort(port,it->InputType(),matchedPort))
+          return false;
+        if(!it->ConnectPort(matchedPort)) {
+          RavlError("Failed to set port.");
+          return false;
+        }
+        return true;
       }
     }
+#if DODEBUG
+    RavlError("Failed to find IPlug '%s' from",name.c_str());
+    for(DLIterC<DPIPlugBaseC> it(plugs);it;it++) {
+      RavlInfo(" %s type %s  ",it->EntityName().c_str(),TypeName(it->InputType()));
+    }
+#endif
     return false;
   }
 
@@ -108,9 +130,22 @@ namespace RavlN {
     DListC<DPOPlugBaseC> plugs = OPlugs();
     for(DLIterC<DPOPlugBaseC> it(plugs);it;it++) {
       if(it->EntityName() == name) {
-        return it->ConnectPort(port);
+        DPOPortBaseC matchedPort;
+        if(!SystemTypeConverter().ConvertOPort(port,it->OutputType(),matchedPort))
+          return false;
+        if(!it->ConnectPort(matchedPort)) {
+          RavlError("Failed to set port.");
+          return false;
+        }
+        return true;
       }
     }
+#if DODEBUG
+    RavlError("Failed to find OPlug '%s' from",name.c_str());
+    for(DLIterC<DPOPlugBaseC> it(plugs);it;it++) {
+      RavlInfo(" %s type %s  ",it->EntityName().c_str(),TypeName(it->OutputType()));
+    }
+#endif
     return false;
   }
 
@@ -138,10 +173,45 @@ namespace RavlN {
     return false;
   }
 
+  //: Get output as specified type
+  bool DPStreamOpBodyC::GetOPort(const StringC &name,DPOPortBaseC &port,const std::type_info &dataType)
+  {
+    DPOPortBaseC orgPort;
+    if(!GetOPort(name,orgPort))
+      return false;
+    return SystemTypeConverter().ConvertOPort(orgPort,dataType,port);
+  }
+
+  //: Get input as specified type
+  bool DPStreamOpBodyC::GetIPort(const StringC &name,DPIPortBaseC &port,const std::type_info &dataType)
+  {
+    DPIPortBaseC orgPort;
+    if(!GetIPort(name,orgPort))
+      return false;
+    return SystemTypeConverter().ConvertIPort(orgPort,dataType,port);
+  }
+
+
   //: Dump information about the stream op.
   bool DPStreamOpBodyC::Dump(std::ostream &strm) const {
-    //....
-
+    strm << "DPStreamOpBody '" << EntityName() << "' Type:" << RavlN::TypeName(typeid(*this)) << " \n";
+    strm << " IPlugs:\n";
+    for(DLIterC<DPIPlugBaseC> it(IPlugs());it;it++){
+      strm << "  '" << it->EntityName() << "' Type:" << TypeName(it->InputType()) << "\n";
+    }
+    strm << " OPlugs:\n";
+    for(DLIterC<DPOPlugBaseC> it(OPlugs());it;it++){
+      strm << "  '" << it->EntityName() << "' Type:" << TypeName(it->OutputType()) << "\n";
+    }
+    strm << " IPorts:\n";
+    for(DLIterC<DPIPortBaseC> it(IPorts());it;it++){
+      strm << "  '" << it->EntityName() << "' Type:" << TypeName(it->InputType()) << "\n";
+    }
+    strm << " OPorts:\n";
+    for(DLIterC<DPOPortBaseC> it(OPorts());it;it++){
+      strm << "  '" << it->EntityName() << "' Type:" << TypeName(it->OutputType()) << "\n";
+    }
+    strm << "Done\n";
     return true;
   }
 

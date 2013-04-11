@@ -11,7 +11,7 @@ DESCRIPTION = Pattern Recognition Classifiers
 
 PACKAGE = Ravl/PatternRec
 
-MAINS=doLeaveOneOut.cc doTrainClassifier.cc doTestClassifier.cc doTrainCascadeClassifier.cc
+MAINS=doLeaveOneOut.cc doTrainClassifier.cc doTestClassifier.cc doTrainCascadeClassifier.cc doClassify.cc
 
 HEADERS= DesignClassifierSupervised.hh  \
  DesignDiscriminantFunction.hh DesignKNearestNeighbour.hh \
