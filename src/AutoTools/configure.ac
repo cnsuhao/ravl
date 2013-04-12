@@ -1343,110 +1343,82 @@ echo \# List of external libraries available to Ravl >> ./Config.Project.in
 # We need to amend the rpath setting for the unconfigured libs if the user has
 # changed the setting.
 #
-# if with_rpath != QMake_rpath | LINKER_LIBPATHSWITCH changed
-#   if QMake_rpath=no
-#     # Add in new rpath setting
-#     for lib in $UnconfiguredLibs
-#     do
-#       # Virtual libraries pick up their configuration from their real
-#       # counterparts. We therefore only need to massage the _LIBS setting here
-#       # for non-virtual libraries.
-#       eval virtual=\$with_${lib}_virtual
-#       if ( test x$virtual != xyes )
-#       then
-#         eval lib_enablement=\$use_${lib}
-#         case $lib_enablement in
-#           'blocked' | 'missing' )
-#                      TRACE_INDENT="     "
-#                      trace 3 ${lib} $lib_enablement
-#                      ;;
-#           'no' )
-#                      TRACE_INDENT="     "
-#                      trace 3 ${lib} discarded
-#                      ;;
-#           'check' | 'yes' )
-#                      trace 1 Assertion: --with-${lib} should not equal ${lib_enablement} here!
-#                      ;;
-#           'present' )
-#                      eval setting=\$${lib}_LIBS
-#                      setting=`echo $setting | $SED 's/-L *\(@<:@^ @:>@@<:@^ @:>@*\)/\$(LINKER_LIBPATHSWITCH)\=\1 -L\1/g'`
-#dnl                   # The sed command is actually:
-#dnl                   #    's/-L *\([^ ][^ ]*\)\$(LINKER_LIBPATHSWITCH)\=\1 -L\1/g'
-#dnl                   # the square brackets having been substituted to prevent
-#dnl                   # m4 removing them. 
-#                      # The sed command looks for:
-#                      #
-#                      #        -L<optional spaces><something><space> 
-#                      # 
-#                      # if this pattern is found, each and every occurrence is
-#                      # replaced by the following:
-#                      #
-#                      #       $(LINKER_LIBPATHSWITCH)=<something> -L<something>
-#                      #
-#                      # <something> being the substring found in the original
-#                      # fragment.
-#                      eval ${lib}_LIBS=\$setting
-#                      echo ${lib}_LIBS=@${lib}_LIBS@ >> Config.Project.in
-#                      echo >> ./Config.Project.in
-#                      ;;
-#         esac
-#       fi
-#     done
-#   else
-#     # Strip existing setting; add any new setting and output the amended
-#     # _LIBS entry
-#     for lib in $UnconfiguredLibs
-#     do
-#       # Virtual libraries pick up their configuration from their real
-#       # counterparts. We therefore only need to massage the _LIBS setting here
-#       # for non-virtual libraries.
-#       eval virtual=\$with_${lib}_virtual
-#       if ( test x$virtual != xyes )
-#       then
-#         eval lib_enablement=\$use_${lib}
-#         case $lib_enablement in
-#           'blocked' | 'missing' )
-#                      TRACE_INDENT="     "
-#                      trace 3 ${lib} $lib_enablement
-#                      ;;
-#           'no' )
-#                      TRACE_INDENT="     "
-#                      trace 3 ${lib} discarded
-#                      ;;
-#           'check' | 'yes' )
-#                      trace 1 Assertion: --with-${lib} should not equal ${lib_enablement} here!
-#                      ;;
-#           'present' )
-#                      # First remove the old setting
-#                      setting=......
-#                      if LINKER_LIBPATHSWITCH changed
-#                        # Add in new switch
-#                        setting=`echo $setting | $SED 's/-L *\(@<:@^ @:>@@<:@^ @:>@*\)/\$(LINKER_LIBPATHSWITCH)\=\1 -L\1/g'`
-#dnl                     # The sed command is actually:
-#dnl                     #    's/-L *\([^ ][^ ]*\)\$(LINKER_LIBPATHSWITCH)\=\1 -L\1/g'
-#dnl                     # the square brackets having been substituted to prevent
-#dnl                     # m4 removing them. 
-#                        # The sed command looks for:
-#                        #
-#                        #        -L<optional spaces><something><space> 
-#                        # 
-#                        # if this pattern is found, each and every occurrence is
-#                        # replaced by the following:
-#                        #
-#                        #       $(LINKER_LIBPATHSWITCH)=<something> -L<something>
-#                        #
-#                        # <something> being the substring found in the original
-#                        # fragment.
-#                      fi
-#                      eval ${lib}_LIBS=\$setting
-#                      echo ${lib}_LIBS=@${lib}_LIBS@ >> Config.Project.in
-#                      echo >> ./Config.Project.in
-#                      ;;
-#         esac
-#       fi
-#     done
-#   fi
-# fi
+if ( test x$USER_with_rpath != x && test x`cat $QMAKE_CFG | $SED -n 's/^USE_LIBPATHSWITCH=\(.*\)/\1/p'` != x$USER_with_rpath)
+then
+  trace 3 Resetting rpath on un-configured external libraries
+  for lib in $UnconfiguredLibs
+  do
+    # Virtual libraries pick up their configuration from their real
+    # counterparts. We therefore only need to massage the _LIBS setting here
+    # for non-virtual libraries.
+    eval virtual=\$with_${lib}_virtual
+    if ( test x$virtual != xyes )
+    then
+      eval lib_enablement=\$use_${lib}
+      case $lib_enablement in
+        'blocked' | 'missing' )
+                   TRACE_INDENT="     "
+                   trace 3 ${lib} $lib_enablement
+                   ;;
+        'no' )
+                   TRACE_INDENT="     "
+                   trace 3 ${lib} discarded
+                   ;;
+        'check' | 'yes' )
+                   trace 1 Assertion: --with-${lib} should not equal ${lib_enablement} here!
+                   ;;
+        'present' )
+                   eval setting=\$${lib}_LIBS
+                   TRACE_INDENT="          "
+                   trace 3 Considering ${lib}_LIBS 
+                   TRACE_INDENT="               "
+                   trace 5 $setting
+                   if (test $with_rpath = Y)
+                   then
+                     # Add in new rpath setting
+                     new_setting=`echo "$setting" | $SED 's/-L *\(@<:@^ @:>@@<:@^ @:>@*\)/\$(LINKER_LIBPATHSWITCH)\=\1 -L\1/g'`
+#dnl                 # The sed command is actually:
+#dnl                 #    's/-L *\([^ ][^ ]*\)\$(LINKER_LIBPATHSWITCH)\=\1 -L\1/g'
+#dnl                 # the square brackets having been substituted to prevent
+#dnl                 # m4 removing them. 
+                     # The sed command looks for:
+                     #
+                     #        -L<optional spaces><something><space> 
+                     # 
+                     # if this pattern is found, each and every occurrence is
+                     # replaced by the following:
+                     #
+                     #       $(LINKER_LIBPATHSWITCH)=<something> -L<something>
+                     #
+                     # <something> being the substring found in the original
+                     # fragment.
+                   else
+                     # Strip existing setting
+                     new_setting=`echo "$setting" | $SED 's/\$(LINKER_LIBPATHSWITCH)\=@<:@^ @:>@@<:@^ @:>@* //g'`
+#dnl                 # The sed command is actually:
+#dnl                 #    's/\$(LINKER_LIBPATHSWITCH)\=[^ ][^ ]* //g'
+#dnl                 # the square brackets having been substituted to prevent
+#dnl                 # m4 removing them. 
+                     # The sed command looks for and deletes:
+                     #
+                     #        $(LINKER_LIBPATHSWITCH)=<something><space> 
+                     #
+                   fi
+                   if ( test "$setting" != "$new_setting" )
+                   then
+                     eval ${lib}_LIBS=\$new_setting
+                     TRACE_INDENT="          "
+                     trace 5 reset to
+                     TRACE_INDENT="               "
+                     trace 5 $new_setting
+                     echo ${lib}_LIBS=@${lib}_LIBS@ >> Config.Project.in
+                     echo >> ./Config.Project.in
+                   fi
+                   ;;
+      esac
+    fi
+  done
+fi
 
 
 # Recalculate all virtual packages to pick up any changes made to the real
