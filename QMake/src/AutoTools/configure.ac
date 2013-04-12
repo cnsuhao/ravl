@@ -459,9 +459,9 @@ do
                    if ( test "$with_rpath" = 'Y' )
                    then
                       eval setting=\$${lib}_LIBS
-                      setting=`echo $setting | $SED 's/-L *\(@<:@^ @:>@@<:@^ @:>@*\)/\$(LIBPATHSWITCH)\=\1 -L\1/g'`
+                      setting=`echo $setting | $SED 's/-L *\(@<:@^ @:>@@<:@^ @:>@*\)/\$(LINKER_LIBPATHSWITCH)\=\1 -L\1/g'`
 dnl                   # The sed command is actually:
-dnl                   #    's/-L *\([^ ][^ ]*\)\$(LIBPATHSWITCH)\=\1 -L\1/g'
+dnl                   #    's/-L *\([^ ][^ ]*\)\$(LINKER_LIBPATHSWITCH)\=\1 -L\1/g'
 dnl                   # the square brackets having been substituted to prevent
 dnl                   # m4 removing them. 
                       # The sed command looks for:
@@ -471,7 +471,7 @@ dnl                   # m4 removing them.
                       # if this pattern is found, each and every occurrence is
                       # replaced by the following:
                       #
-                      #       $(LIBPATHSWITCH)=<something> -L<something>
+                      #       $(LINKER_LIBPATHSWITCH)=<something> -L<something>
                       #
                       # <something> being the substring found in the original
                       # fragment.

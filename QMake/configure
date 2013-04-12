@@ -19557,7 +19557,7 @@ do
                    if ( test "$with_rpath" = 'Y' )
                    then
                       eval setting=\$${lib}_LIBS
-                      setting=`echo $setting | $SED 's/-L *\([^ ][^ ]*\)/\$(LIBPATHSWITCH)\=\1 -L\1/g'`
+                      setting=`echo $setting | $SED 's/-L *\([^ ][^ ]*\)/\$(LINKER_LIBPATHSWITCH)\=\1 -L\1/g'`
                       # The sed command looks for:
                       #
                       #        -L<optional spaces><something><space>
@@ -19565,7 +19565,7 @@ do
                       # if this pattern is found, each and every occurrence is
                       # replaced by the following:
                       #
-                      #       $(LIBPATHSWITCH)=<something> -L<something>
+                      #       $(LINKER_LIBPATHSWITCH)=<something> -L<something>
                       #
                       # <something> being the substring found in the original
                       # fragment.
