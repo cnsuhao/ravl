@@ -1310,9 +1310,9 @@ then
                    trace 5 Changing _LIBS from:
                    TRACE_INDENT="     "
                    trace 5 $setting
-                   setting=`echo $setting | $SED 's/-L *\(@<:@^ @:>@@<:@^ @:>@*\)/\$(LIBPATHSWITCH)\=\1 -L\1/g'`
+                   setting=`echo $setting | $SED 's/-L *\(@<:@^ @:>@@<:@^ @:>@*\)/\$(LINKER_LIBPATHSWITCH)\=\1 -L\1/g'`
 dnl                # The sed command is actually:
-dnl                #    's/-L *\([^ ][^ ]*\)\$(LIBPATHSWITCH)\=\1 -L\1/g'
+dnl                #    's/-L *\([^ ][^ ]*\)\$(LINKER_LIBPATHSWITCH)\=\1 -L\1/g'
 dnl                # the square brackets having been substituted to prevent
 dnl                # m4 removing them. 
                    # The sed command looks for:
@@ -1322,7 +1322,7 @@ dnl                # m4 removing them.
                    # if this pattern is found, each and every occurrence is
                    # replaced by the following:
                    #
-                   #       $(LIBPATHSWITCH)=<something> -L<something>
+                   #       $(LINKER_LIBPATHSWITCH)=<something> -L<something>
                    #
                    # <something> being the substring found in the original
                    # fragment.
@@ -1343,7 +1343,7 @@ echo \# List of external libraries available to Ravl >> ./Config.Project.in
 # We need to amend the rpath setting for the unconfigured libs if the user has
 # changed the setting.
 #
-# if with_rpath != QMake_rpath | LIBPATHSWITCH changed
+# if with_rpath != QMake_rpath | LINKER_LIBPATHSWITCH changed
 #   if QMake_rpath=no
 #     # Add in new rpath setting
 #     for lib in $UnconfiguredLibs
@@ -1369,9 +1369,9 @@ echo \# List of external libraries available to Ravl >> ./Config.Project.in
 #                      ;;
 #           'present' )
 #                      eval setting=\$${lib}_LIBS
-#                      setting=`echo $setting | $SED 's/-L *\(@<:@^ @:>@@<:@^ @:>@*\)/\$(LIBPATHSWITCH)\=\1 -L\1/g'`
+#                      setting=`echo $setting | $SED 's/-L *\(@<:@^ @:>@@<:@^ @:>@*\)/\$(LINKER_LIBPATHSWITCH)\=\1 -L\1/g'`
 #dnl                   # The sed command is actually:
-#dnl                   #    's/-L *\([^ ][^ ]*\)\$(LIBPATHSWITCH)\=\1 -L\1/g'
+#dnl                   #    's/-L *\([^ ][^ ]*\)\$(LINKER_LIBPATHSWITCH)\=\1 -L\1/g'
 #dnl                   # the square brackets having been substituted to prevent
 #dnl                   # m4 removing them. 
 #                      # The sed command looks for:
@@ -1381,7 +1381,7 @@ echo \# List of external libraries available to Ravl >> ./Config.Project.in
 #                      # if this pattern is found, each and every occurrence is
 #                      # replaced by the following:
 #                      #
-#                      #       $(LIBPATHSWITCH)=<something> -L<something>
+#                      #       $(LINKER_LIBPATHSWITCH)=<something> -L<something>
 #                      #
 #                      # <something> being the substring found in the original
 #                      # fragment.
@@ -1419,11 +1419,11 @@ echo \# List of external libraries available to Ravl >> ./Config.Project.in
 #           'present' )
 #                      # First remove the old setting
 #                      setting=......
-#                      if LIBPATHSWITCH changed
+#                      if LINKER_LIBPATHSWITCH changed
 #                        # Add in new switch
-#                        setting=`echo $setting | $SED 's/-L *\(@<:@^ @:>@@<:@^ @:>@*\)/\$(LIBPATHSWITCH)\=\1 -L\1/g'`
+#                        setting=`echo $setting | $SED 's/-L *\(@<:@^ @:>@@<:@^ @:>@*\)/\$(LINKER_LIBPATHSWITCH)\=\1 -L\1/g'`
 #dnl                     # The sed command is actually:
-#dnl                     #    's/-L *\([^ ][^ ]*\)\$(LIBPATHSWITCH)\=\1 -L\1/g'
+#dnl                     #    's/-L *\([^ ][^ ]*\)\$(LINKER_LIBPATHSWITCH)\=\1 -L\1/g'
 #dnl                     # the square brackets having been substituted to prevent
 #dnl                     # m4 removing them. 
 #                        # The sed command looks for:
@@ -1433,7 +1433,7 @@ echo \# List of external libraries available to Ravl >> ./Config.Project.in
 #                        # if this pattern is found, each and every occurrence is
 #                        # replaced by the following:
 #                        #
-#                        #       $(LIBPATHSWITCH)=<something> -L<something>
+#                        #       $(LINKER_LIBPATHSWITCH)=<something> -L<something>
 #                        #
 #                        # <something> being the substring found in the original
 #                        # fragment.
