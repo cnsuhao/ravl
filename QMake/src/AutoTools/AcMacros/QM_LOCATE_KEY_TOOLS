@@ -302,7 +302,7 @@ AC_DEFUN([QM_LOCATE_KEY_TOOLS],
                  then
                     # QMake settings not overridden, so check what they were
                     with_rpath=`cat $QMAKE_CFG | $SED -n 's/^USE_LIBPATHSWITCH=\(.*\)/\1/p'`
-                    if ( test x$with_rpath != Y )
+                    if ( test x$with_rpath != xY )
                     then
                        # QMake didn't enable it so don't consider it from
                        # now on.
