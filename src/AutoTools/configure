@@ -3280,8 +3280,8 @@ $as_echo "yes" >&6; }
                                   InstalledPatch=`echo $InstalledVer | $SED -n "$sedPattern/s//\3/p"`
                                   if ( test "x$PACKAGE_NAME" != xQMake )
                                   then
-                                    LocalVer=`$SED  -n '/^PACKAGE_VERSION *= *'\''\([0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\)'\'' *$/s//\1/p' $srcdir/QMake/configure`
-                                                                                                                                                # The '\'' put a single ' in the search pattern.
+                                    LocalVer=`$SED  -n '/^PACKAGE_VERSION *= *'\''\([0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\)'\'' *$/s//\1/p' $srcdir/../../QMake/configure`
+                                                                                                                                                                                                                                                            # The '\'' put a single ' in the search pattern.
                                   else
                                     LocalVer=$PACKAGE_VERSION
                                   fi
@@ -3307,7 +3307,7 @@ $as_echo "older" >&6; }
                                     # Installed version is latest, use that
                                     WORKING_QMAKE=`$PKG_CONFIG --variable=datadir $with_QMake_pkgconf 2>/dev/null`/QMake
                                     #  "      "  = ${datadir}/QMake
-                                    if ( test X$WORKING_QMAKE == X || test X$QMAKE_CONFIGFILES == X )
+                                    if ( test X$WORKING_QMAKE == X )
                                     then
                                       { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
@@ -3316,7 +3316,7 @@ See \`config.log' for more details." "$LINENO" 5; }
                                     fi
                                     QMAKE_CONFIGFILES=`$PKG_CONFIG --variable=sysconfdir $with_QMake_pkgconf 2>/dev/null`/QMake
                                     # "        "     = ${sysconfdir}/QMake
-                                    if ( test X$WORKING_QMAKE == X || test X$QMAKE_CONFIGFILES == X )
+                                    if ( test X$QMAKE_CONFIGFILES == X )
                                     then
                                       { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
