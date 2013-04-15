@@ -26,8 +26,8 @@ namespace RavlN {
     }
 
     //: Constructor.
-    ControlWinBodyC::ControlWinBodyC(StringListC & dbs, const StringListC & sightingSets, bool autoScale) :
-        WindowBodyC(800, 600, "Face XML Markup Tool"), notebook(GTK_POS_TOP, true, true), faceDb(dbs), m_autoScale(autoScale)
+    ControlWinBodyC::ControlWinBodyC(const FaceInfoDbC & db, const StringListC & sightingSets, bool autoScale) :
+        WindowBodyC(800, 600, "Face XML Markup Tool"), notebook(GTK_POS_TOP, true, true), faceDb(db), m_autoScale(autoScale)
     {
       if (faceDb.IsEmpty()) {
         rWarning("No markups in file provided!");

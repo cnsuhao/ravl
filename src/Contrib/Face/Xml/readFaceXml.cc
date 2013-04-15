@@ -30,6 +30,7 @@ int main(int argc, char **argv)
   OptionC opt(argc, argv);
   FilenameC db = opt.String("db", "", "input FaceInfoDb file");
 
+
   // RLog options
   bool verbose = opt.Boolean("v", false, "Verbose mode. ");
   StringC logFile = opt.String("l", "stderr", "Checkpoint log file. ");
@@ -47,6 +48,7 @@ int main(int argc, char **argv)
   FaceInfoDbC faceInfoDb(db);
   rInfo("Loaded Face XML file '%s' with '%d' subjects and '%d' faces", db.data(), faceInfoDb.NoClients(), faceInfoDb.NoFaces());
 
+#if 0
   for (HashIterC<StringC, FaceInfoC> it(faceInfoDb); it; it++) {
     FilenameC filename(it.Data().OrigImage());
     if (!filename.Exists()) {
@@ -62,6 +64,14 @@ int main(int argc, char **argv)
       continue;
     }
   }
+#endif
+
+#if 1
+  if (!Save("out.xml", faceInfoDb)) {
+    rError("Trouble saving XML file");
+    return 1;
+  }
+#endif
 
   rInfo("All checked out OK!");
   return 0;
