@@ -26,7 +26,7 @@ namespace RavlN {
 
     public:
 
-      ControlWinBodyC(StringListC & dbs, const StringListC & sightingSets, bool autoScale);
+      ControlWinBodyC(const FaceInfoDbC & db, const StringListC & sightingSets, bool autoScale);
       //: Constructor.
 
       bool Create();
@@ -71,8 +71,8 @@ namespace RavlN {
       //: Default constructor.
       // Creates an invalid handle.
 
-      ControlWinC(StringListC & dbs, const StringListC & sightingSets, bool autoScale) :
-          WindowC(*new ControlWinBodyC(dbs, sightingSets, autoScale))
+      ControlWinC(FaceInfoDbC & db, const StringListC & sightingSets, bool autoScale) :
+          WindowC(*new ControlWinBodyC(db, sightingSets, autoScale))
       {
       }
       //: Constructor.
