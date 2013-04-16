@@ -19,7 +19,7 @@
 
 namespace RavlN {
 
-void * DynamicLinkLoad(const StringC &libName);
+void * DynamicLinkLoad(const StringC &libName, bool silent=false);
   //: Load a library.
   // Returns pointer to loaded library
 }

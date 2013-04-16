@@ -148,7 +148,7 @@ namespace RavlImageN {
    {
       void * handle;
 
-      if ( (handle = DynamicLinkLoad ("libjpeg.so")) )
+      if ( (handle = DynamicLinkLoad ("libjpeg.so", true)) )
       {
          jpeg_CreateCompressFP.AsVoidPtr = dlsym (handle, "jpeg_CreateCompress");
          jpeg_create_compressFP.AsVoidPtr = dlsym (handle, "jpeg_create_compress");

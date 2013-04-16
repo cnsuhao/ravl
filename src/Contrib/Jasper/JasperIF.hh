@@ -28,7 +28,7 @@
             {
                void * handle;
 
-               if ( (handle = DynamicLinkLoad ("libjasper.so")) )
+               if ( (handle = DynamicLinkLoad ("libjasper.so", true)) )
                {
                   jas_cmprof_createfromclrspcFP.AsVoidPtr = dlsym (handle, "jas_cmprof_createfromclrspc");
                   jas_cmprof_destroyFP.AsVoidPtr = dlsym (handle, "jas_cmprof_destroy");

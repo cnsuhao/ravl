@@ -24,7 +24,7 @@
             {
                void * handle;
 
-               if ( (handle = DynamicLinkLoad ("libtiff.so")) )
+               if ( (handle = DynamicLinkLoad ("libtiff.so", true)) )
                {
                   TIFFClientOpenFP.AsVoidPtr = dlsym (handle, "TIFFClientOpen");
                   TIFFCloseFP.AsVoidPtr = dlsym (handle, "TIFFClose");

@@ -34,7 +34,7 @@ namespace RavlImageN {
    {
       void * handle;
 
-      if ( (handle = DynamicLinkLoad ("libpng.so")) )
+      if ( (handle = DynamicLinkLoad ("libpng.so", true)) )
       {   /* Assumes loading libpng.so automatically brings in libz.so */
          png_create_info_structFP.AsVoidPtr = dlsym (handle, "png_create_info_struct");
          png_create_read_structFP.AsVoidPtr = dlsym (handle, "png_create_read_struct");

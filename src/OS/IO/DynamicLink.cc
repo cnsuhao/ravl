@@ -36,7 +36,7 @@ namespace RavlN {
   static HashC<StringC,void *> libsLoaded;
   static bool loadedDefault = false;
   
-  static void * DynamicLinkLibLoad(const StringC &libName);
+  static void * DynamicLinkLibLoad(const StringC &, bool);
   
   static bool DynamicLinkLoadDepends(const char *fn) {
     ONDEBUG(cerr << "DynamicLinkLoadDepends() From '" << fn << "'\n");
@@ -66,17 +66,17 @@ namespace RavlN {
     return true;
   }
 
-void * DynamicLinkLoad(const StringC &libName) {
+void * DynamicLinkLoad(const StringC &libName, bool silent) {
     MTWriteLockC lock(0);    
     if(!loadedDefault) {
       // Load library dependancies.
       DynamicLinkLoadDepends(PROJECT_OUT "/lib/RAVL/libdep/libDepends");
       loadedDefault = true;
     }
-    return DynamicLinkLibLoad(libName);
+    return DynamicLinkLibLoad(libName, silent);
   }
   
-static void * DynamicLinkLibLoad(const StringC &libName) {
+static void * DynamicLinkLibLoad(const StringC &libName, bool silent) {
 
     void * handle=NULL;
 
@@ -87,7 +87,7 @@ static void * DynamicLinkLibLoad(const StringC &libName) {
     // Load any other libraries needed for this one.
     if(libDepends.IsElm(libName)) {
       for(DLIterC<StringC> it(libDepends[libName]);it.IsElm();it.Next()) {
-	if(!DynamicLinkLibLoad(it.Data()))
+	if(!DynamicLinkLibLoad(it.Data(), silent))
 	  return false;
       }
     }
@@ -98,7 +98,7 @@ static void * DynamicLinkLibLoad(const StringC &libName) {
     MTWriteLockC dynLinkLock(2); // Only one dynamic open at a time, so lock 'c' non-reentrant lock.
     libsLoaded.Update (libName,dlopen(libName.chars(), RTLD_GLOBAL | RTLD_LAZY));
     libsLoaded.Lookup(libName,handle);
-    if (handle == NULL)
+    if ((handle == NULL) && (silent == false))
       cerr << "Error loading '" << libName << "' :" << dlerror() << "\n";
 #else
     throw ExceptionC("DynamicLinkLibLoad(libName), Not implemented. ");
