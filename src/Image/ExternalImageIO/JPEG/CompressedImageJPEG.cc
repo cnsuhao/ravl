@@ -85,17 +85,6 @@ namespace RavlImageN {
   }
   
 
-  static TypeNameC type1(typeid(CompressedImageJPEGC),"RavlImageN::CompressedImageJPEGC");
-  
-  DP_REGISTER_CONVERSION_NAMED(RGBImage2CompressedImageJPEG ,0.9,
-			       "CompressedImageJPEGC RavlImageN::Convert(const ImageC<ByteRGBValueC> &)");
-  
-  DP_REGISTER_CONVERSION_NAMED(CompressedImageJPEG2RGBImage ,1,
-			       "ImageC<ByteRGBValueC> RavlImageN::Convert(const CompressedImageJPEGC &)");
-
-  FileFormatStreamC<CompressedImageJPEGC> FileFormatStream_CompressedImageJPEGC;
-  FileFormatBinStreamC<CompressedImageJPEGC> FileFormatBinStream_CompressedImageJPEGC;
-
   // Must link func.
   
   void InitJPEGCompressConv() 

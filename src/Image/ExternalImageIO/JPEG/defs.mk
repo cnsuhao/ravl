@@ -18,8 +18,13 @@ PLIB = RavlExtImgIO
 
 LIBDEPS= RavlJPEG.def
 
-HEADERS = ImgIOJPeg.hh ImgIOJPegB.hh JPEGFormat.hh CompressedImageJPEG.hh
+HEADERS = ImgIOJPeg.hh ImgIOJPegB.hh JPEGFormat.hh CompressedImageJPEG.hh JPEGif.hh
 
-SOURCES = ImgIOJPeg.cc JPEGFormat.cc CompressedImageJPEG.cc
+SOURCES = ImgIOJPeg.cc JPEGFormat.cc CompressedImageJPEG.cc JPEGif.cc
 
-USESLIBS = RavlImage RavlIO RavlImageIO LibJPEG
+USESLIBS = RavlOSIO RavlImage RavlIO RavlImageIO
+
+INCLUDES += $(JPEG_CFLAGS)
+# Replacing USESLIBS += LibJPEG
+
+

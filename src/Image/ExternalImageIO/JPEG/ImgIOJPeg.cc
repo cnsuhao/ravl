@@ -25,6 +25,7 @@ extern "C" {
 
 #include "Ravl/Image/ImgIOJPegB.hh"
 #include "Ravl/Image/ByteYUVValue.hh"
+#include "Ravl/Image/JPEGif.hh"
 
 namespace RavlImageN {
   
@@ -47,7 +48,7 @@ namespace RavlImageN {
   
   ///// DATA OUTPUT //////////////////////////////////////////////////
   
-  // Initialize destination.  This is called by jpeg_start_compress()
+  // Initialize destination.  This is called by Jpeg.start_compress()
   // before any data is actually written.  It must initialize
   // next_output_byte and free_in_buffer.  free_in_buffer must be
   // initialized to a positive value.
@@ -86,7 +87,7 @@ namespace RavlImageN {
     
   }
   
-  // Terminate destination --- called by jpeg_finish_compress() after all
+  // Terminate destination --- called by Jpeg.finish_compress() after all
   // data has been written.  In most applications, this must flush any
   // data remaining in the buffer.  Use either next_output_byte or
   // free_in_buffer to determine how much data is in the buffer.
@@ -116,7 +117,7 @@ namespace RavlImageN {
   
   ///// DATA INPUT //////////////////////////////////////////////////
   
-  // Initialize source.  This is called by jpeg_read_header() before any
+  // Initialize source.  This is called by Jpeg.read_header() before any
   // data is actually read.  Unlike init_destination(), it may leave
   // bytes_in_buffer set to 0 (in which case a fill_input_buffer() call
   // will occur immediately).
@@ -201,7 +202,7 @@ namespace RavlImageN {
     }
   }
   
-  // Terminate source --- called by jpeg_finish_decompress() after all
+  // Terminate source --- called by Jpeg.finish_decompress() after all
   // data has been read.  Often a no-op.
   
   static
@@ -239,7 +240,7 @@ namespace RavlImageN {
      * This routine fills in the contents of struct jerr, and returns jerr's
      * address which we place into the link field in cinfo.
      */
-    cinfo.err = jpeg_std_error(&(jerr.pub));
+    cinfo.err = Jpeg.std_error(&(jerr.pub));
     
     /* In this example we want to open the input file before doing anything else,
      * so that the setjmp() error recovery below can assume the file is open.
@@ -250,7 +251,7 @@ namespace RavlImageN {
     /* Step 1: allocate and initialize JPEG decompression object */
     
     /* We set up the normal JPEG error routines, then override error_exit. */
-    cinfo.err = jpeg_std_error(&jerr.pub);
+    cinfo.err = Jpeg.std_error(&jerr.pub);
     jerr.pub.error_exit = my_error_exit;
     
     /* Establish the setjmp return context for my_error_exit to use. */
@@ -259,13 +260,13 @@ namespace RavlImageN {
        * We need to clean up the JPEG object, close the input file, and return.
        */
       std::cerr << "DPImageIOJPegIBaseC::DPImageIOJPegIBaseC(), Error initialising decompressor. \n";
-      jpeg_destroy_decompress(&cinfo);
+      Jpeg.destroy_decompress(&cinfo);
       initalised = false;
       return ;
     }
     
     /* Now we can initialize the JPEG decompression object. */
-    jpeg_create_decompress(&cinfo);
+    Jpeg.create_decompress(&cinfo);
     
     /* Now we can initialize the JPEG decompression object. */
     
@@ -284,7 +285,7 @@ namespace RavlImageN {
 	return ;
       }
       /* This is an important step since it will release a good deal of memory. */
-      jpeg_destroy_decompress(&cinfo);
+      Jpeg.destroy_decompress(&cinfo);
       initalised = false;
     }
   }
@@ -302,7 +303,7 @@ namespace RavlImageN {
     source_mgr.pub.init_source = init_source;
     source_mgr.pub.fill_input_buffer = fill_input_buffer;
     source_mgr.pub.skip_input_data = skip_input_data;
-    source_mgr.pub.resync_to_restart = (rsync_ptr) jpeg_resync_to_restart; /* use default method */
+    source_mgr.pub.resync_to_restart =  (rsync_ptr) &RavlImageN::JPEGif_call_resync_to_restart; /* use default method */
     source_mgr.pub.term_source = term_source;
     source_mgr.pub.bytes_in_buffer = 0; /* forces fill_input_buffer on first read */
     source_mgr.pub.next_input_byte = NULL; /* until buffer loaded */
@@ -348,7 +349,7 @@ namespace RavlImageN {
      * This routine fills in the contents of struct jerr, and returns jerr's
      * address which we place into the link field in cinfo.
      */
-    cinfo.err = jpeg_std_error(&jerr.pub);
+    cinfo.err = Jpeg.std_error(&jerr.pub);
     
     /* Now we can initialize the JPEG compression object. */
     
@@ -360,11 +361,11 @@ namespace RavlImageN {
       /* If we get here, the JPEG code has signaled an error.
        * We need to clean up the JPEG object, close the input file, and return.
        */
-      jpeg_destroy_compress(&cinfo);
+      Jpeg.destroy_compress(&cinfo);
       return ;
     }
     
-    jpeg_create_compress(&cinfo);
+    Jpeg.create_compress(&cinfo);
     
     InitO(fout);  
     initalised = true;
@@ -380,7 +381,7 @@ namespace RavlImageN {
 	// If we get here, the JPEG code has signaled an error.
 	return ;
       }
-      jpeg_destroy_compress(&cinfo);
+      Jpeg.destroy_compress(&cinfo);
       initalised = false;
     }
   }

@@ -26,6 +26,7 @@ extern "C" {
 #include "Ravl/DP/FileFormat.hh"
 #include "Ravl/DP/Port.hh"
 #include "Ravl/Stream.hh"
+#include "Ravl/Image/JPEGif.hh"
 
 namespace RavlImageN {
   //: JPeg Utilities
@@ -255,15 +256,15 @@ namespace RavlImageN {
       return false;
     }
     
-    jpeg_read_header(&cinfo, true);    
+    Jpeg.read_header(&cinfo, true);    
     
     if(!SetupFormat(typeid(PixelT))) // Setup decompression.
       return false; /* Don't know pixel type... */
     
-    jpeg_start_decompress(&cinfo);
+    Jpeg.start_decompress(&cinfo);
     
     /* We may need to do some setup of our own at this point before reading
-     * the data.  After jpeg_start_decompress() we have the correct scaled
+     * the data.  After Jpeg.start_decompress() we have the correct scaled
      * output image dimensions available, as well as the output colormap
      * if we asked for color quantization.
      */ 
@@ -282,11 +283,11 @@ namespace RavlImageN {
     while (cinfo.output_scanline < cinfo.output_height) {
       //cerr << "scanline=" << cinfo.output_scanline << " crow=" << crow << "\n";
       buffer[0] = (JSAMPROW) (& (buff[crow++][LCol]));
-      jpeg_read_scanlines(&cinfo,buffer , 1);    
+      Jpeg.read_scanlines(&cinfo,buffer , 1);    
     }
     // Reframe image without padding....
     buff = ImageC<PixelT>(buff,IndexRange2dC(cinfo.image_height,cinfo.image_width));
-    jpeg_finish_decompress(&cinfo);
+    Jpeg.finish_decompress(&cinfo);
     
     return true;
   }
@@ -353,19 +354,19 @@ namespace RavlImageN {
     if(!SetupFormat(typeid(PixelT)))
       return false; /* Don't know pixel type... */
     
-    jpeg_set_defaults(&cinfo);
-    jpeg_set_quality(&cinfo, compression, true /* limit to baseline-JPEG values */);
+    Jpeg.set_defaults(&cinfo);
+    Jpeg.set_quality(&cinfo, compression, true /* limit to baseline-JPEG values */);
     
-    jpeg_start_compress(&cinfo, true);
+    Jpeg.start_compress(&cinfo, true);
     
     const IndexC LCol = buff.LCol();
     IndexC crow = buff.TRow();
     while (cinfo.next_scanline < cinfo.image_height) {
       row_pointer[0] = (JSAMPROW)(& (buff[crow++][LCol]));
-      jpeg_write_scanlines(&cinfo, row_pointer, 1);
+      Jpeg.write_scanlines(&cinfo, row_pointer, 1);
     }
     
-    jpeg_finish_compress(&cinfo);
+    Jpeg.finish_compress(&cinfo);
     
     return true;
   }

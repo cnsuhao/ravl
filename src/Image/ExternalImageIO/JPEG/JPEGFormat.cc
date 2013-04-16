@@ -194,10 +194,4 @@ namespace RavlImageN {
     return typeid(ImageC<ByteRGBValueC>); 
   }
   
-  FileFormatJPEGC RegisterFileFormatJPEG(100,0,false,"jpeg","JPEG image file format. 'Lossless' compression.");
-  FileFormatJPEGC RegisterFileFormatJPEGL(75,-25,false,"jpegl","JPEG image file format. 75% lossy compression.");
-  
-  FileFormatJPEGC RegisterFileFormatMJPEG(100,-1,true,"mjpeg","Sequence of JPEG images in a single file. 'lossless' compression.");
-  FileFormatJPEGC RegisterFileFormatMJPEGL(75,-26,true,"mjpegl","Sequence of JPEG images in a single file.  75% lossy compression.");
-  
 }
