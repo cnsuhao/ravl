@@ -5,7 +5,7 @@
 #define RAVLN_FACEN_Sighting_HEADER 1
 //! rcsid="$Id$"
 //! lib=RavlFace
-//! docentry="Ravl.Contrib.Face"
+//! docentry="Ravl.Applications.Image.Face"
 //! file="Ravl/Contrib/Face/Xml/Sighting.hh"
 //! author="Kieron J Messer"
 
@@ -47,37 +47,40 @@ namespace RavlN {
 
       StringC ActualId(void) const
       {
-        return actualId;
+        return m_actualId;
       }
       //: Get the id of person to be Sightingled
 
       StringC & ActualId(void)
       {
-        return actualId;
+        return m_actualId;
       }
       //: Get the id of person to be Sightingled
 
       DListC<StringC> FaceIds() const
       {
-        return list;
+        return m_faceIds;
       }
       //: All the faces to be used in Sightinglment
 
       DListC<StringC>& FaceIds()
       {
-        return list;
+        return m_faceIds;
       }
       //: All the faces to be used in Sightinglment
 
       bool AddFaceId(const StringC & faceid);
       //: Add a new face to be included in the Sighting
 
+      bool DeleteFaceId(const StringC & faceId);
+      //: Delete a face id from sighting, if it exists
+
     protected:
 
-      StringC actualId;
+      StringC m_actualId;
       //: The unique id of the person
 
-      DListC<StringC> list;
+      DListC<StringC> m_faceIds;
       //: The list of images used for the Sightinglment session
 
       friend class SightingC;
@@ -170,6 +173,12 @@ namespace RavlN {
         return Body().AddFaceId(faceid);
       }
       //: Add a new face to be included in the Sighting
+
+      bool DeleteFaceId(const StringC & faceId) {
+        return Body().DeleteFaceId(faceId);
+      }
+      //: Delete a face id from sighting, if it exists
+
 
       friend XMLIStreamC &operator>>(XMLIStreamC &xml, SightingC &data);
       friend XMLOStreamC &operator<<(XMLOStreamC &xml, const SightingC &data);

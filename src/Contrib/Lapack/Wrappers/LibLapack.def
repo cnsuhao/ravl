@@ -5,8 +5,6 @@
 # see http://www.gnu.org/copyleft/lesser.html
 # file-header-ends-here
 
-$(error Lapack not currently supported)
-
 ifndef LIBLAPACK_DEF
 
   LIBLAPACK_DEF=1

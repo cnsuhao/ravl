@@ -11,6 +11,9 @@
 #include "Ravl/Zmq/Context.hh"
 #include "Ravl/SArray1d.hh"
 #include "Ravl/String.hh"
+#include "Ravl/SysLog.hh"
+#include "Ravl/DP/MemIO.hh"
+#include "Ravl/TypeName.hh"
 #include <vector>
 #include <string>
 
@@ -33,6 +36,9 @@ namespace RavlN {
       MessageC(const std::string &data);
 
       //! Construct a message from a string
+      MessageC(const StringC &data);
+
+      //! Construct a message from a string
       MessageC(const char *data);
 
       //! Destructor.
@@ -44,11 +50,26 @@ namespace RavlN {
       //! Push a string.
       void Push(const std::string &msg);
 
+      //! Push a string.
+      void Push(const RavlN::StringC &msg);
+
       //! Push a buffer onto the message stack
       void Push(const SArray1dC<char> &buff);
 
       //! Push contents of another message onto the end of this one.
       void Push(const MessageC &msg);
+
+      //! Send a arbitrary class
+      template<typename DataT>
+      void Push(const DataT &value,const StringC &codec = "abs",bool verbose = false) {
+        SArray1dC<char> data;
+        if(!MemSave(data,value,codec,verbose)) {
+          RavlError("Failed to encode message using codec %s from type '%s' ",codec.c_str(),RavlN::TypeName(typeid(DataT)));
+          RavlAssert(0);
+          throw RavlN::ExceptionOperationFailedC("Failed to encode data.");
+        }
+        Push(data);
+      }
 
       //! Pop a buffer from the message stack
       void Pop(SArray1dC<char> &buff);
@@ -56,6 +77,28 @@ namespace RavlN {
       //! Pop a message
       void Pop(std::string &str);
 
+      //! Pop a message
+      void Pop(RavlN::StringC &str);
+
+      //! Send a arbitrary class
+      template<typename DataT>
+      void Pop(DataT &value,const StringC &codec = "abs",bool verbose = false) {
+        SArray1dC<char> data;
+        Pop(data);
+        if(!MemLoad(data,value,codec,verbose)) {
+          RavlError("Failed to decode message ");
+          RavlAssert(0);
+          throw RavlN::ExceptionOperationFailedC("Failed to decode data.");
+        }
+      }
+
+      //! Access next array to pop.
+      SArray1dC<char> &Top()
+      { return m_parts.back(); }
+
+      //! Discard the top of the stack.
+      void Pop()
+      { m_parts.pop_back(); }
 
       //! Access parts
       std::vector<SArray1dC<char> > &Parts()

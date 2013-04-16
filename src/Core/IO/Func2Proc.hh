@@ -9,7 +9,6 @@
 ///////////////////////////////////////////////
 //! docentry="Ravl.API.Core.Data Processing.Processes" 
 //! lib=RavlIO
-//! rcsid="$Id$"
 //! file="Ravl/Core/IO/Func2Proc.hh"
 //! author="Charles Galambos"
 //! date="09/07/1998"

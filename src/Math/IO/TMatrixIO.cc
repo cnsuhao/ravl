@@ -5,7 +5,6 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 /////////////////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! lib=RavlMathIO
 //! file="Ravl/Math/IO/TMatrixIO.cc"
 
@@ -52,7 +51,10 @@ namespace RavlN {
       it.Data1() = static_cast<FloatT>(it.Data2());
     return ret;
   }
-  
+
+  TVectorC<FloatT> SArray1dFloatTVectorFloat(const SArray1dC<FloatT> &vec)
+  { return TVectorC<FloatT>(vec); }
+
   VectorC TVectorFloat2Vector(const TVectorC<FloatT> &vec) {
     VectorC ret(vec.Size());
     for(SArray1dIter2C<RealT,FloatT> it(ret,vec);it;it++)
@@ -67,6 +69,7 @@ namespace RavlN {
   DP_REGISTER_CONVERSION_NAMED(TVectorFloat2Vector,1,
 			       "RavlN::VectorC RavlN::Convert(const RavlN::TVectorC<FloatT> &)");
 
+  DP_REGISTER_CONVERSION(SArray1dFloatTVectorFloat,1);
 
   //-----------------------------------------------------------------------------------------
   // MatrixC converters.

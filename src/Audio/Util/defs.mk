@@ -4,7 +4,6 @@
 # General Public License (LGPL). See the lgpl.licence file for details or
 # see http://www.gnu.org/copyleft/lesser.html
 # file-header-ends-here
-#! rcsid="$Id$"
 #! file="Ravl/Audio/Util/defs.mk"
 
 PACKAGE=Ravl/Audio
@@ -17,7 +16,9 @@ SOURCES=AudioIO.cc WindowSignal.cc  Segment.cc Transcription.cc \
 
 PLIB=RavlAudioUtil
 
-USESLIBS=RavlIO
+MUSTLINK= linkRavlAudioUtil.cc
+
+USESLIBS=RavlIO RavlOSIO RavlXMLFactory
 
 EHT= Ravl.API.Audio.IO.html
 

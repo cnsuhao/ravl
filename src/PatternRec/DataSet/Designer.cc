@@ -15,21 +15,25 @@ namespace RavlN {
   //: Default constructor.
 
   DesignerBodyC::DesignerBodyC()
+   : m_verbose(false)
   {}
 
   DesignerBodyC::DesignerBodyC(const XMLFactoryContextC & factory)
+    : m_verbose(factory.AttributeBool("verbose",false))
   {}
 
   //: Load from stream.
   
   DesignerBodyC::DesignerBodyC(std::istream &strm)
-    : RCBodyVC(strm)
+    : RCBodyVC(strm),
+      m_verbose(false)
   {}
   
   //: Load from binary stream.
   
   DesignerBodyC::DesignerBodyC(BinIStreamC &strm)
-    : RCBodyVC(strm)
+    : RCBodyVC(strm),
+      m_verbose(false)
   {}
   
   //: Writes object to stream, can be loaded using constructor

@@ -47,6 +47,8 @@ namespace RavlN {
     virtual UIntT Classify(const VectorC &data) const;
     //: Returns most likely label
     
+    virtual VectorC Apply(const VectorC & data) const;
+    //: Get probability vector
     
   protected:
     SArray1dC<VectorC>mean;

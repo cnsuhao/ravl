@@ -14,6 +14,7 @@
 
 #include "Ravl/PatternRec/DesignClassifierSupervised.hh"
 
+
 namespace RavlN {
   
   //! userlevel=Develop
@@ -44,6 +45,9 @@ namespace RavlN {
     DesignBayesNormalLinearBodyC(const SArray1dC<RealT> & priors);
     //: Specify the priors for each class
         
+    DesignBayesNormalLinearBodyC(const XMLFactoryContextC &factory);
+    //: Construct from XML factory
+
     virtual ClassifierC Apply(const SampleC<VectorC> &in,const SampleC<UIntT> &out);
     //: Create function from the a labelled dataset.
         
@@ -79,6 +83,11 @@ namespace RavlN {
     {}
     //: Create designer.
     
+    DesignBayesNormalLinearC(const XMLFactoryContextC &factory)
+      :  DesignClassifierSupervisedC(*new DesignBayesNormalLinearBodyC(factory))
+    {}
+    //: Construct from XML factory
+
   protected:
     DesignBayesNormalLinearC(DesignBayesNormalLinearBodyC &bod)
       : DesignClassifierSupervisedC(bod)

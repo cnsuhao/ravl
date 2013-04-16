@@ -23,8 +23,7 @@ namespace RavlN {
     : public DistanceBodyC
   {
   public:
-    DistanceSqrEuclideanBodyC()
-    {}
+    DistanceSqrEuclideanBodyC();
     //: Default constructor.
     
     DistanceSqrEuclideanBodyC(const XMLFactoryContextC &factory);

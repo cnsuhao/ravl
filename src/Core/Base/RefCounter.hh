@@ -199,7 +199,7 @@ namespace RavlN {
       body = 0;
     }
     //: Invalidate this handle.
-    // Unattaches the body from the handle.
+    // Detaches the body from the handle.
     
     template<class DT>
     bool IsHandleType(const DT &/*dummy*/) const
@@ -220,7 +220,19 @@ namespace RavlN {
     //: Access unique address for this object.
     // Used in PointerManagerC.  Not for general use
     // this interface may changed in future releases.
+
+    BodyT *BodyPtr()
+    { return body; }
+    //! userlevel=Advanced
+    //: Access body pointer.
+    // Used for working with SmartPtrC's.
     
+    const BodyT *BodyPtr() const
+    { return body; }
+    //! userlevel=Advanced
+    //: Access body pointer.
+    // Use for working with SmartPtrC's.
+
   private:
     BodyT *body;
     
@@ -263,16 +275,6 @@ namespace RavlN {
     }
     //: Constant access to body of object.
     
-    BodyT *BodyPtr()
-    { return body; }
-    //: Access body pointer.
-    // Used in upcasting.
-    
-    const BodyT *BodyPtr() const
-    { return body; }
-    //: Access body pointer.
-    // Used in upcasting.
-    
     static BodyT *BodyPtr(RCHandleC<BodyT> &bod)
     { return bod.body; }
     //: Access body point from a derived class.
@@ -284,6 +286,7 @@ namespace RavlN {
   public:
     UIntT References() const
     { return Body().References(); }
+    //! userlevel=Normal
     //: Find the number of references to the body of this object.
     
     friend class SmartPtrC<BodyT>; 

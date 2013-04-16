@@ -147,7 +147,7 @@ namespace RavlN {
     }
     for(HashIterC<KeyT,UIntC> it2(oth);it2;it2++) {
       UIntC oc = 0;
-      if(Lookup(it2.Key(),oc)) 
+      if(this->Lookup(it2.Key(),oc))
 	continue; // Only interested in elements in oth only.
       IntT diff = oc;
       if(diff < maxDiff)

@@ -15,17 +15,22 @@
 
 #include "Ravl/Point2d.hh"
 #include "Ravl/Index2d.hh"
+#include "Ravl/LinePP2d.hh"
 
 namespace RavlN {
   
   //! userlevel=Normal
   //: Iterate through integer grid points along a 2d line.
   // Uses a version of the midpoint algorithm to iterate all
-  // grid points on a line between two positions.
+  // 8-connected grid points on a line between two positions.
   
   class Line2dIterC {
   public:
     Line2dIterC(const Index2dC &start,const Index2dC &end);
+    //: Constructor.
+
+    Line2dIterC(const LinePP2dC &line)
+    { *this = Line2dIterC(line.P1(), line.P2()); }
     //: Constructor.
     
     void First(const Index2dC &start,const Index2dC &end);

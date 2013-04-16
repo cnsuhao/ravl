@@ -24,16 +24,15 @@ namespace RavlN {
 
   //: Constructor.
   FitHomog2dPointsBodyC::FitHomog2dPointsBodyC(RealT nzh1, RealT nzh2)
-  {
-    zh1 = nzh1;
-    zh2 = nzh2;
-  }
+    : zh1(nzh1),
+      zh2(nzh2)
+  { }
 
   //: Constructor.
   FitHomog2dPointsBodyC::FitHomog2dPointsBodyC()
-  {
-    zh1 = zh2 = 1.0;
-  }
+    : zh1(1.0),
+      zh2(1.0)
+  { }
 
   //: Fit parameters to sample of observations
   StateVectorC FitHomog2dPointsBodyC::FitModel(DListC<ObservationC> sample)
@@ -127,10 +126,16 @@ namespace RavlN {
 
     // initialise Levenberg-Marquardt algorithm with Ransac solution
     StateVectorHomog2dC stateVecInit = ransac.GetSolution();
-    LevenbergMarquardtC lm = LevenbergMarquardtC(stateVecInit, obsList);
+    LevenbergMarquardtC lm(stateVecInit, compatibleObsList);
 
     // apply Levenberg-Marquardt iterations
-    lm.NIterations ( obsList, noLevMarqIterations, lambdaStart, lambdaFactor );
+    lmFailed = false;
+    try {
+      lm.NIterations ( obsList, noLevMarqIterations, lambdaStart, lambdaFactor );
+    }
+    catch (ExceptionC) {
+      lmFailed = true;
+    }
 
     // get solution homography
     StateVectorHomog2dC sv(lm.GetSolution()); 

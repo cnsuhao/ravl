@@ -220,7 +220,7 @@ namespace RavlN {;
     }
     
     if(!child->Component().IsValid()) {
-      RavlDebug("No component at the leaf of path '%s' from '%s'",name.chars(),Path().chars());
+      ONDEBUG(RavlDebug("No component at the leaf of path '%s' from '%s'",name.chars(),Path().chars()));
       return false;
     }
     
@@ -311,7 +311,7 @@ namespace RavlN {;
     handle = RavlN::SystemTypeConverter().DoConversion(child->Component().Abstract(),from,to);
     if(!handle.IsValid()) {
       if(!silentError) {
-        RavlError(" convert data to requested type, from '%s' to '%s' in '%s'",RavlN::TypeName(from),RavlN::TypeName(to),Path().data());
+        RavlError("Failed to convert data to requested type, from '%s' to '%s' in '%s'",RavlN::TypeName(from),RavlN::TypeName(to),Path().data());
       }
       return false;
     }
@@ -483,7 +483,8 @@ namespace RavlN {;
       
   //: lookup child in tree.
   // Returns true and updates parameter 'child' if child is found.
-  bool XMLFactoryContextC::ChildContext(const StringC &key,XMLFactoryContextC &child) const {
+  bool XMLFactoryContextC::ChildContext(const StringC &key,XMLFactoryContextC &child) const
+  {
     if(!m_iNode.IsValid())
       return false;
     XMLFactoryNodeC::RefT childNode;
@@ -493,6 +494,20 @@ namespace RavlN {;
     child = XMLFactoryContextC(Factory(),*childNode);
     return true;
   }
+
+  //: lookup child in tree.
+  // Returns true and updates parameter 'child' if child is found.
+
+  bool XMLFactoryContextC::CreateContext(const StringC &key,XMLFactoryContextC &child) const
+  {
+    XMLTreeC childXML;
+    if(!Node().Child(key,childXML))
+      return false;
+    child = XMLFactoryContextC(Factory(),*new XMLFactoryNodeC(childXML,INode()));
+    return true;
+  }
+
+
 
   //! Set factory to use.
   
@@ -824,6 +839,24 @@ namespace RavlN {;
     }
     Type2Factory()[originalName] = factoryFunc;
     return true;
+  }
+
+  //: Generate a list of known types.
+
+  void XMLFactoryC::ListKnownTypes(CollectionC<StringC> &types) {
+    if(!types.IsValid())
+      types = CollectionC<StringC>(Type2Factory().Size());
+    types.Empty();
+    for(HashIterC<StringC,TypeFactoryT> it(Type2Factory());it;it++)
+      types.Append(it.Key());
+  }
+
+  //: Write known types to a stream.
+  void XMLFactoryC::DumpKnownTypes(std::ostream &strm) {
+    strm << "XMLFactory types:\n";
+    for(HashIterC<StringC,TypeFactoryT> it(Type2Factory());it;it++) {
+      strm << " " << it.Key() << "\n";
+    }
   }
 
   //! Follow path to node.

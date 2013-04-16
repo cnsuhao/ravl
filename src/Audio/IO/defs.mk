@@ -22,6 +22,6 @@ MUSTLINK=RavlAudioSample.cc
 
 MAINS=audioconv.cc
 
-PROGLIBS=RavlOSIO RavlDevAudio.opt RavlAudioFile.opt DynLink
+PROGLIBS=RavlOSIO RavlDevAudio.opt RavlAudioFile.opt RavlPortAudio.opt DynLink
 
 EXAMPLES= exTranscriptionStream.cc

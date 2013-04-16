@@ -141,7 +141,7 @@ namespace RavlN {
 #endif
     if(x > (formSize - 256)) 
       std::cerr << "OStreamC::form(...), WARNING: Ouput string is near or over buffer length. \n";
-    std::cerr << buff;
+    std::cerr << buff << "\n";
     va_end(args);
 #if RAVL_HAVE_EXCEPTIONS
     if(g_assertThrowException)
@@ -174,7 +174,7 @@ namespace RavlN {
 #endif
     if(x > (formSize - 256)) 
       std::cerr << "OStreamC::form(...), WARNING: Ouput string is near or over buffer length. \n";
-    std::cerr << buff;
+    std::cerr << buff << "\n";
     va_end(args);
   }
 

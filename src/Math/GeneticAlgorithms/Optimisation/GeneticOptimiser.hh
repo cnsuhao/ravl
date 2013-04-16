@@ -30,11 +30,16 @@ namespace RavlN { namespace GeneticN {
     //! Factory constructor
     GeneticOptimiserC(const XMLFactoryContextC &factory);
 
+    //! Reset population to an empty set.
+    void Reset();
+
     //! Set fitness function to use
     void SetFitnessFunction(EvaluateFitnessC &fitness);
 
     //! Run generation.
-    void RunGeneration(UIntT generation);
+    // Setting 'resetScores' recompute's scores for all entries, which should be used
+    // if the cost function is modified in any way.
+    void RunGeneration(UIntT generation,bool resetScores = false);
 
     //! Save population to file
     //! Note: This thread safe
@@ -69,6 +74,10 @@ namespace RavlN { namespace GeneticN {
 
     //! Get the current best genome and its score.
     bool GetBestGenome(GenomeC::RefT &genome,float &score);
+
+    //! Set the root gene type.
+    void SetRootGeneType(const GeneTypeC &rootGeneType)
+    { m_rootGeneType = &rootGeneType; }
 
     //! Handle to optimiser
     typedef SmartPtrC<GeneticOptimiserC> RefT;

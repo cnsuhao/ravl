@@ -9,7 +9,6 @@
 ///////////////////////////////////////////////
 //! docentry="Ravl.API.Core.Data Processing.Processes" 
 //! lib=RavlIO
-//! rcsid="$Id$"
 //! file="Ravl/Core/IO/Process.hh"
 //! author="Charles Galambos"
 //! date="16/06/1998"
@@ -19,6 +18,7 @@
 #include "Ravl/Exception.hh"
 #include "Ravl/SArray1dIter2.hh"
 #include "Ravl/Assert.hh"
+#include "Ravl/SmartPtr.hh"
 
 #if RAVL_HAVE_ANSICPPHEADERS
 #include <typeinfo>
@@ -37,25 +37,21 @@ namespace RavlN {
     : virtual public DPEntityBodyC 
   {
   public:
-    DPProcessBaseBodyC() 
-    {}
+    DPProcessBaseBodyC();
     //: Default constructor.
     
-    DPProcessBaseBodyC(std::istream &in) 
-      : DPEntityBodyC(in)
-    {}
+    DPProcessBaseBodyC(std::istream &in);
     //: Stream constructor.
     
-    DPProcessBaseBodyC(BinIStreamC &in) 
-      : DPEntityBodyC(in)
-    {}
+    DPProcessBaseBodyC(BinIStreamC &in);
     //: Binary stream constructor.
     
-    DPProcessBaseBodyC(const DPProcessBaseBodyC &oth) 
-      : DPEntityBodyC(oth)
-    {}
+    DPProcessBaseBodyC(const DPProcessBaseBodyC &oth);
     //: Copy constructor.
     
+    DPProcessBaseBodyC(const XMLFactoryContextC &factory);
+    //: XML factory constructor.
+
     virtual bool Save(std::ostream &out) const;
     //: Save to std::ostream.
     
@@ -87,6 +83,10 @@ namespace RavlN {
     virtual bool IsStateless() const 
     { return false; }
     //: Is operation stateless ?
+
+    typedef SmartPtrC<DPProcessBaseBodyC> RefT;
+    //: Handle to this process.
+
   };
   
   
@@ -100,16 +100,21 @@ namespace RavlN {
     : public DPProcessBaseBodyC 
   {
   public:
-    inline DPProcessBodyC()
+    DPProcessBodyC()
     {}
     //: Default constructor.
-    
-    inline DPProcessBodyC(std::istream &in)
+
+    DPProcessBodyC(const XMLFactoryContextC &factory)
+     : DPProcessBaseBodyC(factory)
+    {}
+    //: factory constructor.
+
+    DPProcessBodyC(std::istream &in)
       : DPProcessBaseBodyC(in)
     {}
     //: Stream constructor.
     
-    inline DPProcessBodyC(BinIStreamC &in) 
+    DPProcessBodyC(BinIStreamC &in)
       : DPProcessBaseBodyC(in)
     {}
     //: Binary stream constructor.
@@ -149,6 +154,8 @@ namespace RavlN {
     }
     //: Get output type.
     
+    typedef SmartPtrC<DPProcessBodyC<InT,OutT> > RefT;
+    //: Handle to this process.
   };
   
   ////////////////////////////////////////////////////////
@@ -179,7 +186,12 @@ namespace RavlN {
       : DPEntityC(oth)
     {}
     //: Copy constructor.
-    
+
+    DPProcessBaseC(DPProcessBaseC *oth)
+      : DPEntityC(oth)
+    {}
+    //: Copy constructor.
+
     DPProcessBaseC(const RCAbstractC &abst);
     //: Constructor from an abstract handle.
     
@@ -275,12 +287,16 @@ namespace RavlN {
     {}
     //: Copy constructor.
 
-  protected:  
     DPProcessC(DPProcessBodyC<InT,OutT> &bod)
       : DPProcessBaseC(bod)
     {}
     //: Body constructor.
-    
+
+    DPProcessC(DPProcessBodyC<InT,OutT> *bod)
+      : DPProcessBaseC(bod)
+    {}
+    //: Body constructor.
+  protected:
     inline DPProcessBodyC<InT,OutT> &Body() 
     { return dynamic_cast<DPProcessBodyC<InT,OutT> & > (DPEntityC::Body()); }
     //: Access body.

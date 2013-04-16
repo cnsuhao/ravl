@@ -8,7 +8,6 @@
 //! author="Lee Gregory"
 //! userlevel=Normal
 //! docentry="Ravl.API.OS.Threads"
-//! rcsid="$Id$"
 //! lib=RavlThreads
 //! file="Ravl/OS/Threads/Posix/exThread.cc"
 

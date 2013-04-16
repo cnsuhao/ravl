@@ -13,7 +13,7 @@ DESCRIPTION=Common mathematical operations.  sin, sqrt, etc....
 PACKAGE = Ravl
 
 #  MAINS = all modules containing the main function separated by space.
-MAINS	 = 
+MAINS = 
 
 # HEADERS = all include files of this project to be exported
 HEADERS = StdMath.hh Random.hh RandomGauss.hh Angle.hh ScalMath.hh \

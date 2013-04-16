@@ -4,8 +4,8 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-#ifndef RAVL_DESIGNKNEARESTNEIGHBOUR_HEADER
-#define RAVL_DESIGNKNEARESTNEIGHBOUR_HEADER 1
+#ifndef RAVL_DESIGNCLASSIFIERLOGISTICREGRESSION_HEADER
+#define RAVL_DESIGNCLASSIFIERLOGISTICREGRESSION_HEADER 1
 //! lib=RavlPatternRec
 //! docentry="Ravl.API.Pattern Recognition.Classifier.DesignClassifier"
 //! file="Ravl/PatternRec/Classify/DesignClassifierLogisticRegression.hh"
@@ -40,7 +40,13 @@ namespace RavlN {
     
     DesignClassifierLogisticRegressionBodyC(BinIStreamC &strm);
     //: Load from binary stream.
-    
+
+    DesignClassifierLogisticRegressionBodyC(const DesignClassifierLogisticRegressionBodyC &other);
+    //: Copy constructor
+
+    virtual RCBodyVC &Copy() const;
+    //: Make copy of body.
+
     virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
     
@@ -59,10 +65,10 @@ namespace RavlN {
     // set in 'params', but will be the closest legal values.
 
     virtual ClassifierC Apply(const SampleC<VectorC> &in,const SampleC<UIntT> &out);
-    //: Create a clasifier.
+    //: Create a classifier.
     
     virtual ClassifierC Apply(const SampleC<VectorC> &in,const SampleC<UIntT> &out,const SampleC<RealT> &weight);
-    //: Create a clasifier with weights for the samples.
+    //: Create a classifier with weights for the samples.
 
     RealT Regularisation() const
     { return m_regularisation; }

@@ -5,7 +5,7 @@
 #define RAVLN_FACEN_SightingSet_HEADER 1
 //! rcsid="$Id$"
 //! lib=RavlFace
-//! docentry="Ravl.Contrib.Face"
+//! docentry="Ravl.Applications.Image.Face"
 //! file="Ravl/Contrib/Face/Xml/SightingSet.hh"
 //! author="Kieron J Messer"
 
@@ -27,6 +27,9 @@ namespace RavlN {
 
       SightingSetC();
       //: Constructor
+
+      // Delete some face ids from the sighting set
+      bool DeleteFaceIds(const DListC<StringC> & faceIds);
 
     protected:
 

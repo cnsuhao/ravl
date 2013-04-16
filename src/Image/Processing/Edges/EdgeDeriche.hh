@@ -121,8 +121,8 @@ namespace RavlImageN {
     bool Apply(const ImageC<RealT> &inImg,ImageC<TFVectorC<RealT,2> > &out) const
     { return Body().Apply(inImg,out); }
     //: Apply Deriche operator to "img", put result in "out"
-    // This is a little slower than the Apply(inImg,vert,horz) for the moment,
-    // this will be fixed eventually.
+    // This is slightly slower than the Apply(inImg,vert,horz) for the moment,
+    // but it might be fixed eventually.
     
     ImageC<RealT> EdgeMagnitude(const ImageC<RealT> &inImg) const
     { return Body().EdgeMagnitude(inImg); }

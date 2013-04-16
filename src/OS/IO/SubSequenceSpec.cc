@@ -14,13 +14,24 @@
 
 namespace RavlN {
   
+  SubSequenceSpecBodyC::SubSequenceSpecBodyC()
+   : channelId(0),
+     single(false)
+  {}
+
   //: Constructor.
   
-  SubSequenceSpecBodyC::SubSequenceSpecBodyC(const StringC &nfn,IndexC nfirstFrame,IndexC nlastFrame,IntT nchannelId, const StringC &fmt,bool nsingle)
+  SubSequenceSpecBodyC::SubSequenceSpecBodyC(const StringC &nfn,
+                                             IndexC nfirstFrame,
+                                             IndexC nlastFrame,
+                                             IntT nchannelId,
+                                             const StringC &fmt,
+                                             bool nsingle)
     : fn(nfn),
       fileFormat(fmt),
       range(nfirstFrame,nlastFrame),
-      channelId(nchannelId)      
+      channelId(nchannelId),
+      single(nsingle)
   {}
 
   //: Copy from another spec

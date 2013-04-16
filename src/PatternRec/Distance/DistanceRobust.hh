@@ -23,7 +23,7 @@ namespace RavlN {
   // Class for calculating robust distance to a metric using any of the other
   // distance metrics. A threshold is set and all elements of X greater than it
   // are clipped. The other metric is specified in the constructor. <p>
-  // If you need seperate clip limits for each component of the vector
+  // If you need separate clip limits for each component of the vector
   // let me know and I'll change it.
   
   class DistanceRobustBodyC

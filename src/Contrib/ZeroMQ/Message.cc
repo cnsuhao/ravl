@@ -38,6 +38,12 @@ namespace RavlN {
       Push(data);
     }
 
+    MessageC::MessageC(const StringC &data)
+    {
+      Push(data);
+    }
+
+
     //! Push a string.
     void MessageC::Push(const char *msg) {
       size_t len = strlen(msg);
@@ -50,6 +56,14 @@ namespace RavlN {
     //! Push a string.
     void MessageC::Push(const std::string &msg) {
       SArray1dC<char> arr(MsgBufferC(msg.size()),msg.size());
+      if(arr.Size() > 0)
+        memcpy(arr.ReferenceElm(),&msg[0],msg.size());
+      Push(arr);
+    }
+
+    //! Push a string.
+    void MessageC::Push(const RavlN::StringC &msg) {
+      SArray1dC<char> arr(MsgBufferC((size_t) msg.Size()),msg.Size());
       if(arr.Size() > 0)
         memcpy(arr.ReferenceElm(),&msg[0],msg.size());
       Push(arr);
@@ -83,6 +97,18 @@ namespace RavlN {
         str = std::string();
       } else {
         str = std::string(&part[0],part.Size().V());
+      }
+      m_parts.pop_back();
+    }
+
+    //! Pop a message
+    void MessageC::Pop(RavlN::StringC &str) {
+      SArray1dC<char> &part = m_parts.back();
+      //RavlDebug("Got part:%zu ",part.Size().V());
+      if(part.Size() == 0) {
+        str = RavlN::StringC();
+      } else {
+        str = RavlN::StringC(&part[0],part.Size().V());
       }
       m_parts.pop_back();
     }

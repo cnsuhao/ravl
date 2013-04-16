@@ -13,7 +13,6 @@
 #include "Ravl/Genetic/GenePalette.hh"
 #include "Ravl/Genetic/GeneFactory.hh"
 
-
 #include "Ravl/Random.hh"
 #include "Ravl/SysLog.hh"
 #include "Ravl/XMLFactoryRegister.hh"
@@ -362,6 +361,15 @@ namespace RavlN { namespace GeneticN {
     m_components.Insert(name,&newEntry);
   }
 
+  //! Get Component.
+  bool GeneNodeC::GetComponent(const std::string &name,GeneC::ConstRefT &gene) const
+  { return m_components.Lookup(name,gene); }
+
+  //! Set component
+  void GeneNodeC::SetComponent(const std::string &name,const GeneC &newGene)
+  { m_components.Insert(name,&newGene); }
+
+
   //! Visit all gene's in tree.
   void GeneNodeC::Visit(GeneVisitorC &visitor) const {
     GeneC::Visit(visitor);
@@ -421,18 +429,20 @@ namespace RavlN { namespace GeneticN {
   // ---------------------------------------------------------------------
 
   //! Factory constructor
-  GeneTypeClassC::GeneTypeClassC(const XMLFactoryContextC &factory)
+  GeneTypeClassC::GeneTypeClassC(const XMLFactoryContextC &factory,bool checkType)
    : GeneTypeNodeC(factory),
      m_typeName(factory.AttributeString("className","").data())
   {
-    m_typeInfo = &RTypeInfo(m_typeName.data());
-    if(*m_typeInfo == typeid(void)) {
-      RavlError("Type '%s' unknown ",m_typeName.data());
-      throw RavlN::ExceptionBadConfigC("Unknown type");
-    }
-    if(!SystemTypeConverter().CanConvert(typeid(GeneFactoryC),*m_typeInfo)) {
-      RavlError("Don't know how to create class '%s' ",m_typeName.data());
-      throw RavlN::ExceptionBadConfigC("Asked to create unknown class. ");
+    if(checkType) {
+      m_typeInfo = &RTypeInfo(m_typeName.data());
+      if(*m_typeInfo == typeid(void)) {
+        RavlError("Type '%s' unknown ",m_typeName.data());
+        throw RavlN::ExceptionBadConfigC("Unknown type");
+      }
+      if(!SystemTypeConverter().CanConvert(typeid(GeneFactoryC),*m_typeInfo)) {
+        RavlError("Don't know how to create class '%s' ",m_typeName.data());
+        throw RavlN::ExceptionBadConfigC("Asked to create unknown class. ");
+      }
     }
   }
 
@@ -528,6 +538,18 @@ namespace RavlN { namespace GeneticN {
     return GeneTypeNodeC::Cross(palette,original1,original2,newValue);
   }
 
+  //! Method for generating the class.
+  void GeneTypeClassC::Generate(const GeneFactoryC &childContext,RCWrapAbstractC &handle) const
+  {
+    RavlN::RCWrapC<GeneFactoryC> fgwrap(childContext);
+    ONDEBUG(RavlDebug("Creating class '%s' ",TypeName().data()));
+    handle = SystemTypeConverter().DoConversion(fgwrap.Abstract(),fgwrap.DataType(),TypeInfo());
+    if(!handle.IsValid()) {
+      RavlError("Failed to create class '%s' ",TypeName().data());
+    }
+    RavlAssert(handle.IsValid());
+  }
+
   //! Generate a gene type for
   const GeneTypeC &CreateGeneType(const std::type_info &ti)
   { return *new GeneTypeClassC(ti); }
@@ -596,13 +618,7 @@ namespace RavlN { namespace GeneticN {
   void GeneClassC::Generate(const GeneFactoryC &context,RCWrapAbstractC &handle) const
   {
     GeneFactoryC childContext(context,*this);
-    RavlN::RCWrapC<GeneFactoryC> fgwrap(childContext);
-    ONDEBUG(RavlDebug("Creating class '%s' ",ClassType().TypeName().data()));
-    handle = SystemTypeConverter().DoConversion(fgwrap.Abstract(),fgwrap.DataType(),ClassType().TypeInfo());
-    if(!handle.IsValid()) {
-      RavlError("Failed to create class '%s' ",ClassType().TypeName().data());
-    }
-    RavlAssert(handle.IsValid());
+    ClassType().Generate(childContext,handle);
   }
 
   XMLFactoryRegisterConvertC<GeneClassC,GeneNodeC> g_registerGeneClass("RavlN::GeneticN::GeneClassC");

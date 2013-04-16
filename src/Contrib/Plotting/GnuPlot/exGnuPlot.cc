@@ -9,7 +9,7 @@
 //! lib=RavlURLIO
 //! file="Ravl/Contrib/Plotting/GnuPlot/exGnuPlot.cc"
 //! author="Kieron Messer"
-//! docentry="Ravl.Contrib.Plotting.GnuPlot"
+//! docentry="Ravl.API.Graphics.Graph Plotting"
 //! userlevel=Normal
 
 #include "Ravl/Plot/GnuPlot.hh"

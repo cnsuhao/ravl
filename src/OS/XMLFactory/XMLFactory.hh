@@ -18,7 +18,7 @@
 #include "Ravl/SmartLayerPtr.hh"
 #include "Ravl/Threads/RWLock.hh"
 #include "Ravl/Threads/Mutex.hh"
-#include "Ravl/OS/SysLog.hh"
+#include "Ravl/SysLog.hh"
 #include "Ravl/RCWrap.hh"
 #include "Ravl/Collection.hh"
 #include "Ravl/Traits.hh"
@@ -46,6 +46,11 @@ namespace RavlN {
   enum XMLFactorySearchScopeT
   { XMLFACTORY_SEARCH_PARENT_NODES,
     XMLFACTORY_SEARCH_LOCAL_ONLY
+  };
+
+  enum XMLFactoryCreateModeT
+  { XMLFACTORY_CREATE_DEFAULT,
+    XMLFACTORY_CREATE_NO_REGISTERATION
   };
 
   //! uselevel=Develop
@@ -461,7 +466,9 @@ namespace RavlN {
 
     
     template<class DataT>
-    bool CreateComponent(const StringC &name,DataT &data,bool suppressErrorMessages = false) const;
+    bool CreateComponent(const StringC &name,DataT &data,
+                         bool suppressErrorMessages = false,
+                         XMLFactoryCreateModeT createMode = XMLFACTORY_CREATE_DEFAULT) const;
     //: Create a new instance of the named component.
 
     template<class DataT>
@@ -476,6 +483,10 @@ namespace RavlN {
     //: Set component for name.
 
     bool ChildContext(const StringC &key,XMLFactoryContextC &child) const;
+    //: lookup child in tree.
+    // Returns true and updates parameter 'child' if child is found.
+
+    bool CreateContext(const StringC &key,XMLFactoryContextC &child) const;
     //: lookup child in tree.
     // Returns true and updates parameter 'child' if child is found.
 
@@ -506,6 +517,24 @@ namespace RavlN {
     // Returns true if child group exists, though it still may be empty.
 
     template<class DataT>
+    bool UseComponentGroup(const StringC &group,DListC<DataT> &list,const std::type_info &defaultType=typeid(void)) const {
+      XMLFactoryContextC childContext;
+      if(!ChildContext(group,childContext))
+        return false;
+      for(RavlN::DLIterC<XMLTreeC> it(childContext.Children());it;it++) {
+        DataT value;
+        if(!childContext.UseChildComponent(it->Name(),value,false,defaultType)) {
+          SysLog(SYSLOG_ERR,"Failed to load child component %s, at %s ",it->Name().data(),childContext.Path().data());
+          throw RavlN::ExceptionBadConfigC("Failed to load component");
+        }
+        list.InsLast(value);
+      }
+      return true;
+    }
+    //: Load component list.
+    // Returns true if child group exists, though it still may be empty.
+
+    template<class DataT>
     bool UseComponentGroup(const StringC &group,CollectionC<DataT> &list,const std::type_info &defaultType=typeid(void)) const {
       XMLFactoryContextC childContext;
       if(!ChildContext(group,childContext))
@@ -520,6 +549,17 @@ namespace RavlN {
         }
         list.Append(value);
       }
+      return true;
+    }
+    //: Load component list.
+    // Returns true if child group exists, though it still may be empty.
+
+    template<class DataT>
+    bool UseComponentGroup(const StringC &group,SArray1dC<DataT> &list,const std::type_info &defaultType=typeid(void)) const {
+      CollectionC<DataT> col;
+      if(!UseComponentGroup(group,col,defaultType))
+        return false;
+      list = col.Array();
       return true;
     }
     //: Load component list.
@@ -684,25 +724,23 @@ namespace RavlN {
     bool CreateComponent(const XMLFactoryContextC& currentContext,
                          const StringC &name,
                          DataT &data,
-                         bool suppressErrors = false
+                         bool suppressErrors = false,
+                         XMLFactoryCreateModeT createMode = XMLFACTORY_CREATE_DEFAULT
                          )
     {
       RCWrapC<DataT> handle;
-      XMLFactoryContextC newNode;
+
 
       StringC redirect = currentContext.AttributeString(name);
       if(redirect.IsEmpty())
         redirect = name;
 
-      //StringC fullName = currentNode.Path() + ":" + redirect;
-
-      // Does spec for component exist in this node ?
-      if(!currentContext.ChildContext(redirect,newNode)) {
+      XMLFactoryContextC newNode;
+      if(!currentContext.CreateContext(redirect,newNode)) {
         if(!suppressErrors)
           throw RavlN::ExceptionBadConfigC("Failed to find child");
         return false;
       }
-      //newNode.SetFactory(*this);
 
       if(!CreateComponent(newNode,data)) {
         if(!suppressErrors)
@@ -711,7 +749,8 @@ namespace RavlN {
       }
 
       // Store ready for reuse.
-      const_cast<XMLFactoryNodeC &>(currentContext.INode()).AddChild(redirect,newNode.INode());
+      if(createMode != XMLFACTORY_CREATE_NO_REGISTERATION)
+        const_cast<XMLFactoryNodeC &>(currentContext.INode()).AddChild(redirect,newNode.INode());
       return true;
     }
     //: Create named component, even if it exists already.
@@ -723,6 +762,12 @@ namespace RavlN {
     static bool RegisterTypeAlias(const char *originalName,const char *newName);
     //: Register an alias for a type. This must be done after the type is registered.
     //: Note: This is NOT thread safe.
+
+    static void ListKnownTypes(CollectionC<StringC> &types);
+    //: Generate a list of known types.
+
+    static void DumpKnownTypes(std::ostream &strm = std::cout);
+    //: Write known types to a stream.
 
     template<class DataT>
     static RCWrapAbstractC DefaultFactoryFunc(const XMLFactoryContextC &node)
@@ -932,8 +977,10 @@ namespace RavlN {
 
 
   template<class DataT>
-  bool XMLFactoryContextC::CreateComponent(const StringC &name,DataT &data,bool suppressErrorMessages) const
-  { return Factory().CreateComponent(*this,name,data,suppressErrorMessages); }
+  bool XMLFactoryContextC::CreateComponent(const StringC &name,DataT &data,
+                                           bool suppressErrorMessages,
+                                           XMLFactoryCreateModeT createMode) const
+  { return Factory().CreateComponent(*this,name,data,suppressErrorMessages,createMode); }
   //: Create named component.
 
   template<class DataT>

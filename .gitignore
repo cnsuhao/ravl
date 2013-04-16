@@ -1,7 +1,6 @@
 core.*
 /QMake
 /Makefile.in
-src/AutoTools/configure
 autom4te.cache
 tmp.ppm
 *.swp
@@ -12,3 +11,5 @@ tags
 *~
 gmon.out
 buildTag
+.settings
+.pydevproject

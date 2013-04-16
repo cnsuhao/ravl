@@ -13,6 +13,7 @@
 namespace RavlN {
   
   void InitFileFormatBinStream();
+  void LinkProcIStream();
 
 
   //: Ensure libRavlIO is linked in
@@ -20,6 +21,7 @@ namespace RavlN {
   void LinkRavlIO () {
     InitCoreIO();
     InitFileFormatBinStream();
+    LinkProcIStream();
   }
   
 }

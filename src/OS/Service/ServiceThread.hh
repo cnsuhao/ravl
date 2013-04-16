@@ -41,6 +41,9 @@ namespace RavlN {
     //! Shutdown service
     virtual bool Shutdown();
 
+    //! Run thread directly.
+    virtual bool Run();
+
     //! Owner reference counted ptr to class
     typedef RavlN::SmartOwnerPtrC<ServiceThreadC> RefT;
 
@@ -48,8 +51,6 @@ namespace RavlN {
     typedef RavlN::SmartCallbackPtrC<ServiceThreadC> CBRefT;
 
   protected:
-    //! Code called on the thread.
-    virtual bool Run();
 
     //! Set to true to exit.
     bool m_started;

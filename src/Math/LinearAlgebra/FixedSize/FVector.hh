@@ -60,7 +60,7 @@ namespace RavlN {
     //: Calculate the magnitude of the vector.
     
     inline RealT EuclidDistance(const TFVectorC<RealT,N> & i) const
-    { return Sqrt(SqrEuclidDistance(i)); }
+    { return Sqrt(this->SqrEuclidDistance(i)); }
     //: Returns the magnitude of the difference between the two vectors.
     
     FVectorC<N> Unit() const {

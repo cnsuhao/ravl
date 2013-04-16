@@ -10,6 +10,7 @@
 
 #include "Ravl/PatternRec/Classifier.hh"
 #include "Ravl/SArray1dIter2.hh"
+#include "Ravl/PatternRec/SampleIter.hh"
 
 namespace RavlN {
 
@@ -49,9 +50,19 @@ namespace RavlN {
     RavlAssertMsg(0,"ClassifierBodyC::Classifier(), Abstract method called. ");
     return 0;
   }
+
+  //: Classify each vector in the set
+
+  SampleC<UIntT> ClassifierBodyC::Classify(const SampleC<VectorC> &data) const {
+    SampleC<UIntT> ret(data.Size());
+    for(SampleIterC<VectorC> it(data);it;it++) {
+      ret.Append(Classify(*it));
+    }
+    return ret;
+  }
   
   //: Generate a probability for each label.
-  // Note: Not all classifiers return a true probablility vector.
+  // Note: Not all classifiers return a true probability vector.
   
   VectorC ClassifierBodyC::Apply(const VectorC &data) const {
     VectorC ret(NoLabels());
@@ -81,6 +92,20 @@ namespace RavlN {
     return Apply(reduced);
   }
   
+  RealT ClassifierBodyC::LabelProbability(const VectorC & data, UIntT label) const {
+    RavlAssertMsg(label<NumLabels(), "label bigger than number of classes");
+    VectorC conf = Apply(data);
+    return conf[label]/conf.Sum();
+  }
+     //: Compute the 'posterior' probability of a given class
+
+  RealT ClassifierBodyC::LabelProbability(const VectorC & data, const SArray1dC<IndexC> &featureSet, UIntT label) const {
+    RavlAssertMsg(label<NumLabels(), "label bigger than number of classes");
+    VectorC conf = Apply(data, featureSet);
+    return conf[label]/conf.Sum();
+  }
+  //: Compute the 'posterior' probability of a given class
+
   
   ///////////////////////////////////////////////////////////
   

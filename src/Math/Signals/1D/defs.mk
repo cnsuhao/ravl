@@ -4,7 +4,6 @@
 # General Public License (LGPL). See the lgpl.licence file for details or
 # see http://www.gnu.org/copyleft/lesser.html
 # file-header-ends-here
-#! rcsid="$Id$"
 #! file="Ravl/Math/Signals/1D/defs.mk"
 
 PACKAGE=Ravl
@@ -19,6 +18,8 @@ SOURCES= FFT1d.cc PowerSpectrum1d.cc Correlation1d.cc RealCepstral.cc \
 PLIB = RavlMath
 
 LIBDEPS=RavlSignal1.def
+
+MUSTLINK=LinkRavlSignal1.cc
 
 TESTEXES= testGenerateSignal1d.cc testSignal1d.cc
 

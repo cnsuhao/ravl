@@ -21,6 +21,13 @@
 
 namespace RavlN {
 
+
+  enum DataSetNormaliseT {
+    DATASET_NORMALISE_NONE=0,
+    DATASET_NORMALISE_MEAN=1,
+    DATASET_NORMALISE_SCALE=2
+  };
+
   class MatrixRUTC;
   class MeanCovarianceC;  
   
@@ -61,7 +68,7 @@ namespace RavlN {
     //!param: featureSet - the indexes of features to keep
 
     SampleVectorC(const MeanCovarianceC & meanCovariance);
-    //: Construct a dataset using the statistics and number of samples specified.  Note the actual mean and covariance will differ slighty
+    //: Construct a dataset with random values using the statistics and number of samples specified.  Note the actual mean and covariance will differ slighty
     //!param meanCovariance The desired mean and covariance to use to generate the dataset
     
     SampleVectorC(const XMLFactoryContextC & factory);
@@ -69,6 +76,10 @@ namespace RavlN {
     //!param mean the mean vector
     //!param covariance the covariance matrix of the data
     //!param samples the number of samples to generate
+
+    SampleVectorC Copy (void) const
+    { return SampleVectorC(static_cast<DArray1dC<VectorC> >(*this).Copy(),FieldInfo()); }
+    //: Make a copy of this object
 
     UIntT VectorSize() const;
     //: Get the size of vectors in this sample.
@@ -99,6 +110,9 @@ namespace RavlN {
     //: Compute the sum of the outerproducts weighting each with the corresponding value from 'w'.
     // sam2 must have the same size as this sample vector.
     
+    FunctionC Normalise(DataSetNormaliseT normType);
+    //: Compute the normalisation function using the current data, normalise the data IP and return function
+
     void Normalise(const MeanCovarianceC & stats);
     //: Normalises the input vectors using given stats, in place
     // In order to achieve zero mean and unity variance this function should be
@@ -106,6 +120,9 @@ namespace RavlN {
     // then be normalised the same way by recording the MeanCovarianceC returned by
     // MeanCovariance.
     
+    void Normalise(const FunctionC & func);
+    //: Apply function in place.  Typically used for normalising data.
+
     void UndoNormalisation(const MeanCovarianceC & stats);
     //: Undo the normalisation done by 'Normalise()', in place.
 
@@ -125,8 +142,10 @@ namespace RavlN {
     FuncLinearC UndoNormalisationFunction(const MeanCovarianceC & stats) const;
      //: Get the function used to un-normalise the data
 
+
     void Scale(FuncLinearC & func);
-    //: Scale each dimension between 0 and 1 and return function created to do this
+    //: Compute function that scales each dimension between 0 and 1 and return function created to do this
+    //: !param: func The function that performs the scaling
 
     const SArray1dC<FieldInfoC> & FieldInfo() const {
       return m_fieldInfo;

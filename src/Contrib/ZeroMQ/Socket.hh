@@ -55,13 +55,16 @@ namespace RavlN {
     {
     public:
       //! Construct a new socket.
-      SocketC(ContextC &context,SocketTypeT socketType);
+      SocketC(ContextC &context,SocketTypeT socketType,const StringC &codec = "");
 
       //! Factory constructor
       SocketC(const XMLFactoryContextC &context);
 
       //! Destructor
       ~SocketC();
+
+      //! Set name for socket, used in debugging
+      void SetName(const RavlN::StringC &name);
 
       //! Write to an ostream
       bool Save(std::ostream &strm) const;
@@ -72,6 +75,14 @@ namespace RavlN {
 
       //! Bind to an address
       void Bind(const std::string &addr);
+
+      //! Bind to first available port in the range.
+      //! Assigned the address bount to 'addr'.
+      //! Returns true if a port is successfully found and false if no free port is found.
+      bool BindDynamicTCP(const std::string &devName,std::string &addr,int minPort,int maxPort);
+
+      //! Access last bound address.
+      const std::string &BoundAddress() const;
 
       //! Connect to an address.
       void Connect(const std::string &addr);
@@ -103,7 +114,7 @@ namespace RavlN {
       //! Receive a message.
       bool Recieve(SArray1dC<char> &msg,BlockT block = ZSB_BLOCK);
 
-      //! Send a arbitary class
+      //! Send a arbitrary class
       template<typename DataT>
       bool Send(const DataT &value,BlockT block = ZSB_BLOCK) {
         SArray1dC<char> data;
@@ -115,7 +126,7 @@ namespace RavlN {
         return Send(data,block);
       }
 
-      //! Send a arbitary class
+      //! Send a arbitrary class
       template<typename DataT>
       bool Recieve(DataT &value,BlockT block = ZSB_BLOCK) {
         SArray1dC<char> data;
@@ -129,6 +140,10 @@ namespace RavlN {
         return true;
       }
 
+      //! Access default codec for socket
+      const StringC &DefaultCodec() const
+      { return m_defaultCodec; }
+
       //! Access the raw socket.
       void *RawSocket()
       { return m_socket; }
@@ -137,10 +152,11 @@ namespace RavlN {
       typedef SmartPtrC<SocketC> RefT;
     protected:
 
-      std::string m_name;
+      RavlN::StringC m_name;
       void *m_socket;
       StringC m_defaultCodec;
       bool m_verbose;
+      std::string m_boundAddress;
     };
   }
 }

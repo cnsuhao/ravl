@@ -7,7 +7,6 @@
 #ifndef RAVL_DPSTREAMOP_HEADER
 #define RAVL_DPSTREAMOP_HEADER 1
 /////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! docentry="Ravl.API.Core.Data Processing.Internal" 
 //! file="Ravl/Core/IO/StreamOp.hh"
 //! lib=RavlIO
@@ -18,8 +17,11 @@
 #include "Ravl/DP/Port.hh"
 #include "Ravl/DP/Plug.hh"
 #include "Ravl/DList.hh"
+#include "Ravl/SysLog.hh"
 
 namespace RavlN {
+
+  class XMLFactoryContextC;
   
   //! userlevel=Develop
   //: Abstract stream operation.
@@ -28,22 +30,24 @@ namespace RavlN {
     : virtual public DPEntityBodyC 
   {
   public:
-    DPStreamOpBodyC()
-    {}
+    DPStreamOpBodyC();
     //: Default constructor.
-    
-    DPStreamOpBodyC(std::istream &in) 
-      : DPEntityBodyC(in)
-    {}
+
+    DPStreamOpBodyC(const StringC &entityName);
+    //: Constructor.
+
+    DPStreamOpBodyC(std::istream &in);
     //: Stream constructor.
     
-    DPStreamOpBodyC(BinIStreamC &in) 
-      : DPEntityBodyC(in)
-    {}
+    DPStreamOpBodyC(BinIStreamC &in);
     //: Binary stream constructor.
 
-    virtual StringC OpName() const
-    { return StringC("generic"); }
+    void Setup(const XMLFactoryContextC &factory);
+    //: Setup using an xml factory.
+    // This can only be called after the class is constructed
+    // and the IPlugs,OPlugs,IPorts and OPorts methods are functional.
+
+    virtual StringC OpName() const;
     //: Op type name.
     
     virtual DListC<DPIPlugBaseC> IPlugs() const;
@@ -57,7 +61,70 @@ namespace RavlN {
     
     virtual DListC<DPOPortBaseC> OPorts() const;
     //: Output ports
-    
+
+    virtual bool GetIPlug(const StringC &name,DPIPlugBaseC &port);
+    //: Get input
+
+    virtual bool GetOPlug(const StringC &name,DPOPlugBaseC &port);
+    //: Get output
+
+    virtual bool SetIPort(const StringC &name,const DPIPortBaseC &port);
+    //: Set an input
+
+    virtual bool SetOPort(const StringC &name,const DPOPortBaseC &port);
+    //: Set an output
+
+    virtual bool GetOPort(const StringC &name,DPOPortBaseC &port);
+    //: Get output
+
+    virtual bool GetIPort(const StringC &name,DPIPortBaseC &port);
+    //: Get input
+
+    bool GetOPort(const StringC &name,DPOPortBaseC &port,const std::type_info &dataType);
+    //: Get output as specified type
+
+    bool GetIPort(const StringC &name,DPIPortBaseC &port,const std::type_info &dataType);
+    //: Get input as specified type
+
+    template<typename TypeT>
+    bool GetIPort(const StringC &name,DPIPortC<TypeT> &thePort) {
+      DPIPortBaseC itmp;
+      if(!GetIPort(name,itmp,typeid(TypeT)))
+        return false;
+      RavlAssert(itmp.IsValid());
+      DPIPortC<TypeT> aPort(itmp);
+      if(!aPort.IsValid()) {
+        RavlError("Unexpected type '%s', expecting '%s' ",itmp.InputType().name(),typeid(TypeT).name());
+        return false;
+      }
+      thePort = aPort;
+      RavlAssert(thePort.IsValid());
+      return true;
+    }
+    //: Get input port.
+
+    template<typename TypeT>
+    bool GetOPort(const StringC &name,DPOPortC<TypeT> &thePort) {
+      DPOPortBaseC otmp;
+      if(!GetOPort(name,otmp,typeid(TypeT)))
+        return false;
+      RavlAssert(otmp.IsValid());
+      DPOPortC<TypeT> aPort(otmp);
+      if(!aPort.IsValid()) {
+        RavlError("Unexpected type '%s', expecting '%s' ",otmp.OutputType().name(),typeid(TypeT).name());
+        return false;
+      }
+      thePort = aPort;
+      RavlAssert(thePort.IsValid());
+      return true;
+    }
+    //: Get input port.
+
+    virtual bool Dump(std::ostream &strm) const;
+    //: Dump information about the stream op.
+
+    typedef RavlN::SmartPtrC<DPStreamOpBodyC> RefT;
+    //: Handle to class
   };
 
   //! userlevel=Normal
@@ -80,6 +147,16 @@ namespace RavlN {
     // If object is not a DPStreamOpC then an invalid handle will
     // be created.
     
+    DPStreamOpC(const RCAbstractC &bod)
+     : DPEntityC(dynamic_cast<const DPStreamOpBodyC *>(bod.BodyPtr()))
+    {}
+    //: Construct from an abstract handle
+    // This handle will be invalid if handle types don't match.
+
+    DPStreamOpC(const DPStreamOpBodyC *bod)
+      : DPEntityC(bod)
+    {}
+    //: Body ptr constructor.
   protected:
     DPStreamOpC(DPStreamOpBodyC &bod)
       : DPEntityC(bod)
@@ -114,7 +191,45 @@ namespace RavlN {
     DListC<DPOPortBaseC> OPorts() const
     { return Body().OPorts(); }
     //: Output ports
-    
+
+    bool GetIPlug(const StringC &name,DPIPlugBaseC &port)
+    { return Body().GetIPlug(name,port); }
+    //: Get input
+
+    bool GetOPlug(const StringC &name,DPOPlugBaseC &port)
+    { return Body().GetOPlug(name,port); }
+    //: Get output
+
+    bool SetIPort(const StringC &name,const DPIPortBaseC &port)
+    { return Body().SetIPort(name,port); }
+    //: Set an input
+
+    bool SetOPort(const StringC &name,const DPOPortBaseC &port)
+    { return Body().SetOPort(name,port); }
+    //: Set an output
+
+    bool GetOPort(const StringC &name,DPOPortBaseC &port)
+    { return Body().GetOPort(name,port); }
+    //: Get output
+
+    bool GetIPort(const StringC &name,DPIPortBaseC &port)
+    { return Body().GetIPort(name,port); }
+    //: Get input
+
+    template<typename TypeT>
+    bool GetIPort(const StringC &name,DPIPortC<TypeT> &thePort)
+    { return Body().GetIPort(name,thePort); }
+    //: Get input port.
+
+    template<typename TypeT>
+    bool GetOPort(const StringC &name,DPOPortC<TypeT> &thePort)
+    { return Body().GetOPort(name,thePort); }
+    //: Get output port.
+
+    bool Dump(std::ostream &strm) const
+    { return Body().Dump(strm); }
+    //: Dump information about the stream op.
+
   };
 
   
@@ -130,13 +245,17 @@ namespace RavlN {
   public:
     DPIStreamOpBodyC()
       : DPIPortBodyC<OutT>("Out1")
-    {}
+    {
+      DPEntityBodyC::SetEntityName("Out1");
+    }
     //: Default constructor.
     
     DPIStreamOpBodyC(const DPIPortC<InT> &nin)
       : DPIPortBodyC<OutT>("Out1"),
         input(nin)
-    {}
+    {
+      DPEntityBodyC::SetEntityName("Out1");
+    }
     //: Constructor.
     
     DPIStreamOpBodyC(std::istream &in) 
@@ -182,7 +301,8 @@ namespace RavlN {
 
     virtual DListC<DPIPlugBaseC> IPlugs() const {
       DListC<DPIPlugBaseC> lst = DPStreamOpBodyC::IPlugs();
-      lst.InsLast(DPIPlugC<InT>(input,"In1",DPEntityC((DPEntityBodyC &)*this)));
+      DPIPlugC<InT> plug(input,"In1",DPEntityC((DPEntityBodyC &)*this));
+      lst.InsLast(plug);
       return lst;
     }
     //: Input plugs.
@@ -204,7 +324,7 @@ namespace RavlN {
     
     virtual void Input(const DPIPortC<InT> &ins) {
       input = ins; 
-      ReparentAttributeCtrl(input); // Make sure changed signals are changed appropriately.
+      this->ReparentAttributeCtrl(input); // Make sure changed signals are updated appropriately.
     }
     //: Setup input port.
   }; 
@@ -330,7 +450,7 @@ namespace RavlN {
     
     virtual void Output(const DPOPortC<InT> &oport) {
       output = oport; 
-      ReparentAttributeCtrl(output); // Make sure changed signals are changed appropriately.
+      this->ReparentAttributeCtrl(output); // Make sure changed signals are changed appropriately.
     }
     //: Setup new output port.
   }; 

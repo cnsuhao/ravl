@@ -7,7 +7,6 @@
 #ifndef RAVL_CLASSIFY_HEADER
 #define RAVL_CLASSIFY_HEADER 1
 ///////////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! lib=RavlPatternRec
 //! docentry="Ravl.API.Pattern Recognition.Classifier"
 //! author="Charles Galambos"
@@ -15,6 +14,7 @@
 
 #include "Ravl/PatternRec/Function.hh"
 #include "Ravl/Vector.hh"
+#include "Ravl/PatternRec/Sample.hh"
 
 namespace RavlN {
   
@@ -28,13 +28,13 @@ namespace RavlN {
     ClassifierBodyC(UIntT nmaxLabels = 0);
     //: Constructor.
     
-    ClassifierBodyC(istream &strm);
+    ClassifierBodyC(std::istream &strm);
     //: Load from stream.
     
     ClassifierBodyC(BinIStreamC &strm);
     //: Load from binary stream.
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
     
     virtual bool Save (BinOStreamC &out) const;
@@ -49,6 +49,9 @@ namespace RavlN {
     // on the classifier used. The higher the confidence the more likely
     // it is the label is correct.
     
+    virtual SampleC<UIntT> Classify(const SampleC<VectorC> &data) const;
+    //: Classify each vector in the set.
+
     virtual UIntT Classify(const VectorC &data,const SArray1dC<IndexC> &featureSet) const;
     //: Classifier vector 'data' return the most likely label.
     
@@ -58,6 +61,12 @@ namespace RavlN {
     // on the classifier used. The higher the confidence the more likely
     // it is the label is correct.
     
+    virtual RealT LabelProbability(const VectorC & data, UIntT label) const;
+    //: Compute the 'posterior' probability of a given class
+
+    virtual RealT LabelProbability(const VectorC & data, const SArray1dC<IndexC> &featureSet, UIntT label) const;
+    //: Compute the 'posterior' probability of a given class
+
     UIntT NoLabels() const
     { return outputSize; }
     //: Returns the maximum number of output labels.
@@ -95,7 +104,7 @@ namespace RavlN {
     //: Default constructor.
     // Creates an invalid handle.
     
-    ClassifierC(istream &strm);
+    ClassifierC(std::istream &strm);
     //: Load from stream.
     
     ClassifierC(BinIStreamC &strm);
@@ -130,7 +139,11 @@ namespace RavlN {
     UIntT Classify(const VectorC &data) const
     { return Body().Classify(data); }
     //: Classifier vector 'data' return the most likely label.
-    
+
+    SampleC<UIntT> Classify(const SampleC<VectorC> &data) const
+    { return Body().Classify(data); }
+    //: Classify each vector in the set.
+
     VectorC Confidence(const VectorC &data) const
     { return Body().Apply(data); }
     //: Estimate the confidence for each label.
@@ -151,6 +164,16 @@ namespace RavlN {
     // it is the label is correct. <p>
     // The result is identical to that of the apply method.
     
+    RealT LabelProbability(const VectorC & data, UIntT label) const {
+      return Body().LabelProbability(data, label);
+    }
+    //: Compute the 'posterior' probability of a given class
+
+    RealT LabelProbability(const VectorC & data, const SArray1dC<IndexC> &featureSet, UIntT label) const {
+      return Body().LabelProbability(data, featureSet, label);
+    }
+    //: Compute the 'posterior' probability of a given class using only features specified.
+
     UIntT NoLabels() const
     { return Body().NoLabels(); }
     //: Returns the maximum number of output labels.
@@ -173,14 +196,14 @@ namespace RavlN {
     
   };
   
-  inline istream &operator>>(istream &strm,ClassifierC &obj) {
+  inline std::istream &operator>>(std::istream &strm,ClassifierC &obj) {
     obj = ClassifierC(strm);
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
   
-  inline ostream &operator<<(ostream &out,const ClassifierC &obj) {
+  inline std::ostream &operator<<(std::ostream &out,const ClassifierC &obj) {
     obj.Save(out);
     return out;
   }

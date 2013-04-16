@@ -72,7 +72,7 @@ namespace RavlN {
     CacheC(UIntT nMaxSize)
       : maxSize(nMaxSize)
     { RavlAssert(maxSize > 0); }
-    //: Creat a cache with the given maximum size.
+    //: Create a cache with the given maximum size.
     
     ~CacheC()
     { HashC<KeyT,CacheEntryC<DataT> >::Empty(); }
@@ -84,7 +84,7 @@ namespace RavlN {
     
     UIntT MaxSize(UIntT size)
     { return maxSize = size; }
-    //: Set maxium size of the cache.
+    //: Set maximum size of the cache.
 
     UIntT Size() const
     { return HashC<KeyT,CacheEntryC<DataT> >::Size(); }
@@ -129,7 +129,7 @@ namespace RavlN {
     
     bool Insert(const KeyT &key,const DataT &data,bool bump = true) {
       SizeT hashVal;
-      HashElemC<KeyT,CacheEntryC<DataT> > *elem = LookupHV(key,hashVal);
+      HashElemC<KeyT,CacheEntryC<DataT> > *elem = this->LookupHV(key,hashVal);
       if(elem != 0) {
         elem->Data().Data() = data;
         if(bump) {

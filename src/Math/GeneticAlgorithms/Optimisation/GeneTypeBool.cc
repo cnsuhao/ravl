@@ -135,6 +135,12 @@ namespace RavlN { namespace GeneticN {
   RAVL_INITVIRTUALCONSTRUCTOR_NAMED(GeneTypeBoolC,"RavlN::GeneticN::GeneTypeBoolC");
   static RavlN::TypeNameC g_typePtrGeneTypeBool(typeid(GeneTypeBoolC::RefT),"RavlN::SmartPtrC<RavlN::GeneticN::GeneTypeBoolC>");
 
+  //! Access a gene type with 50/50 bias
+  const GeneTypeBoolC &GeneTypeBoolBiasHalf() {
+    static GeneTypeBoolC::RefT ret = new GeneTypeBoolC("BiasHalf",0.5);
+    return *ret;
+  }
+
   // ------------------------------------------------------------------
 
   //! Factory constructor
@@ -193,6 +199,17 @@ namespace RavlN { namespace GeneticN {
     GeneC::Save(strm);
     strm << XMLAttribute("value",m_value) ;
     return true;
+  }
+
+  //! Generate an instance of the class.
+  void GeneBoolC::Generate(const GeneFactoryC &context,RCWrapAbstractC &handle) const {
+    if(handle.IsValid()) {
+      bool *theValue = 0;
+      handle.GetPtr(theValue);
+      *theValue = m_value;
+    } else {
+      handle = RCWrapC<bool>(m_value);
+    }
   }
 
   //! Test is value is effectively equal to this within tolerances specified in the type.

@@ -59,7 +59,11 @@ namespace RavlN {
     const SizeT &Number() const
     { return n; }
     //: Access the number of samples.
-    
+
+    SizeT &Number()
+    { return n; }
+    //: Access the number of samples.
+
     const RealT &Mean() const
     { return mean; }
     //: Access the mean.
@@ -78,15 +82,17 @@ namespace RavlN {
     MeanVarianceC &operator+=(const MeanVarianceC &mv);
     //: Add another MeanVariance to this one.
     
+    MeanVarianceC &operator+=(const RealT &value);
+    //: Add another sample
+
     MeanVarianceC &operator-=(const MeanVarianceC &mv);
     //: Remove another MeanVariance from this one.
     
     MeanVarianceC operator*(const MeanVarianceC &oth) const;
     //: Calculate the product of the two probability density functions.
-    // This assumes the estimates of the distributions are accurate. (The number
-    // of samples is ignored) 
+    // (The number of samples is ignored)
     
-    UIntT Hash() const
+    size_t Hash() const
     { return n + StdHash(mean) + StdHash(var); }
     //: Provided for compatibility with templates.
   protected:

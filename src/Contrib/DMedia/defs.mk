@@ -32,6 +32,6 @@ PROGLIBS=RavlVideoIO RavlImageIO RavlDPDisplay.opt DynLink
 
 EHT = SGI_DMedia.html
 
-AUXDIR=libdep
+AUXDIR=lib$(PROJECT_DIR)/libdep
 
 AUXFILES=SGIVL.def

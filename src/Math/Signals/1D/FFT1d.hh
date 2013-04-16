@@ -4,10 +4,9 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-#ifndef RAVLFFT1D_HEADER
-#define RAVLFFT1D_HEADER 1
+#ifndef RAVL_FFT1D_HEADER
+#define RAVL_FFT1D_HEADER 1
 ////////////////////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! lib=RavlMath
 //! file="Ravl/Math/Signals/1D/FFT1d.hh"
 //! example=exFFT1d.cc
@@ -39,18 +38,18 @@ namespace RavlN {
     
     Array1dC<ComplexC> Apply(const Array1dC<ComplexC> &dat);
     //: Apply transform to array.
-    // Note, only the first 'n' byte of dat are proccessed.
+    // Note, only the first 'n' byte of dat are processed.
     // if the array is shorter than the given length, an
     // exception 'ErrorOutOfRangeC' will be thrown.
     
     Array1dC<ComplexC> Apply(const Array1dC<RealT> &dat);
     //: Apply transform to real array 
-    // Note, only the first 'n' byte of dat are proccessed.
+    // Note, only the first 'n' byte of dat are processed.
     // if the array is shorter than the given length, an
     // exception 'ErrorOutOfRangeC' will be thrown.
     
     IntT N() const
-      { return n; }
+    { return n; }
     //: The size of the transform.
     
     bool IsZeroPad() const
@@ -74,12 +73,12 @@ namespace RavlN {
   {
   public:
     FFT1dC()
-      {}
+    {}
     //: Default constructor.
     
     FFT1dC(int n,bool iinv = false,bool zeroPad = false)
       : RCHandleC<FFT1dBodyC>(*new FFT1dBodyC(n,iinv,zeroPad))
-      {}
+    {}
     //: Create a fft class.
     // If iinv is true do an inverse transform
     
@@ -88,21 +87,21 @@ namespace RavlN {
     //: Create a plan with the given setup.
     
     Array1dC<ComplexC> Apply(const Array1dC<ComplexC> &dat)
-      { return Body().Apply(dat); }
+    { return Body().Apply(dat); }
     //: Apply transform to array.
-    // Note, only the first 'n' byte of dat are proccessed.
+    // Note, only the first 'n' byte of dat are processed.
     // if the array is shorter than the given length, an
     // exception 'ErrorOutOfRangeC' will be thrown.
     
     Array1dC<ComplexC> Apply(const Array1dC<RealT> &dat)
-      { return Body().Apply(dat); }
+    { return Body().Apply(dat); }
     //: Apply transform to real array 
-    // Note, only the first 'n' byte of dat are proccessed.
+    // Note, only the first 'n' byte of dat are processed.
     // if the array is shorter than the given length, an
     // exception 'ErrorOutOfRangeC' will be thrown.
     
     IntT N() const
-      { return Body().N(); }
+    { return Body().N(); }
     //: The size of the transform.
     
     bool IsZeroPad() const

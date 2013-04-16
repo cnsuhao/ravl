@@ -10,7 +10,6 @@
 //! docentry="Ravl.API.Images.Scaling and Warping"
 //! lib=RavlImageProc
 //! author="Charles Galambos"
-//! rcsid="$Id$"
 //! date="05/05/1999"
 //! file="Ravl/Image/Processing/Filters/Warp/WarpScale2d.hh"
 
@@ -302,9 +301,6 @@ namespace RavlImageN {
     typedef typename RavlN::NumericalTraitsC<OutT>::RealAccumT RealAccumT;
     SArray1dC<RealAccumT> bufferRow(resCols);
     SArray1dC<RealAccumT> bufferRes(resCols);
-
-    Point2dC srcPos = origin;
-    Index2dC resPos = result.Frame().TopLeft();
 
     //prepare row buffer
     double srcRowR = origin.Row();

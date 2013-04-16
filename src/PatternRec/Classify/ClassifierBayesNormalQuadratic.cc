@@ -85,6 +85,17 @@ namespace RavlN {
     return res.MaxIndex().V();
   }
   
+  //: Classify sample
+  VectorC ClassifierBayesNormalQuadraticBodyC::Apply(const VectorC &data) const
+  {
+    VectorC res(konst.Size());
+    for (SArray1dIter4C<RealT, VectorC, MatrixC, RealT> it(res, mean, invCov, konst); it; it++) {
+      VectorC cent = data - it.Data2();
+      it.Data1() = -0.5 * it.Data3().TMul(cent).Dot(cent) + it.Data4();
+    }
+    return res.MakeUnit();
+  }
+
   ///////////////////////////////////////////////////////////
   
   

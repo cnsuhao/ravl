@@ -14,6 +14,13 @@
 #include "Ravl/SysLog.hh"
 #include "Ravl/MTLocks.hh"
 
+#define DODEBUG 0
+#if DODEBUG
+#define ONDEBUG(x) x
+#else
+#define ONDEBUG(x)
+#endif
+
 namespace RavlN {
   FileFormatBinStreamMetaBodyC::FileFormatBinStreamMetaBodyC(bool pubList)
     : FileFormatBodyC("abs","RAVL binary stream. ",pubList)
@@ -94,6 +101,7 @@ namespace RavlN {
                                                                 const std::type_info &obj_type,
                                                                 bool forceFormat) const
   {
+    ONDEBUG(RavlDebug("Probe save for '%s' type '%s' ForceFormat:%d ",filename.c_str(),RavlN::TypeName(obj_type),(int) forceFormat));
     const std::type_info *bestType = &typeid(void);
     MTReadLockC lock(3);
     if(!m_type2use.Lookup(obj_type.name(),bestType)) {
@@ -111,9 +119,11 @@ namespace RavlN {
             bestType = &it.Data().DefaultType();
           }
         }
+#if 0
         if(*bestType == typeid(void)) {
           RavlDebug("Don't know how to save '%s' (%s) ",TypeName(obj_type),obj_type.name());
         }
+#endif
       } else {
         bestType = &(ff.DefaultType());
       }
@@ -123,11 +133,14 @@ namespace RavlN {
       lock.Unlock();
       bestType = &obj_type;
     }
-    if(*bestType == typeid(void))
+    if(*bestType == typeid(void)) {
+      ONDEBUG(RavlDebug("Probe save for '%s' unknown type. ",filename.c_str()));
       return typeid(void);
+    }
     if(forceFormat) {
       return *bestType;
     }
+    ONDEBUG(RavlDebug("Probe save for '%s' checking extension. ",filename.c_str()));
     // abs = RAVL Binary Stream.
     if(filename.IsEmpty())
       return typeid(void); // Nope.
@@ -135,15 +148,20 @@ namespace RavlN {
       return typeid(void); // Nope.
     StringC ext = Extension(filename);
     // If there's no extension or the extension is 'abs' we can handle it.
-    if(ext == ""  || ext == "abs" || ext == "bin" || m_ext.IsMember(ext))
+    if(ext == ""  || ext == "abs" || ext == "bin" || m_ext.IsMember(ext)) {
+      ONDEBUG(RavlDebug("Probe save for '%s' ok. ",filename.c_str()));
       return *bestType; // Yep, can save in format.
+    }
+    ONDEBUG(RavlDebug("Probe save for '%s' rejected on extension. ",filename.c_str()));
     return typeid(void); // Nope.
   }
 
   DPIPortBaseC FileFormatBinStreamMetaBodyC::CreateInput(IStreamC &in,const std::type_info &obj_type) const {
     FileFormatBaseC ff;
-    if(!m_class2format.Lookup(TypeName(obj_type),ff))
+    if(!m_class2format.Lookup(TypeName(obj_type),ff)) {
+      RavlDebug("Failed to lookup type '%s' ",TypeName(obj_type));
       return DPIPortBaseC();
+    }
     return ff.CreateInput(in,obj_type);
   }
   //: Create a input port for loading.
@@ -151,8 +169,10 @@ namespace RavlN {
 
   DPOPortBaseC FileFormatBinStreamMetaBodyC::CreateOutput(OStreamC &out,const std::type_info &obj_type) const {
     FileFormatBaseC ff;
-    if(!m_class2format.Lookup(TypeName(obj_type),ff))
+    if(!m_class2format.Lookup(TypeName(obj_type),ff)) {
+      RavlDebug("Failed to lookup type '%s' ",TypeName(obj_type));
       return DPOPortBaseC();
+    }
     return ff.CreateOutput(out,obj_type);
   }
   //: Create a output port for saving.
@@ -161,8 +181,10 @@ namespace RavlN {
 
   DPIPortBaseC FileFormatBinStreamMetaBodyC::CreateInput(const StringC &filename,const std::type_info &obj_type) const  {
     FileFormatBaseC ff;
-    if(!m_class2format.Lookup(TypeName(obj_type),ff))
+    if(!m_class2format.Lookup(TypeName(obj_type),ff)) {
+      RavlDebug("Failed to lookup type '%s' ",TypeName(obj_type));
       return DPIPortBaseC();
+    }
     return ff.CreateInput(filename,obj_type);
   }
 
@@ -171,8 +193,10 @@ namespace RavlN {
 
   DPOPortBaseC FileFormatBinStreamMetaBodyC::CreateOutput(const StringC &filename,const std::type_info &obj_type) const {
     FileFormatBaseC ff;
-    if(!m_class2format.Lookup(TypeName(obj_type),ff))
+    if(!m_class2format.Lookup(TypeName(obj_type),ff)) {
+      RavlDebug("Failed to lookup type '%s' ",TypeName(obj_type));
       return DPOPortBaseC();
+    }
     return ff.CreateOutput(filename,obj_type);
   }
   //: Create a output port for saving.
@@ -188,6 +212,8 @@ namespace RavlN {
 
   //: Register format
   bool FileFormatBinStreamMetaBodyC::RegisterFormat(FileFormatBaseC &fileformat) {
+    //ONDEBUG(std::cerr << "Registering type '" << RavlN::TypeName(fileformat.DefaultType()) << "' Name:'" << fileformat.Name() << "'\n");
+    ONDEBUG(RavlDebug("Registering type '%s' Name:'%s' ",RavlN::TypeName(fileformat.DefaultType()),fileformat.Name().c_str()));
     RavlAssert(fileformat.DefaultType() != typeid(void));
     if(!HaveTypeName(fileformat.DefaultType())) {
       RavlError("No typename registered for '%s', binary IO may fail to work. Hint: Ensure TypeNameC is used to register the name BEFORE the format is registered. ",fileformat.DefaultType().name());
@@ -198,7 +224,11 @@ namespace RavlN {
       return false;
     }
     entry = fileformat;
-    m_ext += fileformat.Name();
+    if(!m_ext.IsMember(fileformat.Name())) {
+      ONDEBUG(RavlDebug("Adding extension '%s' ",fileformat.Name().c_str()));
+      m_ext += fileformat.Name();
+    }
+
     return true;
   }
 

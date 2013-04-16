@@ -111,12 +111,12 @@ namespace RavlN {
     //: Remove item at 'ind' from the collection.
     // Note the last item in the collection will be moved
     // to replace element at 'ind'.
-    // Same as Delete, added for consistancy with DArray1dC.
+    // Same as Delete, added for consistency with DArray1dC.
     
     DataT Pick();
     //: Pick a random item from the collection.
     // the element will be removed from the set.
-    // It is the users responsiblity to ensure the
+    // It is the users responsibility to ensure the
     // set is not empty when this method is called.
     // See 'IsEmpty()'
     
@@ -147,7 +147,7 @@ namespace RavlN {
     SArray1dC<DataT> Array()
     { return SArray1dC<DataT>(data,n); }
     //: Access data as array.
-    // Obsolete, use SArray1d() instread. <br>
+    // Obsolete, use SArray1d() instead. <br>
     // Note: The returned array is a direct access
     // to the internal data structure, no operations
     // that modify the collection should be performed 
@@ -157,7 +157,7 @@ namespace RavlN {
     const SArray1dC<DataT> Array() const
     { return SArray1dC<DataT>(data,n); }
     //: Access data as array.
-    // Obsolete, use SArray1d() instread. <br>
+    // Obsolete, use SArray1d() instead. <br>
     // Note: The returned array is a direct access
     // to the internal data structure, no operations
     // that modify the collection should be performed 
@@ -244,7 +244,7 @@ namespace RavlN {
     CollectionC(SizeT maxSize,SizeT used = 0)
       : RCHandleC<CollectionBodyC<DataT> >(*new CollectionBodyC<DataT>(maxSize,used))
     {}
-    //: Creat an empty collection.
+    //: Create an empty collection.
     // maxSize should be set to maximum number of elements the collection 
     // will contain.  'used' is the number of elements to be in the collection 
     // at the time of creation.
@@ -308,6 +308,8 @@ namespace RavlN {
     void Delete(IndexC ind)
     { Body().Delete(ind); }
     //: Remove item at 'ind' from the collection.
+    // Note the last item in the collection will be moved
+    // to replace element at 'ind'
     
     void operator+=(const DataT &dat)
     { Body().Insert(dat); }
@@ -355,7 +357,7 @@ namespace RavlN {
     SArray1dC<DataT> Array()
     { return Body().Array(); }
     //: Access data as array.
-    // Obsolete, use SArray1d() instread. <br>
+    // Obsolete, use SArray1d() instead. <br>
     // Note: The returned array is a direct access
     // to the internal data structure, no operations
     // that modify the collection should be performed 
@@ -364,7 +366,7 @@ namespace RavlN {
     const SArray1dC<DataT> Array() const
     { return Body().Array(); }
     //: Access data as array.
-    // Obsolete, use SArray1d() instread. <br>
+    // Obsolete, use SArray1d() instead. <br>
     // Note: The returned array is a direct access
     // to the internal data structure, no operations
     // that modify the collection should be performed 
@@ -452,7 +454,10 @@ namespace RavlN {
   template <class DataT>
   BinOStreamC & operator<<(BinOStreamC & s, const CollectionC<DataT> &col)
   {
-    s << col.Array();
+    if(!col.IsValid())
+      s << SArray1dC<DataT>();
+    else
+      s << col.Array();
     return s;
   }
   
@@ -467,7 +472,10 @@ namespace RavlN {
   
   template<class DataT>
   std::ostream &operator<<(std::ostream &s,const CollectionC<DataT> &d) {
-    s << d.Array();
+    if(!d.IsValid())
+      s << SArray1dC<DataT>();
+    else
+      s << d.Array();
     return s;
   }
 
@@ -499,7 +507,7 @@ namespace RavlN {
   inline
   UIntT CollectionBodyC<DataT>::Insert(const DataT &dat) {
     if(n >= data.Size())
-      data = data.Copy((UIntT) data.Size() * 2); // Double the size of the collection.
+      data = data.Copy(RavlN::Max((UIntT) data.Size(),(UIntT) 2) * 2); // Double the size of the collection.
     int i = n;
     data[n++] = dat;
     return i;
@@ -508,7 +516,7 @@ namespace RavlN {
   template<class DataT>
   UIntT CollectionBodyC<DataT>::Insert(const Array1dC<DataT> &dat) {
     if( (n + dat.Size()) > data.Size() ) {
-      UIntT ns = (UIntT) data.Size() * 2;
+      UIntT ns = RavlN::Max((UIntT) data.Size(),(UIntT) 2) * 2;
       while(ns < (n + dat.Size()))
 	ns *= 2;
       data = data.Copy(ns); // Double the size of the collection.
@@ -526,7 +534,7 @@ namespace RavlN {
   inline
   UIntT CollectionBodyC<DataT>::InsertRandom(const DataT &dat) {
     if(n >= data.Size())
-      data = data.Copy(data.Size() * 2); // Double the size of the collection.
+      data = data.Copy(RavlN::Max((UIntT) data.Size(),(UIntT) 2) * 2); // Double the size of the collection.
     SizeT p = (SizeT)((RealT) Random1() * n);
     if(p > n-1)
       p = n-1; // Incase of rounding errors.
@@ -578,17 +586,20 @@ namespace RavlN {
   template<class DataT>
   CollectionC<DataT>  CollectionBodyC<DataT>::Shuffle() const {
     CollectionC<DataT> ret(n);
-    for(BufferAccessIterC<DataT> it(data);it;it++)
+    BufferAccessIterC<DataT> it(data);
+    for(SizeT i=0;i<n;i++,it++) {
       ret.InsertRandom(*it);
+    }
     return ret;
   }
 
   template<class DataT>
   void CollectionBodyC<DataT>::ShuffleIP() {
-    for(BufferAccessIterC<DataT> it(data);it;it++) {
-      SizeT p = (SizeT)((RealT) Random1() * n);
-      if(p > n-1)
-	p = n-1; // Incase of rounding errors.
+    BufferAccessIterC<DataT> it(data);
+    for (SizeT i = 0; i < n; i++, it++) {
+      SizeT p = (SizeT) (Random1() * (RealT) n);
+      if (p > n - 1)
+        p = n - 1; // Incase of rounding errors.
       DataT tmp = *it;
       *it = data[p];
       data[p] = tmp;
@@ -679,6 +690,26 @@ namespace RavlN {
     }
   }
   
+  template<class DataT>
+  bool operator==(const CollectionC<DataT> &c1,const CollectionC<DataT> &c2)
+  {
+    if(c1.VoidPtr() == c2.VoidPtr())
+      return true; // They're identical.
+    if(c1.IsValid() != c2.IsValid())
+      return false; // They're not both valid.
+    if(c1.Size() != c2.Size())
+      return false;
+    for(unsigned i = 0;i < c1.Size();i++) {
+      if(!(c1[i] == c2[i]))
+        return false;
+    }
+    return true;
+  }
+
+  template<class DataT>
+  inline bool operator!=(const CollectionC<DataT> &c1,const CollectionC<DataT> &c2)
+  { return !operator==(c1,c2); }
+
 }
 
 #endif

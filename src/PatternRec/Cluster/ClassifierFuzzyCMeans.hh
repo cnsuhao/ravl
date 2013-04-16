@@ -7,7 +7,6 @@
 #ifndef RAVL_CLASSIFIERFUZZYCMEANS_HEADER
 #define RAVL_CLASSIFIERFUZZYCMEANS_HEADER 1
 /////////////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! lib=RavlPatternRec
 //! author="Charles Galambos"
 //! userlevel=Normal

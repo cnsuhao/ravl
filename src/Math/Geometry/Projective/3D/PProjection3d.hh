@@ -13,7 +13,6 @@
 //! author="Radek Marik"
 //! date="26.06.1995"
 //! docentry="Ravl.API.Math.Projective Geometry.3D"
-//! rcsid="$Id$"
 
 #include "Ravl/Matrix4d.hh"
 #include "Ravl/PPoint3d.hh"
@@ -67,7 +66,7 @@ namespace RavlN {
     //:--------------------------------------------
     // Access to the elements of the projection.
     
-    Matrix4dC::operator[];
+    using Matrix4dC::operator[];
     
     Matrix4dC &Matrix()
     { return *this; }

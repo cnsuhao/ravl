@@ -9,7 +9,6 @@
 //! author="Charles Galambos"
 //! docentry="Ravl.API.Images.Filtering"
 //! lib=RavlImageProc
-//! rcsid="$Id$"
 //! userlevel=Normal 
 //! file="Ravl/Image/Processing/Filters/Misc/ImagePyramid.hh"
 //! example=exImagePyramid.cc"
@@ -163,7 +162,6 @@ namespace RavlImageN {
   template<typename PixelT,typename SumTypeT>
   ImageC<PixelT> ImagePyramidC<PixelT,SumTypeT>::ScaleImage(const ImageC<PixelT> &img,IntT scale,bool subSample,IntT imgScale) {
     IntT kernelSize = scale*2 - 1;
-    IndexRange2dC outRange = img.Frame();
     ImageC<PixelT> prepImage;
     ExtendImageCopy(img,scale-1,prepImage);
     GaussConvolve2dC<PixelT,PixelT,RealT,SumTypeT> filter(kernelSize);
@@ -196,7 +194,6 @@ namespace RavlImageN {
     IntT kernelSize = (IntT)(scale * 2.0) - 1;
     if (!(kernelSize & 1))
       kernelSize++;
-    IndexRange2dC outRange = img.Frame();
     ImageC<PixelT> prepImage;
     if (((kernelSize - 1) >> 1) > 0)
       ExtendImageCopy(img,(kernelSize-1) >> 1,prepImage);

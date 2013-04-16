@@ -222,6 +222,17 @@ namespace RavlN { namespace GeneticN {
     strm << " Value=" << m_value;
   }
 
+  //! Generate an instance of the class.
+  void GeneIntC::Generate(const GeneFactoryC &context,RCWrapAbstractC &handle) const {
+    if(handle.IsValid()) {
+      IntT *theValue = 0;
+      handle.GetPtr(theValue);
+      *theValue = m_value;
+    } else {
+      handle = RCWrapC<IntT>(m_value);
+    }
+  }
+
   XMLFactoryRegisterConvertC<GeneIntC,GeneC> g_registerGeneInt("RavlN::GeneticN::GeneIntC");
   RAVL_INITVIRTUALCONSTRUCTOR_NAMED(GeneIntC,"RavlN::GeneticN::GeneIntC");
   static RavlN::TypeNameC g_typePtrGeneInt(typeid(GeneIntC::RefT),"RavlN::SmartPtrC<RavlN::GeneticN::GeneIntC>");
@@ -441,6 +452,17 @@ namespace RavlN { namespace GeneticN {
     const GeneTypeFloatC *gtf = dynamic_cast<const GeneTypeFloatC *>(m_type.BodyPtr());
     RavlAssert(gtf != 0);
     return gtf->IsEffectivelyEqual(og->Value(),m_value);
+  }
+
+  //! Generate an instance of the class.
+  void GeneFloatC::Generate(const GeneFactoryC &context,RCWrapAbstractC &handle) const {
+    if(handle.IsValid()) {
+      float *theValue = 0;
+      handle.GetPtr(theValue);
+      *theValue = m_value;
+    } else {
+      handle = RCWrapC<float>(m_value);
+    }
   }
 
   //! Dump description in human readable form.

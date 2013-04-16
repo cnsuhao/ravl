@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <!--! docentry = "Applications.Video.Markup" -->
+    <title>MarkSeq - a video markup program</title>
+  </head>
+
+  <body>
+    <p><a href="../Application/MarkSeq.html">MarkSeq</a> is a very simple tool
+    to help generate manual annotation of video sequences.  It is derived from
+    VPlay, and so has the same video controls for play, single step etc.  The
+    tool is very limited in what annotation it can create; however it is
+    straightforward to modify its behaviour to suit your particular task.</p>
+
+    <p>Usage:</p><ul> 
+      <li>To get usage, type 
+        <pre>MarkSeq -help</pre></li>
+
+      <li>To use, first you need to create a file of the set of possible
+      annotation strings, one to a line.  If you don't specify this file
+      (option <code>-cf</code>), it will give you a list that was used for the
+      Vampire tennis annotation project.</li>
+
+      <li>To generate a markup:<ol>
+
+          <li>Pause the video on the desired frame.</li>
+          <li>Select one of the set of markup classes from the boxes on the right-hand side of the GUI.</li> 
+          <li>Click on the current frame.</li></ol>
+
+        This will generate a line in the file containing the frame no., the position of the (most recent) mouse click and the index of the markup class.
+      </li>
+
+      <li>At the top of the screen there are three numbers:<ul>
+          <li>The middle one is the current frame.</li>
+          <li>The left-hand one is the frame no. of the nearest preceding annotation</li>
+          <li>The right-hand one is the frame no. of the nearest succeding annotation</li>
+
+</ul></li>
+
+      <li>The markup is save to a file specified by the (compulsory)
+      <code>-mf</code> option.  However, it is <i>only</i> saved when you
+        press the "Save marks" button, <i>NOT</i> when you quit from the program.  If
+      the markup file already exists, the new markup is merged with the
+      existing markup, so you can spread the marking up over several
+      sessions.</li>
+
+    </ul>
+    <hr>
+    <address><a href="mailto:w.christmas@surrey.ac.uk">Bill Christmas</a></address>
+<!-- Created: Fri Oct 20 14:23:17 BST 2006 -->
+<!-- hhmts start -->
+Last modified: Fri Oct 20 16:56:44 BST 2006
+<!-- hhmts end -->
+  </body>
+</html>

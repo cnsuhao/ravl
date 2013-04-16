@@ -7,7 +7,7 @@
 //! author="Kieron J Messer"
 //! date="11/10/2001"
 //! lib=RavlFace
-//! docentry="Ravl.Contrib.Face"
+//! docentry="Ravl.Applications.Image.Face"
 //! file="Ravl/Contrib/Face/Experiment/Roc.hh"
 
 #include "Ravl/RefCounter.hh"
@@ -20,21 +20,24 @@
 #include "Ravl/Face/ScoreSession.hh"
 #include "Ravl/Face/ResultsInfo.hh"
 #include "Ravl/BinStream.hh"
-#include "Ravl/Plot/GnuPlot.hh"
+#include "Ravl/OS/Directory.hh"
+#include "Ravl/Plot/Plot2d.hh"
+#include "Ravl/Image/Image.hh"
+#include "Ravl/Image/ByteRGBValue.hh"
+#include "Ravl/MeanVariance.hh"
 
 namespace RavlN {
   namespace FaceN {
     
-    
     /////// RocBodyC ///////////////////////////////////////////
     //! userlevel=Develop
-    //: A class for receiver operatign curves
+    //: A class for receiver operating curves
     
     typedef Tuple2C<StringC, RealT> RankT;
     
     typedef Tuple2C<bool, RealT> ClaimT;
     
-    class RocBodyC : public RCBodyC
+    class RocBodyC : public RCBodyVC
     {
     public:
       //: Constructors, copies, assigment, and destructor
@@ -89,6 +92,9 @@ namespace RavlN {
       ResultsInfoC Error(RealT threshold) const;
       //: Works out the error rates at a set threshold
 
+      bool FalseRejection(RealT faRate, RealT & frRate, RealT & threshold) const;
+      // Get the false rejection rate at a given false acceptance rate and the corresponding threshold used
+
       RealHistogram1dC Histogram(bool cl) const;
       //: Generate a histogram of the client and impostor distributions
 
@@ -98,12 +104,17 @@ namespace RavlN {
       SArray1dC<Tuple3C<RealT, RealT, RealT> > ThresholdInfo() const;
       //: Generate information about threshold
 
-      RavlGUIN::GnuPlotC Plot(RealT maxFa, RealT maxFr) const;
-      //: Generate a gnu plot
+      bool Plot(RealT maxFa, RealT maxFr, const StringC & title, const StringC & outfile) const;
+      //: Plot the roc
 
-      RavlGUIN::GnuPlotC PlotHistogram(UIntT type) const;
-      //: Generate a gnu plot of the score distributions
-      //: 0 - client, 1 - impostor, 2 = both
+      bool Plot(RealT maxFa, RealT maxFr, const StringC & title, RavlImageN::ImageC<RavlImageN::ByteRGBValueC> & image) const;
+      // Get an image of the ROC
+
+      bool PlotScoreHistogram(const StringC & title, const StringC & outfile) const;
+      //: Generate a normalised plot of the client and impostor score distributions
+
+      bool PlotScoreHistogram(const StringC & title, RavlImageN::ImageC<RavlImageN::ByteRGBValueC> & image) const;
+      //: Make an image of the score distribution
 
       UIntT ClientClaims() const
       {
@@ -117,23 +128,20 @@ namespace RavlN {
       }
       //: Number of impostor attacks
 
+      RealT MaxFAScore() const;
+      //: Get the maximum score
+
+      RealT MinFRScore() const;
+      //: Get the maximum score
+
       bool IsValid() const;
       //: Is ROC valid
 
-      StringC Info() const;
-      //: Some nice formatted information about ROC
+      bool Report(const DirectoryC & outDir);
+      //: Write some reports to the outDir
 
-      friend ostream &operator<<(ostream &s, const RocBodyC &out);
-      //: output stream operator
-
-      friend istream &operator>>(istream &s, RocBodyC &in);
-      //: input stream operator
-
-      friend BinOStreamC &operator<<(BinOStreamC &s, const RocBodyC &out);
-      //: output stream operator
-
-      friend BinIStreamC &operator>>(BinIStreamC &s, RocBodyC &in);
-      //: input stream operator
+      Tuple2C<MeanVarianceC, MeanVarianceC> DistributionStats() const;
+      // Compute the stats of the two distributions
 
     protected:
       //: Put all your class members here
@@ -145,23 +153,11 @@ namespace RavlN {
       bool sorted;
     };
     
-    ostream &operator<<(ostream &s, const RocBodyC &out);
-    //: output stream operator
-    
-    istream &operator>>(istream &s, RocBodyC &in);
-    //: input stream operator
-
-    BinOStreamC &operator<<(BinOStreamC &s, const RocBodyC &out);
-    //: output stream operator
-    
-    BinIStreamC &operator>>(BinIStreamC &s, RocBodyC &in);
-    //: input stream operator
-    
     /////// RocC ///////////////////////////////////////////
     //! userlevel=Normal
     //: Receiver operator curves
     
-    class RocC : public RCHandleC<RocBodyC>
+    class RocC : public RCHandleVC<RocBodyC>
     {
     public:
       //: Constructors, copies, assigment, and destructor
@@ -175,21 +171,21 @@ namespace RavlN {
       // You can remove this if you always want to create a full object.
 
       RocC(istream &in) :
-          RCHandleC<RocBodyC>(*new RocBodyC(in))
+          RCHandleVC<RocBodyC>(*new RocBodyC(in))
       {
       }
       //: Stream constructor
       // This creates a new instance of the class from an input stream.
 
       RocC(BinIStreamC &in) :
-          RCHandleC<RocBodyC>(*new RocBodyC(in))
+          RCHandleVC<RocBodyC>(*new RocBodyC(in))
       {
       }
       //: Stream constructor
       // This creates a new instance of the class from an input stream.
 
       RocC(bool highMatches) :
-          RCHandleC<RocBodyC>(*new RocBodyC(highMatches))
+          RCHandleVC<RocBodyC>(*new RocBodyC(highMatches))
       {
       }
       //: Constructor
@@ -197,7 +193,7 @@ namespace RavlN {
       // userArg should be changed to the real arguments.
 
       RocC(const DListC<RankT> & roc, UIntT nclients, UIntT nimpostors, bool highMatches = true) :
-          RCHandleC<RocBodyC>(*new RocBodyC(roc, nclients, nimpostors, highMatches))
+          RCHandleVC<RocBodyC>(*new RocBodyC(roc, nclients, nimpostors, highMatches))
       {
       }
       //: Constructor
@@ -205,13 +201,13 @@ namespace RavlN {
       // userArg should be changed to the real arguments.
 
       RocC(const ScoreSessionC & session, const StringC & metricType, bool highMatches = true) :
-          RCHandleC<RocBodyC>(*new RocBodyC(session, metricType, highMatches))
+          RCHandleVC<RocBodyC>(*new RocBodyC(session, metricType, highMatches))
       {
       }
       //: Construct from a score session
 
       RocC(RealT min, RealT max, bool highMatches = true) :
-          RCHandleC<RocBodyC>(*new RocBodyC(min, max, highMatches))
+          RCHandleVC<RocBodyC>(*new RocBodyC(min, max, highMatches))
       {
       }
       //: Default constructor
@@ -220,7 +216,7 @@ namespace RavlN {
 
     protected:
       RocC(RocBodyC &bod) :
-          RCHandleC<RocBodyC>(bod)
+          RCHandleVC<RocBodyC>(bod)
       {
       }
       //: Body Constructor
@@ -229,7 +225,7 @@ namespace RavlN {
 
       inline RocBodyC &Body()
       {
-        return static_cast<RocBodyC &>(RCHandleC<RocBodyC>::Body());
+        return static_cast<RocBodyC &>(RCHandleVC<RocBodyC>::Body());
       }
       //: Access body.
       // This isn't really needed, they're just to ensure
@@ -237,7 +233,7 @@ namespace RavlN {
 
       inline const RocBodyC &Body() const
       {
-        return static_cast<const RocBodyC &>(RCHandleC<RocBodyC>::Body());
+        return static_cast<const RocBodyC &>(RCHandleVC<RocBodyC>::Body());
       }
       //: Constant access body.
       // This isn't really needed, they're just to ensure
@@ -304,6 +300,12 @@ namespace RavlN {
       }
       //: Works out the error rates at a set threshold
 
+      bool FalseRejection(RealT faRate, RealT & frRate, RealT & threshold)
+      {
+        return Body().FalseRejection(faRate, frRate, threshold);
+      }
+      // Get the false rejection rate at a given false acceptance rate and the corresponding threshold used
+
       RealHistogram1dC Histogram(bool cl) const
       {
         return Body().Histogram(cl);
@@ -322,17 +324,29 @@ namespace RavlN {
       }
       //: Generate information about threshold
 
-      RavlGUIN::GnuPlotC Plot(RealT maxFa, RealT maxFr) const
+      bool Plot(RealT maxFa = 1.0, RealT maxFr = 1.0, const StringC & title = "", const StringC & filename = "") const
       {
-        return Body().Plot(maxFa, maxFr);
+        return Body().Plot(maxFa, maxFr, title, filename);
       }
-      //: Generate a gnu plot
+      //: Generate a plot of the ROC
 
-      RavlGUIN::GnuPlotC PlotHistogram(UIntT type) const
+      bool Plot(RealT maxFa, RealT maxFr, const StringC & title, RavlImageN::ImageC<RavlImageN::ByteRGBValueC> & image) const
       {
-        return Body().PlotHistogram(type);
+        return Body().Plot(maxFa, maxFr, title, image);
       }
-      //: Generate a gnu plot og histograms 0 = client, 1 = impostor, 2 = both in one
+      // Get an image of the ROC
+
+      bool PlotScoreHistogram(const StringC & title, const StringC & filename = "") const
+      {
+        return Body().PlotScoreHistogram(title, filename);
+      }
+      //: Generate a plot of the client/impostor histograms
+
+      bool PlotScoreHistogram(const StringC & title, RavlImageN::ImageC<RavlImageN::ByteRGBValueC> & image) const
+      {
+        return Body().PlotScoreHistogram(title, image);
+      }
+      //: Make an image of the score distribution
 
       UIntT ClientClaims() const
       {
@@ -346,17 +360,35 @@ namespace RavlN {
       }
       //: Number of impostor attacks
 
+      RealT MaxFAScore() const
+      {
+        return Body().MaxFAScore();
+      }
+      //: Get the maximum score
+
+      RealT MinFRScore() const
+      {
+        return Body().MinFRScore();
+      }
+      //: Get the maximum score
+
       bool IsValid() const
       {
         return Body().IsValid();
       }
       //: Is ROC valid
 
-      StringC Info() const
+      bool Report(const DirectoryC & outDir)
       {
-        return Body().Info();
+        return Body().Report(outDir);
       }
-      //: Some nice formatted information about ROC
+      //: Generate a report
+
+      Tuple2C<MeanVarianceC, MeanVarianceC> DistributionStats() const
+      {
+        return Body().DistributionStats();
+      }
+      // Compute the stats of the two distributions
 
       friend ostream &operator<<(ostream &s, const RocC &out);
       //: output stream operator

@@ -59,10 +59,21 @@ namespace RavlN {
   }
   
   OptimiseConjugateGradientBodyC::OptimiseConjugateGradientBodyC (std::istream &in)
-    : OptimiseBodyC("OptimiseConjugateGradientBodyC",in)
+    : OptimiseBodyC("OptimiseConjugateGradientBodyC",in),
+      _iterations(0),
+      _tolerance(0),
+      _brentIterations(0),
+      _brentTolerance(0),
+      _useBracketMinimum(false),
+      m_useAbsoluteCostForTolerance(0)
   {
     in >> _iterations;
   }
+
+  RavlN::RCBodyVC &OptimiseConjugateGradientBodyC::Copy() const
+  { return *new OptimiseConjugateGradientBodyC(*this); }
+  //: Create copy of the optimiser
+
   
   static void SetupLimits(const VectorC &dir,const VectorC &P,const CostC &domain,ParametersC &parameters1d) {
     // Find the domain limits along the direction vector.
@@ -87,7 +98,7 @@ namespace RavlN {
     steps /= domain.Steps().Size();
     if(steps < 3) steps = 3; // Check there;s actually some space to optimise in.
     
-    //Point in full space to evaluate is given by: _point + _direction * X[0];  Where X[0] is the paramiter we're optimising.
+    //Point in full space to evaluate is given by: _point + _direction * X[0];  Where X[0] is the parameter we're optimising.
     parameters1d.Setup(0,min,max,steps);
   }
   
@@ -112,7 +123,8 @@ namespace RavlN {
     ParametersC parameters1d(1);
     OptimiseBrentC _brent(_brentIterations,_brentTolerance);
     RealT currentCost = domain.Cost (iterX);      // Evaluate current cost
-    
+    //RealT firstCost = currentCost;
+
     VectorC dYdX = domain.Jacobian1(iterX) * -1.0; // Determine current Jacobian
     VectorC gdYdX = dYdX.Copy();
     VectorC hdYdX = dYdX.Copy();
@@ -206,7 +218,10 @@ namespace RavlN {
       }
       
     } while (counter++ < _iterations); 
-    ONDEBUG(cerr << "Terminated after " << counter << " iterations. MinCost=" << currentCost << "\n");
+    //RavlDebug("Terminated after %u  iterations. MinCost=%f",counter,currentCost);
+    //if(currentCost < 0.1)
+    //  RavlDebug("First cost: %f final: %f ",firstCost,currentCost);
+
     return domain.ConvertX2P (iterX);            // Return final estimate
   }
   

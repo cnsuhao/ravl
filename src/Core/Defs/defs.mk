@@ -11,6 +11,6 @@ DESCRIPTION= Defintion files for external libraries that may be used in RAVL.
 EXTERNALLIBS= GTK.def LibPNG.def posixThreads.def zlib.def \
  DynLink.def LibTIFF.def OpenGL.def libGL.def libGLU.def LibJPEG.def \
  Socket.def x11.def libHints AudioFile.def libDepends \
- formatInfo libglade.def RLog.def GLUT.def ObjC.def
+ formatInfo libglade.def RLog.def GLUT.def ObjC.def RT.def
 
 

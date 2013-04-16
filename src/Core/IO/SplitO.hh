@@ -10,7 +10,6 @@
 //! docentry="Ravl.API.Core.Data Processing.Split"
 //! lib=RavlIO
 //! example=exDPSplit.cc
-//! rcsid="$Id$"
 //! file="Ravl/Core/IO/SplitO.hh"
 //! author="Charles Galambos"
 //! date="21/07/98"
@@ -20,6 +19,8 @@
 #include "Ravl/DList.hh"
 #include "Ravl/DLIter.hh"
 #include "Ravl/CDLIter.hh"
+#include "Ravl/SysLog.hh"
+#include "Ravl/DP/Plug.hh"
 
 namespace RavlN {
 
@@ -33,13 +34,18 @@ namespace RavlN {
   
   template<class DataT>
   class DPSplitOBodyC 
-    : public DPOPortBodyC<DataT> 
+    : public DPOPortBodyC<DataT>,
+      public DPOPlugBaseBodyC
   {
   public:
     DPSplitOBodyC()
     {}
     //: Constructor.
-    
+
+    DPSplitOBodyC(const XMLFactoryContextC &factory)
+    { DPOPlugBaseBodyC::Setup(factory); }
+    //: Constructor.
+
     DPSplitOBodyC(const DPOPortC<DataT> &aport)
     { ports.InsLast(aport); }
     //: Construct with an OPortC.
@@ -57,6 +63,16 @@ namespace RavlN {
     virtual bool IsPutReady() const;
     //: Is port ready for data ?
     
+    virtual bool ConnectPort(const DPOPortBaseC &port) {
+      DPOPortC<DataT> oport(port);
+      if(!oport.IsValid()) {
+        RavlWarning("OPort type doesn't match. ");
+        return false;
+      }
+      return Add(port);
+    }
+    //: set port.
+
   protected:
     bool Remove(const DPOPortC<DataT> &port);
     //: Remove output port.
@@ -97,7 +113,12 @@ namespace RavlN {
     {}
     //: Constructor.
     // Creates a new splitter.
-    
+
+    DPSplitOC(const XMLFactoryContextC &factory)
+    : DPEntityC(*new DPSplitOBodyC<DataT>(factory))
+    {}
+    //: XMLFactory constructor
+
     DPSplitOC()
       : DPEntityC(true)
     {}

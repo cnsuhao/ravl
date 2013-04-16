@@ -10,6 +10,7 @@
 #include "Ravl/TypeName.hh"
 #include "Ravl/DP/FileFormatXMLStream.hh"
 #include "Ravl/Exception.hh"
+#include "Ravl/SysLog.hh"
 
 #define DODEBUG 0
 #if DODEBUG
@@ -69,6 +70,31 @@ namespace RavlN {
       xml << XMLEndTag;
 
       return xml;
+    }
+
+    // Delete some face ids from the sighting set
+    bool SightingSetC::DeleteFaceIds(const DListC<StringC> & faceIds)
+    {
+      bool allFound = true;
+      for (DLIterC<StringC> faceIt(faceIds); faceIt; faceIt++) {
+        bool found = false;
+
+        for (DArray1dIterC<SightingC> it(*this); it; it++) {
+          if (it.Data().DeleteFaceId(*faceIt)) {
+            found = true;
+            break;
+          }
+        } // end sighting it
+
+        // If we didn't find it in the sightings then flag an error
+        if (!found) {
+          allFound = false;
+          RavlWarning("Failed to delete face %s from sighting set!", faceIt.Data().data());
+        }
+
+      } // end faceids it
+
+      return allFound;
     }
 
     XMLIStreamC &operator>>(XMLIStreamC &xml, SightingSetC &data)

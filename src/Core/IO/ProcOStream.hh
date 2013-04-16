@@ -33,13 +33,18 @@ namespace RavlN {
   public:
     DPProcOStreamBodyC(const DPProcessC<InT,OutT> &bod,const DPOPortC<OutT> &nout)
       : DPProcessC<InT,OutT>(bod),
-      DPOStreamOpBodyC<InT,OutT>(nout)
-      {}
+        DPOStreamOpBodyC<InT,OutT>(nout)
+    {}
     //: Constructor.
-    
+
+    DPProcOStreamBodyC(const DPProcessC<InT,OutT> &bod)
+      : DPProcessC<InT,OutT>(bod)
+    {}
+    //: Constructor.
+
     virtual bool Put(const InT &dat) { 
       RavlAssert(this->output.IsValid());
-      return this->output.Put(Apply(dat)); 
+      return this->output.Put(this->Apply(dat));
     }
     //: Process next piece of data.  
     
@@ -48,7 +53,7 @@ namespace RavlN {
 #ifdef NDEBUG
       ApplyArray(src,dest);
 #else
-      RavlAssert((UIntT) ApplyArray(src,dest) == src.Size());
+      RavlAssert((UIntT) this->ApplyArray(src,dest) == src.Size());
 #endif
       return this->output.PutArray(dest);
     }
@@ -62,7 +67,7 @@ namespace RavlN {
 
   /////////////////////////////////
   //! userlevel=Normal
-  //: Wrapped Proccess handle.
+  //: Wrapped Process handle.
   
   template<class InT,class OutT>
   class DPProcOStreamC 
@@ -77,14 +82,18 @@ namespace RavlN {
     
     DPProcOStreamC(const DPProcessC<InT,OutT> &bod,const DPOPortC<OutT> &nout)
       : DPEntityC((DPOPortBodyC<InT> &) *new DPProcOStreamBodyC<InT,OutT>(bod,nout))
-      {}
+    {}
     //: Constructor.
-    // 
+
+    DPProcOStreamC(const DPProcessC<InT,OutT> &bod)
+      : DPEntityC((DPOPortBodyC<InT> &) *new DPProcOStreamBodyC<InT,OutT>(bod))
+    {}
+    //: Constructor.
     
     DPProcOStreamC(const DPProcOStreamC<IntT,OutT> &oth) 
       : DPEntityC(oth),
-      DPOStreamOpC<InT,OutT>(oth)
-      {}
+        DPOStreamOpC<InT,OutT>(oth)
+    {}
     //: Copy Constructor.
     
   };

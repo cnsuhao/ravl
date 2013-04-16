@@ -11,16 +11,17 @@
 
 #include "Ravl/DP/Event.hh"
 #include "Ravl/Stream.hh"
+#include "Ravl/DP/Converter.hh"
 
 namespace RavlN {
 
   //: Wait for event.
-  // Return when event occurres.
+  // Return when event occurred.
   
   bool DPEventBodyC::Wait()
   { return false; }
   
-  //: Has event occured ?
+  //: Has event occurred ?
   // Returns number of events since last call.
   
   IntT DPEventBodyC::Occurred()
@@ -40,4 +41,5 @@ namespace RavlN {
   void DPEventC::Dummy(void)
   {}
   
+
 }

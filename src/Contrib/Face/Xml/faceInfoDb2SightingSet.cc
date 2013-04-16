@@ -4,7 +4,7 @@
 // This file is part of OmniSoft, Pattern recognition software 
 // Copyright (C) 2002, Omniperception Ltd.
 //! rcsid="$Id: faceInfoDb2ClaimSession.cc 5236 2005-01-28 11:11:46Z kieron $"
-//! docentry="Ravl.Contrib.Face"
+//! docentry="Ravl.Applications.Image.Face"
 //! lib=RavlFace
 //! file="Ravl/Contrib/Face/Xml/modifyXml.cc"
 

@@ -9,7 +9,6 @@
 ///////////////////////////////////////////////////////////
 //! userlevel=Normal
 //! author="Charles Galambos"
-//! rcsid="$Id$"
 //! lib=RavlPatternRec
 //! docentry="Ravl.API.Pattern Recognition.Cluster;Ravl.API.Pattern Recognition.Classifier.DesignClassifier"
 //! file="Ravl/PatternRec/Cluster/DesignClassifierUnsupervised.hh"
@@ -24,7 +23,7 @@
 namespace RavlN {
   
   //! userlevel=Develop
-  //: Abstract unsupervised classifer designer.
+  //: Abstract unsupervised classifier designer.
   
   class DesignClassifierUnsupervisedBodyC
     : public DesignFunctionUnsupervisedBodyC
@@ -55,7 +54,7 @@ namespace RavlN {
   };
   
   //! userlevel=Normal
-  //: Abstract unsupervised classifer designer.
+  //: Abstract unsupervised classifier designer.
   
   class DesignClassifierUnsupervisedC
     : public DesignFunctionUnsupervisedC

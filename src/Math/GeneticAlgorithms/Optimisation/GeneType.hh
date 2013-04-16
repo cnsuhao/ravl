@@ -81,10 +81,17 @@ namespace RavlN { namespace GeneticN {
     virtual void Random(GenePaletteC &palette,RavlN::SmartPtrC<GeneC> &newValue) const = 0;
 
     //! Mutate a gene
-    virtual bool Mutate(GenePaletteC &palette,float fraction,bool mustChange,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const = 0;
+    virtual bool Mutate(GenePaletteC &palette,
+                        float fraction,
+                        bool mustChange,
+                        const GeneC &original,
+                        RavlN::SmartPtrC<GeneC> &newValue) const = 0;
 
-    //! Mutate a gene
-    virtual void Cross(GenePaletteC &palette,const GeneC &original1,const GeneC &original2,RavlN::SmartPtrC<GeneC> &newValue) const;
+    //! Cross two genes
+    virtual void Cross(GenePaletteC &palette,
+                       const GeneC &original1,
+                       const GeneC &original2,
+                       RavlN::SmartPtrC<GeneC> &newValue) const;
 
     //! Access default weight for gene
     //! Used to effect relative frequencies in meta types.

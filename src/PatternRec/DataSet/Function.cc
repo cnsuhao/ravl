@@ -51,7 +51,12 @@ namespace RavlN {
     out << inputSize << outputSize;
     return true;
   }
-  
+
+  //: Apply function in place to 'data', overwrite values in out if its of the correct size.
+
+  void FunctionBodyC::ApplyInPlace(const VectorC &data,VectorC &out) const
+  { out = Apply(data); }
+
 
   //: Apply function with float vectors to 'data'
 
@@ -61,10 +66,18 @@ namespace RavlN {
     return ret;
   }
 
+
+  //: Apply function in place to 'data', overwrite values in out if its of the correct size.
+
+  void FunctionBodyC::ApplyInPlace(const TVectorC<float> &data,TVectorC<float> &out) const
+  { out = Apply(data); }
+
+
   //: Apply function to 'data'
   
   VectorC FunctionBodyC::Apply(const VectorC &data) const {
     //RavlAssertMsg(0,"RavlN::Apply(), Abstract method called. \n");
+    RavlWarning("Function does nothing to data!");
     return data;
   }
   
@@ -169,9 +182,10 @@ namespace RavlN {
   {}
   
   //: Setup virtual constructor.
-  // As this is an abstract class its not really needed, but its usefull to
+  // As this is an abstract class its not really needed, but its useful to
   // have an example of how it should work here.
   
   //RAVL_INITVIRTUALCONSTRUCTOR(FunctionBodyC);
   
+
 }

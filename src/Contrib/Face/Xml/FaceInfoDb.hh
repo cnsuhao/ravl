@@ -3,9 +3,8 @@
 // file-header-ends-here
 #ifndef RAVLN_FACEN_FACEINFODB_HEADER
 #define RAVLN_FACEN_FACEINFODB_HEADER 1
-//! rcsid="$Id$"
 //! lib=RavlFace
-//! docentry="Ravl.Contrib.Face"
+//! docentry="Ravl.Applications.Image.Face"
 //! file="Ravl/Contrib/Face/Xml/FaceInfoDb.hh"
 //! author="Kieron J Messer"
 

@@ -26,11 +26,28 @@ namespace RavlN {
   //: Default constructor.
   
   PlayListBodyC::PlayListBodyC()
+   : maxIndexEdit(0),
+     maxIndexOff(0)
   {}
   
+  //: Constructor from a plain list of filenames.
+
+  PlayListBodyC::PlayListBodyC(const DListC<StringC> &lst)
+   : maxIndexEdit(0),
+     maxIndexOff(0)
+  {
+    edits = SArray1dC<EditSpecC>(lst.Size());
+    unsigned i = 0;
+    for(DLIterC<StringC> it(lst);it;it++,i++)
+      edits[i] = EditSpecC(*it);
+  }
+
   //: binary stream constructor.
   
-  PlayListBodyC::PlayListBodyC(BinIStreamC &is) {
+  PlayListBodyC::PlayListBodyC(BinIStreamC &is)
+    : maxIndexEdit(0),
+      maxIndexOff(0)
+  {
     is >> edits;
   }
   //: Save to a ostream.
@@ -58,7 +75,7 @@ namespace RavlN {
 
   //: Dump debug info about play list.
   
-  void PlayListBodyC::Dump(ostream &os) {
+  void PlayListBodyC::Dump(std::ostream &os) {
     os << "PlayList dump. MaxIndexEdit:" << maxIndexEdit << " MaxIndexOff:" << maxIndexOff << " \n";;
     for(UIntT i = 0;i < edits.Size();i++) {
       os << edits[i] << " " << edits[i].InsertRange() << "\n";
@@ -69,7 +86,7 @@ namespace RavlN {
   
   //: Load from an ostream.
   
-  bool PlayListBodyC::Load(istream &is) {
+  bool PlayListBodyC::Load(std::istream &is) {
     cerr << "PlayListBodyC::Load(), Called \n";
     DListC<EditSpecC> spec;
     bool single = false;

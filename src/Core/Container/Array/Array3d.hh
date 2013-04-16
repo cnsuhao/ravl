@@ -191,7 +191,7 @@ namespace RavlN {
 
   template <class DataT>
   void Array3dC<DataT>::ConstructAccess(const IndexRangeC &rng1) {
-    Attach(data,rng1);
+    this->Attach(data,rng1);
     const SizeT d3Size = Range3().Size();
     const SizeT d2Size = Range2().Size();
     BufferAccessC<DataT>  *acc2 = data.DataIndex().ReferenceElm() - Range2().Min().V();

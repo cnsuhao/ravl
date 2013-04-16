@@ -18,13 +18,14 @@
 #include "Ravl/RCHandleV.hh"
 #include "Ravl/Vector.hh"
 #include "Ravl/PatternRec/Sample.hh"
+#include "Ravl/PatternRec/DataSetVectorLabel.hh"
 #include "Ravl/PatternRec/Classifier.hh"
 #include "Ravl/PatternRec/DesignFunctionSupervised.hh"
 
 namespace RavlN {
   
   //! userlevel=Develop
-  //: Abstract supervised classifer designer.
+  //: Abstract supervised classifier designer.
   
   class DesignClassifierSupervisedBodyC
     : public DesignFunctionSupervisedBodyC
@@ -68,10 +69,15 @@ namespace RavlN {
     //!param: featureSet - array of feature indexes to use from sample set when designing classifier
     //!param: weight     - relative weights attached to each feature vector
     
+    ClassifierC Apply(const DataSetVectorLabelC & dset) {
+      return Apply(dset.Sample1(), dset.Sample2());
+    }
+    //: Create a classifier from a data set
+
   };
   
   //! userlevel=Normal
-  //: Abstract supervised classifer designer.
+  //: Abstract supervised classifier designer.
   
   class DesignClassifierSupervisedC
     : public DesignFunctionSupervisedC
@@ -113,6 +119,10 @@ namespace RavlN {
     //: Access body.
     
   public:
+    DesignClassifierSupervisedC Copy() const
+    { return DesignClassifierSupervisedC(dynamic_cast<DesignClassifierSupervisedBodyC &>(Body().Copy())); }
+     //: Make copy of body.
+
     ClassifierC Apply(const SampleC<VectorC> &in,const SampleC<UIntT> &out)
     { return Body().Apply(in,out); }
     //: Create a classifier.
@@ -136,6 +146,11 @@ namespace RavlN {
     //!param: featureSet - array of feature indexes to use from sample set when designing classifier
     //!param: weight     - weight associated with each feature vector
     
+    ClassifierC Apply(const DataSetVectorLabelC & dset) {
+       return Body().Apply(dset);
+     }
+     //: Create a classifier from a data set
+
   };
 
   inline std::istream &operator>>(std::istream &strm,DesignClassifierSupervisedC &obj) {

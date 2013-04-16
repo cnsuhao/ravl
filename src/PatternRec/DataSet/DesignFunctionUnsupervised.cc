@@ -17,6 +17,10 @@
 
 namespace RavlN {
 
+  //: Default constructor.
+  DesignFunctionUnsupervisedBodyC::DesignFunctionUnsupervisedBodyC()
+  {}
+
   //: Load from stream.
   
   DesignFunctionUnsupervisedBodyC::DesignFunctionUnsupervisedBodyC(std::istream &strm)

@@ -40,16 +40,16 @@ namespace RavlN {
       bool Save(BinOStreamC &strm) const;
 
       //! Sugar to make it easier to setup from a factory.
-      bool CallOnRead(const XMLFactoryContextC &factory,const std::string &name,const TriggerC &trigger,SocketC::RefT &skt);
+      SocketDispatcherC::RefT CallOnRead(const XMLFactoryContextC &factory,const std::string &name,const TriggerC &trigger,SocketC::RefT &skt);
 
       //! Sugar to make it easier to setup from a factory.
-      bool CallOnWrite(const XMLFactoryContextC &factory,const std::string &name,const TriggerC &trigger,SocketC::RefT &skt);
+      SocketDispatcherC::RefT CallOnWrite(const XMLFactoryContextC &factory,const std::string &name,const TriggerC &trigger,SocketC::RefT &skt);
 
       //! Add a read trigger
-      bool CallOnRead(const SocketC &socket,const TriggerC &trigger);
+      SocketDispatcherC::RefT CallOnRead(const SocketC &socket,const TriggerC &trigger);
 
       //! Add a write trigger
-      bool CallOnWrite(const SocketC &socket,const TriggerC &trigger);
+      SocketDispatcherC::RefT CallOnWrite(const SocketC &socket,const TriggerC &trigger);
 
       //! Add handler to system
       bool Add(const SocketDispatcherC &handler);

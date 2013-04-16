@@ -85,7 +85,7 @@ namespace RavlN {
     // typeid(void) == no, otherwise returns the preferred save type.
     
     inline const std::type_info &ProbeSave(const std::type_info &obj_type) const;
-  //: Alias for ProbeSave("",IStreamC(),obj_type);
+    //: Alias for ProbeSave("",IStreamC(),obj_type);
     // typeid(void) == no, otherwise returns the preferred save type.
   
     virtual DPIPortBaseC CreateInput(const StringC &filename,const std::type_info &obj_type) const;
@@ -183,7 +183,7 @@ namespace RavlN {
     inline const std::type_info &ProbeLoad(IStreamC &in,const std::type_info &obj_type) const;
     //: Is stream in this format ?
     // This asks the question: Can stream 'in' be loaded into object 'obj_type' ?
-    // Returns a suggested load type. (Which may or mayno match 'obj_type'.), 
+    // Returns a suggested load type. (Which may or may not match 'obj_type'.),
     // This will be typeid(void), if failed.
     
     inline const std::type_info &ProbeLoad(const StringC &filename,IStreamC &in,const std::type_info &obj_type) const;
@@ -191,12 +191,12 @@ namespace RavlN {
     // This asks the question: Can file 'filename' be loaded with object 'obj_type' ?
     // If used with a empty filename then in is invalid and it
     //   asks: Can load this type of object ?
-    // Returns a suggested load type. (Which may or mayno match 'obj_type'.), 
+    // Returns a suggested load type. (Which may or may not match 'obj_type'.),
     // This will be typeid(void), if failed.
     
     inline const std::type_info &ProbeLoad(const StringC &filename,const std::type_info &obj_type) const;
     //: Is Filename in this format (for load) ?
-    // Returns a suggested load type. (Which may or mayno match 'obj_type'.), 
+    // Returns a suggested load type. (Which may or may not match 'obj_type'.),
     // This will be typeid(void), if failed.
     
     inline const std::type_info &ProbeSave(const StringC &filename,const std::type_info &obj_type,bool forceFormat) const;
@@ -204,13 +204,13 @@ namespace RavlN {
     // This asks the question: Can file 'filename' be saved with object 'obj_type' ?
     // This uses extension to check consistency.
     // If used with a empty filename asks: Can save this type of object ?
-    // Returns a suggested load type. (Which may or mayno match 'obj_type'.), 
+    // Returns a suggested load type. (Which may or may not match 'obj_type'.),
     // This will be typeid(void), if failed.
     
     inline const std::type_info &ProbeLoad(const std::type_info &obj_type) const;
     //: Is Filename in this format (for load) ?
     // Alias for ProbeLoad("",IStreamC(),obj_type);
-    // Returns a suggested load type. (Which may or mayno match 'obj_type'.), 
+    // Returns a suggested load type. (Which may or may not match 'obj_type'.),
     // This will be typeid(void), if failed.
     
     inline const std::type_info &ProbeSave(const std::type_info &obj_type) const;

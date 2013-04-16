@@ -11,32 +11,31 @@
 //! author="Charles Galambos"
 
 #include "Ravl/PatternRec/DistanceEuclidean.hh"
+#include "Ravl/PatternRec/DistanceCorrelation.hh"
 #include "Ravl/Stream.hh"
 #include "Ravl/StrStream.hh"
 #include "Ravl/EntryPnt.hh"
+#include "Ravl/UnitTest.hh"
 
 using namespace RavlN;
 
 int testEuclidian();
-int testIO();
+int testEuclidianIO();
+int testCorrelationIO();
 
 int testMeasure(int args,char **argv) {
   int ln;
-  if((ln = testEuclidian()) != 0) {
-    std::cerr << "Test failed " << ln <<"\n";
-    return 1;
-  }
-  if((ln = testIO()) != 0) {
-    std::cerr << "Test failed " << ln <<"\n";
-    return 1;
-  }
-  std::cerr << "Test passed. \n";
+  RAVL_RUN_TEST(testEuclidian());
+  RAVL_RUN_TEST(testEuclidianIO());
+  RAVL_RUN_TEST(testCorrelationIO());
+  RavlInfo("Test passed. ");
   return 0;
 }
 
 RAVL_ENTRY_POINT(testMeasure);
 
-int testEuclidian() {
+int testEuclidian()
+{
   std::cerr << "testEuclidian(). Started. \n";  
   DistanceEuclideanC de;
   if(Abs(de.Measure(VectorC(1,0),VectorC(2,0)) - 1) > 0.000000001)
@@ -44,7 +43,8 @@ int testEuclidian() {
   return 0;
 }
 
-int testIO() {
+int testEuclidianIO()
+{
   DistanceEuclideanC de;
   StrOStreamC os;
   os << de;
@@ -54,5 +54,20 @@ int testIO() {
   if(!de2.IsValid()) return __LINE__;
   DistanceEuclideanC tst(de2);
   if(!tst.IsValid()) return __LINE__;
+
+  DistanceEuclideanC deRL;
+  RAVL_TEST_TRUE(TestBinStreamIO(de,deRL));
+
+  return 0;
+}
+
+int testCorrelationIO()
+{
+  DistanceCorrelationC dc(false);
+  DistanceCorrelationC dcRL;
+
+  RAVL_TEST_TRUE(TestBinStreamIO(dc,dcRL));
+  RAVL_TEST_EQUALS(dc.UseNormalise(),dcRL.UseNormalise());
+
   return 0;
 }

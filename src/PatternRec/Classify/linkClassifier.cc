@@ -20,6 +20,12 @@ namespace RavlN {
   extern void linkDesignClassifierLogisticRegression();
   extern void InitRavlClassifierNeuralNetwork2();
   extern void linkDesignClassifierNeuralNetwork2();
+  extern void linkDesignDiscriminantFunction();
+  extern void linkDesignBayesNormalLinear();
+  extern void linkDesignBayesNormalQuadratic();
+  extern void linkDesignCascade();
+  extern void linkDesignClassifierSupervisedWithValidation();
+  extern void LinkClassifierFixed();
 
   void LinkClassifier() {
     linkDesignClassifierSupervised();
@@ -33,6 +39,12 @@ namespace RavlN {
     linkDesignClassifierLogisticRegression();
     InitRavlClassifierNeuralNetwork2();
     linkDesignClassifierNeuralNetwork2();
+    linkDesignDiscriminantFunction();
+    linkDesignBayesNormalLinear();
+    linkDesignBayesNormalQuadratic();
+    linkDesignCascade();
+    linkDesignClassifierSupervisedWithValidation();
+    LinkClassifierFixed();
   }
 
 }

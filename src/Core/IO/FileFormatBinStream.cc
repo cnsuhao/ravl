@@ -18,8 +18,11 @@ namespace RavlN {
   // Some basic file types.
   
   static FileFormatBinStreamC<RealT>   FileFormatBinStream_RealT("RealT");
+  static FileFormatBinStreamC<float>   FileFormatBinStream_FloatT("float");
   static FileFormatBinStreamC<IntT>    FileFormatBinStream_IntT("IntT");
   static FileFormatBinStreamC<UIntT>   FileFormatBinStream_UIntT("UIntT");
   static FileFormatBinStreamC<StringC> FileFormatBinStream_StringC("RavlN::StringC");
   static FileFormatBinStreamC<ByteT>   FileFormatBinStream_ByteT("ByteT");
+  static FileFormatBinStreamC<SArray1dC<float> >   FileFormatBinStream_SArray1dFloat("RavlN::SArray1dC<float>");
+  static FileFormatBinStreamC<SArray1dC<RealT> >   FileFormatBinStream_SArray1dRealT("RavlN::SArray1dC<RealT>");
 }

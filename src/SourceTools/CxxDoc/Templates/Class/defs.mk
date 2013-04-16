@@ -14,12 +14,11 @@ AUXDIR = $(ROOTDIR)/transient/Ravl/CxxDoc/Class
 # because the CxxDoc stage expects it (that phase must be run with PROJECT_NAME
 # set, even for Ravl)
 
-AUXFILES = user.class.tmpl user.namespace.tmpl  \
-           develop.class.tmpl develop.namespace.tmpl \
-           index.tmpl bugs.tmpl class.stmpl scope.stmpl method.stmpl \
-           comment.stmpl namespace.stmpl basic.tmpl \
-           develop.index.tmpl user.index.tmpl example.tmpl topbar.stmpl \
-	   function.stmpl develop.function.tmpl user.function.tmpl executable.stmpl \
-           user.executable.tmpl develop.executable.tmpl footer.stmpl
+AUXFILES = user.class.tmpl user.namespace.tmpl develop.class.tmpl \
+ develop.namespace.tmpl index.tmpl bugs.tmpl class.stmpl scope.stmpl \
+ method.stmpl comment.stmpl namespace.stmpl basic.tmpl develop.index.tmpl \
+ user.index.tmpl example.tmpl topbar.stmpl function.stmpl \
+ develop.function.tmpl user.function.tmpl executable.stmpl \
+ user.executable.tmpl develop.executable.tmpl footer.stmpl
 
 #docentries.tmpl

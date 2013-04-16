@@ -9,9 +9,11 @@
 namespace RavlN {
 
   extern void LinkFuncMeanProjection();
+  extern void linkDesignFuncLSQ();
 
   void LinkRavlPatternRecModelBasic() {
     LinkFuncMeanProjection();
+    linkDesignFuncLSQ();
   }
 
 }

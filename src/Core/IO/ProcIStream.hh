@@ -13,7 +13,6 @@
 //! author="Charles Galambos"
 //! docentry="Ravl.API.Core.Data Processing.Internal" 
 //! date="06/07/1998"
-//! rcsid="$Id$"
 //! userlevel=Default
 
 #include "Ravl/DP/StreamOp.hh"
@@ -46,7 +45,7 @@ namespace RavlN {
     
     virtual OutT Get()  { 
       RavlAssert(this->input.IsValid());
-      return Apply(this->input.Get()); 
+      return this->Apply(this->input.Get());
     }
     //: Process next piece of data.
     
@@ -55,7 +54,7 @@ namespace RavlN {
       RavlAssert(this->input.IsValid());
       if(!this->input.Get(buff))
 	return false;
-      outbuff = Apply(buff);
+      outbuff = this->Apply(buff);
       return true;
     }
     //: Process some data.  
@@ -71,7 +70,7 @@ namespace RavlN {
 #if RAVL_CHECK
       IntT ap = 
 #endif
-	ApplyArray(src,dest);
+	this->ApplyArray(src,dest);
       RavlAssert(ap == (IntT) src.Size()); // Expect the all to be processed.
       return ret;
     }

@@ -25,10 +25,12 @@ namespace RavlN {
     : public DesignFunctionSupervisedBodyC
   {
   public:
-    DesignFuncLSQBodyC()
-    {}
+    DesignFuncLSQBodyC();
     //: Default constructor.
     
+    DesignFuncLSQBodyC(const XMLFactoryContextC &factory);
+    //: Construct from XML factory
+
     DesignFuncLSQBodyC(std::istream &strm);
     //: Load from stream.
     
@@ -90,6 +92,12 @@ namespace RavlN {
     {}
     //: Create designer.
     
+    DesignFuncLSQC(const XMLFactoryContextC &factory) :
+        DesignFunctionSupervisedC(*new DesignFuncLSQBodyC(factory))
+    {
+    }
+    //: Construct from XML factory
+
   protected:
     DesignFuncLSQC(DesignFuncLSQBodyC &bod)
       : DesignFunctionSupervisedC(bod)

@@ -5,7 +5,7 @@
 #define RAVLN_FACEN_Claim_HEADER 1
 //! rcsid="$Id$"
 //! lib=RavlFace
-//! docentry="Ravl.Contrib.Face"
+//! docentry="Ravl.Applications.Image.Face"
 //! file="Ravl/Contrib/Face/Xml/Xml/Claim.hh"
 //! author="Kieron J Messer"
 

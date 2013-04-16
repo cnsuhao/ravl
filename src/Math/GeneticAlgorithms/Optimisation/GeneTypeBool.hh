@@ -58,6 +58,9 @@ namespace RavlN { namespace GeneticN {
     float m_bias;  // True/False bias,  1.0 = Always true, 0.0 = Always false
   };
 
+  //! Access a gene type with 50/50 bias
+  const GeneTypeBoolC &GeneTypeBoolBiasHalf();
+
   //! Gene for integer variable
   class GeneBoolC
    : public GeneC
@@ -87,6 +90,9 @@ namespace RavlN { namespace GeneticN {
     //! Access value
     bool Value() const
     { return m_value; }
+
+    //! Generate an instance of the class.
+    virtual void Generate(const GeneFactoryC &context,RCWrapAbstractC &handle) const;
 
     //! Access hash value.
     virtual size_t Hash() const

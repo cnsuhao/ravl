@@ -285,7 +285,7 @@ namespace RavlN {
     
     virtual bool GetAt(StreamPosT off,DataT &buffer) {
       if(!Seek64(off)) return false;
-      return Get(buffer);
+      return this->Get(buffer);
     }
     //: Get data from the given offset.
     //!param: off - Offset to retrieve data from.
@@ -370,7 +370,7 @@ namespace RavlN {
     
     virtual bool PutAt(StreamPosT off,const DataT &buffer) {
       if(!Seek64(off)) return false;
-      return Put(buffer);
+      return this->Put(buffer);
     }
     //: Put data to given given offset.
     //!param: off - Offset to retrieve data from.

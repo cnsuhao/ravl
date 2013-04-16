@@ -71,7 +71,7 @@ namespace HollyN
   const RealT bhattacharyya_threshold = 0.0001;
   const RealT MINIMUM_DISTANCE = 0.1;
 
-  const RealT field_of_view = Radians(15);
+  const RealT field_of_view = Radians(15f);
 
   // Conversion between robot position to camera position
   // This function takes the robot's position and orientation and current pan angle

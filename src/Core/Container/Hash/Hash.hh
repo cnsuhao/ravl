@@ -318,9 +318,15 @@ namespace RavlN {
     // Ptr == NULL, if matching key not found.
     
     const T &First() const;
-    //: Find an arbitrary value in the hash table.  Note: This is not random.
+    //: Find an arbitrary data value in the hash table.
+    //: Note: The name 'First' is for compatibility with other containers, which element is return is undefined
     //: The table must not be empty.
-  protected:
+
+    const K &FirstKey() const;
+    //: Find an arbitrary key value in the hash table.
+    //: Note: The name 'First' is for compatibility with other containers, which element is return is undefined
+    //: The table must not be empty.
+protected:
     inline T &Add(const K &Key,const T &Data);
     // Add member to table.
     // !! Doesn't check if member already exists !!
@@ -907,6 +913,16 @@ namespace RavlN {
       IntrDLIterC<HashElemC<K,T> > place(*it);
       if(place.IsElm())
         return place.Data().Data();
+    }
+    throw RavlN::ExceptionOperationFailedC("No element found in table.");
+  }
+
+  template<class K,class T>
+  const K &HashC<K,T>::FirstKey() const {
+    for(BufferAccessIterC<HashElemLst> it(table);it;it++) {
+      IntrDLIterC<HashElemC<K,T> > place(*it);
+      if(place.IsElm())
+        return place.Data().GetKey();
     }
     throw RavlN::ExceptionOperationFailedC("No element found in table.");
   }

@@ -182,7 +182,7 @@ namespace RavlN {
     //: Constructor.
     
     TSMatrixFullC(const TSMatrixC<DataT> &mat)
-      : TSMatrixC<DataT>(dynamic_cast<const TSMatrixFullBodyC<DataT> *>(BodyPtr(mat)))
+      : TSMatrixC<DataT>(dynamic_cast<const TSMatrixFullBodyC<DataT> *>(this->BodyPtr(mat)))
     {}
     //: Base constructor.
     

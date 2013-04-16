@@ -6,7 +6,6 @@
 // file-header-ends-here
 #ifndef RAVL_FUNCTIONCASCADE_HEADER
 #define RAVL_FUNCTIONCASCADE_HEADER 1
-//! rcsid="$Id: FunctionCascade.hh 6820 2008-05-30 14:30:11Z ees1wc $"
 //! lib=RavlPatternRec
 //! author="Kieron"
 //! docentry="Ravl.API.Pattern Recognition.Numerical Modeling"
@@ -26,13 +25,18 @@ namespace RavlN {
   public:
     FunctionCascadeBodyC();
     //: Default constructor.
-    
+
+    FunctionCascadeBodyC(const XMLFactoryContextC &factory);
+    //: Construct from XML factory
+
     FunctionCascadeBodyC(const SArray1dC<FunctionC> & functions);
-    //: Default constructor.
+    //: Construct from array of functions
 
     FunctionCascadeBodyC(const FunctionC & function1, const FunctionC & function2);
+    //: Construct from two functions
     
     FunctionCascadeBodyC(const FunctionC & function1, const FunctionC & function2, const FunctionC & function3);
+    //: Construct from three functions
     
     FunctionCascadeBodyC(std::istream &strm);
     //: Load from stream.
@@ -46,9 +50,18 @@ namespace RavlN {
     virtual bool Save (BinOStreamC &out) const;
     //: Writes object to binary stream.
     
+    virtual void ApplyInPlace(const VectorC &data,VectorC &out) const;
+    //: Apply function in place to 'data', overwrite values in out if its of the correct size.
+
     virtual VectorC Apply(const VectorC &data) const;
     //: Apply function to 'data'
-    
+
+    virtual void ApplyInPlace(const TVectorC<float> &data,TVectorC<float> &out) const;
+    //: Apply function in place to 'data', overwrite values in out if its of the correct size.
+
+    virtual TVectorC<float> Apply(const TVectorC<float> &data) const;
+    //: Apply function with float vectors to 'data'
+
     const SArray1dC<FunctionC> & Functions() const
     { return m_functions; }
     //: Access to the functions
@@ -69,11 +82,16 @@ namespace RavlN {
     FunctionCascadeC()
     {}
     //: Default constructor.
+
+    FunctionCascadeC(const XMLFactoryContextC &factory)
+      : FunctionC(*new FunctionCascadeBodyC(factory))
+    {}
+    //: Construct from XML factory
     
     FunctionCascadeC(const SArray1dC<FunctionC> & functions)
       : FunctionC(*new FunctionCascadeBodyC(functions))
     {}
-    //: Construct from a set of functions
+    //: Construct from an array of functions
 
     FunctionCascadeC(const FunctionC & function1, const FunctionC & function2)
       : FunctionC(*new FunctionCascadeBodyC(function1, function2))

@@ -37,7 +37,7 @@ namespace RavlAudioN {
     //: Destructor.
     
     virtual bool BuildAttributes( AttributeCtrlBodyC & attributes ) ; 
-    //: Build the set of attriubtes 
+    //: Build the set of attributes
     
     bool IOpen(const StringC &fn,int channel,const type_info &dtype);
     //: Open audio device.
@@ -76,11 +76,11 @@ namespace RavlAudioN {
 
     bool Read(void *buf,IntT &len);
     //: Read bytes from audio stream.
-    // Returns false if error occured.
+    // Returns false if error occurred.
     
     bool Write(const void *buf,IntT len);
     //: Write bytes to audio stream.
-    // Returns false if error occured.
+    // Returns false if error occurred.
     
     bool IsOpen() const
     { return false; }
@@ -127,12 +127,12 @@ namespace RavlAudioN {
   {
   public:
     DPIAudioBodyC()
-      { BuildAttributes( *this ) ; }
+      { this->BuildAttributes( *this ) ; }
     //: Default constructor.
     
     DPIAudioBodyC(const StringC &dev,int channel)
       : IOClassT(dev,channel,true,typeid(DataT))
-      { BuildAttributes( *this ) ; }
+      { this->BuildAttributes( *this ) ; }
     //: Default constructor.
     
     virtual bool IsGetReady() const
@@ -165,6 +165,10 @@ namespace RavlAudioN {
     
     IntT GetArray(SArray1dC<DataT> &data) {
       IntT size = data.Size() * sizeof(DataT);
+      if(data.Size() == 0) {
+        RavlIssueError("Attempt to read 0 bytes");
+        return 0;
+      }
       if(!this->Read(&(data[0]),size))
         return 0;
       return size / sizeof(DataT);
@@ -176,7 +180,7 @@ namespace RavlAudioN {
     //: Seek to location in stream.
     // Returns false, if seek failed. (Maybe because its
     // not implemented.)
-    // if an error occurered (Seek returned False) then stream
+    // if an error occurred (Seek returned False) then stream
     // position will not be changed.
     
     virtual UIntT Tell() const

@@ -17,8 +17,8 @@
 
 namespace RavlN {
   
-  PLine2dC::PLine2dC(const LinePP2dC & l)
-    : PPointLine2dC(PPoint2dC(l.FirstPoint()),PPoint2dC(l.SecondPoint()))
+  PLine2dC::PLine2dC(const LinePP2dC &l, RealT s)
+    : PPointLine2dC(PPoint2dC(l.FirstPoint(), s),PPoint2dC(l.SecondPoint(), s))
   {}
   
 

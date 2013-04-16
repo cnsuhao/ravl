@@ -11,9 +11,9 @@ DESCRIPTION = Pattern Recognition Performance
 
 PACKAGE = Ravl/PatternRec
 
-HEADERS= Error.hh OptimiseClassifierDesign.hh
+HEADERS= Error.hh OptimiseClassifierDesign.hh ErrorBinaryClassifier.hh
 
-SOURCES= Error.cc OptimiseClassifierDesign.cc
+SOURCES= Error.cc OptimiseClassifierDesign.cc ErrorBinaryClassifier.cc
 
 PLIB = RavlPatternRec
 

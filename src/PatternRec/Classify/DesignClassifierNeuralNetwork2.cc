@@ -198,17 +198,17 @@ namespace RavlN {
          work = res;
        }
 
-       //ONDEBUG(RavlDebug("Data:%s Theta:%s ",RavlN::StringOf(it.Data1()).c_str(),RavlN::StringOf(theta).c_str()));
-       //RavlDebug("Dot %f ",dotProdS);
-       for(unsigned i = 0;i < work.Size();i++) {
-         if((work[i] > 0) == (it.Data2() == i)) {
-           // Got it right
-           cost += -Log(work[i]);
-         } else {
-           cost += -Log(1-work[i]);
-         }
-       }
-     }
+      //ONDEBUG(RavlDebug("Data:%s Theta:%s ",RavlN::StringOf(it.Data1()).c_str(),RavlN::StringOf(theta).c_str()));
+      //RavlDebug("Dot %f ",dotProdS);
+      for (unsigned i = 0; i < work.Size(); i++) {
+        if ((work[i] > 0) == (it.Data2() == i)) {
+          // Got it right
+          cost += -Log(work[i]);
+        } else {
+          cost += -Log(1 - work[i]);
+        }
+      }
+     } // end data set
      *costPtr = cost;
      return true;
    }
@@ -298,8 +298,8 @@ namespace RavlN {
 
       // Compute errors at final layer
       VectorC err(work.Size());
-      for(unsigned j = 0;j < err.Size();j++) {
-        if(j == it.Data2()) {
+      for (unsigned j = 0; j < err.Size(); j++) {
+        if (j == it.Data2()) {
           err[j] = work[j] - 1;
         } else {
           err[j] = work[j];
@@ -397,7 +397,9 @@ namespace RavlN {
        RealT regularisation,
        RealT desiredError,
        UIntT maxEpochs,
-       UIntT displayEpochs)
+       UIntT displayEpochs,
+       bool useSigmoid,
+       UIntT threads)
     : m_nLayers(nLayers),
       m_nHidden(nHidden),
       m_hiddenFraction(-1),
@@ -406,16 +408,17 @@ namespace RavlN {
       m_displayEpochs(displayEpochs),
       m_regularisation(regularisation),
       m_doNormalisation(doNorm),
-      m_threads(1)
+      m_threads(threads),
+      m_useSigmoidOnOutput(useSigmoid)
   {
     if(!m_optimiser.IsValid()) {
-      m_optimiser = OptimiseConjugateGradientC(m_maxEpochs);
+      m_optimiser = OptimiseConjugateGradientC(m_maxEpochs, m_desiredError, true, true, 6, 1e-2);
       //m_optimiser = OptimiseDescentC(1000,1e-3);
     }
   }
 
   DesignClassifierNeuralNetwork2BodyC::DesignClassifierNeuralNetwork2BodyC(const XMLFactoryContextC & factory)
-  : DesignClassifierSupervisedBodyC(factory),
+   : DesignClassifierSupervisedBodyC(factory),
         m_nLayers(factory.AttributeInt("numberOfLayers", 3)),
         m_nHidden(factory.AttributeInt("numberOfHiddenUnits", 7)),
         m_hiddenFraction(-1),
@@ -423,9 +426,11 @@ namespace RavlN {
         m_maxEpochs(factory.AttributeInt("maxEpochs", 50000)),
         m_displayEpochs(factory.AttributeInt("displayEpochs", 100)),
         m_regularisation(factory.AttributeReal("regularisation", 0.0)),
-        m_doNormalisation(factory.AttributeReal("doNormalisation", true)),
-        m_threads(factory.AttributeInt("threads", 1))
+        m_doNormalisation(factory.AttributeBool("doNormalisation", true)),
+        m_threads(factory.AttributeInt("threads", 1)),
+        m_useSigmoidOnOutput(factory.AttributeBool("useSigmoidOnOutput",true))
   {
+
     if(!factory.UseChildComponent("FeatureMap",m_featureExpand,true)) { // Optional feature expansion.
       //m_featureExpand = FuncOrthPolynomialC(2);
     }
@@ -447,11 +452,12 @@ namespace RavlN {
      m_displayEpochs(0),
      m_regularisation(0),
      m_doNormalisation(false),
-     m_threads(1)
+     m_threads(1),
+     m_useSigmoidOnOutput(true)
   {
     int version;
     strm >> version;
-    if (version != 1)
+    if (version < 1 || version > 2)
       throw ExceptionUnexpectedVersionInStreamC("DesignClassifierNeuralNetwork2BodyC::DesignClassifierNeuralNetwork2BodyC(std::istream &), Unrecognised version number in stream. ");
     strm >> m_featureExpand;
     strm >> m_nLayers;
@@ -460,6 +466,8 @@ namespace RavlN {
     strm >> m_maxEpochs;
     strm >> m_displayEpochs;
     strm >> m_regularisation;
+    if(version > 1)
+      strm >> m_useSigmoidOnOutput;
   }
 
   //: Load from binary stream.
@@ -474,7 +482,8 @@ namespace RavlN {
     m_displayEpochs(0),
     m_regularisation(0),
     m_doNormalisation(false),
-    m_threads(1)
+    m_threads(1),
+    m_useSigmoidOnOutput(true)
   {
     ByteT version;
     strm >> version;
@@ -488,7 +497,8 @@ namespace RavlN {
     strm >> m_displayEpochs;
     strm >> m_regularisation;
     strm >> m_doNormalisation;
-    // FIXME:- Load threads ??
+    if(version > 1)
+      strm >> m_useSigmoidOnOutput;
   }
 
   //: Writes object to stream, can be loaded using constructor
@@ -507,6 +517,7 @@ namespace RavlN {
     out << m_displayEpochs << std::endl;
     out << m_regularisation << std::endl;
     out << m_doNormalisation << std::endl;
+    out << m_useSigmoidOnOutput << std::endl;
     return true;
   }
 
@@ -516,7 +527,7 @@ namespace RavlN {
   {
     if (!DesignClassifierSupervisedBodyC::Save(out))
       return false;
-    ByteT version = 1;
+    ByteT version = 2;
     out << version;
     out << m_featureExpand;
     out << m_nLayers;
@@ -526,6 +537,7 @@ namespace RavlN {
     out << m_displayEpochs;
     out << m_regularisation;
     out << m_doNormalisation;
+    out << m_useSigmoidOnOutput;
     return true;
   }
 
@@ -596,6 +608,7 @@ namespace RavlN {
       return ClassifierC();
     }
 
+
     //size_t nInputs = in.First().Size();
 
     SampleLabelC labels(out);
@@ -660,6 +673,9 @@ namespace RavlN {
     for(unsigned i = 0;i < layers.Size();i++) {
       layers[i]->SetWeights(w[i]);
       layers[i]->SetBias(bias[i]);
+    }
+    if(!m_useSigmoidOnOutput) {
+      layers[layers.Size()-1]->SetUseSigmoid(false);
     }
 
     if(m_doNormalisation) {

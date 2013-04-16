@@ -17,6 +17,7 @@
 
 #include "Ravl/TFVector.hh"
 #include "Ravl/FIndex.hh"
+#include "Ravl/StdMath.hh"
 
 namespace RavlN {
 
@@ -54,18 +55,18 @@ namespace RavlN {
     //: Vector constructor.
     
     RealT EuclideanDistance(const FPointC<N> & i) const 
-    { return Sqrt((RealT) SqrEuclidDistance(i)); }
+    { return Sqrt((RealT) this->SqrEuclidDistance(i)); }
     //: Returns the distance of two indexes in Euclid metric.
     
     RealT EuclidDistance(const FPointC<N> & i) const 
-    { return EuclideanDistance(i); }
-    //: Returns the distance of two indexes in Euclid metric.
+    { return this->EuclideanDistance(i); }
+    //!deprecated: Returns the distance of two indexes in Euclid metric.
     // Identical to EuclideanDistance, which should be used in new code.
     
     bool IsReal() const
     {
       for(unsigned int i = 0; i < N;i++) {
-        if(IsNan(this->data[i]) || IsInf(this->data[i]))
+        if(RavlN::IsNan(this->data[i]) || RavlN::IsInf(this->data[i]))
           return false;
       }
       return true;

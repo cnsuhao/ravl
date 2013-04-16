@@ -28,7 +28,7 @@
 namespace RavlN {
 
   //: Keep a ranked array of results.
-  // KeyT = score value.
+  // KeyT = score value, higher values preferred over smaller ones.
 
   template<typename KeyT,typename DataT>
   class RankedScoreArrayC
@@ -70,16 +70,16 @@ namespace RavlN {
     //: Reset with with a minimum Score to accept.
 
 
-    bool Include(const KeyT &dist,const DataT &data) {
+    bool Include(const KeyT &score,const DataT &data) {
       if(m_used < N) // Have we filled the list yet?
-        return AddFill(dist,data);
-      if(dist <= m_results[0].Data1())
+        return AddFill(score,data);
+      if(score <= m_results[0].Data1())
         return false;
       // Add pushing worst out.
       register SizeT j = 1;
-      for(;j < N && m_results[j].Data1() < dist;j++)
+      for(;j < N && m_results[j].Data1() < score;j++)
         m_results[j-1] = m_results[j];
-      m_results[j-1].Data1() = dist;
+      m_results[j-1].Data1() = score;
       m_results[j-1].Data2() = data;
       return true;
     }
@@ -149,21 +149,21 @@ namespace RavlN {
     //: Get results as array.
     
   protected:
-    bool AddFill(const KeyT &dist,const DataT &data) {
-      if(dist < m_worseAcceptableScore)
+    bool AddFill(const KeyT &score,const DataT &data) {
+      if(score < m_worseAcceptableScore)
         return false;
       RavlAssert(m_used < N);
       register SizeT j = 0;
 
       // Find where to put new entry.
-      for(;j < m_used && m_results[j].Data1() < dist;j++);
+      for(;j < m_used && m_results[j].Data1() < score;j++);
 
       // Make a space for the new entry.
       for(SizeT k = m_used;k > j;k--)
         m_results[k] = m_results[k-1];
 
       // Put in the  new entry.
-      m_results[j].Data1() = dist;
+      m_results[j].Data1() = score;
       m_results[j].Data2() = data;
       m_used++;
       return j == 0;

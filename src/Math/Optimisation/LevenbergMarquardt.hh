@@ -29,9 +29,7 @@ namespace RavlN {
   //: Levenberg-Marquardt algorithm class
   // This is a generic implementation of Levenberg-Marquardt least-squares
   // minimisation. The algorithm is described mathematically in a
-  // <a href="../../../LevenbergMarquardt/levmarq.pdf">separate document</a>,
-  // which is also available in
-  // <a href="../../../LevenbergMarquardt/levmarq.html">HTML</a>,
+  // <a href="../../../html/levmarq.pdf">separate document</a>.
   // <p>
   // This class contains a constructor for initialising the algorithm, a method
   // for a applying a damped Levenberg-Marquardt iteration, which should be
