@@ -74,10 +74,8 @@ namespace RavlN {
     if(in.Size() == 0)
       return FunctionC(); // Can't do anything without data.
     VectorC vec = in.First();
-#if 0
     if(vec.Size() > in.Size() || forceHimDim)
       return DesignHighDim(in,varPreserved);
-#endif
     return DesignLowDim(in,varPreserved);
   }
   
@@ -89,7 +87,7 @@ namespace RavlN {
   
   FunctionC DesignFuncPCABodyC::DesignHighDim(const SampleC<VectorC> &sample,RealT variation) {
     // FIXME :- This could be implemented more efficiently.
-      cerr << "High dim" << endl;
+    
     SampleVectorC sv(sample);
     UIntT N = sample.Size(); // number of training samples
     if(N == 0)
@@ -198,26 +196,17 @@ namespace RavlN {
   //: Build pca from mean and covariance.
   
   FunctionC DesignFuncPCABodyC::DesignLowDim(const MeanCovarianceC &stats) {
-
     if(stats.Number() == 0)
       return FunctionC();
     mean = stats.Mean();
     RealT variation = varPreserved;
     const UIntT dim = mean.Size();
-#if 0
     VectorMatrixC Leigenvecs =  EigenVectors(stats.Covariance());
-#else
-    ONDEBUG(cerr << "Computing EigenVectors using SVD" << endl);
-    MatrixC u, v;
-    MatrixC cov = stats.Covariance();
-    VectorC d = SVD_IP(cov, u, v);
-    VectorMatrixC Leigenvecs(d, u);
-#endif
     
     //: need to sort matrix into order
     Leigenvecs.Sort();
 
-    //ONDEBUG(cerr << "Values=" << Leigenvecs.Vector() << "\n");
+    ONDEBUG(cerr << "Values=" << Leigenvecs.Vector() << "\n");
     
     RealT total = Leigenvecs.Vector().Sum();
     RealT runningTotal = 0.0;
@@ -230,7 +219,6 @@ namespace RavlN {
       for (UIntT i = 0; i < numComponents; i++)
 	runningTotal += Leigenvecs.Vector()[i];
     }
-    ONDEBUG(cerr << "Variation Preserved=" << variation << endl);
     varPreserved = runningTotal / total;
     
     pca = VectorMatrixC (Leigenvecs.Vector().From(0,numComponents),
