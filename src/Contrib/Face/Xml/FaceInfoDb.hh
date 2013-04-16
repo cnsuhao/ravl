@@ -114,6 +114,7 @@ namespace RavlN {
       }
       //: Get database name
 
+
       const DListC<StringC> & ImagePath() const
       {
         return m_imagePath;
