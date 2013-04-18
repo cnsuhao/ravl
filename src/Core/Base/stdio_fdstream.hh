@@ -45,7 +45,7 @@ namespace RavlN {
     explicit stdio_ifdstream(int fd, ios_base::openmode mode = ios_base::in, bool freeFd = true,int buffSize = 4096)
       : basic_istream<char_type, traits_type>(0),
 	filebuf(fd,mode,freeFd,buffSize)
-    { init(&filebuf); }
+    { this->init(&filebuf); }
     //: Construct from a file handle and an open mode.
     
     buf_type* rdbuf() const

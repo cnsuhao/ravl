@@ -134,7 +134,8 @@ endif
 ##################################
 # Do makes.
 
-MAKEFLAGS += --no-print-directory -r $(PAR_MAKE)
+#MAKEFLAGS += --no-print-directory -r $(PAR_MAKE)
+MAKEFLAGS += -r $(PAR_MAKE)
 
 # Where commands are prefixed by 'q' frozen dependancies are used.
 # NB. Frozen dependancies can only be used where  normal make has 

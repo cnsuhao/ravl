@@ -48,26 +48,27 @@ namespace RavlN {
         return noClients;
       }
 
-      StringC Root() const
-      {
-        return root;
-      }
 
     protected:
       UIntT m_formatId; // The input format we are using
 
       DListC<FaceInfoC> faces;
       //: the list of all sorted face infos
+
       DLIterC<FaceInfoC> iter;
       //: the iterator through the file names
+
       UIntT noFaces;
       //: Number of faces in list
+
       UIntT noClients;
       //: Number of clients in stream
-      StringC root;
-      //: The root dir of the database
+
       bool markedUp;
       //: Only consider images which have been marked up
+
+      StringC m_cacheDir;
+      //: Store a cache of stuff in here
 
       XMLIStreamC xml;
 
@@ -128,11 +129,7 @@ namespace RavlN {
       }
       //: The number of seperate clients in the stream
 
-      StringC Root() const
-      {
-        return Body().Root();
-      }
-      //: The root directory of the database
+
 
     };
 

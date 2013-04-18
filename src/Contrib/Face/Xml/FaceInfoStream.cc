@@ -41,7 +41,7 @@ namespace RavlN {
       noClients = sort.Size();
 
       //: Set the root dir
-      root = db.Root();
+      //root = db.Root();
 
       //: Finally make the iter
       iter = DLIterC < FaceInfoC > (faces);

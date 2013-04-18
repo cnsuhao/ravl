@@ -324,7 +324,7 @@ namespace RavlN {
     
     virtual void Input(const DPIPortC<InT> &ins) {
       input = ins; 
-      this->ReparentAttributeCtrl(input); // Make sure changed signals are updated appropriately.
+      this->ReparentAttributeCtrl(input); // Make sure changed signals are changed appropriately.
     }
     //: Setup input port.
   }; 
