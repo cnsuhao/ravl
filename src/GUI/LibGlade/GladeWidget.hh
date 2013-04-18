@@ -69,6 +69,8 @@ namespace RavlGUIN {
     //!param: newWidget - Widget object to connect to the named object
     //!param: optional - If false, warn if the widget is not found
 
+    typedef RavlN::SmartPtrC<GladeWidgetBodyC> RefT;
+    //: Handle to glade widget
   protected:
     bool InterceptDeleteEvent();
     //: Intercept the "delete-event", and just hide the widget.
