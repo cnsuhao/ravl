@@ -13,7 +13,7 @@
 #include "Ravl/OS/SysLog.hh"
 #include "Ravl/OS/Date.hh"
 
-#define DODEBUG 1
+#define DODEBUG 0
 #if DODEBUG
 #define ONDEBUG(x) x
 #else
