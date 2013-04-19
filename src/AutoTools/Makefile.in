@@ -299,6 +299,10 @@ $(PROJECT_OUT)/lib/libdep/Ravl.def: $(PROJECT_OUT)/Makefile
 	$(SHOWIT)echo >> $@
 
 
+recheck: retest
+
+retest: retestsingleoptshared 
+
 retestgprof:
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=gprof TEST_TARGET=gprof retest
 
@@ -517,8 +521,8 @@ uninstallsingleoptshared:
  install-stripProject installDummyDefs installHdrs installoptshared \
  installProject installpkgconf installQMake installRavl.def \
  installsingleoptshared LocalQMake opt optbin optshared optsharedbin pkgconf \
- qmake QMake Ravl.def retestgprof retestgprofshared retestopt retestoptshared \
- retestsinglegprof retestsinglegprofshared retestsingleopt \
+ qmake QMake Ravl.def recheck retest retestgprof retestgprofshared retestopt \
+ retestoptshared retestsinglegprof retestsinglegprofshared retestsingleopt \
  retestsingleoptshared rpm SetRootInstalledOptStatic SetRootStagedOptStatic \
  singledebug singledebugbin singledebugshared singledebugsharedbin singlegprof \
  singlegprofbin singlegprofshared singlegprofsharedbin singleopt singleoptbin \
