@@ -16,7 +16,7 @@
 #include "Ravl/IO.hh"
 #include "Ravl/DP/FileFormatIO.hh"
 
-#define DODEBUG 1
+#define DODEBUG 0
 #if DODEBUG
 #include "Ravl/Image/DrawCross.hh"
 #include "Ravl/IO.hh"
