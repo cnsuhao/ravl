@@ -40,6 +40,9 @@ namespace RavlN {
     bool Plot(const SArray1dC<RealT> & data, const StringC & dataName = "");
     //: Plot values against their index, optional dataName will appear in the legend
 
+    bool Plot(const SArray1dC<float> & data, const StringC & dataName = "");
+    //: Plot values against their index, optional dataName will appear in the legend
+
     bool Plot(const SArray1dC<Point2dC> & data,
         RavlImageN::ImageC<RavlImageN::ByteRGBValueC> & image,
         const IndexRange2dC & rec = IndexRange2dC(750, 750),
