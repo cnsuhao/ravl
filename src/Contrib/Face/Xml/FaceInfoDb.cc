@@ -211,9 +211,7 @@ namespace RavlN {
         for (DLIterC<StringC> pathIt(m_imagePath); pathIt; pathIt++) {
           FilenameC imagePath = it.Data().OrigImage();
           StringC imageDir = imagePath.PathComponent();
-          RavlInfo("%s %s", imageDir.data(), pathIt.Data().data());
           if (imageDir == *pathIt) {
-            RavlInfo("Boo %s", imagePath.NameComponent().data());
             it.Data().OrigImage() = imagePath.NameComponent();
             break;
           }
@@ -591,6 +589,15 @@ namespace RavlN {
         }
       }
       return db;
+    }
+
+    bool FaceInfoDbC::AddImagePath(const StringC & imagePath) {
+      // Check path isn't already in list
+      if(m_imagePath.Contains(imagePath)) {
+        return true;
+      }
+      m_imagePath.InsLast(imagePath);
+      return true;
     }
 
 

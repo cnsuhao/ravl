@@ -121,6 +121,9 @@ namespace RavlN {
       }
       //: Get the image path
 
+      bool AddImagePath(const StringC & imagePath);
+      //: Add an imagepath
+
     protected:
       void init(const DListC<StringC> & dbNames, const DListC<StringC> & imagePath);
 

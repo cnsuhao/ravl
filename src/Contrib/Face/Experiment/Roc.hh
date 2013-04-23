@@ -107,6 +107,9 @@ namespace RavlN {
       bool Plot(RealT maxFa, RealT maxFr, const StringC & title, const StringC & outfile) const;
       //: Plot the roc
 
+      bool PlotLog(const StringC & outfile, const StringC & title, RealT minFalseMatchRate, RealT maxFalseMatchRate, RealT minTrueMatchRate, RealT maxTrueMatchRate) const;
+      //: Plot with the FA on a logarithmic scale
+
       bool Plot(RealT maxFa, RealT maxFr, const StringC & title, RavlImageN::ImageC<RavlImageN::ByteRGBValueC> & image) const;
       // Get an image of the ROC
 
@@ -335,6 +338,11 @@ namespace RavlN {
         return Body().Plot(maxFa, maxFr, title, image);
       }
       // Get an image of the ROC
+
+      bool PlotLog(const StringC & outfile, const StringC & title = "Verification Performance", RealT minFalseMatchRate=0.0001, RealT maxFalseMatchRate = 0.1, RealT minTrueMatchRate=0.80, RealT maxTrueMatchRate=0.99) const {
+        return Body().PlotLog(outfile, title, minFalseMatchRate, maxFalseMatchRate, minTrueMatchRate, maxTrueMatchRate);
+      }
+      //: Plot with the FA on a logarithmic scale on the x-axis and plotting 1.0 - FR (aka True Match) on the y-axis.
 
       bool PlotScoreHistogram(const StringC & title, const StringC & filename = "") const
       {
