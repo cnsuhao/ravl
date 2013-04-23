@@ -35,7 +35,7 @@ namespace RavlImageN {
   
   //! userlevel=Normal
   //: Scale an image
-  // Note: WarpScale2d is now prefered.
+  // Note: WarpScale2d is now preferred.
   
   template <class InT, class OutT = InT>
   class WarpScaleC

@@ -23,7 +23,7 @@
 #include "Ravl/Threads/LaunchThread.hh"
 #include "Ravl/CallMethodPtrs.hh"
 
-#define DODEBUG 0
+#define DODEBUG 1
 #if DODEBUG
 #define ONDEBUG(x) x
 #include "Ravl/StrStream.hh"
@@ -199,9 +199,8 @@ namespace RavlN {
        }
 
       //ONDEBUG(RavlDebug("Data:%s Theta:%s ",RavlN::StringOf(it.Data1()).c_str(),RavlN::StringOf(theta).c_str()));
-      //RavlDebug("Dot %f ",dotProdS);
       for (unsigned i = 0; i < work.Size(); i++) {
-        if ((work[i] > 0) == (it.Data2() == i)) {
+        if (it.Data2() == i) {
           // Got it right
           cost += -Log(work[i]);
         } else {
@@ -286,7 +285,6 @@ namespace RavlN {
       VectorC work = it.Data1();
       a[0] = work;
       for(unsigned i = 0;i < m_layers.Size();i++) {
-        VectorC res;
         // FIXME:- This could be faster and avoid lots of allocations.
         //res = w[i] * work + bias[i];
         RavlN::MulAdd(w[i],work,bias[i],z[i+1]);
@@ -660,6 +658,14 @@ namespace RavlN {
 
     CostNeuralNetwork2C::RefT costnn = new CostNeuralNetwork2C(layers,normVec,labels,m_regularisation,m_displayEpochs > 0,m_threads);
     CostC costFunc(costnn.BodyPtr());
+
+#if 0
+    if(!costnn->CheckJacobian(costnn->StartX())) {
+      RavlError("Gradient check failed!");
+    } else {
+      RavlInfo("Gradient check passed!");
+    }
+#endif
 
     RealT minimumCost;
     VectorC result = m_optimiser.MinimalX (costFunc,minimumCost);

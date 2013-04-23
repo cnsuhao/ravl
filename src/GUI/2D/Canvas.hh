@@ -175,11 +175,11 @@ namespace RavlGUIN {
     bool GUIAutoRefresh(bool &val);
     //: Turn auto refresh after draw routines on/off.
     // Call with GUI thread only!
-    // Note: Turning autorefresh on, automaticly refreshes the display.
+    // Note: Turning autorefresh on, automatically refreshes the display.
     
     void AutoRefresh(bool val);
     //: Turn auto refresh after draw routines on/off.
-    // Note: Turning autorefresh on, automaticly refreshes the display.
+    // Note: Turning autorefresh on, automatically refreshes the display.
     
     bool AutoRefresh() const
     { return autoRefresh; }
@@ -251,12 +251,12 @@ namespace RavlGUIN {
     
     CanvasC(int width,int height,bool direct = false);
     //: Constructor.
-    // If direct rendering is enabled (true) it is the user's responsibity to provide an 
+    // If direct rendering is enabled (true) it is the user's responsibility to provide an
     // expose method which updates the window on the display.
     
     CanvasC(const ImageRectangleC& rect, bool direct = false);
     //: Constructor.
-    // If direct rendering is enabled (true) it is the user's responsibity to provide an 
+    // If direct rendering is enabled (true) it is the user's responsibility to provide an
     // expose method which updates the window on the display.<br>
     // <b>N.B.:</b> Only the image size is used from <code>rect</code>.  The offset from the origin is ignored.
 

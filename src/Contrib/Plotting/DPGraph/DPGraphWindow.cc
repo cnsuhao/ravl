@@ -18,7 +18,7 @@
 
 #include <stdlib.h>
 
-#define DODEBUG 1
+#define DODEBUG 0
 #if DODEBUG
 #define ONDEBUG(x) x
 #else

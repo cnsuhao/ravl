@@ -12,6 +12,7 @@
 #include "Ravl/GUI/Pixbuf.hh"
 #include "Ravl/GUI/Window.hh"
 #include "Ravl/XMLFactoryRegister.hh"
+#include "Ravl/DP/TypeConverter.hh"
 
 #include <gtk/gtk.h>
 
@@ -182,6 +183,12 @@ namespace RavlGUIN {
   WindowC GladeWindowBodyC::Window() {
     return GladeWindowWrapperC(this);
   }
+
+  static GladeWindowC ConvertGladeWindowBodyPtrToHandle(const GladeWindowBodyC::RefT &ref)
+  { return GladeWindowC(ref.BodyPtr()); }
+
+  DP_REGISTER_CONVERSION(ConvertGladeWindowBodyPtrToHandle,1.0);
+
 
   void LinkGladeWindow()
   {}

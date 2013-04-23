@@ -93,6 +93,9 @@ namespace RavlN {
     // decreasing steps until cost function decreases. This is one iteration.
     // Iterates until the Jacobian is very small or number of iterations is met.
   };
+
+  void LinkOptimiseConjugateGradient();
+
 }
 
 #endif

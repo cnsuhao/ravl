@@ -11,6 +11,7 @@
 #include "Ravl/HashIter.hh"
 #include "Ravl/OS/SysLog.hh"
 #include "Ravl/XMLFactoryRegister.hh"
+#include "Ravl/DP/Converter.hh"
 #include <gtk/gtk.h>
 
 #define DODEBUG 0
@@ -238,6 +239,11 @@ namespace RavlGUIN {
   }
 
   static XMLFactoryRegisterHandleConvertC<GladeWidgetC,WidgetC> g_registerXMLFactoryGladeWidget("RavlGUIN::GladeWidgetC");
+
+  static GladeWidgetC ConvertGladeWidgetBodyPtrToHandle(const GladeWidgetBodyC::RefT &ref)
+  { return GladeWidgetC(ref.BodyPtr()); }
+
+  DP_REGISTER_CONVERSION(ConvertGladeWidgetBodyPtrToHandle,1.0);
 
   void LinkGladeWidget()
   {}

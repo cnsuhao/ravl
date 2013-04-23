@@ -61,6 +61,10 @@ namespace RavlGUIN {
     
     WindowC Window();
     //: Get a handle to a basic window.
+
+    typedef RavlN::SmartPtrC<GladeWindowBodyC> RefT;
+    //: Handle to glade widget
+
   protected:
     virtual bool CommonCreate(GtkWidget *newWidget = NULL);
     //: Common object creation
@@ -103,6 +107,11 @@ namespace RavlGUIN {
      : GladeWidgetC(*new GladeWindowBodyC(factory))
     {}
     //: Factory constructor.
+
+    GladeWindowC(const GladeWindowBodyC *body)
+      : GladeWidgetC(body)
+    {}
+    //: Body ptr constructor
 
   protected:
     GladeWindowC(GladeWindowBodyC &body)

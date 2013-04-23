@@ -27,6 +27,7 @@ namespace RavlN {
   class BinOStreamC;
   class BinIStreamC;  
   template<typename DataT> class SArray1dC;
+  template<typename DataT> class CollectionC;
   
   //! userlevel=Develop
   //: Actions to handle pointers.
@@ -538,6 +539,29 @@ namespace RavlN {
     SizeC size;
     strm >> size;
     arr = SArray1dC<DataT>(size);
+    for(unsigned i = 0;i < size;i++)
+      strm >> ObjIO(arr[i]);
+    return strm;
+  }
+
+  template<class DataT>
+  BinOStreamC &WriteCollectionIOPtr(BinOStreamC &strm,const CollectionC<DataT> &arr) {
+    if(!arr.IsValid()) {
+      SizeT size = 0;
+      strm << size;
+      return strm;
+    }
+    strm << arr.Size();
+    for(unsigned i = 0;i < arr.Size();i++)
+      strm << ObjIO(arr[i]);
+    return strm;
+  }
+
+  template<class DataT>
+  BinIStreamC &ReadCollectionIOPtr(BinIStreamC &strm,CollectionC<DataT> &arr) {
+    SizeC size;
+    strm >> size;
+    arr = CollectionC<DataT>(size,size);
     for(unsigned i = 0;i < size;i++)
       strm >> ObjIO(arr[i]);
     return strm;

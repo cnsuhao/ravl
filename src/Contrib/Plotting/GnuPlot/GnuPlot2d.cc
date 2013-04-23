@@ -202,7 +202,7 @@ namespace RavlN {
       cmd.form("'%s' every ::%d::%d with points pointtype 1 title \'%s\'",
           tmpFile.data(),
           count,
-          count + it.Data().Size() - 1,
+          count + it.Data().Size().V() - 1,
           className.data());
       for (SampleIterC<VectorC> vecIt(it.Data()); vecIt; vecIt++) {
         os << vecIt.Data()[fv1] << ' ' << vecIt.Data()[fv2] << endl;
@@ -385,10 +385,10 @@ namespace RavlN {
       FilenameC fn(output);
       StringC cmd;
       if (fn.HasExtension("png")) {
-        cmd.form("set terminal png size %d, %d", rec.Cols(), rec.Rows());
+        cmd.form("set terminal png size %d, %d", (int) rec.Cols().V(), (int) rec.Rows().V());
         Command(cmd);
       } else if (fn.HasExtension("jpg") || fn.HasExtension("jpeg")) {
-        cmd.form("set terminal jpg size %d, %d", rec.Cols(), rec.Rows());
+        cmd.form("set terminal jpg size %d, %d", (int) rec.Cols().V(), (int) rec.Rows().V());
         Command(cmd);
       } else {
         RavlError("gnuplot terminal not supported yet '%s'.", output.data());

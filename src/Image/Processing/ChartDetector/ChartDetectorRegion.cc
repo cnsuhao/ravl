@@ -12,7 +12,7 @@
 #include "Ravl/IO.hh"
 #include "Ravl/Boundary.hh"
 
-#define DODEBUG 1
+#define DODEBUG	0
 
 #if DODEBUG
 #define ONDEBUG(x) x

@@ -24,7 +24,7 @@
 #include "Ravl/DP/Method2Proc.hh"
 #include "Ravl/DP/ProcIStream.hh"
 
-#define DODEBUG 1
+#define DODEBUG 0
 #if DODEBUG
 #define ONDEBUG(x) x
 #else
