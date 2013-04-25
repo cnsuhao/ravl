@@ -156,7 +156,7 @@ $(ABS_DESTDIR)$(libdir)/pkgconfig/Ravl.pc:
 	$(INSTALL_DATA) $(PROJECT_OUT)/lib/pkgconfig/Ravl.pc $(ABS_DESTDIR)$(libdir)/pkgconfig/Ravl.pc
 
 installRavl.def:  $(ABS_DESTDIR)$(datadir)/QMake/Projects/Ravl/libdep
-	$(INSTALL) $(PROJECT_OUT)/lib/libdep/Ravl.def $(ABS_DESTDIR)$(datadir)/QMake/Projects/Ravl/libdep/Ravl.def
+	$(INSTALL) $(PROJECT_OUT)/lib/libdep/4install/Ravl.def $(ABS_DESTDIR)$(datadir)/QMake/Projects/Ravl/libdep/Ravl.def
 
 $(ABS_DESTDIR)$(datadir)/QMake/Projects/Ravl/libdep:
 	$(SHOWIT)$(MKDIR_P) $(ABS_DESTDIR)$(datadir)/QMake/Projects/Ravl/libdep
@@ -266,14 +266,25 @@ LocalQMake:
 # it) and move it into QMake.
 
 
-Ravl.def: $(PROJECT_OUT)/lib/libdep $(PROJECT_OUT)/lib/libdep/Ravl.def
+Ravl.def: $(PROJECT_OUT)/lib/libdep $(PROJECT_OUT)/lib/libdep/Ravl.def $(PROJECT_OUT)/lib/libdep/4install $(PROJECT_OUT)/lib/libdep/4install/Ravl.def
 
 $(PROJECT_OUT)/lib/libdep:
 	$(SHOWIT) $(MKDIR_P) $@
 
-$(PROJECT_OUT)/lib/libdep/Ravl.def: $(PROJECT_OUT)/Makefile
+$(PROJECT_OUT)/lib/libdep/Ravl.def:
+	$(SHOWIT)echo \# Dummy dot def > $@
+	$(SHOWIT)echo \# >> $@
+	$(SHOWIT)echo \# Dummy file to prevent single Ravl library being used by a qm in the Ravl source dirs >> $@
+	$(SHOWIT)echo \# >> $@
+	$(SHOWIT)echo \# Real Ravl.def file can be found in the 4install sub-directory>> $@
+	$(SHOWIT)echo \# >> $@
+
+$(PROJECT_OUT)/lib/libdep/4install:
+	$(SHOWIT) $(MKDIR_P) $@
+
+$(PROJECT_OUT)/lib/libdep/4install/Ravl.def: $(PROJECT_OUT)/Makefile  $(PROJECT_OUT)/Config.Project @QMAKE_CONFIGFILES@/Config.QMake
 	$(SHOWIT)echo \# This file is part of RAVL, Recognition And Vision Library > $@
-	$(SHOWIT)echo \# Copyright \(C\) 2001-12,  University of Surrey. >> $@
+	$(SHOWIT)echo \# Copyright \(C\) 2001-13,  University of Surrey. >> $@
 	$(SHOWIT)echo \# This code may be redistributed under the terms of the GNU Lesser >> $@
 	$(SHOWIT)echo \# General Public License \(LGPL\). See the lgpl.licence file for details or >> $@
 	$(SHOWIT)echo \# see http://www.gnu.org/copyleft/lesser.html >> $@
