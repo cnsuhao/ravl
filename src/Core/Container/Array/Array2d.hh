@@ -75,6 +75,9 @@ namespace RavlN {
     // Note: It is the users responsibility to ensure that 'data' is
     // large enough to contain 'rect'.
 
+    Array2dC(const IndexRange2dC & rect,const SArray1dC<DataT> &data);
+    //: Create 2D array with the range covering indices in 'rect' from data.
+
     Array2dC(const Array2dC<DataT> &arr,const IndexRange2dC & rect);
     //: Create a sub array of 'arr' covering indices 'rect'.
 
@@ -417,6 +420,15 @@ namespace RavlN {
     : RangeBufferAccess2dC<DataT>(rect.Range2()),
       data(ndata,rect.Range1().Size())
   { ConstructAccess(rect.Range1(),bufferOffset); }
+
+  template <class DataT>
+  Array2dC<DataT>::Array2dC(const IndexRange2dC & rect,const SArray1dC<DataT> &ndata)
+   : RangeBufferAccess2dC<DataT>(rect.Range2()),
+     data(ndata.Buffer(),rect.Range1().Size())
+  {
+    RavlAssert(rect.Area() <= ndata.Size());
+    ConstructAccess(rect.Range1(),ndata.ReferenceElm() - ndata.Buffer().ReferenceElm());
+  }
 
   template <class DataT>
   Array2dC<DataT>::Array2dC(const Array2dC<DataT> &arr,const IndexRange2dC & rect)
