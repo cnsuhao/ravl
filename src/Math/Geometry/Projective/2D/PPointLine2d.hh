@@ -33,6 +33,8 @@ namespace RavlN {
     : public TFVectorC<double,3>
   {  
   public:
+    using TFVectorC<double,3>::operator *;
+
     //:----------------------------------------------
     // Constructors, assignment, copy, and destructor.
     

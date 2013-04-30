@@ -46,6 +46,8 @@ namespace RavlN {
     //: Setup using an xml factory.
     // This can only be called after the class is constructed
     // and the IPlugs,OPlugs,IPorts and OPorts methods are functional.
+    // As well as requiring libRavlXMLFactory; this method also requires
+    // libRavlOSIO to be used.
 
     virtual StringC OpName() const;
     //: Op type name.
