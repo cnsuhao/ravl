@@ -54,6 +54,10 @@ namespace RavlN {
       : public RCBodyC
     {
     public:
+
+      //! Default constructor - creates invalid handle
+      SocketC() {};
+
       //! Construct a new socket.
       SocketC(ContextC &context,SocketTypeT socketType,const StringC &codec = "");
 
