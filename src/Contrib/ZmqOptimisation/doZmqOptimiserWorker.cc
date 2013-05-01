@@ -16,6 +16,7 @@
 #include "Ravl/IO.hh"
 #include "Ravl/DP/Blackboard.hh"
 #include "Ravl/Point2d.hh"
+#include "Ravl/PatternRec/TestFunctions.hh"
 
 using namespace RavlN;
 using namespace RavlN::ZmqN;
@@ -29,6 +30,7 @@ int main(int nargs, char **argv)
   StringC logFile = opts.String("l", "stderr", "Checkpoint log file. ");
   StringC logLevel = opts.String("ll", "info", "Logging level (debug, info, warning, error)");
   bool verbose = opts.Boolean("v", false, "Verbose mode.");
+  StringC testFunc = opts.String("func", "Ackley", "Test function to optimise (Sphere, Ackely or Greiwank)");
   opts.Check();
 
   RLogInit(nargs, argv, logFile.chars(), verbose);
@@ -51,7 +53,27 @@ int main(int nargs, char **argv)
     return 1;
   }
 
-  rInfo("Optimise Worker ready to go!");
+  // What we are trying to minimise
+  /*
+   * This is our test function we wish to minimise.  They all
+   * have minimums at [0, 0].
+   */
+  FunctionC func;
+  UIntT d = 2;
+  if (testFunc == "Ackley") {
+    func = FunctionAckleyC(d);
+  } else if (testFunc == "Sphere") {
+    func = FunctionSphereC(d);
+  } else if (testFunc == "Griewank") {
+    func = FunctionGriewankC(d);
+  } else {
+    RavlError("Unknown function!");
+    return 1;
+  }
+  rInfo("Zmq Optimiser Worker ready to Optimise '%s' function!", testFunc.data());
+
+  VectorC target(1);
+  target.Fill(0.0);
 
   while (true) {
 
@@ -84,13 +106,15 @@ int main(int nargs, char **argv)
       rError("Failed to get col");
       continue;
     }
-    Point2dC point(row, col);
 
-    rInfo("Evaluating task %d and location (%0.2f, %0.2f)", id, point.Row(), point.Col());
+    VectorC vec(2);
+    vec[0] = row;
+    vec[1] = col;
 
-    // Do optimisation....
-    Point2dC target(0.1234, 0.4321);
-    RealT score = (1.0 / (point.EuclideanDistance(target) + 0.0001));
+    VectorC v = func.Apply(vec);
+    RealT score = 1.0/(target.EuclidDistance(v) + 0.0001); // we are maximising
+
+    rInfo("Task:%d  Point: (%0.2f, %0.2f) Score: %0.4f", id, vec[0], vec[1], score);
 
     // Send back data
     BlackboardC results(true);

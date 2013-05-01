@@ -20,7 +20,7 @@ using namespace RavlN::GeneticN;
 using namespace RavlN::ZmqN;
 
 // Define how to construct our target object.
-static GeneticN::GeneTypeFloatC::RefT g_numType = new GeneticN::GeneTypeFloatC("coord", 0.0, 1.0);
+static GeneticN::GeneTypeFloatC::RefT g_numType = new GeneticN::GeneTypeFloatC("coord", -100.0, 100.0);
 
 BlackboardC ConvertGeneFactory2Blackboard(const GeneticN::GeneFactoryC & factory)
 {

@@ -26,7 +26,7 @@ namespace RavlN {
         GeneticOptimiserC(factory)
     {
       rThrowBadConfigContextOnFailS(factory, UseComponent("Sender", m_sender), "Failed to find Sender socket in XML!");
-      rThrowBadConfigContextOnFailS(factory, UseComponent("SinkReceiver", m_receiver), "Failed to find Receiver socket in XML!");
+      rThrowBadConfigContextOnFailS(factory, UseComponent("SinkReceiver", m_receiver), "Failed to find SinkReceiver socket in XML!");
     }
 
     void ZmqGeneticOptimiserC::Evaluate(const std::vector<GenomeC::RefT> &pop)
