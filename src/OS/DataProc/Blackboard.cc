@@ -65,26 +65,32 @@ namespace RavlN {
   {
     int version;
     strm >> version;
-    if(version > 0) {
+    if(version != 0) {
       cerr << "BlackboardBodyC::BlackboardBodyC(), Illegal stream version = " << version << "\n";
       throw ExceptionOutOfRangeC("BlackboardBodyC::BlackboardBodyC(istream &), Unexpected version number. ");
     }
-    UIntT size;
+    UInt32T size;
     strm >> size;
     for(;size > 0;size--) {
       StringC key;
       strm >> key;
-      SArray1dC<char> buf;
-      StringC formatClue;
-      strm >> formatClue;
-      strm >> buf;
-      BufIStreamC ss(buf);
       RCWrapAbstractC obj;
-      if(!RavlN::LoadAbstract(ss,obj,formatClue,false)) 
-	unknown[key] = Tuple2C<StringC,SArray1dC<char> > (formatClue,buf); // Failed to load object.
-      else 
-	entries[key] = obj;
+      if(version == 0) {
+        SArray1dC<char> buf;
+        StringC formatClue;
+        strm >> formatClue;
+        strm >> buf;
+        BufIStreamC ss(buf);
+        if(!RavlN::LoadAbstract(ss,obj,formatClue,false))
+          unknown[key] = Tuple2C<StringC,SArray1dC<char> > (formatClue,buf); // Failed to load object.
+        else
+          entries[key] = obj;
+      } else {
+        strm >> obj;
+        entries[key] = obj;
+      }
     }
+    //if(version == 1) strm >> unknown;
   }
     
   //: Writes object to stream, can be loaded using constructor
@@ -124,7 +130,7 @@ namespace RavlN {
       return false;
     int version = 0;
     strm << version; 
-    strm << ((UIntT) entries.Size());
+    strm << (UInt32T) (entries.Size() + unknown.Size());
     bool verbose = true;
     for(HashIterC<StringC,RCWrapAbstractC> it(entries);it;it++) {
       strm << it.Key();
@@ -143,6 +149,13 @@ namespace RavlN {
       strm << formatClue;
       strm << ss.Data();
     }
+    for(HashIterC<StringC,Tuple2C<StringC,SArray1dC<char> > > it(unknown);it;it++) {
+      if(entries.IsElm(it.Key()))
+        continue;
+      strm << it.Key();
+      strm << it.Data().Data1();
+      strm << it.Data().Data2();
+    }
     return true;    
   }
 
@@ -157,9 +170,13 @@ namespace RavlN {
   RAVL_INITVIRTUALCONSTRUCTOR_FULL(BlackboardBodyC,BlackboardC,RCHandleVC<BlackboardBodyC>);
   
   //--------------------------------------------------------------------------------------------
+
+  void LinkBlackboardIO()
+  {}
   
+  static TypeNameC type0(typeid(BlackboardC),"RavlN::BlackboardC");
+
   FileFormatStreamC<BlackboardC> FileFormatStream_Blackboard;
   FileFormatBinStreamC<BlackboardC> FileFormatBinStream_Blackboard;
 
-  static TypeNameC type0(typeid(BlackboardC),"BlackboardC");
 }
