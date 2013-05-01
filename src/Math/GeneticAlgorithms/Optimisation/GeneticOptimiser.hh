@@ -20,7 +20,6 @@
 
 namespace RavlN { namespace GeneticN {
 
-
   //! Optimiser
 
   class GeneticOptimiserC
@@ -39,7 +38,7 @@ namespace RavlN { namespace GeneticN {
     //! Run generation.
     // Setting 'resetScores' recompute's scores for all entries, which should be used
     // if the cost function is modified in any way.
-    void RunGeneration(UIntT generation,bool resetScores = false);
+    void RunGeneration(UIntT generation, bool resetScores = false);
 
     //! Save population to file
     //! Note: This thread safe
@@ -83,7 +82,7 @@ namespace RavlN { namespace GeneticN {
     typedef SmartPtrC<GeneticOptimiserC> RefT;
 
   protected:
-    void Evaluate(const std::vector<GenomeC::RefT> &pop);
+    virtual void Evaluate(const std::vector<GenomeC::RefT> &pop);
 
     void EvaluateWorker();
 
@@ -100,6 +99,7 @@ namespace RavlN { namespace GeneticN {
     bool m_createOnly;     //!< Create objects only, don't evaluate them, used for debugging.
     UIntT m_threads;       //!< Number of threads to use for evaluation.
 
+
     EvaluateFitnessC::RefT m_evaluateFitness;
     RavlN::SArray1dC<GenomeC::RefT> m_currentSeeds;
     std::vector<GenomeC::RefT> m_startPopulation;
@@ -111,6 +111,7 @@ namespace RavlN { namespace GeneticN {
     UIntT m_atWorkQueue;
     bool m_randomiseDomain; // Change the problem for each new generation
     UIntT m_runningAverageLength;
+    bool m_requireFitnessFunction; //!< Does this class require a fitness function, it may be external..
 
     GenePaletteC::RefT m_genePalette;
 
