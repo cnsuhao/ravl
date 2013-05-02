@@ -17,6 +17,7 @@
 #include "Ravl/DP/Blackboard.hh"
 #include "Ravl/Point2d.hh"
 #include "Ravl/PatternRec/TestFunctions.hh"
+#include "Ravl/OS/Date.hh"
 
 using namespace RavlN;
 using namespace RavlN::ZmqN;
@@ -115,6 +116,9 @@ int main(int nargs, char **argv)
     RealT score = 1.0/(target.EuclidDistance(v) + 0.0001); // we are maximising
 
     rInfo("Task:%d  Point: (%0.2f, %0.2f) Score: %0.4f", id, vec[0], vec[1], score);
+
+    // Lets pretend to do some real work
+    Sleep(0.5);
 
     // Send back data
     BlackboardC results(true);
