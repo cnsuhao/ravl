@@ -115,7 +115,7 @@ int main(int nargs, char **argv)
     VectorC v = func.Apply(vec);
     RealT score = 1.0/(target.EuclidDistance(v) + 0.0001); // we are maximising
 
-    rInfo("Task:%d  Point: (%0.2f, %0.2f) Score: %0.4f", id, vec[0], vec[1], score);
+    rInfo("Task:%d  Point: (%0.2f, %0.2f) Score: %0.6f", id, vec[0], vec[1], score);
 
     // Lets pretend to do some real work
     Sleep(0.5);
@@ -124,6 +124,9 @@ int main(int nargs, char **argv)
     BlackboardC results(true);
     results.Put("id", id);
     results.Put("score", score);
+    StringC name;
+    name.form("Pt: (%0.2f, %0.2f)", vec[0], vec[1]);
+    results.Put("name", name);
 
     BufOStreamC bos;
     {

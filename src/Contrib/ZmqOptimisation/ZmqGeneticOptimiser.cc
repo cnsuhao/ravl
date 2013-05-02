@@ -39,6 +39,8 @@ namespace RavlN {
       }
       lock.Unlock();
 
+      rInfo("Evaluating a new generation with %s genomes.", StringOf(pop.size()).data());
+
       for (IntT i = 0; i < (IntT) pop.size(); i++) {
 
         // Need to get next point for evaluation from the GeneFactory
@@ -73,8 +75,10 @@ namespace RavlN {
       bool allDone = false;
 
       // Now we have to wait for all the workers.
-      // At the moment I am just counting the number of
+      // At the moment I am just counting the number of results.
       UIntT done = 0;
+      FloatT bestScore = 0.0;
+
       while (!allDone) {
 
         SArray1dC<char> data;
@@ -98,12 +102,11 @@ namespace RavlN {
           rError("Need a score");
           continue;
         }
-        rInfo("Id %d has score %0.2f", id, score);
 
         GenomeC::RefT genome = pop[id];
 
         size_t size = genome->Size();
-        //float sizeDiscount =  (size / 1000.0) * (0.5 + Random1()); //Floor(size / 10) * 0.01;
+        //float sizeDiscount =  (size / 1000.0) * (0.5 + Random1()); // Floor(size / 10) * 0.01;
         float sizeDiscount = ((float) size / 15.0f) * 0.001f;
         //float sizeDiscount = size / 1000.0;
         score -= sizeDiscount;
@@ -115,9 +118,22 @@ namespace RavlN {
         lock.Unlock();
         done++;
 
+        StringC name;
+        if (bb.Get("name", name)) {
+          rInfo("Worker Id: %d Name: %s Score: %0.6f", id, name.data(), score);
+        } else {
+          rInfo("Worker Id: %d has score %0.6f", id, score);
+        }
+
+        if(score > bestScore) {
+          bestScore = score;
+          rWarning("New best score for generation %0.6f", bestScore);
+        }
+
+        // Have we got all the results for the current generation?
         if (done == pop.size()) {
           allDone = true;
-          rInfo("All done!");
+          rInfo("Current generation finished!");
         }
 
       }
