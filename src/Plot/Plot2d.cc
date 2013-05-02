@@ -43,6 +43,15 @@ namespace RavlN {
     return Plot(pnts,dataName);
   }
 
+  //: Plot values against their index, optional dataName will appear in the legend
+
+  bool Plot2dC::Plot(const SArray1dC<float> & data, const StringC & dataName) {
+    SArray1dC<Point2dC> pnts(data.Size());
+    for(unsigned i = 0;i < data.Size();i++) {
+      pnts[i] = Point2dC(i,data[i]);
+    }
+    return Plot(pnts,dataName);
+  }
 
   bool Plot2dC::Plot(const SArray1dC<Point2dC> & data,
           ImageC<ByteRGBValueC> & image,

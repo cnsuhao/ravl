@@ -12,5 +12,5 @@ NESTED=V4L.r Meteor1.r HTTP.r ClipStationPro.r DMedia.r MPEG.r DVDRead.r \
   V4L2.r Crypto.r IntelMKL.r Jasper.r Gnome.r RawVidFileFormat LibFFmpeg.r HTTPServer.r \
   LibGd.r Python.r Swig.r SwigPython.r OpenCV.r WinMediaConverter UUId.r \
  uEye.r RLog.r Lapack.r MacOSX.r OpenSceneGraph.r XMPP.r ZeroMQ.r Face.r \
- MemModules.r
+ MemModules.r Html.r
 

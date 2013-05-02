@@ -240,6 +240,9 @@ namespace RavlN {
     return true;
   }
   
+  void LinkOptimiseConjugateGradient()
+  {}
+
   static RavlN::XMLFactoryRegisterHandleConvertC<OptimiseConjugateGradientC, OptimiseC> g_registerXMLFactoryDesignClassifierGaussianMixture("RavlN::OptimiseConjugateGradientC");
 
 

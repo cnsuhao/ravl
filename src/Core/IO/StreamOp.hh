@@ -46,6 +46,8 @@ namespace RavlN {
     //: Setup using an xml factory.
     // This can only be called after the class is constructed
     // and the IPlugs,OPlugs,IPorts and OPorts methods are functional.
+    // As well as requiring libRavlXMLFactory; this method also requires
+    // libRavlOSIO to be used.
 
     virtual StringC OpName() const;
     //: Op type name.
@@ -324,7 +326,7 @@ namespace RavlN {
     
     virtual void Input(const DPIPortC<InT> &ins) {
       input = ins; 
-      this->ReparentAttributeCtrl(input); // Make sure changed signals are updated appropriately.
+      this->ReparentAttributeCtrl(input); // Make sure changed signals are changed appropriately.
     }
     //: Setup input port.
   }; 

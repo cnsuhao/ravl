@@ -41,7 +41,8 @@ namespace RavlN { namespace GeneticN {
      m_threads(factory.AttributeUInt("threads",1)),
      m_atWorkQueue(0),
      m_randomiseDomain(factory.AttributeBool("randomiseDomain",false)),
-     m_runningAverageLength(factory.AttributeUInt("runningAverageLength",0))
+     m_runningAverageLength(factory.AttributeUInt("runningAverageLength",0)),
+     m_requireFitnessFunction(factory.AttributeBool("requireFitnessFunction", true))
   {
     factory.Attribute("logLevel",m_logLevel,RavlN::SYSLOG_INFO);
     RavlInfo("Setting debug level to '%s' ",RavlN::StringOf(m_logLevel).c_str());
@@ -69,10 +70,10 @@ namespace RavlN { namespace GeneticN {
 
   //! Run whole optimisation
   void GeneticOptimiserC::Run() {
-    if(!m_evaluateFitness.IsValid()) {
-      RavlError("Not fitness function defined.");
+    if(m_requireFitnessFunction && !m_evaluateFitness.IsValid()) {
+      RavlError("No fitness function defined.");
       RavlAssertMsg(0,"No fitness function defined.");
-      return ;
+      return;
     }
     RavlDebug("Running %u generations ", m_numGenerations);
     MutexLockC lock(m_access);

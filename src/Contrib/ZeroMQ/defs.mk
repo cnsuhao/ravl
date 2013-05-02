@@ -27,4 +27,5 @@ USESLIBS=RavlCore RavlXMLFactory Zmq RavlService
 
 EXTERNALLIBS = Zmq.def
 
-MAINS= testRavlZeroMQ.cc
+MAINS= testRavlZeroMQ.cc testRavlZeroMQXML.cc
+

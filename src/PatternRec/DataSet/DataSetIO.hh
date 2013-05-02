@@ -6,7 +6,6 @@
 // file-header-ends-here
 #ifndef RAVL_DATASETIO_HEADER
 #define RAVL_DATASETIO_HEADER 1
-//! rcsid="$Id$"
 //! lib=RavlPatternRec
 //! file="Ravl/PatternRec/DataSet/DataSetIO.hh"
 

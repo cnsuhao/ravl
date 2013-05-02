@@ -51,7 +51,7 @@ namespace RavlN {
       bool SaveData();
       //: Save data
 
-      bool LoadData(const StringC & faceId);
+      bool LoadData(const StringC & faceId); 
       //: Load data
 
       bool NextPrevButton(IntT & v);

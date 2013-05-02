@@ -152,13 +152,13 @@ namespace RavlN {
             }
             std::string bindAddr;
             if(!BindDynamicTCP(autoBindDev,bindAddr,minPort,maxPort)) {
-              RavlError("Failed to dynamicly bind port.");
+              RavlError("Failed to dynamically bind port.");
               // FIXME:- Should this be fatal ?
               if(mustBind)
                 throw ExceptionOperationFailedC("Failed to find free port. ");
             }
             if(m_verbose)
-              RavlDebug("Auto binding to '%s' ",bindAddr.c_str());
+              RavlDebug("Auto bound to '%s' ",bindAddr.c_str());
             continue;
           }
           if(it->Name() == "Connect") {
@@ -244,8 +244,14 @@ namespace RavlN {
       int ret;
       for(int i = minPort;i < maxPort;i++) {
         StringC newAddr = rootName + StringC(i);
+        if(m_verbose) {
+          RavlInfo("Trying to connect to '%s'", newAddr.data());
+        }
         ret = zmq_bind (m_socket, newAddr.c_str());
-        if(ret == 0) {
+        if(ret != 0 && errno == EADDRINUSE) {
+          RavlDebug("Address '%s' in use, trying the next.", newAddr.data());
+          continue;
+        } else {
           addr = newAddr.c_str();
           m_boundAddress = newAddr.c_str();
           if(m_verbose) {
@@ -253,11 +259,11 @@ namespace RavlN {
           }
           return true;
         }
-        if(ret != EADDRINUSE) {
-          RavlError("Failed to bind to %s : %s ",newAddr.c_str(),zmq_strerror (zmq_errno ()));
-          break;
-        }
+        // If we get here we got an error that was not an EADDRINUSE!
+        RavlError("Failed to bind to %s : %s ",newAddr.c_str(),zmq_strerror (errno));
+        break;
       }
+      RavlInfo("Failed to dynamically bind TCP!");
       return false;
     }
 

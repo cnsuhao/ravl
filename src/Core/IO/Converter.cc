@@ -77,11 +77,29 @@ namespace RavlN {
   static IntT ConvByte2Int(const ByteT &v)
   { return (IntT) v; }
 
+  static IntT ConvUByte2Int(const UByteT &v)
+  { return (IntT) v; }
+
   static IntT ConvInt162Int(const Int16T &v)
   { return (IntT) v; }
   
   static RealT ConvInt2Real(const IntT &v)
   { return (RealT) v; }
+
+  static Int64T ConvInt2Int64(const IntT &v)
+  { return v; }
+
+  static UInt64T ConvUInt2UInt64(const UIntT &v)
+  { return v; }
+
+  static RealT ConvUInt2Real(const UIntT &v)
+  { return (RealT) v; }
+
+  static RealT ConvFloat2Real(const float &v)
+  { return (RealT) v; }
+
+  static float ConvReal2Float(const RealT &v)
+  { return v; }
 
   static StringC ConvInt2String(const IntT &v)
   { return StringC(v); }
@@ -98,8 +116,14 @@ namespace RavlN {
   }
 
   DP_REGISTER_CONVERSION_NAMED(ConvByte2Int,1,"IntT RavlN::Convert(const ByteT &)");
+  DP_REGISTER_CONVERSION_NAMED(ConvUByte2Int,1,"IntT RavlN::Convert(const UByteT &)");
   DP_REGISTER_CONVERSION_NAMED(ConvInt162Int,1,"IntT RavlN::Convert(const Int16T &)");
+  DP_REGISTER_CONVERSION_NAMED(ConvInt2Int64,1,"Int64T RavlN::Convert(const IntT &)");
+  DP_REGISTER_CONVERSION_NAMED(ConvUInt2UInt64,1,"UInt64T RavlN::Convert(const UIntT &)");
   DP_REGISTER_CONVERSION_NAMED(ConvInt2Real,1,"RealT RavlN::Convert(const IntT &)");
+  DP_REGISTER_CONVERSION_NAMED(ConvFloat2Real,1,"RealT RavlN::Convert(const float &)");
+  DP_REGISTER_CONVERSION_NAMED(ConvReal2Float,2,"float RavlN::Convert(const RealT &)");
+  DP_REGISTER_CONVERSION_NAMED(ConvUInt2Real,1,"RealT RavlN::Convert(const UIntT &)");
   DP_REGISTER_CONVERSION_NAMED(ConvInt2String,1,"StringC RavlN::Convert(const IntT &)");
   DP_REGISTER_CONVERSION_NAMED(ConvReal2String,1,"StringC RavlN::Convert(const RealT &)");
   DP_REGISTER_CONVERSION(ConvSArray1d_Float2Array1dC_Real,1);

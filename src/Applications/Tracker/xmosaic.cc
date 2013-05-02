@@ -31,7 +31,7 @@
 #include "Ravl/Threads/RWLock.hh"
 #include "Ravl/IO.hh"
 
-#define DODEBUG 1
+#define DODEBUG 0
 #if DODEBUG
 #define ONDEBUG(x) x
 #else
