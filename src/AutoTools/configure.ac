@@ -915,6 +915,9 @@ if ( test "x$USER_AR" != x )
 then
   AC_SUBST([USER_AR])
   echo AR=@USER_AR@ >> ./Config.Project.in
+  echo >> ./Config.Project.in
+  echo AR_SPECIFIC_ARFLAGS=@AR_SPECIFIC_ARFLAGS@ >> ./Config.Project.in
+  echo >> ./Config.Project.in
 fi
 
 if ( test "x$USER_AWK" != x )
@@ -927,6 +930,16 @@ if ( test "x$USER_CC" != x )
 then
   AC_SUBST([USER_CC])
   echo CC=@USER_CC@ >> ./Config.Project.in
+  echo >> ./Config.Project.in
+  echo COMPILER_ANSI_CFLAGS=@COMPILER_ANSI_CFLAGS@ >> ./Config.Project.in
+  echo COMPILER_DEBUG_CFLAGS=@COMPILER_DEBUG_CFLAGS@ >> ./Config.Project.in
+  echo COMPILER_GPROF_CFLAGS=@COMPILER_GPROF_CFLAGS@ >> ./Config.Project.in
+  echo COMPILER_NON_OPT_CFLAGS=@COMPILER_NON_OPT_CFLAGS@ >> ./Config.Project.in
+  echo COMPILER_OPT_CFLAGS=@COMPILER_OPT_CFLAGS@ >> ./Config.Project.in
+  echo COMPILER_PROF_CFLAGS=@COMPILER_PROF_CFLAGS@ >> ./Config.Project.in
+  echo COMPILER_SHARED_CFLAGS=@COMPILER_SHARED_CFLAGS@ >> ./Config.Project.in
+  echo COMPILER_SPECIFIC_CFLAGS=@COMPILER_SPECIFIC_CFLAGS@ >> ./Config.Project.in
+  echo >> ./Config.Project.in
 fi
 
 if ( test "x$CP" != x )
@@ -969,6 +982,16 @@ if ( test "x$USER_CXX" != x )
 then
   AC_SUBST([USER_CXX])
   echo CXX=@USER_CXX@ >> ./Config.Project.in
+  echo >> ./Config.Project.in
+  echo COMPILER_ANSI_CCFLAGS=@COMPILER_ANSI_CCFLAGS@ >> ./Config.Project.in
+  echo COMPILER_DEBUG_CCFLAGS=@COMPILER_DEBUG_CCFLAGS@ >> ./Config.Project.in
+  echo COMPILER_GPROF_CCFLAGS=@COMPILER_GPROF_CCFLAGS@ >> ./Config.Project.in
+  echo COMPILER_NON_OPT_CCFLAGS=@COMPILER_NON_OPT_CCFLAGS@ >> ./Config.Project.in
+  echo COMPILER_OPT_CCFLAGS=@COMPILER_OPT_CCFLAGS@ >> ./Config.Project.in
+  echo COMPILER_PROF_CCFLAGS=@COMPILER_PROF_CCFLAGS@ >> ./Config.Project.in
+  echo COMPILER_SHARED_CCFLAGS=@COMPILER_SHARED_CCFLAGS@ >> ./Config.Project.in
+  echo COMPILER_SPECIFIC_CCFLAGS=@COMPILER_SPECIFIC_CCFLAGS@ >> ./Config.Project.in
+  echo >> ./Config.Project.in
 fi
 
 if ( test "x$USER_CXXCPP" != x )
@@ -1023,6 +1046,18 @@ if ( test "x$USER_LD" != x )
 then
   AC_SUBST([USER_LD])
   echo LD=@USER_LD@ >> ./Config.Project.in
+  echo >> ./Config.Project.in
+  echo LINKER_SPECIFIC_LDFLAGS=@LINKER_SPECIFIC_LDFLAGS@ >> ./Config.Project.in
+  echo LINKER_SHARED_LDFLAGS=@LINKER_SHARED_LDFLAGS@ >> ./Config.Project.in
+  echo >> ./Config.Project.in
+  echo LINKER_SPECIFIC_LDLIBFLAGS=@LINKER_SPECIFIC_LDLIBFLAGS@ >> ./Config.Project.in
+  echo LINKER_SHARED_LDLIBFLAGS=@LINKER_SHARED_LDLIBFLAGS@ >> ./Config.Project.in
+  echo >> ./Config.Project.in
+  echo LINKER_LIBPATHSWITCH=@LINKER_LIBPATHSWITCH@ >> ./Config.Project.in
+  echo LINKER_SET_SONAME=@LINKER_SET_SONAME@ >> ./Config.Project.in
+  echo LINKER_UNDEFSYMB=@LINKER_UNDEFSYMB@ >> ./Config.Project.in
+  echo >> ./Config.Project.in
+
 fi
 
 if ( test "x$LEX" != x )
@@ -1047,6 +1082,11 @@ if ( test "x$USER_MAKE" != x )
 then
   AC_SUBST([USER_MAKE])
   echo MAKE=@USER_MAKE@ >> ./Config.Project.in
+  echo >> ./Config.Project.in
+  echo MAKE_SPECIFIC_MAKEFLAGS=@MAKE_SPECIFIC_MAKEFLAGS@ >> ./Config.Project.in
+  echo MAKE_SPECIFIC_PARALLEL=@MAKE_SPECIFIC_PARALLEL@ >> ./Config.Project.in
+  echo >> ./Config.Project.in
+
 fi
 
 if ( test "x$MKDIR_P" != x )
