@@ -883,6 +883,11 @@ echo >> ./Config.Project.in
 
 echo \# Declare current version of RAVL >> ./Config.Project.in
 echo PROJECT_VERSION=@PACKAGE_VERSION@ >> ./Config.Project.in
+sedPattern='/^\@{:@@<:@0-9@:>@@<:@0-9@:>@*\@:}@\.\@{:@@<:@0-9@:>@@<:@0-9@:>@*\@:}@\.\@{:@@<:@0-9@:>@@<:@0-9@:>@*\@:}@ *@S|@'
+dnl# Pattern minus quadrigraphs is '/^\([0-9][0-9]*\)\.\([0-9][0-9]*\)\.\([0-9][0-9]*\) *$'
+PROJECT_MAJOR=`echo $PACKAGE_VERSION | $SED -n "$sedPattern/s//\1/p"`
+AC_SUBST([PROJECT_MAJOR])
+echo PROJECT_MAJOR=@PROJECT_MAJOR@ >> ./Config.Project.in
 echo PROJECT_DISTDIR=RAVL-@PACKAGE_VERSION@ >> ./Config.Project.in
 echo >> ./Config.Project.in
 

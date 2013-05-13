@@ -12,7 +12,12 @@ DESCRIPTION=RAVL, Recognition and Vision Library
 
 NESTED=Core.r OS.r CCMath.r Math.r Plot.r PatternRec.r Audio.r \
 Image.r 3D.r Logic.r SourceTools.r GUI.r CompVision.r Contrib.r \
-Applications.r AutoTools.r Single.r
+Applications.r AutoTools.r Single
+
+EXTRA_DIST_DIRS=Single
+# Include the dir Single in the dist file. This is needed as we do not build in there
+# recursivly hence it is not listed for automatic parsing (not listed with the .r
+# suffix in NESTED).
 
 LOCAL_FILES=
 
