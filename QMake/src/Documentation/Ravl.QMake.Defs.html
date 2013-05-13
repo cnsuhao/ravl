@@ -67,6 +67,7 @@
               <li><a href="#special">Special files</A>
                 <ul>
                   <li><a href="#AUXFILES">AUXFILES,AUXDIR</A>
+                  <li><a href="#EXTRA_DIST_DIRS">EXTRA_DIST_DIRS</A>
                   <li><a href="#PREBUILDSTEP">PREBUILDSTEP</A>
                   <li><a href="#POSTBUILDSTEP">POSTBUILDSTEP</A>
                 </ul>
@@ -657,6 +658,23 @@ program will always find them.  All files listed in AUXFILES are installed in
 </PRE></code><p> will install the file mask.png in the directory
 <code>$PROJECT_OUT/share/data</code>.  Any necessary subdirectories are
 automatically created.</p>
+</DD>
+
+<LI><DT><A NAME="EXTRA_DIST_DIRS"></A><B>EXTRA_DIST_DIRS</B></DT>
+<DD><p> Occasionally, additional files exist that are part of a project but form
+no part of the build. To keep these files from being included in the build phase,
+their parent directory will not be listed for processing in the
+<a href="#NESTED">NESTED</a> definition. Normally, such an omission prevents the
+contents of that directory from being included in the distribution (source tar)
+file. To force the inclusion of the unprocessed files in the distribution file,
+add the name of the directory (without any trailing .r suffix) to the
+EXTRA_DIST_DIRS setting. For example: </p><code><PRE>
+    NESTED=Processed.r Unprocessed Used.r Unwanted
+    EXTRA_DIST_DIRS=Unprocessed
+</PRE></code><p>will ensure the build is carried out in the Processed and Used
+subdirectories (but not in Unprocessed or Unwanted), and that the three
+directories: Processed, Unprocessed and Used are included in any distribution
+file.</p>
 </DD>
 
 <LI><DT><A NAME="PREBUILDSTEP"></A><B>PREBUILDSTEP</B></DT>

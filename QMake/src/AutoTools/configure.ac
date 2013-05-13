@@ -402,6 +402,7 @@ echo \# Specific linker functionality >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo LINKER_LIBPATHSWITCH=@LINKER_LIBPATHSWITCH@ >> ./Config.QMake.in
 echo USE_LIBPATHSWITCH=@with_rpath@ >> ./Config.QMake.in
+echo LINKER_SET_SONAME=@LINKER_SET_SONAME@ >> ./Config.QMake.in
 echo LINKER_UNDEFSYMB=@LINKER_UNDEFSYMB@ >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo >> ./Config.QMake.in

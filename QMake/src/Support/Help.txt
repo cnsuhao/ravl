@@ -1,65 +1,76 @@
 ------- HELP on QMake make system V1.0 ------
 
 Common targets (some compile targets may not have been installed on your system): 
-  check     Build static binaries & libraries embedding consistency checking
-            code. This is the recommended development target and constitutes the
-            default operation of QMake.
-  debug     Build static binaries & libraries with debug information, but link
-            with the "check" version of the project libraries.  I.e. debug just
-            your code, not all of the project libraries.
-  debugall  Build static binaries & libraries with debug information, linking
-            with the "debug" version of the project libraries.  I.e. debug both
-            the application code and the libraries. Please note, using this
-            option, the executables may be very large.
-  opt       Optimised build. 
-  shared    Build "check" version but generating & using shared libraries.
+  check        Build static binaries & libraries embedding consistency checking
+               code. This is the recommended development target and constitutes the
+               default operation of QMake.
+  debug        Build static binaries & libraries with debug information, but link
+               with the "check" version of the project libraries.  I.e. debug just
+               your code, not all of the project libraries.
+  debugall     Build static binaries & libraries with debug information, linking
+               with the "debug" version of the project libraries.  I.e. debug both
+               the application code and the libraries. Please note, using this
+               option, the executables may be very large.
+  opt          Optimised build. 
+  shared       Build "check" version but generating & using shared libraries.
   debugshared (or 'ds' for short)
-            Build "debugall" version but generating & using shared debug libs. 
+               Build "debugall" version but generating & using shared debug libs. 
   optshared (or 'os' for short)
-            Build "opt"  version but generating & using shared libraries.
+               Build "opt"  version but generating & using shared libraries.
   ne, debugne, optne, gprofne, sharedne, dsne
-            As check,debug, opt etc. but only building libraries, not executables.
-  build     Build check, debug, opt and executables
-  buildall  Build check, debug, opt, executables and the documentation.
-  fullbuild Builds all the variants specified by the FULLBUILD_TARGETS variable
-            (by default this is the "check opt checkshared optbin doc" targets)
-            A different default value may be set in either Config.Project or
-            Config.QMake.
-  prof      Output optimised code with profiling info suitable for prof.
-  gprof     Output optimised code with profiling info suitable for gprof.
-  purify    Build all executables in the CURRENT directory with purify.
-	    "purify" executables are prefixed with 'pure_'.  (Not available in
-            CVSSP.)
-  src       Initialises header files into the build structure.
-  clean     Removes all object files created during compilation for this library
-            - This forces all objects in the current source tree to be recompiled.
-            - Use VAR=... to select variant - see below:
-    optclean clean with VAR=opt
-    dbclean  clean with VAR=debug
-    chkclean clean with VAR=check
-  cleanlib  Like clean, but removes library as well.
-  cleandep  Remove all dependency files.  This forces the make system to recompute the library dependencies. 
-  cleandoc  Remove all documentation files 
-  distclean Remove ALL files from your project out and all temporary files.  
-  doc       Make automatic documentation.
-  chead     Check headers with original the make system.
-  lib_info  Tells you which library paths are needed/used to create an executable.
-  help      Print this help on the QMake system. 
-  info      Prints lots of useful info about where the compilation wil look for things
-  defs      List of public ".def" files.
-  test	    Compile and then run the project test suite.
-  retest    Rerun the project test suite.
+               As check,debug, opt etc. but only building libraries, not executables.
+  build        Build check, debug, opt and executables
+  buildall     Build check, debug, opt, executables and the documentation.
+  fullbuild    Builds all the variants specified by the FULLBUILD_TARGETS variable
+               (by default this is the "check opt checkshared optbin doc" targets)
+               A different default value may be set in either Config.Project or
+               Config.QMake.
+  prof         Output optimised code with profiling info suitable for prof.
+  gprof        Output optimised code with profiling info suitable for gprof.
+  purify       Build all executables in the CURRENT directory with purify.
+	       "purify" executables are prefixed with 'pure_'.  (Not available in
+               CVSSP.)
+  src          Initialises header files into the build structure.
+  clean        Removes all object files created during compilation for this library
+               - This forces all objects in the current source tree to be recompiled.
+               - Use VAR=... to select variant - see below:
+                      optclean clean with VAR=opt
+                      dbclean  clean with VAR=debug
+                      chkclean clean with VAR=check
+  cleanlib     Like clean, but removes library as well.
+  cleandep     Remove all dependency files.  This forces the make system to recompute the library dependencies. 
+  cleandoc     Remove all documentation files 
+  distclean    Remove ALL files from your project out and all temporary files.  
+  doc          Make automatic documentation.
+  chead        Check headers with original the make system.
+  lib_info     Tells you which library paths are needed/used to create an executable.
+  help         Print this help on the QMake system. 
+  info         Prints lots of useful info about where the compilation wil look for things
+  defs         List of public ".def" files.
+  test	       Compile and then run the project test suite.
+  retest       Rerun the project test suite.
 
 Variables: 
   PROCS=       Number of processors to use. (Default varies with no. of c.p.u.s on machine.) 
   VAR=         check (default), debug, opt 
   QMAKE_INFO=1 Print command lines during make. 
-  USERCFLAGS= ... Pass extra options to the compiler.
+  USERCFLAGS=  Pass extra options to the compiler.
   NOEXEBUILD=1 Build libraries only, don't compile or link executables.
   TMP=         Directory to use for temporary files. Default = /tmp 
-  ANSIFLAG=  Switch off strict ansi compilation (or switch to other gcc options).
-  CXXEXT=    Name of extension for SOURCES/MAIN files.  E.g. CXXEXT=.cpp
-  CHXXEXT=   Name of extension for HEADERS files.  E.g. CHXXEXT=.hpp
+  ANSIFLAG=    Switch off strict ansi compilation (or switch to other gcc options).
+  CXXEXT=      Name of extension for SOURCES/MAIN files.  E.g. CXXEXT=.cpp
+  CHXXEXT=     Name of extension for HEADERS files.  E.g. CHXXEXT=.hpp
+  LIB_STAMP=   Create shared libraries stamped with the project version number.
+               The default (LIB_STAMP=NO) operation is to not version stamp the
+               libraries (they will just be called libName.so). LIB_STAMP=VER
+               suffixes a library with the full product version (as set by the
+               PROJECT_VERSION setting in the Config.Project file); libraries
+               will be created as libName.so.1.2.3 where 1.2.3 is the specified
+               version number. LIB_STAMP=MAJ suffies the libraries with only the
+               major (1st) part of PROJECT_VERSION (i.e. libName.so.1). When version
+               stamping, symbolic links that point to the fully qualified library
+               name, are created from the lesser qualified versions (i.e. libName.so
+               and libName.so.1 will point to libName.so.1.2.3 if LIB_STAMP=VER).
 
 Examples: 
 

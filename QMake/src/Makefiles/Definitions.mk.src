@@ -344,10 +344,55 @@ else
 endif
 
 ifndef SHAREDBUILD
+ # we are performing a static build
  LIBEXT:=.a
-else
+
+ LIB_STAMP_EXT=$(LIBEXT)
+ # Should only be stamping shared libs, LIB_STAMP_EXT set here as it makes
+ # coding of the makefile more straightforward if we always use this variable.
+ # We do not need to set SET_xxxx_SONAME as a null value causes them to be
+ # ignored which is what we want for a static build.
+else 
+ # we are performing a SHAREDBUILD
  LIBEXT:=.$(SHAREDEXT)
-endif
+
+ ifdef LIB_STAMP
+  # We want shared libraries stamped with a trailing version
+
+  ifeq ($(LIB_STAMP),VER)
+   # Suffix with full 3-part version number
+   LIB_STAMP_EXT=$(LIBEXT).$(PROJECT_VERSION)
+  else
+   ifeq ($(LIB_STAMP),NO)
+    # Explicitly disabling stamping
+    LIB_STAMP_EXT=$(LIBEXT)
+   else
+    # Only append major version number
+    LIB_STAMP_EXT=$(LIBEXT).$(PROJECT_MAJOR)
+   endif
+  endif
+
+  ifneq ($(LIB_STAMP),NO)
+   # If suffixing the library with a version number, the SONAME is always the
+   # name of the library with the major version number appended i.e. of the form
+   # libXXX.so.A
+   SET_PLIB_SONAME=$(LINKER_SET_SONAME)lib$(PLIB)$(LIBEXT).$(PROJECT_MAJOR)
+   SET_SINGLESO_SONAME=$(LINKER_SET_SONAME)$(SINGLESO)$(LIBEXT).$(PROJECT_MAJOR)
+   # N.B. PLIB is specified without the lib prefix to the library name, SINGLESO
+   # includes this (hence the extra lib in the above setting of SET_PLIB_SONAME)
+  endif
+  # We do not need to alter the default SONAME if we are not stamping the library
+  # hence SET_PLIB_SONAME and SET_SINGLESO_SONAME need not be set
+
+ else
+  # Default case, do not version stamp libraries
+  LIB_STAMP_EXT=$(LIBEXT)
+
+  # We do not need to alter the default SONAME if we are not version stamping the
+  # library, hence SET_PLIB_SONAME and SET_SINGLESO_SONAME need not be set.
+
+ endif # ifdef LIB_STAMP
+endif # ifndef SHAREDBUILD
 
 # Default Object file extension
 ifndef OBJEXT

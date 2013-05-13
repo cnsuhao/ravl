@@ -13,7 +13,7 @@ endif
 include $(QMAKE_MAKEFILES)/Definitions.mk
 
 
-SUBDIRS=$(patsubst %.r,%,$(filter %.r,$(NESTED)))
+SUBDIRS=$(patsubst %.r,%,$(filter %.r,$(NESTED))) $(EXTRA_DIST_DIRS)
 
 SOURCE_FILES=defs.mk $(MAINS) $(SCRIPTS) $(SOURCES) $(MUSTLINK) $(HEADERS) \
              $(LOCALHEADERS) $(EXAMPLES) $(TESTEXES) $(AUXFILES) \

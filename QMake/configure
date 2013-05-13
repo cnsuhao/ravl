@@ -698,6 +698,7 @@ MAKE_SPECIFIC_MAKEFLAGS
 MAKEFLAGS
 AR_SPECIFIC_ARFLAGS
 LINKER_UNDEFSYMB
+LINKER_SET_SONAME
 LINKER_LIBPATHSWITCH
 LINKER_SHARED_LDLIBFLAGS
 LINKER_SPECIFIC_LDLIBFLAGS
@@ -6002,6 +6003,7 @@ trace 2 Set linker specific LDFLAGS
              LINKER_SHARED_LDLIBFLAGS=" -shared "
 
              LINKER_LIBPATHSWITCH=" -Wl,-rpath#"
+             LINKER_SET_SONAME=" -Wl,-soname=#"
              LINKER_UNDEFSYMB=" -u#"
           else
              trace 3 We do not have a GNU linker
@@ -6014,7 +6016,8 @@ trace 2 Set linker specific LDFLAGS
                           LINKER_SPECIFIC_LDLIBFLAGS=
                           LINKER_SHARED_LDLIBFLAGS=" -shared "
                           LINKER_LIBPATHSWITCH=" -Wl,-rpath#"
-                          # sic, this is an assumption on what compiler is in use
+                          LINKER_SET_SONAME=" -Wl,-soname=#"
+                          # the above 2 entries make an assumption on the compiler
                           LINKER_UNDEFSYMB=" -u #"
                          ;;
               Xirix*    ) trace 3 Setting LDFLAGS we have previously used under Irix
@@ -6023,6 +6026,7 @@ trace 2 Set linker specific LDFLAGS
                           LINKER_SPECIFIC_LDLIBFLAGS=
                           LINKER_SHARED_LDLIBFLAGS=" -shared "
                           LINKER_LIBPATHSWITCH=" -Wl,-rpath#"
+                          LINKER_SET_SONAME=" -Wl,-soname#"
                           LINKER_UNDEFSYMB=" -u#"
                           ;;
               Xsolaris* ) trace 3 Setting LDFLAGS we have previously used on Solaris
@@ -6031,6 +6035,8 @@ trace 2 Set linker specific LDFLAGS
                           LINKER_SPECIFIC_LDLIBFLAGS=
                           LINKER_SHARED_LDLIBFLAGS=" -dy -G "
                           LINKER_LIBPATHSWITCH=" -R#"
+                          LINKER_SET_SONAME=" -Wl,-h#"
+                          # Soname setting Untested
                           LINKER_UNDEFSYMB=" -u#"
                           ;;
               * )         trace 3 Setting default LDFLAGS
@@ -6039,6 +6045,7 @@ trace 2 Set linker specific LDFLAGS
                           LINKER_SPECIFIC_LDLIBFLAGS=
                           LINKER_SHARED_LDLIBFLAGS=" -shared "
                           LINKER_LIBPATHSWITCH=" -Wl,-rpath#"
+                          LINKER_SET_SONAME=" -Wl,-soname=#"
                           LINKER_UNDEFSYMB=" -u#"
                           ;;
              esac
@@ -6046,6 +6053,7 @@ trace 2 Set linker specific LDFLAGS
           # Allow linker flags to be saved in config file
 
           # any user-provided LDFLAGS will be recorded in Config.QMake as QMAKE_LDFLAGS
+
 
 
 
@@ -19500,6 +19508,7 @@ echo \# Specific linker functionality >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo LINKER_LIBPATHSWITCH=@LINKER_LIBPATHSWITCH@ >> ./Config.QMake.in
 echo USE_LIBPATHSWITCH=@with_rpath@ >> ./Config.QMake.in
+echo LINKER_SET_SONAME=@LINKER_SET_SONAME@ >> ./Config.QMake.in
 echo LINKER_UNDEFSYMB=@LINKER_UNDEFSYMB@ >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo >> ./Config.QMake.in

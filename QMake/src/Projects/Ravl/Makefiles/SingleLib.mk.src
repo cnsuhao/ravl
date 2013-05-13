@@ -7,6 +7,28 @@ LIB_WORK=$(PROJECT_OUT)/lib$(PROJECT_DIR)/$(ARC)/$(VAR)
 BUILT_ROOT=$(LOCALTMP)/$(ARC)
 
 
+# Control version stamping of single-shared library
+ifndef STAMP_SINGLE
+ ifdef LIB_STAMP
+  STAMP_SINGLE=$(LIB_STAMP)
+ else
+  STAMP_SINGLE=VER
+  # Default to full version stamping
+ endif
+endif
+
+ifeq ($(STAMP_SINGLE),VER)
+ STAMP_SINGLE_EXT=.so.$(PROJECT_VERSION)
+else
+ ifeq ($(STAMP_SINGLE),NO)
+  # Version stamping switched off
+  STAMP_SINGLE_EXT=.so
+ else
+  STAMP_SINGLE_EXT=.so.$(PROJECT_MAJOR)
+ endif
+endif
+
+
 
 buildsinglelibs: makedirs buildstatic buildshared
 
@@ -92,7 +114,30 @@ SHARED_OBJS=$(subst /$(VAR)/objs/,/$(VAR)/shared/objs/,$(NEW_OBJS) $(ORDERED_OBJ
 buildshared: $(LIB_WORK)/shared/single/libRavl.so
 	@: Suppress any Nothing to be done message if library is up to date
 
-$(LIB_WORK)/shared/single/libRavl.so: $(SHARED_OBJS)
+
+ifneq ($(STAMP_SINGLE),NO)
+ # We want to version stamp shared libraries.
+
+ # libXXX.so is just a symbolic link to the fully quantified name. We also
+ # need to depend on libXXX.so.A.
+ $(LIB_WORK)/shared/single/libRavl.so: $(LIB_WORK)/shared/single/libRavl.so.$(PROJECT_MAJOR)
+	$(SHOWIT)if [ -h $@ ] || [ -f $@ ] ; then $(RM) $@ ; fi
+	$(SHOWIT)cd $(@D); $(LN_S) libRavl$(STAMP_SINGLE_EXT) $(@F)
+
+ ifeq ($(STAMP_SINGLE),VER)
+  # We want to use the full version as the suffix
+
+  # libXXX.so.A is just a symbolic link to the fully quantified name. We also
+  # need to depend on libXXX.so.A.B.C
+  $(LIB_WORK)/shared/single/libRavl.so.$(PROJECT_MAJOR): $(LIB_WORK)/shared/single/libRavl.so.$(PROJECT_VERSION)
+	$(SHOWIT)if [ -h $@ ] || [ -f $@ ] ; then $(RM) $@ ; fi
+	$(SHOWIT)cd $(@D); $(LN_S) libRavl$(STAMP_SINGLE_EXT) $(@F)
+ endif
+
+endif #  STAMP_SINGLE!=no
+
+
+$(LIB_WORK)/shared/single/libRavl$(STAMP_SINGLE_EXT): $(SHARED_OBJS)
 	$(CXX) $(PKG_LDLIBFLAGS) $(LDLIBFLAGS) $(SHARED_OBJS) $(ALL_EXTERNAL_LIBS) -o $@
 
 

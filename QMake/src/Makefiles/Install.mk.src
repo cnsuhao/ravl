@@ -440,36 +440,139 @@ insLibs:
             fi ;\
             if [ X$(QMAKE_INFO) != X ] ;\
             then \
-               echo $(INSTALL) $(STRIP_SWITCH) $(patsubst %,$(INSTALLHOME)/lib$(PROJECT_DIR)/$(ARC)/$(VAR)$(SHARED_LIB_POSTFIX)/lib%$(LIBEXT), $(PLIB)) $(ABS_DESTDIR)$(libdir) ; \
+               echo $(INSTALL) $(STRIP_SWITCH) $(patsubst %,$(INSTALLHOME)/lib$(PROJECT_DIR)/$(ARC)/$(VAR)$(SHARED_LIB_POSTFIX)/lib%$(LIB_STAMP_EXT), $(PLIB)) $(ABS_DESTDIR)$(libdir) ;\
             fi ;\
-            $(INSTALL) $(STRIP_SWITCH) $(patsubst %,$(INSTALLHOME)/lib$(PROJECT_DIR)/$(ARC)/$(VAR)$(SHARED_LIB_POSTFIX)/lib%$(LIBEXT), $(PLIB)) $(ABS_DESTDIR)$(libdir) ; \
+            $(INSTALL) $(STRIP_SWITCH) $(patsubst %,$(INSTALLHOME)/lib$(PROJECT_DIR)/$(ARC)/$(VAR)$(SHARED_LIB_POSTFIX)/lib%$(LIB_STAMP_EXT), $(PLIB)) $(ABS_DESTDIR)$(libdir) ;\
             RET=$$? ;\
             if [ $$RET -ne 0 ] ;\
             then \
                exit $$RET ;\
             fi ;\
-         fi
-
-uinsLibs:
-	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(PLIB)" != X ] ;\
-         then \
-            for f in $(PLIB) ;\
-            do \
-               if [ -f $(ABS_DESTDIR)$(libdir)/$$f ] ;\
+            if [ "X$(LIB_STAMP)" != X ] && [ "X$(SHAREDBUILD)" != X ] ;\
+            then \
+               if [ $(LIB_STAMP) = VER ] ;\
                then \
+                  if [ -h $(ABS_DESTDIR)$(libdir)/lib$(PLIB)$(LIBEXT).$(PROJECT_MAJOR) ] || [ -f $(ABS_DESTDIR)$(libdir)/lib$(PLIB)$(LIBEXT).$(PROJECT_MAJOR) ] ;\
+                  then \
+                     if [ X$(QMAKE_INFO) != X ] ;\
+                     then \
+                        echo $(RM) -f $(ABS_DESTDIR)$(libdir)/lib$(PLIB)$(LIBEXT).$(PROJECT_MAJOR)  ;\
+                     fi ;\
+                     $(RM) -f $(ABS_DESTDIR)$(libdir)/lib$(PLIB)$(LIBEXT).$(PROJECT_MAJOR)  ;\
+                     RET=$$? ;\
+                     if [ $$RET -ne 0 ] ;\
+                     then \
+                        exit $$RET ;\
+                     fi ;\
+                  fi ;\
                   if [ X$(QMAKE_INFO) != X ] ;\
                   then \
-                     echo $(RM) -f $(ABS_DESTDIR)$(libdir)/$$f  ;\
+                     echo cd $(ABS_DESTDIR)$(libdir); $(LN_S) lib$(PLIB)$(LIB_STAMP_EXT) lib$(PLIB)$(LIBEXT).$(PROJECT_MAJOR) ; \
                   fi ;\
-                  $(RM) -f $(ABS_DESTDIR)$(libdir)/$$f  ;\
+                  cd $(ABS_DESTDIR)$(libdir); $(LN_S) lib$(PLIB)$(LIB_STAMP_EXT) lib$(PLIB)$(LIBEXT).$(PROJECT_MAJOR) ; \
                   RET=$$? ;\
                   if [ $$RET -ne 0 ] ;\
                   then \
                      exit $$RET ;\
                   fi ;\
                fi ;\
+               if [ $(LIB_STAMP) != NO ] ;\
+               then \
+                  if [ -h $(ABS_DESTDIR)$(libdir)/lib$(PLIB)$(LIBEXT) ] || [ -f $(ABS_DESTDIR)$(libdir)/lib$(PLIB)$(LIBEXT) ] ; \
+                  then \
+                     if [ X$(QMAKE_INFO) != X ] ;\
+                     then \
+                        echo $(RM) -f $(ABS_DESTDIR)$(libdir)/lib$(PLIB)$(LIBEXT)  ;\
+                     fi ;\
+                     $(RM) -f $(ABS_DESTDIR)$(libdir)/lib$(PLIB)$(LIBEXT)  ;\
+                     RET=$$? ;\
+                     if [ $$RET -ne 0 ] ;\
+                     then \
+                        exit $$RET ;\
+                     fi ;\
+                  fi ;\
+                  if [ X$(QMAKE_INFO) != X ] ;\
+                  then \
+                     echo cd $(ABS_DESTDIR)$(libdir); $(LN_S) lib$(PLIB)$(LIB_STAMP_EXT) lib$(PLIB)$(LIBEXT) ; \
+                  fi ;\
+                  cd $(ABS_DESTDIR)$(libdir); $(LN_S) lib$(PLIB)$(LIB_STAMP_EXT) lib$(PLIB)$(LIBEXT) ; \
+                  RET=$$? ;\
+                  if [ $$RET -ne 0 ] ;\
+                  then \
+                     exit $$RET ;\
+                  fi ;\
+               fi ;\
+            fi ;\
+         fi
+#        LIB_STAMP determines if we are version stamping shared libraries, and
+#        with what extension (LIB_STAMP=VER => use full product version i.e.
+#        libXXX.so.A.B.C; otherwise, if set, use major only i.e. libXXX.so.A).
+#        If LIB_STAMP is unset, or we are installing static libraries, just
+#        install to libXXX.so or libXXX.a as appropriate
+#        When installing version stamped libraries, we need to create links
+#        from the "link name" (libXXX.so) to the actually installed file. If
+#        using the full product version for stamping, we also must create a
+#        link from the SONAME (libXXX.A.so).
+
+uinsLibs:
+	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(PLIB)" != X ] ;\
+         then \
+            for f in $(PLIB) ;\
+            do \
+               if [ -h $(ABS_DESTDIR)$(libdir)/lib$$f$(LIBEXT) ] || [ -f $(ABS_DESTDIR)$(libdir)/lib$$f$(LIBEXT) ] ; \
+               then \
+                  if [ X$(QMAKE_INFO) != X ] ;\
+                  then \
+                     echo $(RM) -f $(ABS_DESTDIR)$(libdir)/lib$$f$(LIBEXT) ;\
+                  fi ;\
+                  $(RM) -f $(ABS_DESTDIR)$(libdir)/lib$$f$(LIBEXT)  ;\
+                  RET=$$? ;\
+                  if [ $$RET -ne 0 ] ;\
+                  then \
+                     exit $$RET ;\
+                  fi ;\
+               fi ;\
+               if [ "X$(LIB_STAMP)" != X ] && [ "X$(SHAREDBUILD)" != X ] ;\
+               then \
+                  if [ $(LIB_STAMP) = VER ] ;\
+                  then \
+                     if [ -h $(ABS_DESTDIR)$(libdir)/lib$$f$(LIBEXT).$(PROJECT_MAJOR) ] || [ -f $(ABS_DESTDIR)$(libdir)/lib$$f$(LIBEXT).$(PROJECT_MAJOR) ] ; \
+                     then \
+                        if [ X$(QMAKE_INFO) != X ] ;\
+                        then \
+                           echo $(RM) -f $(ABS_DESTDIR)$(libdir)/lib$$f$(LIBEXT).$(PROJECT_MAJOR)  ;\
+                        fi ;\
+                        $(RM) -f $(ABS_DESTDIR)$(libdir)/lib$$f$(LIBEXT).$(PROJECT_MAJOR)  ;\
+                        RET=$$? ;\
+                        if [ $$RET -ne 0 ] ;\
+                        then \
+                           exit $$RET ;\
+                        fi ;\
+                     fi ;\
+                  fi ;\
+                  if [ $(LIB_STAMP) != NO ] ;\
+                  then \
+                     if [ -h $(ABS_DESTDIR)$(libdir)/lib$$f$(LIB_STAMP_EXT) ] || [ -f $(ABS_DESTDIR)$(libdir)/lib$$f$(LIB_STAMP_EXT) ] ; \
+                     then \
+                        if [ X$(QMAKE_INFO) != X ] ;\
+                        then \
+                           echo $(RM) -f $(ABS_DESTDIR)$(libdir)/lib$$f$(LIB_STAMP_EXT)  ;\
+                        fi ;\
+                        $(RM) -f $(ABS_DESTDIR)$(libdir)/lib$$f$(LIB_STAMP_EXT)  ;\
+                        RET=$$? ;\
+                        if [ $$RET -ne 0 ] ;\
+                        then \
+                           exit $$RET ;\
+                        fi ;\
+                     fi ;\
+                  fi ;\
+               fi ;\
             done ;\
          fi
+#        If LIB_STAMP is set and we are processing shared libraries, we need to
+#        remove any fully qualified versions of the library (libXXX.so.A.B.B 
+#        and/or libXXX.so.A) as well as the simple name (libXXX.so or .whatever
+#        shared library extension is in use).
 
 insMains: 
 	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(MAINS)" != X ] ;\
@@ -508,9 +611,9 @@ uinsMains:
                then \
                   if [ X$(QMAKE_INFO) != X ] ;\
                   then \
-                     echo $(RM) -f $(ABS_DESTDIR)$(bindir)/$$f  ;\
+                     echo $(RM) -f $(ABS_DESTDIR)$(bindir)/$$f ;\
                   fi ;\
-                  $(RM) -f $(ABS_DESTDIR)$(bindir)/$$f  ;\
+                  $(RM) -f $(ABS_DESTDIR)$(bindir)/$$f ;\
                   RET=$$? ;\
                   if [ $$RET -ne 0 ] ;\
                   then \

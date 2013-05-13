@@ -895,7 +895,66 @@ else
  # DIRECTORYID is used to keep a track of where an object file has come from so if the file is removed or
  # renamed it can be taken out of the list. 
 
-$(INST_LIB)/lib$(PLIB)$(LIBEXT) : $(TARG_OBJS) $(TARG_MUSTLINK_OBJS) $(INST_LIB)/dummymain$(OBJEXT) $(INST_LIB)/.dir
+
+ ifdef LIB_STAMP
+  ifneq ($(LIB_STAMP),NO)
+   # We want to vesion stamp shared libraries.
+
+   # libXXX.so is just a symbolic link to the fully quantified name. We also
+   # need to depend on libXXX.so.A.
+   #
+   # Codify this for PLIB
+   $(INST_LIB)/lib$(PLIB)$(LIBEXT) : $(INST_LIB)/lib$(PLIB)$(LIBEXT).$(PROJECT_MAJOR)
+	$(SHOWIT)if [ -h $(INST_LIB)/lib$(PLIB)$(LIBEXT) ] || [ -f $(INST_LIB)/lib$(PLIB)$(LIBEXT) ] ; \
+                 then \
+                    $(RM) $(INST_LIB)/lib$(PLIB)$(LIBEXT) ; \
+                 fi ; \
+                 cd $(INST_LIB); $(LN_S) lib$(PLIB)$(LIB_STAMP_EXT) lib$(PLIB)$(LIBEXT)
+
+   # libXXX.so definitition for SINGLESO (when stamping libraries)
+   $(INST_LIB)/single/$(SINGLESO)$(LIBEXT) : $(INST_LIB)/single/$(SINGLESO)$(LIBEXT).$(PROJECT_MAJOR)
+	$(SHOWIT)if [ -h $(INST_LIB)/single/$(SINGLESO)$(LIBEXT) ] || [ -f $(INST_LIB)/single/$(SINGLESO)$(LIBEXT) ] ; \
+                 then \
+                    $(RM) $(INST_LIB)/single/$(SINGLESO)$(LIBEXT) ; \
+                 fi ; \
+                 cd $(INST_LIB)/single; $(LN_S) $(SINGLESO)$(LIB_STAMP_EXT) $(SINGLESO)$(LIBEXT)
+
+   ifeq ($(LIB_STAMP),VER)
+    # We want to use the full version as the suffix
+
+    # libXXX.so.A is just a symbolic link to the fully quantified name. We also
+    # need to depend on libXXX.so.A.B.C
+    #
+    # Codify this for PLIB
+    $(INST_LIB)/lib$(PLIB)$(LIBEXT).$(PROJECT_MAJOR) : $(INST_LIB)/lib$(PLIB)$(LIBEXT).$(PROJECT_VERSION)
+	$(SHOWIT)if [ -h $(INST_LIB)/lib$(PLIB)$(LIBEXT).$(PROJECT_MAJOR) ] || [ -f $(INST_LIB)/lib$(PLIB)$(LIBEXT).$(PROJECT_MAJOR) ] ; \
+                 then \
+                    $(RM) $(INST_LIB)/lib$(PLIB)$(LIBEXT).$(PROJECT_MAJOR) ; \
+                 fi ; \
+                 cd $(INST_LIB); $(LN_S) lib$(PLIB)$(LIBEXT).$(PROJECT_VERSION) lib$(PLIB)$(LIBEXT).$(PROJECT_MAJOR)
+
+    # libXXX.so.A definition for SINGLESO
+    $(INST_LIB)/single/$(SINGLESO)$(LIBEXT).$(PROJECT_MAJOR) : $(INST_LIB)/single/$(SINGLESO)$(LIBEXT).$(PROJECT_VERSION)
+	$(SHOWIT)if [ -h $(INST_LIB)/single/$(SINGLESO)$(LIBEXT).$(PROJECT_MAJOR) ] || [ -f $(INST_LIB)/single/$(SINGLESO)$(LIBEXT).$(PROJECT_MAJOR) ] ; \
+                 then \
+                    $(RM) $(INST_LIB)/single/$(SINGLESO)$(LIBEXT).$(PROJECT_MAJOR) ; \
+                 fi ; \
+                 cd $(INST_LIB)/single; $(LN_S) $(SINGLESO)$(LIBEXT).$(PROJECT_VERSION) $(SINGLESO)$(LIBEXT).$(PROJECT_MAJOR)
+
+
+   endif # LIB_STAMP=VER
+
+  endif # LIB_STAMP != NO
+ endif # ifdef LIB_STAMP
+
+ # Recepie to create PLIB library. Dependant on LIB_STAMP, this will
+ # either create libXXX.so; libXXX.so.A or libXXX.so.A.B.C. Recepies
+ # immediately above this one create any necessary symbolic links to the
+ # actual file created. If LIB_STAMP is unused, this target falls back to
+ # being libXXX.so (or .whatever shared library suffix is in use).
+ # SET_PLIB_SONAME will set the SONAME (to libXXX.so.A) if we are appending
+ # a revision number to the library name (otherwise it will do nothing)
+ $(INST_LIB)/lib$(PLIB)$(LIB_STAMP_EXT) : $(TARG_OBJS) $(TARG_MUSTLINK_OBJS) $(INST_LIB)/dummymain$(OBJEXT) $(INST_LIB)/.dir
 	$(SHOWIT)echo "--- Building " $(@F) ; \
 	echo "$(patsubst %$(OBJEXT),%$(OBJEXT):$(DIRECTORYID)@,$(TARG_OBJS))" | $(TR) '@' '\n' > $(INST_OBJS)/libObjs.new ; \
 	if [ -f $(INST_OBJS)/libObjs.txt ] ; then \
@@ -904,19 +963,25 @@ $(INST_LIB)/lib$(PLIB)$(LIBEXT) : $(TARG_OBJS) $(TARG_MUSTLINK_OBJS) $(INST_LIB)
 	$(SORT) -b -u $(INST_OBJS)/libObjs.new -t : -k 1,1 -o $(INST_OBJS)/libObjs.txt ; \
 	$(RM) $(INST_OBJS)/libObjs.new ; \
         echo "---- Building shared library $(INST_LIB)/$(@F) " ; \
-	$(AWK) -F: '{ print $$1 }' $(INST_OBJS)/libObjs.txt | $(XARGS) $(CXX) $(PKG_LDLIBFLAGS) $(LDLIBFLAGS) $(filter-out -l$(PLIB),$(LIBSONLY)) -o $(INST_LIB)/$(@F) && \
+	$(AWK) -F: '{ print $$1 }' $(INST_OBJS)/libObjs.txt | $(XARGS) $(CXX) $(PKG_LDLIBFLAGS) $(LDLIBFLAGS) $(filter-out -l$(PLIB),$(LIBSONLY)) $(SET_PLIB_SONAME) -o $(INST_LIB)/$(@F) && \
 	$(UNTOUCH) $(INST_LIB)/$(@F) $(TARG_OBJS) $(TARG_MUSTLINK_OBJS) ; 
 
-$(INST_LIB)/single/$(SINGLESO)$(LIBEXT) : $(INST_LIB)/single $(INST_LIB)/lib$(PLIB)$(LIBEXT) $(patsubst %,$(INST_LIB)/lib%$(LIBEXT),$(PLIBDEPENDS))
+
+ # Single lib recepie, again this is dependant on LIB_STAMP as to what the
+ # target actually is (libXXX.so; libXXX.so.A or libXXX.so.A.B.C). Previous
+ # recepies will create any necessary symbolic links to this file.
+ # SET_SINGLESO_SONAME will set the SONAME (to libXXX.so.A) if we are appending
+ # a revision number to the library name (otherwise it will do nothing)
+ $(INST_LIB)/single/$(SINGLESO)$(LIB_STAMP_EXT) : $(INST_LIB)/single $(INST_LIB)/lib$(PLIB)$(LIBEXT) $(patsubst %,$(INST_LIB)/lib%$(LIBEXT),$(PLIBDEPENDS))
 	$(SHOWIT)echo "--- Building " $(@F) ; \
 	echo "$(patsubst %,$(LOCALTMP)/$(ARC)/%/$(VAR)/shared/objs/libObjs.txt,$(PLIB) $(PLIBDEPENDS))" | $(XARGS) cat > $(INST_OBJS)/libSharedObjs.new ; \
 	$(SORT) -b -u $(INST_OBJS)/libSharedObjs.new -t : -k 1,1 | $(AWK) -F: '{ print $$1 }' | $(TR) '\n' ' ' > $(INST_OBJS)/libSharedObjs.txt; \
 	$(RM) $(INST_OBJS)/libSharedObjs.new ; \
   echo "---- Building single shared library $(INST_LIB)/single/$(@F) " ; \
-	$(CXX) $(PKG_LDLIBFLAGS) $(LDLIBFLAGS) @$(INST_OBJS)/libSharedObjs.txt $(filter-out $(patsubst %,-l%,$(PLIB) $(PLIBDEPENDS)),$(LIBSONLY)) -o $(INST_LIB)/single/$(@F) && \
+	$(CXX) $(PKG_LDLIBFLAGS) $(LDLIBFLAGS) @$(INST_OBJS)/libSharedObjs.txt $(filter-out $(patsubst %,-l%,$(PLIB) $(PLIBDEPENDS)),$(LIBSONLY)) $(SET_SINGLESO_SONAME) -o $(INST_LIB)/single/$(@F) && \
 	$(UNTOUCH) $(INST_LIB)/single/$(@F) $(INST_LIB)/lib$(PLIB)$(LIBEXT) ;
 
-$(INST_LIB)/single:
+ $(INST_LIB)/single:
 	$(MKDIR_P) $(INST_LIB)/single
 
 endif

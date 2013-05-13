@@ -41,6 +41,8 @@ dnl                                  is encountered where this is not the
 dnl                                  case. This macro does, however, select
 dnl                                  the linker switch (passed on) based on
 dnl                                  the type of linker in use.
+dnl       LINKER_SET_SONAME          Receives the linker switch to specify the
+dnl                                  soname to build a library with.
 dnl       LINKER_UNDEFSYMB           Receives the linker switch to forcably
 dnl                                  undefine a particular symbol. Set based
 dnl                                  on the particular linker in use.
@@ -73,6 +75,7 @@ AC_DEFUN([QM_SET_LINKER_LDFLAGS],
              LINKER_SHARED_LDLIBFLAGS=" -shared "
 
              LINKER_LIBPATHSWITCH=" -Wl,-rpath#"
+             LINKER_SET_SONAME=" -Wl,-soname=#"
              LINKER_UNDEFSYMB=" -u#"
           else
              trace 3 We do not have a GNU linker
@@ -96,7 +99,8 @@ AC_DEFUN([QM_SET_LINKER_LDFLAGS],
                           LINKER_SPECIFIC_LDLIBFLAGS=
                           LINKER_SHARED_LDLIBFLAGS=" -shared "
                           LINKER_LIBPATHSWITCH=" -Wl,-rpath#"
-                          # sic, this is an assumption on what compiler is in use
+                          LINKER_SET_SONAME=" -Wl,-soname=#"
+                          # the above 2 entries make an assumption on the compiler
                           LINKER_UNDEFSYMB=" -u #"
                          ;;
               Xirix*    ) trace 3 Setting LDFLAGS we have previously used under Irix
@@ -105,6 +109,7 @@ AC_DEFUN([QM_SET_LINKER_LDFLAGS],
                           LINKER_SPECIFIC_LDLIBFLAGS=
                           LINKER_SHARED_LDLIBFLAGS=" -shared "
                           LINKER_LIBPATHSWITCH=" -Wl,-rpath#"
+                          LINKER_SET_SONAME=" -Wl,-soname#"
                           LINKER_UNDEFSYMB=" -u#"
                           ;;
               Xsolaris* ) trace 3 Setting LDFLAGS we have previously used on Solaris
@@ -113,6 +118,8 @@ AC_DEFUN([QM_SET_LINKER_LDFLAGS],
                           LINKER_SPECIFIC_LDLIBFLAGS=
                           LINKER_SHARED_LDLIBFLAGS=" -dy -G "
                           LINKER_LIBPATHSWITCH=" -R#"
+                          LINKER_SET_SONAME=" -Wl,-h#"
+                          # Soname setting Untested
                           LINKER_UNDEFSYMB=" -u#"
                           ;;
               * )         trace 3 Setting default LDFLAGS
@@ -121,6 +128,7 @@ AC_DEFUN([QM_SET_LINKER_LDFLAGS],
                           LINKER_SPECIFIC_LDLIBFLAGS=
                           LINKER_SHARED_LDLIBFLAGS=" -shared "
                           LINKER_LIBPATHSWITCH=" -Wl,-rpath#"
+                          LINKER_SET_SONAME=" -Wl,-soname=#"
                           LINKER_UNDEFSYMB=" -u#"
                           ;;
              esac
@@ -133,6 +141,7 @@ AC_DEFUN([QM_SET_LINKER_LDFLAGS],
           AC_SUBST([LINKER_SPECIFIC_LDLIBFLAGS])
           AC_SUBST([LINKER_SHARED_LDLIBFLAGS])
           AC_SUBST([LINKER_LIBPATHSWITCH])
+          AC_SUBST([LINKER_SET_SONAME])
           AC_SUBST([LINKER_UNDEFSYMB])
          ]
         )
