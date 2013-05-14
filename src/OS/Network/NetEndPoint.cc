@@ -30,6 +30,9 @@ namespace RavlN {
   enum NEPMsgTypeT { NEPMsgInit = 1, NEPMsgPing };
   
   const SizeT g_netEndPointDefaultPacketSizeLimit = 100000000;
+
+  const SizeT g_stackSizeReceiveThread = 4 * 1024 * 1024; // 4Mb should be half of system default.
+  const SizeT g_stackSizeTransmitThread = 100000; // Transmit thread only needs a small stack.
   
   //: Global count of open net end points.
   
@@ -263,8 +266,8 @@ namespace RavlN {
     // derived classes. (There must be at least 1 handle to the object. )
     // Contact Charles Galambos if you need further information.
     RavlAssert(References() > 0); 
-    LaunchThread(me,&NetEndPointC::RunReceive);
-    LaunchThread((SizeT) 1e5,Trigger(me,&NetEndPointC::RunTransmit)); // Transmit thread only needs a small stack.
+    LaunchThread(g_stackSizeReceiveThread, Trigger(me,&NetEndPointC::RunReceive));
+    LaunchThread(g_stackSizeTransmitThread, Trigger(me, &NetEndPointC::RunTransmit));
 
 #if RAVL_USE_DECODE_THREAD
     if(optimiseThroughput) 
