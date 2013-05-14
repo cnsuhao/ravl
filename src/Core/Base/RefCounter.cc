@@ -43,7 +43,10 @@ namespace RavlN {
     }
 
     void Decrement()
-    { m_count--; }
+    {
+      if(m_count > 0)
+        m_count--;
+    }
 
     size_t Count() const
     { return m_count; }
