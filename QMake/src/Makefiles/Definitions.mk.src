@@ -40,9 +40,9 @@ ifdef SHAREDBUILD
   CCPPFLAGS += -DCPUG_VAR_SHARED=1
 endif
 
-LOCALBIN=$(INSTALLHOME)/bin/utils/opt/bin
+LOCALBIN=$(INSTALLHOME)/bin
 # Utilities used during the build process
-# Standardise on opt version for consistency
+# $(INSTALLHOME)/bin contains symbolic links to latest built copy of any binary
 
 NOLIBRARYPRELINK=1
 
