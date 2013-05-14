@@ -7,7 +7,6 @@
 #ifndef RAVL_REFCOUNTER_HEADER
 #define RAVL_REFCOUNTER_HEADER 1
 ///////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! docentry="Ravl.API.Core.Reference Counting"
 //! file="Ravl/Core/Base/RefCounter.hh"
 //! lib=RavlCore
@@ -94,6 +93,14 @@ namespace RavlN {
     void SetRefCounter(UIntT val) const
     { ravl_atomic_set(&counter,val); }
     // Set reference counter. For use in RCHandle only.
+    //: Increment reference counter.
+
+    void RavlRegisterInstance(const std::type_info &type) const;
+    //: Register a value has been created
+
+    void RavlUnregisterInstance(const std::type_info &type) const;
+    //: Unregister a value
+
   private:
     mutable ravl_atomic_t counter;
   };
@@ -124,6 +131,9 @@ namespace RavlN {
     RCHandleC(CreateBodyFlagT)
       : body(new BodyT())
     {
+#if QMAKE_PARANOID
+      body->RavlRegisterInstance(typeid(BodyT));
+#endif
       body->SetRefCounter(1);
     }
     //: Constructor.
@@ -132,6 +142,9 @@ namespace RavlN {
     RCHandleC(std::istream &is)
       : body(new BodyT())
     { 
+#if QMAKE_PARANOID
+      body->RavlRegisterInstance(typeid(BodyT));
+#endif
       body->SetRefCounter(1);
       is >> *body;
     }
@@ -146,11 +159,18 @@ namespace RavlN {
         // Stop the check code getting upset about the reference being non-zero.
         body->SetRefCounter(0);
 #endif
+#if QMAKE_PARANOID
+        body->RavlUnregisterInstance(typeid(*body));
+#endif
         delete body;
         return ;
       }
-      if(body->DecRefCounter())
+      if(body->DecRefCounter()) {
+#if QMAKE_PARANOID
+        body->RavlUnregisterInstance(typeid(*body));
+#endif
         delete body;
+      }
     }
     //: Destructor.
     // Decrement reference count, and delete object if it reaches zero.
@@ -163,8 +183,12 @@ namespace RavlN {
       if(oth.body != 0)
         oth.body->IncRefCounter();
       if(body != 0) {
-        if(body->DecRefCounter())
+        if(body->DecRefCounter()) {
+#if QMAKE_PARANOID
+          body->RavlUnregisterInstance(typeid(*body));
+#endif
           delete body;
+        }
       }
       body = oth.body;
       return *this;
@@ -194,8 +218,12 @@ namespace RavlN {
 
     void Invalidate() { 
       if(body == 0) return ;
-      if(body->DecRefCounter())
+      if(body->DecRefCounter()) {
+#if QMAKE_PARANOID
+        body->RavlUnregisterInstance(typeid(*body));
+#endif
 	delete body;
+      }
       body = 0;
     }
     //: Invalidate this handle.
@@ -241,6 +269,9 @@ namespace RavlN {
       : body(&bod)
     {
       if(body->References() == 0) {
+#if QMAKE_PARANOID
+        body->RavlRegisterInstance(typeid(*body));
+#endif
         // Avoid unneeded atomic operation, they're slow.
         body->SetRefCounter(1);
       } else
@@ -253,6 +284,9 @@ namespace RavlN {
     {
       if(body != 0) {
         if(body->References() == 0) {
+#if QMAKE_PARANOID
+          body->RavlRegisterInstance(typeid(*body));
+#endif
           // Avoid unneeded atomic operation, they're slow.
           body->SetRefCounter(1);
         } else
@@ -322,7 +356,17 @@ namespace RavlN {
     return strm;
   }
   //: Read a handle from a stream.
-  
+
+  void EnableClassInstanceStats(bool flag);
+  //: Enable and disable the collection of instance counts.
+  //: This only works in debug builds
+
+  void DumpInstanceCounts(std::ostream &strm,size_t countThreshold = 1);
+  //: Write out class instance counts to strm.
+  // This only works in debug builds.
+
+  bool IsClassInstanceStatsEnabled();
+  //: Test if class stats are enabled
 }
 
 #endif
