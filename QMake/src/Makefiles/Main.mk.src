@@ -1044,7 +1044,8 @@ $(TARG_EXE) : $(INST_BIN)/%$(EXEEXT) : $(INST_OBJS)/%$(OBJEXT) $(EXTRAOBJS) $(TA
 	if $(CXX) $(PKG_LDFLAGS) $(LDFLAGS) $(INST_OBJS)/$*$(OBJEXT) $(EXTRAOBJS) $(BINLIBS) -o $(INST_BIN)/$(@F) ; then \
 	  $(SYNC) ; \
 	  $(CHMOD) 555 $(INST_BIN)/$(@F) ; \
-	  if [ -f $(ROOTDIR)/bin/$(@F) ] ; then \
+	  if [ -h $(ROOTDIR)/bin/$(@F) ] || [ -f $(ROOTDIR)/bin/$(@F) ] ; \
+          then \
 	    $(RM) $(ROOTDIR)/bin/$(@F) ; \
 	  fi ; \
           cd $(ROOTDIR)/bin; $(LN_S) $(INST_BIN)/$(@F) $(@F) ; \

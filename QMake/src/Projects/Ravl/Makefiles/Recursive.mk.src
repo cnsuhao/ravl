@@ -191,6 +191,13 @@ else
   $(PROJECT_OUT)/bin/utils/$(BIN_SUBDIR)/bin/$1: $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $2
 	$(CXX) $(PKG_LDFLAGS) $(LDFLAGS) $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $3 -o $$@
 endif
+	@if [ -h $(PROJECT_OUT)/bin/$1 ] || [ -f  $(PROJECT_OUT)/bin/$1 ] ; \
+        then \
+	   if [ X$(QMAKE_INFO) != X ] ; then echo $(RM) $(PROJECT_OUT)/bin/$1; fi; \
+	   $(RM) $(PROJECT_OUT)/bin/$1; \
+        fi ; \
+	if [ X$(QMAKE_INFO) != X ] ; then echo cd $(PROJECT_OUT)/bin\; $(LN_S) utils/$(BIN_SUBDIR)/bin/$1 $1; fi; \
+        cd $(PROJECT_OUT)/bin; $(LN_S) utils/$(BIN_SUBDIR)/bin/$1 $1
 endef
 
 $(PROJECT_OUT)/bin/utils/$(BIN_SUBDIR)/bin:
