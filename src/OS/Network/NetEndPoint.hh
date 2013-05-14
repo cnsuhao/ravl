@@ -520,7 +520,7 @@ namespace RavlN {
       : RCHandleC<NetEndPointBodyC>(*new NetEndPointBodyC(socket,autoInit,optimiseThroughput))
     { StartPacketProcessing(); }
     //: Constructor.  
-    //!param: socket - connext to existing socket
+    //!param: socket - connect to existing socket
     //!param: autoInit - If false, you must call the Ready() function when you are ready to start processing network messages. If true, messages will start being processed as soon as the connection is established.
     
     NetEndPointC(const StringC &address,bool autoInit = true,bool optimiseThroughput = false)
@@ -535,8 +535,8 @@ namespace RavlN {
       : RCHandleC<NetEndPointBodyC>(*new NetEndPointBodyC(istrm,ostrm,protocolName,protocolVersion,autoInit,optimiseThroughput))
     { StartPacketProcessing(); }
     //: Constructor.
-    //!param: istrm - Input comunications stream
-    //!param: ostrm - Output comunications stream
+    //!param: istrm - Input communications stream
+    //!param: ostrm - Output communications stream
     //!param: protocolName - Name of communication protocol being used.
     //!param: protocolVersion - Version of communication protocol being used.
     //!param: autoInit - If false, you must call the Ready() function when you are ready to start processing network messages. If true, messages will start being processed as soon as the connection is established.
@@ -545,11 +545,11 @@ namespace RavlN {
       : RCHandleC<NetEndPointBodyC>(*new NetEndPointBodyC(socket,protocolName,protocolVersion,autoInit,optimiseThroughput))
     { StartPacketProcessing(); }
     //: Constructor.
-    //!param: socket - connext to existing socket
+    //!param: socket - connect to existing socket
     //!param: protocolName - Name of communication protocol being used.
     //!param: protocolVersion - Version of communication protocol being used.
     //!param: autoInit - If false, you must call the Ready() function when you are ready to start processing network messages. If true, messages will start being processed as soon as the connection is established.
-    //!param: optimiseThroughput - If true optimise for total throughput at the expense of comminication latency. If false optimise for latency
+    //!param: optimiseThroughput - If true optimise for total throughput at the expense of communication latency. If false optimise for latency
     
     NetEndPointC(const StringC &address,const StringC &protocolName,const StringC &protocolVersion,bool autoInit = true,bool optimiseThroughput = false) 
       : RCHandleC<NetEndPointBodyC>(*new NetEndPointBodyC(address,protocolName,protocolVersion,autoInit,optimiseThroughput))
@@ -559,12 +559,12 @@ namespace RavlN {
     //!param: protocolName - Name of communication protocol being used.
     //!param: protocolVersion - Version of communication protocol being used.
     //!param: autoInit - If false, you must call the Ready() function when you are ready to start processing network messages. If true, messages will start being processed as soon as the connection is established.
-    //!param: optimiseThroughput - If true optimise for total throughput at the expense of comminication latency. If false optimise for latency
+    //!param: optimiseThroughput - If true optimise for total throughput at the expense of communication latency. If false optimise for latency
 
     explicit NetEndPointC(bool)
       : RCHandleC<NetEndPointBodyC>(*new NetEndPointBodyC())
     {}
-    //: Create an uninitalised end point.
+    //: Create an uninitialised end point.
     
   protected:
     NetEndPointC(NetEndPointBodyC &bod)
@@ -640,7 +640,7 @@ namespace RavlN {
     bool WaitSetupComplete(RealT timeOut = 30)
     { return Body().WaitSetupComplete(timeOut); }
     //: Wait for setup to complete.
-    // May fail if peer drops connection for some reasson.
+    // May fail if peer drops connection for some reason.
     
     bool WaitTransmitQClear()
     { return Body().WaitTransmitQClear(); }

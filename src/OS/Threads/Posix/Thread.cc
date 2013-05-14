@@ -194,7 +194,8 @@ namespace RavlN {
 #if RAVL_HAVE_POSIX_THREADS
     pthread_t tmpThreadID = threadID;
     threadID = 0; // Forget the ID, no other function will work now.
-    pthread_detach(tmpThreadID);
+    if (tmpThreadID != 0)
+      pthread_detach(tmpThreadID);
 #endif
 #if RAVL_HAVE_WIN32_THREADS
     HANDLE tmpThreadID = threadID;
