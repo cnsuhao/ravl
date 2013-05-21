@@ -166,17 +166,41 @@ installopt:
 #       binaries; config files; data files and scripts. 
 #       Restore the embedded paths to point to the staged location of Ravl
 #       Rebuild the binaries to pick up the path resotoration
+#       N.B. This recepie includes a duplication of parts of the installoptlib
+#       recepie (we can not use the XXXgeneral XXXlib form used by the shared
+#       recepies because of the need to rebuild the binaries to pick up the
+#       change in resource-root). Please remember to apply any changes to the
+#       other copy of the code as appropriate.
 
-installoptshared:
+installoptlib:
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=opt SetRootInstalled
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) insLibs recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=opt SetRootStaged
+#       First re-link those modules that need to be built with the location of
+#       the library reflected in the code. Install the libraries via QMake and
+#       re-build the relevant objects/libraries with the original path to the
+#       staging area.
+#       N.B. Parts of this recepie are duplicated in the installopt recepie (we
+#       can not use the XXXgeneral XXXlib form used by the shared recepies
+#       because of the need to rebuild the binaries to pick up the change in
+#       resource-root). Please remember to apply any changes to the other copy
+#       of the code as appropriate.
+
+installoptshared: installoptsharedgeneral installoptsharedlib
+
+installoptsharedgeneral:
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project AUXHOME=Ravl VAR=opt SHAREDBUILD=1 STRIP_SWITCH=$(STRIP_SWITCH) install recurse
+#       Use the 'install' function of QMake to install the Ravl utility
+#       binaries; config files; data files and scripts. 
+
+installoptsharedlib:
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=opt SHAREDBUILD=1 SetRootInstalled
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt SHAREDBUILD=1 STRIP_SWITCH=$(STRIP_SWITCH) insLibs recurse
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=opt SHAREDBUILD=1 SetRootStaged
-#       Use the 'install' function of QMake to install the Ravl utility
-#       binaries; config files; data files and scripts. Then re-link those
-#       modules that need to be built with the location of the library reflected
-#       in the code. Install the libraries via QMake and re-build the relevant
-#       objects/libraries with the original path to the staging area.
+#       First re-link those modules that need to be built with the location of
+#       the library reflected in the code. Install the libraries via QMake and
+#       re-build the relevant objects/libraries with the original path to the
+#       staging area.
 
 installpkgconf: $(ABS_DESTDIR)$(libdir)/pkgconfig $(ABS_DESTDIR)$(libdir)/pkgconfig/Ravl.pc
 
@@ -214,9 +238,39 @@ installsingleopt:
 #       single library having first ensured the target directory exists.
 #       Finally, we restore the local path into the object and library files
 #       and then remake the binaries to pick up the restore.
+#       N.B. This recepie includes a duplication of parts of the recepie for
+#       installsingleoptlib (we can not use the XXXgeneral XXXlib form used by
+#       the shared recepies because of the need to rebuild the binaries to pick
+#       up the change in resource-root). Please remember to apply any changes
+#       to the other copy of the code as appropriate.
 
-installsingleoptshared:
+installsingleoptlib:
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=opt singleSetRootInstalled
+	$(SHOWIT)if [ ! -d $(ABS_DESTDIR)$(libdir) ] ; then $(MKDIR_P) $(ABS_DESTDIR)$(libdir) ; fi
+	$(INSTALL) $(STRIP_SWITCH) $(PROJECT_OUT)/lib/$(ARC)/opt/single/libRavl.a $(ABS_DESTDIR)$(libdir)/libRavl.a
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=opt singleSetRootStaged
+#       First rebuild those modules that rely on the installation path and
+#       relink their libraries. 
+#       Ensure the target dir exists and manually copy across the library.
+#       Finally, we restore the local path into the object and library files.
+#       N.B. Parts of this recepie are duplicated in the installsingleopt
+#       recepie (we can not use the XXXgeneral XXXlib form used by the shared
+#       recepies because of the need to rebuild the binaries to pick up the
+#       change in resource-root). Please remember to apply any changes to the
+#       other copy of the code as appropriate.
+
+installsingleoptshared:installsingleoptsharedgeneral installsingleoptsharedlib
+
+installsingleoptsharedgeneral:
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project AUXHOME=Ravl VAR=opt SHARED_LIB_POSTFIX=/shared/single SHAREDBUILD=1 STRIP_SWITCH=$(STRIP_SWITCH) install recurse
+#       Use the 'install' function of QMake to install the Ravl utility
+#       binaries; config files; data files and scripts. We must set
+#       SHARED_LIB_POSTFIX (to /shared/single) in order to force QMake to use
+#       the version of the binaries compiled against the single shared Ravl
+#       library rather than the more usual (for QMake) individual shared
+#       libraries. 
+
+installsingleoptsharedlib:
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=opt SHAREDBUILD=1 singlesharedSetRootInstalled
 	$(SHOWIT)if [ ! -d $(ABS_DESTDIR)$(libdir) ] ; then $(MKDIR_P) $(ABS_DESTDIR)$(libdir) ; fi
 	$(INSTALL) $(STRIP_SWITCH) $(PROJECT_OUT)/lib/$(ARC)/opt/shared/single/libRavl$(STAMP_SINGLE_EXT) $(ABS_DESTDIR)$(libdir)/libRavl$(STAMP_SINGLE_EXT)
@@ -237,17 +291,13 @@ ifneq ($(STAMP_SINGLE),NO)
                  fi
 endif
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=opt SHAREDBUILD=1 singlesharedSetRootStaged
-#       Use the 'install' function of QMake to install the Ravl utility
-#       binaries; config files; data files and scripts. We must set
-#       SHARED_LIB_POSTFIX (to /shared/single) in order to force QMake to use
-#       the version of the binaries compiled against the single shared Ravl
-#       library rather than the more usual (for QMake) individual shared
-#       libraries.  Then turn attention to the library itself and rebuild those
-#       modules that rely on the installation path and relink their libraries
-#       and the single library itself. Ensure the target directory exists and
-#       manually copy across the single shared library. If required, we set up
-#       the symbolic links for the less-quantified library names. Finally, we
-#       restore the local path into the object/library files.
+#       First rebuild those modules that rely on the installation path and
+#       relink their libraries and the single library itself. 
+#       Then ensure the target directory exists and manually copy across the
+#       single shared library.
+#       If required, we set up the symbolic links for the less-quantified
+#       library names.
+#       Finally, we restore the local path into the object/library files.
 
 
 installQMake:
@@ -557,12 +607,24 @@ uninstallDummyDefs:
 uninstallHdrs:
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project uinsHdrs recurse
 
-uninstallopt:
+uninstallopt: uninstalloptgeneral uninstalloptlib
+
+uninstalloptgeneral:
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project AUXHOME=Ravl VAR=opt uninstall recurse
+#       Seperate versions of the uninstall generals exist to allow for differing
+#       manifests dependant on VAR, SHAREDBUILD, etc.
+
+uninstalloptlib:
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) uinsLibs recurse
 
-uninstalloptshared:
+uninstalloptshared: uninstalloptsharedgeneral uninstalloptsharedlib
+
+uninstalloptsharedgeneral:
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project AUXHOME=Ravl VAR=opt SHAREDBUILD=1 uninstall recurse
+#       Seperate versions of the uninstall generals exist to allow for differing
+#       manifests dependant on VAR, SHAREDBUILD, etc.
+
+uninstalloptsharedlib:
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt SHAREDBUILD=1 STRIP_SWITCH=$(STRIP_SWITCH) uinsLibs recurse
 
 uninstallpkgconf: 
@@ -598,8 +660,14 @@ uninstallRavl.def:
             fi ;\
          fi
 
-uninstallsingleopt:
+uninstallsingleopt:uninstallsingleoptgeneral uninstallsingleoptlib
+
+uninstallsingleoptgeneral: 
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project AUXHOME=Ravl VAR=opt uninstall recurse
+#       Seperate versions of the uninstall generals exist to allow for differing
+#       manifests dependant on VAR, SHAREDBUILD, etc.
+
+uninstallsingleoptlib:
 	@if [ -f $(ABS_DESTDIR)$(libdir)/libRavl.a ] ; \
          then \
             if [ X$(QMAKE_INFO) != X ] ;\
@@ -614,8 +682,14 @@ uninstallsingleopt:
             fi ;\
          fi
 
-uninstallsingleoptshared:
+uninstallsingleoptshared: uninstallsingleoptsharedgeneral  uninstallsingleoptsharedlib
+
+uninstallsingleoptsharedgeneral:
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project AUXHOME=Ravl VAR=opt SHARED_LIB_POSTFIX=/shared/single SHAREDBUILD=1 uninstall recurse
+#       Seperate versions of the uninstall generals exist to allow for differing
+#       manifests dependant on VAR, SHAREDBUILD, etc.
+
+uninstallsingleoptsharedlib:
 	@if [ -h $(ABS_DESTDIR)$(libdir)/libRavl$(STAMP_SINGLE_EXT) ] || [ -f $(ABS_DESTDIR)$(libdir)/libRavl$(STAMP_SINGLE_EXT) ] ; \
          then \
             if [ X$(QMAKE_INFO) != X ] ;\
@@ -668,26 +742,30 @@ endif
 .DEFAULT: qmake
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) $@
 
-#JFi:ToDo Targets for install-strip install-check uninstall clean 
-#    distcheck html pdf install-html install-pdf installdirs distclean
-#    mostlyclean maintainter-clean tags ctags
+#JFi:ToDo Targets for clean ctags distclean distcheck html install-check
+#                     install-html install-pdf installdirs mostlyclean
+#                     maintainter-clean pdf tags
 
 
 .PHONY: check debug debugshared default dist doc fullsrc \
  gprof gprofbin gprofshared gprofsharedbin install install-strip \
- install-stripProject installDummyDefs installHdrs installopt installoptshared \
- installProject installpkgconf installQMake installRavl.def \
- installsingleopt installsingleoptshared LocalQMake opt optbin optshared \
- optsharedbin pkgconf qmake QMake Ravl.def recheck retest retestgprof \
- retestgprofshared retestopt retestoptshared retestsinglegprof \
- retestsinglegprofshared retestsingleopt retestsingleoptshared rpm \
- SetRootInstalled SetRootStaged singledebug singledebugbin singledebugshared \
- singledebugsharedbin singlegprof singlegprofbin singlegprofshared \
- singlegprofsharedbin singleopt singleoptbin singleoptshared \
- singleoptsharedbin singleSetRootInstalled singleSetRootStaged \
+ install-stripProject installDummyDefs installHdrs installopt installoptlib \
+ installoptshared installoptsharedgeneral installoptsharedlib installProject \
+ installpkgconf installQMake installRavl.def installsingleopt \
+ installsingleoptlib installsingleoptshared installsingleoptsharedgeneral \
+ installsingleoptsharedlib LocalQMake opt optbin optshared optsharedbin \
+ pkgconf qmake QMake Ravl.def recheck retest retestgprof retestgprofshared \
+ retestopt retestoptshared retestsinglegprof retestsinglegprofshared \
+ retestsingleopt retestsingleoptshared rpm SetRootInstalled SetRootStaged \
+ singledebug singledebugbin singledebugshared singledebugsharedbin singlegprof \
+ singlegprofbin singlegprofshared singlegprofsharedbin singleopt singleoptbin \
+ singleoptshared singleoptsharedbin singleSetRootInstalled singleSetRootStaged \
  singlesharedSetRootInstalled singlesharedSetRootStaged test testgprof \
  testgprofshared testopt testoptshared testsinglegprof testsinglegprofshared \
  testsingleopt testsingleoptshared uninstall uninstallDummyDefs uninstallHdrs \
- uninstallopt uninstalloptshared uninstallpkgconf uninstallQMake \
- uninstallRavl.def uninstallsingleopt uninstallsingleoptshared .DEFAULT
+ uninstallopt uninstalloptgeneral uninstalloptlib uninstalloptshared \
+ uninstalloptsharedgeneral uninstalloptsharedlib uninstallpkgconf \
+ uninstallQMake uninstallRavl.def uninstallsingleopt uninstallsingleoptgeneral \
+ uninstallsingleoptlib uninstallsingleoptshared \
+ uninstallsingleoptsharedgeneral uninstallsingleoptsharedlib .DEFAULT
 
