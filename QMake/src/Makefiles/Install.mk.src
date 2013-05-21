@@ -28,6 +28,11 @@ ifdef DESTDIR
   SET_DESTDIR=DESTDIR=$(ABS_DESTDIR)
 endif
 
+# Allow debug libraries to be installed under a separate debug structure
+ifeq ($(VAR),debug)
+  DEBUG_DEST=$(libdir)/debug
+endif
+
 # Determine the sub-directories we may have to process
 REQUIRED_DIRS=$(patsubst %.r,%, $(filter %.r,$(filter-out QMake.r,$(NESTED))))
 
@@ -425,13 +430,13 @@ uinsHdrs:
 insLibs: 
 	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(PLIB)" != X ] ;\
          then \
-            if [ ! -d $(ABS_DESTDIR)$(libdir) ] ;\
+            if [ ! -d $(ABS_DESTDIR)$(DEBUG_DEST)$(libdir) ] ;\
             then \
                if [ X$(QMAKE_INFO) != X ] ;\
                then \
-                  echo $(MKDIR_P) $(ABS_DESTDIR)$(libdir) ;\
+                  echo $(MKDIR_P) $(ABS_DESTDIR)$(DEBUG_DEST)$(libdir) ;\
                fi ;\
-               $(MKDIR_P) $(ABS_DESTDIR)$(libdir) ;\
+               $(MKDIR_P) $(ABS_DESTDIR)$(DEBUG_DEST)$(libdir) ;\
                RET=$$? ;\
                if [ $$RET -ne 0 ] ;\
                then \
@@ -440,9 +445,9 @@ insLibs:
             fi ;\
             if [ X$(QMAKE_INFO) != X ] ;\
             then \
-               echo $(INSTALL) $(STRIP_SWITCH) $(patsubst %,$(INSTALLHOME)/lib$(PROJECT_DIR)/$(ARC)/$(VAR)$(SHARED_LIB_POSTFIX)/lib%$(LIB_STAMP_EXT), $(PLIB)) $(ABS_DESTDIR)$(libdir) ;\
+               echo $(INSTALL) $(STRIP_SWITCH) $(patsubst %,$(INSTALLHOME)/lib$(PROJECT_DIR)/$(ARC)/$(VAR)$(SHARED_LIB_POSTFIX)/lib%$(LIB_STAMP_EXT), $(PLIB)) $(ABS_DESTDIR)$(DEBUG_DEST)$(libdir) ;\
             fi ;\
-            $(INSTALL) $(STRIP_SWITCH) $(patsubst %,$(INSTALLHOME)/lib$(PROJECT_DIR)/$(ARC)/$(VAR)$(SHARED_LIB_POSTFIX)/lib%$(LIB_STAMP_EXT), $(PLIB)) $(ABS_DESTDIR)$(libdir) ;\
+            $(INSTALL) $(STRIP_SWITCH) $(patsubst %,$(INSTALLHOME)/lib$(PROJECT_DIR)/$(ARC)/$(VAR)$(SHARED_LIB_POSTFIX)/lib%$(LIB_STAMP_EXT), $(PLIB)) $(ABS_DESTDIR)$(DEBUG_DEST)$(libdir) ;\
             RET=$$? ;\
             if [ $$RET -ne 0 ] ;\
             then \
@@ -452,13 +457,13 @@ insLibs:
             then \
                if [ $(LIB_STAMP) = VER ] ;\
                then \
-                  if [ -h $(ABS_DESTDIR)$(libdir)/lib$(PLIB)$(LIBEXT).$(PROJECT_MAJOR) ] || [ -f $(ABS_DESTDIR)$(libdir)/lib$(PLIB)$(LIBEXT).$(PROJECT_MAJOR) ] ;\
+                  if [ -h $(ABS_DESTDIR)$(DEBUG_DEST)$(libdir)/lib$(PLIB)$(LIBEXT).$(PROJECT_MAJOR) ] || [ -f $(ABS_DESTDIR)$(DEBUG_DEST)$(libdir)/lib$(PLIB)$(LIBEXT).$(PROJECT_MAJOR) ] ;\
                   then \
                      if [ X$(QMAKE_INFO) != X ] ;\
                      then \
-                        echo $(RM) -f $(ABS_DESTDIR)$(libdir)/lib$(PLIB)$(LIBEXT).$(PROJECT_MAJOR)  ;\
+                        echo $(RM) -f $(ABS_DESTDIR)$(DEBUG_DEST)$(libdir)/lib$(PLIB)$(LIBEXT).$(PROJECT_MAJOR)  ;\
                      fi ;\
-                     $(RM) -f $(ABS_DESTDIR)$(libdir)/lib$(PLIB)$(LIBEXT).$(PROJECT_MAJOR)  ;\
+                     $(RM) -f $(ABS_DESTDIR)$(DEBUG_DEST)$(libdir)/lib$(PLIB)$(LIBEXT).$(PROJECT_MAJOR)  ;\
                      RET=$$? ;\
                      if [ $$RET -ne 0 ] ;\
                      then \
@@ -467,9 +472,9 @@ insLibs:
                   fi ;\
                   if [ X$(QMAKE_INFO) != X ] ;\
                   then \
-                     echo cd $(ABS_DESTDIR)$(libdir); $(LN_S) lib$(PLIB)$(LIB_STAMP_EXT) lib$(PLIB)$(LIBEXT).$(PROJECT_MAJOR) ; \
+                     echo cd $(ABS_DESTDIR)$(DEBUG_DEST)$(libdir); $(LN_S) lib$(PLIB)$(LIB_STAMP_EXT) lib$(PLIB)$(LIBEXT).$(PROJECT_MAJOR) ; \
                   fi ;\
-                  cd $(ABS_DESTDIR)$(libdir); $(LN_S) lib$(PLIB)$(LIB_STAMP_EXT) lib$(PLIB)$(LIBEXT).$(PROJECT_MAJOR) ; \
+                  cd $(ABS_DESTDIR)$(DEBUG_DEST)$(libdir); $(LN_S) lib$(PLIB)$(LIB_STAMP_EXT) lib$(PLIB)$(LIBEXT).$(PROJECT_MAJOR) ; \
                   RET=$$? ;\
                   if [ $$RET -ne 0 ] ;\
                   then \
@@ -478,13 +483,13 @@ insLibs:
                fi ;\
                if [ $(LIB_STAMP) != NO ] ;\
                then \
-                  if [ -h $(ABS_DESTDIR)$(libdir)/lib$(PLIB)$(LIBEXT) ] || [ -f $(ABS_DESTDIR)$(libdir)/lib$(PLIB)$(LIBEXT) ] ; \
+                  if [ -h $(ABS_DESTDIR)$(DEBUG_DEST)$(libdir)/lib$(PLIB)$(LIBEXT) ] || [ -f $(ABS_DESTDIR)$(DEBUG_DEST)$(libdir)/lib$(PLIB)$(LIBEXT) ] ; \
                   then \
                      if [ X$(QMAKE_INFO) != X ] ;\
                      then \
-                        echo $(RM) -f $(ABS_DESTDIR)$(libdir)/lib$(PLIB)$(LIBEXT)  ;\
+                        echo $(RM) -f $(ABS_DESTDIR)$(DEBUG_DEST)$(libdir)/lib$(PLIB)$(LIBEXT)  ;\
                      fi ;\
-                     $(RM) -f $(ABS_DESTDIR)$(libdir)/lib$(PLIB)$(LIBEXT)  ;\
+                     $(RM) -f $(ABS_DESTDIR)$(DEBUG_DEST)$(libdir)/lib$(PLIB)$(LIBEXT)  ;\
                      RET=$$? ;\
                      if [ $$RET -ne 0 ] ;\
                      then \
@@ -493,9 +498,9 @@ insLibs:
                   fi ;\
                   if [ X$(QMAKE_INFO) != X ] ;\
                   then \
-                     echo cd $(ABS_DESTDIR)$(libdir); $(LN_S) lib$(PLIB)$(LIB_STAMP_EXT) lib$(PLIB)$(LIBEXT) ; \
+                     echo cd $(ABS_DESTDIR)$(DEBUG_DEST)$(libdir); $(LN_S) lib$(PLIB)$(LIB_STAMP_EXT) lib$(PLIB)$(LIBEXT) ; \
                   fi ;\
-                  cd $(ABS_DESTDIR)$(libdir); $(LN_S) lib$(PLIB)$(LIB_STAMP_EXT) lib$(PLIB)$(LIBEXT) ; \
+                  cd $(ABS_DESTDIR)$(DEBUG_DEST)$(libdir); $(LN_S) lib$(PLIB)$(LIB_STAMP_EXT) lib$(PLIB)$(LIBEXT) ; \
                   RET=$$? ;\
                   if [ $$RET -ne 0 ] ;\
                   then \
@@ -513,19 +518,21 @@ insLibs:
 #        from the "link name" (libXXX.so) to the actually installed file. If
 #        using the full product version for stamping, we also must create a
 #        link from the SONAME (libXXX.A.so).
+#        To allow debug libraries to be installed to their usual location,
+#        $(DEBUG_DEST) is set to $(libdir)/debug whenever VAR=debug.
 
 uinsLibs:
 	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(PLIB)" != X ] ;\
          then \
             for f in $(PLIB) ;\
             do \
-               if [ -h $(ABS_DESTDIR)$(libdir)/lib$$f$(LIBEXT) ] || [ -f $(ABS_DESTDIR)$(libdir)/lib$$f$(LIBEXT) ] ; \
+               if [ -h $(ABS_DESTDIR)$(DEBUG_DEST)$(libdir)/lib$$f$(LIBEXT) ] || [ -f $(ABS_DESTDIR)$(DEBUG_DEST)$(libdir)/lib$$f$(LIBEXT) ] ; \
                then \
                   if [ X$(QMAKE_INFO) != X ] ;\
                   then \
-                     echo $(RM) -f $(ABS_DESTDIR)$(libdir)/lib$$f$(LIBEXT) ;\
+                     echo $(RM) -f $(ABS_DESTDIR)$(DEBUG_DEST)$(libdir)/lib$$f$(LIBEXT) ;\
                   fi ;\
-                  $(RM) -f $(ABS_DESTDIR)$(libdir)/lib$$f$(LIBEXT)  ;\
+                  $(RM) -f $(ABS_DESTDIR)$(DEBUG_DEST)$(libdir)/lib$$f$(LIBEXT)  ;\
                   RET=$$? ;\
                   if [ $$RET -ne 0 ] ;\
                   then \
@@ -536,13 +543,13 @@ uinsLibs:
                then \
                   if [ $(LIB_STAMP) = VER ] ;\
                   then \
-                     if [ -h $(ABS_DESTDIR)$(libdir)/lib$$f$(LIBEXT).$(PROJECT_MAJOR) ] || [ -f $(ABS_DESTDIR)$(libdir)/lib$$f$(LIBEXT).$(PROJECT_MAJOR) ] ; \
+                     if [ -h $(ABS_DESTDIR)$(DEBUG_DEST)$(libdir)/lib$$f$(LIBEXT).$(PROJECT_MAJOR) ] || [ -f $(ABS_DESTDIR)$(DEBUG_DEST)$(libdir)/lib$$f$(LIBEXT).$(PROJECT_MAJOR) ] ; \
                      then \
                         if [ X$(QMAKE_INFO) != X ] ;\
                         then \
-                           echo $(RM) -f $(ABS_DESTDIR)$(libdir)/lib$$f$(LIBEXT).$(PROJECT_MAJOR)  ;\
+                           echo $(RM) -f $(ABS_DESTDIR)$(DEBUG_DEST)$(libdir)/lib$$f$(LIBEXT).$(PROJECT_MAJOR)  ;\
                         fi ;\
-                        $(RM) -f $(ABS_DESTDIR)$(libdir)/lib$$f$(LIBEXT).$(PROJECT_MAJOR)  ;\
+                        $(RM) -f $(ABS_DESTDIR)$(DEBUG_DEST)$(libdir)/lib$$f$(LIBEXT).$(PROJECT_MAJOR)  ;\
                         RET=$$? ;\
                         if [ $$RET -ne 0 ] ;\
                         then \
@@ -552,13 +559,13 @@ uinsLibs:
                   fi ;\
                   if [ $(LIB_STAMP) != NO ] ;\
                   then \
-                     if [ -h $(ABS_DESTDIR)$(libdir)/lib$$f$(LIB_STAMP_EXT) ] || [ -f $(ABS_DESTDIR)$(libdir)/lib$$f$(LIB_STAMP_EXT) ] ; \
+                     if [ -h $(ABS_DESTDIR)$(DEBUG_DEST)$(libdir)/lib$$f$(LIB_STAMP_EXT) ] || [ -f $(ABS_DESTDIR)$(DEBUG_DEST)$(libdir)/lib$$f$(LIB_STAMP_EXT) ] ; \
                      then \
                         if [ X$(QMAKE_INFO) != X ] ;\
                         then \
-                           echo $(RM) -f $(ABS_DESTDIR)$(libdir)/lib$$f$(LIB_STAMP_EXT)  ;\
+                           echo $(RM) -f $(ABS_DESTDIR)$(DEBUG_DEST)$(libdir)/lib$$f$(LIB_STAMP_EXT)  ;\
                         fi ;\
-                        $(RM) -f $(ABS_DESTDIR)$(libdir)/lib$$f$(LIB_STAMP_EXT)  ;\
+                        $(RM) -f $(ABS_DESTDIR)$(DEBUG_DEST)$(libdir)/lib$$f$(LIB_STAMP_EXT)  ;\
                         RET=$$? ;\
                         if [ $$RET -ne 0 ] ;\
                         then \
@@ -573,6 +580,8 @@ uinsLibs:
 #        remove any fully qualified versions of the library (libXXX.so.A.B.B 
 #        and/or libXXX.so.A) as well as the simple name (libXXX.so or .whatever
 #        shared library extension is in use).
+#        To allow deletion of debug libraries from their usual sub-directory
+#        location, $(DEBUG_DEST) is set to $(libdir)/debug whenever VAR=debug.
 
 insMains: 
 	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(MAINS)" != X ] ;\
