@@ -972,7 +972,15 @@ else
  # recepies will create any necessary symbolic links to this file.
  # SET_SINGLESO_SONAME will set the SONAME (to libXXX.so.A) if we are appending
  # a revision number to the library name (otherwise it will do nothing)
- $(INST_LIB)/single/$(SINGLESO)$(LIB_STAMP_EXT) : $(INST_LIB)/single $(INST_LIB)/lib$(PLIB)$(LIBEXT) $(patsubst %,$(INST_LIB)/lib%$(LIBEXT),$(PLIBDEPENDS))
+ $(INST_LIB)/single/$(SINGLESO)$(LIB_STAMP_EXT) : $(INST_LIB)/lib$(PLIB)$(LIBEXT) $(patsubst %,$(INST_LIB)/lib%$(LIBEXT),$(PLIBDEPENDS))
+	@if [ ! -d $(INST_LIB)/single ] ; \
+         then \
+            if [ X$(QMAKE_INFO) != X ] ; \
+            then \
+               echo $(MKDIR_P) $(INST_LIB)/single ; \
+            fi ; \
+            $(MKDIR_P) $(INST_LIB)/single ; \
+         fi
 	$(SHOWIT)echo "--- Building " $(@F) ; \
 	echo "$(patsubst %,$(LOCALTMP)/$(ARC)/%/$(VAR)/shared/objs/libObjs.txt,$(PLIB) $(PLIBDEPENDS))" | $(XARGS) cat > $(INST_OBJS)/libSharedObjs.new ; \
 	$(SORT) -b -u $(INST_OBJS)/libSharedObjs.new -t : -k 1,1 | $(AWK) -F: '{ print $$1 }' | $(TR) '\n' ' ' > $(INST_OBJS)/libSharedObjs.txt; \
@@ -980,9 +988,6 @@ else
   echo "---- Building single shared library $(INST_LIB)/single/$(@F) " ; \
 	$(CXX) $(PKG_LDLIBFLAGS) $(LDLIBFLAGS) @$(INST_OBJS)/libSharedObjs.txt $(filter-out $(patsubst %,-l%,$(PLIB) $(PLIBDEPENDS)),$(LIBSONLY)) $(SET_SINGLESO_SONAME) -o $(INST_LIB)/single/$(@F) && \
 	$(UNTOUCH) $(INST_LIB)/single/$(@F) $(INST_LIB)/lib$(PLIB)$(LIBEXT) ;
-
- $(INST_LIB)/single:
-	$(MKDIR_P) $(INST_LIB)/single
 
 endif
 
