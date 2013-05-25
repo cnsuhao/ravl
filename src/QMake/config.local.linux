@@ -131,7 +131,7 @@ RESOURCES += GnuPlot
 
 #### devVideo4Linux ################
 
-RESOURCES += devVideo4Linux
+#RESOURCES += devVideo4Linux
 
 #### devVideo4Linux2 ################
 

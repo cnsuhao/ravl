@@ -6,6 +6,6 @@ ifndef CUDA_HOME
 endif
 
 INCLUDES+= -I$(CUDA_HOME)/include
-EXELIB :=  -L$(CUDA_HOME)/lib -lcuda -lcudart $(LIBPATHSWITCH)$(CUDA_HOME)/lib $(EXELIB)
+EXELIB :=  -L$(CUDA_HOME)/lib -lcuda -lcudart $(LIBPATHSWITCH)$(CUDA_HOME)/lib  -Wl,-rpath,$(CUDA_HOME)/lib  $(EXELIB)
 
 endif
