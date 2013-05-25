@@ -373,7 +373,7 @@ CCFLAGS += $(USERCFLAGS) $(ANSIFLAG)
 ifndef NVCC
  NVCC=nvcc
 endif
-NVCCFLAGS = 
+NVCCFLAGS = $(USERNVCCFLAGS)
 
 ifeq ($(VAR),debug)
  NVCCFLAGS += -g 
