@@ -120,7 +120,7 @@ RESOURCES += libCurl
 
 #### devVideo4Linux ################
 
-RESOURCES += devVideo4Linux
+#RESOURCES += devVideo4Linux
 
 #### devVideo4Linux2 ################
 
