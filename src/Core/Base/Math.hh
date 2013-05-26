@@ -25,12 +25,15 @@
 #include <math.h>
 
 #if RAVL_HAVE_HYPOT
+// CHeck is not being treated as a CUDA header.
+#ifndef __NVCC__
 /* This isn't ansi so it may not be in the include files,
  * but we want to use it if its available.
  */
 extern "C" {
   double hypot(double a,double b);
 };
+#endif
 #endif
 
 //: Ravl namespace.
