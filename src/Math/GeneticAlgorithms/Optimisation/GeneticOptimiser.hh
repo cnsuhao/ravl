@@ -38,7 +38,7 @@ namespace RavlN { namespace GeneticN {
     //! Run generation.
     // Setting 'resetScores' recompute's scores for all entries, which should be used
     // if the cost function is modified in any way.
-    void RunGeneration(UIntT generation, bool resetScores = false);
+    bool RunGeneration(UIntT generation, bool resetScores = false);
 
     //! Save population to file
     //! Note: This thread safe
@@ -57,7 +57,7 @@ namespace RavlN { namespace GeneticN {
     void AddPopulation(const SArray1dC<RavlN::Tuple2C<float,GenomeC::RefT> > &population);
 
     //! Run whole optimisation
-    void Run();
+    bool Run();
 
     //! Test if we're using a randomised domain
     bool IsUsingRandomisedDomain() const
@@ -82,7 +82,7 @@ namespace RavlN { namespace GeneticN {
     typedef SmartPtrC<GeneticOptimiserC> RefT;
 
   protected:
-    virtual void Evaluate(const std::vector<GenomeC::RefT> &pop);
+    virtual bool Evaluate(const std::vector<GenomeC::RefT> &pop);
 
     void EvaluateWorker();
 

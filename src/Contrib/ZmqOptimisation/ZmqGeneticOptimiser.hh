@@ -30,7 +30,7 @@ namespace RavlN {
        * The function that takes the entire population and evaluates them
        * @param pop The Genome population
        */
-      virtual void Evaluate(const std::vector<RavlN::GeneticN::GenomeC::RefT> &pop);
+      virtual bool Evaluate(const std::vector<RavlN::GeneticN::GenomeC::RefT> &pop);
 
 
       SocketC::RefT m_sender; //!< Send out tasks

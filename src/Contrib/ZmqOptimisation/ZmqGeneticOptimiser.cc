@@ -6,6 +6,7 @@
 #include "Ravl/Point2d.hh"
 #include "Ravl/DP/Blackboard.hh"
 #include "Ravl/DP/FileFormatStream.hh"
+#include "Ravl/OS/Date.hh"
 
 #define DODEBUG 0
 #if DODEBUG
@@ -29,7 +30,7 @@ namespace RavlN {
       rThrowBadConfigContextOnFailS(factory, UseComponent("SinkReceiver", m_receiver), "Failed to find SinkReceiver socket in XML!");
     }
 
-    void ZmqGeneticOptimiserC::Evaluate(const std::vector<GenomeC::RefT> &pop)
+    bool ZmqGeneticOptimiserC::Evaluate(const std::vector<GenomeC::RefT> &pop)
     {
       MutexLockC lock(m_access);
       if (m_randomiseDomain) {
@@ -68,6 +69,7 @@ namespace RavlN {
           rWarning("Trouble sending data for evaluation!");
           continue;
         }
+        RavlN::Sleep(0.1);
 
         // and move on to the next data point to be evaluated
       }
@@ -138,7 +140,7 @@ namespace RavlN {
 
       }
 
-      return;
+      return true;
     }
 
     void LinkGeneticOptimiser()
