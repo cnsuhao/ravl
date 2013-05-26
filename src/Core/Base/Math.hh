@@ -147,6 +147,11 @@ namespace RavlN {
   }
   //: Returns safe exp(r).
 
+  inline float Exp(float r){
+    return expf(r);
+  }
+  //: Returns safe exp(r).
+
   inline IntT ILog2(IntT i) {
     IntT mex = 0;
     while((i/=2) != 0) mex++;
@@ -270,7 +275,7 @@ namespace RavlN {
   //: Compute the sigmoid of z
 
   inline float Sigmoid(const float z)
-  { return 1.0f / (1.0f + float(Exp(-z))); }
+  { return 1.0f / (1.0f + Exp(-z)); }
   //: Compute the sigmoid of z
 
 }
