@@ -119,7 +119,13 @@ int testBlackboard() {
   cerr << "testBlackboard() Called. \n";
   BlackboardC bb(true);
   IntT bval = 1;
+  UIntT uintval = 2;
+  float floatval = 3;
+  RealT realval = 4;
   bb.Put("Hello",bval);
+  bb.Put("UIntT",uintval);
+  bb.Put("FloatT",floatval);
+  bb.Put("RealT",realval);
   IntT ival = 0;
   if(!bb.Get("Hello",ival)) return __LINE__;
   if(ival != (IntT) bval) return __LINE__;
