@@ -102,7 +102,7 @@ namespace RavlN {
     //: Convert from a float vector.
     
     operator TMatrixC<FloatT> () const {
-      TMatrixC<FloatT> ret(Size(),Size());
+      TMatrixC<FloatT> ret(Size1(),Size2());
       for(BufferAccess2dIter2C<RealT,FloatT> it(*this,Size2(),ret,Size2());it;it++)
         it.Data2() = static_cast<FloatT>(it.Data1());
       return ret;
