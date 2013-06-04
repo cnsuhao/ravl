@@ -99,15 +99,15 @@ namespace RavlN {
       for(BufferAccess2dIter2C<RealT,FloatT> it(*this,Size2(),oth,Size2());it;it++)
         it.Data1() = static_cast<RealT>(it.Data2());
     }
-    //: Convert from a float vector.
+    //: Convert from a float matrix.
     
     operator TMatrixC<FloatT> () const {
-      TMatrixC<FloatT> ret(Size(),Size());
+      TMatrixC<FloatT> ret(Size1(),Size2());
       for(BufferAccess2dIter2C<RealT,FloatT> it(*this,Size2(),ret,Size2());it;it++)
         it.Data2() = static_cast<FloatT>(it.Data1());
       return ret;
     }
-    //: Convert to a float vector.
+    //: Convert to a float matrix.
     
     template<unsigned int N,unsigned int M>
     MatrixC(const TFMatrixC<RealT,N,M> &fmat)
