@@ -29,4 +29,3 @@ EXTERNALLIBS = Zmq.def
 
 MAINS= testRavlZeroMQ.cc testRavlZeroMQXML.cc
 
-USESPKGCONFIG = opencv
