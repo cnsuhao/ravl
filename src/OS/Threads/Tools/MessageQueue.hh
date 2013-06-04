@@ -96,6 +96,7 @@ namespace RavlN {
     //: Default constructor.
     
     MessageQueueC(const MessageQueueC<T> &) 
+     : data(0)
     { RavlAssert(0); }// Not supported !
     //: Copy constructor.
     

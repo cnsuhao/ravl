@@ -45,7 +45,8 @@ namespace RavlN {
   //: Load from stream.
   
   DesignMeanShiftClusterBodyC::DesignMeanShiftClusterBodyC(istream &strm) 
-    : DesignClusterBodyC(strm)
+    : DesignClusterBodyC(strm),
+      k(0)
   {
     IntT version;
     strm >> version;
@@ -57,7 +58,9 @@ namespace RavlN {
   //: Load from binary stream.
   
   DesignMeanShiftClusterBodyC::DesignMeanShiftClusterBodyC(BinIStreamC &strm) 
-    : DesignClusterBodyC(strm)
+    : DesignClusterBodyC(strm),
+      k(0),
+      termiter(0)
   {
     IntT version;
     strm >> version;
@@ -68,7 +71,8 @@ namespace RavlN {
   
   //: Writes object to stream, can be loaded using constructor
   
-  bool DesignMeanShiftClusterBodyC::Save (ostream &out) const {
+  bool DesignMeanShiftClusterBodyC::Save (std::ostream &out) const
+  {
     if(!DesignClusterBodyC::Save(out))
       return false;
     IntT version = 0;
@@ -91,7 +95,7 @@ namespace RavlN {
   DListC<VectorC> DesignMeanShiftClusterBodyC::FindMeans(const SampleC<VectorC> &in,SampleC<UIntT> &labels) {
     DListC<VectorC> clusters;
     if(in.Size() == 0) {
-      cerr << "DesignMeanShiftClusterBodyC::Apply(), WARNING: No data samples given. \n";
+      std::cerr << "DesignMeanShiftClusterBodyC::Apply(), WARNING: No data samples given. \n";
       return clusters;
     }
     labels = SampleC<UIntT>(SArray1dC<UIntT>(in.Size()));
@@ -140,7 +144,7 @@ namespace RavlN {
     DListC<VectorC> clusters;
     labels = SampleC<UIntT>(SArray1dC<UIntT>(in.Size()));
     if(in.Size() == 0) {
-      cerr << "DesignMeanShiftClusterBodyC::Apply(), WARNING: No data samples given. \n";
+      std::cerr << "DesignMeanShiftClusterBodyC::Apply(), WARNING: No data samples given. \n";
       return clusters;
     }
     

@@ -38,7 +38,11 @@ namespace RavlN {
   //: Load from stream.
   
   ClassifierWeakLinearBodyC::ClassifierWeakLinearBodyC(std::istream &strm) 
-    : ClassifierBodyC(strm)
+    : ClassifierBodyC(strm),
+      m_parityThreshold1(0),
+      m_parity1(0),
+      m_parityThreshold2(0),
+      m_parity2(0)
   {
     IntT version;
     strm >> version;
@@ -50,7 +54,11 @@ namespace RavlN {
   //: Load from binary stream.
   
   ClassifierWeakLinearBodyC::ClassifierWeakLinearBodyC(BinIStreamC &strm) 
-    : ClassifierBodyC(strm)
+    : ClassifierBodyC(strm),
+      m_parityThreshold1(0),
+      m_parity1(0),
+      m_parityThreshold2(0),
+      m_parity2(0)
   {
     IntT version;
     strm >> version;

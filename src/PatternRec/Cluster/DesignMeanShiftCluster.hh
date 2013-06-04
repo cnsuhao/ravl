@@ -114,7 +114,7 @@ namespace RavlN {
     //!param: k - size of the kernel
     //!param: ntermiter - minimum distance the cluster centre is moved before terminating iteration.
     
-    DesignMeanShiftClusterC(istream &strm);
+    DesignMeanShiftClusterC(std::istream &strm);
     //: Load from stream.
     
     DesignMeanShiftClusterC(BinIStreamC &strm);

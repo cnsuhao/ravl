@@ -152,11 +152,17 @@ namespace RavlImageN {
   ChanDCTC::ChanDCTC()
     : N(0),
       m(0),
-      cosines(0)
+      cosines(0),
+      scaleDC(0),
+      scaleMix(0),
+      scaleAC(0)
   {}
   
   ChanDCTC::ChanDCTC(unsigned int size)
-    : cosines(0)
+    : cosines(0),
+      scaleDC(0),
+      scaleMix(0),
+      scaleAC(0)
   { 
     if(size > 0)
       Setup(size); 
@@ -476,7 +482,10 @@ namespace RavlImageN {
       ct(0),
       ct2d(0),
       r(0),
-      cosine_array(0)
+      cosine_array(0),
+      scaleDC(0),
+      scaleMix(0),
+      scaleAC(0)
   {}
   
   void VecRadDCTC::Setup(unsigned int size, unsigned int pts)
