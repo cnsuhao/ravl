@@ -32,10 +32,10 @@ namespace RavlN {
       FaceInfoDbC();
       //: Constructor
 
-      FaceInfoDbC(const StringC & dbName, const DListC<StringC> & imagePath = DListC<StringC>());
+      FaceInfoDbC(const StringC & dbName, const DListC<StringC> & imagePath = DListC<StringC>(), bool imageExists=true);
       //: Construct from a known database or filename
 
-      FaceInfoDbC(DListC<StringC> & dbName, const DListC<StringC> & imagePath = DListC<StringC>());
+      FaceInfoDbC(DListC<StringC> & dbName, const DListC<StringC> & imagePath = DListC<StringC>(), bool imageExists=true);
       //: Construct from a known database
 
       FaceInfoDbC(const XMLFactoryContextC &node);
@@ -125,7 +125,7 @@ namespace RavlN {
       //: Add an imagepath
 
     protected:
-      void init(const DListC<StringC> & dbNames, const DListC<StringC> & imagePath);
+      void init(const DListC<StringC> & dbNames, const DListC<StringC> & imagePath, bool imageExists);
 
       bool ExpandKnownDatabases2(const DListC<StringC> & databases);
 

@@ -21,6 +21,7 @@ namespace RavlN {
   {
   public:
     TestClassC()
+     : m_value(0)
     {
       linkXMLFactoryRegister();
     }

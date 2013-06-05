@@ -220,7 +220,8 @@ namespace RavlN
     
   private:
     MutexLockC(const MutexLockC &x)
-      : mutex(x.mutex)
+      : mutex(x.mutex),
+        locked(false)
     { RavlAssert(0); }
     //: Dissable copy constructor.
     

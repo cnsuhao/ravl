@@ -73,6 +73,12 @@ namespace RavlN {
     }
 
 
+    //! Default constructor - creates invalid handle
+    SocketC::SocketC()
+     : m_socket(0),
+       m_verbose(false)
+    {};
+
     //! Construct a new socket.
     SocketC::SocketC(ContextC &context,SocketTypeT socketType,const StringC &codec)
      : m_socket(0),

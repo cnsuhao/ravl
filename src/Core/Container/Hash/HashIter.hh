@@ -29,6 +29,7 @@ namespace RavlN {
   class HashIterC {
   public:
     HashIterC() 
+      : hashtable(0)
     {}
     // Don't use this if you can help it.
     
