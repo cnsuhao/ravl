@@ -2,17 +2,21 @@ ifndef CUDA_DEF
 CUDA_DEF=1
 
 ifndef CUDA_HOME
+ifeq ($(ARC),linux)
   CUDA_HOME=/usr/local/cuda
+else
+  CUDA_HOME=/Developer/NVIDIA/CUDA-5.0
+endif
 endif
 
 INCLUDES+= -I$(CUDA_HOME)/include
 
-ifeq ($(ARC),linux)
-  CUDA_LIB=$(CUDA_HOME)/lib
-else
+ifeq ($(ARC),linux64)
   CUDA_LIB=$(CUDA_HOME)/lib64
+else
+  CUDA_LIB=$(CUDA_HOME)/lib
 endif
  
-EXELIB :=  -L$(CUDA_LIB) -lcuda -lcudart $(LIBPATHSWITCH)$(CUDA_LIB)   $(EXELIB)
+EXELIB :=  -L$(CUDA_LIB) -lcudart $(LIBPATHSWITCH)$(CUDA_LIB)   $(EXELIB)
 
 endif
