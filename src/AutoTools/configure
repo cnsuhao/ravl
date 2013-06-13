@@ -624,37 +624,18 @@ ParallelIO_SUPPORT
 USER_UNDEFSYMB
 USER_with_rpath
 USER_LIBPATHSWITCH
-YACC
-XARGS
 USER_TR
-TOUCH
-SYNC
 USER_SORT
 USER_SED
-RM
-RANLIB
-PAGER
-MKDIR_P
 USER_MAKE
-LN_S
-LEXLIB
-LEX
 USER_LD
 USER_PKG_CONFIG
-INSTALL_PROGRAM
-INSTALL_DATA
-INSTALL
 USER_GREP
 USER_GET_CWD
 USER_EXPR
 USER_CXXCPP
 USER_CXX
-USER_CUT
-CHOWN
-CHMOD
-CHGRP
 USER_CPP
-CP
 USER_CC
 USER_AWK
 USER_AR
@@ -662,7 +643,6 @@ PROJECT_MAJOR
 DynLink_LIBS
 SWIG
 GnuPlot
-PERL
 EGREP
 Meteor1_SUPPORT
 devVideo4Linux_SUPPORT
@@ -859,10 +839,6 @@ COMPILER_GPROF_CFLAGS
 COMPILER_DEBUG_CFLAGS
 COMPILER_ANSI_CFLAGS
 CONFIGURE_CFLAGS
-TR
-SORT
-GREP
-EXPR
 CXXCPP
 ac_ct_CXX
 CXXFLAGS
@@ -875,14 +851,40 @@ CPPFLAGS
 LDFLAGS
 CFLAGS
 CC
-AWK
-AR
 GET_CWD
 NeededQMake
 WORKING_QMAKE
 QMAKE_CONFIGFILES
 SED
 PKG_CONFIG
+XARGS
+YACC
+TR
+TOUCH
+SYNC
+SORT
+RM
+RANLIB
+PERL
+PAGER
+MKDIR_P
+MAKE
+LN_S
+LEXLIB
+LEX
+LD
+INSTALL_SCRIPT
+INSTALL_PROGRAM
+INSTALL_DATA
+INSTALL
+GREP
+EXPR
+CP
+CHOWN
+CHMOD
+CHGRP
+AWK
+AR
 host_os
 host_vendor
 host_cpu
@@ -1027,6 +1029,34 @@ with_OpenGL
       ac_precious_vars='build_alias
 host_alias
 target_alias
+AR
+AWK
+CHGRP
+CHMOD
+CHOWN
+CP
+EXPR
+GREP
+INSTALL
+INSTALL_DATA
+INSTALL_PROGRAM
+INSTALL_SCRIPT
+LD
+LEX
+LEXLIB
+LN_S
+MAKE
+MKDIR_P
+PAGER
+PERL
+RANLIB
+RM
+SORT
+SYNC
+TOUCH
+TR
+YACC
+XARGS
 PKG_CONFIG
 CC
 CFLAGS
@@ -1986,6 +2016,42 @@ Optional Packages:
 
 
 Some influential environment variables:
+  AR          Path to the utility for creating static archives
+  AWK         Path to the awk pattern scanning and processing utility
+  CHGRP       Path to the utility for changing group ownership of a file
+  CHMOD       Path to the utility for changing file permissions
+  CHOWN       Path to the utility for changing file ownership
+  CP          Path to the utility for copying a file
+  EXPR        Path to the utility for evaluating arguments as an expression
+  GREP        Path to the utility to search a file for a particular pattern
+  INSTALL     Path to the utility for installing software
+  INSTALL_DATA
+              Command details for installing data
+  INSTALL_PROGRAM
+              Command details for installing programs
+  INSTALL_SCRIPT
+              Command details for installing scripts
+  LD          Path to the linker
+  LEX         Path to the lexical analyser generator program
+  LEXLIB      Name of the lexical analyser library to link against
+  LN_S        The command(s) to create a symbolic link between two files. If
+              symbolic links are unsupported on this platform, the command(s)
+              should create an alternative (usually hard) link between the
+              files
+  MAKE        Path to the make utility
+  MKDIR_P     Command to create a directory even if some of its parents do not
+              initially exist
+  PAGER       Path to the utility for interactive pagewise file browsing
+  PERL        Path to the PERL interpreter
+  RANLIB      Path to any indexing utility that may be required when building
+              static archives
+  RM          Path to the utility for deleting a file
+  SORT        Path to the utility for file sorting
+  SYNC        Path to the command for forcing a flush of output to disk
+  TOUCH       Path to the utility for changing the date of a file
+  TR          Path to the utility for translating characters
+  YACC        Path to the compiler compiler
+  XARGS       Path to the utility for assembling and executing argument lists
   PKG_CONFIG  path to pkg-config utility
   CC          C compiler command
   CFLAGS      C compiler flags
@@ -2886,6 +2952,24 @@ trace ()
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Reset list of external libraries
 #
 echo > ./ExtPkgSupp.$$
@@ -2994,11 +3078,260 @@ case $host_os in *\ *) host_os=`echo "$host_os" | sed 's/ /-/g'`;; esac
 
 # Locate the tools needed to run this script (locate QMake; shell utils;
 # compilers etc.)
-# Check for pkg-config as we may need that next to check for QMake
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          if ( test "x$AR" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_AR=$AR
+          fi
+
+
+          if ( test "x$AWK" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_AWK=$AWK
+          fi
+
+                    if ( test "x$CC" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_CC=$CC
+          fi
+
+                    if ( test "x$CCPP" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_CCPP=$CCPP
+          fi
+
+
+          if ( test "x$CHGRP" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_CHGRP=$CHGRP
+          fi
+
+
+          if ( test "x$CHMOD" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_CHMOD=$CHMOD
+          fi
+
+
+          if ( test "x$CHOWN" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_CHOWN=$CHOWN
+          fi
+
+
+          if ( test "x$CP" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_CP=$CP
+          fi
+
+                    if ( test "x$CXX" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_CXX=$CXX
+          fi
+
+                    if ( test "x$CXXPP" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_CXXPP=$CXXPP
+          fi
+
+
+          if ( test "x$EXPR" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_EXPR=$EXPR
+          fi
+
+
+          if ( test "x$GREP" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_GREP=$GREP
+          fi
+
+
+          if ( test "x$INSTALL" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_INSTALL=$INSTALL
+          fi
+
+
+          if ( test "x$INSTALL_DATA" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_INSTALL_DATA=$INSTALL_DATA
+          fi
+
+
+          if ( test "x$INSTALL_PROGRAM" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_INSTALL_PROGRAM=$INSTALL_PROGRAM
+          fi
+
+
+          if ( test "x$INSTALL_SCRIPT" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_INSTALL_SCRIPT=$INSTALL_SCRIPT
+          fi
+
+
+          if ( test "x$LD" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_LD=$LD
+          fi
+
+
+          if ( test "x$LEX" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_LEX=$LEX
+          fi
+
+
+          if ( test "x$LEXLIB" != x )
+          then
+             # User has supplied their own setting of LEXLIB, record this
+             USER_LEXLIB=$LEXLIB
+          fi
+
+
+          if ( test "x$LN_S" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_LN_S=$LN_S
+          fi
+
+
+          if ( test "x$MAKE" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_MAKE=$MAKE
+          fi
+
+
+          if ( test "x$MKDIR_P" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_MKDIR_P=$MKDIR_P
+          fi
+
+
+          if ( test "x$PAGER" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_PAGER=$PAGER
+          fi
+
+
+          if ( test "x$PERL" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_PERL=$PERL
+          fi
+
+                    if ( test "x$PKG_CONFIG" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_PKG_CONFIG=$PKG_CONFIG
+          fi
+
+
+          if ( test "x$RANLIB" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_RANLIB=$RANLIB
+          fi
+
+
+          if ( test "x$RM" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_RM=$RM
+          fi
+
+
+          if ( test "x$SORT" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_SORT=$SORT
+          fi
+
+
+          if ( test "x$SYNC" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_SYNC=$SYNC
+          fi
+
+
+          if ( test "x$TOUCH" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_TOUCH=$TOUCH
+          fi
+
+
+          if ( test "x$TR" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_TR=$TR
+          fi
+
+
+          if ( test "x$YACC" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_YACC=$YACC
+          fi
+
+
+          if ( test "x$XARGS" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_XARGS=$XARGS
+          fi
+
+
+
+
+
+          # Check for pkg-config as we may need that next to check for QMake
           # and will certainly need it later
           #
-          # First record if the user has supplied an initial path
-          USER_PKG_CONFIG=$PKG_CONFIG
 
 
 if test "x$ac_cv_env_PKG_CONFIG_set" != "xset"; then
@@ -3123,7 +3456,6 @@ fi
           then
              # User has not specified a sed program to use, attempt to
              # find one
-             USER_SED=""
              { $as_echo "$as_me:${as_lineno-$LINENO}: checking for a sed that does not truncate output" >&5
 $as_echo_n "checking for a sed that does not truncate output... " >&6; }
 if test "${ac_cv_path_SED+set}" = set; then :
@@ -3193,10 +3525,6 @@ $as_echo "$ac_cv_path_SED" >&6; }
  SED="$ac_cv_path_SED"
   rm -f conftest.sed
 
-          else
-             # User supplied the sed command to use, remember
-             # this setting.
-             USER_SED=$SED
           fi
 
           # Look for QMake
@@ -3379,7 +3707,15 @@ fi
              if ( test "x$PACKAGE_NAME" == xQMake )
              then
                QMAKE_CFG=`pwd`/Config.QMake
+
+               # If we are configuring QMake itself, we want to explicitly
+               # configure everything ourselves rather than bootstrap from
+               # any existing Config.QMake file.
+               InheritCFG=no
              else
+               # If building a project, we can bootstrap from the local copy
+               # of QMake.
+               InheritCFG=yes
                QMAKE_CFG=`cd ../..; pwd`/QMake/Config.QMake
              fi
 
@@ -3393,6 +3729,9 @@ fi
              # our own copy for building the project. The project build should therefore only
              # build the updated QMake for possible later installation.
              NeededQMake="QMake"
+
+             # We can use the existing settings to bootstrap our own configuration
+             InheritCFG=yes
           fi
 
 
@@ -3676,7 +4015,7 @@ fi
           # can check for what we're about to use...)
 
           # Is there an existing QMake installation to prime the pumps?
-          if test -f $QMAKE_CFG; then :
+          if test "x$InheritCFG" = xyes ; then :
   trace 2 Reading configuration from $QMAKE_CFG
 
                  # We are using an existing QMake so we can use the locations
@@ -3697,101 +4036,59 @@ fi
 
 
                  # Now find the rest of the required programs (if the user
-                 # hasn't specified them). As we do not immediately require most
-                 # of these commands, we need not usually check if we get no
-                 # value back from the config file; the tail end of this macro
-                 # will deal with unset variables. For the odd exceptions (like
-                 # sed, above, or pkg-config) we will check that we get a usable
-                 # value.
+                 # has not specified them). As we do not immediately require
+                 # these commands, we need not check if we get no value back
+                 # from the config file; the tail end of this macro will deal
+                 # with unset variables.
 
                  if ( test "x$AR" = x )
                  then
                     AR=`cat $QMAKE_CFG | $SED -n 's/^AR=\(.*\)/\1/p'`
-                 else
-                    # Remember the user setting so we output it to
-                    # Config.Project.
-                    USER_AR=$AR
                  fi
 
                  if ( test x$AWK = x )
                  then
                     AWK=`cat $QMAKE_CFG | $SED -n 's/^AWK=\(.*\)/\1/p'`
-                 else
-                    # Remember the user setting so we output it to
-                    # Config.Project.
-                    USER_AWK=$AWK
                  fi
 
                  if ( test x$CC = x )
                  then
                     CC=`cat $QMAKE_CFG | $SED -n 's/^CC=\(.*\)/\1/p'`
-                 else
-                    # Remember the user setting so we output it to
-                    # Config.Project.
-                    USER_CC=$CC
                  fi
 
                  if ( test x$CPP = x )
                  then
                     CPP=`cat $QMAKE_CFG | $SED -n 's/^CPP=\(.*\)/\1/p'`
-                 else
-                    # Remember the user setting so we output it to
-                    # Config.Project.
-                    USER_CPP=$CPP
                  fi
 
                  if ( test x$CXX = x )
                  then
                     CXX=`cat $QMAKE_CFG | $SED -n 's/^CXX=\(.*\)/\1/p'`
-                 else
-                    # Remember the user setting so we output it to
-                    # Config.Project.
-                    USER_CXX=$CXX
                  fi
 
                  if ( test x$CXXCPP = x )
                  then
                     CXXCPP=`cat $QMAKE_CFG | $SED -n 's/^CXXCPP=\(.*\)/\1/p'`
-                 else
-                    # Remember the user setting so we output it to
-                    # Config.Project.
-                    USER_CXXCPP=$CXXCPP
                  fi
 
                  if ( test x$EXPR = x )
                  then
                     EXPR=`cat $QMAKE_CFG | $SED -n 's/^EXPR=\(.*\)/\1/p'`
-                 else
-                    # Remember the user setting so we output it to
-                    # Config.Project.
-                    USER_EXPR=$EXPR
                  fi
 
                  if ( test x$GREP = x )
                  then
                     GREP=`cat $QMAKE_CFG | $SED -n 's/^GREP=\(.*\)/\1/p'`
-                 else
-                    # Remember the user setting so we output it to
-                    # Config.Project.
-                    USER_GREP=$GREP
                  fi
 
                  if ( test x$LD = x )
                  then
                     LD=`cat $QMAKE_CFG | $SED -n 's/^LD=\(.*\)/\1/p'`
-                 else
-                    # Remember the user setting so we output it to
-                    # Config.Project.
-                    USER_LD=$LD
                  fi
 
                  if ( test x$MAKE = x )
                  then
                     MAKE=`cat $QMAKE_CFG | $SED -n 's/^MAKE=\(.*\)/\1/p'`
-                 else
-                    # Remember the user setting so we output it to
-                    # Config.Project.
-                    USER_MAKE=$MAKE
                  fi
 
                  # We have already found/used pkg-config, but if the user did not
@@ -3806,25 +4103,15 @@ fi
                     fi
                  fi
 
-
                  if ( test x$SORT = x )
                  then
                     SORT=`cat $QMAKE_CFG | $SED -n 's/^SORT=\(.*\)/\1/p'`
-                 else
-                    # Remember the user setting so we output it to
-                    # Config.Project.
-                    USER_SORT=$SORT
                  fi
 
                  if ( test x$TR = x )
                  then
                     TR=`cat $QMAKE_CFG | $SED -n 's/^TR=\(.*\)/\1/p'`
-                 else
-                    # Remember the user setting so we output it to
-                    # Config.Project.
-                    USER_TR=$TR
                  fi
-
 
 
                  # Process command line switches that effect QMake directly
@@ -3835,13 +4122,13 @@ fi
                     with_rpath=`cat $QMAKE_CFG | $SED -n 's/^USE_LIBPATHSWITCH=\(.*\)/\1/p'`
                     if ( test x$with_rpath != xY )
                     then
-                       # QMake didn't enable it so don't consider it from
+                       # QMake did not enable it so do not consider it from
                        # now on.
                        with_rpath="N"
                     fi
                  fi
 
-                                                                    if ( test x$GET_CWD = x )
+                                                                                     if ( test x$GET_CWD = x )
                  then
                     GET_CWD=`cat $QMAKE_CFG | $SED -n 's/^GET_CWD=\(.*\)/\1/p'`
                  else
@@ -3849,105 +4136,8 @@ fi
                  fi
 
 else
-                  # The definitive list of support programs will be located by
-                 # the configure script from QMake. However, that will only
-                 # get run towards the end of this configure script; we will
-                 # have to ascertain where the programs are for those
-                 # utilities that this script requires.
 
-                 trace 2 No existing QMake configuration, searching for required programs
-
-                 # Utils needed by this script (for direct use)
-
-                 if ( test "x$AR" != x )
-                 then
-                    # Remember the user setting so we output it to
-                    # Config.Project.
-                    USER_AR=$AR
-                 fi
-
-                 if ( test "x$AWK" != x )
-                 then
-                    # Remember the user setting so we output it to
-                    # Config.Project.
-                    USER_AWK=$AWK
-                 fi
-
-
-                 if ( test "x$CC" != x )
-                 then
-                    # Remember the user setting so we output it to
-                    # Config.Project.
-                    USER_CC=$CC
-                 fi
-
-                 if ( test "x$CPP" != x )
-                 then
-                    # Remember the user setting so we output it to
-                    # Config.Project.
-                    USER_CPP=$CPP
-                 fi
-
-                 if ( test "x$CXX" != x )
-                 then
-                    # Remember the user setting so we output it to
-                    # Config.Project.
-                    USER_CXX=$CXX
-                 fi
-
-                 if ( test "x$CXXCPP" != x )
-                 then
-                    # Remember the user setting so we output it to
-                    # Config.Project.
-                    USER_CXXCPP=$CXXCPP
-                 fi
-
-                 if ( test "x$EXPR" != x )
-                 then
-                    # Remember the user setting so we output it to
-                    # Config.Project.
-                    USER_EXPR=$EXPR
-                 fi
-
-                 if ( test "x$GREP" != x )
-                 then
-                    # Remember the user setting so we output it to
-                    # Config.Project.
-                    USER_GREP=$GREP
-                 fi
-
-                 if ( test "x$LD" != x )
-                 then
-                    # Remember the user setting so we output it to
-                    # Config.Project.
-                    USER_LD=$LD
-                 fi
-
-                 if ( test "x$MAKE" != x )
-                 then
-                    # Remember the user setting so we output it to
-                    # Config.Project.
-                    USER_MAKE=$MAKE
-                 fi
-
-                 # No need to look for sed here as we have already located it
-                 # and remembered any user-setting
-
-                 if ( test "x$SORT" != x )
-                 then
-                    # Remember the user setting so we output it to
-                    # Config.Project.
-                    USER_SORT=$SORT
-                 fi
-
-                 if ( test "x$TR" != x )
-                 then
-                    # Remember the user setting so we output it to
-                    # Config.Project.
-                    USER_TR=$TR
-                 fi
-
-                 # Process command line switches that effect QMake directly
+                 trace 2 No existing QMake configuration
 
                                                                                      if ( test x$GET_CWD != x )
                  then
@@ -3957,7 +4147,9 @@ else
 
 fi
 
-          # Fill in any commands we do not yet know the location of
+          # The definitive list of support programs will be located by the
+          # full QMake configure script. However, we have to ascertain where
+          # the programs are for those utilities that this script requires.
           #
           if ( test "x$AR" = x )
           then
@@ -4854,8 +5046,8 @@ ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
 ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
 ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
-          # AC_PROG_CC won't actually have altered CFLAGS if a value was
-          # already set however, if an initial value was not provided,
+          # AC_PROG_CC will not have actually have altered CFLAGS if a value
+          # was already set however, if an initial value was not provided,
           # AC_PROG_CC may have set CFLAGS to include optimisation or -g.
           # As we do not unconditionally want this, we re-initialise CFLAGS
           # to the original value (which may be null or what a user supplied
@@ -5676,7 +5868,10 @@ See \`config.log' for more details." "$LINENO" 5; }
 fi
           fi
 
-                              if ( test "x$LD" = x )
+
+
+
+          if ( test "x$LD" = x )
           then
              # We do not currently know of a specific linker: look for one
 
@@ -5837,14 +6032,17 @@ See \`config.log' for more details." "$LINENO" 5; }
              else
                 { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error "$LD does not appear to correctly specify a linker
+as_fn_error "\$LD does not appear to correctly specify a linker
 See \`config.log' for more details." "$LINENO" 5; }
              fi
           fi
 
 
 
-                              if ( test "X$MAKE" = X )
+
+
+
+          if ( test "X$MAKE" = X )
           then
              # User has not asked for a specific make utility, look for make
              MAKE=make
@@ -19134,7 +19332,7 @@ then
   echo >> ./Config.Project.in
 fi
 
-if ( test "x$CP" != x )
+if ( test "x$USER_CP" != x )
 then
 
   echo CP=@CP@ >> ./Config.Project.in
@@ -19146,19 +19344,19 @@ then
   echo CPP=@USER_CPP@ >> ./Config.Project.in
 fi
 
-if ( test "x$CHGRP" != x )
+if ( test "x$USER_CHGRP" != x )
 then
 
   echo CHGRP=@CHGRP@ >> ./Config.Project.in
 fi
 
-if ( test "x$CHMOD" != x )
+if ( test "x$USER_CHMOD" != x )
 then
 
   echo CHMOD=@CHMOD@ >> ./Config.Project.in
 fi
 
-if ( test "x$CHOWN" != x )
+if ( test "x$USER_CHOWN" != x )
 then
 
   echo CHOWN=@CHOWN@ >> ./Config.Project.in
@@ -19204,22 +19402,28 @@ then
   echo GREP=@USER_GREP@ >> ./Config.Project.in
 fi
 
-if ( test "x$INSTALL" != x )
+if ( test "x$USER_INSTALL" != x )
 then
 
   echo INSTALL=@INSTALL@ >> ./Config.Project.in
 fi
 
-if ( test "x$INSTALL_DATA" != x )
+if ( test "x$USER_INSTALL_DATA" != x )
 then
 
   echo INSTALL_DATA=@INSTALL_DATA@ >> ./Config.Project.in
 fi
 
-if ( test "x$INSTALL_PROGRAM" != x )
+if ( test "x$USER_INSTALL_PROGRAM" != x )
 then
 
   echo INSTALL=@INSTALL_PROGRAM@ >> ./Config.Project.in
+fi
+
+if ( test "x$USER_INSTALL_SCRIPT" != x )
+then
+
+  echo INSTALL_SCRIPT=@INSTALL_SCRIPT@ >> ./Config.Project.in
 fi
 
 if ( test "x$USER_PKG_CONFIG" != x )
@@ -19246,19 +19450,19 @@ then
 
 fi
 
-if ( test "x$LEX" != x )
+if ( test "x$USER_LEX" != x )
 then
 
   echo LEX=@LEX@ >> ./Config.Project.in
 fi
 
-if ( test "x$LEXLIB" != x )
+if ( test "x$USER_LEXLIB" != x )
 then
 
   echo LEXLIB=@LEXLIB@ >> ./Config.Project.in
 fi
 
-if ( test "x$LN_S" != x )
+if ( test "x$USER_LN_S" != x )
 then
 
   echo LN_S=@LN_S@ >> ./Config.Project.in
@@ -19281,19 +19485,19 @@ then
   echo MKDIR_P=@MKDIR_P@ >> ./Config.Project.in
 fi
 
-if ( test "x$PAGER" != x )
+if ( test "x$USER_PAGER" != x )
 then
 
   echo PKG_PAGER=@PAGER@ >> ./Config.Project.in
 fi
 
-if ( test "x$RANLIB" != x )
+if ( test "x$USER_RANLIB" != x )
 then
 
   echo RANLIB=@RANLIB@ >> ./Config.Project.in
 fi
 
-if ( test "x$RM" != x )
+if ( test "x$USER_RM" != x )
 then
 
   echo RM=@RM@ >> ./Config.Project.in
@@ -19311,13 +19515,13 @@ then
   echo SORT=@USER_SORT@ >> ./Config.Project.in
 fi
 
-if ( test "x$SYNC" != x )
+if ( test "x$USER_SYNC" != x )
 then
 
   echo SYNC=@SYNC@ >> ./Config.Project.in
 fi
 
-if ( test "x$TOUCH" != x )
+if ( test "x$USER_TOUCH" != x )
 then
 
   echo TOUCH=@TOUCH@ >> ./Config.Project.in
@@ -19329,13 +19533,13 @@ then
   echo TR=@USER_TR@ >> ./Config.Project.in
 fi
 
-if ( test "x$XARGS" != x )
+if ( test "x$USER_XARGS" != x )
 then
 
   echo XARGS=@XARGS@ >> ./Config.Project.in
 fi
 
-if ( test "x$YACC" != x )
+if ( test "x$USER_YACC" != x )
 then
 
   echo YACC=@YACC@ >> ./Config.Project.in

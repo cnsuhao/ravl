@@ -37,7 +37,9 @@ m4_include([../../QMake/src/AutoTools/AcMacros/QM_LOCATE_KEY_TOOLS])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_LOCATE_LD])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_LOCATE_MAKE])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_LOCATE_QMAKE])
+m4_include([../../QMake/src/AutoTools/AcMacros/QM_LOCATE_QMAKE_DEPS])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_PROCESS_EXTLIBS])
+m4_include([../../QMake/src/AutoTools/AcMacros/QM_READ_USER_ENV])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_SET_ARC])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_SET_ARCHIVER_ARFLAGS])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_SET_COMPILER_CFLAGS])
@@ -947,7 +949,7 @@ then
   echo >> ./Config.Project.in
 fi
 
-if ( test "x$CP" != x )
+if ( test "x$USER_CP" != x )
 then
   AC_SUBST([CP])
   echo CP=@CP@ >> ./Config.Project.in
@@ -959,19 +961,19 @@ then
   echo CPP=@USER_CPP@ >> ./Config.Project.in
 fi
 
-if ( test "x$CHGRP" != x )
+if ( test "x$USER_CHGRP" != x )
 then
   AC_SUBST([CHGRP])
   echo CHGRP=@CHGRP@ >> ./Config.Project.in
 fi
 
-if ( test "x$CHMOD" != x )
+if ( test "x$USER_CHMOD" != x )
 then
   AC_SUBST([CHMOD])
   echo CHMOD=@CHMOD@ >> ./Config.Project.in
 fi
 
-if ( test "x$CHOWN" != x )
+if ( test "x$USER_CHOWN" != x )
 then
   AC_SUBST([CHOWN])
   echo CHOWN=@CHOWN@ >> ./Config.Project.in
@@ -1017,22 +1019,28 @@ then
   echo GREP=@USER_GREP@ >> ./Config.Project.in
 fi
 
-if ( test "x$INSTALL" != x )
+if ( test "x$USER_INSTALL" != x )
 then
   AC_SUBST([INSTALL])
   echo INSTALL=@INSTALL@ >> ./Config.Project.in
 fi
 
-if ( test "x$INSTALL_DATA" != x )
+if ( test "x$USER_INSTALL_DATA" != x )
 then
   AC_SUBST([INSTALL_DATA])
   echo INSTALL_DATA=@INSTALL_DATA@ >> ./Config.Project.in
 fi
 
-if ( test "x$INSTALL_PROGRAM" != x )
+if ( test "x$USER_INSTALL_PROGRAM" != x )
 then
   AC_SUBST([INSTALL_PROGRAM])
   echo INSTALL=@INSTALL_PROGRAM@ >> ./Config.Project.in
+fi
+
+if ( test "x$USER_INSTALL_SCRIPT" != x )
+then
+  AC_SUBST([INSTALL_SCRIPT])
+  echo INSTALL_SCRIPT=@INSTALL_SCRIPT@ >> ./Config.Project.in
 fi
 
 if ( test "x$USER_PKG_CONFIG" != x )
@@ -1059,19 +1067,19 @@ then
 
 fi
 
-if ( test "x$LEX" != x )
+if ( test "x$USER_LEX" != x )
 then
   AC_SUBST([LEX])
   echo LEX=@LEX@ >> ./Config.Project.in
 fi
 
-if ( test "x$LEXLIB" != x )
+if ( test "x$USER_LEXLIB" != x )
 then
   AC_SUBST([LEXLIB])
   echo LEXLIB=@LEXLIB@ >> ./Config.Project.in
 fi
 
-if ( test "x$LN_S" != x )
+if ( test "x$USER_LN_S" != x )
 then
   AC_SUBST([LN_S])
   echo LN_S=@LN_S@ >> ./Config.Project.in
@@ -1094,19 +1102,19 @@ then
   echo MKDIR_P=@MKDIR_P@ >> ./Config.Project.in
 fi
 
-if ( test "x$PAGER" != x )
+if ( test "x$USER_PAGER" != x )
 then
   AC_SUBST([PAGER])
   echo PKG_PAGER=@PAGER@ >> ./Config.Project.in
 fi
 
-if ( test "x$RANLIB" != x )
+if ( test "x$USER_RANLIB" != x )
 then
   AC_SUBST([RANLIB])
   echo RANLIB=@RANLIB@ >> ./Config.Project.in
 fi
 
-if ( test "x$RM" != x )
+if ( test "x$USER_RM" != x )
 then
   AC_SUBST([RM])
   echo RM=@RM@ >> ./Config.Project.in
@@ -1124,13 +1132,13 @@ then
   echo SORT=@USER_SORT@ >> ./Config.Project.in
 fi
 
-if ( test "x$SYNC" != x )
+if ( test "x$USER_SYNC" != x )
 then
   AC_SUBST([SYNC])
   echo SYNC=@SYNC@ >> ./Config.Project.in
 fi
 
-if ( test "x$TOUCH" != x )
+if ( test "x$USER_TOUCH" != x )
 then
   AC_SUBST([TOUCH])
   echo TOUCH=@TOUCH@ >> ./Config.Project.in
@@ -1142,13 +1150,13 @@ then
   echo TR=@USER_TR@ >> ./Config.Project.in
 fi
 
-if ( test "x$XARGS" != x )
+if ( test "x$USER_XARGS" != x )
 then
   AC_SUBST([XARGS])
   echo XARGS=@XARGS@ >> ./Config.Project.in
 fi
 
-if ( test "x$YACC" != x )
+if ( test "x$USER_YACC" != x )
 then
   AC_SUBST([YACC])
   echo YACC=@YACC@ >> ./Config.Project.in
