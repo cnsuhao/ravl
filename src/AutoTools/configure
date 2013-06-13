@@ -20170,11 +20170,11 @@ else
    Xalpha* )
                  # DEC/Compaq/HP Alpha kit
 
-                 trace 3 Disallowing Meteor1 on non 32-bit x86 platforms
+                 trace 3 Disallowing Meteor1 on DEC/Compaq/HP Alpha platforms
                  Meteor1_SUPPORT=""
 
                  # ParallelIO currently unsupported off 32-bit x86
-                 trace 3 Disallowing ParallelIO on non 32-bit x86 platforms
+                 trace 3 Disallowing ParallelIO on DEC/Compaq/HP Alpha platforms
                  ParallelIO_SUPPORT=""
                  ;;
    XNone-at-the-moment )
@@ -20185,11 +20185,11 @@ else
                  # variations in the trace messages to allow execution path
                  # confirmation when debugging).
 
-                 trace 3 Disallowing Meteor1 on non 32-bit x86 platforms
+                 trace 3 Disallowing Meteor1 on new platform
                  Meteor1_SUPPORT=""
 
                  # ParallelIO currently unsupported off 32-bit x86
-                 trace 3 Disallowing ParallelIO on non 32-bit x86 platforms
+                 trace 3 Disallowing ParallelIO on new platform
                  ParallelIO_SUPPORT=""
                  ;;
     X* )
