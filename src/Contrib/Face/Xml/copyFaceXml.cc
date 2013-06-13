@@ -17,6 +17,7 @@
 #include "Ravl/RLog.hh"
 #include "Ravl/Image/Image.hh"
 #include "Ravl/Image/ByteRGBValue.hh"
+#include "Ravl/StringList.hh"
 
 using namespace RavlN;
 using namespace RavlN::FaceN;
@@ -28,10 +29,10 @@ using namespace RavlImageN;
 int main(int argc, char **argv)
 {
   OptionC opt(argc, argv);
-  FilenameC from = opt.String("db", "", "input FaceInfoDb file");
+  StringListC from = opt.List("db", "input FaceInfoDb files");
   DirectoryC to = opt.String("to", "", "change the path of the original images to");
   bool jpg = opt.Boolean("jpg", false, "copy images to jpg (if they are not already)");
-  StringC filename = opt.String("o", from.NameComponent(), "Filename to give XML file.");
+  StringC filename = opt.String("o", "out.xml", "Filename to give XML file.");
 
   // RLog options
   bool verbose = opt.Boolean("v", false, "Verbose mode. ");
@@ -48,7 +49,6 @@ int main(int argc, char **argv)
   RavlN::RLogSubscribeL(logLevel.chars());
 
   // Load in all the XML files into one master one!
-  rInfo("Moving XML from file '%s'.", from.data());
   FaceN::FaceInfoDbC faceInfoDb(from);
 
   if (!to.Exists()) {
@@ -70,6 +70,7 @@ int main(int argc, char **argv)
   rInfo("Image dir '%s'", imageDir.data());
 
   FaceInfoDbC newDb;
+  newDb.AddImagePath(imageDir);
   for (HashIterC<StringC, FaceInfoC> it(faceInfoDb); it; it++) {
 
     FilenameC filename = it.Data().OrigImage();
