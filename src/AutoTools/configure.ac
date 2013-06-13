@@ -977,12 +977,6 @@ then
   echo CHOWN=@CHOWN@ >> ./Config.Project.in
 fi
 
-if ( test "x$USER_CUT" != x )
-then
-  AC_SUBST([USER_CUT])
-  echo CUT=@USER_CUT@ >> ./Config.Project.in
-fi
-
 if ( test "x$USER_CXX" != x )
 then
   AC_SUBST([USER_CXX])

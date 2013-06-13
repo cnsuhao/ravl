@@ -19164,12 +19164,6 @@ then
   echo CHOWN=@CHOWN@ >> ./Config.Project.in
 fi
 
-if ( test "x$USER_CUT" != x )
-then
-
-  echo CUT=@USER_CUT@ >> ./Config.Project.in
-fi
-
 if ( test "x$USER_CXX" != x )
 then
 
