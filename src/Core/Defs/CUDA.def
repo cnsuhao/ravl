@@ -5,7 +5,11 @@ ifndef CUDA_HOME
 ifeq ($(ARC),linux)
   CUDA_HOME=/usr/local/cuda
 else
+ifeq ($(ARC),linux64)
+  CUDA_HOME=/usr/local/cuda
+else
   CUDA_HOME=/Developer/NVIDIA/CUDA-5.0
+endif
 endif
 endif
 
