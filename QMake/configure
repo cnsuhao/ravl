@@ -672,27 +672,8 @@ libavc1394_LIBS
 libavc1394_CFLAGS
 libdc1394_LIBS
 libdc1394_CFLAGS
-XARGS
-SYNC
-PERL
-QMAKE_PAGER
-LN_S
-TOUCH
-RM
-CP
 YFLAGS
-YACC
-RANLIB
-MKDIR_P
-LEXLIB
 LEX_OUTPUT_ROOT
-LEX
-INSTALL_DATA
-INSTALL_SCRIPT
-INSTALL_PROGRAM
-CHOWN
-CHMOD
-CHGRP
 MAKE_SPECIFIC_PARALLEL
 MAKE_SPECIFIC_MAKEFLAGS
 MAKEFLAGS
@@ -723,12 +704,6 @@ COMPILER_DEBUG_CFLAGS
 COMPILER_ANSI_CFLAGS
 CONFIGURE_CFLAGS
 with_rpath
-MAKE
-LD
-TR
-SORT
-GREP
-EXPR
 CXXCPP
 ac_ct_CXX
 CXXFLAGS
@@ -741,14 +716,40 @@ CPPFLAGS
 LDFLAGS
 CFLAGS
 CC
-AWK
-AR
 GET_CWD
 NeededQMake
 WORKING_QMAKE
 QMAKE_CONFIGFILES
 SED
 PKG_CONFIG
+XARGS
+YACC
+TR
+TOUCH
+SYNC
+SORT
+RM
+RANLIB
+PERL
+PAGER
+MKDIR_P
+MAKE
+LN_S
+LEXLIB
+LEX
+LD
+INSTALL_SCRIPT
+INSTALL_PROGRAM
+INSTALL_DATA
+INSTALL
+GREP
+EXPR
+CP
+CHOWN
+CHMOD
+CHGRP
+AWK
+AR
 host_os
 host_vendor
 host_cpu
@@ -893,6 +894,34 @@ with_OpenGL
       ac_precious_vars='build_alias
 host_alias
 target_alias
+AR
+AWK
+CHGRP
+CHMOD
+CHOWN
+CP
+EXPR
+GREP
+INSTALL
+INSTALL_DATA
+INSTALL_PROGRAM
+INSTALL_SCRIPT
+LD
+LEX
+LEXLIB
+LN_S
+MAKE
+MKDIR_P
+PAGER
+PERL
+RANLIB
+RM
+SORT
+SYNC
+TOUCH
+TR
+YACC
+XARGS
 PKG_CONFIG
 CC
 CFLAGS
@@ -904,7 +933,6 @@ CXX
 CXXFLAGS
 CCC
 CXXCPP
-YACC
 YFLAGS'
 
 
@@ -1854,6 +1882,42 @@ Optional Packages:
 
 
 Some influential environment variables:
+  AR          Path to the utility for creating static archives
+  AWK         Path to the awk pattern scanning and processing utility
+  CHGRP       Path to the utility for changing group ownership of a file
+  CHMOD       Path to the utility for changing file permissions
+  CHOWN       Path to the utility for changing file ownership
+  CP          Path to the utility for copying a file
+  EXPR        Path to the utility for evaluating arguments as an expression
+  GREP        Path to the utility to search a file for a particular pattern
+  INSTALL     Path to the utility for installing software
+  INSTALL_DATA
+              Command details for installing data
+  INSTALL_PROGRAM
+              Command details for installing programs
+  INSTALL_SCRIPT
+              Command details for installing scripts
+  LD          Path to the linker
+  LEX         Path to the lexical analyser generator program
+  LEXLIB      Name of the lexical analyser library to link against
+  LN_S        The command(s) to create a symbolic link between two files. If
+              symbolic links are unsupported on this platform, the command(s)
+              should create an alternative (usually hard) link between the
+              files
+  MAKE        Path to the make utility
+  MKDIR_P     Command to create a directory even if some of its parents do not
+              initially exist
+  PAGER       Path to the utility for interactive pagewise file browsing
+  PERL        Path to the PERL interpreter
+  RANLIB      Path to any indexing utility that may be required when building
+              static archives
+  RM          Path to the utility for deleting a file
+  SORT        Path to the utility for file sorting
+  SYNC        Path to the command for forcing a flush of output to disk
+  TOUCH       Path to the utility for changing the date of a file
+  TR          Path to the utility for translating characters
+  YACC        Path to the compiler compiler
+  XARGS       Path to the utility for assembling and executing argument lists
   PKG_CONFIG  path to pkg-config utility
   CC          C compiler command
   CFLAGS      C compiler flags
@@ -1866,8 +1930,6 @@ Some influential environment variables:
   CXX         C++ compiler command
   CXXFLAGS    C++ compiler flags
   CXXCPP      C++ preprocessor
-  YACC        The `Yet Another C Compiler' implementation to use. Defaults to
-              the first program found out of: `bison -y', `byacc', `yacc'.
   YFLAGS      The list of arguments that will be passed by default to $YACC.
               This script will default YFLAGS to the empty string to avoid a
               default value of `-d' given by some make applications.
@@ -2757,6 +2819,24 @@ trace ()
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Main body of configure script
 
 # First determine the current platform
@@ -2860,11 +2940,260 @@ case $host_os in *\ *) host_os=`echo "$host_os" | sed 's/ /-/g'`;; esac
 
 
 # Locate the tools needed to run this script (shell utils, compilers etc.)
-# Check for pkg-config as we may need that next to check for QMake
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          if ( test "x$AR" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_AR=$AR
+          fi
+
+
+          if ( test "x$AWK" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_AWK=$AWK
+          fi
+
+                    if ( test "x$CC" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_CC=$CC
+          fi
+
+                    if ( test "x$CCPP" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_CCPP=$CCPP
+          fi
+
+
+          if ( test "x$CHGRP" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_CHGRP=$CHGRP
+          fi
+
+
+          if ( test "x$CHMOD" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_CHMOD=$CHMOD
+          fi
+
+
+          if ( test "x$CHOWN" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_CHOWN=$CHOWN
+          fi
+
+
+          if ( test "x$CP" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_CP=$CP
+          fi
+
+                    if ( test "x$CXX" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_CXX=$CXX
+          fi
+
+                    if ( test "x$CXXPP" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_CXXPP=$CXXPP
+          fi
+
+
+          if ( test "x$EXPR" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_EXPR=$EXPR
+          fi
+
+
+          if ( test "x$GREP" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_GREP=$GREP
+          fi
+
+
+          if ( test "x$INSTALL" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_INSTALL=$INSTALL
+          fi
+
+
+          if ( test "x$INSTALL_DATA" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_INSTALL_DATA=$INSTALL_DATA
+          fi
+
+
+          if ( test "x$INSTALL_PROGRAM" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_INSTALL_PROGRAM=$INSTALL_PROGRAM
+          fi
+
+
+          if ( test "x$INSTALL_SCRIPT" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_INSTALL_SCRIPT=$INSTALL_SCRIPT
+          fi
+
+
+          if ( test "x$LD" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_LD=$LD
+          fi
+
+
+          if ( test "x$LEX" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_LEX=$LEX
+          fi
+
+
+          if ( test "x$LEXLIB" != x )
+          then
+             # User has supplied their own setting of LEXLIB, record this
+             USER_LEXLIB=$LEXLIB
+          fi
+
+
+          if ( test "x$LN_S" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_LN_S=$LN_S
+          fi
+
+
+          if ( test "x$MAKE" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_MAKE=$MAKE
+          fi
+
+
+          if ( test "x$MKDIR_P" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_MKDIR_P=$MKDIR_P
+          fi
+
+
+          if ( test "x$PAGER" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_PAGER=$PAGER
+          fi
+
+
+          if ( test "x$PERL" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_PERL=$PERL
+          fi
+
+                    if ( test "x$PKG_CONFIG" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_PKG_CONFIG=$PKG_CONFIG
+          fi
+
+
+          if ( test "x$RANLIB" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_RANLIB=$RANLIB
+          fi
+
+
+          if ( test "x$RM" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_RM=$RM
+          fi
+
+
+          if ( test "x$SORT" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_SORT=$SORT
+          fi
+
+
+          if ( test "x$SYNC" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_SYNC=$SYNC
+          fi
+
+
+          if ( test "x$TOUCH" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_TOUCH=$TOUCH
+          fi
+
+
+          if ( test "x$TR" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_TR=$TR
+          fi
+
+
+          if ( test "x$YACC" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_YACC=$YACC
+          fi
+
+
+          if ( test "x$XARGS" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_XARGS=$XARGS
+          fi
+
+
+
+
+
+          # Check for pkg-config as we may need that next to check for QMake
           # and will certainly need it later
           #
-          # First record if the user has supplied an initial path
-          USER_PKG_CONFIG=$PKG_CONFIG
 
 
 if test "x$ac_cv_env_PKG_CONFIG_set" != "xset"; then
@@ -2989,7 +3318,6 @@ fi
           then
              # User has not specified a sed program to use, attempt to
              # find one
-             USER_SED=""
              { $as_echo "$as_me:${as_lineno-$LINENO}: checking for a sed that does not truncate output" >&5
 $as_echo_n "checking for a sed that does not truncate output... " >&6; }
 if test "${ac_cv_path_SED+set}" = set; then :
@@ -3059,10 +3387,6 @@ $as_echo "$ac_cv_path_SED" >&6; }
  SED="$ac_cv_path_SED"
   rm -f conftest.sed
 
-          else
-             # User supplied the sed command to use, remember
-             # this setting.
-             USER_SED=$SED
           fi
 
           # Look for QMake
@@ -3245,7 +3569,15 @@ fi
              if ( test "x$PACKAGE_NAME" == xQMake )
              then
                QMAKE_CFG=`pwd`/Config.QMake
+
+               # If we are configuring QMake itself, we want to explicitly
+               # configure everything ourselves rather than bootstrap from
+               # any existing Config.QMake file.
+               InheritCFG=no
              else
+               # If building a project, we can bootstrap from the local copy
+               # of QMake.
+               InheritCFG=yes
                QMAKE_CFG=`cd ../..; pwd`/QMake/Config.QMake
              fi
 
@@ -3259,6 +3591,9 @@ fi
              # our own copy for building the project. The project build should therefore only
              # build the updated QMake for possible later installation.
              NeededQMake="QMake"
+
+             # We can use the existing settings to bootstrap our own configuration
+             InheritCFG=yes
           fi
 
 
@@ -3542,7 +3877,7 @@ fi
           # can check for what we're about to use...)
 
           # Is there an existing QMake installation to prime the pumps?
-          if test -f $QMAKE_CFG; then :
+          if test "x$InheritCFG" = xyes ; then :
   trace 2 Reading configuration from $QMAKE_CFG
 
                  # We are using an existing QMake so we can use the locations
@@ -3563,101 +3898,59 @@ fi
 
 
                  # Now find the rest of the required programs (if the user
-                 # hasn't specified them). As we do not immediately require most
-                 # of these commands, we need not usually check if we get no
-                 # value back from the config file; the tail end of this macro
-                 # will deal with unset variables. For the odd exceptions (like
-                 # sed, above, or pkg-config) we will check that we get a usable
-                 # value.
+                 # has not specified them). As we do not immediately require
+                 # these commands, we need not check if we get no value back
+                 # from the config file; the tail end of this macro will deal
+                 # with unset variables.
 
                  if ( test "x$AR" = x )
                  then
                     AR=`cat $QMAKE_CFG | $SED -n 's/^AR=\(.*\)/\1/p'`
-                 else
-                    # Remember the user setting so we output it to
-                    # Config.Project.
-                    USER_AR=$AR
                  fi
 
                  if ( test x$AWK = x )
                  then
                     AWK=`cat $QMAKE_CFG | $SED -n 's/^AWK=\(.*\)/\1/p'`
-                 else
-                    # Remember the user setting so we output it to
-                    # Config.Project.
-                    USER_AWK=$AWK
                  fi
 
                  if ( test x$CC = x )
                  then
                     CC=`cat $QMAKE_CFG | $SED -n 's/^CC=\(.*\)/\1/p'`
-                 else
-                    # Remember the user setting so we output it to
-                    # Config.Project.
-                    USER_CC=$CC
                  fi
 
                  if ( test x$CPP = x )
                  then
                     CPP=`cat $QMAKE_CFG | $SED -n 's/^CPP=\(.*\)/\1/p'`
-                 else
-                    # Remember the user setting so we output it to
-                    # Config.Project.
-                    USER_CPP=$CPP
                  fi
 
                  if ( test x$CXX = x )
                  then
                     CXX=`cat $QMAKE_CFG | $SED -n 's/^CXX=\(.*\)/\1/p'`
-                 else
-                    # Remember the user setting so we output it to
-                    # Config.Project.
-                    USER_CXX=$CXX
                  fi
 
                  if ( test x$CXXCPP = x )
                  then
                     CXXCPP=`cat $QMAKE_CFG | $SED -n 's/^CXXCPP=\(.*\)/\1/p'`
-                 else
-                    # Remember the user setting so we output it to
-                    # Config.Project.
-                    USER_CXXCPP=$CXXCPP
                  fi
 
                  if ( test x$EXPR = x )
                  then
                     EXPR=`cat $QMAKE_CFG | $SED -n 's/^EXPR=\(.*\)/\1/p'`
-                 else
-                    # Remember the user setting so we output it to
-                    # Config.Project.
-                    USER_EXPR=$EXPR
                  fi
 
                  if ( test x$GREP = x )
                  then
                     GREP=`cat $QMAKE_CFG | $SED -n 's/^GREP=\(.*\)/\1/p'`
-                 else
-                    # Remember the user setting so we output it to
-                    # Config.Project.
-                    USER_GREP=$GREP
                  fi
 
                  if ( test x$LD = x )
                  then
                     LD=`cat $QMAKE_CFG | $SED -n 's/^LD=\(.*\)/\1/p'`
-                 else
-                    # Remember the user setting so we output it to
-                    # Config.Project.
-                    USER_LD=$LD
                  fi
 
                  if ( test x$MAKE = x )
                  then
                     MAKE=`cat $QMAKE_CFG | $SED -n 's/^MAKE=\(.*\)/\1/p'`
-                 else
-                    # Remember the user setting so we output it to
-                    # Config.Project.
-                    USER_MAKE=$MAKE
                  fi
 
                  # We have already found/used pkg-config, but if the user did not
@@ -3672,25 +3965,15 @@ fi
                     fi
                  fi
 
-
                  if ( test x$SORT = x )
                  then
                     SORT=`cat $QMAKE_CFG | $SED -n 's/^SORT=\(.*\)/\1/p'`
-                 else
-                    # Remember the user setting so we output it to
-                    # Config.Project.
-                    USER_SORT=$SORT
                  fi
 
                  if ( test x$TR = x )
                  then
                     TR=`cat $QMAKE_CFG | $SED -n 's/^TR=\(.*\)/\1/p'`
-                 else
-                    # Remember the user setting so we output it to
-                    # Config.Project.
-                    USER_TR=$TR
                  fi
-
 
 
                  # Process command line switches that effect QMake directly
@@ -3701,13 +3984,13 @@ fi
                     with_rpath=`cat $QMAKE_CFG | $SED -n 's/^USE_LIBPATHSWITCH=\(.*\)/\1/p'`
                     if ( test x$with_rpath != xY )
                     then
-                       # QMake didn't enable it so don't consider it from
+                       # QMake did not enable it so do not consider it from
                        # now on.
                        with_rpath="N"
                     fi
                  fi
 
-                                                                    if ( test x$GET_CWD = x )
+                                                                                     if ( test x$GET_CWD = x )
                  then
                     GET_CWD=`cat $QMAKE_CFG | $SED -n 's/^GET_CWD=\(.*\)/\1/p'`
                  else
@@ -3715,105 +3998,8 @@ fi
                  fi
 
 else
-                  # The definitive list of support programs will be located by
-                 # the configure script from QMake. However, that will only
-                 # get run towards the end of this configure script; we will
-                 # have to ascertain where the programs are for those
-                 # utilities that this script requires.
 
-                 trace 2 No existing QMake configuration, searching for required programs
-
-                 # Utils needed by this script (for direct use)
-
-                 if ( test "x$AR" != x )
-                 then
-                    # Remember the user setting so we output it to
-                    # Config.Project.
-                    USER_AR=$AR
-                 fi
-
-                 if ( test "x$AWK" != x )
-                 then
-                    # Remember the user setting so we output it to
-                    # Config.Project.
-                    USER_AWK=$AWK
-                 fi
-
-
-                 if ( test "x$CC" != x )
-                 then
-                    # Remember the user setting so we output it to
-                    # Config.Project.
-                    USER_CC=$CC
-                 fi
-
-                 if ( test "x$CPP" != x )
-                 then
-                    # Remember the user setting so we output it to
-                    # Config.Project.
-                    USER_CPP=$CPP
-                 fi
-
-                 if ( test "x$CXX" != x )
-                 then
-                    # Remember the user setting so we output it to
-                    # Config.Project.
-                    USER_CXX=$CXX
-                 fi
-
-                 if ( test "x$CXXCPP" != x )
-                 then
-                    # Remember the user setting so we output it to
-                    # Config.Project.
-                    USER_CXXCPP=$CXXCPP
-                 fi
-
-                 if ( test "x$EXPR" != x )
-                 then
-                    # Remember the user setting so we output it to
-                    # Config.Project.
-                    USER_EXPR=$EXPR
-                 fi
-
-                 if ( test "x$GREP" != x )
-                 then
-                    # Remember the user setting so we output it to
-                    # Config.Project.
-                    USER_GREP=$GREP
-                 fi
-
-                 if ( test "x$LD" != x )
-                 then
-                    # Remember the user setting so we output it to
-                    # Config.Project.
-                    USER_LD=$LD
-                 fi
-
-                 if ( test "x$MAKE" != x )
-                 then
-                    # Remember the user setting so we output it to
-                    # Config.Project.
-                    USER_MAKE=$MAKE
-                 fi
-
-                 # No need to look for sed here as we have already located it
-                 # and remembered any user-setting
-
-                 if ( test "x$SORT" != x )
-                 then
-                    # Remember the user setting so we output it to
-                    # Config.Project.
-                    USER_SORT=$SORT
-                 fi
-
-                 if ( test "x$TR" != x )
-                 then
-                    # Remember the user setting so we output it to
-                    # Config.Project.
-                    USER_TR=$TR
-                 fi
-
-                 # Process command line switches that effect QMake directly
+                 trace 2 No existing QMake configuration
 
                                                                                      if ( test x$GET_CWD != x )
                  then
@@ -3823,7 +4009,9 @@ else
 
 fi
 
-          # Fill in any commands we do not yet know the location of
+          # The definitive list of support programs will be located by the
+          # full QMake configure script. However, we have to ascertain where
+          # the programs are for those utilities that this script requires.
           #
           if ( test "x$AR" = x )
           then
@@ -4720,8 +4908,8 @@ ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
 ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
 ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
-          # AC_PROG_CC won't actually have altered CFLAGS if a value was
-          # already set however, if an initial value was not provided,
+          # AC_PROG_CC will not have actually have altered CFLAGS if a value
+          # was already set however, if an initial value was not provided,
           # AC_PROG_CC may have set CFLAGS to include optimisation or -g.
           # As we do not unconditionally want this, we re-initialise CFLAGS
           # to the original value (which may be null or what a user supplied
@@ -5542,7 +5730,10 @@ See \`config.log' for more details." "$LINENO" 5; }
 fi
           fi
 
-                              if ( test "x$LD" = x )
+
+
+
+          if ( test "x$LD" = x )
           then
              # We do not currently know of a specific linker: look for one
 
@@ -5703,14 +5894,17 @@ See \`config.log' for more details." "$LINENO" 5; }
              else
                 { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error "$LD does not appear to correctly specify a linker
+as_fn_error "\$LD does not appear to correctly specify a linker
 See \`config.log' for more details." "$LINENO" 5; }
              fi
           fi
 
 
 
-                              if ( test "X$MAKE" = X )
+
+
+
+          if ( test "X$MAKE" = X )
           then
              # User has not asked for a specific make utility, look for make
              MAKE=make
@@ -5795,19 +5989,6 @@ as_fn_error "\$MAKE does not specify a usable make utility
 See \`config.log' for more details." "$LINENO" 5; }
              fi
           fi
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -6093,164 +6274,7 @@ trace 2 Set make specific MAKEFLAGS
 
 
 
-# Check for remaining utils
-
 # Check for programs needed by QMake
-# First check for those programs that GNU coding standards regard as safe to use
-# in a makefile if they are employed via make variables (and thus create the
-# necessary variables)
-# Extract the first word of "chgrp", so it can be a program name with args.
-set dummy chgrp; ac_word=$2
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
-$as_echo_n "checking for $ac_word... " >&6; }
-if test "${ac_cv_path_CHGRP+set}" = set; then :
-  $as_echo_n "(cached) " >&6
-else
-  case $CHGRP in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_CHGRP="$CHGRP" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-    for ac_exec_ext in '' $ac_executable_extensions; do
-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_CHGRP="$as_dir/$ac_word$ac_exec_ext"
-    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-  done
-IFS=$as_save_IFS
-
-  test -z "$ac_cv_path_CHGRP" && ac_cv_path_CHGRP="missing"
-  ;;
-esac
-fi
-CHGRP=$ac_cv_path_CHGRP
-if test -n "$CHGRP"; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $CHGRP" >&5
-$as_echo "$CHGRP" >&6; }
-else
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-fi
-
-
-if test $CHGRP = missing; then :
-  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error "Cannot find a working chgrp required for using QMake
-See \`config.log' for more details." "$LINENO" 5; }
-
-fi
-
-
-# Extract the first word of "chmod", so it can be a program name with args.
-set dummy chmod; ac_word=$2
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
-$as_echo_n "checking for $ac_word... " >&6; }
-if test "${ac_cv_path_CHMOD+set}" = set; then :
-  $as_echo_n "(cached) " >&6
-else
-  case $CHMOD in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_CHMOD="$CHMOD" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-    for ac_exec_ext in '' $ac_executable_extensions; do
-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_CHMOD="$as_dir/$ac_word$ac_exec_ext"
-    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-  done
-IFS=$as_save_IFS
-
-  test -z "$ac_cv_path_CHMOD" && ac_cv_path_CHMOD="missing"
-  ;;
-esac
-fi
-CHMOD=$ac_cv_path_CHMOD
-if test -n "$CHMOD"; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $CHMOD" >&5
-$as_echo "$CHMOD" >&6; }
-else
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-fi
-
-
-if test $CHMOD = missing; then :
-  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error "Cannot find a working chmod required for using QMake
-See \`config.log' for more details." "$LINENO" 5; }
-
-fi
-
-
-# Extract the first word of "chown", so it can be a program name with args.
-set dummy chown; ac_word=$2
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
-$as_echo_n "checking for $ac_word... " >&6; }
-if test "${ac_cv_path_CHOWN+set}" = set; then :
-  $as_echo_n "(cached) " >&6
-else
-  case $CHOWN in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_CHOWN="$CHOWN" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-    for ac_exec_ext in '' $ac_executable_extensions; do
-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_CHOWN="$as_dir/$ac_word$ac_exec_ext"
-    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-  done
-IFS=$as_save_IFS
-
-  test -z "$ac_cv_path_CHOWN" && ac_cv_path_CHOWN="missing"
-  ;;
-esac
-fi
-CHOWN=$ac_cv_path_CHOWN
-if test -n "$CHOWN"; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $CHOWN" >&5
-$as_echo "$CHOWN" >&6; }
-else
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-fi
-
-
-if test $CHOWN = missing; then :
-  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error "Cannot find a working chown required for using QMake
-See \`config.log' for more details." "$LINENO" 5; }
-
-fi
-
-
-# Check for install-sh as it is needed directly by QMake and it also may be
-# needed for mkdir -p support
 # Find a good install program.  We prefer a C program (faster),
 # so one script is as good as another.  But avoid the broken or
 # incompatible versions:
@@ -6343,7 +6367,6 @@ test -z "$INSTALL_PROGRAM" && INSTALL_PROGRAM='${INSTALL}'
 test -z "$INSTALL_SCRIPT" && INSTALL_SCRIPT='${INSTALL}'
 
 test -z "$INSTALL_DATA" && INSTALL_DATA='${INSTALL} -m 644'
-
 
 
 for ac_prog in flex lex
@@ -6503,11 +6526,6 @@ fi
 rm -f conftest.l $LEX_OUTPUT_ROOT.c
 
 fi
-
-
-
-# Ensure we have a mkdir -p capability (will use install-sh on systems without
-# a native mkdir -p)
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for a thread-safe mkdir -p" >&5
 $as_echo_n "checking for a thread-safe mkdir -p... " >&6; }
 if test -z "$MKDIR_P"; then
@@ -6552,8 +6570,307 @@ $as_echo "$MKDIR_P" >&6; }
 
 
 
-# Ranlib program (if necessary)
-if test -n "$ac_tool_prefix"; then
+
+          # Locate the requisite dependencies
+
+          # First check for those programs that GNU coding standards regard as
+          # safe to use in a makefile if they are employed via make variables
+          # (and thus create the necessary variables)
+
+          if ( test "x$USER_CHGRP" = x )
+          then
+             # User has not specified a CHGRP program to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                CHGRP=`cat $QMAKE_CFG | $SED  -n 's/^CHGRP=\(.*\)/\1/p'`
+             fi
+             if ( test "x$CHGRP" = x )
+             then
+                # We still do not have a setting, attempt to find one
+                # Extract the first word of "chgrp", so it can be a program name with args.
+set dummy chgrp; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_CHGRP+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $CHGRP in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_CHGRP="$CHGRP" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_CHGRP="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_CHGRP" && ac_cv_path_CHGRP="missing"
+  ;;
+esac
+fi
+CHGRP=$ac_cv_path_CHGRP
+if test -n "$CHGRP"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $CHGRP" >&5
+$as_echo "$CHGRP" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+             fi
+          fi
+          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES CHGRP"
+
+          if ( test "x$USER_CHMOD" = x )
+          then
+             # User has not specified a CHMOD program to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                CHMOD=`cat $QMAKE_CFG | $SED  -n 's/^CHMOD=\(.*\)/\1/p'`
+             fi
+             if ( test "x$CHMOD" = x )
+             then
+                # We still do not have a setting, attempt to find one
+                # Extract the first word of "chmod", so it can be a program name with args.
+set dummy chmod; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_CHMOD+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $CHMOD in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_CHMOD="$CHMOD" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_CHMOD="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_CHMOD" && ac_cv_path_CHMOD="missing"
+  ;;
+esac
+fi
+CHMOD=$ac_cv_path_CHMOD
+if test -n "$CHMOD"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $CHMOD" >&5
+$as_echo "$CHMOD" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+             fi
+          fi
+          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES CHMOD"
+
+          if ( test "x$USER_CHOWN" = x )
+          then
+             # User has not specified a CHOWN program to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                CHOWN=`cat $QMAKE_CFG | $SED  -n 's/^CHOWN=\(.*\)/\1/p'`
+             fi
+             if ( test "x$CHOWN" = x )
+             then
+                # We still do not have a setting, attempt to find one
+                # Extract the first word of "chown", so it can be a program name with args.
+set dummy chown; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_CHOWN+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $CHOWN in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_CHOWN="$CHOWN" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_CHOWN="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_CHOWN" && ac_cv_path_CHOWN="missing"
+  ;;
+esac
+fi
+CHOWN=$ac_cv_path_CHOWN
+if test -n "$CHOWN"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $CHOWN" >&5
+$as_echo "$CHOWN" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+             fi
+          fi
+          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES CHOWN"
+
+
+          if ( test "x$USER_INSTALL" = x )
+          then
+             # User has not specified a INSTALL program to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                OriginalSetting=`cat $QMAKE_CFG | $SED  -n 's/^INSTALL=\(.*\)/\1/p'`
+                if ( test "x$OriginalSetting" != x )
+                then
+                   INSTALL=$OriginalSetting
+                   # Prefer any original setting over the value set from the
+                   # AC_PROG_INSTALL macro
+                fi
+             fi
+          fi
+          if ( test "x$USER_INSTALL_DATA" = x )
+          then
+             # User has not specified INSTALL_DATA do we have an existing
+             # setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                OriginalSetting=`cat $QMAKE_CFG | $SED  -n 's/^INSTALL_DATA=\(.*\)/\1/p'`
+                if ( test "x$OriginalSetting" != x )
+                then
+                   INSTALL_DATA=$OriginalSetting
+                   # Prefer any original setting over the value set from the
+                   # AC_PROG_INSTALL macro
+                fi
+             fi
+          fi
+          if ( test "x$USER_INSTALL_PROGRAM" = x )
+          then
+             # User has not specified INSTALL_PROGRAM do we have an existing
+             # setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                OriginalSetting=`cat $QMAKE_CFG | $SED  -n 's/^INSTALL_PROGRAM=\(.*\)/\1/p'`
+                if ( test "x$OriginalSetting" != x )
+                then
+                   INSTALL_PROGRAM=$OriginalSetting
+                   # Prefer any original setting over the value set from the
+                   # AC_PROG_INSTALL macro
+                fi
+             fi
+          fi
+          if ( test "x$USER_INSTALL_SCRIPT" = x )
+          then
+             # User has not specified INSTALL_SCRIPT, do we have an existing
+             # setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                OriginalSetting=`cat $QMAKE_CFG | $SED  -n 's/^INSTALL_SCRIPT=\(.*\)/\1/p'`
+                if ( test "x$OriginalSetting" != x )
+                then
+                   INSTALL_SCRIPT=$OriginalSetting
+                   # Prefer any original setting over the value set from the
+                   # AC_PROG_INSTALL macro
+                fi
+             fi
+          fi
+          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES INSTALL INSTALL_DATA INSTALL_PROGRAM INSTALL_SCRIPT"
+
+
+          if ( test "x$USER_LEX" = x )
+          then
+             # User has not specified a LEX program to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                OriginalSetting=`cat $QMAKE_CFG | $SED  -n 's/^LEX=\(.*\)/\1/p'`
+                if ( test "x$OriginalSetting" != x )
+                then
+                   LEX=$OriginalSetting
+                   # Prefer any original setting over the value set from the
+                   # AC_PROG_LEX macro
+                fi
+             fi
+          fi
+          if ( test "x$USER_LEXLIB" = x )
+          then
+             # User has not specified a LEXLIB to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                OriginalSetting=`cat $QMAKE_CFG | $SED  -n 's/^LEXLIB=\(.*\)/\1/p'`
+                if ( test "x$OriginalSetting" != x )
+                then
+                   LEXLIB=$OriginalSetting
+                   # Prefer any original setting over the value set from the
+                   # AC_PROG_LEX macro
+                fi
+             fi
+          fi
+          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES LEX LEXLIB"
+
+
+          if ( test "x$USER_MKDIR_P" = x )
+          then
+             # User has not specified a MKDIR_P program to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                OriginalSetting=`cat $QMAKE_CFG | $SED  -n 's/^MKDIR_P=\(.*\)/\1/p'`
+                if ( test "x$OriginalSetting" != x )
+                then
+                   MKDIR_P=$OriginalSetting
+                   # Prefer any original setting over the value set from the
+                   # AC_MKDIR_P macro
+                fi
+             fi
+          fi
+          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES MKDIR_P"
+
+          if ( test "x$USER_RANLIB" = x )
+          then
+             # User has not specified a RANLIB program to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                RANLIB=`cat $QMAKE_CFG | $SED  -n 's/^RANLIB=\(.*\)/\1/p'`
+             fi
+             if ( test "x$RANLIB" = x )
+             then
+                # We still do not have a setting, attempt to find one
+                if test -n "$ac_tool_prefix"; then
   # Extract the first word of "${ac_tool_prefix}ranlib", so it can be a program name with args.
 set dummy ${ac_tool_prefix}ranlib; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
@@ -6645,11 +6962,24 @@ else
   RANLIB="$ac_cv_prog_RANLIB"
 fi
 
+                # Slight weakness of this check is that if ranlib is not
+                # found, we assume it is not needed (set RANLIB to ":")
+             fi
+          fi
+          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES RANLIB"
 
-# Slight weakness of this check is that if ranlib is not found, we assume it is
-# not needed (set RANLIB to ":")
-
-for ac_prog in 'bison -y' byacc
+          if ( test "x$YACC" = x )
+          then
+             # User has not specified a YACC program to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                YACC=`cat $QMAKE_CFG | $SED  -n 's/^YACC=\(.*\)/\1/p'`
+             fi
+             if ( test "x$YACC" = x )
+             then
+                # We still do not have a setting, attempt to find one
+                for ac_prog in 'bison -y' byacc
 do
   # Extract the first word of "$ac_prog", so it can be a program name with args.
 set dummy $ac_prog; ac_word=$2
@@ -6692,11 +7022,25 @@ fi
 done
 test -n "$YACC" || YACC="yacc"
 
+             fi
+          fi
+          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES YACC"
 
+          # GNU standards regard the following safe to call directly but as we
+          # already implemented them via a make variable, set those here...
 
-# GNU standards regard the following safe to call directly but as we already
-# implemented them via a make variable, set those here...
-# Extract the first word of "cp", so it can be a program name with args.
+          if ( test "x$USER_CP" = x )
+          then
+             # User has not specified a CP program to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                CP=`cat $QMAKE_CFG | $SED  -n 's/^CP=\(.*\)/\1/p'`
+             fi
+             if ( test "x$CP" = x )
+             then
+                # We still do not have a setting, attempt to find one
+                # Extract the first word of "cp", so it can be a program name with args.
 set dummy cp; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
 $as_echo_n "checking for $ac_word... " >&6; }
@@ -6737,16 +7081,22 @@ $as_echo "no" >&6; }
 fi
 
 
-if test $CP = missing; then :
-  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error "Cannot find a working cp required for using QMake
-See \`config.log' for more details." "$LINENO" 5; }
+             fi
+          fi
+          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES CP"
 
-fi
-
-
-# Extract the first word of "rm", so it can be a program name with args.
+          if ( test "x$USER_RM" = x )
+          then
+             # User has not specified a RM program to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                RM=`cat $QMAKE_CFG | $SED  -n 's/^RM=\(.*\)/\1/p'`
+             fi
+             if ( test "x$RM" = x )
+             then
+                # We still do not have a setting, attempt to find one
+                # Extract the first word of "rm", so it can be a program name with args.
 set dummy rm; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
 $as_echo_n "checking for $ac_word... " >&6; }
@@ -6787,16 +7137,22 @@ $as_echo "no" >&6; }
 fi
 
 
-if test $RM = missing; then :
-  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error "Cannot find a working rm required for using QMake
-See \`config.log' for more details." "$LINENO" 5; }
+             fi
+          fi
+          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES RM"
 
-fi
-
-
-# Extract the first word of "touch", so it can be a program name with args.
+          if ( test "x$USER_TOUCH" = x )
+          then
+             # User has not specified a TOUCH program to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                TOUCH=`cat $QMAKE_CFG | $SED  -n 's/^TOUCH=\(.*\)/\1/p'`
+             fi
+             if ( test "x$TOUCH" = x )
+             then
+                # We still do not have a setting, attempt to find one
+                # Extract the first word of "touch", so it can be a program name with args.
 set dummy touch; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
 $as_echo_n "checking for $ac_word... " >&6; }
@@ -6837,21 +7193,27 @@ $as_echo "no" >&6; }
 fi
 
 
-if test $TOUCH = missing; then :
-  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error "Cannot find a working touch required for using QMake
-See \`config.log' for more details." "$LINENO" 5; }
+             fi
+          fi
+          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES TOUCH"
 
-fi
+          #  Now check for those utilities used by QMake which are not
+          # recognised as being reliably portable by the GNU standard.
+          # For these, we will need to consider providing an alternative
+          # implementation in cases where any are absent.
 
-
-
-
-# Now check for those utilities we use in the build process that aren't recognised
-# as being reliably portable by the GNU standard. For these, we will need to
-# consider providing an alternative implementation in cases where any are absent.
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether ln -s works" >&5
+          if ( test "x$USER_LN_S" = x )
+          then
+             # User has not specified a LN_S program to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                LN_S=`cat $QMAKE_CFG | $SED  -n 's/^LN_S=\(.*\)/\1/p'`
+             fi
+             if ( test "x$LN_S" = x )
+             then
+                # We still do not have a setting, attempt to find one
+                { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether ln -s works" >&5
 $as_echo_n "checking whether ln -s works... " >&6; }
 LN_S=$as_ln_s
 if test "$LN_S" = "ln -s"; then
@@ -6862,19 +7224,31 @@ else
 $as_echo "no, using $LN_S" >&6; }
 fi
 
+             fi
+          fi
+          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES LN_S"
 
-
-if test x$PAGER = x; then :
-  # Extract the first word of "more", so it can be a program name with args.
+          if ( test "x$USER_PAGER" = x )
+          then
+             # User has not specified a PAGER to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                PAGER=`cat $QMAKE_CFG | $SED  -n 's/^QMAKE_PAGER=\(.*\)/\1/p'`
+             fi
+             if ( test "x$PAGER" = x )
+             then
+                # We still do not have a setting, attempt to find one
+                # Extract the first word of "more", so it can be a program name with args.
 set dummy more; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
 $as_echo_n "checking for $ac_word... " >&6; }
-if test "${ac_cv_path_QMAKE_PAGER+set}" = set; then :
+if test "${ac_cv_path_PAGER+set}" = set; then :
   $as_echo_n "(cached) " >&6
 else
-  case $QMAKE_PAGER in
+  case $PAGER in
   [\\/]* | ?:[\\/]*)
-  ac_cv_path_QMAKE_PAGER="$QMAKE_PAGER" # Let the user override the test with a path.
+  ac_cv_path_PAGER="$PAGER" # Let the user override the test with a path.
   ;;
   *)
   as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
@@ -6884,7 +7258,7 @@ do
   test -z "$as_dir" && as_dir=.
     for ac_exec_ext in '' $ac_executable_extensions; do
   if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_QMAKE_PAGER="$as_dir/$ac_word$ac_exec_ext"
+    ac_cv_path_PAGER="$as_dir/$ac_word$ac_exec_ext"
     $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
     break 2
   fi
@@ -6892,31 +7266,32 @@ done
   done
 IFS=$as_save_IFS
 
-  test -z "$ac_cv_path_QMAKE_PAGER" && ac_cv_path_QMAKE_PAGER="missing"
+  test -z "$ac_cv_path_PAGER" && ac_cv_path_PAGER="missing"
   ;;
 esac
 fi
-QMAKE_PAGER=$ac_cv_path_QMAKE_PAGER
-if test -n "$QMAKE_PAGER"; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $QMAKE_PAGER" >&5
-$as_echo "$QMAKE_PAGER" >&6; }
+PAGER=$ac_cv_path_PAGER
+if test -n "$PAGER"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PAGER" >&5
+$as_echo "$PAGER" >&6; }
 else
   { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
 $as_echo "no" >&6; }
 fi
 
 
-       if test $QMAKE_PAGER = missing; then :
-  # Extract the first word of "pg", so it can be a program name with args.
+                if ( test "x$PAGER" = xmissing )
+                then
+                   # Extract the first word of "pg", so it can be a program name with args.
 set dummy pg; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
 $as_echo_n "checking for $ac_word... " >&6; }
-if test "${ac_cv_path_QMAKE_PAGER+set}" = set; then :
+if test "${ac_cv_path_PAGER+set}" = set; then :
   $as_echo_n "(cached) " >&6
 else
-  case $QMAKE_PAGER in
+  case $PAGER in
   [\\/]* | ?:[\\/]*)
-  ac_cv_path_QMAKE_PAGER="$QMAKE_PAGER" # Let the user override the test with a path.
+  ac_cv_path_PAGER="$PAGER" # Let the user override the test with a path.
   ;;
   *)
   as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
@@ -6926,7 +7301,7 @@ do
   test -z "$as_dir" && as_dir=.
     for ac_exec_ext in '' $ac_executable_extensions; do
   if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_QMAKE_PAGER="$as_dir/$ac_word$ac_exec_ext"
+    ac_cv_path_PAGER="$as_dir/$ac_word$ac_exec_ext"
     $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
     break 2
   fi
@@ -6934,38 +7309,37 @@ done
   done
 IFS=$as_save_IFS
 
-  test -z "$ac_cv_path_QMAKE_PAGER" && ac_cv_path_QMAKE_PAGER="missing"
+  test -z "$ac_cv_path_PAGER" && ac_cv_path_PAGER="missing"
   ;;
 esac
 fi
-QMAKE_PAGER=$ac_cv_path_QMAKE_PAGER
-if test -n "$QMAKE_PAGER"; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $QMAKE_PAGER" >&5
-$as_echo "$QMAKE_PAGER" >&6; }
+PAGER=$ac_cv_path_PAGER
+if test -n "$PAGER"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PAGER" >&5
+$as_echo "$PAGER" >&6; }
 else
   { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
 $as_echo "no" >&6; }
 fi
 
 
-              if test $QMAKE_PAGER = missing; then :
-  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error "Cannot find a working pager required for using QMake
-See \`config.log' for more details." "$LINENO" 5; }
+                fi
+             fi
+          fi
+          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES PAGER"
 
-fi
-
-
-fi
-
-else
-  QMAKE_PAGER=$PAGER
-
-fi
-
-
-# Extract the first word of "perl", so it can be a program name with args.
+          if ( test "x$USER_PERL" = x )
+          then
+             # User has not specified the PERL interpreter to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                PERL=`cat $QMAKE_CFG | $SED  -n 's/^PERL=\(.*\)/\1/p'`
+             fi
+             if ( test "x$PERL" = x )
+             then
+                # We still do not have a setting, attempt to find one
+                # Extract the first word of "perl", so it can be a program name with args.
 set dummy perl; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
 $as_echo_n "checking for $ac_word... " >&6; }
@@ -7006,16 +7380,22 @@ $as_echo "no" >&6; }
 fi
 
 
-if test $PERL = missing; then :
-  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error "Cannot find a working copy of Perl
-See \`config.log' for more details." "$LINENO" 5; }
+             fi
+          fi
+          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES PERL"
 
-fi
-
-
-# Extract the first word of "sync", so it can be a program name with args.
+          if ( test "x$USER_SYNC" = x )
+          then
+             # User has not specified a SYNC program to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                SYNC=`cat $QMAKE_CFG | $SED  -n 's/^SYNC=\(.*\)/\1/p'`
+             fi
+             if ( test "x$SYNC" = x )
+             then
+                # We still do not have a setting, attempt to find one
+                # Extract the first word of "sync", so it can be a program name with args.
 set dummy sync; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
 $as_echo_n "checking for $ac_word... " >&6; }
@@ -7056,16 +7436,22 @@ $as_echo "no" >&6; }
 fi
 
 
-if test $SYNC = missing; then :
-  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error "Cannot find a working sync required for using QMake
-See \`config.log' for more details." "$LINENO" 5; }
+             fi
+          fi
+          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES SYNC"
 
-fi
-
-
-# Extract the first word of "xargs", so it can be a program name with args.
+          if ( test "x$USER_XARGS" = x )
+          then
+             # User has not specified a XARGS program to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                XARGS=`cat $QMAKE_CFG | $SED  -n 's/^XARGS=\(.*\)/\1/p'`
+             fi
+             if ( test "x$XARGS" = x )
+             then
+                # We still do not have a setting, attempt to find one
+                # Extract the first word of "xargs", so it can be a program name with args.
 set dummy xargs; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
 $as_echo_n "checking for $ac_word... " >&6; }
@@ -7106,18 +7492,33 @@ $as_echo "no" >&6; }
 fi
 
 
-if test $XARGS = missing; then :
-  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+             fi
+          fi
+          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES XARGS"
+
+          # Remaining utils used in the build process are all regarded by the
+          # GNU standards as safe for direct use:
+          #       cat cmp diff ls mv rmdir tar test touch true
+          # We do not therefore configure those in
+
+          missing_deps=""
+          for e in $QMAKE_DEPENDENCIES
+          do
+             eval exe_path=\$$e
+             if ( test "x$exe_path" = xmissing || test "x$exe_path" = x )
+             then
+                missing_deps="$missing_deps $e"
+             fi
+          done
+          if ( test "x$missing_deps" != x )
+          then
+             { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error "Cannot find a working xargs required for using QMake
+as_fn_error "Cannot locate the following dependencies of QMake: $missing_deps
 See \`config.log' for more details." "$LINENO" 5; }
+          fi
 
-fi
 
-
-# Remaining utils used in the build process are all regarded by the GNU
-# standards as safe for direct use:
-#       cat cmp diff ls mv rmdir tar test touch true
 
 
 
@@ -19437,7 +19838,7 @@ echo MAKE=@MAKE@ >> ./Config.QMake.in
 echo MKDIR_P=@MKDIR_P@ >> ./Config.QMake.in
 echo PERL=@PERL@ >> ./Config.QMake.in
 echo PKG_CONFIG=@PKG_CONFIG@ >> ./Config.QMake.in
-echo QMAKE_PAGER=@QMAKE_PAGER@ >> ./Config.QMake.in
+echo QMAKE_PAGER=@PAGER@ >> ./Config.QMake.in
 echo RANLIB=@RANLIB@ >> ./Config.QMake.in
 echo RM=@RM@ >> ./Config.QMake.in
 echo SED=@SED@ >> ./Config.QMake.in

@@ -37,6 +37,10 @@ dnl                                  are using the local QMake shipped with
 dnl                                  the project).
 dnl       QMAKE_CFG                  Receives the location of the located
 dnl                                  QMake's configuration file.
+dnl       InheritCFG                 Records if we should be bootstrapping
+dnl                                  our configuration from an existing
+dnl                                  Config.QMake file (as specified by the
+dnl                                  QMAKE_CFG variable).
 dnl       QMAKE_CONFIGFILES          Receives the directory containing the
 dnl                                  located QMake's configuration files.
 dnl                                  This variable is in makefile form i.e.
@@ -233,7 +237,15 @@ AC_DEFUN([QM_LOCATE_QMAKE],
              if ( test "x$PACKAGE_NAME" == xQMake )
              then
                QMAKE_CFG=`pwd`/Config.QMake
+
+               # If we are configuring QMake itself, we want to explicitly
+               # configure everything ourselves rather than bootstrap from
+               # any existing Config.QMake file.
+               InheritCFG=no
              else
+               # If building a project, we can bootstrap from the local copy
+               # of QMake.
+               InheritCFG=yes
                QMAKE_CFG=`cd ../..; pwd`/QMake/Config.QMake
              fi
 
@@ -247,6 +259,9 @@ AC_DEFUN([QM_LOCATE_QMAKE],
              # our own copy for building the project. The project build should therefore only
              # build the updated QMake for possible later installation.
              NeededQMake="QMake"
+
+             # We can use the existing settings to bootstrap our own configuration
+             InheritCFG=yes
           fi
           AC_SUBST([QMAKE_CONFIGFILES])
           AC_SUBST([WORKING_QMAKE])

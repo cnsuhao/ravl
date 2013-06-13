@@ -25,7 +25,9 @@ m4_include([./AcMacros/QM_LOCATE_KEY_TOOLS])
 m4_include([./AcMacros/QM_LOCATE_LD])
 m4_include([./AcMacros/QM_LOCATE_MAKE])
 m4_include([./AcMacros/QM_LOCATE_QMAKE])
+m4_include([./AcMacros/QM_LOCATE_QMAKE_DEPS])
 m4_include([./AcMacros/QM_PROCESS_EXTLIBS])
+m4_include([./AcMacros/QM_READ_USER_ENV])
 m4_include([./AcMacros/QM_SET_ARC])
 m4_include([./AcMacros/QM_SET_ARCHIVER_ARFLAGS])
 m4_include([./AcMacros/QM_SET_COMPILER_CFLAGS])
@@ -56,23 +58,6 @@ dnl       _AC_INCLUDES_DEFAULT_REQUIREMENTS
 
 # Locate the tools needed to run this script (shell utils, compilers etc.)
 QM_LOCATE_KEY_TOOLS
-dnl Declare key tools for output to the Config.X file.
-dnl Ensure this tallies with the list of tools regarded as such in the
-dnl locate macro. There must be no additions or subtractions here.
-dnl
-AC_SUBST([AR])
-AC_SUBST([AWK])
-AC_SUBST([CC])
-AC_SUBST([CPP])
-AC_SUBST([CXX])
-AC_SUBST([CXXCPP])
-AC_SUBST([EXPR])
-AC_SUBST([GREP])
-AC_SUBST([LD])
-AC_SUBST([MAKE])
-AC_SUBST([PKG_CONFIG])
-AC_SUBST([SED])
-AC_SUBST([TR])
 
 dnl Allow for output of the command-line switches initialised by the
 dnl QM_LOCATE_KEY_TOOLS macro. 
@@ -90,115 +75,8 @@ QM_SET_MAKE_MAKEFLAGS
 
 
 
-# Check for remaining utils
-
 # Check for programs needed by QMake
-# First check for those programs that GNU coding standards regard as safe to use
-# in a makefile if they are employed via make variables (and thus create the
-# necessary variables)
-AC_PATH_PROG([CHGRP],[chgrp],[missing])
-AS_IF([test $CHGRP = missing],
-      [AC_MSG_FAILURE([Cannot find a working chgrp required for using QMake])]
-     )
-AC_SUBST([CHGRP])
-
-AC_PATH_PROG([CHMOD],[chmod],[missing])
-AS_IF([test $CHMOD = missing],
-      [AC_MSG_FAILURE([Cannot find a working chmod required for using QMake])]
-     )
-AC_SUBST([CHMOD])
-
-AC_PATH_PROG([CHOWN],[chown],[missing])
-AS_IF([test $CHOWN = missing],
-      [AC_MSG_FAILURE([Cannot find a working chown required for using QMake])]
-     )
-AC_SUBST([CHOWN])
-
-# Check for install-sh as it is needed directly by QMake and it also may be
-# needed for mkdir -p support
-AC_PROG_INSTALL
-
-AC_PROG_LEX
-AC_SUBST([LEX])
-AC_SUBST([LEXLIB])
-
-# Ensure we have a mkdir -p capability (will use install-sh on systems without
-# a native mkdir -p)
-AC_PROG_MKDIR_P
-AC_SUBST([MKDIR_P])
-
-# Ranlib program (if necessary)
-AC_PROG_RANLIB
-AC_SUBST([RANLIB])
-# Slight weakness of this check is that if ranlib is not found, we assume it is
-# not needed (set RANLIB to ":")
-
-AC_PROG_YACC
-AC_SUBST([YACC])
-
-# GNU standards regard the following safe to call directly but as we already
-# implemented them via a make variable, set those here...
-AC_PATH_PROG([CP],[cp],[missing])
-AS_IF([test $CP = missing],
-      [AC_MSG_FAILURE([Cannot find a working cp required for using QMake])]
-     )
-AC_SUBST([CP])
-
-AC_PATH_PROG([RM],[rm],[missing])
-AS_IF([test $RM = missing],
-      [AC_MSG_FAILURE([Cannot find a working rm required for using QMake])]
-     )
-AC_SUBST([RM])
-
-AC_PATH_PROG([TOUCH],[touch],[missing])
-AS_IF([test $TOUCH = missing],
-      [AC_MSG_FAILURE([Cannot find a working touch required for using QMake])]
-     )
-AC_SUBST([TOUCH])
-
-
-
-# Now check for those utilities we use in the build process that aren't recognised
-# as being reliably portable by the GNU standard. For these, we will need to
-# consider providing an alternative implementation in cases where any are absent.
-AC_PROG_LN_S
-AC_SUBST([LN_S])
-
-AS_IF([test x$PAGER = x],
-      [AC_PATH_PROG([QMAKE_PAGER],[more],[missing])
-       AS_IF([test $QMAKE_PAGER = missing],
-             [AC_PATH_PROG([QMAKE_PAGER],[pg],[missing])
-              AS_IF([test $QMAKE_PAGER = missing],
-                    [AC_MSG_FAILURE([Cannot find a working pager required for using QMake])]
-                   )
-             ]
-            )
-      ],
-      [QMAKE_PAGER=$PAGER]
-     )
-AC_SUBST([QMAKE_PAGER])
-
-AC_PATH_PROG([PERL],[perl],[missing])
-AS_IF([test $PERL = missing], 
-      [AC_MSG_FAILURE([Cannot find a working copy of Perl])]
-     )
-AC_SUBST([PERL])
-
-AC_PATH_PROG([SYNC],[sync],[missing])
-AS_IF([test $SYNC = missing],
-      [AC_MSG_FAILURE([Cannot find a working sync required for using QMake])]
-     )
-AC_SUBST([SYNC])
-
-AC_PATH_PROG([XARGS],[xargs],[missing])
-AS_IF([test $XARGS = missing],
-      [AC_MSG_FAILURE([Cannot find a working xargs required for using QMake])]
-     )
-AC_SUBST([XARGS])
-
-# Remaining utils used in the build process are all regarded by the GNU
-# standards as safe for direct use:
-#       cat cmp diff ls mv rmdir tar test touch true
+QM_LOCATE_QMAKE_DEPS
 
 
 
@@ -331,7 +209,7 @@ echo MAKE=@MAKE@ >> ./Config.QMake.in
 echo MKDIR_P=@MKDIR_P@ >> ./Config.QMake.in
 echo PERL=@PERL@ >> ./Config.QMake.in
 echo PKG_CONFIG=@PKG_CONFIG@ >> ./Config.QMake.in
-echo QMAKE_PAGER=@QMAKE_PAGER@ >> ./Config.QMake.in
+echo QMAKE_PAGER=@PAGER@ >> ./Config.QMake.in
 echo RANLIB=@RANLIB@ >> ./Config.QMake.in
 echo RM=@RM@ >> ./Config.QMake.in
 echo SED=@SED@ >> ./Config.QMake.in

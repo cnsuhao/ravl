@@ -1,0 +1,456 @@
+dnl This file is part of QMake, Quick Make System
+dnl Copyright (C) 2013, University of Surrey
+dnl This code may be redistributed under the terms of the GNU General
+dnl Public License (GPL). See the gpl.licence file for details or
+dnl see http://www.gnu.org/copyleft/gpl.html
+dnl
+dnl file-header-ends-here
+
+
+
+dnl QM_LOCATE_QMAKE_DEPS
+dnl
+dnl Macro to locate those UNIX tools that are required by QMake itself. Any
+dnl user-provided paths for these tools will will be used in preference to
+dnl configure locating the executable itself.
+dnl
+dnl This macro only deals with those tools required by QMake that are not
+dnl also a dependency of the configure script itself (for example, sed; tr
+dnl or the C compliers are not located by this macro). The dependencies of
+dnl the configure script will have already been processed from a prior 
+dnl execution of the QM_LOCATE_KEY_TOOLS macro.
+dnl
+dnl No Macro parameters
+dnl
+dnl Global variables used:
+dnl
+dnl   All variables listed with a <CMD> in their name exist for each command
+dnl   set up by this macro. For example, locating the touch command via this
+dnl   macro will update the TOUCH variable (with the path to the executable)
+dnl   unless the USER_TOUCH variable indicates the user specified an initial
+dnl   preference.
+dnl
+dnl
+dnl       <CMD>                      Receives the path to the utility <cmd>.
+dnl                                  Can initially be primed by the user to
+dnl                                  force the use of a particular program.
+dnl       QMAKE_CFG                  Already primed (by the QM_LOCATE_QMAKE
+dnl                                  macro) with the location of QMake's
+dnl                                  configuration file.
+dnl       InheritCFG                 Specifies if we should use the QMAKE_CFG
+dnl                                  file to bootstrap our configuration
+dnl                                  settings.
+dnl       QMAKE_DEPENDENCIES         Builds up into a list of all the utilities
+dnl                                  processed by this macro.
+dnl       SED                        Holds the name of the executable to carry
+dnl                                  out stream editing. This will already have
+dnl                                  been primed by a prior call to the macro
+dnl                                  QM_LOCATE_KEY_TOOLS.
+dnl       USER_<CMD>                 Holds any user specified configuration for
+dnl                                  the utility <cmd>.
+dnl
+AC_DEFUN([QM_LOCATE_QMAKE_DEPS],
+         [
+          dnl First ensure we have recorded any user settings
+          AC_REQUIRE([QM_READ_USER_ENV])
+
+          # Locate the requisite dependencies
+          dnl# If adding dependencies to this macro, start with the following
+          dnl# as a pro-forma for adding a new requirement:
+          dnl#
+          dnl#   if ( test "x$USER_<CMD>" = x )
+          dnl#   then
+          dnl#      # User has not specified a <cmd> program to use, do we have
+          dnl#      # an existing setting?
+          dnl#      if ( test "x$InheritCFG" = xyes )
+          dnl#      then
+          dnl#         <CMD>=`cat $QMAKE_CFG | $SED  -n 's/^<CMD>=\(.*\)/\1/p'`
+          dnl#      fi
+          dnl#      if ( test "x$<CMD>" = x )
+          dnl#      then
+          dnl#         # We still do not have a setting, attempt to find one
+          dnl#         AC_PATH_PROG([<CMD>],[<cmd>],[missing])
+          dnl#      fi
+          dnl#   fi
+          dnl#   QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES CMD"
+          dnl#  
+          dnl# Replacing <cmd> and <CMD> with the command name and the name
+          dnl# of its specifying variable (e.g. touch and TOUCH for that 
+          dnl# particular utility).
+          dnl#
+
+          # First check for those programs that GNU coding standards regard as
+          # safe to use in a makefile if they are employed via make variables
+          # (and thus create the necessary variables)
+
+          if ( test "x$USER_CHGRP" = x )
+          then
+             # User has not specified a CHGRP program to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                CHGRP=`cat $QMAKE_CFG | $SED  -n 's/^CHGRP=\(.*\)/\1/p'`
+             fi
+             if ( test "x$CHGRP" = x )
+             then
+                # We still do not have a setting, attempt to find one
+                AC_PATH_PROG([CHGRP],[chgrp],[missing])
+             fi
+          fi
+          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES CHGRP"
+
+          if ( test "x$USER_CHMOD" = x )
+          then
+             # User has not specified a CHMOD program to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                CHMOD=`cat $QMAKE_CFG | $SED  -n 's/^CHMOD=\(.*\)/\1/p'`
+             fi
+             if ( test "x$CHMOD" = x )
+             then
+                # We still do not have a setting, attempt to find one
+                AC_PATH_PROG([CHMOD],[chmod],[missing])
+             fi
+          fi
+          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES CHMOD"
+
+          if ( test "x$USER_CHOWN" = x )
+          then
+             # User has not specified a CHOWN program to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                CHOWN=`cat $QMAKE_CFG | $SED  -n 's/^CHOWN=\(.*\)/\1/p'`
+             fi
+             if ( test "x$CHOWN" = x )
+             then
+                # We still do not have a setting, attempt to find one
+                AC_PATH_PROG([CHOWN],[chown],[missing])
+             fi
+          fi
+          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES CHOWN"
+
+          dnl The INSTALL and INSTALL_xxx settings are initialised differently
+          dnl owing to how the macro AC_PROG_INSTALL is expanded. When control
+          dnl reaches this point, the AC_PROG_INSTALL macro will have already
+          dnl been expanded and executed. This occurs regardless of where we
+          dnl place the macro call in this code.
+          AC_PROG_INSTALL
+          if ( test "x$USER_INSTALL" = x )
+          then
+             # User has not specified a INSTALL program to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                OriginalSetting=`cat $QMAKE_CFG | $SED  -n 's/^INSTALL=\(.*\)/\1/p'`
+                if ( test "x$OriginalSetting" != x )
+                then
+                   INSTALL=$OriginalSetting
+                   # Prefer any original setting over the value set from the
+                   # AC_PROG_INSTALL macro
+                fi
+             fi
+          fi
+          if ( test "x$USER_INSTALL_DATA" = x )
+          then
+             # User has not specified INSTALL_DATA do we have an existing
+             # setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                OriginalSetting=`cat $QMAKE_CFG | $SED  -n 's/^INSTALL_DATA=\(.*\)/\1/p'`
+                if ( test "x$OriginalSetting" != x )
+                then
+                   INSTALL_DATA=$OriginalSetting
+                   # Prefer any original setting over the value set from the
+                   # AC_PROG_INSTALL macro
+                fi
+             fi
+          fi
+          if ( test "x$USER_INSTALL_PROGRAM" = x )
+          then
+             # User has not specified INSTALL_PROGRAM do we have an existing
+             # setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                OriginalSetting=`cat $QMAKE_CFG | $SED  -n 's/^INSTALL_PROGRAM=\(.*\)/\1/p'`
+                if ( test "x$OriginalSetting" != x )
+                then
+                   INSTALL_PROGRAM=$OriginalSetting
+                   # Prefer any original setting over the value set from the
+                   # AC_PROG_INSTALL macro
+                fi
+             fi
+          fi
+          if ( test "x$USER_INSTALL_SCRIPT" = x )
+          then
+             # User has not specified INSTALL_SCRIPT, do we have an existing 
+             # setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                OriginalSetting=`cat $QMAKE_CFG | $SED  -n 's/^INSTALL_SCRIPT=\(.*\)/\1/p'`
+                if ( test "x$OriginalSetting" != x )
+                then
+                   INSTALL_SCRIPT=$OriginalSetting
+                   # Prefer any original setting over the value set from the
+                   # AC_PROG_INSTALL macro
+                fi
+             fi
+          fi
+          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES INSTALL INSTALL_DATA INSTALL_PROGRAM INSTALL_SCRIPT"
+
+          dnl As per AC_PROG_INSTALL, AC_PROG_LEX will already have been
+          dnl executed when we reach this point. Hence we use a similar
+          dnl modified method of initialising the LEX and LEXLIB variables.
+          AC_PROG_LEX
+          if ( test "x$USER_LEX" = x )
+          then
+             # User has not specified a LEX program to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                OriginalSetting=`cat $QMAKE_CFG | $SED  -n 's/^LEX=\(.*\)/\1/p'`
+                if ( test "x$OriginalSetting" != x )
+                then
+                   LEX=$OriginalSetting
+                   # Prefer any original setting over the value set from the
+                   # AC_PROG_LEX macro
+                fi
+             fi
+          fi
+          if ( test "x$USER_LEXLIB" = x )
+          then
+             # User has not specified a LEXLIB to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                OriginalSetting=`cat $QMAKE_CFG | $SED  -n 's/^LEXLIB=\(.*\)/\1/p'`
+                if ( test "x$OriginalSetting" != x )
+                then
+                   LEXLIB=$OriginalSetting
+                   # Prefer any original setting over the value set from the
+                   # AC_PROG_LEX macro
+                fi
+             fi
+          fi
+          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES LEX LEXLIB"
+
+          dnl Again, AC_PROG_MKDIR_P is a macro that expands otuside of this
+          dnl macro and will have been run by the time control reaches this
+          dnl code. We use the same work around as for INSTALL and LEX.
+          AC_PROG_MKDIR_P
+          if ( test "x$USER_MKDIR_P" = x )
+          then
+             # User has not specified a MKDIR_P program to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                OriginalSetting=`cat $QMAKE_CFG | $SED  -n 's/^MKDIR_P=\(.*\)/\1/p'`
+                if ( test "x$OriginalSetting" != x )
+                then
+                   MKDIR_P=$OriginalSetting
+                   # Prefer any original setting over the value set from the
+                   # AC_MKDIR_P macro
+                fi
+             fi
+          fi
+          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES MKDIR_P"
+
+          if ( test "x$USER_RANLIB" = x )
+          then
+             # User has not specified a RANLIB program to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                RANLIB=`cat $QMAKE_CFG | $SED  -n 's/^RANLIB=\(.*\)/\1/p'`
+             fi
+             if ( test "x$RANLIB" = x )
+             then
+                # We still do not have a setting, attempt to find one
+                AC_PROG_RANLIB
+                # Slight weakness of this check is that if ranlib is not
+                # found, we assume it is not needed (set RANLIB to ":")
+             fi
+          fi
+          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES RANLIB"
+
+          if ( test "x$YACC" = x )
+          then
+             # User has not specified a YACC program to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                YACC=`cat $QMAKE_CFG | $SED  -n 's/^YACC=\(.*\)/\1/p'`
+             fi
+             if ( test "x$YACC" = x )
+             then
+                # We still do not have a setting, attempt to find one
+                AC_PROG_YACC
+             fi
+          fi
+          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES YACC"
+
+          # GNU standards regard the following safe to call directly but as we
+          # already implemented them via a make variable, set those here...
+
+          if ( test "x$USER_CP" = x )
+          then
+             # User has not specified a CP program to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                CP=`cat $QMAKE_CFG | $SED  -n 's/^CP=\(.*\)/\1/p'`
+             fi
+             if ( test "x$CP" = x )
+             then
+                # We still do not have a setting, attempt to find one
+                AC_PATH_PROG([CP],[cp],[missing])
+             fi
+          fi
+          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES CP"
+
+          if ( test "x$USER_RM" = x )
+          then
+             # User has not specified a RM program to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                RM=`cat $QMAKE_CFG | $SED  -n 's/^RM=\(.*\)/\1/p'`
+             fi
+             if ( test "x$RM" = x )
+             then
+                # We still do not have a setting, attempt to find one
+                AC_PATH_PROG([RM],[rm],[missing])
+             fi
+          fi
+          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES RM"
+
+          if ( test "x$USER_TOUCH" = x )
+          then
+             # User has not specified a TOUCH program to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                TOUCH=`cat $QMAKE_CFG | $SED  -n 's/^TOUCH=\(.*\)/\1/p'`
+             fi
+             if ( test "x$TOUCH" = x )
+             then
+                # We still do not have a setting, attempt to find one
+                AC_PATH_PROG([TOUCH],[touch],[missing])
+             fi
+          fi
+          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES TOUCH"
+
+          #  Now check for those utilities used by QMake which are not
+          # recognised as being reliably portable by the GNU standard.
+          # For these, we will need to consider providing an alternative
+          # implementation in cases where any are absent.
+
+          if ( test "x$USER_LN_S" = x )
+          then
+             # User has not specified a LN_S program to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                LN_S=`cat $QMAKE_CFG | $SED  -n 's/^LN_S=\(.*\)/\1/p'`
+             fi
+             if ( test "x$LN_S" = x )
+             then
+                # We still do not have a setting, attempt to find one
+                AC_PROG_LN_S
+             fi
+          fi
+          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES LN_S"
+
+          if ( test "x$USER_PAGER" = x )
+          then
+             # User has not specified a PAGER to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                PAGER=`cat $QMAKE_CFG | $SED  -n 's/^QMAKE_PAGER=\(.*\)/\1/p'`
+             fi
+             if ( test "x$PAGER" = x )
+             then
+                # We still do not have a setting, attempt to find one
+                AC_PATH_PROG([PAGER],[more],[missing])
+                if ( test "x$PAGER" = xmissing )
+                then
+                   AC_PATH_PROG([PAGER],[pg],[missing])
+                fi
+             fi
+          fi
+          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES PAGER"
+
+          if ( test "x$USER_PERL" = x )
+          then
+             # User has not specified the PERL interpreter to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                PERL=`cat $QMAKE_CFG | $SED  -n 's/^PERL=\(.*\)/\1/p'`
+             fi
+             if ( test "x$PERL" = x )
+             then
+                # We still do not have a setting, attempt to find one
+                AC_PATH_PROG([PERL],[perl],[missing])
+             fi
+          fi
+          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES PERL"
+
+          if ( test "x$USER_SYNC" = x )
+          then
+             # User has not specified a SYNC program to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                SYNC=`cat $QMAKE_CFG | $SED  -n 's/^SYNC=\(.*\)/\1/p'`
+             fi
+             if ( test "x$SYNC" = x )
+             then
+                # We still do not have a setting, attempt to find one
+                AC_PATH_PROG([SYNC],[sync],[missing])
+             fi
+          fi
+          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES SYNC"
+
+          if ( test "x$USER_XARGS" = x )
+          then
+             # User has not specified a XARGS program to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                XARGS=`cat $QMAKE_CFG | $SED  -n 's/^XARGS=\(.*\)/\1/p'`
+             fi
+             if ( test "x$XARGS" = x )
+             then
+                # We still do not have a setting, attempt to find one
+                AC_PATH_PROG([XARGS],[xargs],[missing])
+             fi
+          fi
+          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES XARGS"
+
+          # Remaining utils used in the build process are all regarded by the
+          # GNU standards as safe for direct use:
+          #       cat cmp diff ls mv rmdir tar test touch true
+          # We do not therefore configure those in
+
+          missing_deps=""
+          for e in $QMAKE_DEPENDENCIES
+          do
+             eval exe_path=\$$e
+             if ( test "x$exe_path" = xmissing || test "x$exe_path" = x )
+             then
+                missing_deps="$missing_deps $e"
+             fi
+          done
+          if ( test "x$missing_deps" != x )
+          then
+             AC_MSG_FAILURE([Cannot locate the following dependencies of QMake: $missing_deps])
+          fi
+         ]
+        )
+  
+
+
+

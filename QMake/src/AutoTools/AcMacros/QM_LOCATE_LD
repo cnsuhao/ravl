@@ -84,7 +84,12 @@ dnl                                  version
 dnl                                  
 dnl
 AC_DEFUN([QM_LOCATE_LD],
-         [if ( test "x$LD" = x )
+         [
+          dnl# Preserve any user-supplied environment settings including any 
+          dnl# existing setting for LD
+          AC_REQUIRE([QM_READ_USER_ENV])
+
+          if ( test "x$LD" = x )
           then
              # We do not currently know of a specific linker: look for one
      
@@ -234,7 +239,7 @@ AC_DEFUN([QM_LOCATE_LD],
                    GNU_LD=no
                 fi
              else
-                AC_MSG_FAILURE([$LD does not appear to correctly specify a linker])
+                AC_MSG_FAILURE([\$LD does not appear to correctly specify a linker])
              fi
           fi
          ]

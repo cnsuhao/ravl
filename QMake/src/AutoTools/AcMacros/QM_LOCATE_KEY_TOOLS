@@ -10,42 +10,33 @@ dnl file-header-ends-here
 
 dnl QM_LOCATE_KEY_TOOLS
 dnl
-dnl Macro to locate those UNIX tools that are required for the configured
+dnl Macro to locate those UNIX tools that are required for the configure
 dnl script to run correctly. Any user-provided paths for these tools will be
-dnl preserved and output to Config.Project to provide a project-specific
-dnl over-ride of the default QMake configuration.
+dnl preferred over locating the utility.
 dnl
 dnl No Macro parameters
 dnl
 dnl Global variables used:
 dnl
-dnl   All variables listed with a <cmd> in their name exist for each command
+dnl   All variables listed with a <CMD> in their name exist for each command
 dnl   that is set up in this macro. For example, locating the sed command via
-dnl   this macro will create both the SED variable (populated with the path
-dnl   to the utility) and the USER_SED variable. The list of possible values
-dnl   for <cmd> (the list of tools located by this macro) is:
+dnl   this macro will update the SED variable (with the path to the utility)
+dnl   unless the USER_SED variable indicates the user has specified a given
+dnl   path to use. The list of possible values for <CMD> (the list of tools
+dnl   located by this macro) is:
 dnl
 dnl        AR; AWK; CC; CPP; CXX; CXXCPP; EXPR; GET_CWD; GREP; LD;
 dnl        MAKE; SED; SORT and TR.
 dnl
-dnl   Any user-supplied value for the <cmd> variable will be preserved (in
-dnl   USER_<cmd>) and output as an over-ride to the default settings made in
-dnl   the Config.QMake file. If the user does not supply an initial value,
-dnl   this macro will locate the utility and set <cmd> to its path. In this
-dnl   second scenario, the setting will only be used to allow the configure 
-dnl   script to function; the setting will not be recorded as an over-ride
-dnl   and QMake will continue to use its origially configured settings (as
-dnl   found in the Config.QMake file).
-dnl
-dnl       <cmd>                      Receives the path to the utility <cmd>.
+dnl       <CMD>                      Receives the path to the utility <cmd>.
 dnl                                  Can initially be primed by the user to
 dnl                                  force the use of a particular program.
 dnl                                  It is this variable that is used when
 dnl                                  <cmd> is wanted within the configure
 dnl                                  script.
-dnl       USER_<cmd>                 Receives the particular program to use
-dnl                                  as the utility <cmd>, when the user
-dnl                                  initially specifies the command to use.
+dnl       USER_<CMD>                 Holds any user-provided setting for the
+dnl                                  particular path to use for the utility
+dnl                                  <cmd>.
 dnl       CFLAGS                     Can initially be set by the user to
 dnl                                  supply specific CFLAGS for use by QMake
 dnl                                  (this value will be preserved in the
@@ -67,6 +58,9 @@ dnl                                  by QMake for all builds.
 dnl       QMAKE_CFG                  Primed (by calling the QM_LOCATE_QMAKE
 dnl                                  macro) with the location of QMake's
 dnl                                  configuration file.
+dnl       InheritCFG                 Specifies if we should use the QMAKE_CFG
+dnl                                  file to bootstrap our configuration
+dnl                                  settings.
 dnl       with_rpath                 Dependant on configuration, this var may
 dnl                                  be primed by call to the QM_CHOSE_RPATH
 dnl                                  macro made by this macro; or it may be
@@ -90,11 +84,13 @@ dnl                                  this variable may be set directly or from
 dnl                                  calling the QM_LOCATE_LD macro.
 dnl
 AC_DEFUN([QM_LOCATE_KEY_TOOLS],
-         [# Check for pkg-config as we may need that next to check for QMake
+         [
+          dnl First ensure we have recorded any user settings
+          AC_REQUIRE([QM_READ_USER_ENV])
+
+          # Check for pkg-config as we may need that next to check for QMake
           # and will certainly need it later
           #
-          # First record if the user has supplied an initial path
-          USER_PKG_CONFIG=$PKG_CONFIG
           PKG_PROG_PKG_CONFIG
 
 
@@ -104,12 +100,7 @@ AC_DEFUN([QM_LOCATE_KEY_TOOLS],
           then
              # User has not specified a sed program to use, attempt to
              # find one
-             USER_SED=""
              AC_PROG_SED
-          else
-             # User supplied the sed command to use, remember 
-             # this setting.
-             USER_SED=$SED
           fi
 
           # Look for QMake
@@ -137,7 +128,7 @@ AC_DEFUN([QM_LOCATE_KEY_TOOLS],
           # can check for what we're about to use...)
 
           # Is there an existing QMake installation to prime the pumps?
-          AS_IF([test -f $QMAKE_CFG],
+          AS_IF([test "x$InheritCFG" = xyes ],
                 [trace 2 Reading configuration from $QMAKE_CFG
 
                  # We are using an existing QMake so we can use the locations
@@ -158,38 +149,24 @@ AC_DEFUN([QM_LOCATE_KEY_TOOLS],
          
 
                  # Now find the rest of the required programs (if the user
-                 # hasn't specified them). As we do not immediately require most
-                 # of these commands, we need not usually check if we get no
-                 # value back from the config file; the tail end of this macro
-                 # will deal with unset variables. For the odd exceptions (like
-                 # sed, above, or pkg-config) we will check that we get a usable
-                 # value.
+                 # has not specified them). As we do not immediately require
+                 # these commands, we need not check if we get no value back
+                 # from the config file; the tail end of this macro will deal
+                 # with unset variables.
           
                  if ( test "x$AR" = x )
                  then
                     AR=`cat $QMAKE_CFG | $SED -n 's/^AR=\(.*\)/\1/p'`
-                 else
-                    # Remember the user setting so we output it to 
-                    # Config.Project.
-                    USER_AR=$AR
                  fi
 
                  if ( test x$AWK = x )
                  then
                     AWK=`cat $QMAKE_CFG | $SED -n 's/^AWK=\(.*\)/\1/p'`
-                 else
-                    # Remember the user setting so we output it to 
-                    # Config.Project.
-                    USER_AWK=$AWK
                  fi
      
                  if ( test x$CC = x )
                  then
                     CC=`cat $QMAKE_CFG | $SED -n 's/^CC=\(.*\)/\1/p'`
-                 else
-                    # Remember the user setting so we output it to 
-                    # Config.Project.
-                    USER_CC=$CC
                  fi
                  dnl We also need to call AC_PROG_CC as that initialises
                  dnl several prerequisites of configure's operation. However,
@@ -200,67 +177,39 @@ AC_DEFUN([QM_LOCATE_KEY_TOOLS],
                  if ( test x$CPP = x )
                  then
                     CPP=`cat $QMAKE_CFG | $SED -n 's/^CPP=\(.*\)/\1/p'`
-                 else
-                    # Remember the user setting so we output it to  
-                    # Config.Project.
-                    USER_CPP=$CPP
                  fi
                  dnl# Again we will need to call AC_PROG_CPP but cannot do that here
                
                  if ( test x$CXX = x )
                  then
                     CXX=`cat $QMAKE_CFG | $SED -n 's/^CXX=\(.*\)/\1/p'`
-                 else
-                    # Remember the user setting so we output it to 
-                    # Config.Project.
-                    USER_CXX=$CXX
                  fi
                  dnl# Need to call AC_PROG_CXX outside this AS_IF
      
                  if ( test x$CXXCPP = x )
                  then
                     CXXCPP=`cat $QMAKE_CFG | $SED -n 's/^CXXCPP=\(.*\)/\1/p'`
-                 else
-                    # Remember the user setting so we output it to 
-                    # Config.Project.
-                    USER_CXXCPP=$CXXCPP
                  fi
                  dnl# Will need to call AC_PROG_CXXCPP later
      
                  if ( test x$EXPR = x )
                  then
                     EXPR=`cat $QMAKE_CFG | $SED -n 's/^EXPR=\(.*\)/\1/p'`
-                 else
-                    # Remember the user setting so we output it to 
-                    # Config.Project.
-                    USER_EXPR=$EXPR
                  fi
      
                  if ( test x$GREP = x )
                  then
                     GREP=`cat $QMAKE_CFG | $SED -n 's/^GREP=\(.*\)/\1/p'`
-                 else
-                    # Remember the user setting so we output it to
-                    # Config.Project.
-                    USER_GREP=$GREP
                  fi
      
                  if ( test x$LD = x )
                  then
                     LD=`cat $QMAKE_CFG | $SED -n 's/^LD=\(.*\)/\1/p'`
-                 else
-                    # Remember the user setting so we output it to 
-                    # Config.Project.
-                    USER_LD=$LD
                  fi
      
                  if ( test x$MAKE = x )
                  then
                     MAKE=`cat $QMAKE_CFG | $SED -n 's/^MAKE=\(.*\)/\1/p'`
-                 else
-                    # Remember the user setting so we output it to 
-                    # Config.Project.
-                    USER_MAKE=$MAKE
                  fi
      
                  # We have already found/used pkg-config, but if the user did not
@@ -274,26 +223,16 @@ AC_DEFUN([QM_LOCATE_KEY_TOOLS],
                        PKG_CONFIG=$OriginalSetting
                     fi
                  fi
-         
 
                  if ( test x$SORT = x )
                  then
                     SORT=`cat $QMAKE_CFG | $SED -n 's/^SORT=\(.*\)/\1/p'`
-                 else
-                    # Remember the user setting so we output it to 
-                    # Config.Project.
-                    USER_SORT=$SORT
                  fi
      
                  if ( test x$TR = x )
                  then
                     TR=`cat $QMAKE_CFG | $SED -n 's/^TR=\(.*\)/\1/p'`
-                 else
-                    # Remember the user setting so we output it to 
-                    # Config.Project.
-                    USER_TR=$TR
                  fi
-     
      
 
                  # Process command line switches that effect QMake directly
@@ -304,15 +243,16 @@ AC_DEFUN([QM_LOCATE_KEY_TOOLS],
                     with_rpath=`cat $QMAKE_CFG | $SED -n 's/^USE_LIBPATHSWITCH=\(.*\)/\1/p'`
                     if ( test x$with_rpath != xY )
                     then
-                       # QMake didn't enable it so don't consider it from
+                       # QMake did not enable it so do not consider it from
                        # now on.
                        with_rpath="N"
                     fi
                  fi
 
                  dnl QM_CHOOSE_GETCWD does not default GET_CWD if the user
-                 dnl did not use the command-line option, hence there is no
-                 dnl USER_GET_CWD variable yet
+                 dnl did not use the command-line option (or set GET_CWD on
+                 dnl the command line or set it in the environment), hence
+                 dnl there is no USER_GET_CWD variable yet.
                  if ( test x$GET_CWD = x )
                  then
                     GET_CWD=`cat $QMAKE_CFG | $SED -n 's/^GET_CWD=\(.*\)/\1/p'`
@@ -321,122 +261,11 @@ AC_DEFUN([QM_LOCATE_KEY_TOOLS],
                  fi
                 ],
 dnl    ELSE
-                [# The definitive list of support programs will be located by
-                 # the configure script from QMake. However, that will only
-                 # get run towards the end of this configure script; we will
-                 # have to ascertain where the programs are for those
-                 # utilities that this script requires.
-               
-                 trace 2 No existing QMake configuration, searching for required programs
+                [
+                 trace 2 No existing QMake configuration
      
-                 # Utils needed by this script (for direct use)
-     
-                 if ( test "x$AR" != x )
-                 then
-                    # Remember the user setting so we output it to 
-                    # Config.Project.
-                    USER_AR=$AR
-                 fi
-
-                 if ( test "x$AWK" != x )
-                 then
-                    # Remember the user setting so we output it to 
-                    # Config.Project.
-                    USER_AWK=$AWK
-                 fi
-
-                 dnl C and C++ compilers and preprocessors
-                 dnl
-                 dnl We cannot call AC_PROG_xx to look for these prorgrams at
-                 dnl this point in the script; these calls must not be made
-                 dnl conditionally (in this AS_IF) as this can prevent some
-                 dnl needed initialisation code from being run on the
-                 dnl alternative execution path. Instead, preseve any user 
-                 dnl provided settings here and call the locating macros
-                 dnl outside of this if statement.
-
-                 if ( test "x$CC" != x )
-                 then
-                    # Remember the user setting so we output it to 
-                    # Config.Project.
-                    USER_CC=$CC
-                 fi
-     
-                 if ( test "x$CPP" != x )
-                 then
-                    # Remember the user setting so we output it to 
-                    # Config.Project.
-                    USER_CPP=$CPP
-                 fi
-     
-                 if ( test "x$CXX" != x )
-                 then
-                    # Remember the user setting so we output it to 
-                    # Config.Project.
-                    USER_CXX=$CXX
-                 fi
-     
-                 if ( test "x$CXXCPP" != x )
-                 then
-                    # Remember the user setting so we output it to 
-                    # Config.Project.
-                    USER_CXXCPP=$CXXCPP
-                 fi
-
-                 if ( test "x$EXPR" != x )
-                 then
-                    # Remember the user setting so we output it to  
-                    # Config.Project.
-                    USER_EXPR=$EXPR
-                 fi
-     
-                 if ( test "x$GREP" != x )
-                 then
-                    # Remember the user setting so we output it to 
-                    # Config.Project.
-                    USER_GREP=$GREP
-                 fi
-       
-                 if ( test "x$LD" != x )
-                 then
-                    # Remember the user setting so we output it to 
-                    # Config.Project.
-                    USER_LD=$LD
-                 fi
-       
-                 if ( test "x$MAKE" != x )
-                 then
-                    # Remember the user setting so we output it to 
-                    # Config.Project.
-                    USER_MAKE=$MAKE
-                 fi
-       
-                 # No need to look for sed here as we have already located it
-                 # and remembered any user-setting
-
-                 if ( test "x$SORT" != x )
-                 then
-                    # Remember the user setting so we output it to 
-                    # Config.Project.
-                    USER_SORT=$SORT
-                 fi
-     
-                 if ( test "x$TR" != x )
-                 then
-                    # Remember the user setting so we output it to 
-                    # Config.Project.
-                    USER_TR=$TR
-                 fi 
-
-                 # Process command line switches that effect QMake directly
-                 dnl
-                 dnl Nothing to do here for --with-rpath as the macro
-                 dnl QM_CHOOSE_RPATH will already have set USER_with_rpath
-                 dnl if the user utilised the command-line option or
-                 dnl defaulted the value if they did not.
-
                  dnl Although we have already called QM_CHOOSE_GETCWD that
-                 dnl will only have set GET_CWD if the use caused it to be
+                 dnl will only have set GET_CWD if the user caused it to be
                  dnl primed. Hence, we can infer a user setting if GET_CWD
                  dnl is set
                  if ( test x$GET_CWD != x )
@@ -446,7 +275,9 @@ dnl    ELSE
                 ]
                )
   
-          # Fill in any commands we do not yet know the location of
+          # The definitive list of support programs will be located by the
+          # full QMake configure script. However, we have to ascertain where
+          # the programs are for those utilities that this script requires.
           #
           if ( test "x$AR" = x )
           then
@@ -473,8 +304,8 @@ dnl    ELSE
           # First record any user-supplied CFLAGS
           CONFIGURE_CFLAGS=$CFLAGS
           AC_PROG_CC
-          # AC_PROG_CC won't actually have altered CFLAGS if a value was
-          # already set however, if an initial value was not provided,
+          # AC_PROG_CC will not have actually have altered CFLAGS if a value
+          # was already set however, if an initial value was not provided,
           # AC_PROG_CC may have set CFLAGS to include optimisation or -g.
           # As we do not unconditionally want this, we re-initialise CFLAGS
           # to the original value (which may be null or what a user supplied

@@ -52,7 +52,12 @@ dnl       PATH                       UNIX searchlist, use for locating the
 dnl                                  make utility
 dnl
 AC_DEFUN([QM_LOCATE_MAKE],
-         [if ( test "X$MAKE" = X )
+         [
+          dnl# Preserve any user-supplied environment settings including any 
+          dnl# existing setting for MAKE
+          AC_REQUIRE([QM_READ_USER_ENV])
+
+          if ( test "X$MAKE" = X )
           then
              # User has not asked for a specific make utility, look for make
              MAKE=make

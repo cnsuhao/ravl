@@ -1,0 +1,329 @@
+dnl This file is part of QMake, Quick Make System
+dnl Copyright (C) 2013, University of Surrey
+dnl This code may be redistributed under the terms of the GNU General
+dnl Public License (GPL). See the gpl.licence file for details or
+dnl see http://www.gnu.org/copyleft/gpl.html
+dnl
+dnl file-header-ends-here
+
+
+
+dnl QM_READ_USER_ENV
+dnl
+dnl Macro to record any user-defined settings for those UNIX tools that are
+dnl configured by means of environment variables. Any user-provided paths
+dnl for these tools will ultimately be used in preference to configure
+dnl locating the executable itself. 
+dnl
+dnl For those tools that do not already have a help description associated
+dnl with their controlling environment variable, this macro also declares the
+dnl help text to be displayed on a configure --help.
+dnl
+dnl No Macro parameters
+dnl
+dnl Global variables used:
+dnl
+dnl   The <CMD> shown in the following list of variables represents that the
+dnl   variable exists for each external program considered by this macro. For
+dnl   instance, the support for the touch utility inspires both a TOUCH and
+dnl   a USER_TOUCH global variable.
+dnl
+dnl       <CMD>                      Holds the path to the associated external 
+dnl                                  utility. Will be initially primed with
+dnl                                  any setting that the user has requested.
+dnl                                  If no user preference is supplied this
+dnl                                  variable will ultimately receive the path
+dnl                                  of where the configure script finds the
+dnl                                  utility. This variable is used whenever
+dnl                                  the utility needs to be used by either the
+dnl                                  configure script or QMake.
+dnl       USER_<CMD>                 Receives any particular setting for <cmd>
+dnl                                  that the user has explicitly requested.
+dnl                                  This variable is used to both preserve the
+dnl                                  user setting and flag that there was one
+dnl                                  specified.
+dnl
+AC_DEFUN([QM_READ_USER_ENV],
+         [
+          dnl# If adding newly supported environment variables to this macro,
+          dnl# start with the following as a pro-forma:
+          dnl#
+          dnl#   AC_ARG_VAR([<CMD>],[Description of what variable controls])
+          dnl#   if ( test "x$<CMD>" != x )
+          dnl#   then
+          dnl#      # User has supplied their own setting, record this
+          dnl#      USER_<CMD>=$<CMD>
+          dnl#   fi
+          dnl#  
+          dnl# and replace all occurrences of <CMD> with the variable you are
+          dnl# adding.
+          dnl#
+          dnl# If the variable you are adding is defaulted by a particular
+          dnl# macro that macro must also be added to the list of
+          dnl# postrequisite macros declared AC_BEFORE. If possible, the
+          dnl# specified macro should also be amended to AC_REQUIRE this
+          dnl# macro. You will still need to call the initialising macro
+          dnl# but must ensure that it is always called after this macro
+          dnl# has been executed.
+          dnl#
+
+          dnl# List of postrequisite macros that should never be called prior
+          dnl# to execution of this one.
+          dnl#
+          AC_BEFORE([QM_READ_USER_ENV, QM_LOCATE_KEY_TOOLS])
+          dnl# Macros called from QM_LOCATE_KEY_TOOLS that are also postrequisites
+                    AC_BEFORE([QM_READ_USER_ENV, PKG_PROG_PKG_CONFIG])
+                    AC_BEFORE([QM_READ_USER_ENV, AC_PROG_SED])
+                    AC_BEFORE([QM_READ_USER_ENV, AC_PROG_AWK])
+                    AC_BEFORE([QM_READ_USER_ENV, AC_PROG_CC])
+                    AC_BEFORE([QM_READ_USER_ENV, AC_PROG_CPP])
+                    AC_BEFORE([QM_READ_USER_ENV, AC_PROG_CXX])
+                    AC_BEFORE([QM_READ_USER_ENV, AC_PROG_CXXCPP])
+                    AC_BEFORE([QM_READ_USER_ENV, AC_PROG_GREP])
+                    AC_BEFORE([QM_READ_USER_ENV, QM_LOCATE_LD])
+                    AC_BEFORE([QM_READ_USER_ENV, QM_LOCATE_MAKE])
+          AC_BEFORE([QM_READ_USER_ENV, QM_LOCATE_QMAKE_DEPS])
+          dnl# Macros called from QM_LOCATE_QMAKE_DEPS that are also postrequisites
+                    AC_BEFORE([QM_READ_USER_ENV, AC_PROG_INSTALL])
+                    AC_BEFORE([QM_READ_USER_ENV, AC_PROG_LEX])
+                    AC_BEFORE([QM_READ_USER_ENV, AC_PROG_MKDIR_P])
+                    AC_BEFORE([QM_READ_USER_ENV, AC_PROG_RANLIB])
+                    AC_BEFORE([QM_READ_USER_ENV, AC_PROG_YACC])
+                    AC_BEFORE([QM_READ_USER_ENV, AC_PROG_LN_S])
+
+          AC_ARG_VAR([AR],[Path to the utility for creating static archives])
+          if ( test "x$AR" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_AR=$AR
+          fi
+
+          AC_ARG_VAR([AWK],[Path to the awk pattern scanning and processing utility])
+          if ( test "x$AWK" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_AWK=$AWK
+          fi
+
+          dnl No need for a AC_ARG_VAR as CC automatically defined
+          if ( test "x$CC" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_CC=$CC
+          fi
+
+          dnl No need for a AC_ARG_VAR as CCPP automatically defined
+          if ( test "x$CCPP" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_CCPP=$CCPP
+          fi
+
+          AC_ARG_VAR([CHGRP],[Path to the utility for changing group ownership of a file])
+          if ( test "x$CHGRP" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_CHGRP=$CHGRP
+          fi
+
+          AC_ARG_VAR([CHMOD],[Path to the utility for changing file permissions])
+          if ( test "x$CHMOD" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_CHMOD=$CHMOD
+          fi
+
+          AC_ARG_VAR([CHOWN],[Path to the utility for changing file ownership])
+          if ( test "x$CHOWN" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_CHOWN=$CHOWN
+          fi
+
+          AC_ARG_VAR([CP],[Path to the utility for copying a file])
+          if ( test "x$CP" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_CP=$CP
+          fi
+
+          dnl No need for a AC_ARG_VAR as CXX automatically defined
+          if ( test "x$CXX" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_CXX=$CXX
+          fi
+
+          dnl No need for a AC_ARG_VAR as CXXPP automatically defined
+          if ( test "x$CXXPP" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_CXXPP=$CXXPP
+          fi
+
+          AC_ARG_VAR([EXPR],[Path to the utility for evaluating arguments as an expression])
+          if ( test "x$EXPR" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_EXPR=$EXPR
+          fi
+
+          AC_ARG_VAR([GREP],[Path to the utility to search a file for a particular pattern])
+          if ( test "x$GREP" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_GREP=$GREP
+          fi
+
+          AC_ARG_VAR([INSTALL],[Path to the utility for installing software])
+          if ( test "x$INSTALL" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_INSTALL=$INSTALL
+          fi
+
+          AC_ARG_VAR([INSTALL_DATA],[Command details for installing data])
+          if ( test "x$INSTALL_DATA" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_INSTALL_DATA=$INSTALL_DATA
+          fi
+
+          AC_ARG_VAR([INSTALL_PROGRAM],[Command details for installing programs])
+          if ( test "x$INSTALL_PROGRAM" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_INSTALL_PROGRAM=$INSTALL_PROGRAM
+          fi
+
+          AC_ARG_VAR([INSTALL_SCRIPT],[Command details for installing scripts])
+          if ( test "x$INSTALL_SCRIPT" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_INSTALL_SCRIPT=$INSTALL_SCRIPT
+          fi
+
+          AC_ARG_VAR([LD],[Path to the linker])
+          if ( test "x$LD" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_LD=$LD
+          fi
+
+          AC_ARG_VAR([LEX],[Path to the lexical analyser generator program])
+          if ( test "x$LEX" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_LEX=$LEX
+          fi
+
+          AC_ARG_VAR([LEXLIB],[Name of the lexical analyser library to link against])
+          if ( test "x$LEXLIB" != x )
+          then
+             # User has supplied their own setting of LEXLIB, record this
+             USER_LEXLIB=$LEXLIB
+          fi
+
+          AC_ARG_VAR([LN_S],[The command(s) to create a symbolic link between two files. If symbolic links are unsupported on this platform, the command(s) should create an alternative (usually hard) link between the files])
+          if ( test "x$LN_S" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_LN_S=$LN_S
+          fi
+
+          AC_ARG_VAR([MAKE],[Path to the make utility])
+          if ( test "x$MAKE" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_MAKE=$MAKE
+          fi
+
+          AC_ARG_VAR([MKDIR_P],[Command to create a directory even if some of its parents do not initially exist])
+          if ( test "x$MKDIR_P" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_MKDIR_P=$MKDIR_P
+          fi
+
+          AC_ARG_VAR([PAGER],[Path to the utility for interactive pagewise file browsing])
+          if ( test "x$PAGER" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_PAGER=$PAGER
+          fi
+
+          AC_ARG_VAR([PERL],[Path to the PERL interpreter])
+          if ( test "x$PERL" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_PERL=$PERL
+          fi
+
+          dnl No need for a AC_ARG_VAR as PKG_CONFIG automatically defined
+          if ( test "x$PKG_CONFIG" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_PKG_CONFIG=$PKG_CONFIG
+          fi
+
+          AC_ARG_VAR([RANLIB],[Path to any indexing utility that may be required when building static archives])
+          if ( test "x$RANLIB" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_RANLIB=$RANLIB
+          fi
+
+          AC_ARG_VAR([RM],[Path to the utility for deleting a file])
+          if ( test "x$RM" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_RM=$RM
+          fi
+
+          AC_ARG_VAR([SORT],[Path to the utility for file sorting])
+          if ( test "x$SORT" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_SORT=$SORT
+          fi
+
+          AC_ARG_VAR([SYNC],[Path to the command for forcing a flush of output to disk])
+          if ( test "x$SYNC" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_SYNC=$SYNC
+          fi
+
+          AC_ARG_VAR([TOUCH],[Path to the utility for changing the date of a file])
+          if ( test "x$TOUCH" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_TOUCH=$TOUCH
+          fi
+
+          AC_ARG_VAR([TR],[Path to the utility for translating characters])
+          if ( test "x$TR" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_TR=$TR
+          fi
+
+          AC_ARG_VAR([YACC],[Path to the compiler compiler])
+          if ( test "x$YACC" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_YACC=$YACC
+          fi
+
+          AC_ARG_VAR([XARGS],[Path to the utility for assembling and executing argument lists])
+          if ( test "x$XARGS" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_XARGS=$XARGS
+          fi
+         ]
+        )
+  
+
+
+
