@@ -32,8 +32,9 @@ int main(int nargs,char **argv) {
   bool verbose = opt.Boolean("v",false,"Verbose mode. ");
   bool useMasks = opt.Boolean("m",false,"Use masks. ");
   IntT trim = opt.Int("t",0,"Trim the image being processed. ");
+  StringC displayImage = opt.String("di","@X","Display image destination. ");
   StringC fn = opt.String("","test.pgm","Input image. ");
-  StringC ofn = opt.String("","","Output boundries. ");  
+  StringC ofn = opt.String("","","Output boundaries. ");
   opt.Check();
 
   
@@ -99,11 +100,11 @@ int main(int nargs,char **argv) {
           res.Fill(0);
         }
         
-        // Draw boundries into image and display.
+        // Draw boundaries into image and display.
         for(DLIterC<BoundaryC> bit(bounds);bit;bit++)
           for(DLIterC<CrackC> it(*bit);it;it++)
             res[it->LPixel()] = 255;
-        Save("@X",res);
+        Save(displayImage,res);
       }
       if(outp.IsValid()) {
         if(!outp.Put(bounds)) {

@@ -20,6 +20,7 @@
 #else
 #include <typeinfo.h>
 #endif
+#include <iostream>
 
 namespace RavlN {
 #if RAVL_HAVE_STDNAMESPACE
@@ -87,7 +88,7 @@ namespace RavlN {
     const std::type_info &To() const { return to; }
     //: Cast to.
 
-    virtual void Dump();
+    virtual void Dump(std::ostream &strm = std::cerr);
     //: Dump contents of exception to std::cerr;
   protected:
     const std::type_info &from;

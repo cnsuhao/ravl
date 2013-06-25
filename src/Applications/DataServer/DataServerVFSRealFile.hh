@@ -110,9 +110,6 @@ namespace RavlN {
     bool AddOPortTypeConversion(const StringC &dataType, DPOPortBaseC& oPort);
     //: Add any required type conversion.
 
-    bool DisconnectIPortClientAbstract();
-    //: Called when input file client disconnects.
-
     bool DisconnectIPortClientByte();
     //: Called when input file client disconnects.
 
@@ -123,9 +120,6 @@ namespace RavlN {
     //: Called when output file client disconnects.
 
     bool ZeroIPortClientsAbstract();
-    //: Called when input file stops being used.
-
-    bool ZeroIPortClientsByte();
     //: Called when input file stops being used.
 
     bool DoDelete();
@@ -140,7 +134,7 @@ namespace RavlN {
     DPTypeInfoC iTypeInfo; // Type info for input stream.
     
     DPISPortShareC<RCWrapAbstractC> iSPortShareAbstract; // Share for abstract input port.
-    DPISPortShareC<ByteT> iSPortShareByte; // Share for byte input port.
+    UIntT iSPortByteCount;
     UIntT cacheSize; // Size of cache to use.
 
     DPTypeInfoC oTypeInfo; // Type info for input stream.
@@ -215,14 +209,6 @@ namespace RavlN {
     bool ZeroIPortClientsAbstract()
     { return Body().ZeroIPortClientsAbstract(); }
     //: Called when input file stops being used.
-
-    bool ZeroIPortClientsByte()
-    { return Body().ZeroIPortClientsByte(); }
-    //: Called when input file stops being used.
-
-    bool DisconnectIPortClientAbstract()
-    { return Body().DisconnectIPortClientAbstract(); }
-    //: Called when input file client disconnects.
 
     bool DisconnectIPortClientByte()
     { return Body().DisconnectIPortClientByte(); }

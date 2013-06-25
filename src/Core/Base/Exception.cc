@@ -95,11 +95,11 @@ namespace RavlN {
 
   //: Dump contents of exception to std::cerr;
   
-  void ExceptionErrorCastC::Dump() {
-    std::cerr << "RAVL Exception: Illegal cast. \n";
-    std::cerr << " From:" << from.name() << std::endl;
-    std::cerr << "   To:" << to.name() << std::endl;
-    std::cerr << " Desc:" << desc << std::endl << std::endl;
+  void ExceptionErrorCastC::Dump(std::ostream &strm) {
+    strm << "RAVL Exception: Illegal cast. \n";
+    strm << " From:" << from.name() << std::endl;
+    strm << "   To:" << to.name() << std::endl;
+    strm << " Desc:" << desc << std::endl << std::endl;
   }
 
   // ---------------------------------------------------------

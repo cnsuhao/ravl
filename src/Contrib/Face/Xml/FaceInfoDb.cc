@@ -46,21 +46,22 @@ namespace RavlN {
     }
     //: Constructor
 
-    FaceInfoDbC::FaceInfoDbC(const StringC & dbName, const DListC<StringC> & imagePath)
+    FaceInfoDbC::FaceInfoDbC(const StringC & dbName, const DListC<StringC> & imagePath, bool imageExists)
     {
       // And intialise in the normal way
       DListC<StringC> dbNames;
       dbNames.InsLast(dbName);
-      init(dbNames, imagePath);
+      init(dbNames, imagePath, imageExists);
     }
 
-    FaceInfoDbC::FaceInfoDbC(DListC<StringC> & dbNames, const DListC<StringC> & imagePath)
+    FaceInfoDbC::FaceInfoDbC(DListC<StringC> & dbNames, const DListC<StringC> & imagePath, bool imageExists)
     {
-      init(dbNames, imagePath);
+      init(dbNames, imagePath, imageExists);
     }
 
     FaceInfoDbC::FaceInfoDbC(const XMLFactoryContextC &factory)
     {
+      bool imageExists = factory.AttributeBool("imageExists", true);
       // Go through child entries.
       DListC<StringC> dbNames;
       for (RavlN::DLIterC<RavlN::XMLTreeC> it(factory.Children()); it; it++) {
@@ -69,11 +70,11 @@ namespace RavlN {
           dbNames.InsLast(dbName);
         }
       }
-      DListC<StringC>imagePath;
-      init(dbNames, imagePath);
+      DListC<StringC> imagePath;
+      init(dbNames, imagePath, imageExists);
     }
 
-    void FaceInfoDbC::init(const DListC<StringC> & dbNames, const DListC<StringC> & imagePath)
+    void FaceInfoDbC::init(const DListC<StringC> & dbNames, const DListC<StringC> & imagePath, bool imageExists)
     {
       // Look up and see if we have an alias
       ExpandKnownDatabases2(dbNames);
@@ -89,43 +90,47 @@ namespace RavlN {
         rDebug("Loaded XML database '%s' with '%d' subjects and '%d' faces.", it.Data().chars(), db.NoClients(), db.NoFaces());
 
         // OK lets sort out which imagePath to use
-        DListC<StringC>useImagePath = imagePath;
-        if(imagePath.IsEmpty()) {
+        DListC<StringC> useImagePath = imagePath;
+        if (imagePath.IsEmpty()) {
           // OK lets use the loaded db one
           useImagePath = db.ImagePath();
         }
 
-
-
         // Now lets go through the faces
         for (HashIterC<StringC, FaceInfoC> faceIt(db); faceIt; faceIt++) {
 
-          FilenameC origImagePath(faceIt.Data().OrigImage());
+          // Do we want to check the image exists - not always
+          if (imageExists) {
 
-          // If an imagePath has been defined we use that instead to pick up the images
-          if (!useImagePath.IsEmpty()) {
-            bool found = false;
-            for (DLIterC<StringC> pathIt(useImagePath); pathIt; pathIt++) {
-              FilenameC newImagePath = *pathIt + "/" + origImagePath;
-              if (newImagePath.Exists()) {
-                faceIt.Data().OrigImage() = newImagePath;
+            FilenameC origImagePath(faceIt.Data().OrigImage());
+
+            // If an imagePath has been defined we use that instead to pick up the images
+            if (!useImagePath.IsEmpty()) {
+              bool found = false;
+              for (DLIterC<StringC> pathIt(useImagePath); pathIt; pathIt++) {
+                FilenameC newImagePath = *pathIt + "/" + origImagePath;
+                //RavlInfo("Checking %s", newImagePath.data());
+                if (newImagePath.Exists()) {
+                  faceIt.Data().OrigImage() = newImagePath;
+                  Insert(faceIt.Key(), faceIt.Data());
+                  found = true;
+                  break;
+                }
+              }
+              if (!found) {
+                RavlWarning("Modified image path '%s' not found, face not loaded!", origImagePath.data());
+              }
+            } else {
+              // OK an image path is not defined, so we just try and use the image - may be the path is in that
+              if (!origImagePath.Exists()) {
+                RavlWarning("Original Image Path '%s' not found, face not loaded!", origImagePath.data());
+              } else {
                 Insert(faceIt.Key(), faceIt.Data());
-                found = true;
-                break;
               }
             }
-            if (!found) {
-              RavlWarning("Modified Image not found, face not loaded!", origImagePath.data());
-            }
           } else {
-            // OK an image path is not defined, so we just try and use the image - may be the path is in that
-            if (!origImagePath.Exists()) {
-              RavlWarning("Original Image Path '%s' not found, face not loaded!", origImagePath.data());
-            } else {
-              Insert(faceIt.Key(), faceIt.Data());
-            }
+            Insert(faceIt.Key(), faceIt.Data());
           }
-
 
         } // end face it
 
@@ -219,8 +224,6 @@ namespace RavlN {
 
         xml << *it;
       }
-
-
 
       // End Tag
       xml << XMLEndTag;
@@ -591,15 +594,15 @@ namespace RavlN {
       return db;
     }
 
-    bool FaceInfoDbC::AddImagePath(const StringC & imagePath) {
+    bool FaceInfoDbC::AddImagePath(const StringC & imagePath)
+    {
       // Check path isn't already in list
-      if(m_imagePath.Contains(imagePath)) {
+      if (m_imagePath.Contains(imagePath)) {
         return true;
       }
       m_imagePath.InsLast(imagePath);
       return true;
     }
-
 
     XMLIStreamC &operator>>(XMLIStreamC &xml, FaceInfoDbC &data)
     {

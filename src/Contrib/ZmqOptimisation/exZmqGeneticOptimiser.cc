@@ -62,20 +62,21 @@ int main(int nargs, char **argv)
       return 1;
     }
 
-    // FIXME: Get CheckPoint working with derived classes!
-#if 0
     GeneticOptimiserCheckPointC::RefT optimiserCheckPoint;
-    if(!factory.UseComponent("OptimiserCheckPoint",optimiserCheckPoint)) {
+    if(!factory.UseComponent("OptimiserCheckPoint", optimiserCheckPoint)) {
       RavlError("Failed to find optimiser checkpoint.");
       return 1;
     }
-#endif
+
+    optimiserCheckPoint->Start();
 
     RavlInfo("Running optimisation.");
 
     optimiser->Run();
 
     RavlInfo("Optimisation complete");
+
+    optimiserCheckPoint->Shutdown();
 
 #if CATCH_EXCEPTIONS
   } catch (...) {

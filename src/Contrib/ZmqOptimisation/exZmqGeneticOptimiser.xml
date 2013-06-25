@@ -2,7 +2,7 @@
 <?RAVL class='RavlN::XMLTreeC' ?>
 <Config verbose="false" checkConfig="true">
 
-	<ZmqOptimiser typename="OmniN::ObjectN::ZmqGeneticOptimiserC"
+	<ZmqOptimiser typename="RavlN::ZmqN::ZmqGeneticOptimiserC"
 		cross2mutationRatio="0.2" randomFraction="0.05" mutationRate="0.02"
 		keepFraction="0.5" populationSize="20" numGenerations="-1" createOnly="False"
 		threads="4" teminateScore="99" requireFitnessFunction="false">
@@ -16,7 +16,7 @@
 	</ZmqOptimiser>
 
 	<OptimiserCheckPoint typename="RavlN::GeneticN::GeneticOptimiserCheckPointC"
-		filename="checkPoint" interval="60" numberToKeep="2" Optimiser="ZmqOptimiser" />
+		filename="checkPoint" interval="10" numberToKeep="2" Optimiser="ZmqOptimiser" />
 
 
 	<ZmqContext typename="RavlN::ZmqN::ContextC" />

@@ -1,0 +1,8 @@
+ifndef CUDARAND_DEF
+CUDARAND_DEF=1
+
+include CUDA.def
+
+EXELIB :=  -lcurand  $(EXELIB)
+
+endif

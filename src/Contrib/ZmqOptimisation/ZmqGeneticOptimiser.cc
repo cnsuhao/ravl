@@ -6,6 +6,7 @@
 #include "Ravl/Point2d.hh"
 #include "Ravl/DP/Blackboard.hh"
 #include "Ravl/DP/FileFormatStream.hh"
+#include "Ravl/OS/Date.hh"
 
 #define DODEBUG 0
 #if DODEBUG
@@ -29,7 +30,7 @@ namespace RavlN {
       rThrowBadConfigContextOnFailS(factory, UseComponent("SinkReceiver", m_receiver), "Failed to find SinkReceiver socket in XML!");
     }
 
-    void ZmqGeneticOptimiserC::Evaluate(const std::vector<GenomeC::RefT> &pop)
+    bool ZmqGeneticOptimiserC::Evaluate(const std::vector<GenomeC::RefT> &pop)
     {
       MutexLockC lock(m_access);
       if (m_randomiseDomain) {
@@ -38,6 +39,8 @@ namespace RavlN {
         m_evaluateFitness->GenerateNewProblem();
       }
       lock.Unlock();
+
+      rInfo("Evaluating a new generation with %s genomes.", StringOf(pop.size()).data());
 
       for (IntT i = 0; i < (IntT) pop.size(); i++) {
 
@@ -66,6 +69,7 @@ namespace RavlN {
           rWarning("Trouble sending data for evaluation!");
           continue;
         }
+        RavlN::Sleep(0.1);
 
         // and move on to the next data point to be evaluated
       }
@@ -73,8 +77,10 @@ namespace RavlN {
       bool allDone = false;
 
       // Now we have to wait for all the workers.
-      // At the moment I am just counting the number of
+      // At the moment I am just counting the number of results.
       UIntT done = 0;
+      FloatT bestScore = 0.0;
+
       while (!allDone) {
 
         SArray1dC<char> data;
@@ -98,12 +104,11 @@ namespace RavlN {
           rError("Need a score");
           continue;
         }
-        rInfo("Id %d has score %0.2f", id, score);
 
         GenomeC::RefT genome = pop[id];
 
         size_t size = genome->Size();
-        //float sizeDiscount =  (size / 1000.0) * (0.5 + Random1()); //Floor(size / 10) * 0.01;
+        //float sizeDiscount =  (size / 1000.0) * (0.5 + Random1()); // Floor(size / 10) * 0.01;
         float sizeDiscount = ((float) size / 15.0f) * 0.001f;
         //float sizeDiscount = size / 1000.0;
         score -= sizeDiscount;
@@ -115,21 +120,34 @@ namespace RavlN {
         lock.Unlock();
         done++;
 
+        StringC name;
+        if (bb.Get("name", name)) {
+          rInfo("Worker Id: %d Name: %s Score: %0.6f", id, name.data(), score);
+        } else {
+          rInfo("Worker Id: %d has score %0.6f", id, score);
+        }
+
+        if(score > bestScore) {
+          bestScore = score;
+          rWarning("New best score for generation %0.6f", bestScore);
+        }
+
+        // Have we got all the results for the current generation?
         if (done == pop.size()) {
           allDone = true;
-          rInfo("All done!");
+          rInfo("Current generation finished!");
         }
 
       }
 
-      return;
+      return true;
     }
 
     void LinkGeneticOptimiser()
     {
     }
 
-    static XMLFactoryRegisterC<ZmqGeneticOptimiserC> g_registerZmqGeneticOptimiser("OmniN::ObjectN::ZmqGeneticOptimiserC");
+    static XMLFactoryRegisterConvertC<ZmqGeneticOptimiserC, GeneticOptimiserC> g_registerConvertZmqGeneticOptimiser("RavlN::ZmqN::ZmqGeneticOptimiserC");
     static RavlN::TypeNameC g_typeZmqGeneticOptimiserRef(typeid(RavlN::ZmqN::ZmqGeneticOptimiserC::RefT),
         "RavlN::SmartPtrC<OmniN::ObjectN::GeneticOptimiserC>");
 

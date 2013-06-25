@@ -33,6 +33,7 @@ namespace RavlN {
    : DataServerVFSNodeBodyC(factory),
      defaultDataType(factory.AttributeString("defaultDataType","")),
      defaultFileFormat(factory.AttributeString("defaultFileFormat","")),
+     iSPortByteCount(0),
      cacheSize(factory.AttributeInt64("cacheSize",0)),
      realFilename(factory.AttributeString("realFilename","")),
      canSeek(factory.AttributeBool("canSeek",true)),
@@ -43,6 +44,7 @@ namespace RavlN {
   
   DataServerVFSRealFileBodyC::DataServerVFSRealFileBodyC(const StringC &vname,const StringC& npath,const StringC &nRealFilename,bool canWrite)
     : DataServerVFSNodeBodyC(vname,npath,canWrite,false),
+      iSPortByteCount(0),
       cacheSize(0),
       realFilename(nRealFilename),
       canSeek(true),
@@ -55,10 +57,10 @@ namespace RavlN {
   
   DataServerVFSRealFileBodyC::~DataServerVFSRealFileBodyC()
   {
-    ONDEBUG(RavlDebug("~DataServerVFSRealFileBodyC this=%p iSPortShareAbstract=%d iSPortShareByte=%d oPortAbstract=%d oPortByte=%d ",
+    ONDEBUG(RavlDebug("DataServerVFSRealFileBodyC::~DataServerVFSRealFileBodyC this=%p iSPortShareAbstract=%d iSPortShareByte=%d oPortAbstract=%d oPortByte=%d ",
         this,
         (iSPortShareAbstract.IsValid() ? static_cast<Int64T>(iSPortShareAbstract.References()) : -1),
-        (iSPortShareByte.IsValid() ? static_cast<Int64T>(iSPortShareByte.References()) : -1),
+        iSPortByteCount,
         (oPortAbstract.IsValid() ? static_cast<Int64T>(oPortAbstract.References()) : -1),
         (oPortByte.IsValid() ? static_cast<Int64T>(oPortByte.References()) : -1)
         ));
@@ -166,7 +168,7 @@ namespace RavlN {
     
     MutexLockC lock(access);
 
-    if (iSPortShareAbstract.IsValid() || iSPortShareByte.IsValid())
+    if (iSPortShareAbstract.IsValid() || iSPortByteCount > 0)
     {
       RavlError("DataServerVFSRealFileBodyC::OpenOPort failed to open for writing, as already open for reading.");
       return false;
@@ -252,7 +254,7 @@ namespace RavlN {
       DPSeekCtrlC seekControl;
       if (!OpenISequenceBase(iPortBase, seekControl, realFilename, defaultFileFormat, iTypeInfo.TypeInfo(), verbose))
       {
-        cerr << "DataServerBodyC::OpenFileReadAbstract failed to open stream '" << name << "' of type '" << iTypeInfo.Name() << "'" << endl;
+        cerr << "DataServerVFSRealFileBodyC::OpenFileReadAbstract failed to open stream '" << name << "' of type '" << iTypeInfo.Name() << "'" << endl;
         return false;
       }
 
@@ -265,7 +267,7 @@ namespace RavlN {
       // Setup inline cache?
       if (cacheSize > 0)
       {
-        ONDEBUG(cerr << "DataServerBodyC::OpenFileReadAbstract added cache size=" << cacheSize << endl);
+        ONDEBUG(cerr << "DataServerVFSRealFileBodyC::OpenFileReadAbstract added cache size=" << cacheSize << endl);
         iSPortAttachAbstract = CacheIStreamC<RCWrapAbstractC>(iSPortAttachAbstract, cacheSize);
       }
 
@@ -301,37 +303,24 @@ namespace RavlN {
 
   bool DataServerVFSRealFileBodyC::OpenFileReadByte(const StringC& dataType, NetISPortServerBaseC& netPort)
   {
-    if (!iSPortShareByte.IsValid())
+    DPIPortBaseC iPortBase;
+    DPISPortC<ByteT> iSPortByte;
+    DPSeekCtrlC seekControl;
+    if (!OpenISequenceBase(iPortBase, seekControl, realFilename, defaultFileFormat, typeid(ByteT), verbose))
     {
-      DPIPortBaseC iPortBase;
-      DPISPortC<ByteT> iSPortByte;
-      DPSeekCtrlC seekControl;
-      if (!OpenISequenceBase(iPortBase, seekControl, realFilename, defaultFileFormat, typeid(ByteT), verbose))
-      {
-        RavlError("OpenFileReadByte failed to open stream '%s' ",name.c_str());
-        return false;
-      }
-
-      // Setup raw input sport.
-      iSPortByte = DPISPortAttachC<ByteT>(iPortBase, seekControl);
-
-      // Setup inline cache?
-      if (cacheSize > 0)
-      {
-        ONDEBUG(RavlDebug("OpenFileReadByte added cache size=%u ",(unsigned) cacheSize));
-        iSPortByte = CacheIStreamC<ByteT>(iSPortByte, cacheSize);
-      }
-
-      // Setup port share.
-      iSPortShareByte = DPISPortShareC<ByteT>(iSPortByte);
-
-      // Set trigger to let us know when people stop using this file.
-      DataServerVFSRealFileC ref(*this);
-      iSPortShareByte.TriggerCountZero() = Trigger(ref, &DataServerVFSRealFileC::ZeroIPortClientsByte);
+      RavlError("DataServerVFSRealFileBodyC::OpenFileReadByte failed to open stream '%s' ",name.c_str());
+      return false;
     }
-    RavlAssert(iSPortShareByte.IsValid());
 
-    DPISPortC<ByteT> iSPortByte = iSPortShareByte;
+    // Setup raw input sport.
+    iSPortByte = DPISPortAttachC<ByteT>(iPortBase, seekControl);
+
+    // Setup inline cache?
+    if (cacheSize > 0)
+    {
+        ONDEBUG(RavlDebug("DataServerVFSRealFileBodyC::OpenFileReadByte added cache size=%u ",(unsigned) cacheSize));
+      iSPortByte = CacheIStreamC<ByteT>(iSPortByte, cacheSize);
+    }
 
     if (!AddIPortTypeConversion(dataType, iSPortByte))
       return false;
@@ -341,10 +330,10 @@ namespace RavlN {
                                    iSPortByte,
                                    name);
 
-#if DODEBUG
+    ++iSPortByteCount;
+
     DataServerVFSRealFileC ref(*this);
     Connect(netPort.SigConnectionClosed(), ref, &DataServerVFSRealFileC::DisconnectIPortClientByte);
-#endif
 
     return true;
   }
@@ -355,7 +344,7 @@ namespace RavlN {
   {
     if (oPortByte.IsValid())
     {
-      cerr << "DataServerBodyC::OpenFileWriteAbstract failed to open abstract stream '" << name << "' as byte stream already open" << endl;
+      cerr << "DataServerVFSRealFileBodyC::OpenFileWriteAbstract failed to open abstract stream '" << name << "' as byte stream already open" << endl;
       return false;
     }
 
@@ -365,7 +354,7 @@ namespace RavlN {
       DPSeekCtrlC seekControl;
       if (!OpenOSequenceBase(oPortBase, seekControl, realFilename, defaultFileFormat, oTypeInfo.TypeInfo(), verbose))
       {
-        cerr << "DataServerBodyC::OpenFileWriteAbstract failed to open stream '" << name << "' of type '" << oTypeInfo.Name() << "'" << endl;
+        cerr << "DataServerVFSRealFileBodyC::OpenFileWriteAbstract failed to open stream '" << name << "' of type '" << oTypeInfo.Name() << "'" << endl;
         return false;
       }
 
@@ -377,7 +366,7 @@ namespace RavlN {
 
       if (multiWrite)
       {
-        ONDEBUG(RavlDebug("DataServerBodyC::OpenFileWriteAbstract adding port serialisation"));
+        ONDEBUG(RavlDebug("DataServerVFSRealFileBodyC::OpenFileWriteAbstract adding port serialisation"));
         oPortAbstract = DPOSerialisePortC<RCWrapAbstractC>(oPortAbstract);
       }
     }
@@ -385,7 +374,7 @@ namespace RavlN {
     
     if (oPortAbstract.References() > 1 && !multiWrite)
     {
-      RavlError("OpenFileWriteAbstract failed as port already open and multi-write not enabled.");
+      RavlError("DataServerVFSRealFileBodyC::OpenFileWriteAbstract failed as port already open and multi-write not enabled.");
       return false;
     }
 
@@ -411,7 +400,7 @@ namespace RavlN {
   {
     if (oPortAbstract.IsValid())
     {
-      RavlError("DataServerBodyC::OpenFileWriteAbstract failed to open byte stream '%s' as abstract stream already open",name.c_str());
+      RavlError("DataServerVFSRealFileBodyC::OpenFileWriteAbstract failed to open byte stream '%s' as abstract stream already open",name.c_str());
       return false;
     }
 
@@ -421,7 +410,7 @@ namespace RavlN {
       DPSeekCtrlC seekControl;
       if (!OpenOSequenceBase(oPortBase, seekControl, realFilename, defaultFileFormat, typeid(ByteT), verbose))
       {
-        RavlError("DataServerBodyC::OpenFileWriteByte failed to open stream '%s' ",name.c_str());
+        RavlError("DataServerVFSRealFileBodyC::OpenFileWriteByte failed to open stream '%s' ",name.c_str());
         return false;
       }
 
@@ -430,7 +419,7 @@ namespace RavlN {
 
       if (multiWrite)
       {
-        ONDEBUG(RavlDebug("DataServerBodyC::OpenFileWriteByte adding port serialisation"));
+        ONDEBUG(RavlDebug("DataServerVFSRealFileBodyC::OpenFileWriteByte adding port serialisation"));
         oPortByte = DPOSerialisePortC<ByteT>(oPortByte);
       }
     }
@@ -508,7 +497,7 @@ namespace RavlN {
   
   bool DataServerVFSRealFileBodyC::CloseIFileAbstract()
   {
-    RavlAssert(!iSPortShareByte.IsValid());
+    RavlAssert(iSPortByteCount == 0);
 
     MutexLockC lock(access);
 
@@ -535,15 +524,18 @@ namespace RavlN {
 
     MutexLockC lock(access);
 
-    if (iSPortShareByte.IsValid())
+    if (iSPortByteCount > 0)
     {
-      iSPortShareByte.Invalidate();
+      --iSPortByteCount;
 
-      if (sigOnClose.IsValid())
+      if (iSPortByteCount == 0)
       {
-        lock.Unlock();
+        if (sigOnClose.IsValid())
+        {
+          lock.Unlock();
 
-        sigOnClose(AbsoluteName());
+          sigOnClose(AbsoluteName());
+        }
       }
     }
 
@@ -596,18 +588,11 @@ namespace RavlN {
 
 
 
-  bool DataServerVFSRealFileBodyC::DisconnectIPortClientAbstract()
+  bool DataServerVFSRealFileBodyC::DisconnectIPortClientByte()
   {
     ONDEBUG(RavlDebug("DataServerVFSRealFileBodyC::DisconnectIPortClientAbstract refs (%d)",(iSPortShareAbstract.IsValid() ? iSPortShareAbstract.References() : -1)));
 
-    return true;
-  }
-
-
-
-  bool DataServerVFSRealFileBodyC::DisconnectIPortClientByte()
-  {
-    ONDEBUG(RavlDebug("DataServerVFSRealFileBodyC::DisconnectIPortClientByte refs (%d)",(iSPortShareByte.IsValid() ? iSPortShareByte.References() : -1)));
+    CloseIFileByte();
 
     return true;
   }
@@ -652,6 +637,8 @@ namespace RavlN {
     return true;
   }
 
+
+  
   bool DataServerVFSRealFileBodyC::ZeroIPortClientsAbstract()
   {
     ONDEBUG(RavlDebug("DataServerVFSRealFileBodyC::ZeroIPortClientsAbstract (%p) ",this));
@@ -660,13 +647,7 @@ namespace RavlN {
     return true;
   }
 
-  bool DataServerVFSRealFileBodyC::ZeroIPortClientsByte()
-  {
-    ONDEBUG(RavlDebug("DataServerVFSRealFileBodyC::ZeroIPortClientsByte (%p)",this));
 
-    CloseIFileByte();
-    return true;
-  }
 
   bool DataServerVFSRealFileBodyC::DoDelete()
   {

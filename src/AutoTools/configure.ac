@@ -85,6 +85,9 @@ QM_LOCATE_KEY_TOOLS
 
 
    
+# Locate other tools needed to run QMake (as a means of procesing any user
+# settings rather than requirment - QMake will already be aware of them).
+QM_LOCATE_QMAKE_DEPS
 
 
 
@@ -355,6 +358,34 @@ AC_SUBST([PKG_OPT_LDLIBFLAGS])
 AC_SUBST([PKG_PROF_LDLIBFLAGS])
 AC_SUBST([PKG_SHARED_LDLIBFLAGS])
 
+# CUDA Compiler
+#
+# Bring in any configured NVCCFLAGS from the QMake configuration
+CONFIGURE_NVCCFLAGS=" \$(QMAKE_NVCCFLAGS) $CONFIGURE_NVCCFLAGS"
+AC_SUBST([CONFIGURE_NVCCFLAGS])
+#
+# Set PKG_xx_CFLAGS to defaults or any package specific values
+PKG_NVCCANSIFLAG=" \$(NVCC_ANSI_NVCCFLAGS) "
+PKG_CHECK_NVCCFLAGS=" -DRAVL_CHECK "
+PKG_DEBUG_NVCCFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
+PKG_DEFAULT_NVCCFLAGS=" \$(NVCC_NON_OPT_NVCCFLAGS) "
+PKG_GLOBAL_NVCCFLAGS=" \$(NVCC_SPECIFIC_NVCCFLAGS) \$(NVCC_DEBUG_NVCCFLAGS) "
+PKG_GPROF_NVCCFLAGS=" \$(NVCC_GPROF_NVCCFLAGS) "
+PKG_OPT_NVCCFLAGS=" \$(NVCC_OPT_NVCCFLAGS) "
+PKG_PROF_NVCCFLAGS=" \$(NVCC_PROF_NVCCFLAGS) "
+PKG_SHARED_NVCCFLAGS=" \$(NVCC_SHARED_NVCCFLAGS) "
+dnl Declare PKG_XXXXX_NVCCFLAGS variables as output for Config.Project
+AC_SUBST([PKG_NVCCANSIFLAG])
+AC_SUBST([PKG_CHECK_NVCCFLAGS])
+AC_SUBST([PKG_DEBUG_NVCCFLAGS])
+AC_SUBST([PKG_DEFAULT_NVCCFLAGS])
+AC_SUBST([PKG_GLOBAL_NVCCFLAGS])
+AC_SUBST([PKG_GPROF_NVCCFLAGS])
+AC_SUBST([PKG_OPT_NVCCFLAGS])
+AC_SUBST([PKG_PROF_NVCCFLAGS])
+AC_SUBST([PKG_SHARED_NVCCFLAGS])
+AC_SUBST([CONFIGURE_NVCCFLAGS])
+
 
 # Consider the archiver
 #
@@ -492,7 +523,7 @@ RLog_RavlLib=libRavlRLog
 AC_SUBST([RLog_SUPPORT])
 devVideo4Linux2_RavlLib=libRavlImgIOV4L2
 AC_SUBST([devVideo4Linux2_SUPPORT])
-ZeroMQ_RavLib=libRavlZmq
+ZeroMQ_RavlLib=libRavlZmq
 AC_SUBST([ZeroMQ_SUPPORT])
 dnl 
 dnl Now for those libraries needing manual compilation checks:
@@ -655,6 +686,18 @@ Meteor1_SUPPORT=""
 echo Meteor1_SUPPORT=@Meteor1_SUPPORT@ >> ./ExtPkgSupp.$$
 dnl# To re-instate (for linux only)
 dnl#     REQUIRES+=Meteor1  Meteor1_SUPPORT=RavlImgIOMeteor1
+
+
+dnl# Declare <Lib>_SUPPORT substitution variables for external packages known
+dnl# to QMake but which Ravl does not currently utilise.
+dnl#
+dnl# The substitution variable will only be relevant if the user explicitly
+dnl# enables the resource by this project configure program. If this is done
+dnl# the <Lib>_SUPPORT variable will be automatically included in the
+dnl# Config.Project.in template, hence we need to declare it as a substitution
+dnl# variable here.
+dnl#
+AC_SUBST([CUDA_SUPPORT])
 
 
 # If debugging, output what libraries are defined
@@ -1096,10 +1139,16 @@ then
 
 fi
 
-if ( test "x$MKDIR_P" != x )
+if ( test "x$USER_MKDIR_P" != x )
 then
   AC_SUBST([MKDIR_P])
   echo MKDIR_P=@MKDIR_P@ >> ./Config.Project.in
+fi
+
+if ( test "x$USER_NVCC" != x )
+then
+  AC_SUBST([USER_NVCC])
+  echo NVCC=@USER_NVCC@ >> ./Config.Project.in
 fi
 
 if ( test "x$USER_PAGER" != x )
@@ -1264,6 +1313,26 @@ then
 fi
 echo >> ./Config.Project.in
 echo >> ./Config.Project.in
+if ( test x$use_CUDA = xpresent )
+then
+   echo \# CUDA compiler settings >> ./Config.Project.in
+   echo >> ./Config.Project.in
+   echo \# User specified at configure time >> ./Config.Project.in
+   echo CONFIGURE_NVCCFLAGS=@CONFIGURE_NVCCFLAGS@ >> ./Config.Project.in
+   echo >> ./Config.Project.in
+   echo \# Settings determined for current combination of C++ and CUDA compilers >> ./Config.Project.in
+   echo PKG_NVCCANSIFLAG=@PKG_NVCCANSIFLAG@ >> ./Config.Project.in
+   echo PKG_CHECK_NVCCFLAGS=@PKG_CHECK_NVCCFLAGS@ >> ./Config.Project.in
+   echo PKG_DEBUG_NVCCFLAGS=@PKG_DEBUG_NVCCFLAGS@ >> ./Config.Project.in
+   echo PKG_DEFAULT_NVCCFLAGS=@PKG_DEFAULT_NVCCFLAGS@ >> ./Config.Project.in
+   echo PKG_GLOBAL_NVCCFLAGS=@PKG_GLOBAL_NVCCFLAGS@ >> ./Config.Project.in
+   echo PKG_GPROF_NVCCFLAGS=@PKG_GPROF_NVCCFLAGS@ >> ./Config.Project.in
+   echo PKG_OPT_NVCCFLAGS=@PKG_OPT_NVCCFLAGS@ >> ./Config.Project.in
+   echo PKG_PROF_NVCCFLAGS=@PKG_PROF_NVCCFLAGS@ >> ./Config.Project.in
+   echo PKG_SHARED_NVCCFLAGS=@PKG_SHARED_NVCCFLAGS@ >> ./Config.Project.in
+   echo >> ./Config.Project.in
+   echo >> ./Config.Project.in
+fi
 echo \# Flags for the archiver >> ./Config.Project.in
 echo >> ./Config.Project.in
 echo PKG_ARFLAGS=@PKG_ARFLAGS@ >> ./Config.Project.in
@@ -1687,6 +1756,8 @@ RavlVPlay=libRavlVPlay
 RavlXMPP=libRavlXMPP
 SerialIO_SUPPORT=libRavlSerialIO
 # SerialIO is currently included regardless..
+RavlZmqOptimisation=""
+# ZmqOptimisation not currently added to the Ravl build
 
 
 
@@ -1735,6 +1806,8 @@ AC_SUBST([RavlXMPP])
 echo RavlXMPP=@RavlXMPP@ >> ./ExtPkgSupp.$$
 AC_SUBST([SerialIO_SUPPORT])
 echo SerialIO_SUPPORT=@SerialIO_SUPPORT@ >> ./ExtPkgSupp.$$
+AC_SUBST([RavlZmqOptimisation])
+echo RavlZmqOptimisation=@RavlZmqOptimisation@ >> ./ExtPkgSupp.$$
 
 
 
@@ -1823,13 +1896,22 @@ fi
 
 if ( test X$use_RLog != 'Xpresent' )
 then
-   # Lack of RLog blocks libRavlFace and libMarkupTool; PortAudio_SUPPORT;
-   # and blocks XMPP functionality (which in turn blocks iksemel support)
+   # Lack of RLog blocks RavlFace libs (libRavlFace and libMarkupTool);
+   # RavlZmqOptimisation; PortAudio_SUPPORT; and XMPP (which in turn blocks
+   # iksemel support)
    RavlFace_LIBS=""
    PortAudio_SUPPORT=""
    RavlXMPP=""
    iksemel_SUPPORT=""
-   trace 3 Lack of RLog blocking RavlFace PortAudio, XMPP and iksemel
+   RavlZmqOptimisation=""
+   trace 3 Lack of RLog blocking RavlFace PortAudio, XMPP \(indirectly blocks iksemel\) and RavlZmqOptimisation
+fi
+
+if ( test X$use_ZeroMQ != 'Xpresent' )
+then
+   # Lack of ZeroMQ blocks RavlZmqOptimisation.
+   RavlZmqOptimisation=""
+   trace 3 Lack of ZeroMQ blocking RavlZmqOptimisation.
 fi
 
 
@@ -2055,7 +2137,7 @@ $SORT ./ExtPkgSupp.$$ >> ./Config.Project.in
 rm ./ExtPkgSupp.$$
 echo >> ./Config.Project.in
 echo \# Ordered list of the libraries we want in libRavl.\*  >> ./Config.Project.in
-echo SINGLE_RECIPE=\$\(NumPy_SUPPORT\) \$\(avifile_SUPPORT\) libRavlMPEG2 \$\(devVideo4Linux_SUPPORT\) \$\(libffmpeg_SUPPORT\) libRavlVideoIO \$\(dvdread_SUPPORT\) \$\(libmpeg2_SUPPORT\) \$\(libavc1394_SUPPORT\) \$\(libDV_SUPPORT\) \$\(RavlRawVidIO\) \$\(RavlExtImgIO\) \$\(MacOSXVideoCapture_SUPPORT\) \$\(MacOSXRunLoop_SUPPORT\) \$\(RavlVDF\) \$\(SwigPython_SUPPORT\) \$\(RavlDPDisplay\) \$\(Meteor1_SUPPORT\) libRavlAV \$\(RavlChartDetector\) \$\(RavlAAM\) \$\(RavlFace_LIBS\) libRavlTwoWayMap \$\(RavlImageProc\) \$\(uEyeSDK_SUPPORT\) \$\(libmpeg_SUPPORT\) \$\(OpenGL_SUPPORT\) libRavlImageXMLFactory \$\(libClipStationPro_SUPPORT\) libRavlMemModules libRavlImageIO \$\(LibJasper_SUPPORT\) \$\(OpenCV_SUPPORT\) \$\(RavlVPlay\) \$\(Ravl2dGUI_LIBS\) \$\(libdc1394_SUPPORT\) libRavlVideo \$\(LibGd_SUPPORT\) \$\(devVideo4Linux2_SUPPORT\) \$\(OpenSceneGraphGTK_SUPPORT\) \$\(Ravl3d_LIBS\) \$\(LibDirectShow_SUPPORT\) libRavlImage \$\(libAudioFile_SUPPORT\) \$\(RavlDevAudio\) libRavlAudioFeatures \$\(PortAudio_SUPPORT\) libRavlAudioIO libRavlAudioUtil \$\(iksemel_SUPPORT\) \$\(Loudmouth_SUPPORT\) \$\(RavlXMPP\) \$\(RLog_SUPPORT\) \$\(SGIVL_SUPPORT\) \$\(RavlDataServer\) libOptimisation \$\(RavlLogic_LIBS\) libRavlPatternRecIO libRavlKalmanFilter libRavlSVM libRavlGnuPlot libRavlPatternRec libRavlDataSet libRavlOSIO  \$\(ParallelIO_SUPPORT\) \$\(SerialIO_SUPPORT\) \$\(libGuppi_SUPPORT\) libRavlPlot \$\(RavlClassWizard\) libRavlCxxDoc \$\(RavlAutoPort\) libRavlAutoPort2 libRavlSourceTools \$\(LibPython_SUPPORT\) \$\(RavlNet\) \$\(libehs_SUPPORT\) libRavlDPMT \$\(UUIdTheo_SUPPORT\) \$\(LibGnome_SUPPORT\) \$\(libglade2_SUPPORT\) \$\(RavlGUI\) libRavlMathIO libRavlGeneticProgram libRavlGeneticOptimisation \$\(ZeroMQ_SUPPORT\) libRavlService libRavlXMLFactory \$\(libCurl_SUPPORT\) libRavlThreads libRavlOS libRavlIO \$\(libmcrypt_SUPPORT\) libRavlOptimise \$\(RavlCameraCal\) \$\(libmkl_SUPPORT\) \$\(LAPACK_SUPPORT\) libRavlMath libccmath libfann libArffIO \$\(Zlib_SUPPORT\) libRavlHMM libRavlCore  >> ./Config.Project.in
+echo SINGLE_RECIPE=\$\(NumPy_SUPPORT\) \$\(avifile_SUPPORT\) libRavlMPEG2 \$\(devVideo4Linux_SUPPORT\) \$\(libffmpeg_SUPPORT\) libRavlVideoIO \$\(dvdread_SUPPORT\) \$\(libmpeg2_SUPPORT\) \$\(libavc1394_SUPPORT\) \$\(libDV_SUPPORT\) \$\(RavlRawVidIO\) \$\(RavlExtImgIO\) \$\(MacOSXVideoCapture_SUPPORT\) \$\(MacOSXRunLoop_SUPPORT\) \$\(RavlVDF\) \$\(SwigPython_SUPPORT\) \$\(RavlDPDisplay\) \$\(Meteor1_SUPPORT\) libRavlAV \$\(RavlChartDetector\) \$\(RavlAAM\) \$\(RavlFace_LIBS\) libRavlTwoWayMap \$\(RavlImageProc\) \$\(uEyeSDK_SUPPORT\) \$\(libmpeg_SUPPORT\) \$\(OpenGL_SUPPORT\) libRavlImageXMLFactory \$\(libClipStationPro_SUPPORT\) libRavlMemModules libRavlImageIO \$\(LibJasper_SUPPORT\) \$\(OpenCV_SUPPORT\) \$\(RavlVPlay\) \$\(Ravl2dGUI_LIBS\) \$\(libdc1394_SUPPORT\) libRavlVideo \$\(LibGd_SUPPORT\) \$\(devVideo4Linux2_SUPPORT\) \$\(OpenSceneGraphGTK_SUPPORT\) \$\(Ravl3d_LIBS\) \$\(LibDirectShow_SUPPORT\) libRavlImage \$\(libAudioFile_SUPPORT\) \$\(RavlDevAudio\) libRavlAudioFeatures \$\(PortAudio_SUPPORT\) libRavlAudioIO libRavlAudioUtil \$\(iksemel_SUPPORT\) \$\(Loudmouth_SUPPORT\) \$\(RavlXMPP\) \$\(RavlZmqOptimisation\) \$\(RLog_SUPPORT\) \$\(SGIVL_SUPPORT\) \$\(RavlDataServer\) libOptimisation \$\(RavlLogic_LIBS\) libRavlPatternRecIO libRavlKalmanFilter libRavlSVM libRavlGnuPlot libRavlPatternRec libRavlDataSet libRavlOSIO  \$\(ParallelIO_SUPPORT\) \$\(SerialIO_SUPPORT\) \$\(libGuppi_SUPPORT\) libRavlPlot \$\(RavlClassWizard\) libRavlCxxDoc \$\(RavlAutoPort\) libRavlAutoPort2 libRavlSourceTools \$\(LibPython_SUPPORT\) \$\(RavlNet\) \$\(libehs_SUPPORT\) libRavlDPMT \$\(UUIdTheo_SUPPORT\) \$\(LibGnome_SUPPORT\) \$\(libglade2_SUPPORT\) \$\(RavlGUI\) libRavlMathIO libRavlGeneticProgram libRavlGeneticOptimisation \$\(ZeroMQ_SUPPORT\) libRavlService libRavlXMLFactory \$\(libCurl_SUPPORT\) libRavlThreads libRavlHtml libRavlOS libRavlIO \$\(libmcrypt_SUPPORT\) libRavlOptimise \$\(RavlCameraCal\) \$\(libmkl_SUPPORT\) \$\(LAPACK_SUPPORT\) libRavlMath libccmath libfann libArffIO \$\(Zlib_SUPPORT\) libRavlHMM libRavlCore  >> ./Config.Project.in
 echo >> ./Config.Project.in
 echo >> ./Config.Project.in
 

@@ -599,6 +599,7 @@ ALL_EXTERNAL_CFLAGS
 ALL_EXTERNAL_LIBS
 RESOURCES
 ARC
+RavlZmqOptimisation
 SerialIO_SUPPORT
 RavlXMPP
 RavlVPlay
@@ -627,6 +628,7 @@ USER_LIBPATHSWITCH
 USER_TR
 USER_SORT
 USER_SED
+USER_NVCC
 USER_MAKE
 USER_LD
 USER_PKG_CONFIG
@@ -644,6 +646,7 @@ DynLink_LIBS
 SWIG
 GnuPlot
 EGREP
+CUDA_SUPPORT
 Meteor1_SUPPORT
 devVideo4Linux_SUPPORT
 UUIdTheo_SUPPORT
@@ -717,6 +720,8 @@ LibJasper_LIBS
 LibJasper_CFLAGS
 GLUT_LIBS
 GLUT_CFLAGS
+CUDA_LIBS
+CUDA_CFLAGS
 blas_LIBS
 blas_CFLAGS
 ZeroMQ_LIBS
@@ -778,6 +783,16 @@ MAKE_SPECIFIC_MAKEFLAGS
 MAKEFLAGS
 PKG_ARFLAGS
 AR_SPECIFIC_ARFLAGS
+PKG_SHARED_NVCCFLAGS
+PKG_PROF_NVCCFLAGS
+PKG_OPT_NVCCFLAGS
+PKG_GPROF_NVCCFLAGS
+PKG_GLOBAL_NVCCFLAGS
+PKG_DEFAULT_NVCCFLAGS
+PKG_DEBUG_NVCCFLAGS
+PKG_CHECK_NVCCFLAGS
+PKG_NVCCANSIFLAG
+CONFIGURE_NVCCFLAGS
 PKG_SHARED_LDLIBFLAGS
 PKG_PROF_LDLIBFLAGS
 PKG_OPT_LDLIBFLAGS
@@ -811,6 +826,14 @@ PKG_GLOBAL_CCFLAGS
 PKG_DEFAULT_CCFLAGS
 PKG_DEBUG_CCFLAGS
 PKG_CHECK_CCFLAGS
+NVCC_SPECIFIC_NVCCFLAGS
+NVCC_SHARED_NVCCFLAGS
+NVCC_PROF_NVCCFLAGS
+NVCC_OPT_NVCCFLAGS
+NVCC_NON_OPT_NVCCFLAGS
+NVCC_GPROF_NVCCFLAGS
+NVCC_DEBUG_NVCCFLAGS
+NVCC_ANSI_NVCCFLAGS
 COMPILER_SPECIFIC_CCFLAGS
 COMPILER_SHARED_CCFLAGS
 COMPILER_PROF_CCFLAGS
@@ -839,6 +862,8 @@ COMPILER_GPROF_CFLAGS
 COMPILER_DEBUG_CFLAGS
 COMPILER_ANSI_CFLAGS
 CONFIGURE_CFLAGS
+YFLAGS
+LEX_OUTPUT_ROOT
 CXXCPP
 ac_ct_CXX
 CXXFLAGS
@@ -867,6 +892,7 @@ RM
 RANLIB
 PERL
 PAGER
+NVCC
 MKDIR_P
 MAKE
 LN_S
@@ -993,6 +1019,10 @@ with_blas_pkgconf
 with_blas
 with_blas_library
 with_blas_include
+with_CUDA_pkgconf
+with_CUDA
+with_CUDA_library
+with_CUDA_include
 with_GLUT_pkgconf
 with_GLUT
 with_GLUT_library
@@ -1047,6 +1077,7 @@ LEXLIB
 LN_S
 MAKE
 MKDIR_P
+NVCC
 PAGER
 PERL
 RANLIB
@@ -1067,7 +1098,8 @@ CPP
 CXX
 CXXFLAGS
 CCC
-CXXCPP'
+CXXCPP
+YFLAGS'
 
 
 # Initialize some variables set by options.
@@ -1902,6 +1934,19 @@ Optional Packages:
   --with-blas-include     Declare the location of the blas header files and
                           enable their functionality
 
+  --with-CUDA-pkgconf     Enable the CUDA library package via pkg-config and
+                          declare the name by which the CUDA library package
+                          is know to pkg-config
+
+  --with-CUDA             Enable functionality that relies on the CUDA library
+                          [default=check]
+
+  --with-CUDA-library     Declare the location of the CUDA library and enable
+                          its functionality
+
+  --with-CUDA-include     Declare the location of the CUDA header files and
+                          enable their functionality
+
   --with-GLUT-pkgconf     Enable the GLUT library package via pkg-config and
                           declare the name by which the GLUT library package
                           is know to pkg-config
@@ -2041,6 +2086,7 @@ Some influential environment variables:
   MAKE        Path to the make utility
   MKDIR_P     Command to create a directory even if some of its parents do not
               initially exist
+  NVCC        Path to the CUDA compiler
   PAGER       Path to the utility for interactive pagewise file browsing
   PERL        Path to the PERL interpreter
   RANLIB      Path to any indexing utility that may be required when building
@@ -2064,6 +2110,9 @@ Some influential environment variables:
   CXX         C++ compiler command
   CXXFLAGS    C++ compiler flags
   CXXCPP      C++ preprocessor
+  YFLAGS      The list of arguments that will be passed by default to $YACC.
+              This script will default YFLAGS to the empty string to avoid a
+              default value of `-d' given by some make applications.
 
 Use these variables to override the choices made by `configure' or to help
 it to find libraries and programs with nonstandard names/locations.
@@ -2296,6 +2345,52 @@ fi
 
 } # ac_fn_cxx_try_cpp
 
+# ac_fn_c_try_link LINENO
+# -----------------------
+# Try to link conftest.$ac_ext, and return whether this succeeded.
+ac_fn_c_try_link ()
+{
+  as_lineno=${as_lineno-"$1"} as_lineno_stack=as_lineno_stack=$as_lineno_stack
+  rm -f conftest.$ac_objext conftest$ac_exeext
+  if { { ac_try="$ac_link"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval ac_try_echo="\"\$as_me:${as_lineno-$LINENO}: $ac_try_echo\""
+$as_echo "$ac_try_echo"; } >&5
+  (eval "$ac_link") 2>conftest.err
+  ac_status=$?
+  if test -s conftest.err; then
+    grep -v '^ *+' conftest.err >conftest.er1
+    cat conftest.er1 >&5
+    mv -f conftest.er1 conftest.err
+  fi
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; } && {
+	 test -z "$ac_c_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest$ac_exeext && {
+	 test "$cross_compiling" = yes ||
+	 $as_test_x conftest$ac_exeext
+       }; then :
+  ac_retval=0
+else
+  $as_echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	ac_retval=1
+fi
+  # Delete the IPA/IPO (Inter Procedural Analysis/Optimization) information
+  # created by the PGI compiler (conftest_ipa8_conftest.oo), as it would
+  # interfere with the next link command; also delete a directory that is
+  # left behind by Apple's compiler.  We do this before executing the actions.
+  rm -rf conftest.dSYM conftest_ipa8_conftest.oo
+  eval $as_lineno_stack; test "x$as_lineno_stack" = x && { as_lineno=; unset as_lineno;}
+  as_fn_set_status $ac_retval
+
+} # ac_fn_c_try_link
+
 # ac_fn_c_check_header_compile LINENO HEADER VAR INCLUDES
 # -------------------------------------------------------
 # Tests whether HEADER exists and can be compiled using the include files in
@@ -2368,52 +2463,6 @@ fi
   as_fn_set_status $ac_retval
 
 } # ac_fn_c_try_run
-
-# ac_fn_c_try_link LINENO
-# -----------------------
-# Try to link conftest.$ac_ext, and return whether this succeeded.
-ac_fn_c_try_link ()
-{
-  as_lineno=${as_lineno-"$1"} as_lineno_stack=as_lineno_stack=$as_lineno_stack
-  rm -f conftest.$ac_objext conftest$ac_exeext
-  if { { ac_try="$ac_link"
-case "(($ac_try" in
-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-  *) ac_try_echo=$ac_try;;
-esac
-eval ac_try_echo="\"\$as_me:${as_lineno-$LINENO}: $ac_try_echo\""
-$as_echo "$ac_try_echo"; } >&5
-  (eval "$ac_link") 2>conftest.err
-  ac_status=$?
-  if test -s conftest.err; then
-    grep -v '^ *+' conftest.err >conftest.er1
-    cat conftest.er1 >&5
-    mv -f conftest.er1 conftest.err
-  fi
-  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
-  test $ac_status = 0; } && {
-	 test -z "$ac_c_werror_flag" ||
-	 test ! -s conftest.err
-       } && test -s conftest$ac_exeext && {
-	 test "$cross_compiling" = yes ||
-	 $as_test_x conftest$ac_exeext
-       }; then :
-  ac_retval=0
-else
-  $as_echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-	ac_retval=1
-fi
-  # Delete the IPA/IPO (Inter Procedural Analysis/Optimization) information
-  # created by the PGI compiler (conftest_ipa8_conftest.oo), as it would
-  # interfere with the next link command; also delete a directory that is
-  # left behind by Apple's compiler.  We do this before executing the actions.
-  rm -rf conftest.dSYM conftest_ipa8_conftest.oo
-  eval $as_lineno_stack; test "x$as_lineno_stack" = x && { as_lineno=; unset as_lineno;}
-  as_fn_set_status $ac_retval
-
-} # ac_fn_c_try_link
 cat >config.log <<_ACEOF
 This file contains any messages produced by compilers while
 running configure, to aid debugging if configure makes a mistake.
@@ -3247,6 +3296,13 @@ case $host_os in *\ *) host_os=`echo "$host_os" | sed 's/ /-/g'`;; esac
           then
              # User has supplied their own setting, record this
              USER_MKDIR_P=$MKDIR_P
+          fi
+
+
+          if ( test "x$NVCC" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_NVCC=$NVCC
           fi
 
 
@@ -6135,6 +6191,1320 @@ See \`config.log' for more details." "$LINENO" 5; }
 
 
 
+# Locate other tools needed to run QMake (as a means of procesing any user
+# settings rather than requirment - QMake will already be aware of them).
+# Find a good install program.  We prefer a C program (faster),
+# so one script is as good as another.  But avoid the broken or
+# incompatible versions:
+# SysV /etc/install, /usr/sbin/install
+# SunOS /usr/etc/install
+# IRIX /sbin/install
+# AIX /bin/install
+# AmigaOS /C/install, which installs bootblocks on floppy discs
+# AIX 4 /usr/bin/installbsd, which doesn't work without a -g flag
+# AFS /usr/afsws/bin/install, which mishandles nonexistent args
+# SVR4 /usr/ucb/install, which tries to use the nonexistent group "staff"
+# OS/2's system install, which has a completely different semantic
+# ./install, which can be erroneously created by make from ./install.sh.
+# Reject install programs that cannot install multiple files.
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for a BSD-compatible install" >&5
+$as_echo_n "checking for a BSD-compatible install... " >&6; }
+if test -z "$INSTALL"; then
+if test "${ac_cv_path_install+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    # Account for people who put trailing slashes in PATH elements.
+case $as_dir/ in #((
+  ./ | .// | /[cC]/* | \
+  /etc/* | /usr/sbin/* | /usr/etc/* | /sbin/* | /usr/afsws/bin/* | \
+  ?:[\\/]os2[\\/]install[\\/]* | ?:[\\/]OS2[\\/]INSTALL[\\/]* | \
+  /usr/ucb/* ) ;;
+  *)
+    # OSF1 and SCO ODT 3.0 have their own names for install.
+    # Don't use installbsd from OSF since it installs stuff as root
+    # by default.
+    for ac_prog in ginstall scoinst install; do
+      for ac_exec_ext in '' $ac_executable_extensions; do
+	if { test -f "$as_dir/$ac_prog$ac_exec_ext" && $as_test_x "$as_dir/$ac_prog$ac_exec_ext"; }; then
+	  if test $ac_prog = install &&
+	    grep dspmsg "$as_dir/$ac_prog$ac_exec_ext" >/dev/null 2>&1; then
+	    # AIX install.  It has an incompatible calling convention.
+	    :
+	  elif test $ac_prog = install &&
+	    grep pwplus "$as_dir/$ac_prog$ac_exec_ext" >/dev/null 2>&1; then
+	    # program-specific install script used by HP pwplus--don't use.
+	    :
+	  else
+	    rm -rf conftest.one conftest.two conftest.dir
+	    echo one > conftest.one
+	    echo two > conftest.two
+	    mkdir conftest.dir
+	    if "$as_dir/$ac_prog$ac_exec_ext" -c conftest.one conftest.two "`pwd`/conftest.dir" &&
+	      test -s conftest.one && test -s conftest.two &&
+	      test -s conftest.dir/conftest.one &&
+	      test -s conftest.dir/conftest.two
+	    then
+	      ac_cv_path_install="$as_dir/$ac_prog$ac_exec_ext -c"
+	      break 3
+	    fi
+	  fi
+	fi
+      done
+    done
+    ;;
+esac
+
+  done
+IFS=$as_save_IFS
+
+rm -rf conftest.one conftest.two conftest.dir
+
+fi
+  if test "${ac_cv_path_install+set}" = set; then
+    INSTALL=$ac_cv_path_install
+  else
+    # As a last resort, use the slow shell script.  Don't cache a
+    # value for INSTALL within a source directory, because that will
+    # break other packages using the cache if that directory is
+    # removed, or if the value is a relative name.
+    INSTALL=$ac_install_sh
+  fi
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $INSTALL" >&5
+$as_echo "$INSTALL" >&6; }
+
+# Use test -z because SunOS4 sh mishandles braces in ${var-val}.
+# It thinks the first close brace ends the variable substitution.
+test -z "$INSTALL_PROGRAM" && INSTALL_PROGRAM='${INSTALL}'
+
+test -z "$INSTALL_SCRIPT" && INSTALL_SCRIPT='${INSTALL}'
+
+test -z "$INSTALL_DATA" && INSTALL_DATA='${INSTALL} -m 644'
+
+
+for ac_prog in flex lex
+do
+  # Extract the first word of "$ac_prog", so it can be a program name with args.
+set dummy $ac_prog; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_prog_LEX+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  if test -n "$LEX"; then
+  ac_cv_prog_LEX="$LEX" # Let the user override the test.
+else
+as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_prog_LEX="$ac_prog"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+fi
+fi
+LEX=$ac_cv_prog_LEX
+if test -n "$LEX"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $LEX" >&5
+$as_echo "$LEX" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+  test -n "$LEX" && break
+done
+test -n "$LEX" || LEX=":"
+
+if test "x$LEX" != "x:"; then
+  cat >conftest.l <<_ACEOF
+%%
+a { ECHO; }
+b { REJECT; }
+c { yymore (); }
+d { yyless (1); }
+e { yyless (input () != 0); }
+f { unput (yytext[0]); }
+. { BEGIN INITIAL; }
+%%
+#ifdef YYTEXT_POINTER
+extern char *yytext;
+#endif
+int
+main (void)
+{
+  return ! yylex () + ! yywrap ();
+}
+_ACEOF
+{ { ac_try="$LEX conftest.l"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval ac_try_echo="\"\$as_me:${as_lineno-$LINENO}: $ac_try_echo\""
+$as_echo "$ac_try_echo"; } >&5
+  (eval "$LEX conftest.l") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking lex output file root" >&5
+$as_echo_n "checking lex output file root... " >&6; }
+if test "${ac_cv_prog_lex_root+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+
+if test -f lex.yy.c; then
+  ac_cv_prog_lex_root=lex.yy
+elif test -f lexyy.c; then
+  ac_cv_prog_lex_root=lexyy
+else
+  as_fn_error "cannot find output from $LEX; giving up" "$LINENO" 5
+fi
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_prog_lex_root" >&5
+$as_echo "$ac_cv_prog_lex_root" >&6; }
+LEX_OUTPUT_ROOT=$ac_cv_prog_lex_root
+
+if test -z "${LEXLIB+set}"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking lex library" >&5
+$as_echo_n "checking lex library... " >&6; }
+if test "${ac_cv_lib_lex+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+
+    ac_save_LIBS=$LIBS
+    ac_cv_lib_lex='none needed'
+    for ac_lib in '' -lfl -ll; do
+      LIBS="$ac_lib $ac_save_LIBS"
+      cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+`cat $LEX_OUTPUT_ROOT.c`
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  ac_cv_lib_lex=$ac_lib
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+      test "$ac_cv_lib_lex" != 'none needed' && break
+    done
+    LIBS=$ac_save_LIBS
+
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_lex" >&5
+$as_echo "$ac_cv_lib_lex" >&6; }
+  test "$ac_cv_lib_lex" != 'none needed' && LEXLIB=$ac_cv_lib_lex
+fi
+
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether yytext is a pointer" >&5
+$as_echo_n "checking whether yytext is a pointer... " >&6; }
+if test "${ac_cv_prog_lex_yytext_pointer+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  # POSIX says lex can declare yytext either as a pointer or an array; the
+# default is implementation-dependent.  Figure out which it is, since
+# not all implementations provide the %pointer and %array declarations.
+ac_cv_prog_lex_yytext_pointer=no
+ac_save_LIBS=$LIBS
+LIBS="$LEXLIB $ac_save_LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+#define YYTEXT_POINTER 1
+`cat $LEX_OUTPUT_ROOT.c`
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  ac_cv_prog_lex_yytext_pointer=yes
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_save_LIBS
+
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_prog_lex_yytext_pointer" >&5
+$as_echo "$ac_cv_prog_lex_yytext_pointer" >&6; }
+if test $ac_cv_prog_lex_yytext_pointer = yes; then
+
+$as_echo "#define YYTEXT_POINTER 1" >>confdefs.h
+
+fi
+rm -f conftest.l $LEX_OUTPUT_ROOT.c
+
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for a thread-safe mkdir -p" >&5
+$as_echo_n "checking for a thread-safe mkdir -p... " >&6; }
+if test -z "$MKDIR_P"; then
+  if test "${ac_cv_path_mkdir+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH$PATH_SEPARATOR/opt/sfw/bin
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_prog in mkdir gmkdir; do
+	 for ac_exec_ext in '' $ac_executable_extensions; do
+	   { test -f "$as_dir/$ac_prog$ac_exec_ext" && $as_test_x "$as_dir/$ac_prog$ac_exec_ext"; } || continue
+	   case `"$as_dir/$ac_prog$ac_exec_ext" --version 2>&1` in #(
+	     'mkdir (GNU coreutils) '* | \
+	     'mkdir (coreutils) '* | \
+	     'mkdir (fileutils) '4.1*)
+	       ac_cv_path_mkdir=$as_dir/$ac_prog$ac_exec_ext
+	       break 3;;
+	   esac
+	 done
+       done
+  done
+IFS=$as_save_IFS
+
+fi
+
+  test -d ./--version && rmdir ./--version
+  if test "${ac_cv_path_mkdir+set}" = set; then
+    MKDIR_P="$ac_cv_path_mkdir -p"
+  else
+    # As a last resort, use the slow shell script.  Don't cache a
+    # value for MKDIR_P within a source directory, because that will
+    # break other packages using the cache if that directory is
+    # removed, or if the value is a relative name.
+    MKDIR_P="$ac_install_sh -d"
+  fi
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $MKDIR_P" >&5
+$as_echo "$MKDIR_P" >&6; }
+
+
+
+
+          # Locate the requisite dependencies
+
+          # First check for those programs that GNU coding standards regard as
+          # safe to use in a makefile if they are employed via make variables
+          # (and thus create the necessary variables)
+
+          if ( test "x$USER_CHGRP" = x )
+          then
+             # User has not specified a CHGRP program to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                CHGRP=`cat $QMAKE_CFG | $SED  -n 's/^CHGRP=\(.*\)/\1/p'`
+             fi
+             if ( test "x$CHGRP" = x )
+             then
+                # We still do not have a setting, attempt to find one
+                # Extract the first word of "chgrp", so it can be a program name with args.
+set dummy chgrp; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_CHGRP+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $CHGRP in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_CHGRP="$CHGRP" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_CHGRP="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_CHGRP" && ac_cv_path_CHGRP="missing"
+  ;;
+esac
+fi
+CHGRP=$ac_cv_path_CHGRP
+if test -n "$CHGRP"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $CHGRP" >&5
+$as_echo "$CHGRP" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+             fi
+          fi
+          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES CHGRP"
+
+          if ( test "x$USER_CHMOD" = x )
+          then
+             # User has not specified a CHMOD program to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                CHMOD=`cat $QMAKE_CFG | $SED  -n 's/^CHMOD=\(.*\)/\1/p'`
+             fi
+             if ( test "x$CHMOD" = x )
+             then
+                # We still do not have a setting, attempt to find one
+                # Extract the first word of "chmod", so it can be a program name with args.
+set dummy chmod; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_CHMOD+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $CHMOD in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_CHMOD="$CHMOD" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_CHMOD="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_CHMOD" && ac_cv_path_CHMOD="missing"
+  ;;
+esac
+fi
+CHMOD=$ac_cv_path_CHMOD
+if test -n "$CHMOD"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $CHMOD" >&5
+$as_echo "$CHMOD" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+             fi
+          fi
+          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES CHMOD"
+
+          if ( test "x$USER_CHOWN" = x )
+          then
+             # User has not specified a CHOWN program to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                CHOWN=`cat $QMAKE_CFG | $SED  -n 's/^CHOWN=\(.*\)/\1/p'`
+             fi
+             if ( test "x$CHOWN" = x )
+             then
+                # We still do not have a setting, attempt to find one
+                # Extract the first word of "chown", so it can be a program name with args.
+set dummy chown; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_CHOWN+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $CHOWN in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_CHOWN="$CHOWN" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_CHOWN="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_CHOWN" && ac_cv_path_CHOWN="missing"
+  ;;
+esac
+fi
+CHOWN=$ac_cv_path_CHOWN
+if test -n "$CHOWN"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $CHOWN" >&5
+$as_echo "$CHOWN" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+             fi
+          fi
+          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES CHOWN"
+
+
+          if ( test "x$USER_INSTALL" = x )
+          then
+             # User has not specified a INSTALL program to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                OriginalSetting=`cat $QMAKE_CFG | $SED  -n 's/^INSTALL=\(.*\)/\1/p'`
+                if ( test "x$OriginalSetting" != x )
+                then
+                   INSTALL=$OriginalSetting
+                   # Prefer any original setting over the value set from the
+                   # AC_PROG_INSTALL macro
+                fi
+             fi
+          fi
+          if ( test "x$USER_INSTALL_DATA" = x )
+          then
+             # User has not specified INSTALL_DATA do we have an existing
+             # setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                OriginalSetting=`cat $QMAKE_CFG | $SED  -n 's/^INSTALL_DATA=\(.*\)/\1/p'`
+                if ( test "x$OriginalSetting" != x )
+                then
+                   INSTALL_DATA=$OriginalSetting
+                   # Prefer any original setting over the value set from the
+                   # AC_PROG_INSTALL macro
+                fi
+             fi
+          fi
+          if ( test "x$USER_INSTALL_PROGRAM" = x )
+          then
+             # User has not specified INSTALL_PROGRAM do we have an existing
+             # setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                OriginalSetting=`cat $QMAKE_CFG | $SED  -n 's/^INSTALL_PROGRAM=\(.*\)/\1/p'`
+                if ( test "x$OriginalSetting" != x )
+                then
+                   INSTALL_PROGRAM=$OriginalSetting
+                   # Prefer any original setting over the value set from the
+                   # AC_PROG_INSTALL macro
+                fi
+             fi
+          fi
+          if ( test "x$USER_INSTALL_SCRIPT" = x )
+          then
+             # User has not specified INSTALL_SCRIPT, do we have an existing
+             # setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                OriginalSetting=`cat $QMAKE_CFG | $SED  -n 's/^INSTALL_SCRIPT=\(.*\)/\1/p'`
+                if ( test "x$OriginalSetting" != x )
+                then
+                   INSTALL_SCRIPT=$OriginalSetting
+                   # Prefer any original setting over the value set from the
+                   # AC_PROG_INSTALL macro
+                fi
+             fi
+          fi
+          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES INSTALL INSTALL_DATA INSTALL_PROGRAM INSTALL_SCRIPT"
+
+
+          if ( test "x$USER_LEX" = x )
+          then
+             # User has not specified a LEX program to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                OriginalSetting=`cat $QMAKE_CFG | $SED  -n 's/^LEX=\(.*\)/\1/p'`
+                if ( test "x$OriginalSetting" != x )
+                then
+                   LEX=$OriginalSetting
+                   # Prefer any original setting over the value set from the
+                   # AC_PROG_LEX macro
+                fi
+             fi
+          fi
+          if ( test "x$USER_LEXLIB" = x )
+          then
+             # User has not specified a LEXLIB to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                OriginalSetting=`cat $QMAKE_CFG | $SED  -n 's/^LEXLIB=\(.*\)/\1/p'`
+                if ( test "x$OriginalSetting" != x )
+                then
+                   LEXLIB=$OriginalSetting
+                   # Prefer any original setting over the value set from the
+                   # AC_PROG_LEX macro
+                fi
+             fi
+          fi
+          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES LEX LEXLIB"
+
+
+          if ( test "x$USER_MKDIR_P" = x )
+          then
+             # User has not specified a MKDIR_P program to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                OriginalSetting=`cat $QMAKE_CFG | $SED  -n 's/^MKDIR_P=\(.*\)/\1/p'`
+                if ( test "x$OriginalSetting" != x )
+                then
+                   MKDIR_P=$OriginalSetting
+                   # Prefer any original setting over the value set from the
+                   # AC_MKDIR_P macro
+                fi
+             fi
+          fi
+          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES MKDIR_P"
+
+          if ( test "x$USER_NVCC" = x )
+          then
+             # User has not specified a CUDA compiler to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                NVCC=`cat $QMAKE_CFG | $SED  -n 's/^NVCC=\(.*\)/\1/p'`
+             fi
+             if ( test "x$NVCC" = x )
+             then
+                # We still do not have a setting, attempt to find one
+                # Extract the first word of "nvcc", so it can be a program name with args.
+set dummy nvcc; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_NVCC+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $NVCC in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_NVCC="$NVCC" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_NVCC="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_NVCC" && ac_cv_path_NVCC="missing"
+  ;;
+esac
+fi
+NVCC=$ac_cv_path_NVCC
+if test -n "$NVCC"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $NVCC" >&5
+$as_echo "$NVCC" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+             fi
+          fi
+          # Do not update QMAKE_DEPENDENCIES as NVCC is an optional feature
+          # of QMake. What we do have to do is re-set NVCC to null if we did
+          # not find the compiler (as it is optional, finding nvcc to be
+          # missing does not error out of configure so the value of NVCC will
+          # get written to the Config.xx file; hence it needs to be null if
+          # we did not find nvcc).
+          if ( test "x$NVCC" = xmissing )
+          then
+             NVCC=""
+          else
+             CONFIGURE_NVCCFLAGS=$NVCCFLAGS
+             # Record any supplied NVCCFLAGS
+          fi
+
+          if ( test "x$USER_RANLIB" = x )
+          then
+             # User has not specified a RANLIB program to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                RANLIB=`cat $QMAKE_CFG | $SED  -n 's/^RANLIB=\(.*\)/\1/p'`
+             fi
+             if ( test "x$RANLIB" = x )
+             then
+                # We still do not have a setting, attempt to find one
+                if test -n "$ac_tool_prefix"; then
+  # Extract the first word of "${ac_tool_prefix}ranlib", so it can be a program name with args.
+set dummy ${ac_tool_prefix}ranlib; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_prog_RANLIB+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  if test -n "$RANLIB"; then
+  ac_cv_prog_RANLIB="$RANLIB" # Let the user override the test.
+else
+as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_prog_RANLIB="${ac_tool_prefix}ranlib"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+fi
+fi
+RANLIB=$ac_cv_prog_RANLIB
+if test -n "$RANLIB"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $RANLIB" >&5
+$as_echo "$RANLIB" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+fi
+if test -z "$ac_cv_prog_RANLIB"; then
+  ac_ct_RANLIB=$RANLIB
+  # Extract the first word of "ranlib", so it can be a program name with args.
+set dummy ranlib; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_prog_ac_ct_RANLIB+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  if test -n "$ac_ct_RANLIB"; then
+  ac_cv_prog_ac_ct_RANLIB="$ac_ct_RANLIB" # Let the user override the test.
+else
+as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_prog_ac_ct_RANLIB="ranlib"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+fi
+fi
+ac_ct_RANLIB=$ac_cv_prog_ac_ct_RANLIB
+if test -n "$ac_ct_RANLIB"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_ct_RANLIB" >&5
+$as_echo "$ac_ct_RANLIB" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+  if test "x$ac_ct_RANLIB" = x; then
+    RANLIB=":"
+  else
+    case $cross_compiling:$ac_tool_warned in
+yes:)
+{ $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: using cross tools not prefixed with host triplet" >&5
+$as_echo "$as_me: WARNING: using cross tools not prefixed with host triplet" >&2;}
+ac_tool_warned=yes ;;
+esac
+    RANLIB=$ac_ct_RANLIB
+  fi
+else
+  RANLIB="$ac_cv_prog_RANLIB"
+fi
+
+                # Slight weakness of this check is that if ranlib is not
+                # found, we assume it is not needed (set RANLIB to ":")
+             fi
+          fi
+          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES RANLIB"
+
+          if ( test "x$YACC" = x )
+          then
+             # User has not specified a YACC program to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                YACC=`cat $QMAKE_CFG | $SED  -n 's/^YACC=\(.*\)/\1/p'`
+             fi
+             if ( test "x$YACC" = x )
+             then
+                # We still do not have a setting, attempt to find one
+                for ac_prog in 'bison -y' byacc
+do
+  # Extract the first word of "$ac_prog", so it can be a program name with args.
+set dummy $ac_prog; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_prog_YACC+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  if test -n "$YACC"; then
+  ac_cv_prog_YACC="$YACC" # Let the user override the test.
+else
+as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_prog_YACC="$ac_prog"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+fi
+fi
+YACC=$ac_cv_prog_YACC
+if test -n "$YACC"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $YACC" >&5
+$as_echo "$YACC" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+  test -n "$YACC" && break
+done
+test -n "$YACC" || YACC="yacc"
+
+             fi
+          fi
+          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES YACC"
+
+          # GNU standards regard the following safe to call directly but as we
+          # already implemented them via a make variable, set those here...
+
+          if ( test "x$USER_CP" = x )
+          then
+             # User has not specified a CP program to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                CP=`cat $QMAKE_CFG | $SED  -n 's/^CP=\(.*\)/\1/p'`
+             fi
+             if ( test "x$CP" = x )
+             then
+                # We still do not have a setting, attempt to find one
+                # Extract the first word of "cp", so it can be a program name with args.
+set dummy cp; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_CP+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $CP in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_CP="$CP" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_CP="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_CP" && ac_cv_path_CP="missing"
+  ;;
+esac
+fi
+CP=$ac_cv_path_CP
+if test -n "$CP"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $CP" >&5
+$as_echo "$CP" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+             fi
+          fi
+          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES CP"
+
+          if ( test "x$USER_RM" = x )
+          then
+             # User has not specified a RM program to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                RM=`cat $QMAKE_CFG | $SED  -n 's/^RM=\(.*\)/\1/p'`
+             fi
+             if ( test "x$RM" = x )
+             then
+                # We still do not have a setting, attempt to find one
+                # Extract the first word of "rm", so it can be a program name with args.
+set dummy rm; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_RM+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $RM in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_RM="$RM" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_RM="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_RM" && ac_cv_path_RM="missing"
+  ;;
+esac
+fi
+RM=$ac_cv_path_RM
+if test -n "$RM"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $RM" >&5
+$as_echo "$RM" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+             fi
+          fi
+          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES RM"
+
+          if ( test "x$USER_TOUCH" = x )
+          then
+             # User has not specified a TOUCH program to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                TOUCH=`cat $QMAKE_CFG | $SED  -n 's/^TOUCH=\(.*\)/\1/p'`
+             fi
+             if ( test "x$TOUCH" = x )
+             then
+                # We still do not have a setting, attempt to find one
+                # Extract the first word of "touch", so it can be a program name with args.
+set dummy touch; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_TOUCH+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $TOUCH in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_TOUCH="$TOUCH" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_TOUCH="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_TOUCH" && ac_cv_path_TOUCH="missing"
+  ;;
+esac
+fi
+TOUCH=$ac_cv_path_TOUCH
+if test -n "$TOUCH"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $TOUCH" >&5
+$as_echo "$TOUCH" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+             fi
+          fi
+          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES TOUCH"
+
+          #  Now check for those utilities used by QMake which are not
+          # recognised as being reliably portable by the GNU standard.
+          # For these, we will need to consider providing an alternative
+          # implementation in cases where any are absent.
+
+          if ( test "x$USER_LN_S" = x )
+          then
+             # User has not specified a LN_S program to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                LN_S=`cat $QMAKE_CFG | $SED  -n 's/^LN_S=\(.*\)/\1/p'`
+             fi
+             if ( test "x$LN_S" = x )
+             then
+                # We still do not have a setting, attempt to find one
+                { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether ln -s works" >&5
+$as_echo_n "checking whether ln -s works... " >&6; }
+LN_S=$as_ln_s
+if test "$LN_S" = "ln -s"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no, using $LN_S" >&5
+$as_echo "no, using $LN_S" >&6; }
+fi
+
+             fi
+          fi
+          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES LN_S"
+
+          if ( test "x$USER_PAGER" = x )
+          then
+             # User has not specified a PAGER to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                PAGER=`cat $QMAKE_CFG | $SED  -n 's/^QMAKE_PAGER=\(.*\)/\1/p'`
+             fi
+             if ( test "x$PAGER" = x )
+             then
+                # We still do not have a setting, attempt to find one
+                # Extract the first word of "more", so it can be a program name with args.
+set dummy more; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_PAGER+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $PAGER in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_PAGER="$PAGER" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_PAGER="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_PAGER" && ac_cv_path_PAGER="missing"
+  ;;
+esac
+fi
+PAGER=$ac_cv_path_PAGER
+if test -n "$PAGER"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PAGER" >&5
+$as_echo "$PAGER" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+                if ( test "x$PAGER" = xmissing )
+                then
+                   # Extract the first word of "pg", so it can be a program name with args.
+set dummy pg; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_PAGER+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $PAGER in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_PAGER="$PAGER" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_PAGER="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_PAGER" && ac_cv_path_PAGER="missing"
+  ;;
+esac
+fi
+PAGER=$ac_cv_path_PAGER
+if test -n "$PAGER"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PAGER" >&5
+$as_echo "$PAGER" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+                fi
+             fi
+          fi
+          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES PAGER"
+
+          if ( test "x$USER_PERL" = x )
+          then
+             # User has not specified the PERL interpreter to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                PERL=`cat $QMAKE_CFG | $SED  -n 's/^PERL=\(.*\)/\1/p'`
+             fi
+             if ( test "x$PERL" = x )
+             then
+                # We still do not have a setting, attempt to find one
+                # Extract the first word of "perl", so it can be a program name with args.
+set dummy perl; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_PERL+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $PERL in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_PERL="$PERL" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_PERL="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_PERL" && ac_cv_path_PERL="missing"
+  ;;
+esac
+fi
+PERL=$ac_cv_path_PERL
+if test -n "$PERL"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PERL" >&5
+$as_echo "$PERL" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+             fi
+          fi
+          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES PERL"
+
+          if ( test "x$USER_SYNC" = x )
+          then
+             # User has not specified a SYNC program to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                SYNC=`cat $QMAKE_CFG | $SED  -n 's/^SYNC=\(.*\)/\1/p'`
+             fi
+             if ( test "x$SYNC" = x )
+             then
+                # We still do not have a setting, attempt to find one
+                # Extract the first word of "sync", so it can be a program name with args.
+set dummy sync; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_SYNC+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $SYNC in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_SYNC="$SYNC" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_SYNC="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_SYNC" && ac_cv_path_SYNC="missing"
+  ;;
+esac
+fi
+SYNC=$ac_cv_path_SYNC
+if test -n "$SYNC"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $SYNC" >&5
+$as_echo "$SYNC" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+             fi
+          fi
+          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES SYNC"
+
+          if ( test "x$USER_XARGS" = x )
+          then
+             # User has not specified a XARGS program to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                XARGS=`cat $QMAKE_CFG | $SED  -n 's/^XARGS=\(.*\)/\1/p'`
+             fi
+             if ( test "x$XARGS" = x )
+             then
+                # We still do not have a setting, attempt to find one
+                # Extract the first word of "xargs", so it can be a program name with args.
+set dummy xargs; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_XARGS+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $XARGS in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_XARGS="$XARGS" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_XARGS="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_XARGS" && ac_cv_path_XARGS="missing"
+  ;;
+esac
+fi
+XARGS=$ac_cv_path_XARGS
+if test -n "$XARGS"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $XARGS" >&5
+$as_echo "$XARGS" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+             fi
+          fi
+          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES XARGS"
+
+          # Remaining utils used in the build process are all regarded by the
+          # GNU standards as safe for direct use:
+          #       cat cmp diff ls mv rmdir tar test touch true
+          # We do not therefore configure those in
+
+          missing_deps=""
+          for e in $QMAKE_DEPENDENCIES
+          do
+             eval exe_path=\$$e
+             if ( test "x$exe_path" = xmissing || test "x$exe_path" = x )
+             then
+                missing_deps="$missing_deps $e"
+             fi
+          done
+          if ( test "x$missing_deps" != x )
+          then
+             { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Cannot locate the following dependencies of QMake: $missing_deps
+See \`config.log' for more details." "$LINENO" 5; }
+          fi
+
+
 
 
 
@@ -6281,9 +7651,21 @@ then
              trace 3 We have a GNU C++ Compiler
 
              COMPILER_ANSI_CCFLAGS=" -ansi "
+             NVCC_ANSI_NVCCFLAGS=" -Xcompiler -ansi "
+             # -ansi is not recognised by the CUDA compiler driver. This means
+             # we need to prefix them with the -Xcompiler switch that causes
+             # nvcc to ignore the following flag but still pass it on to any
+             # subsequent GNU compilation.
+
              COMPILER_DEBUG_CCFLAGS=" -g "
+             NVCC_DEBUG_NVCCFLAGS=$COMPILER_DEBUG_CCFLAGS
+
              COMPILER_GPROF_CCFLAGS=" -pg "
+             NVCC_GPROF_NVCCFLAGS=$COMPILER_GPROF_CCFLAGS
+
              COMPILER_NON_OPT_CCFLAGS=" -O "
+             NVCC_NON_OPT_NVCCFLAGS=$COMPILER_NON_OPT_CCFLAGS
+
              # Optimisation flags depend on version of GCC in use
                           CXX_VERSION=`$CXX --v 2>&1 | $GREP 'gcc version' | $AWK '{ print $3 }'`
              CXX_MAJOR=`echo $CXX_VERSION | $AWK -F. '{ print $1 }'`
@@ -6299,11 +7681,37 @@ then
                 COMPILER_OPT_CCFLAGS=" -O2 -ffast-math -fno-strict-aliasing "
              fi
              COMPILER_OPT_CCFLAGS=$COMPILER_OPT_CCFLAGS" -march=native -mtune=native "
+
+             NVCC_OPT_NVCCFLAGS=" -O2  -Xcompiler -march=native -Xcompiler -mtune=native "
+             # Take a cautious approach to optimisation of CUDA modules just
+             # in case any of the -ffast_math, -fno-strict-aliasing, etc.
+             # optimisations cause a problem with the generated code. We want
+             # to maintain the processor targetting switches (-march=native
+             # -mtune=native) but these are not recognised by the CUDA compiler
+             # driver. This means we need to prefix them with the -Xcompiler
+             # switch that causes nvcc to ignore the following flag but still
+             # pass it on to any subsequent GNU compilation.
+
              COMPILER_PROF_CCFLAGS=" -p "
+             NVCC_PROF_NVCCFLAGS=$COMPILER_PROF_CCFLAGS
+
              COMPILER_SHARED_CCFLAGS=" -shared -fPIC "
+             NVCC_SHARED_NVCCFLAGS=" -shared -Xcompiler -fPIC "
+             # Prefix -fPIC as the CUDA compiler driver cannot cope with it.
+
              COMPILER_SPECIFIC_CCFLAGS=" -Wall -pipe -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE "
+             NVCC_SPECIFIC_NVCCFLAGS=" -Xcompiler -Wall -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE "
+             # As nvcc chokes on -Wall we prefix it with the nvcc -Xcompiler
+             # "ignore this" switch. The warnings may or may not be useful
+             # as some of the code compiled will be generated code. Given
+             # nvcc fails to understand -pipe, we drop this switch in case
+             # it causes any communication issues between the CUDA compiler
+             # driver and the child GNU compilation.
           else
               trace 3 We do not have a GNU C++ compiler
+              #  N.B. Not having a GNU compiler blocks CUDA, hence we do not
+              #  set NVCCFLAGS in this block.
+              #
               # Try relevant machine specific options we have used before
                                                                                                                                                             case X$host_os in
               Xirix* )    trace 3 Setting CCFLAGS we have previously used under Irix
@@ -6351,6 +7759,15 @@ then
           # any user-provided CCFLAGS will be recorded in Config.QMake as QMAKE_CCFLAGS
 
           # Allow output of compiler specific settings
+
+
+
+
+
+
+
+
+
 
 
 
@@ -6605,6 +8022,33 @@ fi
 
 
 #
+
+
+
+
+
+
+
+
+
+# CUDA Compiler
+#
+# Bring in any configured NVCCFLAGS from the QMake configuration
+CONFIGURE_NVCCFLAGS=" \$(QMAKE_NVCCFLAGS) $CONFIGURE_NVCCFLAGS"
+
+#
+# Set PKG_xx_CFLAGS to defaults or any package specific values
+PKG_NVCCANSIFLAG=" \$(NVCC_ANSI_NVCCFLAGS) "
+PKG_CHECK_NVCCFLAGS=" -DRAVL_CHECK "
+PKG_DEBUG_NVCCFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
+PKG_DEFAULT_NVCCFLAGS=" \$(NVCC_NON_OPT_NVCCFLAGS) "
+PKG_GLOBAL_NVCCFLAGS=" \$(NVCC_SPECIFIC_NVCCFLAGS) \$(NVCC_DEBUG_NVCCFLAGS) "
+PKG_GPROF_NVCCFLAGS=" \$(NVCC_GPROF_NVCCFLAGS) "
+PKG_OPT_NVCCFLAGS=" \$(NVCC_OPT_NVCCFLAGS) "
+PKG_PROF_NVCCFLAGS=" \$(NVCC_PROF_NVCCFLAGS) "
+PKG_SHARED_NVCCFLAGS=" \$(NVCC_SHARED_NVCCFLAGS) "
+
+
 
 
 
@@ -10463,6 +11907,896 @@ $as_echo "$as_me: WARNING: --with-blas-include and --with-blas specify different
           with_blas_prq=""
           with_blas_hdr=""
           with_blas_virtual="no"
+
+
+
+
+
+
+# Check whether --with-CUDA-pkgconf was given.
+if test "${with_CUDA_pkgconf+set}" = set; then :
+  withval=$with_CUDA_pkgconf; case $with_CUDA_pkgconf in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                          with_CUDA_pkgconf=no
+                                          trace 4 --with-CUDA-pkgconf disabling pkg-config use
+                                          ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' | 'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                          { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Asking to configure CUDA via pkg-config but configure is unaware of the name of the DOTpc metadata file
+See \`config.log' for more details." "$LINENO" 5; }
+                                          ;;
+                        * )               use_CUDA=yes
+                                          trace 4 --with-CUDA-pkgconf set to [$with_CUDA_pkgconf]
+                                          ;;
+                       esac
+
+else
+  trace 4 No --with-CUDA-pkgconf specified
+                       with_CUDA_pkgconf=notset
+
+
+fi
+
+
+# Check whether --with-CUDA was given.
+if test "${with_CUDA+set}" = set; then :
+  withval=$with_CUDA; case $with_CUDA in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                          use_CUDA=no
+                                          with_CUDA=no
+                                          ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                          use_CUDA=yes
+                                          with_CUDA=yes
+                                          ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                          use_CUDA=check
+                                          with_CUDA=check
+                                          ;;
+                        * )               use_CUDA=yes
+                                          ;;
+                       esac
+
+else
+  trace 4 No --with-CUDA specified
+                       with_CUDA=notset
+
+
+fi
+
+
+# Check whether --with-CUDA-library was given.
+if test "${with_CUDA_library+set}" = set; then :
+  withval=$with_CUDA_library; case "$with_CUDA_library" in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                          use_CUDA=no
+                                          with_CUDA_library=no
+                                          ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                          use_CUDA=yes
+                                          with_CUDA_library=yes
+                                          ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                          use_CUDA=check
+                                          with_CUDA_library=check
+                                          ;;
+                        * )               use_CUDA=yes
+                                          ;;
+                       esac
+
+else
+  trace 4 No --with-CUDA-library specified
+                       with_CUDA_library=notset
+
+
+fi
+
+
+# Check whether --with-CUDA-include was given.
+if test "${with_CUDA_include+set}" = set; then :
+  withval=$with_CUDA_include; case "$with_CUDA_include" in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                          use_CUDA=no
+                                          with_CUDA_include=no
+                                          ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                          use_CUDA=yes
+                                          with_CUDA_include=yes
+                                          ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                          use_CUDA=check
+                                          with_CUDA_include=check
+                                          ;;
+                        * )               use_CUDA=yes
+                                          ;;
+                       esac
+
+else
+  trace 4 No --with-CUDA-include specified
+                       with_CUDA_include=notset
+
+
+fi
+
+          # Having read the command-line options, check none are mutually
+          # exclusive or contradictory
+          #
+          # First test --with-CUDA compatability with the rest
+          if ( test $with_CUDA = no )
+          then
+             if ( test $with_CUDA_pkgconf != no && test $with_CUDA_pkgconf != notset )
+             then
+                # --with-CUDA-pkgconf=path (is neither no or notset and cannot
+                # be yes or check as they would have errored above.
+                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Asking to CUDA via pkg-config but --with-CUDA disabled it
+See \`config.log' for more details." "$LINENO" 5; }
+             fi
+
+             if ( test "$with_CUDA_library" != no && test "$with_CUDA_library" != notset )
+             then
+                if ( test "$with_CUDA_library" = check )
+                then
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-CUDA specifically disables library but --with-CUDA-library" >&5
+$as_echo "$as_me: WARNING: --with-CUDA specifically disables library but --with-CUDA-library" >&2;}
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: asking to check for it; --with-CUDA-library ignored" >&5
+$as_echo "$as_me: WARNING: asking to check for it; --with-CUDA-library ignored" >&2;}
+                   use_CUDA=no
+                else
+                   # --with-CUDA-library is yes or points to the library
+                   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "--with-CUDA-library asking to use CUDA but --with-CUDA disabled it
+See \`config.log' for more details." "$LINENO" 5; }
+                fi
+              fi
+
+             if ( test "$with_CUDA_include" != no && test "$with_CUDA_include" != notset )
+             then
+                if ( test "$with_CUDA_include" = check )
+                then
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-CUDA specifically disables library but --with-CUDA-include" >&5
+$as_echo "$as_me: WARNING: --with-CUDA specifically disables library but --with-CUDA-include" >&2;}
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: asking to check for it; --with-CUDA-include ignored" >&5
+$as_echo "$as_me: WARNING: asking to check for it; --with-CUDA-include ignored" >&2;}
+                   use_CUDA=no
+                else
+                   # --with-CUDA-include is yes or points to the include
+                   # directory
+                   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "--with-CUDA-include asking to use CUDA but --with-CUDA disabled it
+See \`config.log' for more details." "$LINENO" 5; }
+                fi
+             fi
+
+          else
+             # test --with-CUDA != no
+
+             if ( test $with_CUDA = check )
+             then
+                if ( test $with_CUDA_pkgconf != no && test $with_CUDA_pkgconf != notset )
+                then
+                   # --with-CUDA-pkgconf must point to the metafile
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Explicitly asking for CUDA via pkg-config but --with-CUDA is" >&5
+$as_echo "$as_me: WARNING: Explicitly asking for CUDA via pkg-config but --with-CUDA is" >&2;}
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: asking to check for it; --with-CUDA ignored." >&5
+$as_echo "$as_me: WARNING: asking to check for it; --with-CUDA ignored." >&2;}
+                   use_CUDA=yes
+                fi
+
+                if ( test "$with_CUDA_library" != check && test "$with_CUDA_library" != notset )
+                then
+                   if ( test "$with_CUDA_library" = no )
+                   then
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Asking to check for CUDA via --with-CUDA but --with-CUDA-library" >&5
+$as_echo "$as_me: WARNING: Asking to check for CUDA via --with-CUDA but --with-CUDA-library" >&2;}
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: explicitly disables it; --with-CUDA ignored." >&5
+$as_echo "$as_me: WARNING: explicitly disables it; --with-CUDA ignored." >&2;}
+                      use_CUDA=no
+                   else
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Explicitly asking for CUDA via --with-CUDA-library but --with-CUDA" >&5
+$as_echo "$as_me: WARNING: Explicitly asking for CUDA via --with-CUDA-library but --with-CUDA" >&2;}
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: asking to check for it; --with-CUDA ignored." >&5
+$as_echo "$as_me: WARNING: asking to check for it; --with-CUDA ignored." >&2;}
+                      use_CUDA=yes
+                   fi
+                fi
+
+                if ( test "$with_CUDA_include" != check && test "$with_CUDA_include" != notset )
+                then
+                   if ( test "$with_CUDA_include" = no )
+                   then
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Asking to check for CUDA via --with-CUDA but --with-CUDA-include" >&5
+$as_echo "$as_me: WARNING: Asking to check for CUDA via --with-CUDA but --with-CUDA-include" >&2;}
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: explicitly disables it; --with-CUDA ignored." >&5
+$as_echo "$as_me: WARNING: explicitly disables it; --with-CUDA ignored." >&2;}
+                      use_CUDA=no
+                   else
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Explicitly asking for CUDA via --with-CUDA-include but --with-CUDA" >&5
+$as_echo "$as_me: WARNING: Explicitly asking for CUDA via --with-CUDA-include but --with-CUDA" >&2;}
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: asking to check for it; --with-CUDA ignored." >&5
+$as_echo "$as_me: WARNING: asking to check for it; --with-CUDA ignored." >&2;}
+                      use_CUDA=yes
+                   fi
+                fi
+
+             else
+                # --with-CUDA != no && != check
+                if ( test $with_CUDA != notset )
+                then
+                   # --with-CUDA = path or yes
+
+                   # We need not check --with-CUDA-pkgconf as there is no
+                   # possible conflict (cannot be check and we take no to
+                   # be a request to disable pkg-config, rather than the
+                   # library as a whole)
+
+                   if ( test "$with_CUDA_library" = no )
+                   then
+                      { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "--with-CUDA-library disabling CUDA but --with-CUDA enabled it
+See \`config.log' for more details." "$LINENO" 5; }
+                   else
+                      if ( test "$with_CUDA_library" = check )
+                      then
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Explicitly enabling CUDA via --with-CUDA but --with-CUDA-library" >&5
+$as_echo "$as_me: WARNING: Explicitly enabling CUDA via --with-CUDA but --with-CUDA-library" >&2;}
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING:  asking to check for it; --with-CUDA-include ignored." >&5
+$as_echo "$as_me: WARNING:  asking to check for it; --with-CUDA-include ignored." >&2;}
+                         use_CUDA=no
+                      fi
+                   fi
+
+                   if ( test "$with_CUDA_include" = no )
+                   then
+                      { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "--with-CUDA-include disabling CUDA but --with-CUDA enabled it
+See \`config.log' for more details." "$LINENO" 5; }
+                   else
+                      if ( test "$with_CUDA_include" = check )
+                      then
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Explicitly enabling CUDA via --with-CUDA but --with-CUDA-include" >&5
+$as_echo "$as_me: WARNING: Explicitly enabling CUDA via --with-CUDA but --with-CUDA-include" >&2;}
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING:  asking to check for it; --with-CUDA-include ignored." >&5
+$as_echo "$as_me: WARNING:  asking to check for it; --with-CUDA-include ignored." >&2;}
+                         use_CUDA=no
+                      fi
+                   fi
+                fi
+             fi
+          fi
+
+          # Now test --with-CUDA-pkgconf is not in conflict with the other two
+          # command-line switches.
+          if ( test $with_CUDA_pkgconf != notset && test $with_CUDA_pkgconf != no )
+          then
+             # --with-CUDA-pkgconf = path (cannot be yes or check)
+             if ( test "$with_CUDA_library" = check )
+             then
+                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-CUDA-library asking to check for CUDA but --with-CUDA-pkgconf asking" >&5
+$as_echo "$as_me: WARNING: --with-CUDA-library asking to check for CUDA but --with-CUDA-pkgconf asking" >&2;}
+                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: to use pkg-config, --with-CUDA-library ignored." >&5
+$as_echo "$as_me: WARNING: to use pkg-config, --with-CUDA-library ignored." >&2;}
+                use_CUDA=yes
+             else
+                if ( test "$with_CUDA_library" != no && test "$with_CUDA_library" != notset )
+                then
+                   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "--with-CUDA-library enabling compile check for CUDA but --with-CUDA-pkgconf asking to use pkg-config
+See \`config.log' for more details." "$LINENO" 5; }
+                fi
+             fi
+
+             if ( test "$with_CUDA_include" = check )
+             then
+                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-CUDA-include asking to check for CUDA but --with-CUDA-pkgconf asking" >&5
+$as_echo "$as_me: WARNING: --with-CUDA-include asking to check for CUDA but --with-CUDA-pkgconf asking" >&2;}
+                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: to use pkg-config, --with-CUDA-include ignored." >&5
+$as_echo "$as_me: WARNING: to use pkg-config, --with-CUDA-include ignored." >&2;}
+                use_CUDA=yes
+             else
+                if ( test "$with_CUDA_include" != no && test "$with_CUDA_include" != notset )
+                then
+                   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "--with-CUDA-include enabling compile check for CUDA but --with-CUDA-pkgconf asking to use pkg-config
+See \`config.log' for more details." "$LINENO" 5; }
+                fi
+             fi
+          fi
+
+
+          # Check consistency between library and include switches
+          if ( test "$with_CUDA_library" = no )
+          then
+             if ( test "$with_CUDA_include" != no && test "$with_CUDA_include" != notset )
+             then
+                if ( test "$with_CUDA_include" = check )
+                then
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-CUDA-include asking to check for CUDA but --with-CUDA-library has" >&5
+$as_echo "$as_me: WARNING: --with-CUDA-include asking to check for CUDA but --with-CUDA-library has" >&2;}
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: explicitly disabled it; --with-CUDA-include ignored." >&5
+$as_echo "$as_me: WARNING: explicitly disabled it; --with-CUDA-include ignored." >&2;}
+                   use_CUDA=no
+                else
+                   # --with-CUDA-include = yes or path
+                   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "--with-CUDA-include enabling CUDA but --with-CUDA-library disabled it.
+See \`config.log' for more details." "$LINENO" 5; }
+                fi
+             fi
+          else
+             # --with-CUDA-library != no
+             if ( test "$with_CUDA_library" = check )
+             then
+                if ( test "$with_CUDA_include" = no )
+                then
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-CUDA-library asking to check for CUDA but --with-CUDA-include has" >&5
+$as_echo "$as_me: WARNING: --with-CUDA-library asking to check for CUDA but --with-CUDA-include has" >&2;}
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: explicitly disabled it; --with-CUDA-library ignored." >&5
+$as_echo "$as_me: WARNING: explicitly disabled it; --with-CUDA-library ignored." >&2;}
+                   use_CUDA=no
+                else
+                   if ( test "$with_CUDA_include" != check && test "$with_CUDA_include" != notset )
+                   then
+                      # --with-CUDA-include = yes or path
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-CUDA-library asking to check for CUDA but --with-CUDA-include has" >&5
+$as_echo "$as_me: WARNING: --with-CUDA-library asking to check for CUDA but --with-CUDA-include has" >&2;}
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: explicitly enabled it; --with-CUDA-library ignored." >&5
+$as_echo "$as_me: WARNING: explicitly enabled it; --with-CUDA-library ignored." >&2;}
+                      use_CUDA=yes
+                   fi
+                fi
+             else
+                if ( test "$with_CUDA_library" != notset )
+                then
+                   # --with-CUDA-library a path or yes
+                   if ( test "$with_CUDA_include" = no )
+                   then
+                      { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "--with-CUDA-library enabling CUDA but --with-CUDA-include disabled it.
+See \`config.log' for more details." "$LINENO" 5; }
+                   else
+                      if ( test "$with_CUDA_include" = check )
+                      then
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-CUDA-include asking to check for CUDA but --with-CUDA-library has" >&5
+$as_echo "$as_me: WARNING: --with-CUDA-include asking to check for CUDA but --with-CUDA-library has" >&2;}
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: explicitly enabled it; --with-CUDA-include ignored." >&5
+$as_echo "$as_me: WARNING: explicitly enabled it; --with-CUDA-include ignored." >&2;}
+                         use_CUDA=yes
+                      fi
+                   fi
+                fi
+             fi
+          fi
+
+
+          # Now process --with-CUDA to see if it is a fallback path
+          #
+          # Initialise fallback components
+          fallback_path=""
+          fallback_file=""
+          # Check for viable switch setting
+          if ( test $with_CUDA != notset && test $with_CUDA != no && test $with_CUDA != check && test $with_CUDA != yes )
+          then
+             # We have a path to use
+             if ( test -d $with_CUDA )
+             then
+                # Parameter is a directory path
+                fallback_path=$with_CUDA
+                trace 3 with-CUDA provides a fallback path [$fallback_path]
+             else
+                fallback_path=`$as_dirname -- $with_CUDA ||
+$as_expr X$with_CUDA : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
+	 X$with_CUDA : 'X\(//\)[^/]' \| \
+	 X$with_CUDA : 'X\(//\)$' \| \
+	 X$with_CUDA : 'X\(/\)' \| . 2>/dev/null ||
+$as_echo X$with_CUDA |
+    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)[^/].*/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\).*/{
+	    s//\1/
+	    q
+	  }
+	  s/.*/./; q'`
+                if ( test -d $fallback_path  )
+                then
+                   # strip leading path
+                   fallback_file=`$EXPR "//$with_CUDA" : '.*/\([^/]*\)'`
+                   # portable version of fallback_file=`basename $with_CUDA`
+                   if ( test X$with_CUDA = X$fallback_path/$fallback_file )
+                   then
+                      # Parameter is a file path
+                      trace 3 with-CUDA provides a fallback path [$fallback_path] and a file [$fallback_file]
+                   else
+                      # Somehow dirname($x)/basename($x) != $x
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Problem processing --with-CUDA, parameter ignored" >&5
+$as_echo "$as_me: WARNING: Problem processing --with-CUDA, parameter ignored" >&2;}
+                      fallback_path=""
+                      fallback_file=""
+                   fi
+                else
+                   # --with-CUDA=/path/is/not/a/dir/something
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Illegal command-line option for --with-CUDA, parameter ignored" >&5
+$as_echo "$as_me: WARNING: Illegal command-line option for --with-CUDA, parameter ignored" >&2;}
+                   fallback_path=""
+                   fallback_file=""
+                fi
+             fi
+          fi
+
+
+          if ( test X$use_CUDA != Xno )
+          then
+             if ( test $with_CUDA_pkgconf = no ||  test $with_CUDA_pkgconf = notset )
+             then
+                # Not using pkg-config, set any paths for compile checks
+
+                # Check if --with-CUDA-library is a specification rather than a
+                # simple switch
+                if ( test "$with_CUDA_library" != notset && test "$with_CUDA_library" != no && test "$with_CUDA_library" != check && test "$with_CUDA_library" != yes )
+                then
+                   # We have a path specification to parse
+                   #
+                   # If the specification is a straight forward link line (of
+                   # the form "-L/a/b/c -ld .. -L/w/x/y -lz" we want to split
+                   # off the last -l entries into with_CUDA_lnklibs and include
+                   # the initial part of the link line in with_CUDA_libpath.
+                   # If we just have directory and library paths, we need to
+                   # add the relevant linker switch, and assign the parameter
+                   # to the appropriate variable.
+                   #
+                   with_CUDA_lnklibs=""
+                   with_CUDA_libpath=""
+                   use_CUDA=yes
+                   trace 6 Parsing --with-CUDA-library setting
+                   with_CUDA_library=`echo " $with_CUDA_library " | $SED 's/ -L */ -L/g;s/ -l */ -l/g'`
+                   # Collapse down spaces following -L and -l entries. This is
+                   # mainly for ease of parsing but does make any user input
+                   # compatible with the form of the default values used
+                   # throughout this configure script. Downsides are that any
+                   # other -X <arg> switches provided by the user will not
+                   # parse correctly and a general issue awaiting any systems
+                   # that must have the space between the switch and its
+                   # argument. The latter issue is the bigger problem as such
+                   # a limitation will have big consequences for this script
+                   # if we ever hit such a constrained toolset.
+                   for part in $with_CUDA_library
+                   do
+                      case $part in
+                      -L* )   # Library path specifier. Any previous library
+                              # names ought to be recorded as part of libpath
+                              # to maintain any order significance of the
+                              # supplied link command.
+                              TRACE_INDENT="     "
+                              trace 6 Appending [$part] to library path
+                              with_CUDA_libpath="$with_CUDA_libpath$with_CUDA_lnklibs$part "
+                              with_CUDA_lnklibs=""
+                              ;;
+                      -l* )   # Library specifier. Append to the linklib
+                              # variable.
+                              TRACE_INDENT="     "
+                              trace 6 Appending [$part] to library list
+                              with_CUDA_lnklibs="$with_CUDA_lnklibs$part "
+                              ;;
+                      -* )    # Presume linker switch. Append to libpath after
+                              # adding any existing library specs (so as to
+                              # maintain any order specific requirements).
+                              TRACE_INDENT="     "
+                              trace 6 Appending [$part] to link line
+                              with_CUDA_libpath="$with_CUDA_libpath$with_CUDA_lnklibs$part "
+                              with_CUDA_lnklibs=""
+                              ;;
+                      * )     # Non-linker format, see if we can work out
+                              # what it is
+                              if ( test -d $part )
+                              then
+                                 # We have a directory, add to libpath with
+                                 # a -L prefix having moved across any
+                                 # libraries from lnklibs to preserve ordering
+                                 # constraints
+                                 TRACE_INDENT="     "
+                                 trace 6 Adding [-L$part] to link line
+                                 with_CUDA_libpath="$with_CUDA_libpath${with_CUDA_lnklibs}-L$part "
+                                 with_CUDA_lnklibs=""
+                              else
+                                 # Not a directory, is it directory/file?
+                                 path=`$as_dirname -- $part ||
+$as_expr X$part : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
+	 X$part : 'X\(//\)[^/]' \| \
+	 X$part : 'X\(//\)$' \| \
+	 X$part : 'X\(/\)' \| . 2>/dev/null ||
+$as_echo X$part |
+    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)[^/].*/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\).*/{
+	    s//\1/
+	    q
+	  }
+	  s/.*/./; q'`
+                                 if ( test X$path != X && test $path != . )
+                                 then
+                                    # We have "something/file" does the
+                                    # "something" point to a directory?
+                                    if ( test -d $path  )
+                                    then
+                                       # We have "directory/presumed-library-name"
+                                       # Find candidate library name
+                                       file=`$EXPR "//$part" : '.*/\([^/]*\)'`
+                                       if ( test $part = $path/$file )
+                                       then
+                                          # Parameter is a file path
+                                          # Does it have a '.a' extension
+                                          lib=`$EXPR "X$file" : 'X\(.*\)\.a$'`
+                                          if ( test X$lib != X  )
+                                          then
+                                             lib=`echo $lib | $SED 's/^lib//'`
+                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-CUDA_library pointing to a .a" >&5
+$as_echo "$as_me: WARNING: Specifying --with-CUDA_library pointing to a .a" >&2;}
+                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: will cause problems building with shared libraries." >&5
+$as_echo "$as_me: WARNING: will cause problems building with shared libraries." >&2;}
+                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Instead we will use -l$lib" >&5
+$as_echo "$as_me: WARNING: Instead we will use -l$lib" >&2;}
+                                          else
+                                             # Does it have a '.so' extension
+                                             lib=`$EXPR "X$file" : 'X\(.*\)\.so$'`
+                                             if ( test X$lib != X )
+                                             then
+                                                lib=`echo $lib | $SED 's/^lib//'`
+                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-CUDA_library pointing to" >&5
+$as_echo "$as_me: WARNING: Specifying --with-CUDA_library pointing to" >&2;}
+                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: a .so will cause problems building with " >&5
+$as_echo "$as_me: WARNING: a .so will cause problems building with " >&2;}
+                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: static libraries. Instead, we will use" >&5
+$as_echo "$as_me: WARNING: static libraries. Instead, we will use" >&2;}
+                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: -l$lib" >&5
+$as_echo "$as_me: WARNING: -l$lib" >&2;}
+                                             else
+                                                # Parameter is path and name fragment
+                                                lib=`echo $file | $SED 's/^lib//'`
+                                             fi
+                                          fi
+                                          # As the user specified the library
+                                          # as a path rather than with a -L
+                                          # and a -l entry, it would be good
+                                          # to continue in the same vein.
+                                          # However, as -l/full/path is not
+                                          # supported, we have to revert to
+                                          # the seperate specifiers.
+                                          TRACE_INDENT="     "
+                                          trace 6 Adding [-L$path] to library path
+                                          with_CUDA_libpath="$with_CUDA_libpath$with_CUDA_lnklibs-L$path "
+                                          with_CUDA_lnklibs=""
+                                          TRACE_INDENT="     "
+                                          trace 6 Adding [-l$lib] to library list
+                                          with_CUDA_lnklibs="-l$lib "
+                                       else
+                                          # Somehow dirname($x)/basename($x) != $x
+                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Problem processing --with-CUDA-library, [$part] ignored" >&5
+$as_echo "$as_me: WARNING: Problem processing --with-CUDA-library, [$part] ignored" >&2;}
+                                       fi
+                                    else
+                                       # Parameter is "not-a-dir-path/something"
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Illegal value for --with-CUDA-library, [$part] ignored" >&5
+$as_echo "$as_me: WARNING: Illegal value for --with-CUDA-library, [$part] ignored" >&2;}
+                                    fi
+                                 else
+                                    # Parameter is just "something" - assume library name
+                                    #
+                                    # Does it have a '.a' extension
+                                    lib=`$EXPR "X$part" : 'X\(.*\)\.a$'`
+                                    if ( test X$lib != X  )
+                                    then
+                                       lib=`echo $lib | $SED 's/^lib//'`
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-CUDA_library pointing to a .a" >&5
+$as_echo "$as_me: WARNING: Specifying --with-CUDA_library pointing to a .a" >&2;}
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: will cause problems building with shared libraries." >&5
+$as_echo "$as_me: WARNING: will cause problems building with shared libraries." >&2;}
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Instead we will use -l$lib" >&5
+$as_echo "$as_me: WARNING: Instead we will use -l$lib" >&2;}
+                                    else
+                                       # Does it have a '.so' extension
+                                       lib=`$EXPR "X$part" : 'X\(.*\)\.so$'`
+                                       if ( test X$lib != X )
+                                       then
+                                          lib=`echo $lib | $SED 's/^lib//'`
+                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-CUDA_library pointing to" >&5
+$as_echo "$as_me: WARNING: Specifying --with-CUDA_library pointing to" >&2;}
+                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: a .so will cause problems building with " >&5
+$as_echo "$as_me: WARNING: a .so will cause problems building with " >&2;}
+                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: static libraries. Instead, we will use" >&5
+$as_echo "$as_me: WARNING: static libraries. Instead, we will use" >&2;}
+                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: -l$lib" >&5
+$as_echo "$as_me: WARNING: -l$lib" >&2;}
+                                       else
+                                          # Parameter is name fragment
+                                          lib=`echo $part | $SED 's/^lib//'`
+                                       fi
+                                    fi
+                                    TRACE_INDENT="     "
+                                    trace 6 Adding [-l$lib] to library list
+                                    with_CUDA_lnklibs="${with_CUDA_lnklibs}-l$lib "
+                                 fi
+                              fi
+                              ;;
+                      esac
+                   done
+                   trace 3 Link line assembled from --with-CUDA-library is [$with_CUDA_libpath $with_CUDA_lnklibs]
+                   # Now verify what we have
+                   if ( test X`$EXPR "X $with_CUDA_libpath $with_CUDA_lnklibs" : '.* \(-l[^ ]*\).*$'` == X )
+                   then
+                      # no -lxxx in libpath or lnklibs - use any fallback or the
+                      # default library name
+                      if ( test X$fallback_file != X )
+                      then
+                         # --with_CUDA specified a fallback name, use that but
+                         # sanitise it first
+                         lib=`$EXPR "X$fallback_file" : 'X\(.*\)\.a$'`
+                         if ( test X$lib != X  )
+                         then
+                            # Removed an unwanted .a suffix
+                            # Now strip any leading -l or lib prefix
+                            with_CUDA_lnklibs=-l`echo $lib | $SED 's/^-l//;s/^lib//'`
+                            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-CUDA pointing to a .a" >&5
+$as_echo "$as_me: WARNING: Specifying --with-CUDA pointing to a .a" >&2;}
+                            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: will cause problems building with shared libraries." >&5
+$as_echo "$as_me: WARNING: will cause problems building with shared libraries." >&2;}
+                            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Instead we will use -l$lib" >&5
+$as_echo "$as_me: WARNING: Instead we will use -l$lib" >&2;}
+                         else
+                            lib=`$EXPR "X$fallback_file" : 'X\(.*\)\.so$'`
+                            if ( test X$lib != X )
+                            then
+                               # Removed an unwanted .so suffix
+                               # Now strip any leading -l or lib prefix
+                               with_CUDA_lnklibs=-l`echo $lib | $SED 's/^-l//;s/^lib//'`
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-CUDA pointing to a .so" >&5
+$as_echo "$as_me: WARNING: Specifying --with-CUDA pointing to a .so" >&2;}
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: will cause problems building with static libraries." >&5
+$as_echo "$as_me: WARNING: will cause problems building with static libraries." >&2;}
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Instead, we will use -l$lib" >&5
+$as_echo "$as_me: WARNING: Instead, we will use -l$lib" >&2;}
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: " >&5
+$as_echo "$as_me: WARNING: " >&2;}
+                            else
+                               # No suffix to strip
+                               # Strip any leading -l or lib prefix
+                               with_CUDA_lnklibs=-l`echo $fallback_file | $SED 's/^-l//;s/^lib//'`
+                            fi
+                         fi
+                         trace 3 No library name specified by --with-CUDA-library, using --with-CUDA value [$with_CUDA_lnklibs]
+                      else
+                         trace 3 No library name specified by --with-CUDA-library, using default [-lcuda -lcudart]
+                         with_CUDA_lnklibs="-lcuda -lcudart"
+                      fi
+
+                      if ( test X$fallback_path != X )
+                      then
+                         # --with_CUDA specified a fallback path, are we using
+                         # it?
+                         if ( test X`$EXPR "X $with_CUDA_libpath " : '.* \(-L[^ ]*\).*$'` == X )
+                         then
+                            # We do not have a library path; add the fallback
+                            with_CUDA_libpath="-L$fallback_path $with_CUDA_libpath"
+                            # It is an assumption to put it first, but we do
+                            # not know where the relevant library is in the
+                            # link specification, so we have to put it there.
+                            trace 3 No path component of --with-CUDA-library, using --with-CUDA to set library path for CUDA [-L$fallback_path]
+                         else
+                            if ( test X`$EXPR "X $with_CUDA_libpath " : ".* \(-L$fallback_path\)/* .*"` == X )
+                            then
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-CUDA-library and --with-CUDA specify different paths, --with-CUDA path ignored" >&5
+$as_echo "$as_me: WARNING: --with-CUDA-library and --with-CUDA specify different paths, --with-CUDA path ignored" >&2;}
+                            fi
+                         fi
+                      fi
+                   else
+                      # We already have a library specified, confirm that any
+                      # --with_CUDA setting agreed
+                      if ( test X$fallback_file != X )
+                      then
+                         lib=`echo $fallback_file | $SED 's/^-l//;s/^lib//;s/\(.*\)\.a/\1/;s/\(.*\).so/\1/'`
+                         # strip any leading -l or lib prefix; any trailing .a
+                         # or .so suffixes
+                         if ( test X`$EXPR "X $with_CUDA_libpath $with_CUDA_lnklibs " : ".* \(-l$lib\) .*"` == X )
+                         then
+                            # No -l<fallback>
+                            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-CUDA-library and --with-CUDA specify different libraries, --with-CUDA library setting ignored" >&5
+$as_echo "$as_me: WARNING: --with-CUDA-library and --with-CUDA specify different libraries, --with-CUDA library setting ignored" >&2;}
+                         fi
+                      fi
+
+                      if ( test X$fallback_path != X )
+                      then
+                         # --with_CUDA specified a fallback path, are we using
+                         # it?
+                         if ( test X`$EXPR "X $with_CUDA_libpath " : '.* \(-L[^ ]*\).*$'` == X )
+                         then
+                            # We do not have any library path; add the fallback
+                            trace 3 No path specified by --with-CUDA-library, using --with-CUDA value [-L$fallback_path]
+                            with_CUDA_libpath="-L$fallback_path $with_CUDA_libpath"
+                            # It is an assumption to put it first, but we do
+                            # not know where the relevant library is in the
+                            # link specification, so we have to put it there.
+                         else
+                            if ( test X`$EXPR "X $with_CUDA_libpath " : ".* \(-L$fallback_path\)/* .*"` == X )
+                            then
+                               # No -L entry for the fallback path.
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-CUDA-library and --with-CUDA specify different paths, --with-CUDA path ignored" >&5
+$as_echo "$as_me: WARNING: --with-CUDA-library and --with-CUDA specify different paths, --with-CUDA path ignored" >&2;}
+                            fi
+                         fi
+                      fi
+                   fi
+                else
+                   # --with-CUDA-library used as a switch; employ fallback/default paths
+                   if ( test X$fallback_path != X )
+                   then
+                      trace 3 Using path component of --with-CUDA to set library path for CUDA [-L$fallback_path]
+                      with_CUDA_libpath=-L$fallback_path
+                      use_CUDA=yes
+                   else
+                      with_CUDA_libpath=""
+                   fi
+                   if ( test X$fallback_file != X )
+                   then
+                         # --with_CUDA specified a fallback name, use that but
+                         # sanitise it first
+                         lib=`$EXPR "X$fallback_file" : 'X\(.*\)\.a$'`
+                         if ( test X$lib != X  )
+                         then
+                            # Removed an unwanted .a suffix
+                            # Now strip any leading -l or lib prefix
+                            with_CUDA_lnklibs=-l`echo $lib | $SED 's/^-l//;s/^lib//'`
+                            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-CUDA pointing to a .a" >&5
+$as_echo "$as_me: WARNING: Specifying --with-CUDA pointing to a .a" >&2;}
+                            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: will cause problems building with shared libraries." >&5
+$as_echo "$as_me: WARNING: will cause problems building with shared libraries." >&2;}
+                            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Instead we will use -l$lib" >&5
+$as_echo "$as_me: WARNING: Instead we will use -l$lib" >&2;}
+                         else
+                            lib=`$EXPR "X$fallback_file" : 'X\(.*\)\.so$'`
+                            if ( test X$lib != X )
+                            then
+                               # Removed an unwanted .so suffix
+                               # Now strip any leading -l or lib prefix
+                               with_CUDA_lnklibs=-l`echo $lib | $SED 's/^-l//;s/^lib//'`
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-CUDA pointing to a .so" >&5
+$as_echo "$as_me: WARNING: Specifying --with-CUDA pointing to a .so" >&2;}
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: will cause problems building with static libraries." >&5
+$as_echo "$as_me: WARNING: will cause problems building with static libraries." >&2;}
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Instead, we will use -l$lib" >&5
+$as_echo "$as_me: WARNING: Instead, we will use -l$lib" >&2;}
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: " >&5
+$as_echo "$as_me: WARNING: " >&2;}
+                            else
+                               # No suffix to strip
+                               # Strip any leading -l or lib prefix
+                               with_CUDA_lnklibs=-l`echo $fallback_file | $SED 's/^-l//;s/^lib//'`
+                            fi
+                         fi
+                         trace 3 Using file component of --with-CUDA to set library name for CUDA [$with_CUDA_lnklibs]
+                   else
+                      trace 3 Using default library name for CUDA [-lcuda -lcudart]
+                      with_CUDA_lnklibs="-lcuda -lcudart"
+                   fi
+                fi
+
+
+                # Check if --with-CUDA-include is a provided
+                if ( test "$with_CUDA_include" != notset && test "$with_CUDA_include" != no && test "$with_CUDA_include" != check && test "$with_CUDA_include" != yes )
+                then
+                   # we have a parameter rather than a switch to use
+                   with_CUDA_inc=""
+                   use_CUDA=yes
+                   if ( test X$fallback_path != X )
+                   then
+                      fallback_match=no
+                      # If we have a fallback path, we want to check it is
+                      # included in the -include setting and warn if not
+                   else
+                      fallback_match=yes
+                      # We have no fallback, so we never need to warn the user
+                   fi
+                   trace 6 Parsing --with-CUDA-include setting
+                   # Strip any provided -I entries for ease of parsing.
+                   for path in `echo " $with_CUDA_include " | $SED 's/ -I *//g'`
+                   do
+                      if ( test -d $path )
+                      then
+                         TRACE_INDENT="     "
+                         trace 6 Appending [-I$path] to set include path for CUDA
+                         with_CUDA_inc="$with_CUDA_inc-I$path "
+                         if ( test $fallback_match == no && test $fallback_path == $path )
+                         then
+                            fallback_match=yes
+                         fi
+                      else
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Illegal component of --with-CUDA-include, [$path] ignored" >&5
+$as_echo "$as_me: WARNING: Illegal component of --with-CUDA-include, [$path] ignored" >&2;}
+                      fi
+                   done
+                   if ( test X$with_CUDA_inc == X )
+                   then
+                      # No path from argument, any fallback?
+                      if ( test X$fallback_path != X )
+                      then
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Will use --with-CUDA value [-I$fallback_path]" >&5
+$as_echo "$as_me: WARNING: Will use --with-CUDA value [-I$fallback_path]" >&2;}
+                         with_CUDA_inc=-I$fallback_path
+                      else
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Will use default system include path" >&5
+$as_echo "$as_me: WARNING: Will use default system include path" >&2;}
+                         with_CUDA_inc=""
+                      fi
+                   else
+                      # We have valid path(es) supplied by the user, do they
+                      # encompass the fallback setting?
+                      if ( test $fallback_match != yes )
+                      then
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-CUDA-include and --with-CUDA specify different paths, --with-CUDA ignored" >&5
+$as_echo "$as_me: WARNING: --with-CUDA-include and --with-CUDA specify different paths, --with-CUDA ignored" >&2;}
+                      fi
+                   fi
+                else
+                   # --with-CUDA-include is a switch setting rather than a path,
+                   # use any available fallback
+                   if ( test X$fallback_path != X )
+                   then
+                      trace 3 No path specified by --with-CUDA-include, using --with-CUDA value [-I$fallback_path]
+                      with_CUDA_inc=-I$fallback_path
+                      use_CUDA=yes
+                   else
+                      trace 3 Will use default system include path
+                      with_CUDA_inc=""
+                   fi
+                fi
+             fi # End of: if ( test $with_CUDA_pkgconf = no || notset
+          else
+             trace 4 Library CUDA disabled
+          fi
+
+          KnownLibs=$KnownLibs" "CUDA
+          if ( test X$use_CUDA = X )
+          then
+             use_CUDA=check
+             UnconfiguredLibs=$UnconfiguredLibs" "CUDA
+          else
+             ConfiguredLibs=$ConfiguredLibs" "CUDA
+          fi
+
+          with_CUDA_fn=cudaMalloc
+          with_CUDA_prq=""
+          with_CUDA_hdr="cuda.h"
+          with_CUDA_virtual="no"
 
 
 
@@ -16948,7 +19282,7 @@ RLog_RavlLib=libRavlRLog
 
 devVideo4Linux2_RavlLib=libRavlImgIOV4L2
 
-ZeroMQ_RavLib=libRavlZmq
+ZeroMQ_RavlLib=libRavlZmq
 
 # GLUT not directly used by Ravl
 
@@ -17029,6 +19363,9 @@ echo devVideo4Linux_SUPPORT=@devVideo4Linux_SUPPORT@ >> ./ExtPkgSupp.$$
 
 Meteor1_SUPPORT=""
 echo Meteor1_SUPPORT=@Meteor1_SUPPORT@ >> ./ExtPkgSupp.$$
+
+
+
 
 
 # If debugging, output what libraries are defined
@@ -17154,7 +19491,6 @@ fi
 
 # Now process the libraries the user has explicitly configured.
 LibsToProcess=$ConfiguredLibs
-
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for egrep" >&5
 $as_echo_n "checking for egrep... " >&6; }
@@ -17380,6 +19716,37 @@ else
 
 fi
              done
+          fi
+
+          # CUDA is a special case as it requires not only the appropriate
+          # libraries but also the NVidia compiler driver (nvcc) and that the
+          # C++ compiler be the GNU version. We already know if we have the
+          # libraries so, test the compilers here...
+          if ( test x$NVCC = x || test ! -x $NVCC || test x$GXX != xyes )
+          then
+             case $use_CUDA in
+                'check' )   use_CUDA=blocked
+                            trace 6 Disabling CUDA owing to missing compiler pre-requisites
+                            ;;
+                'needed' )  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "CUDA prerequisites not met and CUDA is required for a selected RESOURCE
+See \`config.log' for more details." "$LINENO" 5; }
+                            ;;
+                'yes' )     { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "CUDA prerequisites not met
+See \`config.log' for more details." "$LINENO" 5; }
+                            ;;
+                'no' )      trace 6 CUDA compiler prerequisites not met but we do not require CUDA anyway
+                            ;;
+                'blocked' ) trace 6 CUDA compiler prerequisites not met but CUDA is already blocked
+                            ;;
+                * )         trace 1 "Assert - Should not fall through here"
+                            ;;
+             esac
+          else
+             trace 5 CUDA compiler requirements appear to be satisfied.
           fi
 
           # Expand the librarys'pre-requisites to include the pre-requisites
@@ -19479,10 +21846,16 @@ then
 
 fi
 
-if ( test "x$MKDIR_P" != x )
+if ( test "x$USER_MKDIR_P" != x )
 then
 
   echo MKDIR_P=@MKDIR_P@ >> ./Config.Project.in
+fi
+
+if ( test "x$USER_NVCC" != x )
+then
+
+  echo NVCC=@USER_NVCC@ >> ./Config.Project.in
 fi
 
 if ( test "x$USER_PAGER" != x )
@@ -19647,6 +22020,26 @@ then
 fi
 echo >> ./Config.Project.in
 echo >> ./Config.Project.in
+if ( test x$use_CUDA = xpresent )
+then
+   echo \# CUDA compiler settings >> ./Config.Project.in
+   echo >> ./Config.Project.in
+   echo \# User specified at configure time >> ./Config.Project.in
+   echo CONFIGURE_NVCCFLAGS=@CONFIGURE_NVCCFLAGS@ >> ./Config.Project.in
+   echo >> ./Config.Project.in
+   echo \# Settings determined for current combination of C++ and CUDA compilers >> ./Config.Project.in
+   echo PKG_NVCCANSIFLAG=@PKG_NVCCANSIFLAG@ >> ./Config.Project.in
+   echo PKG_CHECK_NVCCFLAGS=@PKG_CHECK_NVCCFLAGS@ >> ./Config.Project.in
+   echo PKG_DEBUG_NVCCFLAGS=@PKG_DEBUG_NVCCFLAGS@ >> ./Config.Project.in
+   echo PKG_DEFAULT_NVCCFLAGS=@PKG_DEFAULT_NVCCFLAGS@ >> ./Config.Project.in
+   echo PKG_GLOBAL_NVCCFLAGS=@PKG_GLOBAL_NVCCFLAGS@ >> ./Config.Project.in
+   echo PKG_GPROF_NVCCFLAGS=@PKG_GPROF_NVCCFLAGS@ >> ./Config.Project.in
+   echo PKG_OPT_NVCCFLAGS=@PKG_OPT_NVCCFLAGS@ >> ./Config.Project.in
+   echo PKG_PROF_NVCCFLAGS=@PKG_PROF_NVCCFLAGS@ >> ./Config.Project.in
+   echo PKG_SHARED_NVCCFLAGS=@PKG_SHARED_NVCCFLAGS@ >> ./Config.Project.in
+   echo >> ./Config.Project.in
+   echo >> ./Config.Project.in
+fi
 echo \# Flags for the archiver >> ./Config.Project.in
 echo >> ./Config.Project.in
 echo PKG_ARFLAGS=@PKG_ARFLAGS@ >> ./Config.Project.in
@@ -20066,6 +22459,8 @@ RavlVPlay=libRavlVPlay
 RavlXMPP=libRavlXMPP
 SerialIO_SUPPORT=libRavlSerialIO
 # SerialIO is currently included regardless..
+RavlZmqOptimisation=""
+# ZmqOptimisation not currently added to the Ravl build
 
 
 
@@ -20113,6 +22508,8 @@ echo RavlVPlay=@RavlVPlay@ >> ./ExtPkgSupp.$$
 echo RavlXMPP=@RavlXMPP@ >> ./ExtPkgSupp.$$
 
 echo SerialIO_SUPPORT=@SerialIO_SUPPORT@ >> ./ExtPkgSupp.$$
+
+echo RavlZmqOptimisation=@RavlZmqOptimisation@ >> ./ExtPkgSupp.$$
 
 
 
@@ -20201,13 +22598,22 @@ fi
 
 if ( test X$use_RLog != 'Xpresent' )
 then
-   # Lack of RLog blocks libRavlFace and libMarkupTool; PortAudio_SUPPORT;
-   # and blocks XMPP functionality (which in turn blocks iksemel support)
+   # Lack of RLog blocks RavlFace libs (libRavlFace and libMarkupTool);
+   # RavlZmqOptimisation; PortAudio_SUPPORT; and XMPP (which in turn blocks
+   # iksemel support)
    RavlFace_LIBS=""
    PortAudio_SUPPORT=""
    RavlXMPP=""
    iksemel_SUPPORT=""
-   trace 3 Lack of RLog blocking RavlFace PortAudio, XMPP and iksemel
+   RavlZmqOptimisation=""
+   trace 3 Lack of RLog blocking RavlFace PortAudio, XMPP \(indirectly blocks iksemel\) and RavlZmqOptimisation
+fi
+
+if ( test X$use_ZeroMQ != 'Xpresent' )
+then
+   # Lack of ZeroMQ blocks RavlZmqOptimisation.
+   RavlZmqOptimisation=""
+   trace 3 Lack of ZeroMQ blocking RavlZmqOptimisation.
 fi
 
 
@@ -20480,7 +22886,7 @@ $SORT ./ExtPkgSupp.$$ >> ./Config.Project.in
 rm ./ExtPkgSupp.$$
 echo >> ./Config.Project.in
 echo \# Ordered list of the libraries we want in libRavl.\*  >> ./Config.Project.in
-echo SINGLE_RECIPE=\$\(NumPy_SUPPORT\) \$\(avifile_SUPPORT\) libRavlMPEG2 \$\(devVideo4Linux_SUPPORT\) \$\(libffmpeg_SUPPORT\) libRavlVideoIO \$\(dvdread_SUPPORT\) \$\(libmpeg2_SUPPORT\) \$\(libavc1394_SUPPORT\) \$\(libDV_SUPPORT\) \$\(RavlRawVidIO\) \$\(RavlExtImgIO\) \$\(MacOSXVideoCapture_SUPPORT\) \$\(MacOSXRunLoop_SUPPORT\) \$\(RavlVDF\) \$\(SwigPython_SUPPORT\) \$\(RavlDPDisplay\) \$\(Meteor1_SUPPORT\) libRavlAV \$\(RavlChartDetector\) \$\(RavlAAM\) \$\(RavlFace_LIBS\) libRavlTwoWayMap \$\(RavlImageProc\) \$\(uEyeSDK_SUPPORT\) \$\(libmpeg_SUPPORT\) \$\(OpenGL_SUPPORT\) libRavlImageXMLFactory \$\(libClipStationPro_SUPPORT\) libRavlMemModules libRavlImageIO \$\(LibJasper_SUPPORT\) \$\(OpenCV_SUPPORT\) \$\(RavlVPlay\) \$\(Ravl2dGUI_LIBS\) \$\(libdc1394_SUPPORT\) libRavlVideo \$\(LibGd_SUPPORT\) \$\(devVideo4Linux2_SUPPORT\) \$\(OpenSceneGraphGTK_SUPPORT\) \$\(Ravl3d_LIBS\) \$\(LibDirectShow_SUPPORT\) libRavlImage \$\(libAudioFile_SUPPORT\) \$\(RavlDevAudio\) libRavlAudioFeatures \$\(PortAudio_SUPPORT\) libRavlAudioIO libRavlAudioUtil \$\(iksemel_SUPPORT\) \$\(Loudmouth_SUPPORT\) \$\(RavlXMPP\) \$\(RLog_SUPPORT\) \$\(SGIVL_SUPPORT\) \$\(RavlDataServer\) libOptimisation \$\(RavlLogic_LIBS\) libRavlPatternRecIO libRavlKalmanFilter libRavlSVM libRavlGnuPlot libRavlPatternRec libRavlDataSet libRavlOSIO  \$\(ParallelIO_SUPPORT\) \$\(SerialIO_SUPPORT\) \$\(libGuppi_SUPPORT\) libRavlPlot \$\(RavlClassWizard\) libRavlCxxDoc \$\(RavlAutoPort\) libRavlAutoPort2 libRavlSourceTools \$\(LibPython_SUPPORT\) \$\(RavlNet\) \$\(libehs_SUPPORT\) libRavlDPMT \$\(UUIdTheo_SUPPORT\) \$\(LibGnome_SUPPORT\) \$\(libglade2_SUPPORT\) \$\(RavlGUI\) libRavlMathIO libRavlGeneticProgram libRavlGeneticOptimisation \$\(ZeroMQ_SUPPORT\) libRavlService libRavlXMLFactory \$\(libCurl_SUPPORT\) libRavlThreads libRavlOS libRavlIO \$\(libmcrypt_SUPPORT\) libRavlOptimise \$\(RavlCameraCal\) \$\(libmkl_SUPPORT\) \$\(LAPACK_SUPPORT\) libRavlMath libccmath libfann libArffIO \$\(Zlib_SUPPORT\) libRavlHMM libRavlCore  >> ./Config.Project.in
+echo SINGLE_RECIPE=\$\(NumPy_SUPPORT\) \$\(avifile_SUPPORT\) libRavlMPEG2 \$\(devVideo4Linux_SUPPORT\) \$\(libffmpeg_SUPPORT\) libRavlVideoIO \$\(dvdread_SUPPORT\) \$\(libmpeg2_SUPPORT\) \$\(libavc1394_SUPPORT\) \$\(libDV_SUPPORT\) \$\(RavlRawVidIO\) \$\(RavlExtImgIO\) \$\(MacOSXVideoCapture_SUPPORT\) \$\(MacOSXRunLoop_SUPPORT\) \$\(RavlVDF\) \$\(SwigPython_SUPPORT\) \$\(RavlDPDisplay\) \$\(Meteor1_SUPPORT\) libRavlAV \$\(RavlChartDetector\) \$\(RavlAAM\) \$\(RavlFace_LIBS\) libRavlTwoWayMap \$\(RavlImageProc\) \$\(uEyeSDK_SUPPORT\) \$\(libmpeg_SUPPORT\) \$\(OpenGL_SUPPORT\) libRavlImageXMLFactory \$\(libClipStationPro_SUPPORT\) libRavlMemModules libRavlImageIO \$\(LibJasper_SUPPORT\) \$\(OpenCV_SUPPORT\) \$\(RavlVPlay\) \$\(Ravl2dGUI_LIBS\) \$\(libdc1394_SUPPORT\) libRavlVideo \$\(LibGd_SUPPORT\) \$\(devVideo4Linux2_SUPPORT\) \$\(OpenSceneGraphGTK_SUPPORT\) \$\(Ravl3d_LIBS\) \$\(LibDirectShow_SUPPORT\) libRavlImage \$\(libAudioFile_SUPPORT\) \$\(RavlDevAudio\) libRavlAudioFeatures \$\(PortAudio_SUPPORT\) libRavlAudioIO libRavlAudioUtil \$\(iksemel_SUPPORT\) \$\(Loudmouth_SUPPORT\) \$\(RavlXMPP\) \$\(RavlZmqOptimisation\) \$\(RLog_SUPPORT\) \$\(SGIVL_SUPPORT\) \$\(RavlDataServer\) libOptimisation \$\(RavlLogic_LIBS\) libRavlPatternRecIO libRavlKalmanFilter libRavlSVM libRavlGnuPlot libRavlPatternRec libRavlDataSet libRavlOSIO  \$\(ParallelIO_SUPPORT\) \$\(SerialIO_SUPPORT\) \$\(libGuppi_SUPPORT\) libRavlPlot \$\(RavlClassWizard\) libRavlCxxDoc \$\(RavlAutoPort\) libRavlAutoPort2 libRavlSourceTools \$\(LibPython_SUPPORT\) \$\(RavlNet\) \$\(libehs_SUPPORT\) libRavlDPMT \$\(UUIdTheo_SUPPORT\) \$\(LibGnome_SUPPORT\) \$\(libglade2_SUPPORT\) \$\(RavlGUI\) libRavlMathIO libRavlGeneticProgram libRavlGeneticOptimisation \$\(ZeroMQ_SUPPORT\) libRavlService libRavlXMLFactory \$\(libCurl_SUPPORT\) libRavlThreads libRavlHtml libRavlOS libRavlIO \$\(libmcrypt_SUPPORT\) libRavlOptimise \$\(RavlCameraCal\) \$\(libmkl_SUPPORT\) \$\(LAPACK_SUPPORT\) libRavlMath libccmath libfann libArffIO \$\(Zlib_SUPPORT\) libRavlHMM libRavlCore  >> ./Config.Project.in
 echo >> ./Config.Project.in
 echo >> ./Config.Project.in
 
@@ -21100,6 +23506,8 @@ gives unlimited permission to copy, distribute and modify it."
 
 ac_pwd='$ac_pwd'
 srcdir='$srcdir'
+INSTALL='$INSTALL'
+MKDIR_P='$MKDIR_P'
 AWK='$AWK'
 test -n "\$AWK" || AWK=awk
 _ACEOF
@@ -21522,6 +23930,15 @@ ac_abs_srcdir=$ac_abs_top_srcdir$ac_dir_suffix
   # CONFIG_FILE
   #
 
+  case $INSTALL in
+  [\\/$]* | ?:[\\/]* ) ac_INSTALL=$INSTALL ;;
+  *) ac_INSTALL=$ac_top_build_prefix$INSTALL ;;
+  esac
+  ac_MKDIR_P=$MKDIR_P
+  case $MKDIR_P in
+  [\\/$]* | ?:[\\/]* ) ;;
+  */*) ac_MKDIR_P=$ac_top_build_prefix$MKDIR_P ;;
+  esac
 _ACEOF
 
 cat >>$CONFIG_STATUS <<\_ACEOF || ac_write_fail=1
@@ -21575,6 +23992,8 @@ s&@abs_top_srcdir@&$ac_abs_top_srcdir&;t t
 s&@builddir@&$ac_builddir&;t t
 s&@abs_builddir@&$ac_abs_builddir&;t t
 s&@abs_top_builddir@&$ac_abs_top_builddir&;t t
+s&@INSTALL@&$ac_INSTALL&;t t
+s&@MKDIR_P@&$ac_MKDIR_P&;t t
 $ac_datarootdir_hack
 "
 eval sed \"\$ac_sed_extra\" "$ac_file_inputs" | $AWK -f "$tmp/subs.awk" >$tmp/out \

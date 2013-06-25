@@ -194,6 +194,18 @@ namespace RavlGUIN {
     return true;
   }
 
+  //: Update the page size
+  bool SliderBodyC::GUIUpdatePageSize(const RealT &pageSize)
+  {
+    page_size = pageSize;
+    if(widget == 0)
+      return true;
+    RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");
+    gtk_adjustment_set_page_size(GTK_ADJUSTMENT (adj),pageSize);
+    //gtk_signal_emit_by_name (GTK_OBJECT (adj), "changed");
+    return true;
+  }
+
   //: Get the current value of the slider.
   
   RealT SliderBodyC::GUIValue() const {
