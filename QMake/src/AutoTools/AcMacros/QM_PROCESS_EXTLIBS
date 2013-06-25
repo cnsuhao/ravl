@@ -155,6 +155,31 @@ AC_DEFUN([QM_PROCESS_EXTLIBS],
              done
           fi
 
+          # CUDA is a special case as it requires not only the appropriate
+          # libraries but also the NVidia compiler driver (nvcc) and that the
+          # C++ compiler be the GNU version. We already know if we have the
+          # libraries so, test the compilers here...
+          if ( test x$NVCC = x || test ! -x $NVCC || test x$GXX != xyes )
+          then
+             case $use_CUDA in
+                'check' )   use_CUDA=blocked
+                            trace 6 Disabling CUDA owing to missing compiler pre-requisites
+                            ;;
+                'needed' )  AC_MSG_FAILURE([CUDA prerequisites not met and CUDA is required for a selected RESOURCE])
+                            ;;
+                'yes' )     AC_MSG_FAILURE([CUDA prerequisites not met])
+                            ;;
+                'no' )      trace 6 CUDA compiler prerequisites not met but we do not require CUDA anyway
+                            ;;
+                'blocked' ) trace 6 CUDA compiler prerequisites not met but CUDA is already blocked
+                            ;;
+                * )         trace 1 "Assert - Should not fall through here"
+                            ;;
+             esac
+          else
+             trace 5 CUDA compiler requirements appear to be satisfied.
+          fi
+
           # Expand the librarys'pre-requisites to include the pre-requisites
           # for the  pre-requisites, etc.
           #

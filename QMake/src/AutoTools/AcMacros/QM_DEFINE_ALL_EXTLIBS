@@ -109,6 +109,7 @@ AC_DEFUN([QM_DEFINE_ALL_EXTLIBS],
           dnl
           dnl                 Name,          Fn,                 Deps,   -l,           .h
           dnl 
+          QM_DEFINE_EXTLIB_CC([CUDA],        [cudaMalloc],       [],     [-lcuda -lcudart],   [cuda.h])
           QM_DEFINE_EXTLIB_CC([GLUT],        [glutInit],         [],     [-lglut],     [GL/glut.h])
           QM_DEFINE_EXTLIB_CC([LibJasper],   [jas_init],         [],     [-ljasper],   [jasper/jasper.h])
           QM_DEFINE_EXTLIB_CC([JPEG],        [jpeg_read_header], [],     [-ljpeg],     [jpeglib.h])
@@ -209,8 +210,8 @@ AC_DEFUN([QM_DEFINE_ALL_EXTLIBS],
           dnl#
           dnl# Dropped
           dnl#
-          dnl#    CPPUnit CUDA DMedia FFTW glib {GNU}ReadLine JavaScript libmpeg
-          dnl#    Math Meteor1 Perl5 php libptp2 QtTestRunner SQLite3 Sys system
+          dnl#    CPPUnit DMedia FFTW glib {GNU}ReadLine JavaScript libmpeg Math
+          dnl#    Meteor1 Perl5 php libptp2 QtTestRunner SQLite3 Sys system
           dnl#    Video4Linux Xaw Xerces Xt x11
           dnl#
          ]

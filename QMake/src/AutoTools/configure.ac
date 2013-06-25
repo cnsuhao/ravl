@@ -207,6 +207,7 @@ echo LEXLIB=@LEXLIB@ >> ./Config.QMake.in
 echo LN_S=@LN_S@ >> ./Config.QMake.in
 echo MAKE=@MAKE@ >> ./Config.QMake.in
 echo MKDIR_P=@MKDIR_P@ >> ./Config.QMake.in
+echo NVCC=@NVCC@ >> ./Config.QMake.in
 echo PERL=@PERL@ >> ./Config.QMake.in
 echo PKG_CONFIG=@PKG_CONFIG@ >> ./Config.QMake.in
 echo QMAKE_PAGER=@PAGER@ >> ./Config.QMake.in
@@ -284,6 +285,27 @@ echo LINKER_SET_SONAME=@LINKER_SET_SONAME@ >> ./Config.QMake.in
 echo LINKER_UNDEFSYMB=@LINKER_UNDEFSYMB@ >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo >> ./Config.QMake.in
+if ( test x$use_CUDA = xpresent )
+then
+   echo \# CUDA compiler settings >> ./Config.QMake.in
+   echo >> ./Config.QMake.in
+   echo \# User specified at configure time >> ./Config.QMake.in
+   echo QMAKE_NVCCFLAGS=@CONFIGURE_NVCCFLAGS@ >> ./Config.QMake.in
+   dnl Declare variable for output as that has not already been done
+   AC_SUBST([CONFIGURE_NVCCFLAGS])
+   echo >> ./Config.QMake.in
+   echo \# Settings determined for current combination of C++ and CUDA compilers >> ./Config.QMake.in
+   echo NVCC_ANSI_NVCCFLAGS=@NVCC_ANSI_NVCCFLAGS@ >> ./Config.QMake.in
+   echo NVCC_DEBUG_NVCCFLAGS=@NVCC_DEBUG_NVCCFLAGS@ >> ./Config.QMake.in
+   echo NVCC_GPROF_NVCCFLAGS=@NVCC_GPROF_NVCCFLAGS@ >> ./Config.QMake.in
+   echo NVCC_NON_OPT_NVCCFLAGS=@NVCC_NON_OPT_NVCCFLAGS@ >> ./Config.QMake.in
+   echo NVCC_OPT_NVCCFLAGS=@NVCC_OPT_NVCCFLAGS@ >> ./Config.QMake.in
+   echo NVCC_PROF_NVCCFLAGS=@NVCC_PROF_NVCCFLAGS@ >> ./Config.QMake.in
+   echo NVCC_SHARED_NVCCFLAGS=@NVCC_SHARED_NVCCFLAGS@ >> ./Config.QMake.in
+   echo NVCC_SPECIFIC_NVCCFLAGS=@NVCC_SPECIFIC_NVCCFLAGS@ >> ./Config.QMake.in
+   echo >> ./Config.QMake.in
+   echo >> ./Config.QMake.in
+fi
 echo \# Flags for the archiver >> ./Config.QMake.in
 echo \# >> ./Config.QMake.in
 echo \# No user supplied ARFLAGS are accepted owing to the nature of how ar works >> ./Config.QMake.in

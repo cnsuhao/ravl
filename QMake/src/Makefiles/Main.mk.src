@@ -231,27 +231,6 @@ ifdef LOCALHEADERS
  INCLUDES+=-I.
 endif
 
-# nvcc flags.
-ifndef NVCC
- NVCC=nvcc
-endif
-NVCCFLAGS = 
-
-ifeq ($(VAR),debug)
- NVCCFLAGS += -g 
-endif
-
-ifeq ($(VAR),opt)
- NVCCFLAGS += -O2 
-endif
-
-ifeq ($(VAR),gprof)
- NVCCFLAGS += -O2 -g -pg 
-endif
-
-ifdef SHAREDBUILD
- NVCCFLAGS += -shared
-endif
 
 
 #########################
@@ -763,15 +742,16 @@ $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %.m $(INST_OBJS)/.dir $(INST_DEPEND
 	  exit 1 ; \
 	fi
 
+ifneq ($(strip $(NVCC)),)
 $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %.cu $(INST_OBJS)/.dir $(INST_DEPEND)/.dir
 	$(SHOWIT)echo "--- Compile $(VAR_DISPLAY_NAME) $< "; \
 	if [ -f $(WORKTMP)/$*.d ] ; then \
 	  $(RM) $(WORKTMP)/$*.d ; \
 	fi ; \
 	echo "---- Object $< "; \
-	if $(NVCC) -c $(CPPFLAGS) $(NVCCFLAGS) $(CINCLUDES) -o $(INST_OBJS)/$*$(OBJEXT) $< ; then \
+	if $(NVCC) -c $(CPPFLAGS) $(PKG_NVCCFLAGS) $(NVCCFLAGS) $(CINCLUDES) -o $(INST_OBJS)/$*$(OBJEXT) $< ; then \
 	  echo "---- Depends $< "; \
-	  if $(NVCC) -M $(CPPFLAGS) $(NVCCFLAGS) $(CINCLUDES) -o $(WORKTMP)/$*.d $< ; then \
+	  if $(NVCC) -M $(CPPFLAGS) $(PKG_NVCCFLAGS) $(NVCCFLAGS) $(CINCLUDES) -o $(WORKTMP)/$*.d $< ; then \
 	    $(MKDEPUP) ; \
 	  else \
 	    exit 1 ; \
@@ -779,6 +759,7 @@ $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %.cu $(INST_OBJS)/.dir $(INST_DEPEN
 	else \
 	  exit 1 ; \
 	fi
+endif
 
 
 
@@ -1260,6 +1241,7 @@ info:
 	@echo "Link Flags      :" $(PKG_LDFLAGS) $(LDFLAGS)
 	@echo "Includes        :" $(INCLUDES)
 	@echo "Library libs    :" $(EXELIB)
+	@echo "NVCC Flags      :" $(CCPPFLAGS) $(PKG_NVCCFLAGS) $(NVCCFLAGS)
 	@echo "Executable libs :" $(LIBS)
 	@echo "Test libs       :" $(BINLIBS)
 	@echo "Temp            :" $(LOCALTMP)

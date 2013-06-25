@@ -60,6 +60,16 @@ dnl                                  QM_LOCATE_KEY_TOOLS.
 dnl       GXX                        Flag, originally set by AC_PROG_CXX
 dnl                                  indicating if a GNU C++ compiler is in
 dnl                                  use. Set to yes for a GNU compiler.
+dnl       NVCC_ANSI_NVCCFLAGS     } { Receive the appropriate compiler flags
+dnl       NVCC_DEBUG_NVCCFLAGS    } { for compiling CUDA code in combination
+dnl       NVCC_GPROF_NVCCFLAGS    } { with the current C++ compiler. Setting
+dnl       NVCC_NON_OPT_NVCCFLAGS  } { for each variable is from the sister
+dnl       NVCC_OPT_NVCCFLAGS      } { COMPILER_xxx_CCFLAGS variable with any
+dnl       NVCC_PROF_NVCCFLAGS     } { flags that the CUDA compiler driver
+dnl       NVCC_SHARED_NVCCFLAGS   } { cannot cope with being preffixed with
+dnl       NVCC_SPECIFIC_NVCCFLAGS } { a -Xcompiler directive. This macro
+dnl                                 { declares all of these variables for
+dnl                                 { output to the configuration files.
 dnl
 AC_DEFUN([QM_SET_COMPILER_CCFLAGS],
          [trace 2 Set compiler specific CCFLAGS
@@ -69,9 +79,21 @@ AC_DEFUN([QM_SET_COMPILER_CCFLAGS],
              trace 3 We have a GNU C++ Compiler
 
              COMPILER_ANSI_CCFLAGS=" -ansi "
+             NVCC_ANSI_NVCCFLAGS=" -Xcompiler -ansi "
+             # -ansi is not recognised by the CUDA compiler driver. This means
+             # we need to prefix them with the -Xcompiler switch that causes
+             # nvcc to ignore the following flag but still pass it on to any
+             # subsequent GNU compilation.
+
              COMPILER_DEBUG_CCFLAGS=" -g "
+             NVCC_DEBUG_NVCCFLAGS=$COMPILER_DEBUG_CCFLAGS
+
              COMPILER_GPROF_CCFLAGS=" -pg "
+             NVCC_GPROF_NVCCFLAGS=$COMPILER_GPROF_CCFLAGS
+
              COMPILER_NON_OPT_CCFLAGS=" -O "
+             NVCC_NON_OPT_NVCCFLAGS=$COMPILER_NON_OPT_CCFLAGS
+
              # Optimisation flags depend on version of GCC in use
              dnl Using @S|@ glyph to prevent expansion of $1/2/3 as macro arg
              CXX_VERSION=`$CXX --v 2>&1 | $GREP 'gcc version' | $AWK '{ print @S|@3 }'`
@@ -88,12 +110,42 @@ AC_DEFUN([QM_SET_COMPILER_CCFLAGS],
                 COMPILER_OPT_CCFLAGS=" -O2 -ffast-math -fno-strict-aliasing "
              fi
              COMPILER_OPT_CCFLAGS=$COMPILER_OPT_CCFLAGS" -march=native -mtune=native "
+
+             NVCC_OPT_NVCCFLAGS=" -O2  -Xcompiler -march=native -Xcompiler -mtune=native "
+             # Take a cautious approach to optimisation of CUDA modules just
+             # in case any of the -ffast_math, -fno-strict-aliasing, etc.
+             # optimisations cause a problem with the generated code. We want
+             # to maintain the processor targetting switches (-march=native
+             # -mtune=native) but these are not recognised by the CUDA compiler
+             # driver. This means we need to prefix them with the -Xcompiler 
+             # switch that causes nvcc to ignore the following flag but still
+             # pass it on to any subsequent GNU compilation.
+
              COMPILER_PROF_CCFLAGS=" -p "
+             NVCC_PROF_NVCCFLAGS=$COMPILER_PROF_CCFLAGS
+
              COMPILER_SHARED_CCFLAGS=" -shared -fPIC "
+             NVCC_SHARED_NVCCFLAGS=" -shared -Xcompiler -fPIC "
+             # Prefix -fPIC as the CUDA compiler driver cannot cope with it.
+
              COMPILER_SPECIFIC_CCFLAGS=" -Wall -pipe -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE "
+             NVCC_SPECIFIC_NVCCFLAGS=" -Xcompiler -Wall -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE "
+             # As nvcc chokes on -Wall we prefix it with the nvcc -Xcompiler 
+             # "ignore this" switch. The warnings may or may not be useful
+             # as some of the code compiled will be generated code. Given
+             # nvcc fails to understand -pipe, we drop this switch in case
+             # it causes any communication issues between the CUDA compiler
+             # driver and the child GNU compilation.
           else
               trace 3 We do not have a GNU C++ compiler
               # Try relevant machine specific options we have used before
+              # 
+              # N.B.
+              #      As CUDA expects the available compiler to be the GNU
+              #      version, not having a GNU compiler effectively blocks
+              #      CUDA support. For this reason, we have no need to set
+              #      NVCCFLAGS in this block.
+              # 
              dnl 
              dnl Although testing the host OS, we are using that to identify the native
              dnl tool set that may be in use. These are not platform specific settings
@@ -159,5 +211,17 @@ AC_DEFUN([QM_SET_COMPILER_CCFLAGS],
           AC_SUBST([COMPILER_PROF_CCFLAGS])
           AC_SUBST([COMPILER_SHARED_CCFLAGS])
           AC_SUBST([COMPILER_SPECIFIC_CCFLAGS])
+
+          dnl Allow output of CUDA compiler specific settings
+          dnl Note: These will be null if we do not have a GNU C++ compiler
+          dnl       at that is a prerequisite of CUDA support.
+          AC_SUBST([NVCC_ANSI_NVCCFLAGS])
+          AC_SUBST([NVCC_DEBUG_NVCCFLAGS])
+          AC_SUBST([NVCC_GPROF_NVCCFLAGS])
+          AC_SUBST([NVCC_NON_OPT_NVCCFLAGS])
+          AC_SUBST([NVCC_OPT_NVCCFLAGS])
+          AC_SUBST([NVCC_PROF_NVCCFLAGS])
+          AC_SUBST([NVCC_SHARED_NVCCFLAGS])
+          AC_SUBST([NVCC_SPECIFIC_NVCCFLAGS])
          ]
         )

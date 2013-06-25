@@ -40,14 +40,19 @@ dnl                                  configuration file.
 dnl       InheritCFG                 Specifies if we should use the QMAKE_CFG
 dnl                                  file to bootstrap our configuration
 dnl                                  settings.
-dnl       QMAKE_DEPENDENCIES         Builds up into a list of all the utilities
-dnl                                  processed by this macro.
+dnl       QMAKE_DEPENDENCIES         Builds up into a list of all the required
+dnl                                  utilities processed by this macro.
 dnl       SED                        Holds the name of the executable to carry
-dnl                                  out stream editing. This will already have
-dnl                                  been primed by a prior call to the macro
-dnl                                  QM_LOCATE_KEY_TOOLS.
-dnl       USER_<CMD>                 Holds any user specified configuration for
-dnl                                  the utility <cmd>.
+dnl                                  out stream editing. This will already
+dnl                                  have been primed by a prior call to the
+dnl                                  macro QM_LOCATE_KEY_TOOLS.
+dnl       USER_<CMD>                 Holds any user specified configuration
+dnl                                  for the utility <cmd>.
+dnl       CONFIGURE_NVCCFLAGS        Initialised here to hold any NVCCFLAGS
+dnl                                  that the user may have set in their
+dnl                                  environment. This variable is only 
+dnl                                  initialised if the CUDA compiler is
+dnl                                  actually located (or user-specified).
 dnl
 AC_DEFUN([QM_LOCATE_QMAKE_DEPS],
          [
@@ -255,6 +260,34 @@ AC_DEFUN([QM_LOCATE_QMAKE_DEPS],
              fi
           fi
           QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES MKDIR_P"
+
+          if ( test "x$USER_NVCC" = x )
+          then
+             # User has not specified a CUDA compiler to use, do we have
+             # an existing setting?
+             if ( test "x$InheritCFG" = xyes )
+             then
+                NVCC=`cat $QMAKE_CFG | $SED  -n 's/^NVCC=\(.*\)/\1/p'`
+             fi
+             if ( test "x$NVCC" = x )
+             then
+                # We still do not have a setting, attempt to find one
+                AC_PATH_PROG([NVCC],[nvcc],[missing])
+             fi
+          fi
+          # Do not update QMAKE_DEPENDENCIES as NVCC is an optional feature
+          # of QMake. What we do have to do is re-set NVCC to null if we did
+          # not find the compiler (as it is optional, finding nvcc to be
+          # missing does not error out of configure so the value of NVCC will
+          # get written to the Config.xx file; hence it needs to be null if
+          # we did not find nvcc).
+          if ( test "x$NVCC" = xmissing ) 
+          then
+             NVCC=""
+          else
+             CONFIGURE_NVCCFLAGS=$NVCCFLAGS
+             # Record any supplied NVCCFLAGS
+          fi
 
           if ( test "x$USER_RANLIB" = x )
           then

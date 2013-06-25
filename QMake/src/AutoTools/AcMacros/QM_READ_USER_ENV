@@ -245,6 +245,13 @@ AC_DEFUN([QM_READ_USER_ENV],
              USER_MKDIR_P=$MKDIR_P
           fi
 
+          AC_ARG_VAR([NVCC],[Path to the CUDA compiler])
+          if ( test "x$NVCC" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_NVCC=$NVCC
+          fi
+
           AC_ARG_VAR([PAGER],[Path to the utility for interactive pagewise file browsing])
           if ( test "x$PAGER" != x )
           then
