@@ -1,5 +1,5 @@
 // This file is part of QMake, Quick Make System 
-// Copyright (C) 2001-11, University of Surrey
+// Copyright (C) 2001-13, University of Surrey
 // This code may be redistributed under the terms of the GNU General 
 // Public License (GPL). See the gpl.licence file for details or
 // see http://www.gnu.org/copyleft/gpl.html
@@ -28,7 +28,8 @@
 #define ONDEBUG(x)
 #endif
 
-int verbose = 0;
+short int verbose = 0;
+short int force = 0;
 
 int untouch(char *filename,int seconds) {
   struct stat buf;
@@ -48,8 +49,8 @@ int untouch(char *filename,int seconds) {
   target = now - seconds;
 
   // Is the file at least 'seconds' old already ?
-  if(buf.st_mtime < target)
-    return 0; // No need to change anything.
+  if(buf.st_mtime <= target)
+    if (force==0 || buf.st_mtime==target) return 0; // No need to change anything.
   
   // Change the modification time.
   utbuf.modtime = target;
@@ -63,11 +64,8 @@ int untouch(char *filename,int seconds) {
 
 int main(int nargs,char **argv) {
   int seconds =1;
+  short int show_help;
   ONDEBUG(printf("untouch '%s' \n",argv[1]));
-  if(nargs < 2) {
-    printf("Usage: untouch [files] \n");
-    exit(1);
-  }
   for(int i = 1;i < nargs;i++) {
     // Check for options.
     if(argv[i][0] == '-') {
@@ -77,11 +75,40 @@ int main(int nargs,char **argv) {
 	  continue;
 	}
       }
-      printf("ERROR: Unrecognised option %s. ",argv[i]);
-      return 1;
+      if(argv[i][1] == 'f') {
+	if(argv[i][2] == 0) {
+	  force = 1;
+	  continue;
+	}
+      }
+      if(argv[i][1] == '?') {
+	if(argv[i][2] == 0) {
+	  show_help = 1;
+	  break;
+	}
+      }
+      printf("ERROR: Unrecognised option %s. \n",argv[i]);
+      show_help=2;
+      break;
     }
     // otherwise it must be a file.
     untouch(argv[i],seconds);
+  }
+  if(nargs < 2 || show_help ) {
+    printf("Usage: untouch [OPTION]... FILE... \n");
+    printf("Ensure the access and modification times of each FILE is at least one\n");
+    printf("second prior to the current time.\n");
+    printf("\n");
+    printf("A FILE argument that does not exist is ignored.\n");
+    printf("\n");
+    printf("Valid OPTIONs are:\n");
+    printf("  -f                     force the timestamp to be 1 second ago\n");
+    printf("  -v                     verbose error reporting\n");
+    printf("  -?                     print this help message and exit\n");
+    printf("\n");
+
+
+    exit(show_help!=1);
   }
   return 0;
 }
