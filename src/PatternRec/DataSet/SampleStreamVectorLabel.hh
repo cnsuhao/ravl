@@ -48,6 +48,9 @@ namespace RavlN {
     SampleStreamVectorLabelC(const SampleStream2C<TVectorC<float>, UIntT> & port);
     //: Convert from a stream of float vectors.
 
+    SampleStreamVectorLabelC(const SampleStream2C<TVectorC<ByteT>, UIntT> & port);
+    //: Convert from a stream of byte vectors
+
 #if 0    
     MeanCovarianceC MeanCovariance();
     //: Find the mean and covariance of the sample
