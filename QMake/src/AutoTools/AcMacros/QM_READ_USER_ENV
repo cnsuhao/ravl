@@ -112,6 +112,10 @@ AC_DEFUN([QM_READ_USER_ENV],
              USER_CC=$CC
           fi
 
+          AC_ARG_VAR([CCACHE],[Path to the ccache program for caching output of the compilation process])
+          # Any CCACHE environment variable is processd along with the 
+          # commandline switch (see QM_LOCATE_QMAKE_DEPS)
+
           dnl No need for a AC_ARG_VAR as CCPP automatically defined
           if ( test "x$CCPP" != x )
           then

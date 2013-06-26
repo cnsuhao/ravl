@@ -562,7 +562,7 @@ ifdef FULLCHECKING
 $(INST_HEADERCERT)/%$(CHXXEXT) : %$(CHXXEXT) $(TARG_HDRS) $(INST_HEADERCERT)/.dir $(WORKTMP)/.dir
 	$(SHOWIT)echo "--- Checking header $(@F)" ; \
 	cat $< $< > $(WORKTMP)/$<$(CXXEXT) ; \
-	if $(CXX) -c $(CCPPFLAGS) $(PKG_CCFLAGS) $(CCFLAGS) $(INCLUDES) -o $(WORKTMP)/$<$(OBJEXT) $(WORKTMP)/$<$(CXXEXT)  ; then \
+	if $(CCACHE) $(CXX) -c $(CCPPFLAGS) $(PKG_CCFLAGS) $(CCFLAGS) $(INCLUDES) -o $(WORKTMP)/$<$(OBJEXT) $(WORKTMP)/$<$(CXXEXT)  ; then \
 	  $(TOUCH) $(INST_HEADERCERT)/$< ; \
 	else  \
 	  $(RM) $(WORKTMP)/$<$(OBJEXT) $(WORKTMP)/$<$(CXXEXT) ; \
@@ -573,7 +573,7 @@ $(INST_HEADERCERT)/%$(CHXXEXT) : %$(CHXXEXT) $(TARG_HDRS) $(INST_HEADERCERT)/.di
 $(INST_HEADERCERT)/%$(CHEXT) : %$(CHEXT) $(TARG_HDRS) $(INST_HEADERCERT)/.dir $(WORKTMP)/.dir
 	$(SHOWIT)echo "--- Checking header $(@F)" ; \
 	cat $< $< > $(WORKTMP)/$<$(CEXT) ; \
-	if $(CC) -c $(CPPFLAGS) $(PKG_CFLAGS) $(CFLAGS) $(CINCLUDES) -o $(WORKTMP)/$<$(OBJEXT) $(WORKTMP)/$<$(CEXT)  ; then \
+	if $(CCACHE) $(CC) -c $(CPPFLAGS) $(PKG_CFLAGS) $(CFLAGS) $(CINCLUDES) -o $(WORKTMP)/$<$(OBJEXT) $(WORKTMP)/$<$(CEXT)  ; then \
 	  $(TOUCH) $(INST_HEADERCERT)/$< ; \
 	else \
 	  $(RM) $(WORKTMP)/$<$(OBJEXT) $(WORKTMP)/$<$(CEXT) ; \
@@ -692,7 +692,7 @@ $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %$(CXXAUXEXT) $(INST_OBJS)/.dir $(I
 	if [ -f $(WORKTMP)/$*.d ] ; then \
 	  $(RM) $(WORKTMP)/$*.d ; \
 	fi ; \
-	if $(CXX) -c $(CCPPFLAGS) $(PKG_CCFLAGS) $(CCFLAGS) $(INCLUDES) $(AMKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ; then \
+	if $(CCACHE) $(CXX) -c $(CCPPFLAGS) $(PKG_CCFLAGS) $(CCFLAGS) $(INCLUDES) $(AMKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ; then \
 	  $(MKDEPUP) ; \
 	else \
 	  exit 1 ; \
@@ -703,7 +703,7 @@ $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %$(CXXEXT) $(INST_OBJS)/.dir $(INST
 	if [ -f $(WORKTMP)/$*.d ] ; then \
 	  $(RM) $(WORKTMP)/$*.d ; \
 	fi ; \
-	if $(CXX) -c $(CCPPFLAGS) $(PKG_CCFLAGS) $(CCFLAGS) $(INCLUDES) $(AMKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ;  then \
+	if $(CCACHE) $(CXX) -c $(CCPPFLAGS) $(PKG_CCFLAGS) $(CCFLAGS) $(INCLUDES) $(AMKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ;  then \
 	  $(MKDEPUP) ; \
 	else \
 	  exit 1 ; \
@@ -714,7 +714,7 @@ $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %$(CEXT) $(INST_OBJS)/.dir $(INST_D
 	if [ -f $(WORKTMP)/$*.d ] ; then \
 	  $(RM) $(WORKTMP)/$*.d ; \
 	fi ; \
-	if $(CC) -c $(CPPFLAGS) $(PKG_CFLAGS) $(CFLAGS) $(CINCLUDES)  $(AMKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ; then \
+	if $(CCACHE) $(CC) -c $(CPPFLAGS) $(PKG_CFLAGS) $(CFLAGS) $(CINCLUDES)  $(AMKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ; then \
 	  $(MKDEPUP) ; \
 	else \
 	  exit 1 ; \
@@ -725,7 +725,7 @@ $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %.mm $(INST_OBJS)/.dir $(INST_DEPEN
 	if [ -f $(WORKTMP)/$*.d ] ; then \
 	  $(RM) $(WORKTMP)/$*.d ; \
 	fi ; \
-	if $(CXX) -c $(CCPPFLAGS) $(PKG_CCFLAGS) $(CCFLAGS) $(INCLUDES) $(AMKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ;  then \
+	if $(CCACHE) $(CXX) -c $(CCPPFLAGS) $(PKG_CCFLAGS) $(CCFLAGS) $(INCLUDES) $(AMKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ;  then \
 	  $(MKDEPUP) ; \
 	else \
 	  exit 1 ; \
@@ -736,7 +736,7 @@ $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %.m $(INST_OBJS)/.dir $(INST_DEPEND
 	if [ -f $(WORKTMP)/$*.d ] ; then \
 	  $(RM) $(WORKTMP)/$*.d ; \
 	fi ; \
-	if $(CC) -c $(CPPFLAGS) $(PKG_CFLAGS) $(CFLAGS) $(CINCLUDES)  $(AMKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ; then \
+	if $(CCACHE) $(CC) -c $(CPPFLAGS) $(PKG_CFLAGS) $(CFLAGS) $(CINCLUDES)  $(AMKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ; then \
 	  $(MKDEPUP) ; \
 	else \
 	  exit 1 ; \
@@ -832,7 +832,7 @@ endif
 
 $(INST_LIB)/dummymain$(OBJEXT) :: $(QMAKE_SUPPORT)/dummymain$(CEXT) $(INST_LIB)/.dir
 	$(SHOWIT)echo "--- Compile internal dummymain$(OBJEXT) " ; \
-	$(CC) -c $(QMAKE_SUPPORT)/dummymain$(CEXT) $(PKG_CFLAGS) $(CFLAGS) $(CPPFLAGS) -o $(INST_LIB)/dummymain$(OBJEXT)
+	$(CCACHE) $(CC) -c $(QMAKE_SUPPORT)/dummymain$(CEXT) $(PKG_CFLAGS) $(CFLAGS) $(CPPFLAGS) -o $(INST_LIB)/dummymain$(OBJEXT)
 
 
 # This lib update is nasty but fast, especialy if you have many objects.
@@ -1234,9 +1234,9 @@ lib_info:
 	@echo "Libs: $(LIBS)"
 
 info:
-	@echo "C++ Compiler    :" $(CXX)
+	@echo "C++ Compiler    :" $(CCACHE) $(CXX)
 	@echo "C++ Flags       :" $(CCPPFLAGS) $(PKG_CCFLAGS) $(CCFLAGS)
-	@echo "C Compiler      :" $(CC)
+	@echo "C Compiler      :" $(CCACHE) $(CC)
 	@echo "C Flags         :" $(CPPFLAGS) $(PKG_CFLAGS) $(CFLAGS)
 	@echo "Link Flags      :" $(PKG_LDFLAGS) $(LDFLAGS)
 	@echo "Includes        :" $(INCLUDES)

@@ -188,6 +188,7 @@ echo >> ./Config.QMake.in
 echo AR=@AR@ >> ./Config.QMake.in
 echo AWK=@AWK@ >> ./Config.QMake.in
 echo CC=@CC@ >> ./Config.QMake.in
+echo CCACHE=@CCACHE@ >> ./Config.QMake.in
 echo CP=@CP@ >> ./Config.QMake.in
 echo CPP=@CPP@ >> ./Config.QMake.in
 echo CHGRP=@CHGRP@ >> ./Config.QMake.in

@@ -24,35 +24,48 @@ dnl No Macro parameters
 dnl
 dnl Global variables used:
 dnl
-dnl   All variables listed with a <CMD> in their name exist for each command
+dnl   Most variables listed with a <CMD> in their name exist for each command
 dnl   set up by this macro. For example, locating the touch command via this
 dnl   macro will update the TOUCH variable (with the path to the executable)
 dnl   unless the USER_TOUCH variable indicates the user specified an initial
-dnl   preference.
+dnl   preference. There are the odd one or two commands (e.g. ccache) that do
+dnl   not conform to this pattern (ccache does not have a USER_CCACHE variable
+dnl   but a use_ccache variable instead. This is because ccache is controlled
+dnl   via an explicit command line switch unlike the other commands here that
+dnl   are only controlled by a similarly named environment variable).
 dnl
 dnl
+dnl       CCACHE                     Receives the path of any ccache utility
+dnl                                  the user has requested that QMake use.
 dnl       <CMD>                      Receives the path to the utility <cmd>.
 dnl                                  Can initially be primed by the user to
 dnl                                  force the use of a particular program.
-dnl       QMAKE_CFG                  Already primed (by the QM_LOCATE_QMAKE
-dnl                                  macro) with the location of QMake's
-dnl                                  configuration file.
+dnl       CONFIGURE_NVCCFLAGS        Initialised here to hold any NVCCFLAGS
+dnl                                  that the user may have set in their
+dnl                                  environment. This variable is only 
+dnl                                  initialised if the CUDA compiler is
+dnl                                  actually located (or user-specified).
 dnl       InheritCFG                 Specifies if we should use the QMAKE_CFG
 dnl                                  file to bootstrap our configuration
 dnl                                  settings.
+dnl       QMAKE_CFG                  Already primed (by the QM_LOCATE_QMAKE
+dnl                                  macro) with the location of QMake's
+dnl                                  configuration file.
 dnl       QMAKE_DEPENDENCIES         Builds up into a list of all the required
 dnl                                  utilities processed by this macro.
 dnl       SED                        Holds the name of the executable to carry
 dnl                                  out stream editing. This will already
 dnl                                  have been primed by a prior call to the
 dnl                                  macro QM_LOCATE_KEY_TOOLS.
+dnl       use_ccache                 Receives whether the user wishes to use
+dnl                                  the ccache utility to cache the outout of
+dnl                                  the build process.
 dnl       USER_<CMD>                 Holds any user specified configuration
 dnl                                  for the utility <cmd>.
-dnl       CONFIGURE_NVCCFLAGS        Initialised here to hold any NVCCFLAGS
-dnl                                  that the user may have set in their
-dnl                                  environment. This variable is only 
-dnl                                  initialised if the CUDA compiler is
-dnl                                  actually located (or user-specified).
+dnl       with_ccache                Value of similarly named cmd-line switch
+dnl                                  Enables the user to request use of the
+dnl                                  ccache utility, and also allows the user
+dnl                                  to specify the location of the utility.
 dnl
 AC_DEFUN([QM_LOCATE_QMAKE_DEPS],
          [
@@ -378,6 +391,92 @@ AC_DEFUN([QM_LOCATE_QMAKE_DEPS],
           # recognised as being reliably portable by the GNU standard.
           # For these, we will need to consider providing an alternative
           # implementation in cases where any are absent.
+
+          # ccache is a-typical as it is not enabled by default, we require
+          # the user to specifically enable it with the command line switch
+          # (or by explicitly setting CCACHE in the environment).
+          #
+          dnl Declare the command-line switch
+          AC_ARG_WITH([ccache],
+                      [AS_HELP_STRING([--with-ccache],
+                                      [Enable use of, and declare the path to ccache, the utility to cache compilation results.]
+                                     )
+                      ],
+                      [case $with_ccache in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                          use_ccache=no
+                                          if ( test "x$CCACHE" != x )
+                                          then
+                                             AC_MSG_WARN([CCACHE is set but --with-ccache is requesting to disable use of ccache. ccache will be disabled])
+                                             CCACHE=""
+                                          fi
+                                          trace 4 --with-ccache disabling ccache
+                                          ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                          use_ccache=yes
+                                          trace 4 --with-ccache enabling ccache
+                                          ;;
+                        * )               use_ccache=yes
+                                          CCACHE=$with_ccache
+                                          trace 4 --with-ccache set to @<:@$with_ccache@:>@
+                                          ;;
+                       esac
+                      ],
+                      [if ( test "x$CCACHE" != x )
+                       then
+                          # CCACHE set in environment, we must want to use it
+                          use_ccache=yes
+                       fi
+                      ]
+                     )
+
+          if ( test "x$CCACHE" = x )
+          then
+             # User has neither specified CCACHE in the environment, nor
+             # provided a --with-ccache setting.
+
+             if ( test "x$use_ccache" != xno )
+             then
+                # User has not disabled ccache, do we have a previous setting
+                # to use?
+                if ( test "x$InheritCFG" = xyes )
+                then
+                   CCACHE=`cat $QMAKE_CFG | $SED  -n 's/^CCACHE=\(.*\)/\1/p'`
+                fi
+                if ( test "x$CCACHE" = x  && test "x$use_ccache" = xyes )
+                then
+                   # We have no path for ccache but as the user requested we use
+                   # it, we have to attempt to find it
+                   AC_PATH_PROG([CCACHE],[ccache],[missing])
+                   if ( test "x$CCACHE" = xmissing )
+                   then
+                      AC_MSG_FAILURE([Cannot find ccache])
+                   fi
+                fi
+             fi
+          fi
+
+          # No, this should not be an else to the above if!
+          if ( test "x$CCACHE" != x )
+          then
+             # We have a named ccache, be this user supplied; from a previous 
+             # configuration; or one configure has found. We need to check if
+             # it is valid.
+             if ( ! test -x "$CCACHE" )
+             then
+                trace 2 Un-executable ccache found @<:@$CCACHE@:>@
+                if ( test "x$use_ccache" = xyes )
+                then
+                   # We have CCACHE set because the user requested it
+                   AC_MSG_FAILURE([Cannot find a working ccache])
+                else
+                   # We have CCACHE set from a previous configuration
+                   AC_MSG_FAILURE([The existing setting for ccache in $QMAKE_CFG is incorrect])
+                fi
+             fi
+          fi
+          # We do not add ccache to QMAKE_DEPENDENCIES as it is not a
+          # required dependency.
 
           if ( test "x$USER_LN_S" = x )
           then
