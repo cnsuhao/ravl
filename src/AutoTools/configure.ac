@@ -1038,6 +1038,15 @@ then
   echo >> ./Config.Project.in
 fi
 
+if ( test "x$use_ccache" = xyes )
+then
+   # We do not use USER_CCACHE as the use of ccache is controlled by a 
+   # command-line switch over and above the environment variable. If the
+   # user has requested to use ccache via either the --with-ccache switch
+   # or by setting the environment variable, use_ccache will be 'yes'.
+   echo CCACHE=@CCACHE@ >> ./Config.Project.in
+fi
+
 if ( test "x$USER_CXXCPP" != x )
 then
   AC_SUBST([USER_CXXCPP])
