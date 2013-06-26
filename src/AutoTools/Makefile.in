@@ -535,18 +535,18 @@ rpm: qmake
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) rpmbuild 
 
 SetRootInstalled:
-	$(SHOWIT)touch $(SOURCEHOME)/Core/Base/Resource.cc
+	$(SHOWIT)$(WORKING_QMAKE)/bin/untouch -f $(SOURCEHOME)/Core/Base/Resource.cc
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Core/Base -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
                 CCFLAGS="$(CCFLAGS) -DDEFAULT_ROOT=\\\"$(datadir)/Ravl\\\"" NOEXEBUILD=1 libbuild
-	$(SHOWIT)touch $(SOURCEHOME)/Contrib/Gnome/Gnome.cc
+	$(SHOWIT)$(WORKING_QMAKE)/bin/untouch -f $(SOURCEHOME)/Contrib/Gnome/Gnome.cc
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Contrib/Gnome -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
                 CCFLAGS="$(CCFLAGS) -DPREFIX=\\\"$(prefix)\\\" -DDATADIR=\\\"$(datadir)/Ravl\\\" -DSYSCONFDIR=\\\"$(sysconfdir)/Ravl\\\" -DLIBDIR=\\\"$(libdir)\\\"" \
                 NOEXEBUILD=1 libbuild
 
 SetRootStaged:
-	$(SHOWIT)touch $(SOURCEHOME)/Core/Base/Resource.cc
+	$(SHOWIT)$(WORKING_QMAKE)/bin/untouch -f $(SOURCEHOME)/Core/Base/Resource.cc
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Core/Base -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) NOEXEBUILD=1 libbuild
-	$(SHOWIT)touch $(SOURCEHOME)/Contrib/Gnome/Gnome.cc
+	$(SHOWIT)$(WORKING_QMAKE)/bin/untouch -f $(SOURCEHOME)/Contrib/Gnome/Gnome.cc
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Contrib/Gnome -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) NOEXEBUILD=1 libbuild
 
 singledebug: debug
