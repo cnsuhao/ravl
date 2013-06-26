@@ -2142,8 +2142,38 @@ echo >> ./Config.Project.in
 echo >> ./Config.Project.in
 
 
-dnl Declare RESOURCES and ALL_EXTERNAL_xxx as outputs
+dnl Declare RESOURCES for output
 AC_SUBST([RESOURCES])
+if ( test x$ResetRESOURCES == xyes )
+then
+   # We have already determined that we are disabling resources enabled by
+   # the QMake configuration. We are thus outputting a full redefinition
+   # of RESOURCES which needs to include:
+   #    + those resources already enabled in the QMake configuration minus
+   #      any that have been configured out by this configure run (this is
+   #      the current value of QMAKE_RESOURCES)
+   #    + those resources configured in by this configure run (the current
+   #      value of RESOURCES.
+   # If we have configured in a resource that was both configured in by the
+   # QMake configuration and this run, we will have the resource listed in
+   # both variables. We should therefore delete the duplicate(s) before
+   # creating our final resource list.
+   for lib in $QMAKE_RESOURCES
+   do
+      RESOURCES=`echo " $RESOURCES "  | $SED "s/ $lib / /g"`
+   done
+   # We could have applied this logic if we are not resetting RESOURCES (i.e.
+   # when we are only adding extra resources to those configured in at the
+   # QMake configuration stage). However, this would make items specifically
+   # configured at the project level subject to any subsiquent reconfiguration
+   # of QMake which is probably not what the use would require.
+   RESOURCES=`echo "$QMAKE_RESOURCES $RESOURCES" | sed "s/  */ /g"`
+   # Set final value for RESOURCES removing any multiple spaces
+fi
+
+
+
+dnl Declare ALL_EXTERNAL_xxx as outputs
 AC_SUBST([ALL_EXTERNAL_LIBS])
 AC_SUBST([ALL_EXTERNAL_CFLAGS])
 
