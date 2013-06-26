@@ -35,13 +35,20 @@ int main(int nargs, char **argv) {
   bool equaliseSamples = opts.Boolean("eq", false, "Make sure we have an equal number of samples per class");
   UIntT samplesPerClass = opts.Int("n", 0, "The number of samples per class");
   DListC<StringC> features = opts.List("features", "Use only these features");
-  DirectoryC resultDir = opts.String("dir", ".", "Output directory to place results");
+  DirectoryC resultDir = opts.String("dir", "results", "Output directory to place results");
   //bool verbose = opts.Boolean("v", false, "Verbose mode.");
   opts.Check();
 
   try {
 
     SysLogOpen("doTestClassifier");
+
+    if(!resultDir.Exists()) {
+      if(!resultDir.MakeDir()) {
+        RavlError("Failed to make output directory");
+        return 1;
+      }
+    }
 
     // And save the classifier
     ClassifierC classifier;

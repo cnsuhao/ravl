@@ -13,20 +13,21 @@
 #include "Ravl/RLog.hh"
 #include "Ravl/Face/FaceInfoDb.hh"
 #include "Ravl/Face/SightingSet.hh"
+#include "Ravl/StringList.hh"
 
-using namespace FaceN;
+using namespace RavlN::FaceN;
+using namespace RavlN;
 
 //! userlevel=User
 //: Allows you to modify XML files
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
   OptionC opt(argc, argv);
   StringC logFile = opt.String("l", "stderr", "Checkpoint log file. ");
   StringC logLevel = opt.String("ll", "info", "Logging level (debug, info, warning, error)");
   DListC<StringC> FaceInfoDbFiles = opt.List("db", "input FaceInfoDb files");
-  StringC inSightingSetFile = opt.String("i",
-      "",
-      "If an input claim session File is used then append new sightings to this");
+  StringC inSightingSetFile = opt.String("i", "", "If an input claim session File is used then append new sightings to this");
   StringC SightingSetFile = opt.String("o", "sightingSet.xml", "output sighting set file");
   bool Verbose = opt.Boolean("v", false, "Do things verbosely");
   opt.Check();
@@ -46,10 +47,29 @@ int main(int argc, char **argv) {
   FaceInfoDbC db(FaceInfoDbFiles);
   rInfo("Appending the new claims....");
   for (HashIterC<StringC, DListC<FaceInfoC> > it(db.Sort(true)); it; it++) {
+
+    // Always start a new sighting here
+    SightingC sighting;
+    IntT lastNumber = 0;
+    rInfo("Subject '%s'", it.Key().data());
     for (DLIterC<FaceInfoC> faceIt(it.Data()); faceIt; faceIt++) {
-      SightingC sighting(faceIt.Data().ActualId());
+
+      StringC faceId = faceIt.Data().FaceId();
+      StringListC parts(faceId, ":");
+      IntT number = parts.Last().IntValue();
+
+
+      // Do we need to start new sighting?
+      if (number - lastNumber > 100) {
+        if (sighting.IsValid()) {
+          sightingSet.Append(sighting);
+        }
+        rInfo("New sighting....");
+        sighting = SightingC(faceIt.Data().ActualId());
+      }
+      rInfo("FaceId: %s -> %d %d %d", faceId.data(), lastNumber, number, number - lastNumber);
       sighting.AddFaceId(faceIt.Data().FaceId());
-      sightingSet.Append(sighting);
+      lastNumber = number;
     }
   }
 

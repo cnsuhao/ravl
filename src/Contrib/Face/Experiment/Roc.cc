@@ -630,53 +630,57 @@ namespace RavlN {
       return true;
     }
 
-    bool RocBodyC::PlotLog(const StringC & filename, const StringC & title, RealT minFalseMatchRate, RealT maxFalseMatchRate, RealT minTrueMatchRate, RealT maxTrueMatchRate) const
-       {
+    bool RocBodyC::PlotLog(const StringC & filename,
+        const StringC & title,
+        RealT minFalseMatchRate,
+        RealT maxFalseMatchRate,
+        RealT minTrueMatchRate,
+        RealT maxTrueMatchRate) const
+    {
 
-         //: Check it is sorted before use
-         if (!sorted)
-           return false;
+      //: Check it is sorted before use
+      if (!sorted)
+        return false;
 
-         if (!IsValid())
-           return false;
+      if (!IsValid())
+        return false;
 
-         if(minFalseMatchRate <= 0.0) {
-           RavlWarning("Minimum FMR needs to be above zero");
-           return false;
-         }
+      if (minFalseMatchRate <= 0.0) {
+        RavlWarning("Minimum FMR needs to be above zero");
+        return false;
+      }
 
-         Plot2dC::RefT plot = CreatePlot2d(title);
+      Plot2dC::RefT plot = CreatePlot2d(title);
 
-         // Sort out x-axis
-         plot->SetXLabel("False Match Rate");
-         plot->Command("set logscale x");
-         plot->Command("set grid");
+      // Sort out x-axis
+      plot->SetXLabel("False Match Rate");
+      plot->Command("set logscale x");
+      plot->Command("set grid");
 
-         plot->SetXRange(RealRangeC(minFalseMatchRate, maxFalseMatchRate));
+      plot->SetXRange(RealRangeC(minFalseMatchRate, maxFalseMatchRate));
 
-         // Sort out y-axis
-         plot->SetYLabel("True Match Rate");
-         plot->SetYRange(RealRangeC(minTrueMatchRate, maxTrueMatchRate));
+      // Sort out y-axis
+      plot->SetYLabel("True Match Rate");
+      plot->SetYRange(RealRangeC(minTrueMatchRate, maxTrueMatchRate));
 
-         // Set output filename if requested, otherwise it will plot to screen
-         if (!filename.IsEmpty()) {
-           plot->SetOutput(filename);
-         }
+      // Set output filename if requested, otherwise it will plot to screen
+      if (!filename.IsEmpty()) {
+        plot->SetOutput(filename);
+      }
 
-         // Sort out points
-         DListC<Tuple2C<RealT, RealT> > points = Graph(1.0, 1.0);
-         CollectionC<Point2dC> arr(points.Size());
-         for (DLIterC<Tuple2C<RealT, RealT> > it(points); it; it++) {
-           if(it.Data().Data1() >= minFalseMatchRate && it.Data().Data1() <= maxFalseMatchRate) {
-             arr.Append(Point2dC(it.Data().Data1(), 1-0 - it.Data().Data2()));
-           }
-         }
-         plot->SetLineStyle("lines");
-         plot->Plot(arr.SArray1d());
+      // Sort out points
+      DListC<Tuple2C<RealT, RealT> > points = Graph(1.0, 1.0); // get them all!
+      CollectionC<Point2dC> arr(points.Size());
+      for (DLIterC<Tuple2C<RealT, RealT> > it(points); it; it++) {
+        if (it.Data().Data1() >= minFalseMatchRate && it.Data().Data1() <= maxFalseMatchRate) {
+          arr.Append(Point2dC(it.Data().Data1(), 1 - 0 - it.Data().Data2()));
+        }
+      }
+      plot->SetLineStyle("lines");
+      plot->Plot(arr.SArray1d());
 
-         return true;
-       }
-
+      return true;
+    }
 
     bool RocBodyC::Plot(RealT maxFa, RealT maxFr, const StringC & title, ImageC<ByteRGBValueC> & image) const
     {
@@ -830,8 +834,8 @@ namespace RavlN {
     bool RocBodyC::Report(const DirectoryC & outDir)
     {
       Sort();
-      SArray1dC<RealT> fa(3);
-      StrIStreamC("3 0.01 0.001 0.0001") >> fa;
+      SArray1dC<RealT> fa(4);
+      StrIStreamC("4 0.1 0.01 0.001 0.0001") >> fa;
       RCHashC<RealT, RealT> fa2fr;
       StringC summary;
       OStreamC os(outDir + "/results.txt");
@@ -864,6 +868,12 @@ namespace RavlN {
       StringC rocFile = outDir + "/roc.png";
       if (!Plot(rng, rng, outDir, rocFile)) {
         RavlError("Failed to plot ROC");
+        return false;
+      }
+
+      StringC detFile = outDir + "/det.png";
+      if (!PlotLog(detFile, "DET", 0.0001, 0.1, 1.0 - fa2fr[0.0001], 1.0 - fa2fr[0.1])) {
+        RavlError("Failed to plot DET");
         return false;
       }
 

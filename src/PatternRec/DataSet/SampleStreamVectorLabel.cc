@@ -32,14 +32,28 @@ namespace RavlN {
     return Tuple2C<VectorC, UIntT>(VectorC(vec.Data1()), vec.Data2());
   }
   
+  static Tuple2C<VectorC, UIntT> byte2realVec(const Tuple2C<TVectorC<ByteT>, UIntT> &vec) {
+      VectorC v(vec.Data1().Size());
+      for(SArray1dIter2C<ByteT, RealT>it(vec.Data1(), v);it;it++) {
+        it.Data2() = (RealT)it.Data1();
+      }
+      return Tuple2C<VectorC, UIntT>(v, vec.Data2());
+  }
   
+
   //: Convert from a stream of float vectors.
-  SampleStreamVectorLabelC::SampleStreamVectorLabelC(const SampleStream2C<TVectorC<float>, UIntT> &port)
+  SampleStreamVectorLabelC::SampleStreamVectorLabelC(const SampleStream2C<TVectorC<float>, UIntT> & port)
     : DPEntityC(true)
   {
     *this = SPort(port >> Process(float2realVec));
   }
 
+  //: Convert from a stream of float vectors.
+  SampleStreamVectorLabelC::SampleStreamVectorLabelC(const SampleStream2C<TVectorC<ByteT>, UIntT> & port)
+     : DPEntityC(true)
+  {
+    *this = SPort(port >> Process(byte2realVec));
+  }
 
   //: Convert from a stream of float vectors.
   SampleStreamVectorLabelC::SampleStreamVectorLabelC(const DPISPortC<Tuple2C<VectorC, UIntT> > & stream, const FunctionC & function)
@@ -49,6 +63,7 @@ namespace RavlN {
     *this = SPort(stream >> pFunc);
   }
   
+
 
 #if 0
   //: Compute the sum of the outerproducts.
