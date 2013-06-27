@@ -6069,7 +6069,7 @@ trace 2 Set compiler specific CFLAGS
                 # -funsafe-math-optimisation (implied by -ffast-math) was indeed, unsafe
                 # on versions 4.0/1/2 of GCC, so just implement the parts of -ffast-math
                 # that work with the Ravl source and employ -O3 as compensation
-                COMPILER_OPT_CFLAGS=" -O3 -fno-math-error -fno-trapping-math -fno-signalling-nans -D__FAST_MATH__ -Wstrict-aliasing=2 -fno-strict-aliasing "
+                COMPILER_OPT_CFLAGS=" -O3 -fno-math-errno -fno-trapping-math -fno-signaling-nans -D__FAST_MATH__ -Wstrict-aliasing=2 -fno-strict-aliasing "
              else
                 COMPILER_OPT_CFLAGS=" -O2 -ffast-math -fno-strict-aliasing "
              fi
@@ -6166,7 +6166,7 @@ trace 2 Set compiler specific CCFLAGS
                 # -funsafe-math-optimisation (implied by -ffast-math) was indeed, unsafe
                 # on versions 4.0/1/2 of GCC, so just implement the parts of -ffast-math
                 # that work with the Ravl source and employ -O3 as compensation
-                COMPILER_OPT_CCFLAGS=" -O3 -fno-math-error -fno-trapping-math -fno-signalling-nans -D__FAST_MATH__ -Wstrict-aliasing=2 -fno-strict-aliasing "
+                COMPILER_OPT_CCFLAGS=" -O3 -fno-math-errno -fno-trapping-math -fno-signaling-nans -D__FAST_MATH__ -Wstrict-aliasing=2 -fno-strict-aliasing "
              else
                 COMPILER_OPT_CCFLAGS=" -O2 -ffast-math -fno-strict-aliasing "
              fi
