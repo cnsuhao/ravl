@@ -64,7 +64,7 @@ int untouch(char *filename,int seconds) {
 
 int main(int nargs,char **argv) {
   int seconds =1;
-  short int show_help;
+  short int show_help=0;
   ONDEBUG(printf("untouch '%s' \n",argv[1]));
   for(int i = 1;i < nargs;i++) {
     // Check for options.
