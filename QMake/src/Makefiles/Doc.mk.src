@@ -103,7 +103,9 @@ docinit: docfiles
 
 doc: docinit $(INST_INCLUDE)/.dir
 	$(SHOWIT)echo "--- Generating documentation" ; \
-	$(LOCALBIN)/CxxDoc $(PROJECT_NAME_OPT) $(PROJECT_DESC_OPT) $(INCLUDE_OPT) -p $(PROJECT_OUT)
+	$(LLP) $(QMAKE_UTILS)/CxxDoc $(PROJECT_NAME_OPT) $(PROJECT_DESC_OPT) $(INCLUDE_OPT) -p $(PROJECT_OUT)
+        # LLP = LD_LIBRARY_PATH setting for when building against a project
+        # local QMake (as opposed to an installed copy)
 
 $(INST_EHT)/% : % $(INST_EHT)/.dir
 	$(SHOWIT)echo "--- Installing EHT $(@F) to $(INST_EHT)" ; \
