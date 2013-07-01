@@ -17,8 +17,14 @@ ifndef INSTALLHOME
   $(error Project home directory is not specified)
 endif
 
-# Include project default installation targets
-include $(PROJECT_OUT)/Targets.Project
+# Pick up definitions of where to install to
+#
+-include $(PROJECT_OUT)/Targets.Project
+#   Include any project specific definitions
+include $(QMAKE_CONFIGFILES)/Targets.QMake
+#   Include Targets.QMake as a default in case we have no Targets.Project.
+#   This is safe to always include as it will not override any settings from
+#   a successfull inclusion of Targets.Project.
 
 # Ensure we havent got a relative path for any DESTDIR setting
 ifdef DESTDIR
@@ -856,4 +862,9 @@ info:
 
 $(PROJECT_OUT)/Config.Project:
 	@if [ X$(QMAKE_INFO) != X ]; then echo No Config.Project - Using default settings; fi
+
+
+$(PROJECT_OUT)/Targets.Project:
+        @if [ X$(QMAKE_INFO) != X ]; then echo No Targets.Project - Using default settings; fi
+
 
