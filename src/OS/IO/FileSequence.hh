@@ -232,8 +232,7 @@ namespace RavlN {
     : public DPFileSequenceBaseBodyC
   {
   public:
-    DPIFileSequenceBodyC()
-    {}
+    DPIFileSequenceBodyC();
     //: Default constructor.
     
     DPIFileSequenceBodyC(StringC fn,UIntT start = ((UIntT) -1),UIntT end = ((UIntT) -1),IntT digits = -1);
@@ -259,7 +258,7 @@ namespace RavlN {
   //! userlevel=Normal
   //: Input File Sequence
   // The filename can now be one of the following, where XXX is the
-  // frame number in a multifile sequence.
+  // frame number in a multi-file sequence.
   // (filename)XXX.(suffix)
   // (filename).(suffix)     - The numbers will be inserted in before .(suffix)
   // or a string with '%d' put where digits should be inserted.
@@ -323,8 +322,7 @@ namespace RavlN {
     : public DPFileSequenceBaseBodyC
   {
   public:
-    DPOFileSequenceBodyC()
-    {}
+    DPOFileSequenceBodyC();
     //: Default constructor.
     
     DPOFileSequenceBodyC(StringC fn,UIntT start = ((UIntT) -1),UIntT end = ((UIntT) -1),IntT digits = -1);
@@ -334,7 +332,7 @@ namespace RavlN {
     //: Setup for a specific file type.
     
     static bool AuxFunction(DPOPipeBaseC &auxFun,DPEntityC &hold);
-    //: Auxilary processing function for pipe.
+    //: Auxiliary processing function for pipe.
     
     FileFormatBaseC &Format() { return format; }
     //: Access files format.

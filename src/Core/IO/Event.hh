@@ -7,7 +7,6 @@
 #ifndef RAVL_DPEVENT_HEADER
 #define RAVL_DPEVENT_HEADER 1
 ////////////////////////////////////////////
-//! rcsid="$Id$"
 //! file="Ravl/Core/IO/Event.hh"
 //! lib=RavlIO
 //! author="Charles Galambos"

@@ -488,7 +488,7 @@ namespace RavlN {
             result.Insert(it.Key(), it.Data());
           }
         } else {
-          cerr << "WARNING: Unknown tag, " << tag << endl;
+          std::cerr << "WARNING: Unknown tag, " << tag << std::endl;
         }
       }
       return result;
@@ -512,7 +512,7 @@ namespace RavlN {
             if (it.Data().ActualId() == *valIt)
               result.Insert(it.Key(), it.Data());
           } else
-            cerr << "WARNING: Unknown tag, " << tag << endl;
+            std::cerr << "WARNING: Unknown tag, " << tag << std::endl;
         }
       }
       return result;
