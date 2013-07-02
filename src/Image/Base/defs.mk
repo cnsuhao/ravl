@@ -10,7 +10,7 @@
 PACKAGE=Ravl/Image
 
 HEADERS=ImageRectangle.hh Image.hh \
- RGBValue.hh ByteRGBValue.hh UInt16RGBValue.hh RealRGBValue.hh \
+ RGBValue.hh ByteRGBValue.hh ByteRGBColour.hh UInt16RGBValue.hh RealRGBValue.hh \
  RGBAValue.hh ByteRGBAValue.hh RealRGBAValue.hh \
  BGRValue.hh ByteBGRValue.hh RealBGRValue.hh BGRAValue.hh ByteBGRAValue.hh \
  YUVValue.hh ByteYUVValue.hh RealYUVValue.hh \
