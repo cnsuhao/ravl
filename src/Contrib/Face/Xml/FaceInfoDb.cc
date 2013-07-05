@@ -95,8 +95,6 @@ namespace RavlN {
           useImagePath = db.ImagePath();
         }
 
-
-
         // Now lets go through the faces
         for (HashIterC<StringC, FaceInfoC> faceIt(db); faceIt; faceIt++) {
 
@@ -115,7 +113,7 @@ namespace RavlN {
               }
             }
             if (!found) {
-              RavlWarning("Modified Image not found, face not loaded!", origImagePath.data());
+              RavlWarning("Modified path image not found, face not loaded ('%s', %s)!", RavlN::StringOf(useImagePath).data(), origImagePath.data());
             }
           } else {
             // OK an image path is not defined, so we just try and use the image - may be the path is in that
