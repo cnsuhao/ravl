@@ -16,8 +16,8 @@ PACKAGE= Ravl/Zmq
 HEADERS= Context.hh Message.hh Socket.hh MsgBuffer.hh SocketDispatcher.hh Reactor.hh \
  SocketDispatchTrigger.hh MsgJSON.hh MsgSmartPtr.hh
 
-SOURCES= Context.cc Message.cc Socket.cc MsgBuffer.cc SocketDispatcher.cc Reactor.cc \
- SocketDispatchTrigger.cc MsgJSON.cc MsgSmartPtr.cc
+SOURCES= ZmqContext.cc ZmqMessage.cc ZmqSocket.cc ZmqMsgBuffer.cc ZmqSocketDispatcher.cc ZmqReactor.cc \
+ ZmqSocketDispatchTrigger.cc ZmqMsgJSON.cc ZmqMsgSmartPtr.cc
 
 MUSTLINK=LinkRavlZeroMQ.cc
 
@@ -29,4 +29,3 @@ EXTERNALLIBS = Zmq.def
 
 MAINS= testRavlZeroMQ.cc testRavlZeroMQXML.cc
 
-USESPKGCONFIG = opencv

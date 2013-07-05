@@ -13,7 +13,6 @@
 //! date="1/9/1996"
 //! docentry="Ravl.API.Core.Hash Tables"
 //! example=WordFreq.cc;exHash.cc
-//! rcsid="$Id$"
 //! userlevel=Normal
 
 #include "Ravl/SArray1d.hh"

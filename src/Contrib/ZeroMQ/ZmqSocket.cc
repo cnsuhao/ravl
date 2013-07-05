@@ -16,45 +16,47 @@
 namespace RavlN {
   namespace ZmqN {
 
-    static const char *g_socketTypeNames[] =
+    static const struct {
+      const char *m_name;
+      SocketTypeT m_type;
+    } g_socketTypeNames[] =
     {
-      "PAIR",
-      "PUB",
-      "SUB",
-      "REQ",
-      "REP",
-      "XREQ",
-      "XREP",
-      "PULL",
-      "PUSH",
-      "XPUB",
-      "XSUB",
-      "ROUTER",
-      "DEALER",
-      "Unknown1",
-      "Unknown2",
-      "Unknown3",
-      "Unknown4",
-      0
+        {"PAIR",ZST_PAIR    },
+        {"PUB" ,ZST_PUBLISH   },
+        {"SUB" ,ZST_SUBCRIBE  },
+        {"REQ" ,ZST_REQUEST   },
+        {"REP" ,ZST_REPLY     },
+        {"XREQ",ZST_XREQUEST  },
+        {"XREP",ZST_XREPLY    },
+        {"PULL",ZST_PULL      },
+        {"PUSH",ZST_PUSH      },
+        {"XPUB",ZST_XPUBLISH  },
+        {"XSUB",ZST_XSUBCRIBE },
+        {"ROUTER",ZST_ROUTER  },
+        {"DEALER",ZST_DEALER },
+        {0,ZST_PAIR }
     };
 
     //! Write to text stream.
     std::ostream &operator<<(std::ostream &strm,SocketTypeT sockType)
     {
-      if((int) sockType >= 15) {
-        strm << "UnknownX";
-        return strm;
+      for(unsigned i = 0;g_socketTypeNames[i].m_name != 0;i++) {
+        if(sockType == g_socketTypeNames[i].m_type) {
+          strm << g_socketTypeNames[i].m_name;
+          return strm;
+        }
       }
-      strm << g_socketTypeNames[(int) sockType];
+      RavlError("Unknown socket type '%u' ",(unsigned) sockType);
+      throw ExceptionC("Unknown socket type");
       return strm;
     }
 
     //! Convert a socket type from a name to an enum
     SocketTypeT SocketType(const std::string &name) {
       int i = 0;
-      for(;g_socketTypeNames[i] != 0;i++) {
-        if(name == g_socketTypeNames[i]) {
-          return static_cast<SocketTypeT>(i);
+      for(;g_socketTypeNames[i].m_name != 0;i++) {
+        if(name == g_socketTypeNames[i].m_name) {
+          return g_socketTypeNames[i].m_type;
         }
       }
       RavlError("Unknown socket type '%s' ",name.c_str());
@@ -70,6 +72,12 @@ namespace RavlN {
       return strm;
     }
 
+
+    //! Default constructor - creates invalid handle
+    SocketC::SocketC()
+     : m_socket(0),
+       m_verbose(false)
+    {};
 
     //! Construct a new socket.
     SocketC::SocketC(ContextC &context,SocketTypeT socketType,const StringC &codec)

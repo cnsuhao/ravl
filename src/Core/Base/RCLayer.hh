@@ -36,12 +36,12 @@ namespace RavlN {
     
     RCLayerBodyC(std::istream &strm)
       : RCBodyVC(strm)
-    {}
+    { ravl_atomic_set(&owners,0); }
     //: Text stream constructor
     
     RCLayerBodyC(BinIStreamC &strm)
       : RCBodyVC(strm)
-    {}
+    { ravl_atomic_set(&owners,0); }
     //: Binary stream constructor
     
     RCLayerBodyC(const RCLayerBodyC &)

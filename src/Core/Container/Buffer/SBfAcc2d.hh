@@ -142,9 +142,9 @@ namespace RavlN {
     
     bool IsContinuous() const 
     { return Stride() == (IntT) size2; }
-    //: Test if the array is allocated in a continous area of memory.
+    //: Test if the array is allocated in a continuous area of memory.
     // Note: this only checks the first two rows follow each other in
-    // memory, this may miss other discontunities.
+    // memory, this may miss other discontinuities.
     
     IndexRange2dC Frame() const
     { return IndexRange2dC(0,(IntT) Size1()-1,0,(IntT) size2-1); }

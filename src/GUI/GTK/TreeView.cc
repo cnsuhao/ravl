@@ -108,7 +108,7 @@ namespace RavlGUIN {
         dispList.InsLast(treeModel.ColumnType(i).Name());
     }
     
-    //cerr << "TreeViewBodyC::TreeViewBodyC(), Called. " << nCols << "\n";
+    //std::cerr << "TreeViewBodyC::TreeViewBodyC(), Called. " << nCols << "\n";
     displayColumns = SArray1dC<TreeViewColumnC>(dispList.Size());
     SArray1dIterC<TreeViewColumnC> ait(displayColumns);
     for(DLIterC<StringC> it(dispList);it;it++,ait++) {
@@ -181,7 +181,7 @@ namespace RavlGUIN {
             break;
         }
         rit->SetRenderType(renderType);
-        //cerr << "Setting '" << ait->Name() << "' to render type '" << ait->RenderType() << "'\n";
+        //std::cerr << "Setting '" << ait->Name() << "' to render type '" << ait->RenderType() << "'\n";
       
         rit++;
       }
@@ -209,7 +209,8 @@ namespace RavlGUIN {
     : selection(0),
       m_preselection(NULL),
       selectionChanged(DListC<TreeModelIterC>()),
-      firstSelection(ignoreInitialSelectionSignals ? 2 : 0)
+      firstSelection(ignoreInitialSelectionSignals ? 2 : 0),
+      selMode(GTK_SELECTION_NONE)
   {}
 
   static StringC FindMajorColumnName(const StringC &name) {

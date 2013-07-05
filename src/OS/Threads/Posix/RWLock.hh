@@ -334,9 +334,11 @@ namespace RavlN {
 
   private:
     RWLockHoldC(const RWLockHoldC &o)
-      : rwlock(o.rwlock)
+      : rwlock(o.rwlock),
+        rLocked(false),
+        wLocked(false)
     { RavlAssert(0); }
-    //: Dissable copy constructor.
+    //: Disable copy constructor.
   };
 
 }

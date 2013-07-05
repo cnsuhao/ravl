@@ -7,7 +7,6 @@
 #ifndef RAVL_TEMPLATECMPLX_HEADER
 #define RAVL_TEMPLATECMPLX_HEADER 1
 /////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! file="Ravl/OS/Text/TemplateComplex.hh"
 //! lib=RavlOS
 //! docentry="Ravl.API.OS.Text Processing"

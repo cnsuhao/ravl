@@ -39,6 +39,7 @@ namespace RavlN {
   class FPNumberC {
   public:
     FPNumberC()
+      : v(0)
     {}
     //: Default constructor.
     

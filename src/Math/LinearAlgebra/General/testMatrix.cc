@@ -39,6 +39,7 @@ int testATAandAAT();
 int testSolve();
 int testLSQFixedRank();
 int testLSQEq0Mag1();
+int testRealFloatConv();
 
 int main() {
   int ln;
@@ -93,6 +94,10 @@ int main() {
   }
   if((ln = testLSQEq0Mag1()) != 0) {
     cerr << "testLSQEq0Mag1() failed. Line:" << ln << "\n";
+    return 1;
+  }
+  if((ln = testRealFloatConv()) != 0) {
+    cerr << "testRealFloatConv() failed. Line:" << ln << "\n";
     return 1;
   }
 #endif
@@ -525,6 +530,19 @@ int testLSQEq0Mag1() {
 
     if (zeroVecTest.SumOfAbs() > 1e-6) return __LINE__;
   }
+
+  return 0;
+}
+
+
+int testRealFloatConv() {
+  cerr << "testRealFloatConv(), Called. \n";
+
+  TMatrixC<float> f(3,4);
+  for (SArray2dIterC<float> i(f); i; ++i) *i = 7.3;
+  MatrixC r(f);
+  TMatrixC<float> g = r;
+  if ((TMatrixC<float>(f-g)).SumOfAbs() > 1e-6) return __LINE__;
 
   return 0;
 }

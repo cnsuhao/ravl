@@ -15,6 +15,8 @@
 #include "Ravl/GraphConnIt.hh"
 #include "Ravl/HSet.hh"
 #include "Ravl/String.hh"
+#include "Ravl/SArray2d.hh"
+#include "Ravl/Array2d.hh"
 
 #define DPDEBUG 0
 
@@ -115,6 +117,18 @@ namespace RavlN {
     return ret;
   }
 
+  static SArray2dC<RealT> ConvSArray2d_Float2Array2dC_Real(const SArray2dC<float> &arr)
+  {
+    SArray2dC<RealT> ret(arr.Size1(),arr.Size2());
+    for(unsigned i = 0;i < ret.Size1();i++)
+      for(unsigned j = 0;j < ret.Size2();j++)
+        ret[i][j] = arr[i][j];
+    return ret;
+  }
+
+  static Array2dC<float> ConvSArray2d_FloatArray2dC_Float(const SArray2dC<float> &arr)
+  { return arr; }
+
   DP_REGISTER_CONVERSION_NAMED(ConvByte2Int,1,"IntT RavlN::Convert(const ByteT &)");
   DP_REGISTER_CONVERSION_NAMED(ConvUByte2Int,1,"IntT RavlN::Convert(const UByteT &)");
   DP_REGISTER_CONVERSION_NAMED(ConvInt162Int,1,"IntT RavlN::Convert(const Int16T &)");
@@ -127,6 +141,8 @@ namespace RavlN {
   DP_REGISTER_CONVERSION_NAMED(ConvInt2String,1,"StringC RavlN::Convert(const IntT &)");
   DP_REGISTER_CONVERSION_NAMED(ConvReal2String,1,"StringC RavlN::Convert(const RealT &)");
   DP_REGISTER_CONVERSION(ConvSArray1d_Float2Array1dC_Real,1);
+  DP_REGISTER_CONVERSION(ConvSArray2d_Float2Array2dC_Real,1);
+  DP_REGISTER_CONVERSION(ConvSArray2d_FloatArray2dC_Float,1);
   
 
 }

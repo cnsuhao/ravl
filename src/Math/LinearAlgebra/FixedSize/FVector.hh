@@ -7,7 +7,6 @@
 #ifndef RAVL_FVECTOR_HEADER
 #define RAVL_FVECTOR_HEADER 1
 //////////////////////////////////////////////////
-//! rcsid=$Id$
 //! file="Ravl/Math/LinearAlgebra/FixedSize/FVector.hh"
 //! lib=RavlMath
 //! userlevel=Develop
