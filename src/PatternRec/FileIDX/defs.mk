@@ -15,6 +15,8 @@ MUSTLINK=LinkRavlFileIDX.cc
 
 PLIB=RavlFileIDX
 
-USESLIBS=RavlCore RavlIO RavlOSIO RavlPatternRec RavlPatternRecIO
+USESLIBS=RavlCore RavlIO RavlOSIO 
 
 MAINS=doFileIDX.cc doPrepData.cc
+
+PROGLBS=RavlPatternRec RavlPatternRecIO
