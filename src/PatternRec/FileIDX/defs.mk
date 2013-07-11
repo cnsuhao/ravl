@@ -19,4 +19,4 @@ USESLIBS=RavlCore RavlIO RavlOSIO
 
 MAINS=doFileIDX.cc doPrepData.cc
 
-PROGLBS=RavlPatternRec RavlPatternRecIO
+PROGLIBS=RavlPatternRec RavlPatternRecIO

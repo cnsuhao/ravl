@@ -181,7 +181,7 @@ bool ExtractSamples(OutputFileSetC &outFiles,
       maxLabel = label;
     outFiles.Write(featVec,label);
   }
-  RavlDebug("Done MaxLabel= %u   Feature size=%u ",maxLabel,featVec.Size());
+  RavlDebug("Done MaxLabel= %u   Feature size=%u ",maxLabel,featVec.Size().V());
   return true;
 }
 
