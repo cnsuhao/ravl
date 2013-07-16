@@ -7200,9 +7200,8 @@ fi
           # For these, we will need to consider providing an alternative
           # implementation in cases where any are absent.
 
-          # ccache is a-typical as it is not enabled by default, we require
-          # the user to specifically enable it with the command line switch
-          # (or by explicitly setting CCACHE in the environment).
+          # ccache is a-typical as it is controlled by both the CCACHE
+          # environment variable and a --with-ccache switch.
           #
 
 # Check whether --with-ccache was given.
@@ -7252,10 +7251,9 @@ fi
                 then
                    CCACHE=`cat $QMAKE_CFG | $SED  -n 's/^CCACHE=\(.*\)/\1/p'`
                 fi
-                if ( test "x$CCACHE" = x  && test "x$use_ccache" = xyes )
+                if ( test "x$CCACHE" = x )
                 then
-                   # We have no path for ccache but as the user requested we use
-                   # it, we have to attempt to find it
+                   # We have no path for ccache: attempt to find it
                    # Extract the first word of "ccache", so it can be a program name with args.
 set dummy ccache; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
@@ -7299,10 +7297,16 @@ fi
 
                    if ( test "x$CCACHE" = xmissing )
                    then
-                      { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+                      if ( test "x$use_ccache" = xyes )
+                      then
+                         # We cannot find ccache but the user requested it
+                         { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
 as_fn_error "Cannot find ccache
 See \`config.log' for more details." "$LINENO" 5; }
+                      else
+                         CCACHE=""
+                      fi
                    fi
                 fi
              fi
@@ -7319,17 +7323,16 @@ See \`config.log' for more details." "$LINENO" 5; }
                 trace 2 Un-executable ccache found [$CCACHE]
                 if ( test "x$use_ccache" = xyes )
                 then
-                   # We have CCACHE set because the user requested it
+                   # The user requested cache so error out
                    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
 as_fn_error "Cannot find a working ccache
 See \`config.log' for more details." "$LINENO" 5; }
                 else
-                   # We have CCACHE set from a previous configuration
-                   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error "The existing setting for ccache in $QMAKE_CFG is incorrect
-See \`config.log' for more details." "$LINENO" 5; }
+                   # No user preference, so generate a warning and ignore ccache
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Cannot find a working ccache, will disable its use" >&5
+$as_echo "$as_me: WARNING: Cannot find a working ccache, will disable its use" >&2;}
+                   CCACHE=""
                 fi
              fi
           fi
