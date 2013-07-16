@@ -392,9 +392,8 @@ AC_DEFUN([QM_LOCATE_QMAKE_DEPS],
           # For these, we will need to consider providing an alternative
           # implementation in cases where any are absent.
 
-          # ccache is a-typical as it is not enabled by default, we require
-          # the user to specifically enable it with the command line switch
-          # (or by explicitly setting CCACHE in the environment).
+          # ccache is a-typical as it is controlled by both the CCACHE
+          # environment variable and a --with-ccache switch.
           #
           dnl Declare the command-line switch
           AC_ARG_WITH([ccache],
@@ -443,14 +442,19 @@ AC_DEFUN([QM_LOCATE_QMAKE_DEPS],
                 then
                    CCACHE=`cat $QMAKE_CFG | $SED  -n 's/^CCACHE=\(.*\)/\1/p'`
                 fi
-                if ( test "x$CCACHE" = x  && test "x$use_ccache" = xyes )
+                if ( test "x$CCACHE" = x )
                 then
-                   # We have no path for ccache but as the user requested we use
-                   # it, we have to attempt to find it
+                   # We have no path for ccache: attempt to find it
                    AC_PATH_PROG([CCACHE],[ccache],[missing])
                    if ( test "x$CCACHE" = xmissing )
                    then
-                      AC_MSG_FAILURE([Cannot find ccache])
+                      if ( test "x$use_ccache" = xyes )
+                      then
+                         # We cannot find ccache but the user requested it
+                         AC_MSG_FAILURE([Cannot find ccache])
+                      else
+                         CCACHE=""
+                      fi
                    fi
                 fi
              fi
@@ -467,11 +471,12 @@ AC_DEFUN([QM_LOCATE_QMAKE_DEPS],
                 trace 2 Un-executable ccache found @<:@$CCACHE@:>@
                 if ( test "x$use_ccache" = xyes )
                 then
-                   # We have CCACHE set because the user requested it
+                   # The user requested cache so error out
                    AC_MSG_FAILURE([Cannot find a working ccache])
                 else
-                   # We have CCACHE set from a previous configuration
-                   AC_MSG_FAILURE([The existing setting for ccache in $QMAKE_CFG is incorrect])
+                   # No user preference, so generate a warning and ignore ccache
+                   AC_MSG_WARN([Cannot find a working ccache, will disable its use])
+                   CCACHE=""
                 fi
              fi
           fi
