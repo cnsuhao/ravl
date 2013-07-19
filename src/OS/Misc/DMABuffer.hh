@@ -12,6 +12,7 @@
 //! author="Charles Galambos"
 //! lib=RavlOS
 //! file="Ravl/OS/Misc/DMABuffer.hh"
+#include <stdio.h>
 
 #include "Ravl/Buffer.hh"
 
@@ -28,8 +29,9 @@ namespace RavlN {
     DMABufferBodyC(SizeT size,UIntT align = 64) 
       : BufferBodyC<DataT>(size,0,false,false)
     {
-      raw = new char [((size * sizeof(DataT)) + (align-1))];
-      void *aligned = (void *) ((((size_t) raw) + (align-1)) & (~(align-1)));
+      size_t pad = align-1;
+      raw = new char [(size * sizeof(DataT)) + pad];
+      void *aligned = (void *) ((((size_t) raw) + pad) & (~pad));
       //cerr << "Raw:" << raw << " Aligned:" << aligned << "\n";
       this->buff = ((DataT *)aligned);
     }
