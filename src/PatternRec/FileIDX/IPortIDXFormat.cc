@@ -28,8 +28,12 @@ namespace RavlN { namespace ION {
   const std::type_info &
   FileFormatIPortIDXBodyC::ProbeLoad(RavlN::IStreamC &in,const std::type_info &obj_type) const {
     DataStreamIDXC fds;
-    if(!fds.Open(in))
+    std::streampos pos =in.Tell();
+    if(!fds.Open(in)) {
+      in.Seek(pos);
       return typeid(void);
+    }
+    in.Seek(pos);
     return typeid(RavlN::TVectorC<float>);
   }
   
