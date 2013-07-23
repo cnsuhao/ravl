@@ -10,7 +10,7 @@ parts of RAVL will not be built.
 Basic operation is to extract the source from the tar archive; move to the
 extracted directory and issue the relevant build commands:
 
-        tar -xvf RAVL-1.1.1.tar
+        tar -xvf RAVL-1.1.4.tar
         cd ravl
         ./configure
         make
