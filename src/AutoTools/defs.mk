@@ -8,5 +8,5 @@
 
 PACKAGE=
 
-LOCAL_FILES=aclocal.m4 configure.ac Implementation.txt Limitations.txt \
+LOCAL_FILES=aclocal.m4 configure configure.ac Implementation.txt Limitations.txt \
             Makefile.in Operation.txt Premis.txt Targets.Project.in
