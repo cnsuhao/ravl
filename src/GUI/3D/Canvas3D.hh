@@ -60,7 +60,7 @@ namespace RavlGUIN {
     //: Create a 3D canvas
 
     bool GUIInitGL();
-    //: Initalise GL info
+    //: Initialise GL info
     // Returns false if GL is not available.
 
     virtual bool Create()
