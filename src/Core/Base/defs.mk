@@ -42,7 +42,7 @@ PLIB=RavlCore
 
 MUSTLINK=atexit.cc
 
-USESLIBS=
+USESLIBS=None
 
 TESTEXES= testRavlBase.cc testCalls.cc testString.cc testStream.cc testTFVector.cc testRCLayer.cc testVectorUtils.cc
 
