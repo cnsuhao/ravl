@@ -54,6 +54,14 @@ namespace RavlN {
     return true;
   }
 
+  bool ServiceThreadC::StartOwner() {
+    if(m_started)
+      return true;
+    m_started = true;
+    LaunchThread(TriggerPtr(RefT(this),&ServiceThreadC::Run));
+    return true;
+  }
+
   //! Shutdown service
   bool ServiceThreadC::Shutdown() {
     m_terminate = true;
