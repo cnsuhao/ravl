@@ -95,6 +95,7 @@ void MemModulesC::SetOptionsFile(const FilenameC& OptFile)
       if (!s.IsEmpty())
         optionsTab.Insert(s.before(' '), s.after(' '));
     }
+    if (OptFile.IsReadable())  OptFile.CopyTo(memoryDir+"/options");
   }
   else if (!OptFile.IsEmpty())
     cout << "Could not read options file \"" << OptFile << "\"" << endl;

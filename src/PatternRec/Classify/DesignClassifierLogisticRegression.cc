@@ -44,7 +44,8 @@ namespace RavlN {
      m_optimiser(other.m_optimiser.Copy()),
      m_regularisation(other.m_regularisation),
      m_prependUnit(other.m_prependUnit),
-     m_doNormalisation(other.m_doNormalisation)
+     m_doNormalisation(other.m_doNormalisation),
+     m_verbose(other.m_verbose)
   {}
 
   //: Constructor.
@@ -52,13 +53,15 @@ namespace RavlN {
   DesignClassifierLogisticRegressionBodyC::DesignClassifierLogisticRegressionBodyC(RealT regularisation,
                                                                                    const FunctionC &featureExpand,
                                                                                    bool prependUnit,
-                                                                                   const OptimiseC &optimiser
+                                                                                   const OptimiseC &optimiser,
+                                                                                   bool verbose
                                                                                    )
    : m_featureExpand(featureExpand),
      m_optimiser(optimiser),
      m_regularisation(regularisation),
      m_prependUnit(prependUnit),
-     m_doNormalisation(true)
+     m_doNormalisation(true),
+     m_verbose(verbose)
   {
     if(!m_optimiser.IsValid()) {
       m_optimiser = OptimiseConjugateGradientC(1000);
@@ -72,7 +75,8 @@ namespace RavlN {
     : DesignClassifierSupervisedBodyC(factory),
       m_regularisation(factory.AttributeReal("regularisation",0)),
       m_prependUnit(factory.AttributeBool("prependUnit",true)),
-      m_doNormalisation(factory.AttributeReal("doNormalisation", true))
+      m_doNormalisation(factory.AttributeReal("doNormalisation", true)),
+      m_verbose(factory.AttributeBool("verbose",true))
   {
     if(!factory.UseChildComponent("FeatureMap",m_featureExpand,true)) { // Optional feature expansion.
       //m_featureExpand = FuncOrthPolynomialC(2);
@@ -89,7 +93,8 @@ namespace RavlN {
     : DesignClassifierSupervisedBodyC(strm),
       m_regularisation(0),
       m_prependUnit(false),
-      m_doNormalisation(false)
+      m_doNormalisation(false),
+      m_verbose(true)
   {
     int version;
     strm >> version;
@@ -104,13 +109,16 @@ namespace RavlN {
     : DesignClassifierSupervisedBodyC(strm),
       m_regularisation(0),
       m_prependUnit(false),
-      m_doNormalisation(false)
+      m_doNormalisation(false),
+      m_verbose(true)
   {
     int version;
     strm >> version;
-    if(version != 1)
+    if(version < 1 || version > 2)
       throw ExceptionOutOfRangeC("DesignClassifierLogisticRegressionBodyC::DesignClassifierLogisticRegressionBodyC(BinIStreamC &), Unrecognised version number in stream. ");
     strm >> m_featureExpand >> m_optimiser >> m_regularisation >> m_prependUnit >> m_doNormalisation;
+    if(version > 1)
+      strm >> m_verbose;
   }
   
   //: Writes object to stream, can be loaded using constructor
@@ -129,8 +137,8 @@ namespace RavlN {
   bool DesignClassifierLogisticRegressionBodyC::Save(BinOStreamC &out) const {
     if(!DesignClassifierSupervisedBodyC::Save(out))
       return false;
-    ByteT version = 1;
-    out << version << m_featureExpand << m_optimiser << m_regularisation << m_prependUnit << m_doNormalisation;
+    ByteT version = 2;
+    out << version << m_featureExpand << m_optimiser << m_regularisation << m_prependUnit << m_doNormalisation << m_verbose;
     return true;
   }
 
@@ -226,7 +234,7 @@ namespace RavlN {
     if(maxLabel == 1) maxLabel = 0;
     for(unsigned i = 0;i <= maxLabel;i++) {
       ONDEBUG(RavlDebug("Processing column %i ",i));
-      CostC costFunc(new CostLogisticRegressionC(i,features,normVec,labels,m_regularisation));
+      CostC costFunc(new CostLogisticRegressionC(i,features,normVec,labels,m_regularisation,m_verbose));
       ONDEBUG(RavlDebug("Start at:%s",RavlN::StringOf(costFunc.StartX()).c_str()));
 
 #if 0

@@ -105,7 +105,8 @@ namespace RavlN {
     void SetOptionsFile(const FilenameC& OptFile);
     //: Read file containing module options. 
     // If not set, no module options are read. <br>
-    // Each line of the file consists of a module name followed by a set of options for that module in a format to be processed by OptionC.
+    // Each line of the file consists of a module name followed by a set of options for that module in a format to be processed by OptionC.<br>
+    // The file is copied to the memory directory
 
     bool RegisterModule(MemModuleC& Module)
     { return modules.Insert(Module.ModuleName(), Module); }
