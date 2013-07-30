@@ -65,7 +65,8 @@ namespace RavlN {
     //J = sum(-y .* log( sigmoid(X * theta) ) - (1 -y) .* log(1 - sigmoid(X * theta)))/ m;
     RealT fcost = cost / ((RealT) m_in.Size());
     //ONDEBUG(RavlDebug("Theta=%s Cost=%f",RavlN::StringOf(theta).c_str(),fcost));
-    RavlDebug("Cost=%f",fcost);
+    if(m_verbose)
+      RavlDebug("Cost=%f",fcost);
     //RavlN::Sleep(1.0);
     return fcost;
   }
