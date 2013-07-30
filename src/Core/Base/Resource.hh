@@ -18,18 +18,21 @@ namespace RavlN {
   
   //!userlevel=Normal
   
-  bool SetResourceRoot(const StringC &name);
-  //: Access root of resource directory.
+  bool SetResourceRoot(const StringC &Name);
+  //: Set root of resource directory.
   
   const StringC &ResourceRoot();
   //: Access root of resource directory.
+  // The default is <code>$PROJECT_OUT</code>, if set, or the null string otherwise.
   
-  StringC Resource(const char *module,const char *name);
+  StringC Resource(const char *Module,const char *Name);
   //: Get location of resource.
+  // The default location is composed of <code>ResourceRoot() + "/share/" + module + '/' + name</code>.  Use <a href="RavlN.SetResourceLookupFuncObResourceLookupFuncTCb.html"><code>SetResourceLookupFunc()</code></a> for a different method.<br>
+  // Leading '/'s in <code>Module</code> or <code>Name</code> are ignored.
   
   //!userlevel=Advanced
   
-  typedef StringC (*ResourceLookupFuncT)(const char *module,const char *name);
+  typedef StringC (*ResourceLookupFuncT)(const char *Module,const char *Name);
   
   bool SetResourceLookupFunc(ResourceLookupFuncT resourceLookup);
   //: Replace method for doing resource lookups.
