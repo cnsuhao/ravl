@@ -23,7 +23,7 @@ namespace RavlN {
   
   const StringC &ResourceRoot();
   //: Access root of resource directory.
-  // The default is <code>$PROJECT_OUT</code>, if set, or the null string otherwise.
+  // See <a href="../Tree/Ravl.API.Core.Resource.html">above</a> for the default value.
   
   StringC Resource(const char *Module,const char *Name);
   //: Get location of resource.
