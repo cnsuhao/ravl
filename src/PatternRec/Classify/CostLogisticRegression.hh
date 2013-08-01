@@ -49,11 +49,13 @@ namespace RavlN {
                             UIntT vecSize,
                             const SampleC<VectorC> &in,
                             const SampleC<UIntT> &out,
-                            RealT regularisation)
+                            RealT regularisation,
+                            bool verbose)
      : m_label(label),
        m_in(in),
        m_out(out),
-       m_regularisation(regularisation)
+       m_regularisation(regularisation),
+       m_verbose(verbose)
     {
       ParametersC parameters(vecSize,true);
       SetParameters(parameters);
@@ -72,6 +74,7 @@ namespace RavlN {
     SampleC<UIntT> m_out;
     SampleC<RealT> m_weight;
     RealT m_regularisation;
+    bool m_verbose;
   };
 
 

@@ -28,7 +28,7 @@ namespace RavlN {
     //! XMLFactory Constructor
     ServiceThreadC(const XMLFactoryContextC &factory);
 
-    //! Write to an ostream
+    //! Write to an std::ostream
     bool Save(std::ostream &strm) const;
 
     //! Write to a binary stream
@@ -37,6 +37,9 @@ namespace RavlN {
 
     //! Start service.
     virtual bool Start();
+
+    //! Start service with owner ptr.
+    bool StartOwner();
 
     //! Shutdown service
     virtual bool Shutdown();

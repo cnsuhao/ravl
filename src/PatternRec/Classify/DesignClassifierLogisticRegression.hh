@@ -28,7 +28,8 @@ namespace RavlN {
     DesignClassifierLogisticRegressionBodyC(RealT regularisation = 0,
                                             const FunctionC &featureMap = FunctionC(),
                                             bool prependUnit = true,
-                                            const OptimiseC &optimiser = OptimiseC()
+                                            const OptimiseC &optimiser = OptimiseC(),
+                                            bool verbose = true
                                             );
     //: Constructor.
 
@@ -43,6 +44,10 @@ namespace RavlN {
 
     DesignClassifierLogisticRegressionBodyC(const DesignClassifierLogisticRegressionBodyC &other);
     //: Copy constructor
+
+    void SetVerbose(bool verbose)
+    { m_verbose = verbose; }
+    //: Set verbose mode.
 
     virtual RCBodyVC &Copy() const;
     //: Make copy of body.
@@ -85,6 +90,7 @@ namespace RavlN {
     RealT m_regularisation;
     bool m_prependUnit;
     bool m_doNormalisation; //!< do normalisation ?
+    bool m_verbose;
   };
   
   //! userlevel=Normal
@@ -102,9 +108,10 @@ namespace RavlN {
     DesignClassifierLogisticRegressionC(RealT regularisation,
                                         const FunctionC &featureMap = FunctionC(),
                                         bool prependUnit = true,
-                                        const OptimiseC &optimiser = OptimiseC()
+                                        const OptimiseC &optimiser = OptimiseC(),
+                                        bool verbose = true
                                         )
-      : DesignClassifierSupervisedC(*new DesignClassifierLogisticRegressionBodyC(regularisation,featureMap,prependUnit,optimiser))
+      : DesignClassifierSupervisedC(*new DesignClassifierLogisticRegressionBodyC(regularisation,featureMap,prependUnit,optimiser,verbose))
     {}
     //: Create a new designer.
 
@@ -139,6 +146,9 @@ namespace RavlN {
     //: Access body.
     
   public:
+    void SetVerbose(bool verbose)
+    { return Body().SetVerbose(verbose); }
+    //: Set verbose mode.
     
     RealT Regularisation() const
     { return Body().Regularisation(); }

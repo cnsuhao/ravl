@@ -77,6 +77,7 @@ namespace RavlGUIN {
       GLVertex(p8);
       GLVertex(p6);
     }
+    glEnd();
     return true;
   }
 }
