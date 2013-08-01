@@ -445,7 +445,7 @@ namespace RavlN {
       }
       if(m_verbose) {
         StringC tmp(msg.ReferenceElm(),msg.Size(),msg.Size());
-        RavlDebug("Recieved %s:'%s'",m_name.c_str(),tmp.c_str());
+        RavlDebug("Received %s:'%s'",m_name.c_str(),tmp.c_str());
       }
       return true;
     }
