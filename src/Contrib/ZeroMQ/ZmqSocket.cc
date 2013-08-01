@@ -445,9 +445,18 @@ namespace RavlN {
       }
       if(m_verbose) {
         StringC tmp(msg.ReferenceElm(),msg.Size(),msg.Size());
-        RavlDebug("Recieved %s:'%s'",m_name.c_str(),tmp.c_str());
+        RavlDebug("Received %s:'%s'",m_name.c_str(),tmp.c_str());
       }
       return true;
+    }
+
+    //! Send a message
+    bool SocketC::Send(const MessageC::RefT &msg,BlockT block)
+    {
+      RavlAssert(msg.IsValid());
+      if(!msg.IsValid())
+        return true;
+      return Send(*msg,block);
     }
 
     //! Send a message

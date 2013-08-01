@@ -5,8 +5,9 @@
   </head>
 
   <body>
-    <p>These functions allow the control of the location programs and libraries look for program resources. Examples
+    <p>These functions allow control of where programs and libraries look for program resources. Examples
 of such resources include fonts, images, configuration files etc.</p>
-    <p>The default for the root of the resource directory is <code>$PROJECT_OUT</code>, if set, or the null string otherwise.</p>
+    <p>The default for the root of the resource directory is the root of the library installation (and is therefore likely to be a read-only location).  More precisely, it is the value of <code>$PROJECT_OUT</code> when the function was compiled, if set, or the null string otherwise.  Use <code>SetResourceRoot()</code> to change this.</p>
   </body>
 </html>
+
