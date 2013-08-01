@@ -451,6 +451,15 @@ namespace RavlN {
     }
 
     //! Send a message
+    bool SocketC::Send(const MessageC::RefT &msg,BlockT block)
+    {
+      RavlAssert(msg.IsValid());
+      if(!msg.IsValid())
+        return true;
+      return Send(*msg,block);
+    }
+
+    //! Send a message
     bool SocketC::Send(const MessageC &msg,BlockT block)
     {
       RavlAssert(m_socket != 0);
