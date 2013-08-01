@@ -81,7 +81,7 @@ namespace RavlN {
       void Bind(const std::string &addr);
 
       //! Bind to first available port in the range.
-      //! Assigned the address bount to 'addr'.
+      //! Assigned the address bound to 'addr'.
       //! Returns true if a port is successfully found and false if no free port is found.
       bool BindDynamicTCP(const std::string &devName,std::string &addr,int minPort,int maxPort);
 
@@ -108,6 +108,9 @@ namespace RavlN {
 
       //! Send a message
       bool Send(const MessageC &msg,BlockT block = ZSB_BLOCK);
+
+      //! Send a message
+      bool Send(const MessageC::RefT &msg,BlockT block = ZSB_BLOCK);
 
       //! Receive a message.
       bool Recieve(MessageC::RefT &msg,BlockT block = ZSB_BLOCK);
