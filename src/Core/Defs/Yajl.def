@@ -1,0 +1,18 @@
+# This file is part of RAVL, Recognition And Vision Library 
+# Copyright (C) 2013, Charles Galambos
+# This code may be redistributed under the terms of the GNU Lesser
+# General Public License (LGPL). See the lgpl.licence file for details or
+# see http://www.gnu.org/copyleft/lesser.html
+# file-header-ends-here
+ifndef YAJLDEF 
+YAJLDEF = 1
+
+ifdef YAJL_HOME
+  INCLUDES += -I$(YAJL_HOME)/include
+  YAJL_EXELIB += -L$(YAJL_HOME)/lib -Wl,-rpath,$(YAJL_HOME)/lib 
+endif
+
+EXELIB := -lyajl  $(YAJL_EXELIB)  $(EXELIB)
+
+
+endif
