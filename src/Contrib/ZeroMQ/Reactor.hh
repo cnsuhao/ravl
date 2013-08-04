@@ -14,6 +14,7 @@
 #include "Ravl/String.hh"
 #include "Ravl/Trigger.hh"
 #include "Ravl/ServiceThread.hh"
+#include "Ravl/Threads/TimedTriggerQueue.hh"
 #include <vector>
 #include <string>
 
@@ -27,7 +28,7 @@ namespace RavlN {
     {
     public:
       //! Default constructor.
-      ReactorC();
+      ReactorC(ContextC &context);
 
       //! Factory constructor
       ReactorC(const XMLFactoryContextC &factory);
@@ -57,6 +58,35 @@ namespace RavlN {
       //! Remove handler from system
       bool Remove(const SocketDispatcherC &handler);
 
+      //! Schedule event for running on the reactor thread
+      // Thread safe.
+      // Returns an ID for the event, which can
+      // be used for cancelling it.
+      UIntT Schedule(const TriggerC &se);
+
+      //! Schedule event for running after time 't' (in seconds).
+      // Thread safe.
+      // Returns an ID for the event, which can
+      // be used for cancelling it.
+      UIntT Schedule(RealT t,const TriggerC &se,float period = -1);
+
+      //! Schedule event for running.
+      // Thread safe.
+      // Returns an ID for the event, which can
+      // be used for cancelling it.
+      UIntT Schedule(const DateC &at,const TriggerC &se,float period = -1);
+
+      //! Schedule event for running periodically.
+      // Thread safe.
+      // Returns an ID for the event, which can
+      // be used for cancelling it.
+      UIntT SchedulePeriodic(const TriggerC &se,float period);
+
+      //! Cancel pending event.
+      // Will return TRUE if event in cancelled before
+      // it was run.
+      bool Cancel(UIntT eventID);
+
       //! Run reactor loop.
       virtual bool Run();
 
@@ -68,6 +98,9 @@ namespace RavlN {
       typedef RavlN::SmartCallbackPtrC<ReactorC> CBRefT;
 
     protected:
+      //! Do some initial setup
+      void Init(ContextC &context);
+
       //! Called by the main loop when its first run.
       virtual bool OnStart();
 
@@ -78,6 +111,13 @@ namespace RavlN {
       float m_teminateCheckInterval;
       bool m_pollListChanged;
       bool m_verbose;
+
+      TimedTriggerQueueC m_timedQueue;
+      MutexC m_accessWakeup;
+      ZmqN::SocketC::RefT m_wakeup;
+      MessageC::RefT m_wakeMsg;
+
+
       //! Called when owner handles drop to zero.
       virtual void ZeroOwners();
 

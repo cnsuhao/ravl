@@ -38,13 +38,14 @@ namespace RavlN
 
   //: Default constuctor
   
-  TimedTriggerQueueBodyC::TimedTriggerQueueBodyC() 
+  TimedTriggerQueueBodyC::TimedTriggerQueueBodyC(bool launchProcessThread)
     : m_started(true),
       eventCount(0),
       done(false),
       semaSched(0)
   {
-    LaunchThread(TimedTriggerQueueC(*this,RCLH_CALLBACK),&TimedTriggerQueueC::Process);
+    if(launchProcessThread)
+      LaunchThread(TimedTriggerQueueC(*this,RCLH_CALLBACK),&TimedTriggerQueueC::Process);
   }
   
   //: Destructor.
@@ -102,7 +103,7 @@ namespace RavlN
     do {
       eventCount++;
       if(eventCount == 0)
-	      eventCount++;
+        eventCount++;
     } while(events.IsElm(eventCount));
     UIntT nEvent = eventCount;
     schedule.Insert(at,nEvent);
@@ -116,73 +117,82 @@ namespace RavlN
     return nEvent;
   }
 
+  //: Process pending calls, return time to next event.
+  // This will always return a positive time unless there are no events pending,
+  // when it returns -1 .
+
+  double TimedTriggerQueueBodyC::ProcessStep()
+  {
+    DateC toGo(-1.0);
+    MutexLockC holdLock(access);
+    // Are any events scheduled ??
+    while(!done) {
+      if(!schedule.IsElm()) {
+        ONDEBUG(std::cerr << "Waiting for event to be scheduled. Size:" << schedule.Size() << "\n");
+        holdLock.Unlock();
+        return -1.0;
+      }
+      DateC nextTime = schedule.TopKey();
+      DateC now = DateC::NowUTC();
+      toGo = nextTime - now;
+      ONDEBUG(std::cerr << "Next scheduled event in " << toGo.Double() << " seconds\n");
+      if(toGo.Double() > 0.00001)
+        break;
+      // Might as well do it now...
+      int eventNo = schedule.GetTop();
+      ONDEBUG(std::cerr << "Executing event  " << eventNo << "\n");
+      Tuple2C<TriggerC,float> &entry = events[eventNo];
+      TriggerC ne = entry.Data1();
+      // Is function non-periodic or cancelled?
+      if(entry.Data2() < 0 || !ne.IsValid()) {
+        events.Del(eventNo); // Remove from queue.
+      } else {
+        // Reschedule periodic functions.
+        DateC at = now + entry.Data2();
+        schedule.Insert(at,eventNo);
+      }
+      holdLock.Unlock(); // Unlock before invoke the event, incase it wants to add another.
+      if(ne.IsValid()) { // Check if event has been cancelled.
+#if CATCHEXCEPTIONS
+        try {
+#endif
+          ne.Invoke();
+#if CATCHEXCEPTIONS
+        } catch(ExceptionC &ex) {
+          RavlError("Caught exception in timed trigger event thread. Message:'%s'",ex.Text());
+          // Dump a stack.
+          ex.Dump(std::cerr);
+          // If in check or debug stop.
+          RavlAssertMsg(0,"Aborting due to exception in timed trigger event thread. ");
+          // Otherwise ignore and struggle on.
+        } catch(...) {
+          RavlError("Caught exception in timed trigger event thread.");
+          // If in check or debug stop.
+          RavlAssertMsg(0,"Aborting due to exception in timed trigger event thread. ");
+          // Otherwise ignore and struggle on.
+        }
+#endif
+      }
+      ONDEBUG(else std::cerr << "Event cancelled. \n");
+      holdLock.Lock();
+    }
+    holdLock.Unlock();
+    return toGo.Double();
+  }
+
   //: Process event queue.
   
   bool TimedTriggerQueueBodyC::Process() {
     ONDEBUG(std::cerr << "TimedTriggerQueueBodyC::Process(), Called. \n");
-    MutexLockC holdLock(access);
-    holdLock.Unlock();
-#if CATCHEXCEPTIONS
-    do {
-      // Avoid try/catch in central loop to reduce overhead.
-      try {
-#endif
-        do {
-          holdLock.Lock();
-          // Are any events scheduled ??
-          if(!schedule.IsElm()) {
-            ONDEBUG(std::cerr << "Waiting for event to be scheduled. Size:" << schedule.Size() << "\n");
-            holdLock.Unlock();
-            semaSched.Wait();
-            ONDEBUG(std::cerr << "Re-checking event queue.\n");
-            continue; // Go back and check...
-          }
-          DateC nextTime = schedule.TopKey();
-          DateC now = DateC::NowUTC();
-          DateC toGo = nextTime - now;
-          ONDEBUG(std::cerr << "Next scheduled event in " << toGo.Double() << " seconds\n");
-          if(toGo.Double() < 0.00001) { // Might as well do it now...
-            int eventNo = schedule.GetTop();
-            ONDEBUG(std::cerr << "Executing event  " << eventNo << "\n");
-            Tuple2C<TriggerC,float> &entry = events[eventNo];
-            TriggerC ne = entry.Data1();
-            // Is function non-periodic or cancelled?
-            if(entry.Data2() < 0 || !ne.IsValid()) {
-              events.Del(eventNo); // Remove from queue.
-            } else {
-              // Reschedule periodic functions.
-              DateC at = now + entry.Data2();
-              schedule.Insert(at,eventNo);
-            }
-            holdLock.Unlock(); // Unlock before invoke the event, incase it wants to add another.
-            if(ne.IsValid()) // Check if event has been canceled.
-              ne.Invoke();
-            ONDEBUG(else std::cerr << "Event cancelled. \n");
-            continue; // Check for more pending events.
-          }
-          
-          holdLock.Unlock();
-          // Wait for delay, or until a new event in scheduled.
-          semaSched.Wait(toGo.Double());
-          ONDEBUG(std::cerr << "Time to check things out.\n");
-        } while(!done);
-#if CATCHEXCEPTIONS
-      } catch(ExceptionC &ex) {
-        std::cerr << "Caught exception in timed trigger event thread. Message:'" << ex.Text() << "' \n";
-        // Dump a stack.
-        ex.Dump(std::cerr);
-        // If in check or debug stop.
-        RavlAssertMsg(0,"Aborting due to exception in timed trigger event thread. ");
-        // Otherwise ignore and struggle on.
-        std::cerr << "Ignoring. \n";
-      } catch(...) {
-        // If in check or debug stop.
-        RavlAssertMsg(0,"Caught exception in timed trigger event thread. ");
-        // Otherwise ignore and struggle on.
-        std::cerr << "Caught exception in timed trigger event thread. Ignoring. \n";
+    while(!done) {
+      double nextEvent = ProcessStep();
+      if(nextEvent < 0) {
+        semaSched.Wait();
+      } else {
+        semaSched.Wait(nextEvent);
       }
-    } while(!done) ;
-#endif
+      ONDEBUG(std::cerr << "Time to check things out.\n");
+    }
     // FIXME:- Dump all pending events.
     return true;
    }
