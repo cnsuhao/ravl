@@ -21,6 +21,7 @@ int main(int nargs,char **argv) {
   StringC addr = opts.String("a","tcp://192.168.42.89:5551","Address to connect to");
   StringC topic = opts.String("t","Hello!","Topic to use.");
   bool sndMessages = opts.Boolean("snd",false,"Send messages to socket.");
+  StringC socketType = opts.String("st","DEALER","Socket type to send to ");
   opts.Check();
 
   RavlN::SysLogOpen("testRavlZeroMQ");
@@ -28,10 +29,13 @@ int main(int nargs,char **argv) {
   ContextC::RefT ctxt = new RavlN::ZmqN::ContextC(1);
 
   if(sndMessages) {
-    SocketC::RefT skt = new SocketC(*ctxt,ZST_DEALER);
+    RavlN::ZmqN::SocketTypeT st = RavlN::ZmqN::SocketType(socketType);
+    SocketC::RefT skt = new SocketC(*ctxt,st);
     if(server) {
+      RavlDebug("Binding to '%s' ",addr.c_str());
       skt->Bind(addr);
     } else {
+      RavlDebug("Connecting to '%s' ",addr.c_str());
       skt->Connect(addr);
     }
     for(int i = 0;i < 1000;i++) {

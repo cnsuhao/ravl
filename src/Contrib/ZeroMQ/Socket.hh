@@ -88,6 +88,9 @@ namespace RavlN {
       //! Access last bound address.
       const std::string &BoundAddress() const;
 
+      //! Access address that can be used to connect to the last bound address.
+      RavlN::StringC ConnectBoundAddress() const;
+
       //! Connect to an address.
       void Connect(const std::string &addr);
 
@@ -164,6 +167,7 @@ namespace RavlN {
       StringC m_defaultCodec;
       bool m_verbose;
       std::string m_boundAddress;
+      SocketTypeT m_socketType;
     };
   }
 }

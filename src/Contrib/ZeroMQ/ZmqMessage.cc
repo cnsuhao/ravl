@@ -131,7 +131,7 @@ namespace RavlN {
             src += "]";
           }
         }
-        strm << " Part:" << i << " '" << src.c_str() << "' (%d)" << (unsigned) size;
+        strm << " Part:" << i << " '" << src.c_str() << "' (" << (unsigned) size << ")";
       }
 
     }
