@@ -47,17 +47,21 @@ namespace RavlN {
 
   //! Start service.
   bool ServiceThreadC::Start() {
+    RavlN::MutexLockC lock(m_accessStarted);
     if(m_started)
       return true;
     m_started = true;
+    lock.Unlock();
     LaunchThread(TriggerPtr(CBRefT(this),&ServiceThreadC::Run));
     return true;
   }
 
   bool ServiceThreadC::StartOwner() {
+    RavlN::MutexLockC lock(m_accessStarted);
     if(m_started)
       return true;
     m_started = true;
+    lock.Unlock();
     LaunchThread(TriggerPtr(RefT(this),&ServiceThreadC::Run));
     return true;
   }
