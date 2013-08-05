@@ -11,6 +11,9 @@ DONOT_SUPPORT=VCPP
 
 REQUIRES=ZeroMQ
 
+ANSIFLAG= 
+#-D_POSIX_C_SOURCE
+
 PACKAGE= Ravl/Zmq
 
 HEADERS= Context.hh Message.hh Socket.hh MsgBuffer.hh SocketDispatcher.hh Reactor.hh \

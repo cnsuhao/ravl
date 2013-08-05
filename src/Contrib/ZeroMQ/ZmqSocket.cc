@@ -12,9 +12,16 @@
 #include "Ravl/OS/SysLog.hh"
 #include "Ravl/Exception.hh"
 #include "Ravl/XMLFactoryRegister.hh"
+#if RAVL_OS_LINUX || RAVL_OS_LINUX64 || RAVL_OS_MACOSX
 #include <unistd.h>
+#endif
 #include <string.h>
-
+#if RAVL_OS_MACOSX
+// FIXME: There is probably a define I can use to get this from the header, but I haven't worked out which one yet...
+extern "C" {
+  int  gethostname(char *, size_t);
+}
+#endif
 namespace RavlN {
   namespace ZmqN {
 
