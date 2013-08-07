@@ -40,8 +40,10 @@ namespace RavlN
     : public RavlN::RCLayerBodyC
   {
   public:
-    TimedTriggerQueueBodyC();
-    //: Default constructor
+    TimedTriggerQueueBodyC(bool launchProcessThread = true);
+    //: Constructor
+    // If launchProcessThread is false the user must either call 'Start()' on their own thread
+    // or use the 'ProcessStep()' method to call run scheduled events.
 
     virtual ~TimedTriggerQueueBodyC();
     //: Destructor.
@@ -75,6 +77,14 @@ namespace RavlN
     
     virtual bool Start();
     //: Start service.
+
+    double ProcessStep();
+    //: Process pending calls, return time to next event.
+    // This can be used to embed a scheduler in another main loop. It is up to the
+    // user of the function to ensure the delay is cut short and its recalled
+    // if any new work is scheduled. Start should not be called
+    // This will always return a positive time unless there are no events pending,
+    // when it returns -1.
 
     typedef RavlN::SmartOwnerPtrC<TimedTriggerQueueBodyC> RefT;
     //: Owner reference counted ptr to class
@@ -118,11 +128,12 @@ namespace RavlN
     //: Default constructor.
     // Creates an invalid handle.
 
-    TimedTriggerQueueC(bool )
-      : RCLayerC<TimedTriggerQueueBodyC>(*new TimedTriggerQueueBodyC())
+    TimedTriggerQueueC(bool launchProcessThread)
+      : RCLayerC<TimedTriggerQueueBodyC>(*new TimedTriggerQueueBodyC(launchProcessThread))
     {}
-    //: Default constructor.
-    // Creates an invalid handle.
+    //: Constructor.
+    // If launchProcessThread is false the user must either call 'Start()' on their own thread
+    // or use the 'ProcessStep()' method to call run scheduled events.
     
   protected:
     TimedTriggerQueueC(TimedTriggerQueueBodyC &bod,RCLayerHandleT handleType = RCLH_OWNER)
@@ -173,6 +184,15 @@ namespace RavlN
     { Body().Shutdown(); }
     //: Shutdown even queue.
     
+    double ProcessStep()
+    { return Body().ProcessStep(); }
+    //: Process pending calls, return time to next event.
+    // This can be used to embed a scheduler in another main loop. It is up to the
+    // user of the function to ensure the delay is cut short and its recalled
+    // if any new work is scheduled. Start should not be called
+    // This will always return a positive time unless there are no events pending,
+    // when it returns -1.
+
     friend class TimedTriggerQueueBodyC;
   };
 

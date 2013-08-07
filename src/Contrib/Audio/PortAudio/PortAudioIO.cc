@@ -45,12 +45,15 @@ namespace RavlAudioN {
       // FIXME:- Throw exception?
       return ;
     }
-    RavlDebug("Opening device '%s' Inputs:%u Outputs:%u SampleFormat:%s ",devInfo->name,devInfo->maxInputChannels,devInfo->maxOutputChannels,RavlN::TypeName(ndtype));
     m_sampleRate = devInfo->defaultSampleRate;
+    RavlDebug("Opening device '%s' Inputs:%u Outputs:%u SampleFormat:%s Rate:%f ",
+        devInfo->name,
+        devInfo->maxInputChannels,devInfo->maxOutputChannels,
+        RavlN::TypeName(ndtype),m_sampleRate);
     if(nforInput) {
-      m_latency = devInfo->defaultHighInputLatency;
+      m_latency = devInfo->defaultLowInputLatency;
     } else {
-      m_latency = devInfo->defaultHighOutputLatency;
+      m_latency = devInfo->defaultLowOutputLatency;
     }
     m_frameSize = FileFormatPortAudioBodyC::FrameSize(ndtype);
     ONDEBUG(RavlDebug("Default latency %d frame size %u ",m_latency,(unsigned) m_frameSize));
@@ -118,6 +121,14 @@ namespace RavlAudioN {
 
     if(err != paNoError) {
       RavlError("Failed to open output. Error: %s ",Pa_GetErrorText (err));
+      if(err == paUnanticipatedHostError) {
+        const PaHostErrorInfo *lastHostError = Pa_GetLastHostErrorInfo();
+        RavlError(" APIId:%u Code:%d Error text:%s ",
+            (unsigned) lastHostError->hostApiType,
+            (int) lastHostError->errorCode ,
+            lastHostError->errorText);
+      }
+
       return false;
     }
 
@@ -175,7 +186,11 @@ namespace RavlAudioN {
   //: Set frequency of samples
   // Returns actual frequency.
   
-  bool PortAudioBaseC::SetSampleRate(RealT rate) {
+  bool PortAudioBaseC::SetSampleRate(RealT rate)
+  {
+    if(m_doneSetup) {
+      RavlWarning("Stream already open, sample rate may not change.");
+    }
     ONDEBUG(RavlDebug("SetSampleRate called."));
     PaStreamParameters ioParameters;
     SetupParameters(ioParameters);
@@ -187,8 +202,10 @@ namespace RavlAudioN {
       err = Pa_IsFormatSupported( 0, &ioParameters, rate);
     }
     lock.Unlock();
-    if(err != paNoError)
-       return false;
+    if(err != paNoError) {
+      RavlWarning("Failed to set sample rate to %f. Error:%s ",rate,Pa_GetErrorText (err));
+      return false;
+    }
     m_sampleRate = rate;
     return true;
   }

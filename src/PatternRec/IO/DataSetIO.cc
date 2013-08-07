@@ -19,15 +19,18 @@
 #include "Ravl/PatternRec/DataSet1.hh"
 #include "Ravl/PatternRec/DataSet2.hh"
 #include "Ravl/PatternRec/DataSet3.hh"
+#include "Ravl/PatternRec/DataSetVectorLabel.hh"
 
 namespace RavlN {
   void InitRavlDataSetIO()
   {}
   
   static TypeNameC type1(typeid(DataSet2C<SampleVectorC,SampleLabelC>),"RavlN::DataSet2C<SampleVectorC,SampleLabelC>");
+  static TypeNameC type2(typeid(RavlN::DataSetVectorLabelC),"RavlN::DataSetVectorLabelC");
   
-  FileFormatStreamC<DataSet2C<SampleVectorC,SampleLabelC> > FileFormatStream_DataSet1C_SampleVectorC_SampleLabelC;
-  FileFormatBinStreamC<DataSet2C<SampleVectorC,SampleLabelC> > FileFormatBinStream_DataSet1C_SampleVectorC_SampleLabelC;
-  
+  static FileFormatStreamC<DataSet2C<SampleVectorC,SampleLabelC> > g_FileFormatStream_DataSet1C_SampleVectorC_SampleLabelC;
+  static FileFormatBinStreamC<DataSet2C<SampleVectorC,SampleLabelC> > g_FileFormatBinStream_DataSet1C_SampleVectorC_SampleLabelC;
+  static FileFormatBinStreamC<DataSetVectorLabelC> g_FileFormatBinStream_DataSetVectorLabel("RavlN::DataSetVectorLabelC");
+
   
 }

@@ -22,6 +22,7 @@ int ViewDB(int argc, char * argv[])
   StringC logFile = opts.String("l", "stderr", "Checkpoint log file. ");
   StringC logLevel = opts.String("ll", "info", "Logging level (debug, info, warning, error)");
   StringListC dbs = opts.List("db", "The input XML faces");
+  StringListC imagePath = opts.List("imagePath", "Pick up images from these image paths instead");
   StringListC sightingSets = opts.List("sighting", "Sighting sets, if available");
   bool autoScale = opts.Boolean("scale", true, "Automatically scale images to fit window");
   bool Verbose = opts.Boolean("v", false, "Do things verbosely");
@@ -33,7 +34,8 @@ int ViewDB(int argc, char * argv[])
   rInfo("\nMarkup Tool for Ravl Face XML files!");
 
   // Create main window
-  ControlWinC win(dbs, sightingSets, autoScale);
+  FaceInfoDbC db(dbs, imagePath);
+  ControlWinC win(db, sightingSets, autoScale);
   win.Show();
 
   // Start GUI

@@ -7,3 +7,4 @@ core.*
 gmon.out
 buildTag
 .settings
+.pydevproject

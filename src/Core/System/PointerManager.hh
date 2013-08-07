@@ -26,6 +26,8 @@ namespace RavlN {
   class StoredPointerC;
   class BinOStreamC;
   class BinIStreamC;  
+  template<typename DataT> class SArray1dC;
+  template<typename DataT> class CollectionC;
   
   //! userlevel=Develop
   //: Actions to handle pointers.
@@ -461,7 +463,21 @@ namespace RavlN {
     return IOPtrC((void *) &ptr,action); 
   }
   //: Handle a pointer.
-  
+
+  template<class DataT>
+  inline IOPtrC ObjIO(const DataT * const & ptr) {
+    static IOPtrActionSimpleC<DataT> action;
+    return IOPtrC((void *) &ptr,action);
+  }
+  //: Handle a pointer.
+
+  template<class DataT>
+  inline IOPtrC ObjIO(DataT * const & ptr) {
+    static IOPtrActionSimpleC<DataT> action;
+    return IOPtrC((void *) &ptr,action);
+  }
+  //: Handle a pointer.
+
   template<class DataT>
   inline IOPtrC ObjIO(DataT &ptr) { 
     static IOPtrActionHandleC<DataT> action;
@@ -510,6 +526,47 @@ namespace RavlN {
   BinIStreamC &operator>>(BinIStreamC &strm,IOPtrC obj);
   //: Load managed pointer from a binary stream.
   
+  template<class DataT>
+  BinOStreamC &WriteSArrayIOPtr(BinOStreamC &strm,const SArray1dC<DataT> &arr) {
+    strm << arr.Size();
+    for(unsigned i = 0;i < arr.Size();i++)
+      strm << ObjIO(arr[i]);
+    return strm;
+  }
+
+  template<class DataT>
+  BinIStreamC &ReadSArrayIOPtr(BinIStreamC &strm,SArray1dC<DataT> &arr) {
+    SizeC size;
+    strm >> size;
+    arr = SArray1dC<DataT>(size);
+    for(unsigned i = 0;i < size;i++)
+      strm >> ObjIO(arr[i]);
+    return strm;
+  }
+
+  template<class DataT>
+  BinOStreamC &WriteCollectionIOPtr(BinOStreamC &strm,const CollectionC<DataT> &arr) {
+    if(!arr.IsValid()) {
+      SizeT size = 0;
+      strm << size;
+      return strm;
+    }
+    strm << arr.Size();
+    for(unsigned i = 0;i < arr.Size();i++)
+      strm << ObjIO(arr[i]);
+    return strm;
+  }
+
+  template<class DataT>
+  BinIStreamC &ReadCollectionIOPtr(BinIStreamC &strm,CollectionC<DataT> &arr) {
+    SizeC size;
+    strm >> size;
+    arr = CollectionC<DataT>(size,size);
+    for(unsigned i = 0;i < size;i++)
+      strm >> ObjIO(arr[i]);
+    return strm;
+  }
+
   
 }
 #endif

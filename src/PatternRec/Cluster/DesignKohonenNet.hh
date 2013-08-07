@@ -13,7 +13,6 @@
 //! userlevel=Develop
 //! file="Ravl/PatternRec/Cluster/DesignKohonenNet.hh"
 //! docentry="Ravl.API.Pattern Recognition.Cluster"
-//! rcsid="$Id$"
 
 #include "Ravl/PatternRec/DesignCluster.hh"
 #include "Ravl/PatternRec/DistanceSqrEuclidean.hh"
@@ -56,7 +55,7 @@ namespace RavlN {
     //: Initialises the clusters
     //!param: Sx - x-dimension of grid
     //!param: Sy - y-dimension of grid
-    //!param: trainX - training samples used to determine initial centers
+    //!param: trainX - training samples used to determine initial centres
 
     virtual FunctionC Apply(const SampleC<VectorC> &trainX);
     //: Train the unsupervised classifier on a list of feature vectors

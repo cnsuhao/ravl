@@ -28,6 +28,11 @@
 
 namespace RavlN {
 
+  //: Default constructor.
+  DPIFileSequenceBodyC::DPIFileSequenceBodyC()
+    : loadType(0)
+  {}
+
   //: Constructor.
   
   DPFileSequenceBaseBodyC::DPFileSequenceBaseBodyC(StringC fn,UIntT nstart,UIntT nend,IntT ndigits,bool nforLoad)
@@ -46,21 +51,24 @@ namespace RavlN {
   }
   
   //: Default constructor.
-  // Sets file name 'noname;
+  // Sets file name 'noname'
   
   DPFileSequenceBaseBodyC::DPFileSequenceBaseBodyC()
-    : digits(-1), 
+    : forLoad(false),
+      digits(-1),
       start((UIntT) -1),
       end((UIntT) -1),  
       no(0),
       templateFile("noname"),
-      subst("%d")
+      subst("%d"),
+      ok(false),
+      hasHoles(false)
   {}
   
   //: Seek to location in stream.
   // Returns false, if seek failed. (Maybe because its
   // not implemented.)
-  // if an error occurered (Seek returned False) then stream
+  // if an error occurred (Seek returned False) then stream
   // position will not be changed.
   
   bool DPFileSequenceBaseBodyC::Seek(UIntT off) {
@@ -73,10 +81,10 @@ namespace RavlN {
   }
   
   //: Delta Seek, goto location relative to the current one.
-  // The default behavour of this functions is :
+  // The default behaviour of this functions is :
   // Do some error checking then:
   //   Seek((UIntT)((IntT) Tell() + off));
-  // if an error occurered (DSeek returned False) then stream
+  // if an error occurred (DSeek returned False) then stream
   // position will not be changed.
   
   bool DPFileSequenceBaseBodyC::DSeek(IntT doff) {
@@ -462,7 +470,8 @@ namespace RavlN {
   }
   
   ////////////// DPIFileSequenceBodyC //////////////////////////////////////////////////
-  
+
+
   //: Constructor.
   
   DPIFileSequenceBodyC::DPIFileSequenceBodyC(StringC fn,
@@ -529,7 +538,13 @@ namespace RavlN {
   }
   
   //// DPOFileSequenceBodyC /////////////////////////////////////////////////////////////////////////////////
-  
+
+  //: Default constructor.
+
+  DPOFileSequenceBodyC::DPOFileSequenceBodyC()
+    : saveType(0)
+  {}
+
   //: Constructor.
   
   DPOFileSequenceBodyC::DPOFileSequenceBodyC(StringC fn,

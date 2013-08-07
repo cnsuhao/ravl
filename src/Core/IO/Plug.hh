@@ -8,7 +8,6 @@
 #define RAVL_DPPLUG_HEADER 1
 ////////////////////////////////////////////////////
 //! docentry="Ravl.API.Core.Data Processing.Ports" 
-//! rcsid="$Id$"
 //! file="Ravl/Core/IO/Plug.hh"
 //! lib=RavlIO
 //! author="Charles Galambos"
@@ -18,6 +17,7 @@
 #include "Ravl/DP/Port.hh"
 
 namespace RavlN {
+  class XMLFactoryContextC;
 
   //! userlevel=Develop
   //: Input plug base.
@@ -26,29 +26,25 @@ namespace RavlN {
     : virtual public DPEntityBodyC
   {
   public:
-    DPPlugBaseBodyC()
-      : hold(true)
-    {}
+    DPPlugBaseBodyC();
     //: Default constructor.
-    
-    DPPlugBaseBodyC(const DPEntityC &nhold)
-      : hold(nhold)
-    {}
+
+    DPPlugBaseBodyC(const DPEntityC &nhold);
     //: Constructor.
     
-    DPPlugBaseBodyC(const StringC &nPlugId,const DPEntityC &nhold)
-      : plugId(nPlugId),
-	hold(nhold)
-    {}
+    DPPlugBaseBodyC(const StringC &nPlugId,const DPEntityC &nhold);
     //: Constructor.
+
+    void Setup(const XMLFactoryContextC &factory);
+    //: Factory constructor.
+    // You must include RavlXMLFactory to use
     
     const StringC &PlugId() const
-    { return plugId; }
+    { return EntityName(); }
     //: Get ID for plug.
     
   protected:
-    StringC plugId; 
-    DPEntityC hold; // Make sure object is not deleted.
+    DPEntityC m_hold; // Make sure object is not deleted.
   };
 
   //! userlevel=Advanced
@@ -94,19 +90,18 @@ namespace RavlN {
     : public DPPlugBaseBodyC
   {
   public:
-    DPIPlugBaseBodyC()
-    {}
+    DPIPlugBaseBodyC();
     //: Default constructor.
     
-    DPIPlugBaseBodyC(const DPEntityC &nhold)
-      : DPPlugBaseBodyC(nhold)
-    {}
+    DPIPlugBaseBodyC(const DPEntityC &nhold);
     //: Constructor.
 
-    DPIPlugBaseBodyC(const StringC &nPlugId,const DPEntityC &nhold)
-      : DPPlugBaseBodyC(nPlugId,nhold)
-    {}
+    DPIPlugBaseBodyC(const StringC &nPlugId,const DPEntityC &nhold);
     //: Constructor.
+
+    void Setup(const XMLFactoryContextC &factory);
+    //: Setup iplug with xml factory
+    // You must include RavlXMLFactory to use
     
     virtual bool ConnectPort(const DPIPortBaseC &port);
     //: set port.
@@ -163,20 +158,19 @@ namespace RavlN {
     : public DPPlugBaseBodyC
   {
   public:
-    DPOPlugBaseBodyC()
-    {}
+    DPOPlugBaseBodyC();
     //: Default constructor.
-    
-    DPOPlugBaseBodyC(const DPEntityC &nhold)
-      : DPPlugBaseBodyC(nhold)
-    {}
+
+    DPOPlugBaseBodyC(const DPEntityC &nhold);
     //: Constructor.
     
-    DPOPlugBaseBodyC(const StringC &nPlugId,const DPEntityC &nhold)
-      : DPPlugBaseBodyC(nPlugId,nhold)
-    {}
+    DPOPlugBaseBodyC(const StringC &nPlugId,const DPEntityC &nhold);
     //: Constructor.
-    
+
+    void Setup(const XMLFactoryContextC &factory);
+    //: Setup oplug with xml factory
+    // You must include RavlXMLFactory to use
+
     virtual bool ConnectPort(const DPOPortBaseC &port);
     //: set port.
 
@@ -284,7 +278,7 @@ namespace RavlN {
 
     DPIPlugC(const DPIPortC<DataT> &nport,const StringC &nPlugId,const DPEntityC &nhold = DPEntityC(true))
       : DPEntityC(*new DPIPlugBodyC<DataT>(nport,nPlugId,nhold))
-    {}
+    { RavlAssert(EntityName() == nPlugId); }
     //: Constructor.
     
   protected:

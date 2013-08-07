@@ -3,7 +3,6 @@
 // file-header-ends-here
 #ifndef RAVLN_FACEN_FACEINFODB_HEADER
 #define RAVLN_FACEN_FACEINFODB_HEADER 1
-//! rcsid="$Id$"
 //! lib=RavlFace
 //! docentry="Ravl.Applications.Image.Face"
 //! file="Ravl/Contrib/Face/Xml/FaceInfoDb.hh"
@@ -33,10 +32,10 @@ namespace RavlN {
       FaceInfoDbC();
       //: Constructor
 
-      FaceInfoDbC(const StringC & dbName);
-      //: Construct from a known database
+      FaceInfoDbC(const StringC & dbName, const DListC<StringC> & imagePath = DListC<StringC>(), bool imageExists=true);
+      //: Construct from a known database or filename
 
-      FaceInfoDbC(DListC<StringC> & dbName);
+      FaceInfoDbC(DListC<StringC> & dbName, const DListC<StringC> & imagePath = DListC<StringC>(), bool imageExists=true);
       //: Construct from a known database
 
       FaceInfoDbC(const XMLFactoryContextC &node);
@@ -88,9 +87,6 @@ namespace RavlN {
       FaceInfoDbC Search(const StringC & tag, const DListC<StringC> & values) const;
       //: Return sub-set of database (search on tags "pose", "spectrum", "glasses", "id", "normalisation")
 
-      DListC<StringC> NormImages(const StringC & type) const;
-      //: Get a list of all the norm images for a type
-
       bool ModifyImagePath(const StringC & from, const StringC & to);
       //: Modifies the original image path
 
@@ -106,59 +102,41 @@ namespace RavlN {
       FaceInfoDbC Ids(const EnrolSessionC & enrolSession) const;
       //: Return new db with only these face ids
 
-      StringC& Name()
+      const DListC<StringC> & Name() const
       {
-        return m_strName;
+        return m_name;
       }
       //: Get database name
 
-      void Name(const StringC & strName)
-      {
-        m_strName = strName;
-      }
-      //: Set database name
-
-      StringC Root() const
+      const DListC<StringC> & Root() const
       {
         return m_root;
       }
       //: Get database name
 
-      void Root(const StringC & root)
+
+      const DListC<StringC> & ImagePath() const
       {
-        m_root = root;
+        return m_imagePath;
       }
-      //: Set database name
+      //: Get the image path
 
-      DListC<ProtocolC> Protocols(const StringC & type = "") const;
-      //: Protocols
-
-      bool Protocol(const StringC & name, ProtocolC & protocol) const;
-      //: Get a protocol of a given name
-
-      void Protocols(DListC<ProtocolC> & prots)
-      {
-        protocols = prots;
-      }
-      //: Protocols
-
-      void AddProtocol(const ProtocolC & protocol)
-      {
-        protocols.InsLast(protocol);
-      }
+      bool AddImagePath(const StringC & imagePath);
+      //: Add an imagepath
 
     protected:
-      void init(DListC<StringC> & dbNames);
+      void init(const DListC<StringC> & dbNames, const DListC<StringC> & imagePath, bool imageExists);
 
-      bool ExpandKnownDatabases2(DListC<StringC> & databases);
-      StringC m_root;
-      //: Root of database (optional)
+      bool ExpandKnownDatabases2(const DListC<StringC> & databases);
 
-      StringC m_strName;
-      //: Database name (optional)
+      DListC<StringC> m_name;
+      //: Names of databases currently held (optional)
 
-      DListC<ProtocolC> protocols;
-      //: has the database got some protocols
+      DListC<StringC> m_root;
+      //: Root directories of databases currently held (optional)
+
+      DListC<StringC> m_imagePath;
+      //: Path to images)
 
       friend XMLIStreamC &operator>>(XMLIStreamC &xml, FaceInfoDbC &data);
       friend XMLOStreamC &operator<<(XMLOStreamC &xml, const FaceInfoDbC &data);

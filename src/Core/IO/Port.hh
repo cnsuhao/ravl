@@ -8,7 +8,6 @@
 #define RAVL_DPPORT_HEADER 1
 ////////////////////////////////////////////////////
 //! docentry="Ravl.API.Core.Data Processing.Ports" 
-//! rcsid="$Id$"
 //! file="Ravl/Core/IO/Port.hh"
 //! lib=RavlIO
 //! author="Charles Galambos"
@@ -231,7 +230,7 @@ namespace RavlN {
     
     virtual IntT GetArray(SArray1dC<DataT> &data);
     //: Get an array of data from stream.
-    // returns the number of elements succesfully processed.
+    // returns the number of elements successfully processed.
     // NB. This need NOT be overridden in client classes 
     // unless fast handling of arrays of data elements is required.
     
@@ -266,7 +265,8 @@ namespace RavlN {
     : public DPPortBodyC 
   {
   public:
-    DPOPortBaseBodyC() {}
+    DPOPortBaseBodyC()
+    {}
     //: Default constructor.
 
     DPOPortBaseBodyC(const StringC &nportId)
@@ -429,11 +429,12 @@ namespace RavlN {
     {}
     //: Stream constructor.
     
-    DPIPortBaseC(const DPPortC &bod) 
+    DPIPortBaseC(const DPEntityC &bod)
       : DPEntityC(dynamic_cast<const DPIPortBaseBodyC *>(BodyPtr(bod)))
     {}
-    //: Body constructor.
-    
+    //: Base class constructor.
+    // Will create an invalid handle if types don't match.
+
   protected:
     inline DPIPortBaseBodyC &Body() 
     { return dynamic_cast<DPIPortBaseBodyC &>(DPEntityC::Body()); }
@@ -588,6 +589,12 @@ namespace RavlN {
     {}
     // Stream constructor.
     
+    DPOPortBaseC(const DPEntityC &bod)
+      : DPEntityC(dynamic_cast<const DPOPortBaseBodyC *>(BodyPtr(bod)))
+    {}
+    //: Base class constructor.
+    // Will create an invalid handle if types don't match.
+
   protected:
     inline DPOPortBaseBodyC &Body() 
     { return dynamic_cast<DPOPortBaseBodyC &>(DPEntityC::Body()); }
@@ -628,15 +635,7 @@ namespace RavlN {
       : DPEntityC(true)
     {}
     // Default constructor.
-    
-#ifdef __sgi__
-    DPOPortC(const DPOPortC<DataT> &oth) 
-      : DPEntityC(oth),
-	DPOPortBaseC(oth)
-    {}
-    //: Copy constructor.
-#endif
-    
+
     DPOPortC(DPOPortBodyC<DataT> &bod) 
       : DPEntityC(bod),
 	DPOPortBaseC(bod)

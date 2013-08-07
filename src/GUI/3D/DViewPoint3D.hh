@@ -29,7 +29,7 @@ namespace RavlGUIN {
   public:
     DViewPoint3DBodyC(RealT nFov,
 		      Point3dC nEye,    // Position of eye.
-		      Point3dC nCentre, // Center of object to look at.
+		      Point3dC nCentre, // Centre of object to look at.
 		      Vector3dC nUp,   // Up direction.
 		      RealT dNear,
 		      RealT dFar
@@ -59,7 +59,7 @@ namespace RavlGUIN {
   protected:
     RealT fov;       // Field of view angle.
     Point3dC eye;    // Position of eye.
-    Point3dC centre; // Center of object to look at.
+    Point3dC centre; // Centre of object to look at.
     Vector3dC up;    // Up direction.
     RealT m_dNear, m_dFar; // Clipping planes
   };
@@ -82,7 +82,7 @@ namespace RavlGUIN {
       {}
     //: Constructor.
     // Position of eye. (0,0,-1)
-    // Center of object (0,0,0)
+    // Centre of object (0,0,0)
     // Up direction.  (Y Axis.)
   };
 

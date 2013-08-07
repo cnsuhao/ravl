@@ -24,6 +24,7 @@
 #include "Ravl/Plot/Plot2d.hh"
 #include "Ravl/Image/Image.hh"
 #include "Ravl/Image/ByteRGBValue.hh"
+#include "Ravl/MeanVariance.hh"
 
 namespace RavlN {
   namespace FaceN {
@@ -106,6 +107,9 @@ namespace RavlN {
       bool Plot(RealT maxFa, RealT maxFr, const StringC & title, const StringC & outfile) const;
       //: Plot the roc
 
+      bool PlotLog(const StringC & outfile, const StringC & title, RealT minFalseMatchRate, RealT maxFalseMatchRate, RealT minTrueMatchRate, RealT maxTrueMatchRate) const;
+      //: Plot with the FA on a logarithmic scale
+
       bool Plot(RealT maxFa, RealT maxFr, const StringC & title, RavlImageN::ImageC<RavlImageN::ByteRGBValueC> & image) const;
       // Get an image of the ROC
 
@@ -139,6 +143,9 @@ namespace RavlN {
       bool Report(const DirectoryC & outDir);
       //: Write some reports to the outDir
 
+      Tuple2C<MeanVarianceC, MeanVarianceC> DistributionStats() const;
+      // Compute the stats of the two distributions
+
     protected:
       //: Put all your class members here
       DListC<ClaimT> claims;
@@ -148,8 +155,6 @@ namespace RavlN {
       UIntT impostors;
       bool sorted;
     };
-    
-
     
     /////// RocC ///////////////////////////////////////////
     //! userlevel=Normal
@@ -298,7 +303,8 @@ namespace RavlN {
       }
       //: Works out the error rates at a set threshold
 
-      bool FalseRejection(RealT faRate, RealT & frRate, RealT & threshold) {
+      bool FalseRejection(RealT faRate, RealT & frRate, RealT & threshold)
+      {
         return Body().FalseRejection(faRate, frRate, threshold);
       }
       // Get the false rejection rate at a given false acceptance rate and the corresponding threshold used
@@ -321,16 +327,22 @@ namespace RavlN {
       }
       //: Generate information about threshold
 
-      bool Plot(RealT maxFa=1.0, RealT maxFr=1.0, const StringC & title="", const StringC & filename="") const
+      bool Plot(RealT maxFa = 1.0, RealT maxFr = 1.0, const StringC & title = "", const StringC & filename = "") const
       {
         return Body().Plot(maxFa, maxFr, title, filename);
       }
       //: Generate a plot of the ROC
 
-      bool Plot(RealT maxFa, RealT maxFr, const StringC & title, RavlImageN::ImageC<RavlImageN::ByteRGBValueC> & image) const {
+      bool Plot(RealT maxFa, RealT maxFr, const StringC & title, RavlImageN::ImageC<RavlImageN::ByteRGBValueC> & image) const
+      {
         return Body().Plot(maxFa, maxFr, title, image);
       }
       // Get an image of the ROC
+
+      bool PlotLog(const StringC & outfile, const StringC & title = "Verification Performance", RealT minFalseMatchRate=0.0001, RealT maxFalseMatchRate = 0.1, RealT minTrueMatchRate=0.80, RealT maxTrueMatchRate=0.99) const {
+        return Body().PlotLog(outfile, title, minFalseMatchRate, maxFalseMatchRate, minTrueMatchRate, maxTrueMatchRate);
+      }
+      //: Plot with the FA on a logarithmic scale on the x-axis and plotting 1.0 - FR (aka True Match) on the y-axis.
 
       bool PlotScoreHistogram(const StringC & title, const StringC & filename = "") const
       {
@@ -338,7 +350,8 @@ namespace RavlN {
       }
       //: Generate a plot of the client/impostor histograms
 
-      bool PlotScoreHistogram(const StringC & title, RavlImageN::ImageC<RavlImageN::ByteRGBValueC> & image) const {
+      bool PlotScoreHistogram(const StringC & title, RavlImageN::ImageC<RavlImageN::ByteRGBValueC> & image) const
+      {
         return Body().PlotScoreHistogram(title, image);
       }
       //: Make an image of the score distribution
@@ -355,12 +368,14 @@ namespace RavlN {
       }
       //: Number of impostor attacks
 
-      RealT MaxFAScore() const {
+      RealT MaxFAScore() const
+      {
         return Body().MaxFAScore();
       }
-        //: Get the maximum score
+      //: Get the maximum score
 
-      RealT MinFRScore() const {
+      RealT MinFRScore() const
+      {
         return Body().MinFRScore();
       }
       //: Get the maximum score
@@ -376,6 +391,12 @@ namespace RavlN {
         return Body().Report(outDir);
       }
       //: Generate a report
+
+      Tuple2C<MeanVarianceC, MeanVarianceC> DistributionStats() const
+      {
+        return Body().DistributionStats();
+      }
+      // Compute the stats of the two distributions
 
       friend ostream &operator<<(ostream &s, const RocC &out);
       //: output stream operator

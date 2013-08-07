@@ -10,7 +10,7 @@
 PACKAGE=Ravl/Image
 
 HEADERS=ImageRectangle.hh Image.hh \
- RGBValue.hh ByteRGBValue.hh UInt16RGBValue.hh RealRGBValue.hh \
+ RGBValue.hh ByteRGBValue.hh ByteRGBColour.hh UInt16RGBValue.hh RealRGBValue.hh \
  RGBAValue.hh ByteRGBAValue.hh RealRGBAValue.hh \
  BGRValue.hh ByteBGRValue.hh RealBGRValue.hh BGRAValue.hh ByteBGRAValue.hh \
  YUVValue.hh ByteYUVValue.hh RealYUVValue.hh \
@@ -23,7 +23,7 @@ HEADERS=ImageRectangle.hh Image.hh \
  ScaleValues.hh Reflect.hh \
  RGBcYUV.hh ImageConv.hh \
  Font.hh PSFFont.h \
- DrawFrame.hh DrawCross.hh DrawMask.hh \
+ DrawSymbol.hh DrawFrame.hh DrawCross.hh DrawMask.hh \
  DrawLine.hh DrawCircle.hh DrawPolygon.hh  DrawEllipse.hh\
  Deinterlace.hh BilinearInterpolation.hh \
  YCbCrBT601Value.hh ByteYCbCrBT601Value.hh UInt16YCbCrBT601Value.hh \

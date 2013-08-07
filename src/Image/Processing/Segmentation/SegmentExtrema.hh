@@ -42,8 +42,14 @@ namespace RavlImageN {
   class ExtremaRegionC {
   public:
     ExtremaRegionC()
-      : hist(0),
-	thresh(0)
+      : merge(0),
+        hist(0),
+        total(0),
+	thresh(0),
+	nThresh(0),
+	maxValue(0),
+	minValue(0),
+	closed(0)
     {}
     //: Constructor.
     
@@ -83,7 +89,9 @@ namespace RavlImageN {
   class SegmentExtremaBaseC {
   public:
     SegmentExtremaBaseC(IntT nMinSize,RealT nMinMargin,IntT nlimitMaxValue = 255)
-      : labelAlloc(1),
+      : stride(0),
+        labelAlloc(1),
+        origin(0),
 	minSize(nMinSize),
         maxSize(0), // This gets modified later.
 	minMargin(nMinMargin),
@@ -209,7 +217,7 @@ namespace RavlImageN {
   
   
   //! userlevel=Normal
-  // : Extremal region segmentation.  
+  //: Maximimally stable extremal region's  (MSER's)
 
   // <p>In most images there are regions that can be detected with high repeatability since they
   // possess some distinguishing, invariant and stable property, the so called extremal regions.

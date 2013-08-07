@@ -120,7 +120,7 @@ RESOURCES += libCurl
 
 #### devVideo4Linux ################
 
-RESOURCES += devVideo4Linux
+#RESOURCES += devVideo4Linux
 
 #### devVideo4Linux2 ################
 
@@ -201,3 +201,4 @@ RESOURCES += LibGnome
 #### RLog ################
 
 #RLOG_HOME =/opt/Omni/rlog-1.4
+RESOURCES+=Zlib

@@ -21,4 +21,10 @@ LIBDEPS = RavlPatternRecDimReduce.def
 
 USESLIBS=RavlPatternRec
 
+PROGLIBS= RavlPatternRecIO  RavlGnuPlot.opt
+
+MAINS= doDimensionReduction.cc
+
 EHT = Dimension_Reduction.html
+
+

@@ -26,12 +26,12 @@
 namespace RavlN {
 
   OptimiseParticleSwarmBodyC::OptimiseParticleSwarmBodyC(UIntT numberOfParticles,
-      RealT omega,
-      RealT phiP,
-      RealT phiG,
-      UIntT numberOfIterations,
-      RealT terminationCriterion,
-      UIntT numberOfThreads) :
+                                                        RealT omega,
+                                                        RealT phiP,
+                                                        RealT phiG,
+                                                        UIntT numberOfIterations,
+                                                        RealT terminationCriterion,
+                                                        UIntT numberOfThreads) :
       OptimiseBodyC("OptimiseParticleSwarmBodyC"),
       m_numberOfParticles(numberOfParticles),
       m_omega(omega),
@@ -44,7 +44,14 @@ namespace RavlN {
   }
   
   OptimiseParticleSwarmBodyC::OptimiseParticleSwarmBodyC(std::istream &in) :
-      OptimiseBodyC("OptimiseParticleSwarmBodyC", in)
+      OptimiseBodyC("OptimiseParticleSwarmBodyC", in),
+      m_numberOfParticles(0),
+      m_omega(0),
+      m_phiP(0),
+      m_phiG(0),
+      m_numberOfIterations(0),
+      m_terminationCriterion(0),
+      m_numberOfThreads(0)
   {
     in >> m_numberOfParticles >> m_omega >> m_phiP >> m_phiG >> m_numberOfIterations >> m_terminationCriterion >> m_numberOfThreads;
   }

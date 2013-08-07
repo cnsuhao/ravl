@@ -59,7 +59,7 @@ namespace RavlN {
     //: Expand vector to linear coefficients.
     
     virtual UIntT NumberCoeffs(UIntT inputSize) const;
-    //: Calculate the number of coefficents for a given input size.
+    //: Calculate the number of coefficients for a given input size.
     
     virtual bool SetTransform(const MatrixC &a);
     //: Attempt to set transform matrix.

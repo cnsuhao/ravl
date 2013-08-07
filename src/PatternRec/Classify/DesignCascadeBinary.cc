@@ -130,7 +130,7 @@ namespace RavlN {
 
     while (m_targetErrorRate < actualErrorRate) {
 
-      RavlInfo(" *** Cascade Layer %d ***", classifiers.Size() + 1);
+      RavlInfo(" *** Cascade Layer %d ***", classifiers.Size().V() + 1);
 
       /*
        * Train node using feature selection algorithm.

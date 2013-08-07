@@ -29,7 +29,7 @@ namespace RavlN {
   // implemention my19937ar.c - copyright notice follows
 
   // <PRE>
-  // A C-program for MT19937, with initialization improved 2002/1/26.
+  // A C-program for MT19937, with initialisation improved 2002/1/26.
   // Coded by Takuji Nishimura and Makoto Matsumoto.
   // 
   // Copyright (C) 1997 - 2002, Makoto Matsumoto and Takuji Nishimura,
@@ -79,7 +79,7 @@ namespace RavlN {
   protected:
 
     UInt32T mt[624]; /* the array for the state vector  */
-    UInt32T mti; /* mti==N+1 means mt[N] is not initialized */
+    UInt32T mti; /* mti==N+1 means mt[N] is not initialised */
 
   };
 

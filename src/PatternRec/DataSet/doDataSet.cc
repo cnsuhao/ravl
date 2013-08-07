@@ -17,7 +17,7 @@ using namespace RavlN;
 
 // Do some things with data sets
 
-bool MakeTrainTestDataSet(DataSetVectorLabelC & dset, const FilenameC & outputFile) {
+bool MakeTrainTestDataSet(DataSetVectorLabelC & dset, const FilenameC & outputFile,float trainSetRatio ) {
 
   RavlInfo( "Making a training and test data set.");
 
@@ -29,7 +29,7 @@ bool MakeTrainTestDataSet(DataSetVectorLabelC & dset, const FilenameC & outputFi
   dset = dset.ExtractPerLabel(minSamplesInAClass);
 
   // FIXME: Why doesn't inherit proper?
-  DataSet2C<SampleVectorC, SampleLabelC> train = dset.ExtractSample(0.50);
+  DataSet2C<SampleVectorC, SampleLabelC> train = dset.ExtractSample(trainSetRatio);
 
   StringC path = outputFile.PathComponent();
   if (!path.IsEmpty()) {
@@ -58,6 +58,7 @@ int main(int nargs, char **argv) {
   DListC<StringC> dataFields = opts.List("dataFields", "Insert these fields into the final dataset");
   StringC labelField = opts.String("labelField", "", "Insert this as the field for the label");
   FilenameC outputFile = opts.String("o", "out.csv", "The output dataset!  ");
+  float trainingRatio = opts.Real("tr",0.8,"Fraction of the data for training. ");
   bool equaliseSamples = opts.Boolean("eq", false, "Make sure we have an equal number of samples per class");
   bool makeTrainTest = opts.Boolean("tt", false, "Make a training and test data set");
   bool scale = opts.Boolean("scale", false, "Scale the dataset");
@@ -107,7 +108,7 @@ int main(int nargs, char **argv) {
     }
 
     if (makeTrainTest) {
-      MakeTrainTestDataSet(dset, outputFile);
+      MakeTrainTestDataSet(dset, outputFile,trainingRatio);
       return 1;
     }
 

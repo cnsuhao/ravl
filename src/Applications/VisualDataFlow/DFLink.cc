@@ -12,7 +12,7 @@
 #include "Ravl/DF/DFLink.hh"
 #include "Ravl/DF/DFPort.hh"
 
-#define DODEBUG 1
+#define DODEBUG 0
 #if DODEBUG
 #define ONDEBUG(x) x
 #else

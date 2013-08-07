@@ -200,6 +200,11 @@ namespace RavlN {
         input.Append(it.Data().Pick());
         output.Append(it.Index().V());
       }
+      // Has a class name been set?  If so lets copy it to the extracted set.
+      StringC className;
+      if(Sample2().GetClassName(it.Index().V(), className)) {
+        output.SetClassName(it.Index().V(), className);
+      }
     }
     DataSetVectorLabelC ret(input, output);
     return ret;

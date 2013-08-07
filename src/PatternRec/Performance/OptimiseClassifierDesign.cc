@@ -10,7 +10,7 @@
 #include "Ravl/PatternRec/ClassifierPreprocess.hh"
 #include "Ravl/XMLFactoryRegister.hh"
 
-#define DODEBUG 1
+#define DODEBUG	0
 #if DODEBUG
 #define ONDEBUG(x) x
 #else
@@ -98,6 +98,8 @@ namespace RavlN {
 
   //! XML factory constructor
   OptimiseClassifierDesignBodyC::OptimiseClassifierDesignBodyC(const XMLFactoryContextC &factory)
+   : m_designFraction(factory.AttributeReal("designFraction",0.6)),
+     m_crossValidateFraction(factory.AttributeReal("crossValidateFraction",0.2))
   {
     if(!factory.UseChildComponent("ErrorMeasure",m_errorMeasure,true,typeid(ErrorC)))
       m_errorMeasure = ErrorC();

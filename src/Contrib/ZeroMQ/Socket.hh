@@ -54,6 +54,10 @@ namespace RavlN {
       : public RCBodyC
     {
     public:
+
+      //! Default constructor - creates invalid handle
+      SocketC();
+
       //! Construct a new socket.
       SocketC(ContextC &context,SocketTypeT socketType,const StringC &codec = "");
 
@@ -77,12 +81,15 @@ namespace RavlN {
       void Bind(const std::string &addr);
 
       //! Bind to first available port in the range.
-      //! Assigned the address bount to 'addr'.
+      //! Assigned the address bound to 'addr'.
       //! Returns true if a port is successfully found and false if no free port is found.
       bool BindDynamicTCP(const std::string &devName,std::string &addr,int minPort,int maxPort);
 
       //! Access last bound address.
       const std::string &BoundAddress() const;
+
+      //! Access address that can be used to connect to the last bound address.
+      RavlN::StringC ConnectBoundAddress() const;
 
       //! Connect to an address.
       void Connect(const std::string &addr);
@@ -104,6 +111,9 @@ namespace RavlN {
 
       //! Send a message
       bool Send(const MessageC &msg,BlockT block = ZSB_BLOCK);
+
+      //! Send a message
+      bool Send(const MessageC::RefT &msg,BlockT block = ZSB_BLOCK);
 
       //! Receive a message.
       bool Recieve(MessageC::RefT &msg,BlockT block = ZSB_BLOCK);
@@ -157,6 +167,7 @@ namespace RavlN {
       StringC m_defaultCodec;
       bool m_verbose;
       std::string m_boundAddress;
+      SocketTypeT m_socketType;
     };
   }
 }

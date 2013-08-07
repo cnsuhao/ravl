@@ -15,7 +15,7 @@ DESCRIPTION=Specification of face data sets using XML
 
 PACKAGE = Ravl/Face
 
-MAINS=
+MAINS= doClassifierRoc.cc
 
 SOURCES = Roc.cc
 
@@ -28,9 +28,9 @@ PLIB = RavlFace
 LIBDEPS= 
 
 USESLIBS= RavlMath RavlImageProc RavlCore RavlIO RavlImage RavlOS \
- RavlXMLFactory RavlRLog RavlGnuPlot
+ RavlXMLFactory RavlRLog RavlGnuPlot RavlPatternRec
 
-PROGLIBS = RavlExtImgIO.opt RavlPatternRec RavlPatternRecIO
+PROGLIBS = RavlExtImgIO.opt RavlPatternRec RavlPatternRecIO ReasonNerualNet
 
 SCRIPTS=
 

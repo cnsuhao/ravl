@@ -7,7 +7,6 @@
 #ifndef RAVL_CLASSIFY_HEADER
 #define RAVL_CLASSIFY_HEADER 1
 ///////////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! lib=RavlPatternRec
 //! docentry="Ravl.API.Pattern Recognition.Classifier"
 //! author="Charles Galambos"
@@ -15,6 +14,7 @@
 
 #include "Ravl/PatternRec/Function.hh"
 #include "Ravl/Vector.hh"
+#include "Ravl/PatternRec/Sample.hh"
 
 namespace RavlN {
   
@@ -49,6 +49,9 @@ namespace RavlN {
     // on the classifier used. The higher the confidence the more likely
     // it is the label is correct.
     
+    virtual SampleC<UIntT> Classify(const SampleC<VectorC> &data) const;
+    //: Classify each vector in the set.
+
     virtual UIntT Classify(const VectorC &data,const SArray1dC<IndexC> &featureSet) const;
     //: Classifier vector 'data' return the most likely label.
     
@@ -136,7 +139,11 @@ namespace RavlN {
     UIntT Classify(const VectorC &data) const
     { return Body().Classify(data); }
     //: Classifier vector 'data' return the most likely label.
-    
+
+    SampleC<UIntT> Classify(const SampleC<VectorC> &data) const
+    { return Body().Classify(data); }
+    //: Classify each vector in the set.
+
     VectorC Confidence(const VectorC &data) const
     { return Body().Apply(data); }
     //: Estimate the confidence for each label.

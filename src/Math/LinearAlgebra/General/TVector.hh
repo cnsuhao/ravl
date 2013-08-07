@@ -40,6 +40,15 @@ namespace RavlN {
     {}
     //: Constructor for array of DataT's.
 
+    template<typename OtherT>
+    explicit TVectorC(const SArray1dC<OtherT> &oth)
+      : SArray1dC<DataT>(oth.Size())
+    {
+      for(unsigned i = 0;i < oth.Size();i++)
+        (*this)[i] = oth[i];
+    }
+    //: Construct from an array of a different ype.
+
     inline TVectorC(const Slice1dC<DataT> &oth,bool alwaysCopy = true)
       : SArray1dC<DataT>(oth,alwaysCopy)
     {}

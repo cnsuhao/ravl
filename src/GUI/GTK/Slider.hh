@@ -68,7 +68,10 @@ namespace RavlGUIN {
     
     bool GUIUpdate(const RealT &val,const RealT &lower,const RealT &upper,const RealT &inc);
     //: Update the slider value.
-    
+
+    bool GUIUpdatePageSize(const RealT &pageSize);
+    //: Update the page size
+
     inline
     RealT Upper() const 
     { return upper; }
@@ -186,7 +189,11 @@ namespace RavlGUIN {
     bool GUIUpdate(RealT val,RealT lower,RealT upper,RealT inc)
     { return Body().GUIUpdate(val,lower,upper,inc); }
     //: Update the slider value.
-    
+
+    bool GUIUpdatePageSize(RealT pageSize)
+    { return Body().GUIUpdatePageSize(pageSize); }
+    //: Update the page size
+
     void SetValuePosition(GtkPositionType pos)
     { Body().SetValuePosition(pos); }
     //: Set number position.

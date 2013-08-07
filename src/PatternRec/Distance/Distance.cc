@@ -13,7 +13,11 @@
 #include "Ravl/XMLFactoryRegister.hh"
 
 namespace RavlN {
-  
+
+  DistanceBodyC::DistanceBodyC()
+  {}
+  //: Default constructor.
+
 
   //: XMLFactoryC constructor.
   DistanceBodyC::DistanceBodyC(const XMLFactoryContextC &factory)

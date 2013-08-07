@@ -95,10 +95,22 @@ namespace RavlAudioN {
       : DPEntityC(*new PreEmphasisBodyC<InT,OutT,FilterT>(alpha))
     {}
     //: Constructor.
-    
-    
   };
   
+  //! Pre-emphasis for a stream of floats.
+
+  class PreEmphasisFloatC
+    : public PreEmphasisC<float,float>
+  {
+  public:
+    //! Default constructor.
+    PreEmphasisFloatC();
+
+    //! Factory constructor.
+    PreEmphasisFloatC(const XMLFactoryContextC &factory);
+
+  };
+
 }
 
 

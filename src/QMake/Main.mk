@@ -373,7 +373,7 @@ CCFLAGS += $(USERCFLAGS) $(ANSIFLAG)
 ifndef NVCC
  NVCC=nvcc
 endif
-NVCCFLAGS = 
+NVCCFLAGS += $(USERNVCCFLAGS)
 
 ifeq ($(VAR),debug)
  NVCCFLAGS += -g 
@@ -978,7 +978,7 @@ build_libs: $(TARG_LIBS) buildjavalibs prebuildstep
 else
  ifneq ($(strip $(PLIB)),)
   ifneq ($(strip $(SOURCES)),)
-build_libs: $(TARG_LIBS) $(TARG_LIBS) prebuildstep
+build_libs: $(TARG_LIBS) prebuildstep
   else
 build_libs: prebuildstep
   endif

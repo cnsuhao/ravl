@@ -1,7 +1,6 @@
 // This file is part of OmniSoft, Pattern recognition software
 // Copyright (C) 2003, Omniperception Ltd.
 // file-header-ends-here
-//! rcsid="$Id$"
 //! lib=RavlFace
 //! file="Ravl.Contrib.Face/FaceInfoDb.cc"
 
@@ -15,6 +14,7 @@
 #include "Ravl/StringList.hh"
 #include "Ravl/XMLFactoryRegister.hh"
 #include "Ravl/RLog.hh"
+#include "Ravl/StringList.hh"
 
 #define DODEBUG 0
 #if DODEBUG
@@ -46,49 +46,95 @@ namespace RavlN {
     }
     //: Constructor
 
-    FaceInfoDbC::FaceInfoDbC(const StringC & dbName)
+    FaceInfoDbC::FaceInfoDbC(const StringC & dbName, const DListC<StringC> & imagePath, bool imageExists)
     {
-      DListC < StringC > dbNames;
+      // And intialise in the normal way
+      DListC<StringC> dbNames;
       dbNames.InsLast(dbName);
-      init (dbNames);
+      init(dbNames, imagePath, imageExists);
     }
 
-    FaceInfoDbC::FaceInfoDbC(DListC<StringC> & dbNames)
+    FaceInfoDbC::FaceInfoDbC(DListC<StringC> & dbNames, const DListC<StringC> & imagePath, bool imageExists)
     {
-      init(dbNames);
+      init(dbNames, imagePath, imageExists);
     }
 
     FaceInfoDbC::FaceInfoDbC(const XMLFactoryContextC &factory)
     {
+      bool imageExists = factory.AttributeBool("imageExists", true);
       // Go through child entries.
-      DListC < StringC > dbNames;
-      for (RavlN::DLIterC < RavlN::XMLTreeC > it(factory.Children()); it; it++) {
+      DListC<StringC> dbNames;
+      for (RavlN::DLIterC<RavlN::XMLTreeC> it(factory.Children()); it; it++) {
         if (it->Name() == "XmlDb") {
           StringC dbName = it->Content();
           dbNames.InsLast(dbName);
         }
       }
-      init (dbNames);
+      DListC<StringC> imagePath;
+      init(dbNames, imagePath, imageExists);
     }
 
-    void FaceInfoDbC::init(DListC<StringC> & dbNames)
+    void FaceInfoDbC::init(const DListC<StringC> & dbNames, const DListC<StringC> & imagePath, bool imageExists)
     {
-
-      HashC<StringC, bool> clientHsh;
+      // Look up and see if we have an alias
       ExpandKnownDatabases2(dbNames);
-      for (DLIterC < StringC > it(dbNames); it; it++) {
+
+      for (DLIterC<StringC> it(dbNames); it; it++) {
+
+        // Load the XML file as is
         FaceInfoDbC db;
         if (!Load(*it, db)) {
           rWarning("Unable to load XML database: %s", it.Data().chars());
           continue;
         }
         rDebug("Loaded XML database '%s' with '%d' subjects and '%d' faces.", it.Data().chars(), db.NoClients(), db.NoFaces());
-        m_strName += db.Name();
-        m_root = db.Root();
-        protocols += db.Protocols();
-        for (HashIterC < StringC, FaceInfoC > hshIt(db); hshIt; hshIt++) {
-          Insert(hshIt.Key(), hshIt.Data());
+
+        // OK lets sort out which imagePath to use
+        DListC<StringC> useImagePath = imagePath;
+        if (imagePath.IsEmpty()) {
+          // OK lets use the loaded db one
+          useImagePath = db.ImagePath();
         }
+
+        // Now lets go through the faces
+        for (HashIterC<StringC, FaceInfoC> faceIt(db); faceIt; faceIt++) {
+
+          // Do we want to check the image exists - not always
+          if (imageExists) {
+
+            FilenameC origImagePath(faceIt.Data().OrigImage());
+
+            // If an imagePath has been defined we use that instead to pick up the images
+            if (!useImagePath.IsEmpty()) {
+              bool found = false;
+              for (DLIterC<StringC> pathIt(useImagePath); pathIt; pathIt++) {
+                FilenameC newImagePath = *pathIt + "/" + origImagePath;
+                //RavlInfo("Checking %s", newImagePath.data());
+                if (newImagePath.Exists()) {
+                  faceIt.Data().OrigImage() = newImagePath;
+                  Insert(faceIt.Key(), faceIt.Data());
+                  found = true;
+                  break;
+                }
+              }
+              if (!found) {
+                RavlWarning("Modified image path '%s' not found, face not loaded!", origImagePath.data());
+              }
+            } else {
+              // OK an image path is not defined, so we just try and use the image - may be the path is in that
+              if (!origImagePath.Exists()) {
+                RavlWarning("Original Image Path '%s' not found, face not loaded!", origImagePath.data());
+              } else {
+                Insert(faceIt.Key(), faceIt.Data());
+              }
+            }
+          } else {
+            Insert(faceIt.Key(), faceIt.Data());
+          }
+
+        } // end face it
+
+        m_imagePath += useImagePath;
       }
     }
 
@@ -97,23 +143,30 @@ namespace RavlN {
       StringC strType("");
 
       // Read tags until we get a FaceInfoDb
-      while (xml && xml.ReadTag(strType) != XMLBeginTag && strType != "faceinfodb");
+      while (xml && xml.ReadTag(strType) != XMLBeginTag && strType != "faceinfodb")
+        ;
       if (!xml)
         return;
 
       // Read name attribute
-      xml.GetAttrib("root", m_root);
-      xml.GetAttrib("name", m_strName);
+      StringC root, name, imagePath;
+      xml.GetAttrib("name", name);
+      xml.GetAttrib("root", root);
+      xml.GetAttrib("imagePath", imagePath);
+      m_name = StringListC(name, ";");
+      m_root = StringListC(root, ";");
+      m_imagePath = StringListC(imagePath, ";");
+
       // Read features
       while (xml && xml.PeekTag(strType) != XMLEndTag) {
         if (strType == "faceinfo") {
           FaceInfoC info;
           xml >> info;
+
+          // OK we want to sort out the image path
+          FilenameC origImagePath = info.OrigImage();
           Insert(info.FaceId(), info);
-        } else if (strType == "protocol") {
-          ProtocolC prot;
-          xml >> prot;
-          protocols.InsLast(prot);
+
         } else {
           // Skip this set of tags
           xml.ReadTag(strType);
@@ -133,19 +186,42 @@ namespace RavlN {
       // Start tag
       xml << XMLStartTag("faceinfodb");
       // Set name attribute
-      xml.SetAttrib("name", m_strName);
-      xml.SetAttrib("root", m_root);
+      StringC name;
+      for (DLIterC<StringC> it(m_name); it; it++) {
+        name += *it + ";";
+      }
+      StringC root;
+      for (DLIterC<StringC> it(m_root); it; it++) {
+        root += *it + ";";
+      }
+      StringC imagePath;
+      for (DLIterC<StringC> it(m_imagePath); it; it++) {
+        imagePath += *it + ";";
+      }
+
+      xml.SetAttrib("name", name);
+      xml.SetAttrib("root", root);
+      xml.SetAttrib("imagePath", imagePath);
+
       xml << XMLContent;
 
-      for (HashIterC < StringC, FaceInfoC > it(*this); it; it++) {
+      for (HashIterC<StringC, FaceInfoC> it(*this); it; it++) {
         if (!it->IsValid()) {
           rWarning("Invalid face!");
           continue;
         }
-        xml << *it;
-      }
 
-      for (DLIterC < ProtocolC > it(protocols); it; it++) {
+        // If the image path is not empty we want to use
+        // this where possible
+        for (DLIterC<StringC> pathIt(m_imagePath); pathIt; pathIt++) {
+          FilenameC imagePath = it.Data().OrigImage();
+          StringC imageDir = imagePath.PathComponent();
+          if (imageDir == *pathIt) {
+            it.Data().OrigImage() = imagePath.NameComponent();
+            break;
+          }
+        } // end pathIt
+
         xml << *it;
       }
 
@@ -160,9 +236,9 @@ namespace RavlN {
       FaceInfoDbC db;
 
       //: Get a master list of all files to process
-      DListC < FilenameC > imageFiles;
+      DListC<FilenameC> imageFiles;
       if (ImageDirectory.Exists()) {
-        DListC < StringC > names;
+        DListC<StringC> names;
         names += ImageDirectory.FiltList("*jpg");
         names += ImageDirectory.FiltList("*JPG");
         names += ImageDirectory.FiltList("*jpeg");
@@ -183,11 +259,11 @@ namespace RavlN {
         names += ImageDirectory.FiltList("*tiff");
         names += ImageDirectory.FiltList("*TIF");
         names += ImageDirectory.FiltList("*TIFF");
-        for (DLIterC < StringC > it(names); it; it++)
+        for (DLIterC<StringC> it(names); it; it++)
           imageFiles += (FilenameC) ImageDirectory + "/" + *it;
       }
 
-      for (DLIterC < FilenameC > it(imageFiles); it; it++) {
+      for (DLIterC<FilenameC> it(imageFiles); it; it++) {
         //: The most important thing is that we need to guess the
         //: subject id from the filename.  We do this by looking at the
         //: first n chars
@@ -218,7 +294,7 @@ namespace RavlN {
     FaceInfoDbC FaceInfoDbC::GenerateXml(const DListC<DirectoryC> & dirs, const StringC & SplitChar, UIntT n)
     {
       FaceInfoDbC db;
-      for (DLIterC < DirectoryC > it(dirs); it; it++) {
+      for (DLIterC<DirectoryC> it(dirs); it; it++) {
         FaceInfoDbC d = FaceInfoDbC::GenerateXml(*it, SplitChar, n);
         db.AddFrom(d);
       }
@@ -230,7 +306,7 @@ namespace RavlN {
 
       FaceInfoDbC db;
 
-      for (DLIterC < StringC > it(imageFiles); it; it++) {
+      for (DLIterC<StringC> it(imageFiles); it; it++) {
         FilenameC filename(*it);
         StringC faceId = filename.BaseNameComponent();
         ImagePointFeatureC rightEye(0, 1, "RightEyeCentre", 0, 0);
@@ -247,12 +323,10 @@ namespace RavlN {
       return db;
     }
 
-
-    bool FaceInfoDbC::ExpandKnownDatabases2(DListC<StringC> & databases)
+    bool FaceInfoDbC::ExpandKnownDatabases2(const DListC<StringC> & databases)
     {
 
-
-      for (DLIterC < StringC > it(databases); it; it++) {
+      for (DLIterC<StringC> it(databases); it; it++) {
         if (*it == "xm2vts") {
           StringC db("/vol/db/xm2vts/protocol/xm2vts.xml");
           *it = db;
@@ -302,7 +376,7 @@ namespace RavlN {
     UIntT FaceInfoDbC::NoClients() const
     {
       RCHashC<StringC, bool> hsh;
-      for (HashIterC < StringC, FaceInfoC > it(*this); it; it++) {
+      for (HashIterC<StringC, FaceInfoC> it(*this); it; it++) {
         if (!hsh.IsElm(it.Data().ActualId()))
           hsh.Insert(it.Data().ActualId(), true);
       }
@@ -311,8 +385,8 @@ namespace RavlN {
 
     DListC<StringC> FaceInfoDbC::Keys(bool markedUp) const
     {
-      DListC < StringC > keys;
-      for (HashIterC < StringC, FaceInfoC > it(*this); it; it++) {
+      DListC<StringC> keys;
+      for (HashIterC<StringC, FaceInfoC> it(*this); it; it++) {
         if (!markedUp)
           keys.InsLast(it.Key());
         else if (markedUp && it.Data().FeatureSet().IsValid())
@@ -325,9 +399,9 @@ namespace RavlN {
 
     SArray1dC<StringC> FaceInfoDbC::AllFaces() const
     {
-      SArray1dC < StringC > arr(Size());
+      SArray1dC<StringC> arr(Size());
       UIntT c = 0;
-      for (HashIterC < StringC, FaceInfoC > it(*this); it; it++) {
+      for (HashIterC<StringC, FaceInfoC> it(*this); it; it++) {
         arr[c] = it.Key();
         c++;
       }
@@ -336,9 +410,9 @@ namespace RavlN {
 
     DListC<StringC> FaceInfoDbC::Clients() const
     {
-      DListC < StringC > clients;
+      DListC<StringC> clients;
       RCHashC<StringC, bool> hsh;
-      for (HashIterC < StringC, FaceInfoC > it(*this); it; it++) {
+      for (HashIterC<StringC, FaceInfoC> it(*this); it; it++) {
         if (!hsh.IsElm(it.Data().ActualId())) {
           hsh.Insert(it.Data().ActualId(), true);
           clients.InsLast(it.Data().ActualId());
@@ -352,8 +426,8 @@ namespace RavlN {
     RCHashC<StringC, DListC<FaceInfoC> > FaceInfoDbC::Sort(bool markedUp) const
     {
       //: Get a hash of all face ids for each client
-      RCHashC < StringC, DListC<FaceInfoC> > hsh;
-      for (HashIterC < StringC, FaceInfoC > it(*this); it; it++) {
+      RCHashC<StringC, DListC<FaceInfoC> > hsh;
+      for (HashIterC<StringC, FaceInfoC> it(*this); it; it++) {
         StringC actualId = it.Data().ActualId();
         if (!markedUp) {
           if (!hsh.IsElm(actualId))
@@ -366,7 +440,7 @@ namespace RavlN {
         }
       }
       //: sort all the seperate lists
-      for (HashIterC < StringC, DListC<FaceInfoC> > it(hsh); it; it++)
+      for (HashIterC<StringC, DListC<FaceInfoC> > it(hsh); it; it++)
         it.Data().MergeSort(compare_faceinfo);
       return hsh;
     }
@@ -392,7 +466,7 @@ namespace RavlN {
         cmpFunc = &Contains;
       }
 
-      for (HashIterC < StringC, FaceInfoC > it(*this); it; it++) {
+      for (HashIterC<StringC, FaceInfoC> it(*this); it; it++) {
         if (tag == "glasses") {
           if (cmpFunc(it.Data().Glasses(), value)) {
             result.Insert(it.Key(), it.Data());
@@ -414,7 +488,7 @@ namespace RavlN {
             result.Insert(it.Key(), it.Data());
           }
         } else {
-          cerr << "WARNING: Unknown tag, " << tag << endl;
+          std::cerr << "WARNING: Unknown tag, " << tag << std::endl;
         }
       }
       return result;
@@ -423,8 +497,8 @@ namespace RavlN {
     FaceInfoDbC FaceInfoDbC::Search(const StringC & tag, const DListC<StringC> & values) const
     {
       FaceInfoDbC result;
-      for (HashIterC < StringC, FaceInfoC > it(*this); it; it++) {
-        for (DLIterC < StringC > valIt(values); valIt; valIt++) {
+      for (HashIterC<StringC, FaceInfoC> it(*this); it; it++) {
+        for (DLIterC<StringC> valIt(values); valIt; valIt++) {
           if (tag == "glasses") {
             if (it.Data().Glasses() == *valIt)
               result.Insert(it.Key(), it.Data());
@@ -438,29 +512,15 @@ namespace RavlN {
             if (it.Data().ActualId() == *valIt)
               result.Insert(it.Key(), it.Data());
           } else
-            cerr << "WARNING: Unknown tag, " << tag << endl;
+            std::cerr << "WARNING: Unknown tag, " << tag << std::endl;
         }
       }
       return result;
     }
 
-    DListC<StringC> FaceInfoDbC::NormImages(const StringC & normType) const
-    {
-      DListC < StringC > normImages;
-      for (HashIterC < StringC, FaceInfoC > hshIt(*this); hshIt; hshIt++) {
-        StringC path = m_root + "/" + normType + "/" + hshIt.Data().FaceId() + ".abs";
-        FilenameC fName(path);
-        if (!fName.Exists())
-          cerr << "WARNING: No normalisation for: " << path << endl;
-        else
-          normImages.InsLast(path);
-      }
-      return normImages;
-    }
-
     bool FaceInfoDbC::ModifyImagePath(const StringC & from, const StringC & to)
     {
-      for (HashIterC < StringC, FaceInfoC > it(*this); it; it++) {
+      for (HashIterC<StringC, FaceInfoC> it(*this); it; it++) {
         StringC mod = it.Data().OrigImage();
         mod.gsub(from, to);
         it.Data().OrigImage() = mod;
@@ -471,7 +531,7 @@ namespace RavlN {
 
     bool FaceInfoDbC::DeleteId(const StringC & id)
     {
-      for (HashIterC < StringC, FaceInfoC > it(*this); it; it++) {
+      for (HashIterC<StringC, FaceInfoC> it(*this); it; it++) {
         if (it.Data().ActualId() == id) {
           it.Del();
         }
@@ -481,7 +541,7 @@ namespace RavlN {
 
     bool FaceInfoDbC::RenameId(const StringC & from, const StringC & to, bool actualIdOnly)
     {
-      for (HashIterC < StringC, FaceInfoC > it(*this); it; it++) {
+      for (HashIterC<StringC, FaceInfoC> it(*this); it; it++) {
         if (it.Data().ActualId() == from) {
 
           if (!actualIdOnly) {
@@ -509,9 +569,9 @@ namespace RavlN {
     bool FaceInfoDbC::KeepId(const EnrolSessionC & enrolSession)
     {
       FaceInfoDbC db;
-      for (HashIterC < StringC, EnrolC > it(enrolSession); it; it++) {
-        for (DLIterC < StringC > fit(it.Data().FaceIds()); fit; fit++) {
-          if (IsElm (*fit))
+      for (HashIterC<StringC, EnrolC> it(enrolSession); it; it++) {
+        for (DLIterC<StringC> fit(it.Data().FaceIds()); fit; fit++) {
+          if (IsElm(*fit))
             db.Insert(*fit, Access(*fit));
         }
       }
@@ -522,11 +582,9 @@ namespace RavlN {
     FaceInfoDbC FaceInfoDbC::Ids(const EnrolSessionC & enrolSession) const
     {
       FaceInfoDbC db;
-      db.Root(m_root);
-      db.Name(m_strName);
-      for (HashIterC < StringC, EnrolC > it(enrolSession); it; it++) {
-        for (DLIterC < StringC > fit(it.Data().FaceIds()); fit; fit++) {
-          if (IsElm (*fit)) {
+      for (HashIterC<StringC, EnrolC> it(enrolSession); it; it++) {
+        for (DLIterC<StringC> fit(it.Data().FaceIds()); fit; fit++) {
+          if (IsElm(*fit)) {
             FaceInfoC info;
             Lookup(*fit, info);
             db.Insert(*fit, info);
@@ -536,26 +594,14 @@ namespace RavlN {
       return db;
     }
 
-    //: Get a list of protocols by type
-    DListC<ProtocolC> FaceInfoDbC::Protocols(const StringC & type) const
+    bool FaceInfoDbC::AddImagePath(const StringC & imagePath)
     {
-      if (type == "")
-        return protocols;
-      DListC < ProtocolC > ret;
-      for (DLIterC < ProtocolC > it(protocols); it; it++)
-        if (it.Data().Type() == type)
-          ret.InsLast(*it);
-      return ret;
-    }
-
-    bool FaceInfoDbC::Protocol(const StringC & name, ProtocolC & prot) const
-    {
-      for (DLIterC < ProtocolC > it(protocols); it; it++)
-        if (it.Data().Name() == name) {
-          prot = *it;
-          return true;
-        }
-      return false;
+      // Check path isn't already in list
+      if (m_imagePath.Contains(imagePath)) {
+        return true;
+      }
+      m_imagePath.InsLast(imagePath);
+      return true;
     }
 
     XMLIStreamC &operator>>(XMLIStreamC &xml, FaceInfoDbC &data)

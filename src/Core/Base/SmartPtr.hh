@@ -79,11 +79,24 @@ namespace RavlN {
     
     const SmartPtrC<DataT> &operator=(const DataT *other) {
       DataT *oth = const_cast<DataT *>(other);
-      if(oth != 0)
-	oth->IncRefCounter();
+      if(oth != 0) {
+        if(oth->References() == 0) {
+  #if QMAKE_PARANOID
+          oth->RavlRegisterInstance(typeid(*oth));
+  #endif
+          // Avoid unneeded atomic operation, they're slow.
+          oth->SetRefCounter(1);
+        } else {
+          oth->IncRefCounter();
+        }
+      }
       if(this->body != 0) {
-	if(this->body->DecRefCounter())
-	  delete this->body;
+	if(this->body->DecRefCounter()) {
+#if QMAKE_PARANOID
+	  this->body->RavlUnregisterInstance(typeid(*this->body));
+#endif
+  	  delete this->body;
+	}
       }
       this->body = oth;
       return *this;

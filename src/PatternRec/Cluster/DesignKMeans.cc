@@ -17,10 +17,11 @@
 #include "Ravl/PatternRec/SampleIter.hh"
 #include "Ravl/PatternRec/DataSet2Iter.hh"
 #include "Ravl/PatternRec/ClassifierNearestNeighbour.hh"
+#include "Ravl/PatternRec/DistanceCorrelation.hh"
 #include "Ravl/BinStream.hh"
 #include "Ravl/VirtualConstructor.hh"
 
-#define DODEBUG 0
+#define DODEBUG	0
 #if DODEBUG
 #define ONDEBUG(x) x
 #else
@@ -29,10 +30,18 @@
 
 namespace RavlN {
   
+  //: Constructor.
+
+  DesignKMeansBodyC::DesignKMeansBodyC(UIntT nk,const DistanceC &distanceMetric)
+    : distance(distanceMetric),
+      k(nk)
+  {}
+
   //: Load from stream.
   
   DesignKMeansBodyC::DesignKMeansBodyC(istream &strm)
-    : DesignClusterBodyC(strm)
+    : DesignClusterBodyC(strm),
+      k(0)
   { 
     IntT version;
     strm >> version;
@@ -43,7 +52,8 @@ namespace RavlN {
   //: Load from binary stream.
   
   DesignKMeansBodyC::DesignKMeansBodyC(BinIStreamC &strm)
-    : DesignClusterBodyC(strm)
+    : DesignClusterBodyC(strm),
+      k(0)
   {
     IntT version;
     strm >> version;
@@ -71,7 +81,7 @@ namespace RavlN {
     return true;
   }
   
-  //: Create a clasifier.
+  //: Create a classifier.
   
   FunctionC DesignKMeansBodyC::Apply(const SampleC<VectorC> &in) {
     SArray1dC<VectorC> means = FindMeans(in);
@@ -89,7 +99,7 @@ namespace RavlN {
     return ClassifierNearestNeighbourC(SampleC<VectorC>(means),distance);    
   }
   
-  //: Create a clasifier.
+  //: Create a classifier.
   
   SArray1dC<MeanCovarianceC> DesignKMeansBodyC::Cluster(const SampleC<VectorC> &in) {
     SArray1dC<VectorC> means = FindMeans(in);
@@ -111,14 +121,19 @@ namespace RavlN {
   //: Find means for 'in'.
   
   SArray1dC<VectorC> DesignKMeansBodyC::FindMeans(const SampleC<VectorC> &in) {
-    ONDEBUG(cerr << "DesignKMeansBodyC::Apply(), Called with " << in.Size() << " vectors. K=" << k << "\n");
+    if(m_verbose)
+      RavlDebug("DesignKMeansBodyC::Apply(), Called with %zu vectors. K=%u ",(size_t) in.Size(),k);
+    if(k == 0) {
+      RavlWarning("Asked to find 0 means, returning empty set.");
+      return SArray1dC<VectorC>();
+    }
     SArray1dC<VectorC> means(k);
     if(in.Size() == 0) {
-      cerr << "DesignKMeansBodyC::Apply(), WARNING: No data samples given. \n";
+      RavlError("DesignKMeansBodyC::Apply(), WARNING: No data samples given. ");
       return SArray1dC<VectorC>();
     }
     if(in.Size() <= k) {
-      cerr << "DesignKMeansBodyC::Apply(), WARNING: Fewer samples than means. \n";
+      RavlError("DesignKMeansBodyC::Apply(), WARNING: Fewer samples than means. ");
       //return ClassifierNearestNeighbourC(in,distance);
       means = SArray1dC<VectorC>(in.Size());
       SampleIterC<VectorC> sit(in);
@@ -132,15 +147,19 @@ namespace RavlN {
     HSetC<UIntT> used;
     UIntT index,dim;
     dim = in.First().Size();
-    
+    if(m_verbose)
+      RavlDebug("Vector size %u ",(unsigned) dim);
+
     for(SArray1dIterC<VectorC> it(means);it;it++) {
-      do {
+      while(1) {
 	index = RandomInt() % in.Size();
 	if(used[index])
 	  continue;
 	*it = in[index].Copy();
+        RavlAssert(it->Size() == dim);
 	used += index;
-      } while(0);
+	break;
+      }
     }
     
     // Reassign according to distance.
@@ -156,6 +175,9 @@ namespace RavlN {
     IntT iters = 0;
     SArray1dIterC<VectorC> mit(means);
 
+    bool unitNormalise = DistanceCorrelationC(distance).IsValid();
+    if(m_verbose)
+      RavlDebug("Doing unit normalise %d ",unitNormalise);
     // Update means iteratively.
     
     do {
@@ -166,15 +188,19 @@ namespace RavlN {
       
       for(SampleIterC<VectorC> it(in);it;it++) {
 	mit.First();
+        RavlAssert(mit->Size() == dim);
+	RavlAssert(it->Size() == dim);
 	RealT minDist = distance.Measure(*mit,*it);
 	index = 0;
 	for(mit++;mit;mit++) {
+	  RavlAssert(mit->Size() == dim);
 	  RealT dist =  distance.Measure(*mit,*it);
 	  if(dist < minDist) {
 	    minDist = dist;
 	    index = mit.Index().V();
 	  }
 	}
+        //RavlDebug("Min dist:%f ",minDist);
 	cost += minDist;
 	sums[index] += *it;
 	counts[index]++;
@@ -183,18 +209,23 @@ namespace RavlN {
       // Update means.
       
       for(SArray1dIter3C<VectorC,UIntT,VectorC> uit(sums,counts,means);uit;uit++) {
-	if(uit.Data2() > 0)
+	if(uit.Data2() > 0) {
 	  uit.Data3() = uit.Data1() / ((RealT) uit.Data2());
-	else {
-	  // Reinitalise from a random sample.
+	  if(unitNormalise)
+	    uit.Data3() = uit.Data3().Unit();
+	} else {
+	  // Reinitialise from a random sample.
 	  index = RandomInt() % in.Size();
 	  uit.Data3() = (in[index]).Copy();
 	}
+        RavlAssert(uit.Data3().Size() == dim);
 	uit.Data1().Fill(0);
 	uit.Data2() = 0;
       }
       iters++;
-      ONDEBUG(cerr <<"Iteration complete. Cost=" << cost << " Oldcost=" << oldcost << "\n");
+      if(m_verbose) {
+        RavlDebug("Iteration complete. Cost=%f Old cost=%f ",cost,oldcost);
+      }
     } while(iters < 3 || ((oldcost - cost) > 1e-6) );
     
     return means;
@@ -202,7 +233,8 @@ namespace RavlN {
   
   //: Find weighted means for 'in'.
   
-  SArray1dC<VectorC> DesignKMeansBodyC::FindMeans(const SampleC<VectorC> &in,const SampleC<RealT> &weights) {
+  SArray1dC<VectorC> DesignKMeansBodyC::FindMeans(const SampleC<VectorC> &in,const SampleC<RealT> &weights)
+  {
     ONDEBUG(cerr << "DesignKMeansBodyC::Apply(), Called with " << in.Size() << " vectors. K=" << k << "\n");
     SArray1dC<VectorC> means(k);
     if(in.Size() == 0) {
@@ -277,7 +309,7 @@ namespace RavlN {
 	if(uit.Data2() > 0)
 	  uit.Data3() = uit.Data1() / ((RealT) uit.Data2());
 	else {
-	  // Reinitalise from a random sample.
+	  // Reinitialise from a random sample.
 	  index = RandomInt() % in.Size();
 	  uit.Data3() = (in[index]).Copy();
 	}
@@ -285,7 +317,9 @@ namespace RavlN {
 	uit.Data2() = 0;
       }
       iters++;
-      ONDEBUG(cerr <<"Iteration complete. Cost=" << cost << " Oldcost=" << oldcost << "\n");
+      if(m_verbose) {
+        RavlDebug("Iteration complete. Cost=%f Old cost=%f ",cost,oldcost);
+      }
     } while(iters < 3 || ((oldcost - cost) > 1e-6) );
     
     return means;    

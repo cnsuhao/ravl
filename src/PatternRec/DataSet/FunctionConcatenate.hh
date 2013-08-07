@@ -17,7 +17,7 @@
 namespace RavlN {
 
   //! userlevel=Develop
-  //: Function which con-catenates a set of functions together.
+  //: Function which concatenates a set of functions together.
   
   class FunctionConcatenateBodyC
     : public FunctionBodyC
@@ -26,12 +26,17 @@ namespace RavlN {
     FunctionConcatenateBodyC();
     //: Default constructor.
     
+    FunctionConcatenateBodyC(const XMLFactoryContextC &factory);
+    //: Construct from XML factory
+
     FunctionConcatenateBodyC(const SArray1dC<FunctionC> & functions);
-    //: Default constructor.
+    //: Use an array of functions.
     
     FunctionConcatenateBodyC(const FunctionC & function1, const FunctionC & function2);
+    //: Construct from a set of functions.
 
     FunctionConcatenateBodyC(const FunctionC & function1, const FunctionC & function2, const FunctionC & function3);
+    //: Construct from a set of functions.
     
     FunctionConcatenateBodyC(std::istream &strm);
     //: Load from stream.
@@ -52,8 +57,10 @@ namespace RavlN {
     { return m_functions; }
     //: Access to the functions
     
-    
   protected:
+    //! Compute input and output sizes.
+    void ComputeSizes();
+
     // The concatenated functions
     SArray1dC<FunctionC> m_functions;
   };
@@ -69,6 +76,10 @@ namespace RavlN {
     {}
     //: Default constructor.
     
+    FunctionConcatenateC(const XMLFactoryContextC &factory)
+      : FunctionC(*new FunctionConcatenateBodyC(factory))
+    {}
+    //: Construct from XML factory
 
     FunctionConcatenateC(const SArray1dC<FunctionC> & functions)
       : FunctionC(*new FunctionConcatenateBodyC(functions))

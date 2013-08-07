@@ -11,8 +11,9 @@
 #include "Ravl/Audio/VectorDelta012.hh"
 #include "Ravl/FixedQueue.hh"
 #include "Ravl/SArray1dIter2.hh"
+#include "Ravl/XMLFactoryRegister.hh"
 
-#define DODEBUG 1
+#define DODEBUG 0
 #if DODEBUG
 #define ONDEBUG(x) x
 #else
@@ -21,6 +22,18 @@
 
 namespace RavlAudioN {
   
+  //: XML factory constructor
+
+  VectorDelta012C::VectorDelta012C(const XMLFactoryContextC &context)
+    : DPProcessBodyC<VectorC,VectorC>(),
+      samples(5),
+      delta1(3),
+      features(context.AttributeUInt("features",0))
+  {
+    if(features > 0)
+      Init(features);
+  }
+
   //: Constructor
   
   VectorDelta012C::VectorDelta012C(UIntT fawFeatures,const VectorC &mean)
@@ -28,7 +41,11 @@ namespace RavlAudioN {
       delta1(3),
       features(fawFeatures)
   {
-    VectorC zero(fawFeatures);
+    Init(fawFeatures,mean);
+  }
+
+  void VectorDelta012C::Init(UIntT numFeatures,const VectorC &mean) {
+    VectorC zero(numFeatures);
     zero.Fill(0);
     if(mean.IsValid()) {
       samples.InsLast(mean);
@@ -47,10 +64,16 @@ namespace RavlAudioN {
     delta1.InsLast(zero);
     delta1.InsLast(zero);
   }
-  
+
   //: Compute feature vector.
   
   VectorC VectorDelta012C::Apply(const VectorC &rawFeatures) {
+    // Need to initialise ?
+    if(features == 0) {
+      features = rawFeatures.Size();
+      Init(features);
+    }
+
     VectorC ret(features * 3);
     ret.Fill(-1);
     samples.DelFirst();
@@ -84,4 +107,9 @@ namespace RavlAudioN {
     
     return ret;
   }
+
+  void LinkVectorDelta12()
+  {}
+
+  static RavlN::XMLFactoryRegisterConvertC<VectorDelta012C,DPProcessBodyC<VectorC,VectorC> > g_registerVectorDelta012("RavlAudioN::VectorDelta012C");
 }

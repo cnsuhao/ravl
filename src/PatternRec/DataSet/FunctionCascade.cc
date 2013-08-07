@@ -16,14 +16,30 @@
 #include "Ravl/TypeName.hh"
 #include "Ravl/config.h"
 #include "Ravl/SArray1dIter.hh"
-
-#if RAVL_COMPILER_MIPSPRO 
-#include "Ravl/VirtualConstructor.hh"
-#pragma instantiate RavlN::FunctionCascadeBodyC* RavlN::VCLoad(RavlN::BinIStreamC&,RavlN::FunctionCascadeBodyC*)
-#pragma instantiate RavlN::FunctionCascadeBodyC* RavlN::VCLoad(std::istream &,RavlN::FunctionCascadeBodyC*)
-#endif 
+#include "Ravl/XMLFactoryRegister.hh"
 
 namespace RavlN {
+
+  //: Construct from XML factory
+  FunctionCascadeBodyC::FunctionCascadeBodyC(const XMLFactoryContextC &factory)
+    : FunctionBodyC(factory)
+  {
+    factory.UseComponentGroup("Functions",m_functions);
+    if(m_functions.Size() > 0) {
+      UIntT newISize = m_functions[0].InputSize();
+      UIntT newOSize = m_functions[m_functions.Size()-1].OutputSize();
+      if(inputSize != 0 && newISize != inputSize) {
+        RavlError("Unexpected input size. ");
+        throw RavlN::ExceptionBadConfigC("Unexpected input size");
+      }
+      if(outputSize != 0 && newOSize != outputSize) {
+        RavlError("Unexpected output size. ");
+        throw RavlN::ExceptionBadConfigC("Unexpected output size");
+      }
+      inputSize = newISize;
+      outputSize = newOSize;
+    }
+  }
 
   //: Default constructor.
   
@@ -95,22 +111,57 @@ namespace RavlN {
     return true;
   }
   
+
+  //: Apply function in place to 'data', overwrite values in out if its of the correct size.
+  void FunctionCascadeBodyC::ApplyInPlace(const VectorC &data,VectorC &out) const {
+    VectorC worki;
+    VectorC worko = data.Copy();
+    // This is at least efficient if the input and output vectors are the same length.
+    for(SArray1dIterC<FunctionC> it(m_functions);it;it++) {
+      RavlN::Swap(worki,worko);
+      it.Data().Apply(worki,worko);
+    }
+    out = worko;
+  }
+
   //: Apply function to 'data'
   
   VectorC FunctionCascadeBodyC::Apply(const VectorC &data) const {
     VectorC outputVec = data.Copy();
-    for(SArray1dIterC<FunctionC>it(m_functions);it;it++) {      
+    for(SArray1dIterC<FunctionC> it(m_functions);it;it++) {
       outputVec= it.Data().Apply(outputVec);
     }            
     return outputVec;
   }
-  
+  //: Apply function to 'data'
+
+  void FunctionCascadeBodyC::ApplyInPlace(const TVectorC<float> &data,TVectorC<float> &out) const {
+    TVectorC<float> worki;
+    TVectorC<float> worko = data.Copy();
+    // This is at least efficient if the input and output vectors are the same length.
+    for(SArray1dIterC<FunctionC> it(m_functions);it;it++) {
+      RavlN::Swap(worki,worko);
+      it.Data().Apply(worki,worko);
+    }
+    out = worko;
+  }
+  //: Apply function in place to 'data', overwrite values in out if its of the correct size.
+
+  TVectorC<float> FunctionCascadeBodyC::Apply(const TVectorC<float> &data) const {
+    TVectorC<float> outputVec = data;
+    for(SArray1dIterC<FunctionC> it(m_functions);it;it++) {
+      outputVec= it.Data().Apply(outputVec);
+    }
+    return outputVec;
+  }
+  //: Apply function with float vectors to 'data'
+
   ///////////////////////////////////////////////////////////
   
-  
   RAVL_INITVIRTUALCONSTRUCTOR_FULL(FunctionCascadeBodyC,FunctionCascadeC,FunctionC);
-  //FileFormatStreamC <FunctionCascadeC> FileFormatStream_FunctionCascadeC;
-  //FileFormatBinStreamC <FunctionCascadeC> FileFormatBinStream_FunctionCascadeC;
-  //static TypeNameC typenameFunctionCascade(typeid(FunctionCascadeC),"FunctionCascadeC");
 
+  static RavlN::XMLFactoryRegisterHandleC<RavlN::FunctionCascadeC> g_registerXMLFactoryFunctionCascade("RavlN::FunctionCascadeC");
+
+  void LinkFunctionCascade()
+  {}
 }

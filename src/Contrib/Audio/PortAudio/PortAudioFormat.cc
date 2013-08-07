@@ -74,11 +74,14 @@ namespace RavlAudioN {
     const PaDeviceInfo *devInfo = FindDevice(device,false,devId);
 
     // Device found ?
-    if(devInfo == 0)
+    if(devInfo == 0) {
       return typeid(void);
+    }
     int channels = devInfo->maxInputChannels;
-    if(channels == 0)
+    if(channels == 0) {
+      ONDEBUG(RavlWarning("No channels found."));
       return typeid(void);
+    }
     
     int reqChannels = Channels(obj_type);
 
@@ -95,7 +98,7 @@ namespace RavlAudioN {
     ONDEBUG(RavlDebug("ProbeSave(), Checking file type. %s for '%s' ",RavlN::TypeName(obj_type),filename.c_str()));
 
     StringC devType = ExtractDevice(filename);
-    RavlDebug("Got type %s ",devType.c_str());
+    ONDEBUG(RavlDebug("Got type %s ",devType.c_str()));
     if(devType != "PORTAUDIO") {
       ONDEBUG(RavlDebug("Not recognised."));
       return typeid(void);
@@ -270,7 +273,7 @@ namespace RavlAudioN {
     if(obj_type == typeid(SampleElemC<2,Int16T>))
       return DPOAudioC<SampleElemC<2,Int16T>,PortAudioBaseC>(filename,devId);
     if(obj_type == typeid(SampleElemC<1,Int16T>))
-	    return DPOAudioC<SampleElemC<1,Int16T>, PortAudioBaseC> (filename,devId) ;
+      return DPOAudioC<SampleElemC<1,Int16T>, PortAudioBaseC> (filename,devId);
 
     if(obj_type == typeid(SampleElemC<8,float>))
       return DPOAudioC<SampleElemC<8,float>,PortAudioBaseC>(filename,devId);
@@ -306,12 +309,18 @@ namespace RavlAudioN {
       PaDeviceIndex ind;
       if(forInput) {
         ind = Pa_GetDefaultInputDevice();
+        if(ind < 0) {
+          RavlWarning("AudioPort failed to find default input device");
+          // Failed to find appropriate device.
+          return 0;
+        }
       } else {
         ind = Pa_GetDefaultOutputDevice();
-      }
-      if(ind < 0) {
-        // Failed to find appropriate device.
-        return 0;
+        if(ind < 0) {
+          RavlWarning("AudioPort failed to find default output device");
+          // Failed to find appropriate device.
+          return 0;
+        }
       }
       devId = ind;
       return Pa_GetDeviceInfo(ind);
@@ -320,12 +329,28 @@ namespace RavlAudioN {
     int numDevices = Pa_GetDeviceCount();
     for(int i = 0;i < numDevices;i++) {
       const PaDeviceInfo *xdevInfo = 0;
+      // Does it match the device number ?
+      if(StringC(i) == devName)
+        return xdevInfo;
       xdevInfo = Pa_GetDeviceInfo(i);
       if(devName == xdevInfo->name) {
         devId = i;
         return xdevInfo;
       }
     }
+
+    RavlInfo("Failed to find device '%s'. Available devices are: ",devName.c_str());
+    for(int i = 0;i < numDevices;i++) {
+      const PaDeviceInfo *xdevInfo = 0;
+      xdevInfo = Pa_GetDeviceInfo(i);
+      RavlInfo(" %d '%s' Inputs:%d Outputs:%d Default sample rate:%f ",
+          i,
+          xdevInfo->name,
+          xdevInfo->maxInputChannels,
+          xdevInfo->maxOutputChannels,
+          xdevInfo->defaultSampleRate);
+    }
+
     return 0;
   }
 

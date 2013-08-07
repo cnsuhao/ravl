@@ -12,7 +12,6 @@
 //! author="Radek Marik"
 //! docentry="Ravl.API.Core.Arrays.1D"
 //! date="21/2/1996"
-//! rcsid="$Id$"
 
 #include "Ravl/Buffer.hh"
 #include "Ravl/SBfAcc.hh"

@@ -18,7 +18,7 @@
 #include "Ravl/SmartLayerPtr.hh"
 #include "Ravl/Threads/RWLock.hh"
 #include "Ravl/Threads/Mutex.hh"
-#include "Ravl/OS/SysLog.hh"
+#include "Ravl/SysLog.hh"
 #include "Ravl/RCWrap.hh"
 #include "Ravl/Collection.hh"
 #include "Ravl/Traits.hh"
@@ -486,6 +486,10 @@ namespace RavlN {
     //: lookup child in tree.
     // Returns true and updates parameter 'child' if child is found.
 
+    bool CreateContext(const StringC &key,XMLFactoryContextC &child) const;
+    //: lookup child in tree.
+    // Returns true and updates parameter 'child' if child is found.
+
     bool HasChild(const StringC &childName) const
     { return m_iNode->HasChild(childName); }
     //: Test if a child context exist
@@ -499,13 +503,43 @@ namespace RavlN {
       XMLFactoryContextC childContext;
       if(!ChildContext(group,childContext))
         return false;
+      HSetC<StringC> used;
       for(RavlN::DLIterC<XMLTreeC> it(childContext.Children());it;it++) {
+        if(used.IsMember(it->Name())) {
+          RavlError("Duplicate name '%s' in group '%s' ",it->Name().c_str(),Path().c_str());
+          throw RavlN::ExceptionBadConfigC("Duplicate component");
+        }
+        used += it->Name();
         DataT value;
         if(!childContext.UseChildComponent(it->Name(),value,false,defaultType)) {
-          SysLog(SYSLOG_ERR,"Failed to load child component %s, at %s ",it->Name().data(),childContext.Path().data());
+          RavlError("Failed to load child component %s, at %s ",it->Name().data(),childContext.Path().data());
           throw RavlN::ExceptionBadConfigC("Failed to load component");
         }
         list.push_back(value);
+      }
+      return true;
+    }
+    //: Load component list.
+    // Returns true if child group exists, though it still may be empty.
+
+    template<class DataT>
+    bool UseComponentGroup(const StringC &group,DListC<DataT> &list,const std::type_info &defaultType=typeid(void)) const {
+      XMLFactoryContextC childContext;
+      if(!ChildContext(group,childContext))
+        return false;
+      HSetC<StringC> used;
+      for(RavlN::DLIterC<XMLTreeC> it(childContext.Children());it;it++) {
+        if(used.IsMember(it->Name())) {
+          RavlError("Duplicate name '%s' in group '%s' ",it->Name().c_str(),Path().c_str());
+          throw RavlN::ExceptionBadConfigC("Duplicate component");
+        }
+        used += it->Name();
+        DataT value;
+        if(!childContext.UseChildComponent(it->Name(),value,false,defaultType)) {
+          RavlError("Failed to load child component %s, at %s ",it->Name().data(),childContext.Path().data());
+          throw RavlN::ExceptionBadConfigC("Failed to load component");
+        }
+        list.InsLast(value);
       }
       return true;
     }
@@ -519,14 +553,31 @@ namespace RavlN {
         return false;
       if(!list.IsValid())
         list = CollectionC<DataT>(childContext.Children().Size());
+      HSetC<StringC> used;
       for(RavlN::DLIterC<XMLTreeC> it(childContext.Children());it;it++) {
+        if(used.IsMember(it->Name())) {
+          RavlError("Duplicate name '%s' in group '%s' ",it->Name().c_str(),Path().c_str());
+          throw RavlN::ExceptionBadConfigC("Duplicate component");
+        }
+        used += it->Name();
         DataT value;
         if(!childContext.UseChildComponent(it->Name(),value,false,defaultType)) {
-          SysLog(SYSLOG_ERR,"Failed to load child component %s, at %s ",it->Name().data(),childContext.Path().data());
+          RavlError("Failed to load child component %s, at %s ",it->Name().data(),childContext.Path().data());
           throw RavlN::ExceptionBadConfigC("Failed to load component");
         }
         list.Append(value);
       }
+      return true;
+    }
+    //: Load component list.
+    // Returns true if child group exists, though it still may be empty.
+
+    template<class DataT>
+    bool UseComponentGroup(const StringC &group,SArray1dC<DataT> &list,const std::type_info &defaultType=typeid(void)) const {
+      CollectionC<DataT> col;
+      if(!UseComponentGroup(group,col,defaultType))
+        return false;
+      list = col.Array();
       return true;
     }
     //: Load component list.
@@ -537,10 +588,16 @@ namespace RavlN {
       XMLFactoryContextC childContext;
       if(!ChildContext(group,childContext))
         return false;
+      HSetC<StringC> used;
       for(RavlN::DLIterC<XMLTreeC> it(childContext.Children());it;it++) {
+        if(used.IsMember(it->Name())) {
+          RavlError("Duplicate name '%s' in group '%s' ",it->Name().c_str(),Path().c_str());
+          throw RavlN::ExceptionBadConfigC("Duplicate component");
+        }
+        used += it->Name();
         typename TraitsC<DataT>::BaseTypeT value;
         if(!childContext.UseChildComponent(it->Name(),value,false,defaultType)) {
-          SysLog(SYSLOG_ERR,"Failed to load child component %s, at %s ",it->Name().data(),childContext.Path().data());
+          RavlError("Failed to load child component %s, at %s ",it->Name().data(),childContext.Path().data());
           throw RavlN::ExceptionBadConfigC("Failed to load component");
         }
         (obj.*addMethod)(value);
@@ -555,10 +612,16 @@ namespace RavlN {
       XMLFactoryContextC childContext;
       if(!ChildContext(group,childContext))
         return false;
+      HSetC<StringC> used;
       for(RavlN::DLIterC<XMLTreeC> it(childContext.Children());it;it++) {
+        if(used.IsMember(it->Name())) {
+          RavlError("Duplicate name '%s' in group '%s' ",it->Name().c_str(),Path().c_str());
+          throw RavlN::ExceptionBadConfigC("Duplicate component");
+        }
+        used += it->Name();
         typename TraitsC<DataT>::BaseTypeT value;
         if(!childContext.UseChildComponent(it->Name(),value,false,defaultType)) {
-          SysLog(SYSLOG_ERR,"Failed to load child component %s, at %s ",it->Name().data(),childContext.Path().data());
+          RavlError("Failed to load child component %s, at %s ",it->Name().data(),childContext.Path().data());
           throw RavlN::ExceptionBadConfigC("Failed to load component");
         }
         (obj.*addMethod)(it->Name(),value);
@@ -696,21 +759,18 @@ namespace RavlN {
                          )
     {
       RCWrapC<DataT> handle;
-      XMLFactoryContextC newNode;
+
 
       StringC redirect = currentContext.AttributeString(name);
       if(redirect.IsEmpty())
         redirect = name;
 
-      //StringC fullName = currentNode.Path() + ":" + redirect;
-
-      // Does spec for component exist in this node ?
-      if(!currentContext.ChildContext(redirect,newNode)) {
+      XMLFactoryContextC newNode;
+      if(!currentContext.CreateContext(redirect,newNode)) {
         if(!suppressErrors)
           throw RavlN::ExceptionBadConfigC("Failed to find child");
         return false;
       }
-      //newNode.SetFactory(*this);
 
       if(!CreateComponent(newNode,data)) {
         if(!suppressErrors)

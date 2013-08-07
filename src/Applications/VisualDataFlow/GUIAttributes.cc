@@ -10,7 +10,7 @@
 #include "Ravl/GUI/Label.hh"
 #include "Ravl/GUI/Frame.hh"
 
-#define DODEBUG 1
+#define DODEBUG 0
 #if DODEBUG
 #define ONDEBUG(x) x
 #else

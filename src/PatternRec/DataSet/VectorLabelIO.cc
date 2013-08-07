@@ -9,6 +9,7 @@
 //! file="Ravl/PatternRec/DataSet/VectorLabelIO.cc"
 
 #include "Ravl/PatternRec/DataSet2.hh"
+#include "Ravl/DP/FileFormatBinStream.hh"
 
 #define DODEBUG 0
 #if DODEBUG

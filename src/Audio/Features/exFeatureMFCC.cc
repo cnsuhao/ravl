@@ -24,25 +24,30 @@ using namespace RavlAudioN;
 
 int main(int nargs,char **argv) {
   OptionC opts(nargs,argv);
-  IntT sampleRate = opts.Int("sr",16000,"Sample rate. ");
+  RealT sampleRate = opts.Int("sr",0,"Sample rate. ");
   StringC inFile = opts.String("","@DEVAUDIO:/dev/dsp","Audio input. ");
   StringC outFile = opts.String("","","Output for features. ");
   opts.Check();
   
   DPIPortC<Int16T> inp;
   if(!OpenISequence(inp,inFile)) {
-    cerr << "Failed to open input file '" << inFile << "'\n";
+    std::cerr << "Failed to open input file '" << inFile << "'\n";
     return 1;
   }
   
   DPOPortC<VectorC> outp;
   if(!outFile.IsEmpty()) {
     if(!OpenOSequence(outp,outFile)) {
-      cerr << "Failed to open output file '" << outFile << "'\n";
+      std::cerr << "Failed to open output file '" << outFile << "'\n";
       return 1;
     }
   }
-  inp.SetAttr("samplerate",sampleRate);
+  RealT reportedRate;
+  if(sampleRate == 0) {
+    inp.GetAttr("samplerate",sampleRate);
+  } else {
+    inp.SetAttr("samplerate",sampleRate);
+  }
   FeatureMFCCC fextract(sampleRate);
   fextract.Input() = inp;
   VectorC vec;

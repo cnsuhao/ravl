@@ -41,7 +41,8 @@ namespace RavlN { namespace GeneticN {
      m_threads(factory.AttributeUInt("threads",1)),
      m_atWorkQueue(0),
      m_randomiseDomain(factory.AttributeBool("randomiseDomain",false)),
-     m_runningAverageLength(factory.AttributeUInt("runningAverageLength",0))
+     m_runningAverageLength(factory.AttributeUInt("runningAverageLength",0)),
+     m_requireFitnessFunction(factory.AttributeBool("requireFitnessFunction", true))
   {
     factory.Attribute("logLevel",m_logLevel,RavlN::SYSLOG_INFO);
     RavlInfo("Setting debug level to '%s' ",RavlN::StringOf(m_logLevel).c_str());
@@ -68,11 +69,11 @@ namespace RavlN { namespace GeneticN {
   }
 
   //! Run whole optimisation
-  void GeneticOptimiserC::Run() {
-    if(!m_evaluateFitness.IsValid()) {
-      RavlError("Not fitness function defined.");
+  bool GeneticOptimiserC::Run() {
+    if(m_requireFitnessFunction && !m_evaluateFitness.IsValid()) {
+      RavlError("No fitness function defined.");
       RavlAssertMsg(0,"No fitness function defined.");
-      return ;
+      return false;
     }
     RavlDebug("Running %u generations ", m_numGenerations);
     MutexLockC lock(m_access);
@@ -85,7 +86,10 @@ namespace RavlN { namespace GeneticN {
         bestScore = m_population.rbegin()->first;
       lock.Unlock();
       RavlInfo("Running generation %u  Initial score:%f ",i,bestScore);
-      RunGeneration(i);
+      if(!RunGeneration(i)) {
+        RavlWarning("Failed to run generation!");
+        return false;
+      }
       lock.Lock();
       if(m_logLevel >= SYSLOG_INFO) {
         m_population.rbegin()->second->Dump(RavlSysLog(SYSLOG_INFO));
@@ -101,6 +105,7 @@ namespace RavlN { namespace GeneticN {
     lock.Lock();
     if(m_population.empty()) {
       RavlInfo("Population list empty. ");
+      return false;
     } else {
       RavlInfo("Best final score %f ",m_population.rbegin()->first);
       OStreamC ostrm(std::cout);
@@ -108,6 +113,9 @@ namespace RavlN { namespace GeneticN {
       m_population.rbegin()->second->Save(outXML);
     }
     lock.Unlock();
+
+    // Everything completed OK
+    return true;
   }
 
   //! Save population to file
@@ -173,7 +181,7 @@ namespace RavlN { namespace GeneticN {
 
 
   //! Run generation.
-  void GeneticOptimiserC::RunGeneration(UIntT generation,bool resetScores)
+  bool GeneticOptimiserC::RunGeneration(UIntT generation,bool resetScores)
   {
     RavlDebugIf(m_logLevel,"Examining results from last run. %s ",RavlN::StringOf(m_logLevel).c_str());
     unsigned count = 0;
@@ -212,11 +220,14 @@ namespace RavlN { namespace GeneticN {
 
       RavlAssert(!m_startPopulation.empty());
       lock.Unlock();
-      Evaluate(m_startPopulation);
+      if(!Evaluate(m_startPopulation)) {
+        RavlWarning("Failed to evaluate start population.");
+        return false;
+      }
       lock.Lock();
       if(m_population.empty()) {
         RavlError("Population empty.");
-        return ;
+        return false;
       }
     }
 
@@ -283,10 +294,14 @@ namespace RavlN { namespace GeneticN {
 
     RavlDebugIf(m_logLevel,"Evaluating population size %s with %u threads",RavlN::StringOf(newTestSet.size()).data(),m_threads);
     // Evaluate the new genomes.
-    Evaluate(newTestSet);
+    if(!Evaluate(newTestSet)) {
+      RavlWarning("Failed to evaluate population.");
+      return false;
+    }
+    return true;
   }
 
-  void GeneticOptimiserC::Evaluate(const std::vector<GenomeC::RefT> &pop)
+  bool GeneticOptimiserC::Evaluate(const std::vector<GenomeC::RefT> &pop)
   {
     MutexLockC lock(m_access);
     //std::swap(m_workQueue,pop);
@@ -310,6 +325,7 @@ namespace RavlN { namespace GeneticN {
         threads[i].WaitForExit();
       }
     }
+    return true;
   }
 
   void GeneticOptimiserC::EvaluateWorker() {

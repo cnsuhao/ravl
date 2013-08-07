@@ -59,7 +59,11 @@ namespace RavlN {
     const SizeT &Number() const
     { return n; }
     //: Access the number of samples.
-    
+
+    SizeT &Number()
+    { return n; }
+    //: Access the number of samples.
+
     const RealT &Mean() const
     { return mean; }
     //: Access the mean.

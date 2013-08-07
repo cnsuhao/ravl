@@ -9,7 +9,6 @@
 /////////////////////////////////////////////////////////////
 //! docentry="Ravl.API.Core.IO.Formats" 
 //! author="Charles Galambos"
-//! rcsid="$Id$"
 //! lib=RavlIO
 //! file="Ravl/Core/IO/TypeConverter.hh"
 
@@ -51,6 +50,14 @@ namespace RavlN {
     DListC<DPConverterBaseC> FindConversion(const std::type_info &from,const std::type_info &to);
     //: Find a conversion.
     
+    bool ConvertIPort(const DPIPortBaseC &port,const std::type_info &toType,DPIPortBaseC &result);
+    //: Convert an port to a new type if possible
+    // Returns true and sets 'result' if operation succeeded.
+
+    bool ConvertOPort(const DPOPortBaseC &port,const std::type_info &toType,DPOPortBaseC &result);
+    //: Convert an port to a new type if possible
+    // Returns true and sets 'result' if operation succeeded.
+
     bool CanConvert(const std::type_info &from,const std::type_info &to);
     //: Test if conversion is possible.
     
@@ -148,6 +155,16 @@ namespace RavlN {
     DListC<DPConverterBaseC> FindConversion(const std::type_info &from,const std::type_info &to)
     { return Body().FindConversion(from,to); }
     //: Find a conversion.
+
+    bool ConvertIPort(const DPIPortBaseC &port,const std::type_info &toType,DPIPortBaseC &result)
+    { return Body().ConvertIPort(port,toType,result); }
+    //: Convert an port to a new type if possible
+    // Returns true and sets 'result' if operation succeeded.
+
+    bool ConvertOPort(const DPOPortBaseC &port,const std::type_info &toType,DPOPortBaseC &result)
+    { return Body().ConvertOPort(port,toType,result); }
+    //: Convert an port to a new type if possible
+    // Returns true and sets 'result' if operation succeeded.
     
     bool CanConvert(const std::type_info &from,const std::type_info &to)
     { return Body().CanConvert(from,to); }

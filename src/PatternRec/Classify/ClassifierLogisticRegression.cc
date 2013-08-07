@@ -42,7 +42,8 @@ namespace RavlN {
   //: Load from stream.
   
   ClassifierLogisticRegressionBodyC::ClassifierLogisticRegressionBodyC(std::istream &strm)
-    : ClassifierBodyC(strm)
+    : ClassifierBodyC(strm),
+      m_prependUnit(false)
   { 
     IntT version;
     strm >> version;
@@ -59,7 +60,8 @@ namespace RavlN {
   //: Load from binary stream.
   
   ClassifierLogisticRegressionBodyC::ClassifierLogisticRegressionBodyC(BinIStreamC &strm)
-    : ClassifierBodyC(strm)
+    : ClassifierBodyC(strm),
+      m_prependUnit(false)
   {
     IntT version;
     strm >> version;

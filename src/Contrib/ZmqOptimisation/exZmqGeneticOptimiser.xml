@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<?RAVL class='RavlN::XMLTreeC' ?>
+<Config verbose="false" checkConfig="true">
+
+	<ZmqOptimiser typename="RavlN::ZmqN::ZmqGeneticOptimiserC"
+		cross2mutationRatio="0.2" randomFraction="0.05" mutationRate="0.02"
+		keepFraction="0.5" populationSize="20" numGenerations="-1" createOnly="False"
+		threads="4" teminateScore="99" requireFitnessFunction="false">
+		<StartPopulation>
+			<Seed typename="RavlN::GeneticN::GenomeC">
+				<Gene typename="RavlN::GeneticN::GeneClassC">
+					<Type typename="RavlN::GeneticN::GeneTypeClassC" className="RavlN::BlackboardC" />
+				</Gene>
+			</Seed>
+		</StartPopulation>
+	</ZmqOptimiser>
+
+	<OptimiserCheckPoint typename="RavlN::GeneticN::GeneticOptimiserCheckPointC"
+		filename="checkPoint" interval="10" numberToKeep="2" Optimiser="ZmqOptimiser" />
+
+
+	<ZmqContext typename="RavlN::ZmqN::ContextC" />
+
+	<Sender typename="RavlN::ZmqN::SocketC" socketType="PUSH"
+		verbose="true" >
+		<Properties>
+			<Bind value="tcp://*:5557" />
+		</Properties>
+	</Sender>
+
+	<Receiver typename="RavlN::ZmqN::SocketC" socketType="PULL"
+		verbose="true">
+		<Properties>
+			<Connect value="tcp://*:5557" />
+		</Properties>
+	</Receiver>
+
+	<Sink typename="RavlN::ZmqN::SocketC" socketType="PUSH" verbose="true">
+		<Properties>
+			<Connect value="tcp://*:5558" />
+		</Properties>
+	</Sink>
+
+	<SinkReceiver typename="RavlN::ZmqN::SocketC" socketType="PULL"
+		verbose="true">
+		<Properties>
+			<Bind value="tcp://*:5558" />
+		</Properties>
+	</SinkReceiver>
+
+</Config>

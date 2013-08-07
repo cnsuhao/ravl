@@ -66,6 +66,10 @@ namespace RavlN {
     // startOffset is the location in the buffer to use as 0,0.
     // If stride is set to zero, size2 is used.
 
+    SArray2dC(const SArray1dC<DataT> & arr, SizeT size1,SizeT size2);
+    //: Constructor using 1d array 'arr'.
+    // This can be used, for example to view a 1d array, as a 2d array.
+
     SArray2dC(SArray2dC<DataT> &arr,SizeT size1,SizeT size2);
     //: Construct an access to a sub array of this one.
 
@@ -342,6 +346,17 @@ namespace RavlN {
     : SizeBufferAccess2dC<DataT>(nsize2),
       data(bf,size1)
   { BuildAccess(startOffset,stride); }
+
+  //: Constructor using 1d array 'arr'.
+  // This can be used, for example to view a 1d array, as a 2d array.
+  template<class DataT>
+  SArray2dC<DataT>::SArray2dC(const SArray1dC<DataT> & arr, SizeT nsize1,SizeT nsize2)
+  : SizeBufferAccess2dC<DataT>(nsize2),
+    data(arr.Buffer(),nsize1)
+  {
+    RavlAssert(arr.Size() <= nsize1 * nsize2);
+    BuildAccess(arr.ReferenceElm() - arr.Buffer().ReferenceElm(),0);
+  }
 
   template<class DataT>
   SArray2dC<DataT>::SArray2dC(DataT *data,SizeT size1,SizeT nsize2,bool copyMemory,bool freeMemory,IntT stride)

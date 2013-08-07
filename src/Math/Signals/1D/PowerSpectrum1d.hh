@@ -16,17 +16,23 @@
 #include "Ravl/StdMath.hh"
 #include "Ravl/Array1d.hh"
 #include "Ravl/FFT1d.hh"
+#include "Ravl/DP/Process.hh"
 
 namespace RavlN {
 
   //! userlevel=Normal
   //: Power Spectrum 
   
-  class PowerSpectrum1dC {
+  class PowerSpectrum1dC
+   : public DPProcessBodyC<SArray1dC<RealT>,SArray1dC<RealT> >
+  {
   public:
-    PowerSpectrum1dC(IntT size);
+    PowerSpectrum1dC(IntT size,bool useWindow = true);
     //: Constructor.
-    
+
+    PowerSpectrum1dC(const XMLFactoryContextC &factory);
+    //: Constructor.
+
     Array1dC<RealT> Apply(const Array1dC<RealT> &data);
     //: Compute the power spectrum of data.
     // Compute the power spectrum using Bartlett window (simple triangle).
@@ -38,7 +44,10 @@ namespace RavlN {
     // array will be multiplied by an increasing ramp, the second
     // by a decreasing one.
     
+    typedef RavlN::SmartPtrC<PowerSpectrum1dC> RefT;
+    //: Handle to class
   protected:
+    bool m_useWindow;
     FFT1dC fft;  
   };
   

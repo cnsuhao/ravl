@@ -8,7 +8,6 @@
 #define RAVL_DESIGNMEANSHIFTCLUSTER_HEADER 1
 //! author="Charles Galambos"
 //! userlevel=Normal
-//! rcsid="$Id$"
 //! lib=RavlPatternRec
 //! docentry="Ravl.API.Pattern Recognition.Cluster;Ravl.API.Pattern Recognition.Classifier.DesignClassifier"
 //! file="Ravl/PatternRec/Cluster/DesignMeanShiftCluster.hh"
@@ -27,14 +26,10 @@ namespace RavlN {
     : public DesignClusterBodyC
   {
   public:
-    DesignMeanShiftClusterBodyC(RealT nk,RealT ntermiter = 1.0,const DistanceC &distanceMetric = DistanceSqrEuclideanC())
-      : distance(distanceMetric),
-	k(nk),
-	termiter(ntermiter)
-    {}
+    DesignMeanShiftClusterBodyC(RealT nk,RealT ntermiter = 1.0,const DistanceC &distanceMetric = DistanceSqrEuclideanC());
     //: Constructor.
     // k is the size of the kernel
-    // ntermiter is the minmum distance the cluster center is moved before terminating iteration.
+    // ntermiter is the minimum distance the cluster centre is moved before terminating iteration.
     
     DesignMeanShiftClusterBodyC(istream &strm);
     //: Load from stream.
@@ -49,7 +44,7 @@ namespace RavlN {
     //: Writes object to stream, can be loaded using constructor
     
     virtual FunctionC Apply(const SampleC<VectorC> &in);
-    //: Create a clasifier.
+    //: Create a classifier.
     
     virtual FunctionC Apply(const SampleC<VectorC> &in,const SampleC<RealT> &weight);
     //: Create function from the given data, and sample weights.
@@ -57,13 +52,13 @@ namespace RavlN {
     virtual SArray1dC<MeanCovarianceC> Cluster(const SampleC<VectorC> &in);
     //: Compute cluster means.
     //!param: in - Array of samples to cluster.
-    //!return: Array of point centers
+    //!return: Array of point centres
     
     virtual SArray1dC<MeanCovarianceC> Cluster(const SampleC<VectorC> &in, const SampleC<RealT> & weights);
     //: Compute cluster means.
     //!param: in - Array of samples to cluster.
     //!param: weights - Weights of samples
-    //!return: Array of point centers
+    //!return: Array of point centres
 
     virtual SArray1dC<MeanCovarianceC> Cluster(const SampleC<VectorC> &in,SampleC<UIntT> &labels);
     //: Compute cluster means, and labels for all the samples
@@ -86,14 +81,14 @@ namespace RavlN {
     //: Find means for 'in'.
     //!param: in - Set of vectors to process, must be all of the same length.
     //!param: labels - Data set of labels in which the member ship of each sample is stored
-    //!return: Set of cluster centers
+    //!return: Set of cluster centres
     
     virtual DListC<VectorC> FindMeans(const SampleC<VectorC> &in,const SampleC<RealT> &weights,SampleC<UIntT> &labels);
     //: Find weighted means for 'in'.
     //!param: in - Set of vectors to process, must be all of the same length.
     //!param: labels - Data set of labels in which the member ship of each sample is stored
     //!param: weights - Weights for each of the samples.
-    //!return: Set of cluster centers
+    //!return: Set of cluster centres
     
     DistanceC distance;
     RealT k;
@@ -115,10 +110,11 @@ namespace RavlN {
     DesignMeanShiftClusterC(RealT k,RealT ntermiter = 1.0,const DistanceC &distanceMetric = DistanceSqrEuclideanC())
       : DesignClusterC(*new DesignMeanShiftClusterBodyC(k,ntermiter,distanceMetric))
     {}
-    //: Default constructor.
-    // Creates an invalid constructor.
+    //: Constructor.
+    //!param: k - size of the kernel
+    //!param: ntermiter - minimum distance the cluster centre is moved before terminating iteration.
     
-    DesignMeanShiftClusterC(istream &strm);
+    DesignMeanShiftClusterC(std::istream &strm);
     //: Load from stream.
     
     DesignMeanShiftClusterC(BinIStreamC &strm);

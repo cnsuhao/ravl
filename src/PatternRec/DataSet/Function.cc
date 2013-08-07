@@ -51,7 +51,12 @@ namespace RavlN {
     out << inputSize << outputSize;
     return true;
   }
-  
+
+  //: Apply function in place to 'data', overwrite values in out if its of the correct size.
+
+  void FunctionBodyC::ApplyInPlace(const VectorC &data,VectorC &out) const
+  { out = Apply(data); }
+
 
   //: Apply function with float vectors to 'data'
 
@@ -60,6 +65,13 @@ namespace RavlN {
     TVectorC<float> ret = Apply(tmp);
     return ret;
   }
+
+
+  //: Apply function in place to 'data', overwrite values in out if its of the correct size.
+
+  void FunctionBodyC::ApplyInPlace(const TVectorC<float> &data,TVectorC<float> &out) const
+  { out = Apply(data); }
+
 
   //: Apply function to 'data'
   
@@ -92,7 +104,7 @@ namespace RavlN {
     MatrixC comp = Jacobian (X);
     MatrixC diff = approx - comp;
     RealT err = (diff.SumOfAbs() / (RealT) diff.Size());
-    RavlDebug("Jacobian error:%e ",err);
+    RavlDebug("Jacobian error:%e Epsilon:%f ",err,epsilon);
     RavlDebug("Jacobian   approx:%s ",RavlN::StringOf(approx).c_str());
     RavlDebug("Jacobian computed:%s ",RavlN::StringOf(comp).c_str());
     return err < tolerance;
@@ -102,7 +114,7 @@ namespace RavlN {
 
   MatrixC FunctionBodyC::NumericalJacobian(const VectorC &X,RealT epsilon) const
   {
-    RavlDebug("Num Jacobian. eps:%f ",epsilon);
+    //RavlDebug("Num Jacobian. eps:%f ",epsilon);
     RavlAssert(X.Size() == inputSize);
     MatrixC J (outputSize,inputSize);
     VectorC dX (inputSize);
@@ -170,9 +182,10 @@ namespace RavlN {
   {}
   
   //: Setup virtual constructor.
-  // As this is an abstract class its not really needed, but its usefull to
+  // As this is an abstract class its not really needed, but its useful to
   // have an example of how it should work here.
   
   //RAVL_INITVIRTUALCONSTRUCTOR(FunctionBodyC);
   
+
 }

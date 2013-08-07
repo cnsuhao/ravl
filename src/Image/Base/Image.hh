@@ -96,7 +96,15 @@ namespace RavlImageN {
     //!param: rows - Number of rows in the image.
     //!param: cols - Number of column's in the image
     //!param: buf - Raw pixel buffer, must contain at least row * cols elements.
-    
+
+    ImageC(UIntT rows,UIntT cols,const SArray1dC<PixelT> &buf)
+      : Array2dC<PixelT>(IndexRange2dC(0,rows-1,0,cols-1),buf)
+    {}
+    //: Construct an image with origin at top left corner and size rows x cols, with space in 'buf'
+    //!param: rows - Number of rows in the image.
+    //!param: cols - Number of column's in the image
+    //!param: buf - Raw pixel buffer, must contain at least row * cols elements.
+
     ImageC(UIntT rows,UIntT cols,PixelT *data,bool deletable = true)
       : Array2dC<PixelT>(IndexRange2dC(0,rows-1,0,cols-1),BufferC<PixelT>(rows * cols,data,false,deletable))
     {}

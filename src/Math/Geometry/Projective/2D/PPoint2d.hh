@@ -49,10 +49,11 @@ namespace RavlN {
     {}
     // Constructs the point (row, col, 1).
     
-    inline PPoint2dC(const Point2dC & p)
-      : PPointLine2dC(p.Row(), p.Col(), 1)
+    inline PPoint2dC(const Point2dC & p, RealT s=1)
+      : PPointLine2dC(p.Row(), p.Col(), s)
     {}
-    // Constructs the point (p.row, p.col, 1).
+    // Constructs the point (p.row, p.col, s).
+    // s is the projective scale for the point
     
     inline PPoint2dC(RealT p1, RealT p2, RealT p3)
       : PPointLine2dC(p1, p2, p3)

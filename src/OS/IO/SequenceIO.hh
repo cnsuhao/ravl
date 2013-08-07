@@ -25,13 +25,13 @@ namespace RavlN
   bool OpenISequenceBase(DPIPortBaseC &ip,DPSeekCtrlC &sc,const StringC &filename,const StringC &fileformat,const type_info &obj_type,bool verbose = false);
   //! userlevel=Develop
   //: Open input stream base.
-  // Returns true on succcess.
+  // Returns true on success.
   
   
   bool OpenOSequenceBase(DPOPortBaseC &op,DPSeekCtrlC &sc,const StringC &filename,const StringC &fileformat,const type_info &obj_type,bool verbose = false);
   //! userlevel=Develop
   //: Open output stream base.
-  // Returns true on succcess.
+  // Returns true on success.
 
   
   template<class DataT>
@@ -58,7 +58,7 @@ namespace RavlN
   // for all formats. <p>
   // If the fileformat argument is used, it must be one of the known types
   // returned by "conv -lf".  If the fileformat is a zero length string (the default), the filename extension is used.
-  // Returns true on succcess.
+  // Returns true on success.
   
   template<class DataT>
   bool OpenISequence(DPISPortC<DataT> &ip,const StringC &filename,const StringC &fileformat = "",bool verbose = false)
@@ -88,7 +88,7 @@ namespace RavlN
   // for all formats. <p>
   // If the fileformat argument is used, it must be one of the known types
   // returned by "conv -lf".  If the fileformat is a zero length string (the default), all formats are considered.
-  // Returns true on succcess.
+  // Returns true on success.
 
   
   template<class DataT>
@@ -107,7 +107,7 @@ namespace RavlN
   // If the fileformat argument is used, it must be one of the known types
   // returned by "conv -lf".  If the fileformat is a zero length string (the
   // default), the filename extension is used.
-  // Returns true on succcess.
+  // Returns true on success.
   
   template<class DataT>
   bool OpenISequence(DPIPortC<DataT> &ip,const StringC &filename,const StringC &fileformat = "",bool verbose = false)
@@ -124,7 +124,7 @@ namespace RavlN
   //: Open a normal input stream
   // If the fileformat argument is used, it must be one of the known types
   // returned by "conv -lf".  If the fileformat is a zero length string (the default), all formats are considered.
-  // Returns true on succcess.
+  // Returns true on success.
 }
 
 

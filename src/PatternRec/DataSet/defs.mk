@@ -4,7 +4,6 @@
 # General Public License (LGPL). See the lgpl.licence file for details or
 # see http://www.gnu.org/copyleft/lesser.html
 # file-header-ends-here
-#! rcsid="$Id$"
 #! file="Ravl/PatternRec/DataSet/defs.mk"
 
 DESCRIPTION = Basic parts of the Pattern Recognition library.
@@ -21,7 +20,7 @@ HEADERS =  Sample.hh SampleIter.hh SampleVector.hh SampleLabel.hh \
  SampleReal.hh SampleStreamFromSample.hh ProcessVectorFunction.hh \
  ProcessVectorLabelFunction.hh FunctionSlice.hh FunctionConcatenate.hh \
  FunctionCascade.hh SampleStreamVectorLabel.hh DataSetIO.hh FieldInfo.hh \
- TestFunctions.hh
+ TestFunctions.hh FunctionExpand.hh DPProcessFunction.hh
 
 SOURCES =  SampleVector.cc SampleLabel.cc DataSetBase.cc Function.cc \
  Function1.cc Designer.cc DesignFunctionUnsupervised.cc \
@@ -29,7 +28,8 @@ SOURCES =  SampleVector.cc SampleLabel.cc DataSetBase.cc Function.cc \
  SampleStreamVector.cc DataSetVectorLabelWeight.cc SampleVectorFloat.cc \
  SampleStreamVectorFloat.cc SampleReal.cc FunctionSlice.cc \
  FunctionConcatenate.cc FunctionCascade.cc SampleStreamVectorLabel.cc \
- SampleIO.cc DataSetIO.cc FieldInfo.cc TestFunctions.cc
+ SampleIO.cc DataSetIO.cc FieldInfo.cc TestFunctions.cc \
+ FunctionExpand.cc  DPProcessFunction.cc
 
 MAINS = doDataSet.cc exPlotTestFunctions.cc
 

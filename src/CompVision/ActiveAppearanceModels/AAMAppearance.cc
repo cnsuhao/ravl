@@ -4,7 +4,6 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-//! rcsid="$Id$"
 //! lib=RavlAAM
 //! file="Ravl/CompVision/ActiveAppearanceModels/AAMAppearance.cc"
 
@@ -15,10 +14,10 @@
 #include "Ravl/StringList.hh"
 #include "Ravl/IO.hh"
 #include "Ravl/DP/FileFormatIO.hh"
-
-#define DODEBUG 1
-#if DODEBUG
 #include "Ravl/Image/DrawCross.hh"
+
+#define DODEBUG 0
+#if DODEBUG
 #include "Ravl/IO.hh"
 #define ONDEBUG(x) x
 #else

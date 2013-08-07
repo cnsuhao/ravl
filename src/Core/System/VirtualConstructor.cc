@@ -21,6 +21,11 @@
 
 namespace RavlN {
 
+  static HashC<const char *,const char *> &AliasTable() {
+    static HashC<const char *,const char *> tab;
+    return tab;
+  }
+
   //: Access virtual constructor table.
   
   static HashC<const char *,VirtualConstructorC> &Table() {
@@ -29,13 +34,15 @@ namespace RavlN {
   }
   
   bool CreateVirtualConstructorAlias(const char *newName,const char *oldName) {
+    AliasTable()[oldName] = newName;
     VirtualConstructorC *oldVC = Table().Lookup(oldName);
     if(oldVC == 0) {
-      std::cerr << "Failed to construct virtual construtor alias '" << newName << "' for unknown type '" << oldName << "'\n";
+      // Type being aliases hasn't been registered yet. We'll take care of it later.
       return false;
     }
     if(Table().Lookup(newName) != 0) {
-      std::cerr << "Failed to construct virtual construtor alias '" << newName << "' for '" << oldName << "', name in use. \n";
+      std::cerr << "Failed to construct virtual constructor alias '" << newName << "' for '" << oldName << "', name in use. \n";
+      RavlAssert(0);
       return false;
     }
     Table()[newName] = *oldVC;
@@ -47,9 +54,19 @@ namespace RavlN {
   VirtualConstructorBodyC::VirtualConstructorBodyC(const std::type_info &info,const char *typesname)
   {
     ONDEBUG(std::cerr << "VirtualConstructorBodyC::VirtualConstructorBodyC(), Registering '" << info.name() << "' as '" <<typesname << "' \n");
-    Table()[typesname] = VirtualConstructorC(*this);
+    VirtualConstructorC vc(*this);
+    Table()[typesname] = vc;
+    // Take care of any aliases.
+    const char *aliasName = 0;
+    if(AliasTable().Lookup(typesname,aliasName)) {
+      if(Table().Lookup(aliasName) != 0) {
+        std::cerr << "Failed to construct virtual constructor alias '" << aliasName << "' for '" << typesname << "', name in use. \n";
+        RavlAssert(0);
+      } else {
+        Table()[aliasName] = vc;
+      }
+    }
     AddTypeName(info,typesname);
-    
   }
 
   //: Construct from an std::istream.
@@ -88,7 +105,7 @@ namespace RavlN {
     if(!Table().Lookup(name.chars(),vc)) {
       std::cerr << "WARNING: Failed to find virtual constructor for type '" << name.chars() << "' \n";
       RavlAssert(0);
-      throw ExceptionOperationFailedC("Failed to find virtual constructor to decode stream. ");
+      throw ExceptionOperationFailedC((StringC("Failed to find virtual constructor to decode stream for ") + name).data(), true);
     }
     return vc.Load(s);
   }
@@ -100,7 +117,7 @@ namespace RavlN {
     if(!Table().Lookup(name.chars(),vc)) {
       std::cerr << "WARNING: Failed to find virtual constructor for type '" << name.chars() << "' \n";
       RavlAssert(0);
-      throw ExceptionOperationFailedC("Failed to find virtual constructor to decode stream. ");
+      throw ExceptionOperationFailedC((StringC("Failed to find virtual constructor to decode stream for ") + name).data(), true);
     }
     return vc.Load(s);
   }

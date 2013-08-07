@@ -13,7 +13,6 @@
 //! userlevel=Develop
 //! file="Ravl/PatternRec/Cluster/DesignFuzzyCMeansCluster.hh"
 //! docentry="Ravl.API.Pattern Recognition.Cluster;Ravl.API.Pattern Recognition.Classifier.DesignClassifier"
-//! rcsid="$Id$"
 //! example="exFuzzyCMeansCluster.cc"
 
 #include "Ravl/PatternRec/DesignCluster.hh"

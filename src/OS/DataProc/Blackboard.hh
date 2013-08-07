@@ -24,7 +24,7 @@ namespace RavlN {
   
   //! userlevel=Develop
   //: Blackboard body.
-  // This container allows arbitary data to be associated with
+  // This container allows arbitrary data to be associated with
   // a string key. This class supports loading and saving even where the type
   // of objects is unknown to the program by storing it as a binary stream. 
   

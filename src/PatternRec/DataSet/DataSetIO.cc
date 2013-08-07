@@ -11,6 +11,7 @@
 #include "Ravl/PatternRec/DataSetIO.hh"
 #include "Ravl/MeanCovariance.hh"
 #include "Ravl/PatternRec/FuncLinear.hh"
+#include "Ravl/IO.hh"
 
 #define DODEBUG 0
 #if DODEBUG
@@ -29,18 +30,10 @@ namespace RavlN {
 
     // If we have csv extension lets save it as a csv file
     FilenameC fname(filename);
-    if (fname.HasExtension("csv")) {
+    if (fname.HasExtension("csv"))
       return SaveDataSetVectorLabelCSV(filename, dataset);
-    }
-
-    if (fname.HasExtension("abs")) {
-      BinOStreamC os(filename);
-      if (!os.Stream().good()) {
-        SysLog(SYSLOG_ERR, "Error opening file to save dataset '%s'", filename.data());
-        return false;
-      }
-      os << dataset;
-    }
+    if (fname.HasExtension("abs"))
+      return RavlN::Save(filename,dataset);
 
     OStreamC os(filename);
     if (!os.good()) {
@@ -57,12 +50,13 @@ namespace RavlN {
 
     // If we have csv extension lets save it as a csv file
     FilenameC fname(filename);
-    if (fname.HasExtension("csv")) {
+    if(fname.HasExtension("csv")) {
       return LoadDataSetVectorLabelCSV(filename, dataset);
     }
-    if (fname.HasExtension("libsvm"))
+    if(fname.HasExtension("libsvm"))
       return LoadDataSetVectorLabelLIBSVM(filename, dataset);
-
+    if(fname.HasExtension("abs"))
+      return RavlN::Load(filename,dataset,"",true);
     IStreamC is(filename);
     if (!is.good()) {
       SysLog(SYSLOG_ERR, "Error opening file to load dataset '%s'", filename.data());
@@ -259,7 +253,7 @@ namespace RavlN {
           RavlError("Invalid index %d in '%s' from '%s' ", ind, it->c_str(), str.c_str());
           return false;
         }
-        if (ind >= gVecSize) {
+        if ((size_t)ind >= gVecSize) {
           RavlError("Index out of range %d  in '%s' from '%s' ", ind, it->c_str(), str.c_str());
           return false;
         }
