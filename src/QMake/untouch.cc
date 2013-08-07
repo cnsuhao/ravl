@@ -5,7 +5,7 @@
 // see http://www.gnu.org/copyleft/gpl.html
 
 // file-header-ends-here
-/**********************************************************************************
+//*********************************************************************************
 /*
  * untouch, check that a file is at least a second old. (if it exists).
  */
