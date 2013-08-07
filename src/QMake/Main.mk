@@ -1051,8 +1051,9 @@ $(INST_LIB)/lib$(PLIB)$(LIBEXT) : $(TARG_OBJS) $(TARG_MUSTLINK_OBJS) $(INST_LIB)
 	fi ; \
 	sort -b -u $(INST_OBJS)/libObjs.new -t : -k 1,1 -o $(INST_OBJS)/libObjs.txt ; \
 	rm $(INST_OBJS)/libObjs.new ; \
-        echo "---- Building shared library $(INST_LIB)/$(@F) " ; \
-	awk -F: '{ print $$1 }' $(INST_OBJS)/libObjs.txt | $(XARGS) $(CXX) $(LDLIBFLAGS) $(filter-out -l$(PLIB),$(LIBSONLY)) -o $(INST_LIB)/$(@F) && \
+	awk -F: '{ print $$1 }' $(INST_OBJS)/libObjs.txt > $(INST_OBJS)/libObjs.lnk ; \
+	echo "---- Building shared library $(INST_LIB)/$(@F) " ; \
+	$(CXX) $(LDLIBFLAGS) @$(INST_OBJS)/libObjs.lnk $(filter-out -l$(PLIB),$(LIBSONLY)) -o $(INST_LIB)/$(@F) && \
 	$(UNTOUCH) $(INST_LIB)/$(@F) $(TARG_OBJS) $(TARG_MUSTLINK_OBJS) ; 
 
 $(INST_LIB)/$(SINGLESO)$(LIBEXT) : $(INST_LIB)/lib$(PLIB)$(LIBEXT)
