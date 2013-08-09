@@ -1,5 +1,5 @@
 # This file is part of RAVL, Recognition And Vision Library 
-# Copyright (C) 2001, University of Surrey
+# Copyright (C) 2001-13, University of Surrey
 # This code may be redistributed under the terms of the GNU Lesser
 # General Public License (LGPL). See the lgpl.licence file for details or
 # see http://www.gnu.org/copyleft/lesser.html
@@ -14,6 +14,10 @@ HEADERS=BinaryTree.hh AVLTree.hh BinaryTreeUpIter.hh BinaryTreeDownIter.hh \
  HashTree.hh
 
 PLIB=RavlCore
+
+USESLIBS=RavlCore
+
+LIBDEPS=RavlTree.def
 
 EXAMPLES=exAVLTree.cc exBinaryTree.cc
 
