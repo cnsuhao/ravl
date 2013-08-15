@@ -1,0 +1,9 @@
+ifndef QGLVIEWER
+QGLVIEWER = 1
+
+INCLUDES += -I/usr/include
+
+EXELIB += -L/usr/lib -lqglviewer
+
+endif
+

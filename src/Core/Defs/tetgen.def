@@ -1,0 +1,8 @@
+ifndef TETGENDEF
+TETGENDEF = 1
+
+EXELIB += -ltet
+
+USERCFLAGS += 
+
+endif 

@@ -1,0 +1,9 @@
+ifndef QT3DEF
+QT3DEF = 1
+
+INCLUDES += -I/usr/include/qt3
+
+EXELIB += -L/usr/lib -lqt-mt -lpng -lz -lm -lXext -lX11 -lSM -lICE -lpthread
+
+endif
+

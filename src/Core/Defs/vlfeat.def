@@ -1,0 +1,15 @@
+ifndef VLFEAT_DEF
+
+  VLFEAT_DEF = 1
+
+  EXELIB := -lvl $(EXELIB)
+
+ifdef VLFEAT_HOME
+
+    INCLUDES += -I$(VLFEAT_HOME)/include
+
+    EXELIB := -Wl,-rpath,$(VLFEAT_HOME)/lib -L$(VLFEAT_HOME)/lib $(EXELIB)
+
+endif 
+
+endif 

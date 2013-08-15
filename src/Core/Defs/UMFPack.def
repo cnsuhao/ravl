@@ -1,0 +1,15 @@
+ifndef UMFPACK_DEF
+
+  UMFPACK_DEF = 1
+
+  EXELIB := -lcolamd -lcxsparse -lumfpack -lamd -lblas -pthread $(EXELIB)
+
+ifndef UFMPACK_HOME
+  INCLUDES += -I/usr/include/suitesparse
+else
+  INCLUDES += -I$(UFMPACK_HOME)/include/suitesparse
+
+  EXELIB := -Wl,-rpath,$(UFMPACK_HOME)/lib -L$(UFMPACK_HOME)/lib $(EXELIB)
+endif
+
+endif

@@ -1,0 +1,28 @@
+ifndef VTK_DEF
+  VTK_DEF = 1
+
+
+ifdef VTK_HOME
+
+ifndef VTK_INCLUDES
+      VTK_INCLUDES=$(VTK_HOME)/include/vtk-5.2
+endif
+
+ifndef VTK_LIBS
+      VTK_LIBS=$(VTK_HOME)/lib
+endif
+
+endif
+
+
+ifdef VTK_INCLUDES
+    INCLUDES += -I$(VTK_INCLUDES)
+endif
+
+  EXELIB := -lvtkGraphics -lvtkFiltering -lvtkCommon -lvtksys -pthread -ldl -lm $(EXELIB)
+
+ifdef VTK_LIBS
+    EXELIB := -Wl,-rpath,$(VTK_LIBS) -L$(VTK_LIBS) $(EXELIB)
+endif
+
+endif
