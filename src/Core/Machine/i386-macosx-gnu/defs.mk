@@ -15,6 +15,3 @@ SUPPORT_ONLY=macosx386
 
 HEADERS=Atomic.hh mmx.hh
 
-PLIB=RavlCore
-
-USESLIBS=Math

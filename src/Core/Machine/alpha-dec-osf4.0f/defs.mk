@@ -15,6 +15,3 @@ SUPPORT_ONLY=alpha
 
 HEADERS=Atomic.hh 
 
-PLIB=RavlCore
-
-USESLIBS=Math

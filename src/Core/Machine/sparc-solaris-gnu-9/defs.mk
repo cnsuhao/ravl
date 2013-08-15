@@ -17,6 +17,3 @@ SUPPORT_ONLY = sol2_9
 
 HEADERS=Atomic.hh 
 
-PLIB=RavlCore
-
-USESLIBS=Math
