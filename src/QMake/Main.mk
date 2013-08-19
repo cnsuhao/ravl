@@ -1038,32 +1038,32 @@ else
   LIBSONLY=$(filter-out %$(OBJEXT),$(LIBS))
  endif
 
- DIRECTORYID=$(QCWD)#
+ LIBRARY_INVENTORY=$(INST_OBJS)/$(LOCAL_DEFBASE).list $(filter-out $(INST_OBJS)/$(LOCAL_DEFBASE).list,$(wildcard $(INST_OBJS)/*.list))
+ # If the library is built from a single directory, it will be made up of all
+ # the files listed in the $(PLIB).list file. If the source resides in multiple
+ # directories, the $(PLIB).list file will be supplemented by a number (one for
+ # each extra directory) of X.list files. These extra .list files are named
+ # after the LIBDEPS setting for the extra source directories.
+ # The explicit use of $(INST_OBJS)/$(LOCAL_DEFBASE).list when setting this
+ # variable (and the subsequent need of the filter-out) is needed to ensure the
+ # file is created when it does not exist.
 
- # DIRECTORYID is used to keep a track of where an object file has come from so if the file is removed or
- # renamed it can be taken out of the list. 
+$(INST_LIB)/lib$(PLIB)$(LIBEXT) : $(TARG_OBJS) $(TARG_MUSTLINK_OBJS) $(INST_LIB)/dummymain$(OBJEXT) $(INST_LIB)/.dir $(LIBRARY_INVENTORY)
+	@echo "--- Building " $(@F)
+	$(SHOWIT)$(CXX) $(LDLIBFLAGS) $(patsubst %,@%,$(LIBRARY_INVENTORY)) $(filter-out -l$(PLIB),$(LIBSONLY)) -o $(INST_LIB)/$(@F)
+	@$(UNTOUCH) $(INST_LIB)/$(@F) $(TARG_OBJS) $(TARG_MUSTLINK_OBJS)
 
-$(INST_LIB)/lib$(PLIB)$(LIBEXT) : $(TARG_OBJS) $(TARG_MUSTLINK_OBJS) $(INST_LIB)/dummymain$(OBJEXT) $(INST_LIB)/.dir
-	$(SHOWIT)echo "--- Building " $(@F) ; \
-	echo "$(patsubst %$(OBJEXT),%$(OBJEXT):$(DIRECTORYID)@,$(TARG_OBJS))" | $(TR) '@' '\n' > $(INST_OBJS)/libObjs.new ; \
-	if [ -f $(INST_OBJS)/libObjs.txt ] ; then \
-	  grep -v  ":$(DIRECTORYID)$$" $(INST_OBJS)/libObjs.txt | awk -F: '{ print $$1 ":" $$2 }' >> $(INST_OBJS)/libObjs.new ; \
-	fi ; \
-	sort -b -u $(INST_OBJS)/libObjs.new -t : -k 1,1 -o $(INST_OBJS)/libObjs.txt ; \
-	rm $(INST_OBJS)/libObjs.new ; \
-	awk -F: '{ print $$1 }' $(INST_OBJS)/libObjs.txt | $(TR) '\n' ' ' > $(INST_OBJS)/libObjs.lnk ; \
-	echo "---- Building shared library $(INST_LIB)/$(@F) " ; \
-	$(CXX) $(LDLIBFLAGS) @$(INST_OBJS)/libObjs.lnk $(filter-out -l$(PLIB),$(LIBSONLY)) -o $(INST_LIB)/$(@F) && \
-	$(UNTOUCH) $(INST_LIB)/$(@F) $(TARG_OBJS) $(TARG_MUSTLINK_OBJS) ; 
+$(INST_OBJS)/$(LOCAL_DEFBASE).list: defs.mk $(INST_OBJS)/.dir
+	@echo "---- Updating object list"
+	@echo $(TARG_OBJS)  > $(INST_OBJS)/$(LOCAL_DEFBASE).list
 
-$(INST_LIB)/$(SINGLESO)$(LIBEXT) : $(INST_LIB)/lib$(PLIB)$(LIBEXT)
-	$(SHOWIT)echo "--- Building " $(@F) ; \
-	echo "$(patsubst %,$(LOCALTMP)/$(ARC)/%/$(VAR)/shared/objs/libObjs.txt,$(PLIB) $(PLIBDEPENDS))" | xargs cat > $(INST_OBJS)/libSharedObjs.new ; \
-	sort -b -u $(INST_OBJS)/libSharedObjs.new -t : -k 1,1 | awk -F: '{ print $$1 }' | $(TR) '\n' ' ' > $(INST_OBJS)/libSharedObjs.txt; \
-	rm $(INST_OBJS)/libSharedObjs.new ; \
-  echo "---- Building single shared library $(INST_LIB)/$(@F) " ; \
-	$(CXX) $(LDLIBFLAGS) @$(INST_OBJS)/libSharedObjs.txt $(filter-out $(patsubst %,-l%,$(PLIB) $(PLIBDEPENDS)),$(LIBSONLY)) -o $(INST_LIB)/$(@F) && \
-	$(UNTOUCH) $(INST_LIB)/$(@F) $(INST_LIB)/lib$(PLIB)$(LIBEXT) ;
+ DEPENDENCY_INVENTORY=$(wildcard $(patsubst %,$(LOCALTMP)/$(ARC)/%/$(VAR)/shared/objs/*.list,$(sort $(PLIBDEPENDS))))
+ # List of objects associated with the dependent libraries for the single lib.
+
+$(INST_LIB)/$(SINGLESO)$(LIBEXT) : $(INST_LIB)/lib$(PLIB)$(LIBEXT) $(DEPENDENCY_INVENTORY)
+	@echo "--- Building " $(@F)
+	$(SHOWIT)$(CXX) $(LDLIBFLAGS) $(patsubst %,@%,$(LIBRARY_INVENTORY) $(DEPENDENCY_INVENTORY)) $(filter-out $(patsubst %,-l%,$(PLIB) $(PLIBDEPENDS)),$(LIBSONLY)) -o $(INST_LIB)/$(@F)
+	@$(UNTOUCH) $(INST_LIB)/$(@F) $(INST_LIB)/lib$(PLIB)$(LIBEXT)
 
 endif
 
@@ -1071,8 +1071,8 @@ $(INST_LIB)/lib$(PLIB)$(LIBEXT)(%$(OBJEXT)) : $(INST_OBJS)/%$(OBJEXT)
 	@true
 
 $(INST_LIB)/%$(OBJEXT) : $(INST_OBJS)/%$(OBJEXT)
-	$(SHOWIT)echo "--- MustLink $(VAR_DISPLAY_NAME)" $*$(OBJEXT)  ; \
-	if [ -f $(INST_LIB)/$*$(OBJEXT) ] ; then \
+	@echo "--- MustLink $(VAR_DISPLAY_NAME)" $*$(OBJEXT)
+	$(SHOWIT)if [ -f $(INST_LIB)/$*$(OBJEXT) ] ; then \
 	  rm -f $(INST_LIB)/$*$(OBJEXT); \
 	fi ; \
 	cp /$< $(INST_LIB)/$*$(OBJEXT) ; \
