@@ -117,36 +117,40 @@ class OutputSortedFileSetC
  : public OutputFileSetC
 {
 public:
-  OutputSortedFileSetC(int n)
-    : m_fileSet(n)
+  OutputSortedFileSetC()
+    : m_fileSet(32)
   {}
 
   bool Open(RavlN::FilenameC &outFilename)
   {
-    for(unsigned i = 0;i < m_fileSet.Size();i++) {
-      m_fileSet[i] = new OutputFileSetC();
-      RavlN::StringC ext = StringC(".") + outFilename.Extension();
-      RavlN::FilenameC labelFilename = outFilename.before(ext,-1) + StringC(i) + ext;
-      RavlDebug("Opening file '%s' ",labelFilename.c_str());
-      if(!m_fileSet[i]->Open(labelFilename)) {
-        RavlError("Failed to open %s ",labelFilename.c_str());
-        return false;
-      }
-    }
+    m_baseFilename = outFilename;
     return true;
   }
 
   void Write(const RavlN::TVectorC<float> &vec,ByteT label)
   {
-    if((int)label >= m_fileSet.Size()) {
-      RavlError("Label outside file range %d ",(int) label);
-      throw RavlN::ExceptionOperationFailedC("Outside range");
+    int index = label;
+    // Make sure index exists.
+    while(index >= m_fileSet.Size()) {
+      m_fileSet.Append(OutputFileSetC::RefT());
     }
-    m_fileSet[label]->Write(vec,label);
+    OutputFileSetC::RefT &op = m_fileSet[index];
+    if(!op.IsValid()) {
+      op = new OutputFileSetC();
+      RavlN::StringC ext = StringC(".") + m_baseFilename.Extension();
+      RavlN::FilenameC labelFilename = m_baseFilename.before(ext,-1) + StringC(index) + ext;
+      RavlDebug("Opening file '%s' ",labelFilename.c_str());
+      if(!op->Open(labelFilename)) {
+        RavlError("Failed to open %s ",labelFilename.c_str());
+        throw RavlN::ExceptionOperationFailedC("Failed to open file.");
+      }
+    }
+    op->Write(vec,label);
   }
 
 protected:
-  RavlN::SArray1dC<OutputFileSetC::RefT> m_fileSet;
+  RavlN::FilenameC m_baseFilename;
+  RavlN::CollectionC<OutputFileSetC::RefT> m_fileSet;
 };
 
 
@@ -193,7 +197,7 @@ int main(int nargs,char **argv)
   //bool shuffle = opts.Boolean("s",false,"Shuffle data.");
   unsigned testSamples = opts.Int("ts",0,"Number of items to take as test samples.");
   RavlN::StringListC inputFiles= opts.List("l","List of input files");
-  int sortTraining = opts.Int("st",0,"Sort training set.");
+  bool sortTraining = opts.Boolean("st",false,"Sort training set.");
 
   FilenameC outputTestFileName = opts.String("ote","test.idx","Output file");
   FilenameC outputTrainFileName = opts.String("otr","train.idx","Output file");
@@ -278,11 +282,11 @@ int main(int nargs,char **argv)
 
   OutputFileSetC::RefT outputFiles;
 
-  if(sortTraining < 2)
+  if(!sortTraining)
     outputFiles = new OutputFileSetC();
   else {
     RavlDebug("Sorting output.");
-    outputFiles = new OutputSortedFileSetC(sortTraining);
+    outputFiles = new OutputSortedFileSetC();
   }
 
   if(!outputFiles->Open(outputTrainFileName)) {
