@@ -1,28 +1,39 @@
+# This file is part of RAVL, Recognition And Vision Library 
+# Copyright (C) 2013, University of Surrey
+# This code may be redistributed under the terms of the GNU Lesser
+# General Public License (LGPL). See the lgpl.licence file for details or
+# see http://www.gnu.org/copyleft/lesser.html
+# file-header-ends-here
+
+$(warning )
+$(warning The vtk.def file is being depreciated in favour of seperate files)
+$(warning for the individual parts of VTK. Please update your defs.mk file)
+$(warning to use vtkCore; vtkGraphics etc. rather than vtk in your USESLIBS,)
+$(warning PROGLIBS or REQUIRES settings.)
+$(warning )
+
 ifndef VTK_DEF
   VTK_DEF = 1
 
+  # Include relevant kits to make up as much of original libraries as is
+  # portable (cannot exactly replicate the original list as some of the
+  # libraries are not available on all platforms/versions of VTK - E.G. no
+  # libvtkNetCDF for VTK 5.8 on Ubuntu 12.04, no libVPIC for vtk 5.2 on 
+  # Ubuntu 10.04)
 
-ifdef VTK_HOME
-
-ifndef VTK_INCLUDES
-      VTK_INCLUDES=$(VTK_HOME)/include/vtk-5.2
-endif
-
-ifndef VTK_LIBS
-      VTK_LIBS=$(VTK_HOME)/lib
-endif
-
-endif
-
-
-ifdef VTK_INCLUDES
-    INCLUDES += -I$(VTK_INCLUDES)
-endif
-
-  EXELIB := -lvtkGraphics -lvtkFiltering -lvtkCommon -lvtksys -pthread -ldl -lm $(EXELIB)
-
-ifdef VTK_LIBS
-    EXELIB := -Wl,-rpath,$(VTK_LIBS) -L$(VTK_LIBS) $(EXELIB)
-endif
+  include vtkGenericFiltering.def
+  # Including this implicitly includes:
+  #    vtkGraphics.def
+  #    vtkFiltering.def
+  #    vtkCommon.def
+  include vtkIO.def
+  include vtkImaging.def
+  include vtkRendering.def
+  include vtkVolumeRendering.def
+  # We would need to include vtkWidgets.def and vtkHybrid.def to replicate
+  # what was originally made available by this .def file. However, both of
+  # these  libraries introduce portability issues, with vtkWidgets bringing
+  # in vtkParallel.def which was not in the original set of libraries and
+  # vtkHybrid needing vtkNetCDF which is not available in later packages.
 
 endif

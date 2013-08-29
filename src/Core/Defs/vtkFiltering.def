@@ -1,0 +1,31 @@
+# This file is part of RAVL, Recognition And Vision Library 
+# Copyright (C) 2013, University of Surrey
+# This code may be redistributed under the terms of the GNU Lesser
+# General Public License (LGPL). See the lgpl.licence file for details or
+# see http://www.gnu.org/copyleft/lesser.html
+# file-header-ends-here
+
+ifndef VTK_FILTERING_DEF
+
+  VTK_FILTERING_DEF = 1
+
+  # Declare libraries for this particular VTK kit
+
+    VTK_FILTERING_LIBS = -lvtkFiltering
+
+
+  # Ensure any dependencies of this kit are already included
+
+    ifndef VTK_COMMON_DEF
+      include vtkCommon.def
+    endif
+
+
+  # Prefix any VTK libraries on the link line with this kit
+
+    EXELIB := $(subst $(VTK_LIBS_USED),$(VTK_FILTERING_LIBS) $(VTK_LIBS_USED),$(EXELIB))
+
+    VTK_LIBS_USED :=  $(VTK_FILTERING_LIBS) $(VTK_LIBS_USED)
+
+endif
+
