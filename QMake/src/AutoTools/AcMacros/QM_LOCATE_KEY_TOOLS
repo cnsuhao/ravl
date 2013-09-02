@@ -26,7 +26,7 @@ dnl   path to use. The list of possible values for <CMD> (the list of tools
 dnl   located by this macro) is:
 dnl
 dnl        AR; AWK; CC; CPP; CXX; CXXCPP; EXPR; GET_CWD; GREP; LD;
-dnl        MAKE; SED; SORT and TR.
+dnl        MAKE; PKG_CONFIG; SED; SORT and TR.
 dnl
 dnl       <CMD>                      Receives the path to the utility <cmd>.
 dnl                                  Can initially be primed by the user to
