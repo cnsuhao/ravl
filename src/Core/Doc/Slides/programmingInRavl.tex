@@ -18,7 +18,7 @@
 \begin{frame}
   \pagecolor{titlebg} %\thispagestyle{empty}
   \begin{center}
-    \colorbox{titlebox}{\huge\parbox{0.75\textwidth}{ \textcolor{titlecolor}{ \centering ~\\~Programming in C++~\\ using\\[1ex] {\Huge RAVL}\\[1em]Bill Christmas\\[1ex]}}}
+    \huge\parbox{0.75\textwidth}{ \textcolor{titlecolor}{ \centering ~\\~Programming in C++~\\ using\\[1ex] {\Huge RAVL}\\[1em]\textcolor{royalblue}{Bill Christmas}\\[1ex]}}
   \end{center}
 \end{frame}
 %\pagecolor{pale}
@@ -26,9 +26,7 @@
 \begin{comment}
   &&&& Things to do: more browsing actual doc at some point condense some of
   early boring stuff more actual compile & run of examples STL support now in
-  (a bit) generic vector types TFVectorC & how they relate to "user" types
-  make sure they look at *local* RAVL home page - the one with CVSSP setup
-  instructions.
+  (a bit) generic vector types TFVectorC & how they relate to "user" types.
 \end{comment}
 \section{Introduction}
 
@@ -684,7 +682,7 @@ Automatic numbering of file sequences:
 
 \end{frame}
 
-\begin{frame}[fragile]\frametitle{Classifiers}
+\begin{frame}[fragile]\frametitle{Pattern recognition}
 
   \Href{Tree/Ravl.API.Pattern_Recognition.Classifier.html}{Some standard classifiers:}
 
@@ -696,9 +694,7 @@ Automatic numbering of file sequences:
   \item ......
   \end{itemize}
 
-\end{frame}
-
-\begin{frame}[fragile]\frametitle{Optimisers}
+Optimisers:
 
   \begin{itemize}
   \item conjugate gradient
@@ -743,8 +739,12 @@ Automatic numbering of file sequences:
 \end{enumerate}
 \end{frame}
 
-\section{Compiling using QMake}
+\section{QMake}
 
+\begin{frame}[fragile]\frametitle{QMake}
+
+\centerline{\huge \Href{Tree/Ravl.QMake.html}{QMake}: a compilation tool}
+\end{frame}
 
 \begin{frame}[fragile]\frametitle{Compiling main programs}
 
@@ -760,7 +760,7 @@ Automatic numbering of file sequences:
   \pause\item Execute the command \Codebit{qm}
   \end{itemize}
 
-  \pause \vspace{2em}
+  \pause \vfill
 
   If your program(s) need RAVL libraries that QMake cannot find automatically
   at link time (mainly I/O libs), you will need to add them to the
