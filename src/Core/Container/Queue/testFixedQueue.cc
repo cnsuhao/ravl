@@ -14,6 +14,7 @@
 
 #include "Ravl/FixedQueue.hh"
 #include "Ravl/Stream.hh"
+#include "Ravl/UnitTest.hh"
 
 using namespace RavlN;
 
@@ -128,6 +129,20 @@ int TestQueue()
     }
     if(z != k)
       return __LINE__;
+  }
+
+  {
+    FixedQueueC<int> aq(4);
+    aq.InsLast(0);
+    aq.InsLast(1);
+    aq.InsLast(2);
+    aq.InsLast(3);
+    aq.GetFirst();
+    aq.Resize(8);
+    RAVL_TEST_EQUALS(aq.Size(),3);
+    RAVL_TEST_EQUALS(aq.MaxSize(),8);
+    for(int i = 0;i < aq.Size();i++)
+      aq[i] = i+1;
   }
 
 
