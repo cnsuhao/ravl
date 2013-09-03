@@ -72,7 +72,7 @@ namespace RavlN {
     Tuple2C<KeyT,DataT> &GetTopPair();
     //: Get Key/Data pair from queue.
     // WARNING: For advanced users only.
-    // !! Users responsability to delete returned info after use. !!
+    // !! Users responsibility to delete returned info after use. !!
     
     DataT GetTop();
     //: Get Data from top of queue.
@@ -161,7 +161,7 @@ namespace RavlN {
     { return Body().GetTopPair(); }
     //: Get Key/Data pair from queue.
     // WARNING: For advanced users only.
-    // !! Users responsability to delete returned info after use. !!
+    // !! Users responsibility to delete returned info after use. !!
     
     DataT GetTop()
     { return Body().GetTop(); }

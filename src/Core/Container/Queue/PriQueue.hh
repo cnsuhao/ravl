@@ -57,7 +57,7 @@ namespace RavlN {
       return Array()[0].Data2();
     }
     //: Look/Modify data on top of queue.
-    // Reference not garanteed to stay valid
+    // Reference not guaranteed to stay valid
     // after any insert/delete operation !
     
     const DataT &Top(void) const {
@@ -65,7 +65,7 @@ namespace RavlN {
       return Array()[0].Data2();
     }
     //: Look at data on top of queue.
-    // Reference not garanteed to stay valid
+    // Reference not guaranteed to stay valid
     // after any insert/delete operation !
     
     const KeyT &TopKey(void) const {
@@ -73,7 +73,7 @@ namespace RavlN {
       return Array()[0].Data1();
     }
     //: Look at key on top of queue.
-    // Reference not garanteed to stay valid
+    // Reference not guaranteed to stay valid
     // after any insert/delete operation !
     
     void DelTop(void);
@@ -89,11 +89,11 @@ namespace RavlN {
     void Insert(const KeyT &Key,const DataT &Data)
     { Insert(Tuple2C<KeyT,DataT>(Key,Data)); }
     //: Insert Data/Key into queue.
-    // Will resize the queue if nessary.
+    // Will resize the queue if necessary.
     
     void Insert(const Tuple2C<KeyT,DataT> &dat);
     //: Insert Data/Key into queue.
-    // Will resize the queue if nessary.
+    // Will resize the queue if necessary.
     
     bool Remove(const Tuple2C<KeyT,DataT> &New)
     { return false; }
@@ -116,7 +116,7 @@ namespace RavlN {
     //: Empty the queue of all its contents.
     
     bool Check();
-    //: Check consistancy.
+    //: Check consistency.
   protected:
     RCWrapC<SDArray1dC<Tuple2C<KeyT,DataT> > > data;
     
@@ -183,7 +183,7 @@ namespace RavlN {
     }
     i /= 2;
     Tuple2C<KeyT,DataT> tmp(arr[i-1]); 
-    // Have to use tempory here as array may be resized and the
+    // Have to use temporary here as array may be resized and the
     // reference returned from arr[] may be invalid.
     arr.Add(tmp); // Move up.
     for(;(i > 1) && dat.Data1() < arr[i/2-1].Data1();i /= 2)

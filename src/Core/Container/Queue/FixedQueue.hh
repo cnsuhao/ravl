@@ -351,8 +351,10 @@ namespace RavlN {
   
   template<class T>
   inline
-  FixedQueueC<T>::FixedQueueC(SizeT Size) 
-    : SArray1dC<T>(Size+1)  // Cause we always need space for 1 more item.
+  FixedQueueC<T>::FixedQueueC(SizeT size)
+  // The queue needs to be bigger by one than the maximum size so we can distinguish between an empty and full queue
+  // from the head and tail pointers.
+    : SArray1dC<T>(size+1)
   { 
     head = ArrayStart();
     tail = head;
@@ -365,6 +367,8 @@ namespace RavlN {
   void FixedQueueC<T>::Resize(SizeT newSize)
   {
     RavlAssert(newSize >= Size());
+    if(newSize < Size())
+      throw RavlN::ExceptionOperationFailedC("Resizing queue will delete elements.");
     SArray1dC<T> newArr(newSize+1);
     int at = 0;
     for(FixedQueueIterC<T> it(*this);it;it++)
