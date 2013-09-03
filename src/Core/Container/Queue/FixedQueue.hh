@@ -13,7 +13,6 @@
 //! author="Charles Galambos"
 //! date="6/6/1997"
 //! docentry="Ravl.API.Core.Queues"
-//! rcsid="$Id$"
 
 #include "Ravl/SArray1d.hh"
 #include "Ravl/Assert.hh"
@@ -38,6 +37,10 @@ namespace RavlN {
     explicit inline FixedQueueC(SizeT Size);
     //: Constructor.
     
+    void Resize(SizeT newSize);
+    //: Resize the queue.
+    // The new size must be larger than the number of used elements.
+
     inline bool IsSpace();
     //: Is there space to add an item into ring ?
     
@@ -355,6 +358,24 @@ namespace RavlN {
     tail = head;
     eoa = &(head[SArray1dC<T>::Size()]);
   }
+
+  //: Resize the queue.
+  // The new size must be larger than the number of used elements.
+  template<class T>
+  void FixedQueueC<T>::Resize(SizeT newSize)
+  {
+    RavlAssert(newSize >= Size());
+    SArray1dC<T> newArr(newSize+1);
+    int at = 0;
+    for(FixedQueueIterC<T> it(*this);it;it++)
+      newArr[at++] = *it;
+    static_cast<SArray1dC<T> &>(*this) = newArr;
+    tail = ArrayStart();
+    head = &tail[at];
+    eoa = &(tail[SArray1dC<T>::Size()]);
+  }
+
+
   
   template<class T>
   inline 
