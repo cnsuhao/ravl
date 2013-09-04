@@ -75,7 +75,7 @@ namespace RavlOSGN
     //: Change the viewport on resize.
 
     bool OnDestroy();
-    //: Stop running on destory.
+    //: Stop running on destroy.
 
     int m_width, m_height;
     osg::ref_ptr<osgViewer::ViewerGtk> m_osgViewer;
