@@ -158,7 +158,8 @@ namespace RavlN {
   public:
     FixedQueueIterC()
       : at(0),
-	end(0)
+	end(0),
+	eoa(0)
     {}
     //: Default constructor.
     
@@ -166,8 +167,8 @@ namespace RavlN {
       : SArray1dC<T>(queue)
     { First(queue); }
     //: Constructor from a queue.
-    // Note: Changing the queue after the iterator is contructed
-    // will not affect the indexs iterated, though the data will
+    // Note: Changing the queue after the iterator is constructed
+    // will not affect the indices iterated, though the data will
     // change.
     
     void First(FixedQueueC<T> &queue) {
@@ -257,7 +258,8 @@ namespace RavlN {
   public:
     FixedQueueRevIterC()
       : at(0),
-	end(0)
+	end(0),
+	eoa(0)
     {}
     //: Default constructor.
     
@@ -265,8 +267,8 @@ namespace RavlN {
       : SArray1dC<T>(queue)
     { First(queue); }
     //: Constructor from a queue.
-    // Note: Chaning the queue after the iterator is contructed
-    // will not affect the indexs iterated, though the data will
+    // Note: Changing the queue after the iterator is constructed
+    // will not affect the indices iterated, though the data will
     // change.
     
     void First(FixedQueueC<T> &queue) {
