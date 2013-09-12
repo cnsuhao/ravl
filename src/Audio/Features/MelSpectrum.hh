@@ -42,8 +42,11 @@ namespace RavlAudioN {
     
     SArray1dC<RealT> Apply(const SArray1dC<RealT> &powerSpectrum);
     //: Compute mel spectrum from power spectrum
-    
-    bool InitFilters(RealT sampleRate,IntT frameSize,RealRangeC freqRange,IntT numFilters);
+
+    SArray1dC<float> Apply(const SArray1dC<float> &powerSpectrum);
+    //: Compute mel spectrum from power spectrum
+
+    bool InitFilters(RealT sampleRate,IntT frameSize,RealRangeC freqRange,IntT numFilters,bool verbose = false);
     //: Initialise filters.
     // Frequency's is in Hz.
     
@@ -59,7 +62,8 @@ namespace RavlAudioN {
     //: Handle to this class.
 
   protected:
-    SArray1dC<Array1dC<RealT> > filters; // Filter bank.    
+    bool m_expand;
+    SArray1dC<Array1dC<float> > filters; // Filter bank.
   };
   
 }
