@@ -54,10 +54,12 @@ class OutputFileSetC
  : public RavlN::RCBodyVC
 {
 public:
-  OutputFileSetC()
+  OutputFileSetC(bool featureOnly)
+   : m_featureOnly(featureOnly)
   {}
 
-  OutputFileSetC(RavlN::FilenameC &outFilename)
+  OutputFileSetC(RavlN::FilenameC &outFilename,bool featureOnly)
+   : m_featureOnly(featureOnly)
   {
     if(!Open(outFilename))
       throw RavlN::ExceptionOperationFailedC("Failed to open files.");
@@ -68,27 +70,34 @@ public:
     StringC orignalBase;
     StringC oldSubType;
 
-    RavlN::ION::FilenameComputeSubType(outFilename,
-                                          "Feature",
-                                          "idx",
-                                          orignalBase,
-                                          oldSubType,
-                                          testFeatureFilename);
-
-    RavlN::ION::FilenameComputeSubType(outFilename,
-                                          "Label",
-                                          "idx",
-                                          orignalBase,
-                                          oldSubType,
-                                          testLabelFilename);
-
+    if(!m_featureOnly) {
+      RavlN::ION::FilenameComputeSubType(outFilename,
+                                            "Feature",
+                                            "idx",
+                                            orignalBase,
+                                            oldSubType,
+                                            testFeatureFilename);
+    } else {
+      testFeatureFilename = outFilename;
+    }
     if(!RavlN::OpenOSequence(testFeatOut,testFeatureFilename)) {
       RavlError("Failed to open feature file '%s' ",testFeatureFilename.c_str());
       return false;
     }
-    if(!RavlN::OpenOSequence(testLabelOut,testLabelFilename)) {
-      RavlError("Failed to open feature file '%s' ",testLabelFilename.c_str());
-      return false;
+
+
+    if(!m_featureOnly) {
+      RavlN::ION::FilenameComputeSubType(outFilename,
+                                            "Label",
+                                            "idx",
+                                            orignalBase,
+                                            oldSubType,
+                                            testLabelFilename);
+
+      if(!RavlN::OpenOSequence(testLabelOut,testLabelFilename)) {
+        RavlError("Failed to open feature file '%s' ",testLabelFilename.c_str());
+        return false;
+      }
     }
     return true;
   }
@@ -97,7 +106,8 @@ public:
   virtual void Write(const RavlN::TVectorC<float> &vec,ByteT label)
   {
     testFeatOut.Put(vec);
-    testLabelOut.Put(label);
+    if(testLabelOut.IsValid())
+      testLabelOut.Put(label);
   }
 
   // Handle to file set.
@@ -109,6 +119,7 @@ protected:
 
   RavlN::DPOSPortC<RavlN::TVectorC<float> > testFeatOut;
   RavlN::DPOSPortC<ByteT> testLabelOut;
+  bool m_featureOnly;
 };
 
 // Write sorted set of files.
@@ -117,8 +128,9 @@ class OutputSortedFileSetC
  : public OutputFileSetC
 {
 public:
-  OutputSortedFileSetC()
-    : m_fileSet(32)
+  OutputSortedFileSetC(bool featureOnly)
+    : OutputFileSetC(featureOnly),
+      m_fileSet(32)
   {}
 
   bool Open(RavlN::FilenameC &outFilename)
@@ -136,7 +148,7 @@ public:
     }
     OutputFileSetC::RefT &op = m_fileSet[index];
     if(!op.IsValid()) {
-      op = new OutputFileSetC();
+      op = new OutputFileSetC(m_featureOnly);
       RavlN::StringC ext = StringC(".") + m_baseFilename.Extension();
       RavlN::FilenameC labelFilename = m_baseFilename.before(ext,-1) + StringC(index) + ext;
       RavlDebug("Opening file '%s' ",labelFilename.c_str());
@@ -157,11 +169,12 @@ protected:
 bool ExtractSamples(OutputFileSetC &outFiles,
                     unsigned samples,
                     RavlN::SArray1dC<BigDataInputFileC> &inFiles,
-                    RavlN::CollectionC<BigDataFeatureIndexC> &sampleIndex
+                    RavlN::CollectionC<BigDataFeatureIndexC> &sampleIndex,
+                    bool featureOnly
                     )
 {
   RavlN::TVectorC<float> featVec;
-  ByteT label;
+  ByteT label = 0;
   unsigned maxLabel = 0;
 
   for(unsigned i = 0;i < samples;i++) {
@@ -177,12 +190,14 @@ bool ExtractSamples(OutputFileSetC &outFiles,
       RavlError("Failed to get sample ");
       return false;
     }
-    if(!inFiles[samp.m_fileNum].m_labIn.GetAt(samp.m_offset,label)) {
-      RavlError("Failed to get sample ");
-      return false;
+    if(!featureOnly) {
+      if(!inFiles[samp.m_fileNum].m_labIn.GetAt(samp.m_offset,label)) {
+        RavlError("Failed to get sample ");
+        return false;
+      }
+      if(label > maxLabel)
+        maxLabel = label;
     }
-    if(label > maxLabel)
-      maxLabel = label;
     outFiles.Write(featVec,label);
   }
   RavlDebug("Done MaxLabel= %u   Feature size=%u ",maxLabel,featVec.Size().V());
@@ -198,7 +213,7 @@ int main(int nargs,char **argv)
   unsigned testSamples = opts.Int("ts",0,"Number of items to take as test samples.");
   RavlN::StringListC inputFiles= opts.List("l","List of input files");
   bool sortTraining = opts.Boolean("st",false,"Sort training set.");
-
+  bool featureOnly = opts.Boolean("fo",false,"Use features only, ignore labels.");
   FilenameC outputTestFileName = opts.String("ote","test.idx","Output file");
   FilenameC outputTrainFileName = opts.String("otr","train.idx","Output file");
   opts.Check();
@@ -230,22 +245,29 @@ int main(int nargs,char **argv)
                                         oldSubType,
                                         labelFilename);
 
-
-    if(!RavlN::OpenISequence(inFiles[i].m_featIn,featureFilename)) {
-      RavlError("Failed to open feature file '%s' ",featureFilename.c_str());
-      return 1;
-    }
-    if(!RavlN::OpenISequence(inFiles[i].m_labIn,labelFilename)) {
-      RavlError("Failed to open label file '%s' ",labelFilename.c_str());
-      return 1;
+    if(featureOnly) {
+      if(!RavlN::OpenISequence(inFiles[i].m_featIn,*it)) {
+        RavlError("Failed to open feature file '%s' ",it->c_str());
+      }
+    } else {
+      if(!RavlN::OpenISequence(inFiles[i].m_featIn,featureFilename)) {
+        RavlError("Failed to open feature file '%s' ",featureFilename.c_str());
+        return 1;
+      }
     }
     Int64T samples = inFiles[i].m_featIn.Size64();
-    if(inFiles[i].m_labIn.Size64() != samples) {
-      RavlError("Mismatch between number of features and labels in %s ",(*it).c_str());
-      return 1;
+    if(!featureOnly) {
+      if(!RavlN::OpenISequence(inFiles[i].m_labIn,labelFilename)) {
+        RavlError("Failed to open label file '%s' ",labelFilename.c_str());
+        return 1;
+      }
+      if(inFiles[i].m_labIn.Size64() != samples) {
+        RavlError("Mismatch between number of features and labels in %s ",(*it).c_str());
+        return 1;
+      }
     }
-    inFiles[i].m_samples = samples;
 
+    inFiles[i].m_samples = samples;
     sampleCount += inFiles[i].m_samples;
     RavlDebug("Samples %s in file %s ",RavlN::StringOf(samples).c_str(),(*it).c_str());
   }
@@ -262,7 +284,7 @@ int main(int nargs,char **argv)
 
   if(testSamples > 0) {
     RavlDebug("Extracting test samples.");
-    OutputFileSetC::RefT outputTestFiles = new OutputFileSetC();
+    OutputFileSetC::RefT outputTestFiles = new OutputFileSetC(featureOnly);
     if(!outputTestFiles->Open(outputTestFileName)) {
       RavlError("Failed to open test output.");
       return false;
@@ -270,7 +292,8 @@ int main(int nargs,char **argv)
     if(!ExtractSamples(*outputTestFiles,
                        testSamples,
                        inFiles,
-                       sampleIndex
+                       sampleIndex,
+                       featureOnly
                        ))
     {
       RavlError("Failed to extract test set.");
@@ -283,10 +306,10 @@ int main(int nargs,char **argv)
   OutputFileSetC::RefT outputFiles;
 
   if(!sortTraining)
-    outputFiles = new OutputFileSetC();
+    outputFiles = new OutputFileSetC(featureOnly);
   else {
     RavlDebug("Sorting output.");
-    outputFiles = new OutputSortedFileSetC();
+    outputFiles = new OutputSortedFileSetC(featureOnly);
   }
 
   if(!outputFiles->Open(outputTrainFileName)) {
@@ -297,7 +320,8 @@ int main(int nargs,char **argv)
   if(!ExtractSamples(*outputFiles,
                      g_allSamples, // Everything else;
                      inFiles,
-                     sampleIndex
+                     sampleIndex,
+                     featureOnly
                      ))
   {
     RavlError("Failed to extract test set.");
