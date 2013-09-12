@@ -46,7 +46,7 @@ namespace RavlN {
     
     inline void InsLast(const T &Obj);
     //: Insert data at end of queue.
-    // returns the place its index in the array.
+    // There must be space in the queue.
     
     inline void ForceInsLast(const T &Obj);
     //: Insert data at end of queue, if no space discard oldest element.
