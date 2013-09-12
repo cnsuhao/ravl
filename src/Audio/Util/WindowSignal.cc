@@ -145,10 +145,8 @@ namespace RavlAudioN {
 
   //: Construct from an xml file.
   WindowSignalFloatC::WindowSignalFloatC(const XMLFactoryContextC &factory)
-  : DPEntityC(new WindowSignalBodyC<float,float,float>(factory))
-  {
-
-  }
+   : DPEntityC(new WindowSignalBodyC<float,float,float>(factory))
+  {}
 
   void LinkWindowSignal()
   {}

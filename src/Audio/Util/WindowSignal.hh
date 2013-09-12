@@ -190,6 +190,9 @@ namespace RavlAudioN {
     { return filter; }
     //: Access filter.
     
+    UIntT FrameSize() const
+    { return filter.Size(); }
+    //: Access frame size.
   protected:
     FixedQueueC<SArray1dC<InT> > blocks; 
     SArray1dC<FilterT> filter;
@@ -237,7 +240,7 @@ namespace RavlAudioN {
     //: Access body.
     
     const WindowSignalBodyC<InT,OutT,FilterT> &Body() const
-    { return dynamic_cast<WindowSignalBodyC<InT,OutT,FilterT> &>(DPEntityC::Body()); }
+    { return dynamic_cast<const WindowSignalBodyC<InT,OutT,FilterT> &>(DPEntityC::Body()); }
     //: Access body.
     
   public:
@@ -248,6 +251,11 @@ namespace RavlAudioN {
     const SArray1dC<FilterT> &Filter() const
     { return Body().Filter(); }
     //: Access filter.
+
+    UIntT FrameSize() const
+    { return Body().FrameSize(); }
+    //: Access frame size.
+
   };
 
   //! Window a stream of floats.
