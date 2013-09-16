@@ -15,7 +15,8 @@ namespace RavlImageN {
   static const ByteRGBValueC magenta(255,   0, 255);
   static const ByteRGBValueC white  (255, 255, 255);
   static const ByteRGBValueC olive  (160, 220,   0);
-  static const ByteRGBValueC grey   ( 60, 120, 120);
+  static const ByteRGBValueC grey   (120, 120, 120);
+  static const ByteRGBValueC slate  ( 60, 120, 120);
 
 }
 
