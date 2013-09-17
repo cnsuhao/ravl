@@ -706,7 +706,7 @@ then
    trace 3 Defined libraries
    for lib in $KnownLibs
    do
-      eval testwith=\$with_${lib}_fn
+      eval testwith="\$with_${lib}_tstcd"
       eval prereq=\$with_${lib}_prq
       eval lnklibs=\$with_${lib}_lnklibs
       eval loc=\$with_${lib}_libpath
@@ -718,9 +718,9 @@ then
       eval virtual=\$with_${lib}_virtual
       AS_IF([test X$virtual = Xyes],
             [# Virtual package
-             trace 3 $lib:Virtual:$prereq:$lib_enablement
+             trace 3 "$lib:Virtual:$prereq:$lib_enablement"
             ],
-            [trace 3 $lib:$testwith:$prereq:$lnklibs:$loc:$hdr:$inc:$pkgconf:$lib_enablement
+            [trace 3 "$lib:$testwith:$prereq:$lnklibs:$loc:$hdr:$inc:$pkgconf:$lib_enablement"
             ]
            )
    done
@@ -797,7 +797,7 @@ then
    trace 3 Defaulted libraries
    for lib in $KnownLibs
    do
-      eval testwith=\$with_${lib}_fn
+      eval testwith="\$with_${lib}_tstcd"
       eval prereq=\$with_${lib}_prq
       eval lnklibs=\$with_${lib}_lnklibs
       eval loc=\$with_${lib}_libpath
@@ -809,9 +809,9 @@ then
       eval virtual=\$with_${lib}_virtual
       AS_IF([test X$virtual = Xyes],
             [# Virtual package
-             trace 3 $lib:Virtual:$prereq:$lib_enablement
+             trace 3 "$lib:Virtual:$prereq:$lib_enablement"
             ],
-            [trace 3 $lib:$testwith:$prereq:$lnklibs:$loc:$hdr:$inc:$pkgconf:$lib_enablement
+            [trace 3 "$lib:$testwith:$prereq:$lnklibs:$loc:$hdr:$inc:$pkgconf:$lib_enablement"
             ]
            )
    done
