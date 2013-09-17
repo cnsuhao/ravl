@@ -11602,7 +11602,8 @@ $as_echo "$as_me: WARNING: --with-blas-include and --with-blas specify different
 
           with_blas_tstcd='sgemm_ ();'
                                                   with_blas_prq=""
-          with_blas_hdr=""
+          with_blas_hdr="
+                             "
           with_blas_virtual="no"
 
 
@@ -12492,7 +12493,8 @@ $as_echo "$as_me: WARNING: --with-CUDA-include and --with-CUDA specify different
 
           with_CUDA_tstcd='cudaMalloc ();'
                                                   with_CUDA_prq=""
-          with_CUDA_hdr="cuda.h"
+          with_CUDA_hdr="cuda.h
+                             "
           with_CUDA_virtual="no"
 
 
@@ -13381,11 +13383,12 @@ $as_echo "$as_me: WARNING: --with-GLUT-include and --with-GLUT specify different
           fi
 
           with_GLUT_tstcd='int *pargc;
-                                              char **argv;
-                                              glutInit(pargc, argv);
-                                             '
+                               char **argv;
+                               glutInit(pargc, argv);
+                              '
                                                   with_GLUT_prq=""
-          with_GLUT_hdr="GL/glut.h"
+          with_GLUT_hdr="GL/glut.h
+                             "
           with_GLUT_virtual="no"
 
 
@@ -14275,7 +14278,8 @@ $as_echo "$as_me: WARNING: --with-LibJasper-include and --with-LibJasper specify
 
           with_LibJasper_tstcd='jas_init ();'
                                                   with_LibJasper_prq=""
-          with_LibJasper_hdr="jasper/jasper.h"
+          with_LibJasper_hdr="jasper/jasper.h
+                             "
           with_LibJasper_virtual="no"
 
 
@@ -15164,11 +15168,12 @@ $as_echo "$as_me: WARNING: --with-JPEG-include and --with-JPEG specify different
           fi
 
           with_JPEG_tstcd='j_decompress_ptr cinfo;
-                                              boolean require_image;
-                                              jpeg_read_header (cinfo, require_image);
-                                             '
+                               boolean require_image;
+                               jpeg_read_header (cinfo, require_image);
+                              '
                                                   with_JPEG_prq=""
-          with_JPEG_hdr="stdio.h jpeglib.h"
+          with_JPEG_hdr="stdio.h jpeglib.h
+                             "
           with_JPEG_virtual="no"
 
 
@@ -16058,7 +16063,8 @@ $as_echo "$as_me: WARNING: --with-LAPACK-include and --with-LAPACK specify diffe
 
           with_LAPACK_tstcd='dgetri_ ();'
                                                   with_LAPACK_prq="blas"
-          with_LAPACK_hdr=""
+          with_LAPACK_hdr="
+                             "
           with_LAPACK_virtual="no"
 
 
@@ -16948,7 +16954,8 @@ $as_echo "$as_me: WARNING: --with-posixThreads-include and --with-posixThreads s
 
           with_posixThreads_tstcd='pthread_self ();'
                                                   with_posixThreads_prq=""
-          with_posixThreads_hdr="pthread.h"
+          with_posixThreads_hdr="pthread.h
+                             "
           with_posixThreads_virtual="no"
 
 
@@ -17838,7 +17845,8 @@ $as_echo "$as_me: WARNING: --with-LibTIFF-include and --with-LibTIFF specify dif
 
           with_LibTIFF_tstcd='TIFFGetVersion ();'
                                                   with_LibTIFF_prq="Zlib"
-          with_LibTIFF_hdr=""
+          with_LibTIFF_hdr="
+                             "
           with_LibTIFF_virtual="no"
 
 
@@ -18728,7 +18736,8 @@ $as_echo "$as_me: WARNING: --with-Zlib-include and --with-Zlib specify different
 
           with_Zlib_tstcd='zlibCompileFlags ();'
                                                   with_Zlib_prq=""
-          with_Zlib_hdr=""
+          with_Zlib_hdr="
+                             "
           with_Zlib_virtual="no"
 
 

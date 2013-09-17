@@ -87,9 +87,18 @@ AC_DEFUN([QM_DEFINE_ALL_EXTLIBS],
           dnl    sub-sets of the header files are regularly seen in the wild).
           dnl    If specifying multiple headers, provide a space seperated list.
           dnl
-          dnl                 Name,          Fn,                     Deps,   -l,           .h
+          dnl                 Name,
+          dnl                 Fn,
+          dnl                 Deps,
+          dnl                 -l,
+          dnl                 .h
           dnl
-          QM_DEFINE_EXTLIB_CC([blas],        [sgemm_ ();],           [],     [-lblas],     [])
+          QM_DEFINE_EXTLIB_CC([blas],
+                              [sgemm_ ();],
+                              [],
+                              [-lblas],
+                              []
+                             )
           dnl# Define BLAS support. This is a bit of a bodge as we should be
           dnl# testing for more Fortran functionality/configurataion here than
           dnl# we currently do. The problem with performing that testing is that
@@ -111,24 +120,57 @@ AC_DEFUN([QM_DEFINE_ALL_EXTLIBS],
           dnl# be added at a later date on an as-needed basis. In the meantime,
           dnl# using the --with-blas-library switch will provide support.
           dnl
-          dnl                 Name,          Fn,                     Deps,   -l,           .h
+          dnl                 Name,
+          dnl                 Test Code,
+          dnl                 Deps,
+          dnl                 -l,
+          dnl                 .h
           dnl 
-          QM_DEFINE_EXTLIB_CC([CUDA],        [cudaMalloc ();],       [],     [-lcuda -lcudart],   [cuda.h])
-          QM_DEFINE_EXTLIB_CC([GLUT],        [int *pargc;
-                                              char **argv;
-                                              glutInit(pargc, argv);
-                                             ],                      [],     [-lglut],     [GL/glut.h])
-          QM_DEFINE_EXTLIB_CC([LibJasper],   [jas_init ();],         [],     [-ljasper],   [jasper/jasper.h])
-          QM_DEFINE_EXTLIB_CC([JPEG],        [j_decompress_ptr cinfo;
-                                              boolean require_image;
-                                              jpeg_read_header (cinfo, require_image);
-                                             ],                      [],     [-ljpeg],     [stdio.h jpeglib.h])
+          QM_DEFINE_EXTLIB_CC([CUDA],
+                              [cudaMalloc ();],
+                              [],
+                              [-lcuda -lcudart],
+                              [cuda.h]
+                             )
+          QM_DEFINE_EXTLIB_CC([GLUT],        
+                              [int *pargc;
+                               char **argv;
+                               glutInit(pargc, argv);
+                              ],
+                              [],
+                              [-lglut],
+                              [GL/glut.h]
+                             )
+          QM_DEFINE_EXTLIB_CC([LibJasper],
+                              [jas_init ();],
+                              [],
+                              [-ljasper],
+                              [jasper/jasper.h]
+                             )
+          QM_DEFINE_EXTLIB_CC([JPEG],
+                              [j_decompress_ptr cinfo;
+                               boolean require_image;
+                               jpeg_read_header (cinfo, require_image);
+                              ],
+                              [],
+                              [-ljpeg],
+                              [stdio.h jpeglib.h]
+                             )
           dnl# JPEG check will support either the standard or jpeg-turbo library
           dnl# as they are a straight substitution for each other
           dnl
-          dnl                 Name,          Fn,                     Deps,   -l,           .h
+          dnl                 Name,
+          dnl                 Test Code,
+          dnl                 Deps,
+          dnl                 -l,
+          dnl                 .h
           dnl 
-          QM_DEFINE_EXTLIB_CC([LAPACK],      [dgetri_ ();],          [blas], [-llapack],   [])
+          QM_DEFINE_EXTLIB_CC([LAPACK],
+                              [dgetri_ ();],
+                              [blas],
+                              [-llapack],
+                              []
+                             )
           dnl# As for BLAS, the above definition for LAPACK should be performing
           dnl# more involved Fortran testing (and utilising the extra checking
           dnl# that should have been carried out for the BLAS library). However,
@@ -136,11 +178,30 @@ AC_DEFUN([QM_DEFINE_ALL_EXTLIBS],
           dnl# not builing LAPACK into any client project, we do not do the
           dnl# extra testing.
           dnl
-          dnl                 Name,          Fn,                     Deps,   -l,           .h
+          dnl                 Name,
+          dnl                 Test Code,
+          dnl                 Deps,
+          dnl                 -l,
+          dnl                 .h
           dnl 
-          QM_DEFINE_EXTLIB_CC([posixThreads],[pthread_self ();],     [],     [-lpthread],  [pthread.h])
-          QM_DEFINE_EXTLIB_CC([LibTIFF],     [TIFFGetVersion ();],   [Zlib], [-ltiff],     [])
-          QM_DEFINE_EXTLIB_CC([Zlib],        [zlibCompileFlags ();], [],     [-lz],        [])
+          QM_DEFINE_EXTLIB_CC([posixThreads],
+                              [pthread_self ();],
+                              [],
+                              [-lpthread],
+                              [pthread.h]
+                             )
+          QM_DEFINE_EXTLIB_CC([LibTIFF],
+                              [TIFFGetVersion ();],
+                              [Zlib],
+                              [-ltiff],
+                              []
+                             )
+          QM_DEFINE_EXTLIB_CC([Zlib],
+                              [zlibCompileFlags ();],
+                              [],
+                              [-lz],
+                              []
+                             )
           
           dnl Virtual Pkgs
           QM_DEFINE_VIRTUAL_EXTLIB([libffmpeg], [FFMPEGCDEC FFMPEGCONT FFMPEGSWS FFMPEGUTIL])
