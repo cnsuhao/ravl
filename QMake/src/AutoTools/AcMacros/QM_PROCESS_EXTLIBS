@@ -32,7 +32,7 @@ dnl
 dnl   All variables listed with a <lib> in their name exist for each library
 dnl   that has been declared (via a QM_DEFINE_EXTLIB_[CP]C) with the <lib>
 dnl   being replaced by the RESOURCE name of the package. For example,
-dnl   the OpenCV package will have variables named with_OpenCV_fn; 
+dnl   the OpenCV package will have variables named with_OpenCV_tstcd; 
 dnl   with_OpenCV_hdr; use_OpenCV; etc. Similarly, libGTK2 has variables
 dnl   use_libGTK2; with_GTK2_pkgconf; etc.
 dnl
@@ -75,9 +75,9 @@ dnl                                  an indent of 5 spaces per level of
 dnl                                  nesting in the code i.e. set the var to
 dnl                                  "     " for the first for loop, set it
 dnl                                  to "          " for the second, etc.
-dnl       with_<Lib>_fn              Function in the external library which
-dnl                                  the test link should attempt to call
-dnl                                  when testing for the library's existance
+dnl       with_<Lib>_tstcd           Code that will be used to test that the
+dnl                                  external library is present and can be
+dnl                                  linked against.
 dnl       with_<lib>_hdr             List of header files to test the
 dnl                                  existance of if testing for the lib's
 dnl                                  presence via a compilation check.
@@ -135,7 +135,7 @@ AC_DEFUN([QM_PROCESS_EXTLIBS],
              trace 3 Declared libraries
              for lib in $LibsToProcess
              do
-                eval testwith=\$with_${lib}_fn
+                eval testwith="\$with_${lib}_tstcd"
                 eval prereq=\$with_${lib}_prq
                 eval lnklibs=\$with_${lib}_lnklibs
                 eval loc=\$with_${lib}_libpath
@@ -147,9 +147,9 @@ AC_DEFUN([QM_PROCESS_EXTLIBS],
                 eval virtual=\$with_${lib}_virtual
                 AS_IF([test X$virtual = Xyes],
                       [# Virtual package
-                       trace 3 $lib:Virtual:$prereq:$lib_enablement
+                       trace 3 "$lib:Virtual:$prereq:$lib_enablement"
                       ],
-                      [trace 3 $lib:$testwith:$prereq:$lnklibs:$loc:$hdr:$inc:$pkgconf:$lib_enablement
+                      [trace 3 "$lib:$testwith:$prereq:$lnklibs:$loc:$hdr:$inc:$pkgconf:$lib_enablement"
                       ]
                      )
              done
@@ -352,7 +352,7 @@ AC_DEFUN([QM_PROCESS_EXTLIBS],
 
                 if ( test X$DBG != X && test $DBG -ge 3 )
                 then
-                   eval testwith=\$with_${lib}_fn
+                   eval testwith="\$with_${lib}_tstcd"
                    eval prereq=\$with_${lib}_prq
                    eval lnklibs=\$with_${lib}_lnklibs
                    eval loc=\$with_${lib}_libpath
@@ -364,9 +364,9 @@ AC_DEFUN([QM_PROCESS_EXTLIBS],
                    eval virtual=\$with_${lib}_virtual
                    AS_IF([test X$virtual = Xyes],
                          [# Virtual package
-                          trace 3 $lib:Virtual:$prereq:$lib_enablement
+                          trace 3 "$lib:Virtual:$prereq:$lib_enablement"
                          ],
-                         [trace 3 $lib:$testwith:$prereq:$lnklibs:$loc:$hdr:$inc:$pkgconf:$lib_enablement
+                         [trace 3 "$lib:$testwith:$prereq:$lnklibs:$loc:$hdr:$inc:$pkgconf:$lib_enablement"
                          ]
                         )
                 fi
@@ -452,7 +452,7 @@ AC_DEFUN([QM_PROCESS_EXTLIBS],
                LeftToDo=`echo " $LeftToDo " | $SED "s/ $lib / /"`
                if ( test X$DBG != X && test $DBG -ge 3 )
                then
-                  eval testwith=\$with_${lib}_fn
+                  eval testwith="\$with_${lib}_tstcd"
                   eval prereq="\$with_${lib}_prq"
                   eval lnklibs=\$with_${lib}_lnklibs
                   eval loc=\$with_${lib}_libpath
@@ -460,7 +460,7 @@ AC_DEFUN([QM_PROCESS_EXTLIBS],
                   eval inc=\$with_${lib}_inc
                   eval lib_enablement=\$use_${lib}
                   TRACE_INDENT="     "
-                  trace 3 $lib:$testwith:$prereq:$lnklibs:$loc:$hdr:$pkgconf:$inc:$lib_enablement
+                  trace 3 "$lib:$testwith:$prereq:$lnklibs:$loc:$hdr:$pkgconf:$inc:$lib_enablement"
                fi
             else
                eval virtual=\$with_${lib}_virtual
@@ -1085,7 +1085,7 @@ AC_DEFUN([QM_PROCESS_EXTLIBS],
                 esac
                 if ( test X$DBG != X && test $DBG -ge 3 )
                 then
-                   eval testwith=\$with_${lib}_fn
+                   eval testwith="\$with_${lib}_tstcd"
                    eval prereq=\$with_${lib}_prq
                    eval lnklibs=\$with_${lib}_lnklibs
                    eval loc=\$with_${lib}_libpath
@@ -1097,9 +1097,9 @@ AC_DEFUN([QM_PROCESS_EXTLIBS],
                    eval virtual=\$with_${lib}_virtual
                    AS_IF([test X$virtual = Xyes],
                          [# Virtual package
-                          trace 3 $lib:Virtual:$prereq:$lib_enablement
+                          trace 3 "$lib:Virtual:$prereq:$lib_enablement"
                          ],
-                         [trace 3 $lib:$testwith:$prereq:$lnklibs:$loc:$hdr:$inc:$pkgconf:$lib_enablement
+                         [trace 3 "$lib:$testwith:$prereq:$lnklibs:$loc:$hdr:$inc:$pkgconf:$lib_enablement"
                          ]
                         )
                 fi

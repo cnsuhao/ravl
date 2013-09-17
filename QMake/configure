@@ -11600,8 +11600,8 @@ $as_echo "$as_me: WARNING: --with-blas-include and --with-blas specify different
              ConfiguredLibs=$ConfiguredLibs" "blas
           fi
 
-          with_blas_fn=sgemm_
-          with_blas_prq=""
+          with_blas_tstcd='sgemm_ ();'
+                                                  with_blas_prq=""
           with_blas_hdr=""
           with_blas_virtual="no"
 
@@ -12490,8 +12490,8 @@ $as_echo "$as_me: WARNING: --with-CUDA-include and --with-CUDA specify different
              ConfiguredLibs=$ConfiguredLibs" "CUDA
           fi
 
-          with_CUDA_fn=cudaMalloc
-          with_CUDA_prq=""
+          with_CUDA_tstcd='cudaMalloc ();'
+                                                  with_CUDA_prq=""
           with_CUDA_hdr="cuda.h"
           with_CUDA_virtual="no"
 
@@ -13380,8 +13380,11 @@ $as_echo "$as_me: WARNING: --with-GLUT-include and --with-GLUT specify different
              ConfiguredLibs=$ConfiguredLibs" "GLUT
           fi
 
-          with_GLUT_fn=glutInit
-          with_GLUT_prq=""
+          with_GLUT_tstcd='int *pargc;
+                                              char **argv;
+                                              glutInit(pargc, argv);
+                                             '
+                                                  with_GLUT_prq=""
           with_GLUT_hdr="GL/glut.h"
           with_GLUT_virtual="no"
 
@@ -14270,8 +14273,8 @@ $as_echo "$as_me: WARNING: --with-LibJasper-include and --with-LibJasper specify
              ConfiguredLibs=$ConfiguredLibs" "LibJasper
           fi
 
-          with_LibJasper_fn=jas_init
-          with_LibJasper_prq=""
+          with_LibJasper_tstcd='jas_init ();'
+                                                  with_LibJasper_prq=""
           with_LibJasper_hdr="jasper/jasper.h"
           with_LibJasper_virtual="no"
 
@@ -15160,9 +15163,12 @@ $as_echo "$as_me: WARNING: --with-JPEG-include and --with-JPEG specify different
              ConfiguredLibs=$ConfiguredLibs" "JPEG
           fi
 
-          with_JPEG_fn=jpeg_read_header
-          with_JPEG_prq=""
-          with_JPEG_hdr="jpeglib.h"
+          with_JPEG_tstcd='j_decompress_ptr cinfo;
+                                              boolean require_image;
+                                              jpeg_read_header (cinfo, require_image);
+                                             '
+                                                  with_JPEG_prq=""
+          with_JPEG_hdr="stdio.h jpeglib.h"
           with_JPEG_virtual="no"
 
 
@@ -16050,8 +16056,8 @@ $as_echo "$as_me: WARNING: --with-LAPACK-include and --with-LAPACK specify diffe
              ConfiguredLibs=$ConfiguredLibs" "LAPACK
           fi
 
-          with_LAPACK_fn=dgetri_
-          with_LAPACK_prq="blas"
+          with_LAPACK_tstcd='dgetri_ ();'
+                                                  with_LAPACK_prq="blas"
           with_LAPACK_hdr=""
           with_LAPACK_virtual="no"
 
@@ -16940,8 +16946,8 @@ $as_echo "$as_me: WARNING: --with-posixThreads-include and --with-posixThreads s
              ConfiguredLibs=$ConfiguredLibs" "posixThreads
           fi
 
-          with_posixThreads_fn=pthread_self
-          with_posixThreads_prq=""
+          with_posixThreads_tstcd='pthread_self ();'
+                                                  with_posixThreads_prq=""
           with_posixThreads_hdr="pthread.h"
           with_posixThreads_virtual="no"
 
@@ -17830,8 +17836,8 @@ $as_echo "$as_me: WARNING: --with-LibTIFF-include and --with-LibTIFF specify dif
              ConfiguredLibs=$ConfiguredLibs" "LibTIFF
           fi
 
-          with_LibTIFF_fn=TIFFGetVersion
-          with_LibTIFF_prq="Zlib"
+          with_LibTIFF_tstcd='TIFFGetVersion ();'
+                                                  with_LibTIFF_prq="Zlib"
           with_LibTIFF_hdr=""
           with_LibTIFF_virtual="no"
 
@@ -18720,8 +18726,8 @@ $as_echo "$as_me: WARNING: --with-Zlib-include and --with-Zlib specify different
              ConfiguredLibs=$ConfiguredLibs" "Zlib
           fi
 
-          with_Zlib_fn=zlibCompileFlags
-          with_Zlib_prq=""
+          with_Zlib_tstcd='zlibCompileFlags ();'
+                                                  with_Zlib_prq=""
           with_Zlib_hdr=""
           with_Zlib_virtual="no"
 
@@ -19141,7 +19147,7 @@ done
              trace 3 Declared libraries
              for lib in $LibsToProcess
              do
-                eval testwith=\$with_${lib}_fn
+                eval testwith="\$with_${lib}_tstcd"
                 eval prereq=\$with_${lib}_prq
                 eval lnklibs=\$with_${lib}_lnklibs
                 eval loc=\$with_${lib}_libpath
@@ -19153,10 +19159,10 @@ done
                 eval virtual=\$with_${lib}_virtual
                 if test X$virtual = Xyes; then :
   # Virtual package
-                       trace 3 $lib:Virtual:$prereq:$lib_enablement
+                       trace 3 "$lib:Virtual:$prereq:$lib_enablement"
 
 else
-  trace 3 $lib:$testwith:$prereq:$lnklibs:$loc:$hdr:$inc:$pkgconf:$lib_enablement
+  trace 3 "$lib:$testwith:$prereq:$lnklibs:$loc:$hdr:$inc:$pkgconf:$lib_enablement"
 
 
 fi
@@ -19378,7 +19384,7 @@ See \`config.log' for more details." "$LINENO" 5; }
 
                 if ( test X$DBG != X && test $DBG -ge 3 )
                 then
-                   eval testwith=\$with_${lib}_fn
+                   eval testwith="\$with_${lib}_tstcd"
                    eval prereq=\$with_${lib}_prq
                    eval lnklibs=\$with_${lib}_lnklibs
                    eval loc=\$with_${lib}_libpath
@@ -19390,10 +19396,10 @@ See \`config.log' for more details." "$LINENO" 5; }
                    eval virtual=\$with_${lib}_virtual
                    if test X$virtual = Xyes; then :
   # Virtual package
-                          trace 3 $lib:Virtual:$prereq:$lib_enablement
+                          trace 3 "$lib:Virtual:$prereq:$lib_enablement"
 
 else
-  trace 3 $lib:$testwith:$prereq:$lnklibs:$loc:$hdr:$inc:$pkgconf:$lib_enablement
+  trace 3 "$lib:$testwith:$prereq:$lnklibs:$loc:$hdr:$inc:$pkgconf:$lib_enablement"
 
 
 fi
@@ -19508,7 +19514,7 @@ fi
                LeftToDo=`echo " $LeftToDo " | $SED "s/ $lib / /"`
                if ( test X$DBG != X && test $DBG -ge 3 )
                then
-                  eval testwith=\$with_${lib}_fn
+                  eval testwith="\$with_${lib}_tstcd"
                   eval prereq="\$with_${lib}_prq"
                   eval lnklibs=\$with_${lib}_lnklibs
                   eval loc=\$with_${lib}_libpath
@@ -19516,7 +19522,7 @@ fi
                   eval inc=\$with_${lib}_inc
                   eval lib_enablement=\$use_${lib}
                   TRACE_INDENT="     "
-                  trace 3 $lib:$testwith:$prereq:$lnklibs:$loc:$hdr:$pkgconf:$inc:$lib_enablement
+                  trace 3 "$lib:$testwith:$prereq:$lnklibs:$loc:$hdr:$pkgconf:$inc:$lib_enablement"
                fi
             else
                eval virtual=\$with_${lib}_virtual
@@ -20251,7 +20257,7 @@ See \`config.log' for more details." "$LINENO" 5; }
                     done
                  fi
                  if test "x$process_now" != xno; then :
-  eval testwith=\$with_${lib}_fn
+  eval testwith="\$with_${lib}_tstcd"
                         eval lnklibs="\$with_${lib}_lnklibs"
                         eval loc=\$with_${lib}_libpath
                         eval hdr=\$with_${lib}_hdr
@@ -20310,39 +20316,19 @@ See \`config.log' for more details." "$LINENO" 5; }
          preserve_LIBS=$LIBS
          CPPFLAGS=$LIB_CPPFLAGS
          LIBS="$LIB_LDFLAGS $lnklibs $prereqlibs"
-         { $as_echo "$as_me:${as_lineno-$LINENO}: checking for fn $testwith in library $lnklibs" >&5
-$as_echo_n "checking for fn $testwith in library $lnklibs... " >&6; }
-         cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-int
-main ()
-{
-$testwith ();
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
-  found=true
-else
-  found=false
-fi
-rm -f core conftest.err conftest.$ac_objext \
-    conftest$ac_exeext conftest.$ac_ext
-         if ( test X$found = Xtrue )
+         { $as_echo "$as_me:${as_lineno-$LINENO}: checking for external package $lib..." >&5
+$as_echo "$as_me: checking for external package $lib..." >&6;}
+         preamble=""
+         found=true
+         if ( test X"$hdr" != X )
          then
-            { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
-$as_echo "yes" >&6; }
-            if ( test X"$hdr" != X )
-            then
-               for hf in $hdr
-               do
-                  if ( test X$found = Xtrue )
-                  then
-                     TRACE_INDENT="     "
-                     trace 3 Checking for header file $hf
-                     as_ac_Header=`$as_echo "ac_cv_header_$hf" | $as_tr_sh`
+            for hf in $hdr
+            do
+               if ( test X$found = Xtrue )
+               then
+                  TRACE_INDENT="     "
+                  trace 3 Checking for header file $hf
+                  as_ac_Header=`$as_echo "ac_cv_header_$hf" | $as_tr_sh`
 ac_fn_c_check_header_compile "$LINENO" "$hf" "$as_ac_Header" "$ac_includes_default
 
 "
@@ -20354,12 +20340,63 @@ else
 fi
 
 
+                  if ( test X$found = Xtrue )
+                  then
+                     preamble=$preamble'
+#include <'$hf'>'
+                     # N.B. Above line split is to embed a newline into the
+                     # preamble variable
                   fi
-               done
+               fi
+            done
+         fi
+         # Did we find all the header files?
+         if ( test X$found = Xtrue )
+         then
+            # We did, perform the link test
+            { $as_echo "$as_me:${as_lineno-$LINENO}: checking ability to link against $lnklibs" >&5
+$as_echo_n "checking ability to link against $lnklibs... " >&6; }
+            test_code="$testwith"
+            # Original implementation used a single function name for the test
+            # code and appended (); to it. Check if we have someone using the old
+            # standard and process appropriately
+            if ( test -z "`echo "$test_code" | awk '{ print $2 }'`" )
+            then
+               # test code is a single item, is it a function call or just a
+               # function name?
+               if ( test "$test_code" = "`echo "$test_code" | sed 's/;/./'`" )
+               then
+                  # No ; - test code must just be a function name - convert it to
+                  # a function call
+                  test_code="$test_code ();"
+               fi
             fi
-         else
-            { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+            cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+$preamble
+int
+main ()
+{
+$test_code
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  found=true
+else
+  found=false
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+            if ( test X$found = Xtrue )
+            then
+               { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+            else
+               { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
 $as_echo "no" >&6; }
+            fi
          fi
          CPPFLAGS=$preserve_CPPFLAGS
          LDFLAGS=$preserve_LDFLAGS
@@ -20446,39 +20483,19 @@ $as_echo "no" >&6; }
          preserve_LIBS=$LIBS
          CPPFLAGS=$LIB_CPPFLAGS
          LIBS="$LIB_LDFLAGS $lnklibs $prereqlibs"
-         { $as_echo "$as_me:${as_lineno-$LINENO}: checking for fn $testwith in library $lnklibs" >&5
-$as_echo_n "checking for fn $testwith in library $lnklibs... " >&6; }
-         cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-int
-main ()
-{
-$testwith ();
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
-  found=true
-else
-  found=false
-fi
-rm -f core conftest.err conftest.$ac_objext \
-    conftest$ac_exeext conftest.$ac_ext
-         if ( test X$found = Xtrue )
+         { $as_echo "$as_me:${as_lineno-$LINENO}: checking for external package $lib..." >&5
+$as_echo "$as_me: checking for external package $lib..." >&6;}
+         preamble=""
+         found=true
+         if ( test X"$hdr" != X )
          then
-            { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
-$as_echo "yes" >&6; }
-            if ( test X"$hdr" != X )
-            then
-               for hf in $hdr
-               do
-                  if ( test X$found = Xtrue )
-                  then
-                     TRACE_INDENT="     "
-                     trace 3 Checking for header file $hf
-                     as_ac_Header=`$as_echo "ac_cv_header_$hf" | $as_tr_sh`
+            for hf in $hdr
+            do
+               if ( test X$found = Xtrue )
+               then
+                  TRACE_INDENT="     "
+                  trace 3 Checking for header file $hf
+                  as_ac_Header=`$as_echo "ac_cv_header_$hf" | $as_tr_sh`
 ac_fn_c_check_header_compile "$LINENO" "$hf" "$as_ac_Header" "$ac_includes_default
 
 "
@@ -20490,12 +20507,63 @@ else
 fi
 
 
+                  if ( test X$found = Xtrue )
+                  then
+                     preamble=$preamble'
+#include <'$hf'>'
+                     # N.B. Above line split is to embed a newline into the
+                     # preamble variable
                   fi
-               done
+               fi
+            done
+         fi
+         # Did we find all the header files?
+         if ( test X$found = Xtrue )
+         then
+            # We did, perform the link test
+            { $as_echo "$as_me:${as_lineno-$LINENO}: checking ability to link against $lnklibs" >&5
+$as_echo_n "checking ability to link against $lnklibs... " >&6; }
+            test_code="$testwith"
+            # Original implementation used a single function name for the test
+            # code and appended (); to it. Check if we have someone using the old
+            # standard and process appropriately
+            if ( test -z "`echo "$test_code" | awk '{ print $2 }'`" )
+            then
+               # test code is a single item, is it a function call or just a
+               # function name?
+               if ( test "$test_code" = "`echo "$test_code" | sed 's/;/./'`" )
+               then
+                  # No ; - test code must just be a function name - convert it to
+                  # a function call
+                  test_code="$test_code ();"
+               fi
             fi
-         else
-            { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+            cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+$preamble
+int
+main ()
+{
+$test_code
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  found=true
+else
+  found=false
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+            if ( test X$found = Xtrue )
+            then
+               { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+            else
+               { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
 $as_echo "no" >&6; }
+            fi
          fi
          CPPFLAGS=$preserve_CPPFLAGS
          LDFLAGS=$preserve_LDFLAGS
@@ -20583,39 +20651,19 @@ See \`config.log' for more details." "$LINENO" 5; }
          preserve_LIBS=$LIBS
          CPPFLAGS=$LIB_CPPFLAGS
          LIBS="$LIB_LDFLAGS $lnklibs $prereqlibs"
-         { $as_echo "$as_me:${as_lineno-$LINENO}: checking for fn $testwith in library $lnklibs" >&5
-$as_echo_n "checking for fn $testwith in library $lnklibs... " >&6; }
-         cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-int
-main ()
-{
-$testwith ();
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
-  found=true
-else
-  found=false
-fi
-rm -f core conftest.err conftest.$ac_objext \
-    conftest$ac_exeext conftest.$ac_ext
-         if ( test X$found = Xtrue )
+         { $as_echo "$as_me:${as_lineno-$LINENO}: checking for external package $lib..." >&5
+$as_echo "$as_me: checking for external package $lib..." >&6;}
+         preamble=""
+         found=true
+         if ( test X"$hdr" != X )
          then
-            { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
-$as_echo "yes" >&6; }
-            if ( test X"$hdr" != X )
-            then
-               for hf in $hdr
-               do
-                  if ( test X$found = Xtrue )
-                  then
-                     TRACE_INDENT="     "
-                     trace 3 Checking for header file $hf
-                     as_ac_Header=`$as_echo "ac_cv_header_$hf" | $as_tr_sh`
+            for hf in $hdr
+            do
+               if ( test X$found = Xtrue )
+               then
+                  TRACE_INDENT="     "
+                  trace 3 Checking for header file $hf
+                  as_ac_Header=`$as_echo "ac_cv_header_$hf" | $as_tr_sh`
 ac_fn_c_check_header_compile "$LINENO" "$hf" "$as_ac_Header" "$ac_includes_default
 
 "
@@ -20627,12 +20675,63 @@ else
 fi
 
 
+                  if ( test X$found = Xtrue )
+                  then
+                     preamble=$preamble'
+#include <'$hf'>'
+                     # N.B. Above line split is to embed a newline into the
+                     # preamble variable
                   fi
-               done
+               fi
+            done
+         fi
+         # Did we find all the header files?
+         if ( test X$found = Xtrue )
+         then
+            # We did, perform the link test
+            { $as_echo "$as_me:${as_lineno-$LINENO}: checking ability to link against $lnklibs" >&5
+$as_echo_n "checking ability to link against $lnklibs... " >&6; }
+            test_code="$testwith"
+            # Original implementation used a single function name for the test
+            # code and appended (); to it. Check if we have someone using the old
+            # standard and process appropriately
+            if ( test -z "`echo "$test_code" | awk '{ print $2 }'`" )
+            then
+               # test code is a single item, is it a function call or just a
+               # function name?
+               if ( test "$test_code" = "`echo "$test_code" | sed 's/;/./'`" )
+               then
+                  # No ; - test code must just be a function name - convert it to
+                  # a function call
+                  test_code="$test_code ();"
+               fi
             fi
-         else
-            { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+            cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+$preamble
+int
+main ()
+{
+$test_code
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  found=true
+else
+  found=false
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+            if ( test X$found = Xtrue )
+            then
+               { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+            else
+               { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
 $as_echo "no" >&6; }
+            fi
          fi
          CPPFLAGS=$preserve_CPPFLAGS
          LDFLAGS=$preserve_LDFLAGS
@@ -20776,7 +20875,7 @@ See \`config.log' for more details." "$LINENO" 5; }
                 esac
                 if ( test X$DBG != X && test $DBG -ge 3 )
                 then
-                   eval testwith=\$with_${lib}_fn
+                   eval testwith="\$with_${lib}_tstcd"
                    eval prereq=\$with_${lib}_prq
                    eval lnklibs=\$with_${lib}_lnklibs
                    eval loc=\$with_${lib}_libpath
@@ -20788,10 +20887,10 @@ See \`config.log' for more details." "$LINENO" 5; }
                    eval virtual=\$with_${lib}_virtual
                    if test X$virtual = Xyes; then :
   # Virtual package
-                          trace 3 $lib:Virtual:$prereq:$lib_enablement
+                          trace 3 "$lib:Virtual:$prereq:$lib_enablement"
 
 else
-  trace 3 $lib:$testwith:$prereq:$lnklibs:$loc:$hdr:$inc:$pkgconf:$lib_enablement
+  trace 3 "$lib:$testwith:$prereq:$lnklibs:$loc:$hdr:$inc:$pkgconf:$lib_enablement"
 
 
 fi

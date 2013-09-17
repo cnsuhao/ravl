@@ -17,7 +17,7 @@ dnl
 dnl Macro parameters are:
 dnl       p1: QMake name for library
 dnl       p2: Library to test for (-lxx)
-dnl       p3: Function within that library to be used for the link test
+dnl       p3: Code to link against the library to test for it
 dnl       p4: Path to the library if not on system defaults
 dnl       p5: List of header files to test for
 dnl       p6: Path to the library's headers if not in system defaults
@@ -84,6 +84,9 @@ dnl                                  line for a particular prerequisite.
 dnl       new_prereqlibpath          Interim variable used when determining
 dnl                                  the library search list for satisfying
 dnl                                  a particular prerequisite.
+dnl       preamble                   Interim variable used to include all of
+dnl                                  the external library header files in the
+dnl                                  source used for the link test
 dnl       prereqlibs                 Interim variable that receives all the
 dnl                                  libraries that must be used during the
 dnl                                  test link, so that the prerequsites are
@@ -157,29 +160,59 @@ AC_DEFUN([QM_COMPILE_CK_FOR_LIB],
          preserve_LIBS=$LIBS
          CPPFLAGS=$LIB_CPPFLAGS
          LIBS="$LIB_LDFLAGS $2 $prereqlibs"
-         AC_MSG_CHECKING([for fn $3 in library $2])
-         AC_LINK_IFELSE([AC_LANG_PROGRAM([],[$3 ();])], [found=true], [found=false])
-         if ( test X$found = Xtrue )
+         AC_MSG_NOTICE([checking for external package $1...])
+         preamble=""
+         found=true
+         if ( test X"$5" != X )
          then
-            AC_MSG_RESULT([yes])
-            if ( test X"$5" != X )
-            then
-               for hf in $5 
-               do
+            for hf in $5 
+            do
+               if ( test X$found = Xtrue )
+               then
+                  TRACE_INDENT="     "
+                  trace 3 Checking for header file $hf
+                  AC_CHECK_HEADER([$hf], 
+                                  [found=true], 
+                                  [found=false], 
+                                  [AC_INCLUDES_DEFAULT]
+                                 )
                   if ( test X$found = Xtrue )
                   then
-                     TRACE_INDENT="     "
-                     trace 3 Checking for header file $hf
-                     AC_CHECK_HEADER([$hf], 
-                                     [found=true], 
-                                     [found=false], 
-                                     [AC_INCLUDES_DEFAULT]
-                                    )
+                     preamble=$preamble'
+#include <'$hf'>'
+                     # N.B. Above line split is to embed a newline into the
+                     # preamble variable
                   fi
-               done
+               fi
+            done
+         fi
+         # Did we find all the header files?
+         if ( test X$found = Xtrue )
+         then
+            # We did, perform the link test
+            AC_MSG_CHECKING([ability to link against $2])
+            test_code="$3"
+            # Original implementation used a single function name for the test
+            # code and appended (); to it. Check if we have someone using the old
+            # standard and process appropriately
+            if ( test -z "`echo "$test_code" | awk '{ print @S|@2 }'`" )
+            then
+               # test code is a single item, is it a function call or just a
+               # function name?
+               if ( test "$test_code" = "`echo "$test_code" | sed 's/;/./'`" )
+               then
+                  # No ; - test code must just be a function name - convert it to
+                  # a function call
+                  test_code="$test_code ();"
+               fi
             fi
-         else
-            AC_MSG_RESULT([no])
+            AC_LINK_IFELSE([AC_LANG_PROGRAM([$preamble],[$test_code])], [found=true], [found=false])
+            if ( test X$found = Xtrue )
+            then
+               AC_MSG_RESULT([yes])
+            else
+               AC_MSG_RESULT([no])
+            fi
          fi
          CPPFLAGS=$preserve_CPPFLAGS
          LDFLAGS=$preserve_LDFLAGS

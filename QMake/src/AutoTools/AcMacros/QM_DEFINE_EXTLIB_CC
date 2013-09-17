@@ -37,7 +37,12 @@ dnl           should be the name QMake expects the RESOURCES string to take
 dnl           to enable the library's functionality in the client project. It
 dnl           will also be the name used for the LIB_CFLAGS and LIB_LIBS used
 dnl           in the relevant .def file and Config.Project
-dnl       p2: Name of function in that library for the test link
+dnl       p2: Fragment of code to verify that the library can be successfully
+dnl           linked to. Usually this is just a single call to a function
+dnl           declared by the external library. However, some libraries need
+dnl           a little more set up - such as any library where we need to
+dnl           test for a C++ class; or the Math library where some compilers 
+dnl           perform extra prototype checking on those functions.
 dnl       p3: Name of all prerequisite libraries that this one depends on
 dnl           Specify as a space-separated list of QMake names
 dnl       p4: Name(s) of the library as specified on the link line i.e. in
@@ -82,7 +87,8 @@ dnl       with_<Lib>_lnklibs         List of the library files (in -lXXXX
 dnl                                  form).
 dnl       with_<Lib>_hdr             Name(s) of the library package's headers
 dnl       with_<Lib>_inc             Path to the library's headers
-dnl       with_<Lib>_fn              Function for the test link
+dnl       with_<Lib>_tstcd           Code with which to test that the external
+dnl                                  library will link.
 dnl       with_<Lib>_prq             Space separated list of pre-requisites
 dnl                                  of the library.
 dnl       <lib>_CFLAGS               Substitution variable (variable that is
@@ -872,7 +878,11 @@ AC_DEFUN([QM_DEFINE_EXTLIB_CC],
              ConfiguredLibs=$ConfiguredLibs" "$1
           fi
 
-          with_$1_fn=$2
+          with_$1_tstcd='$2'
+          dnl# The single quotes are to prevent any expansion of the supplied
+          dnl# code (particularly the * of any pointer definitions).
+          dnl# This does not prevent the dollar-2 expanding as this is an M4
+          dnl# macro parameter and not a shell variable.
           with_$1_prq="$3"
           with_$1_hdr="$5"
           with_$1_virtual="no"
