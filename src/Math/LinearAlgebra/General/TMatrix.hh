@@ -163,6 +163,12 @@ namespace RavlN {
     // The creates a new access, but does not copy the data itself.
     // The matrix always starts from 0,0.
     
+    TMatrixC<DataT> SubMatrix(const IndexRange2dC &rng)
+    { return TMatrixC<DataT>(SArray2dC<DataT>(*this,rng)); }
+    //: Get sub matrix in given rng.
+    // The creates a new access, but does not copy the data itself.
+    // The resulting matrix always starts from 0,0.
+
     DataT SumOfAbs() const;
     //: Sum the absolute values of all members of the matrix.
     
