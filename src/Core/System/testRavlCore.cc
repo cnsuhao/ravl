@@ -46,7 +46,9 @@
 #include "Ravl/StrStream.hh"
 #include "Ravl/XMLStream.hh"
 #include "Ravl/UnitTest.hh"
-#include "XMLTree.hh"
+#include "Ravl/XMLTree.hh"
+#include "Ravl/IndexRangeSet.hh"
+#include "Ravl/SysLog.hh"
 
 #include <string.h>
 
@@ -82,6 +84,7 @@ int testVectorIO();
 int testSmartPtr();
 int testStreamParse();
 int testXMLTree();
+int testIndexRangeSet();
 
 int testRavlCore(int argc,char **argv) {
 #if 1
@@ -104,6 +107,7 @@ int testRavlCore(int argc,char **argv) {
   RAVL_RUN_TEST(testSmartPtr());
   RAVL_RUN_TEST(testStreamParse());
   RAVL_RUN_TEST(testXMLTree());
+  RAVL_RUN_TEST(testIndexRangeSet());
 #endif
   std::cout << "Test passed. \n";
   return 0;
@@ -754,6 +758,43 @@ int testXMLTree() {
   try { XMLTreeC::ReadNode(xs, "test2"); } // read node with static method: should fail
   catch (ExceptionBadConfigC &) { xcpt = true; }
   if (!xcpt) return __LINE__;
+  return 0;
+}
+
+
+int testIndexRangeSet()
+{
+  for(int k = 0;k < 10;k++) {
+    IndexRangeSetC rngSet;
+    int maxRange = 30;
+    SArray1dC<bool> done(maxRange);
+    done.Fill(false);
+    for(int i = 0;i < 100;i++) {
+      IndexC ind = RandomInt() % maxRange;
+      done[ind] = true;
+      //RavlDebug("Adding %d ",ind.V());
+
+      // Add to set.
+      rngSet.Add(ind);
+
+      // Did it work ?
+      RAVL_TEST_TRUE(rngSet.Contains(ind));
+
+      // Check invariants.
+      for(DLIterC<IndexRangeC> it(rngSet);it;it++) {
+        RAVL_TEST_TRUE(it->Min() <= it->Max());
+        if(!it.IsLast()) {
+          RAVL_TEST_TRUE((it->Max()+1) < it.NextData().Min());
+        }
+      }
+
+      // Check logically correct.
+      for(int j = 0;j < maxRange;j++) {
+        RAVL_TEST_TRUE(rngSet.Contains(j) == done[j]);
+      }
+    }
+  }
+
   return 0;
 }
 

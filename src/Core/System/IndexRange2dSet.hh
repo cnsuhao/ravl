@@ -20,7 +20,7 @@
 namespace RavlN {
   //! userlevel=Normal
   //: Rectangle set.
-  // Handles a set region defined by a set of nonoverlaping rectangles.
+  // Handles a set region defined by a set of non-overlapping rectangles.
   // The methods in this class ensure that each part of the range is only
   // covered by a single rectangle.
   
@@ -43,7 +43,7 @@ namespace RavlN {
     //: Add rect2 and rect1.
   
     IndexRange2dC Enclosing() const;
-    //: Get minumum enclosing rectangle for set.
+    //: Get minimum enclosing rectangle for set.
     
     IndexRange2dSetC Subtract(const IndexRange2dC &rect) const;
     //: Remove 'rect' rectangle from the region given by the set.
