@@ -20976,519 +20976,148 @@ See \`config.log' for more details." "$LINENO" 5; }
                     done
                  fi
                  if test "x$process_now" != xno; then :
-  eval testwith="\$with_${lib}_tstcd"
-                        eval lnklibs="\$with_${lib}_lnklibs"
-                        eval loc=\$with_${lib}_libpath
-                        eval hdr=\$with_${lib}_hdr
-                        eval inc=\$with_${lib}_inc
-                        case $lib_enablement in #(
+  case $lib_enablement in #(
   check) :
-
-         trace 5 Checking for library:
-         TRACE_INDENT="     "
-         trace 5 "[$lib]"
-         TRACE_INDENT="     "
-         trace 5 "[$lnklibs]"
-         TRACE_INDENT="     "
-         trace 5 "[$testwith]"
-         TRACE_INDENT="     "
-         trace 5 "[$loc]"
-         TRACE_INDENT="     "
-         trace 5 "[$hdr]"
-         TRACE_INDENT="     "
-         trace 5 "[$inc]"
-         TRACE_INDENT="     "
-         trace 5 Code...
-         TRACE_INDENT="     "
-         trace 5 Code...
-         TRACE_INDENT="     "
-         stripspaces=$prereqs
-         # As $prereqs                                                                 will have acquired trailing characters from m4 substitutions
-         trace 5 "[$stripspaces]"
-         if ( test "X$loc" != X )
-         then
-            TRACE_INDENT="     "
-            trace 3 Setting LDFLAGS for library to $loc
-            LIB_LDFLAGS=$loc
-         else
-            LIB_LDFLAGS=""
-         fi
-         if ( test "X$inc" != X )
-         then
-            TRACE_INDENT="     "
-            trace 3 Setting CPPFLAGS for library to $inc
-            LIB_CPPFLAGS=$inc
-         else
-            LIB_CPPFLAGS=""
-         fi
-         prereqlibs=""
-         for prereqlib in $prereqs
-         do
-            TRACE_INDENT="     "
-            eval new_prereqlib="\$${prereqlib}_LIBS"
-            trace 3 Appending $new_prereqlib to link line
-            prereqlibs="$prereqlibs $new_prereqlib"
-         done
-         TRACE_INDENT="     "
-         preserve_LDFLAGS=$LDFLAGS
-         preserve_CPPFLAGS=$CPPFLAGS
-         preserve_LIBS=$LIBS
-         CPPFLAGS=$LIB_CPPFLAGS
-         LIBS="$LIB_LDFLAGS $lnklibs $prereqlibs"
-         { $as_echo "$as_me:${as_lineno-$LINENO}: checking for external package $lib..." >&5
-$as_echo "$as_me: checking for external package $lib..." >&6;}
-         preamble=""
-         found=true
-         if ( test X"$hdr" != X )
-         then
-            for hf in $hdr
-            do
-               if ( test X$found = Xtrue )
-               then
-                  TRACE_INDENT="     "
-                  trace 3 Checking for header file $hf
-                  as_ac_Header=`$as_echo "ac_cv_header_$hf" | $as_tr_sh`
-ac_fn_c_check_header_compile "$LINENO" "$hf" "$as_ac_Header" "$ac_includes_default
-
-"
-eval as_val=\$$as_ac_Header
-   if test "x$as_val" = x""yes; then :
-  found=true
-else
-  found=false
-fi
-
-
-                  if ( test X$found = Xtrue )
-                  then
-                     preamble=$preamble'
-#include <'$hf'>'
-                     # N.B. Above line split is to embed a newline into the
-                     # preamble variable
-                  fi
-               fi
-            done
-         fi
-         # Did we find all the header files?
-         if ( test X$found = Xtrue )
-         then
-            # We did, perform the link test
-            { $as_echo "$as_me:${as_lineno-$LINENO}: checking ability to link against $lnklibs" >&5
-$as_echo_n "checking ability to link against $lnklibs... " >&6; }
-            test_code="$testwith"
-            # Original implementation used a single function name for the test
-            # code and appended (); to it. Check if we have someone using the old
-            # standard and process appropriately
-            if ( test -z "`echo "$test_code" | awk '{ print $2 }'`" )
-            then
-               # test code is a single item, is it a function call or just a
-               # function name?
-               if ( test "$test_code" = "`echo "$test_code" | sed 's/;/./'`" )
-               then
-                  # No ; - test code must just be a function name - convert it to
-                  # a function call
-                  test_code="$test_code ();"
-               fi
-            fi
-            cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-$preamble
-int
-main ()
-{
-$test_code
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
-  found=true
-else
-  found=false
-fi
-rm -f core conftest.err conftest.$ac_objext \
-    conftest$ac_exeext conftest.$ac_ext
-            if ( test X$found = Xtrue )
-            then
-               { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
-$as_echo "yes" >&6; }
-            else
-               { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-            fi
-         fi
-         CPPFLAGS=$preserve_CPPFLAGS
-         LDFLAGS=$preserve_LDFLAGS
-         LIBS=$preserve_LIBS
-         if ( test X$found = Xtrue )
-         then
-            TRACE_INDENT="     "
-            trace 4 Library package $lib found
-            fix_expan=$lib
-            eval "${fix_expan}_CFLAGS=\$LIB_CPPFLAGS"
-            if ( test X$LIB_LDFLAGS != X )
-            then
-               LIB_LDFLAGS=$LIB_LDFLAGS" $lnklibs"
-            else
-               LIB_LDFLAGS=$lnklibs
-            fi
-            if ( test "X$prereqlibs" != X )
-            then
-               LIB_LDFLAGS=$LIB_LDFLAGS" "$prereqlibs
-            fi
-            eval "${fix_expan}_LIBS=\$LIB_LDFLAGS"
-            eval "use_${lib}=present
-                                                                            "
-
-         else
-            TRACE_INDENT="     "
-            trace 3 Library package $lib not found
-            eval "use_${lib}=missing
-                                                                            "
-
-         fi
-
-                                                   ;; #(
+    failure="" ;; #(
   needed) :
-
-         trace 5 Checking for library:
-         TRACE_INDENT="     "
-         trace 5 "[$lib]"
-         TRACE_INDENT="     "
-         trace 5 "[$lnklibs]"
-         TRACE_INDENT="     "
-         trace 5 "[$testwith]"
-         TRACE_INDENT="     "
-         trace 5 "[$loc]"
-         TRACE_INDENT="     "
-         trace 5 "[$hdr]"
-         TRACE_INDENT="     "
-         trace 5 "[$inc]"
-         TRACE_INDENT="     "
-         trace 5 Code...
-         TRACE_INDENT="     "
-         trace 5 Code...
-         TRACE_INDENT="     "
-         stripspaces=$prereqs
-         # As $prereqs                                                                 will have acquired trailing characters from m4 substitutions
-         trace 5 "[$stripspaces]"
-         if ( test "X$loc" != X )
-         then
-            TRACE_INDENT="     "
-            trace 3 Setting LDFLAGS for library to $loc
-            LIB_LDFLAGS=$loc
-         else
-            LIB_LDFLAGS=""
-         fi
-         if ( test "X$inc" != X )
-         then
-            TRACE_INDENT="     "
-            trace 3 Setting CPPFLAGS for library to $inc
-            LIB_CPPFLAGS=$inc
-         else
-            LIB_CPPFLAGS=""
-         fi
-         prereqlibs=""
-         for prereqlib in $prereqs
-         do
-            TRACE_INDENT="     "
-            eval new_prereqlib="\$${prereqlib}_LIBS"
-            trace 3 Appending $new_prereqlib to link line
-            prereqlibs="$prereqlibs $new_prereqlib"
-         done
-         TRACE_INDENT="     "
-         preserve_LDFLAGS=$LDFLAGS
-         preserve_CPPFLAGS=$CPPFLAGS
-         preserve_LIBS=$LIBS
-         CPPFLAGS=$LIB_CPPFLAGS
-         LIBS="$LIB_LDFLAGS $lnklibs $prereqlibs"
-         { $as_echo "$as_me:${as_lineno-$LINENO}: checking for external package $lib..." >&5
-$as_echo "$as_me: checking for external package $lib..." >&6;}
-         preamble=""
-         found=true
-         if ( test X"$hdr" != X )
-         then
-            for hf in $hdr
-            do
-               if ( test X$found = Xtrue )
-               then
-                  TRACE_INDENT="     "
-                  trace 3 Checking for header file $hf
-                  as_ac_Header=`$as_echo "ac_cv_header_$hf" | $as_tr_sh`
-ac_fn_c_check_header_compile "$LINENO" "$hf" "$as_ac_Header" "$ac_includes_default
-
-"
-eval as_val=\$$as_ac_Header
-   if test "x$as_val" = x""yes; then :
-  found=true
-else
-  found=false
-fi
-
-
-                  if ( test X$found = Xtrue )
-                  then
-                     preamble=$preamble'
-#include <'$hf'>'
-                     # N.B. Above line split is to embed a newline into the
-                     # preamble variable
-                  fi
-               fi
-            done
-         fi
-         # Did we find all the header files?
-         if ( test X$found = Xtrue )
-         then
-            # We did, perform the link test
-            { $as_echo "$as_me:${as_lineno-$LINENO}: checking ability to link against $lnklibs" >&5
-$as_echo_n "checking ability to link against $lnklibs... " >&6; }
-            test_code="$testwith"
-            # Original implementation used a single function name for the test
-            # code and appended (); to it. Check if we have someone using the old
-            # standard and process appropriately
-            if ( test -z "`echo "$test_code" | awk '{ print $2 }'`" )
-            then
-               # test code is a single item, is it a function call or just a
-               # function name?
-               if ( test "$test_code" = "`echo "$test_code" | sed 's/;/./'`" )
-               then
-                  # No ; - test code must just be a function name - convert it to
-                  # a function call
-                  test_code="$test_code ();"
-               fi
-            fi
-            cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-$preamble
-int
-main ()
-{
-$test_code
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
-  found=true
-else
-  found=false
-fi
-rm -f core conftest.err conftest.$ac_objext \
-    conftest$ac_exeext conftest.$ac_ext
-            if ( test X$found = Xtrue )
-            then
-               { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
-$as_echo "yes" >&6; }
-            else
-               { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-            fi
-         fi
-         CPPFLAGS=$preserve_CPPFLAGS
-         LDFLAGS=$preserve_LDFLAGS
-         LIBS=$preserve_LIBS
-         if ( test X$found = Xtrue )
-         then
-            TRACE_INDENT="     "
-            trace 4 Library package $lib found
-            fix_expan=$lib
-            eval "${fix_expan}_CFLAGS=\$LIB_CPPFLAGS"
-            if ( test X$LIB_LDFLAGS != X )
-            then
-               LIB_LDFLAGS=$LIB_LDFLAGS" $lnklibs"
-            else
-               LIB_LDFLAGS=$lnklibs
-            fi
-            if ( test "X$prereqlibs" != X )
-            then
-               LIB_LDFLAGS=$LIB_LDFLAGS" "$prereqlibs
-            fi
-            eval "${fix_expan}_LIBS=\$LIB_LDFLAGS"
-            eval "use_${lib}=present
-                                                                            "
-
-         else
-            TRACE_INDENT="     "
-            trace 3 Library package $lib not found
-            { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error "Library $lib is unavailable and a prerequisite of a selected library
-See \`config.log' for more details." "$LINENO" 5; }
-         fi
-
-                                                   ;; #(
+    failure="Library $lib is unavailable and a prerequisite of a selected library" ;; #(
   yes) :
-
-         trace 5 Checking for library:
-         TRACE_INDENT="     "
-         trace 5 "[$lib]"
-         TRACE_INDENT="     "
-         trace 5 "[$lnklibs]"
-         TRACE_INDENT="     "
-         trace 5 "[$testwith]"
-         TRACE_INDENT="     "
-         trace 5 "[$loc]"
-         TRACE_INDENT="     "
-         trace 5 "[$hdr]"
-         TRACE_INDENT="     "
-         trace 5 "[$inc]"
-         TRACE_INDENT="     "
-         trace 5 Code...
-         TRACE_INDENT="     "
-         trace 5 Code...
-         TRACE_INDENT="     "
-         stripspaces=$prereqs
-         # As $prereqs                                                                 will have acquired trailing characters from m4 substitutions
-         trace 5 "[$stripspaces]"
-         if ( test "X$loc" != X )
-         then
-            TRACE_INDENT="     "
-            trace 3 Setting LDFLAGS for library to $loc
-            LIB_LDFLAGS=$loc
-         else
-            LIB_LDFLAGS=""
-         fi
-         if ( test "X$inc" != X )
-         then
-            TRACE_INDENT="     "
-            trace 3 Setting CPPFLAGS for library to $inc
-            LIB_CPPFLAGS=$inc
-         else
-            LIB_CPPFLAGS=""
-         fi
-         prereqlibs=""
-         for prereqlib in $prereqs
-         do
-            TRACE_INDENT="     "
-            eval new_prereqlib="\$${prereqlib}_LIBS"
-            trace 3 Appending $new_prereqlib to link line
-            prereqlibs="$prereqlibs $new_prereqlib"
-         done
-         TRACE_INDENT="     "
-         preserve_LDFLAGS=$LDFLAGS
-         preserve_CPPFLAGS=$CPPFLAGS
-         preserve_LIBS=$LIBS
-         CPPFLAGS=$LIB_CPPFLAGS
-         LIBS="$LIB_LDFLAGS $lnklibs $prereqlibs"
-         { $as_echo "$as_me:${as_lineno-$LINENO}: checking for external package $lib..." >&5
-$as_echo "$as_me: checking for external package $lib..." >&6;}
-         preamble=""
-         found=true
-         if ( test X"$hdr" != X )
-         then
-            for hf in $hdr
-            do
-               if ( test X$found = Xtrue )
-               then
-                  TRACE_INDENT="     "
-                  trace 3 Checking for header file $hf
-                  as_ac_Header=`$as_echo "ac_cv_header_$hf" | $as_tr_sh`
-ac_fn_c_check_header_compile "$LINENO" "$hf" "$as_ac_Header" "$ac_includes_default
-
-"
-eval as_val=\$$as_ac_Header
-   if test "x$as_val" = x""yes; then :
-  found=true
-else
-  found=false
-fi
-
-
-                  if ( test X$found = Xtrue )
-                  then
-                     preamble=$preamble'
-#include <'$hf'>'
-                     # N.B. Above line split is to embed a newline into the
-                     # preamble variable
-                  fi
-               fi
-            done
-         fi
-         # Did we find all the header files?
-         if ( test X$found = Xtrue )
-         then
-            # We did, perform the link test
-            { $as_echo "$as_me:${as_lineno-$LINENO}: checking ability to link against $lnklibs" >&5
-$as_echo_n "checking ability to link against $lnklibs... " >&6; }
-            test_code="$testwith"
-            # Original implementation used a single function name for the test
-            # code and appended (); to it. Check if we have someone using the old
-            # standard and process appropriately
-            if ( test -z "`echo "$test_code" | awk '{ print $2 }'`" )
-            then
-               # test code is a single item, is it a function call or just a
-               # function name?
-               if ( test "$test_code" = "`echo "$test_code" | sed 's/;/./'`" )
-               then
-                  # No ; - test code must just be a function name - convert it to
-                  # a function call
-                  test_code="$test_code ();"
-               fi
-            fi
-            cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-$preamble
-int
-main ()
-{
-$test_code
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
-  found=true
-else
-  found=false
-fi
-rm -f core conftest.err conftest.$ac_objext \
-    conftest$ac_exeext conftest.$ac_ext
-            if ( test X$found = Xtrue )
-            then
-               { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
-$as_echo "yes" >&6; }
-            else
-               { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-            fi
-         fi
-         CPPFLAGS=$preserve_CPPFLAGS
-         LDFLAGS=$preserve_LDFLAGS
-         LIBS=$preserve_LIBS
-         if ( test X$found = Xtrue )
-         then
-            TRACE_INDENT="     "
-            trace 4 Library package $lib found
-            fix_expan=$lib
-            eval "${fix_expan}_CFLAGS=\$LIB_CPPFLAGS"
-            if ( test X$LIB_LDFLAGS != X )
-            then
-               LIB_LDFLAGS=$LIB_LDFLAGS" $lnklibs"
-            else
-               LIB_LDFLAGS=$lnklibs
-            fi
-            if ( test "X$prereqlibs" != X )
-            then
-               LIB_LDFLAGS=$LIB_LDFLAGS" "$prereqlibs
-            fi
-            eval "${fix_expan}_LIBS=\$LIB_LDFLAGS"
-            eval "use_${lib}=present
-                                                                            "
-
-         else
-            TRACE_INDENT="     "
-            trace 3 Library package $lib not found
-            { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error "Required library $lib is unavailable
-See \`config.log' for more details." "$LINENO" 5; }
-         fi
-
-                                                    ;; #(
+    failure="Required library $lib is unavailable" ;; #(
   *) :
     trace 1 "Assert - Should never fall through here"
                                 ;;
 esac
+
+          fix_expan=$lib
+
+          eval LIB_LDFLAGS="\$with_${fix_expan}_libpath"
+          if ( test "X$LIB_LDFLAGS" != X )
+          then
+             TRACE_INDENT="     "
+             trace 3 Setting LDFLAGS for library to $LIB_LDFLAGS
+          fi
+          eval LIB_CPPFLAGS="\$with_${fix_expan}_inc"
+          if ( test "X$LIB_CPPFLAGS" != X )
+          then
+             TRACE_INDENT="     "
+             trace 3 Setting CPPFLAGS for library to $LIB_CPPFLAGS
+          fi
+          eval dependencies="\$with_${fix_expan}_prq"
+          prereqlibs=""
+          for prereqlib in $dependencies
+          do
+             TRACE_INDENT="     "
+             eval new_prereqlib="\$${prereqlib}_LIBS"
+             trace 3 Appending $new_prereqlib to link line
+             prereqlibs="$prereqlibs $new_prereqlib"
+          done
+          TRACE_INDENT="     "
+          preserve_LDFLAGS=$LDFLAGS
+          preserve_CPPFLAGS=$CPPFLAGS
+          preserve_LIBS=$LIBS
+          CPPFLAGS=$LIB_CPPFLAGS
+          eval LIBS=\"\$LIB_LDFLAGS \$with_${fix_expan}_lnklibs \$prereqlibs\"
+          { $as_echo "$as_me:${as_lineno-$LINENO}: checking for external package $lib..." >&5
+$as_echo "$as_me: checking for external package $lib..." >&6;}
+          eval hdr_lst="\$with_${fix_expan}_hdr"
+          preamble=""
+          found=true
+          if ( test X"$hdr_lst" != X )
+          then
+             for hf in $hdr_lst
+             do
+                if ( test X$found = Xtrue )
+                then
+                   as_ac_Header=`$as_echo "ac_cv_header_$hf" | $as_tr_sh`
+ac_fn_c_check_header_compile "$LINENO" "$hf" "$as_ac_Header" "$ac_includes_default
+
+"
+eval as_val=\$$as_ac_Header
+   if test "x$as_val" = x""yes; then :
+  found=true
+else
+  found=false
+fi
+
+
+                   if ( test X$found = Xtrue )
+                   then
+                      preamble=$preamble'
+#include <'$hf'>'
+                      # N.B. Above line split is to embed a newline into the
+                      # preamble variable
+                   fi
+                fi
+             done
+          fi
+          # Did we find all the header files?
+          if ( test X$found = Xtrue )
+          then
+             # We did, perform the link test
+             { $as_echo "$as_me:${as_lineno-$LINENO}: checking ability to link against $LIBS" >&5
+$as_echo_n "checking ability to link against $LIBS... " >&6; }
+             eval test_code="\$with_${fix_expan}_tstcd"
+             cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+$preamble
+int
+main ()
+{
+$test_code
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  found=true
+else
+  found=false
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+             if ( test X$found = Xtrue )
+             then
+                { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+             else
+                { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+             fi
+          fi
+          CPPFLAGS=$preserve_CPPFLAGS
+          LDFLAGS=$preserve_LDFLAGS
+          LIBS=$preserve_LIBS
+          if ( test X$found = Xtrue )
+          then
+             TRACE_INDENT="     "
+             trace 4 Library package $lib found
+             eval "${fix_expan}_CFLAGS=\$LIB_CPPFLAGS"
+             if ( test X$LIB_LDFLAGS != X )
+             then
+                eval LIB_LDFLAGS=\"\$LIB_LDFLAGS \$with_${fix_expan}_lnklibs\"
+             else
+                eval LIB_LDFLAGS="\$with_${fix_expan}_lnklibs"
+             fi
+             if ( test "X$prereqlibs" != X )
+             then
+                LIB_LDFLAGS="$LIB_LDFLAGS $prereqlibs"
+             fi
+             eval "${fix_expan}_LIBS=\$LIB_LDFLAGS"
+             eval "use_${fix_expan}=present"
+          else
+             TRACE_INDENT="     "
+             trace 3 Library package $lib not found
+             eval "use_${fix_expan}=missing"
+             if ( test "X$failure" != X )
+             then
+                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "$failure
+See \`config.log' for more details." "$LINENO" 5; }
+             fi
+          fi
+
+
                         LeftToDo=`echo " $LeftToDo " | $SED "s/ $lib / /"`
                         RecentlyProcessed="$RecentlyProcessed $lib"
 

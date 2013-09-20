@@ -27,7 +27,7 @@ dnl Include standard QMake autoconf macros
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_CHOOSE_GETCWD])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_CHOOSE_RPATH])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_CK_COMPILE_CK_LIB])
-m4_include([../../QMake/src/AutoTools/AcMacros/QM_COMPILE_CK_FOR_LIB])
+m4_include([../../QMake/src/AutoTools/AcMacros/QM_CHECK_CC_LIB])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_Debug_Fn])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_DEFINE_ALL_EXTLIBS])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_DEFINE_EXTLIB_CC])
