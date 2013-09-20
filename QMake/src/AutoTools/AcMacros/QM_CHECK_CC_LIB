@@ -1,0 +1,213 @@
+dnl This file is part of QMake, Quick Make System
+dnl Copyright (C) 2011-3, University of Surrey
+dnl This code may be redistributed under the terms of the GNU General
+dnl Public License (GPL). See the gpl.licence file for details or
+dnl see http://www.gnu.org/copyleft/gpl.html
+dnl
+dnl file-header-ends-here
+
+
+dnl QM_CHECK_CC_LIB
+dnl
+dnl Macro to check if the given library package exits on the system. This
+dnl will check for both the library itself and its header files. This macro
+dnl is intended for checking those libraries that do not come with a 
+dnl pkg-configure file.
+dnl
+dnl Macro parameters are:
+dnl       p1: QMake name for library
+dnl       p2: Error message. Should the user wish an unsuccessful test for
+dnl           the external library package to result in an fatal error, this
+dnl           parameter should contain the text to be used for the error. If
+dnl           the supplied parameter is null, no error will be generated.
+dnl
+dnl
+dnl Global variables used:
+dnl
+dnl       with_<Lib>_hdr             Name(s) of the header files required to
+dnl                                  compile with the library package <Lib>.
+dnl       with_<Lib>_inc             Path (in -I/x/y/z form) to where the
+dnl                                  header files for the external library are
+dnl                                  located.
+dnl       with_<Lib>_libpath         Path (in -L/x/y/z form) to the location
+dnl                                  of the library files needed to compile
+dnl                                  with library package <Lib>.
+dnl       with_<Lib>_lnklibs         List of the library files (in -lXXXX 
+dnl                                  form) needed to compile with library
+dnl                                  package <Lib>.
+dnl       with_<Lib>_prq             Space separated list of pre-requisites
+dnl                                  of the library package <Lib>.
+dnl       with_<Lib>_tstcd           Code with which to test that the external
+dnl                                  library, <Lib>, will link.
+dnl       <Lib>_CFLAGS               Substitution variable holding the CFLAGS
+dnl                                  required when compiling with the
+dnl                                  external library, <Lib>. 
+dnl       <Lib>_LIBS                 Substitution variable holding the link
+dnl                                  line settings needed to link with the
+dnl                                  <Lib> package. This info is supplied
+dnl                                  as on the link line itself  i.e. library
+dnl                                  names are specified in -lX form and the
+dnl                                  setting may include -Lpath entries. 
+dnl       CPPFLAGS                   C preprocessor flags, temporarily
+dnl                                  re-assignedduring this macro as part of
+dnl                                  the testing process.
+dnl       preserve_CPPFLAGS          Interim variable used to preserve the
+dnl                                  global CPPFLAGS settings during 
+dnl                                  operation of this macro.
+dnl       LIB_CPPFLAGS               Interim variable used to build up the 
+dnl                                  CPPFLAGS to be used when testing for the
+dnl                                  header files associated with the library
+dnl                                  package being tested.
+dnl       LDFLAGS                    Linker flags, temporarily re-assigned
+dnl                                  during this macro as part of the testing
+dnl                                  process.
+dnl       preserve_LDFLAGS           Interim variable used to preserve the
+dnl                                  global LDFLAGS settings during operation
+dnl                                  of this macro.
+dnl       LIB_LDFLAGS                Interim variable used to build up the 
+dnl                                  LDFLAGS to be used when testing 
+dnl                                  compilation ot the library being tested.
+dnl       dependencies               Interim variable used to process the
+dnl                                  dependent packages required by the <Lib>
+dnl                                  being tested.
+dnl       fix_expan                  Interim variable used to overcome the 
+dnl                                  limitation over using a macro parameter
+dnl                                  as part of a variable name. This macro
+dnl                                  uses the first parameter to form the
+dnl                                  name of several shell variables used
+dnl                                  within it (eg with_$1_lnklibs). If the
+dnl                                  user of the macro supplies a literal as
+dnl                                  the first parameter, this poses no issue.
+dnl                                  If the user wishes to use a variable,
+dnl                                  then normally they would have to remember
+dnl                                  to specify the variable as ${variable}
+dnl                                  when making the macro call. By utilising
+dnl                                  this fix_expan variable in the macro,
+dnl                                  this limitation is removed and the user
+dnl                                  can use $variable as is more normal.
+dnl       found                      Interim variable maintains the current
+dnl                                  success or failure of the library check.
+dnl       hf                         Interim iterator, used while checking
+dnl                                  for the library package's header files.
+dnl       new_prereqlib              Interim variable used when determining
+dnl                                  the libraries to be added to the link
+dnl                                  line for a particular prerequisite.
+dnl       preamble                   Interim variable used to include all of
+dnl                                  the external library header files in the
+dnl                                  source used for the link test
+dnl       prereqlibs                 Interim variable that receives all the
+dnl                                  libraries that must be used during the
+dnl                                  test link, so that the prerequsites are
+dnl                                  satisfied.
+dnl       prereqlib                  Interim iterator for processing the
+dnl                                  prerequisite library packages.
+dnl       TRACE_INDENT               Variable used for indenting trace debug
+dnl                                  messages (when DBG is set). The current
+dnl                                  convention in this script is to employ
+dnl                                  an indent of 5 spaces per level of 
+dnl                                  nesting in the code i.e. set the var to
+dnl                                  "     " for the first for loop, set it
+dnl                                  to "          " for the second, etc.           
+dnl
+AC_DEFUN([QM_CHECK_CC_LIB],
+         [
+          fix_expan=$1
+
+          eval LIB_LDFLAGS="\$with_${fix_expan}_libpath"
+          if ( test "X$LIB_LDFLAGS" != X )
+          then
+             TRACE_INDENT="     "
+             trace 3 Setting LDFLAGS for library to $LIB_LDFLAGS
+          fi
+          eval LIB_CPPFLAGS="\$with_${fix_expan}_inc"
+          if ( test "X$LIB_CPPFLAGS" != X )
+          then
+             TRACE_INDENT="     "
+             trace 3 Setting CPPFLAGS for library to $LIB_CPPFLAGS
+          fi
+          eval dependencies="\$with_${fix_expan}_prq"
+          prereqlibs=""
+          for prereqlib in $dependencies
+          do
+             TRACE_INDENT="     "
+             eval new_prereqlib="\$${prereqlib}_LIBS"
+             trace 3 Appending $new_prereqlib to link line
+             prereqlibs="$prereqlibs $new_prereqlib"
+          done
+          TRACE_INDENT="     "
+          preserve_LDFLAGS=$LDFLAGS
+          preserve_CPPFLAGS=$CPPFLAGS
+          preserve_LIBS=$LIBS
+          CPPFLAGS=$LIB_CPPFLAGS
+          eval LIBS=\"\$LIB_LDFLAGS \$with_${fix_expan}_lnklibs \$prereqlibs\"
+          AC_MSG_NOTICE([checking for external package $1...])
+          eval hdr_lst="\$with_${fix_expan}_hdr"
+          preamble=""
+          found=true
+          if ( test X"$hdr_lst" != X )
+          then
+             for hf in $hdr_lst 
+             do
+                if ( test X$found = Xtrue )
+                then
+                   AC_CHECK_HEADER([$hf], 
+                                   [found=true], 
+                                   [found=false], 
+                                   [AC_INCLUDES_DEFAULT]
+                                  )
+                   if ( test X$found = Xtrue )
+                   then
+                      preamble=$preamble'
+#include <'$hf'>'
+                      # N.B. Above line split is to embed a newline into the
+                      # preamble variable
+                   fi
+                fi
+             done
+          fi
+          # Did we find all the header files?
+          if ( test X$found = Xtrue )
+          then
+             # We did, perform the link test
+             AC_MSG_CHECKING([ability to link against $LIBS])
+             eval test_code="\$with_${fix_expan}_tstcd"
+             AC_LINK_IFELSE([AC_LANG_PROGRAM([$preamble],[$test_code])], [found=true], [found=false])
+             if ( test X$found = Xtrue )
+             then
+                AC_MSG_RESULT([yes])
+             else
+                AC_MSG_RESULT([no])
+             fi
+          fi
+          CPPFLAGS=$preserve_CPPFLAGS
+          LDFLAGS=$preserve_LDFLAGS
+          LIBS=$preserve_LIBS
+          if ( test X$found = Xtrue )
+          then
+             TRACE_INDENT="     "
+             trace 4 Library package $1 found
+             AS_VAR_SET(${fix_expan}_CFLAGS, [$LIB_CPPFLAGS])
+             if ( test X$LIB_LDFLAGS != X )
+             then
+                eval LIB_LDFLAGS=\"\$LIB_LDFLAGS \$with_${fix_expan}_lnklibs\"
+             else
+                eval LIB_LDFLAGS="\$with_${fix_expan}_lnklibs"
+             fi
+             if ( test "X$prereqlibs" != X )
+             then
+                LIB_LDFLAGS="$LIB_LDFLAGS $prereqlibs"
+             fi
+             AS_VAR_SET(${fix_expan}_LIBS, [$LIB_LDFLAGS])
+             AS_VAR_SET(use_${fix_expan}, [present])
+          else
+             TRACE_INDENT="     "
+             trace 3 Library package $1 not found
+             AS_VAR_SET(use_${fix_expan}, [missing])
+             if ( test "X$2" != X )
+             then
+                AC_MSG_FAILURE([$2])
+             fi
+          fi
+         ]
+        )
+

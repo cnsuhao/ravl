@@ -28,9 +28,9 @@ dnl
 dnl   All variables listed with a <lib> in their name exist for each library
 dnl   that has been declared (via a QM_DEFINE_EXTLIB_[CP]C) with the <lib>
 dnl   being replaced by the RESOURCE name of the package. For example,
-dnl   the OpenCV package will have variables named with_OpenCV_tstcd; 
-dnl   with_OpenCV_hdr; use_OpenCV; etc. Similarly, libGTK2 has variables
-dnl   use_libGTK2; with_GTK2_pkgconf; etc.
+dnl   the OpenCV package will have variables named with_OpenCV_prq; 
+dnl   use_OpenCV; etc. Similarly, libGTK2 has variables use_libGTK2; 
+dnl   with_libGTK2_prq; etc.
 dnl
 dnl       DBG                        Variable that holds the current trace
 dnl                                  level as requested by the user. Requires
@@ -59,16 +59,6 @@ dnl                                  an indent of 5 spaces per level of
 dnl                                  nesting in the code i.e. set the var to
 dnl                                  "     " for the first for loop, set it
 dnl                                  to "          " for the second, etc.
-dnl       with_<Lib>_tstcd           Code to test for the availability of the
-dnl                                  external library
-dnl       with_<lib>_hdr             List of header files to test the
-dnl                                  existance of if testing for the lib's
-dnl                                  presence via a compilation check.
-dnl       with_<lib>_inc             Path to the library's headers
-dnl       with_<lib>_libpath         Path to the location of the library
-dnl       with_<lib>_lnklibs         List of the library files (in -lXXXX 
-dnl                                  form) a client library needs to link
-dnl                                  with to use the library package.
 dnl       with_<lib>_prq             Holds the list of prerequisite libraries
 dnl                                  that external library <lib> is dependant
 dnl                                  on. 
@@ -80,8 +70,7 @@ dnl                                  <lib>
 dnl
 dnl   The following are all interim variables used within this macro:
 dnl
-dnl    hdr; inc; lib; lib_enablement; lnklibs; loc; prereqs; prq;
-dnl    prq_state; process_now; testwith
+dnl     failure; lib; lib_enablement; prereqs; prq; prq_state; process_now
 dnl
 AC_DEFUN([QM_CK_COMPILE_CK_LIB],
          [trace 5 Seeing if we can do the compilation check for $1
@@ -179,59 +168,13 @@ AC_DEFUN([QM_CK_COMPILE_CK_LIB],
                     done
                  fi
                  AS_IF([test "x$process_now" != xno],
-                       [eval testwith="\$with_${lib}_tstcd"
-                        eval lnklibs="\$with_${lib}_lnklibs"
-                        eval loc=\$with_${lib}_libpath
-                        eval hdr=\$with_${lib}_hdr
-                        eval inc=\$with_${lib}_inc
-                        AS_CASE([$lib_enablement],
-                                [check],  [QM_COMPILE_CK_FOR_LIB([$lib],
-                                                                 [$lnklibs], 
-                                                                 [$testwith], 
-                                                                 [$loc],
-                                                                 [$hdr],
-                                                                 [$inc],
-                                                                 [AS_VAR_SET([use_${lib}],
-                                                                             [present]
-                                                                            )
-                                                                 ],
-                                                                 [AS_VAR_SET([use_${lib}],
-                                                                             [missing]
-                                                                            )
-                                                                 ],
-                                                                 [$prereqs]dnl
-                                                                )dnl
-                                          ],
-                                [needed], [QM_COMPILE_CK_FOR_LIB([$lib],
-                                                                 [$lnklibs], 
-                                                                 [$testwith], 
-                                                                 [$loc],
-                                                                 [$hdr],
-                                                                 [$inc],
-                                                                 [AS_VAR_SET([use_${lib}],
-                                                                             [present]
-                                                                            )
-                                                                 ],
-                                                                 [AC_MSG_FAILURE([Library $lib is unavailable and a prerequisite of a selected library])],
-                                                                 [$prereqs]dnl
-                                                                )dnl
-                                          ],
-                                [yes],    [QM_COMPILE_CK_FOR_LIB([$lib],
-                                                                 [$lnklibs], 
-                                                                 [$testwith], 
-                                                                 [$loc],
-                                                                 [$hdr],
-                                                                 [$inc],
-                                                                 [AS_VAR_SET([use_${lib}],
-                                                                             [present]
-                                                                            )
-                                                                 ],
-                                                                 [AC_MSG_FAILURE([Required library $lib is unavailable])],
-                                                                 [$prereqs]dnl
-                                                                )dnl
-                                           ],
+                       [AS_CASE([$lib_enablement],
+                                [check],  [failure=""],
+                                [needed], [failure="Library $lib is unavailable and a prerequisite of a selected library"],
+                                [yes],    [failure="Required library $lib is unavailable"],
                                 [trace 1 "Assert - Should never fall through here"]
                                )
+                        QM_CHECK_CC_LIB([$lib],[$failure])
                         LeftToDo=`echo " $LeftToDo " | $SED "s/ $lib / /"`
                         RecentlyProcessed="$RecentlyProcessed $lib"
                        ]
