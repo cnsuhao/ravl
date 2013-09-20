@@ -50,6 +50,9 @@ dnl           -lXXXX -lYYYY form
 dnl       p5: Name of any header files provided by the library package. It is
 dnl           usually sufficient to only test for one file unless it is known
 dnl           that incomplete subsets of the header files are regularly found
+dnl       p6: Language in which to perform the test compilation/link. This is 
+dnl           usually the language of the API of the external library.
+dnl           Currently only C and C++ are supported languages for this setting
 dnl
 dnl Global variables used:
 dnl
@@ -89,6 +92,8 @@ dnl       with_<Lib>_hdr             Name(s) of the library package's headers
 dnl       with_<Lib>_inc             Path to the library's headers
 dnl       with_<Lib>_tstcd           Code with which to test that the external
 dnl                                  library will link.
+dnl       with_<Lib>_lang            Language of the with_<lib>_tstcd linkage
+dnl                                  test code.
 dnl       with_<Lib>_prq             Space separated list of pre-requisites
 dnl                                  of the library.
 dnl       <lib>_CFLAGS               Substitution variable (variable that is
@@ -885,6 +890,7 @@ AC_DEFUN([QM_DEFINE_EXTLIB_CC],
           dnl# macro parameter and not a shell variable.
           with_$1_prq="$3"
           with_$1_hdr="$5"
+          with_$1_lang="$6"
           with_$1_virtual="no"
 
           AC_SUBST([$1_CFLAGS])

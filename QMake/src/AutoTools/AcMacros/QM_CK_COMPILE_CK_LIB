@@ -174,7 +174,58 @@ AC_DEFUN([QM_CK_COMPILE_CK_LIB],
                                 [yes],    [failure="Required library $lib is unavailable"],
                                 [trace 1 "Assert - Should never fall through here"]
                                )
-                        QM_CHECK_CC_LIB([$lib],[$failure])
+                        eval test_lang="\$with_${lib}_lang"
+                        test_lang=`echo $test_lang`
+                        # Set test_lang from $with_$Lib_lang and strip external spaces
+
+                        dnl# As the stack for switching the current language is
+                        dnl# implemented in autoconf and not available at
+                        dnl# runtime, AC_LANG_xx must take a literal parameter.
+                        AS_CASE(["$test_lang"],
+                                ["C"],             [AC_LANG_PUSH([C])
+                                                  QM_CHECK_CC_LIB([$lib],[$failure])
+                                                  AC_LANG_POP([C])
+                                                 ],
+                                ["C++"],           [AC_LANG_PUSH([C++])
+                                                  QM_CHECK_CC_LIB([$lib],[$failure])
+                                                  AC_LANG_POP([C++])
+                                                 ],
+dnl
+dnl                     Disable non-C or C++ languages as QMake as a whole
+dnl                     cannot currently cope with them. The support that is
+dnl                     not currently present in QMake includes Makefile
+dnl                     support for other language file-extensions and any
+dnl                     support for the language xxFLAGS settings either in
+dnl                     the QMake makefiles or in these configuration script
+dnl                     macros/configuration files. The QM_CHECK_CC_LIB macro
+dnl                     also only supports C-like synatax for include file 
+dnl                     processing.
+dnl
+dnl                             ["Fortran"],       [AC_LANG_PUSH([Fortran])
+dnl                                               QM_CHECK_CC_LIB([$lib],[$failure])
+dnl                                               AC_LANG_POP([Fortran])
+dnl                                              ],
+dnl                             ["Fortran 77"],    [AC_LANG_PUSH([Fortran 77])
+dnl                                               QM_CHECK_CC_LIB([$lib],[$failure])
+dnl                                               AC_LANG_POP([Fortran 77])
+dnl                                              ],
+dnl                             ["Erlang"],        [AC_LANG_PUSH([Erlang])
+dnl                                               QM_CHECK_CC_LIB([$lib],[$failure])
+dnl                                               AC_LANG_POP([Erlang])
+dnl                                              ],
+dnl                             ["Objective C"],   [AC_LANG_PUSH([Objective C])
+dnl                                               QM_CHECK_CC_LIB([$lib],[$failure])
+dnl                                               AC_LANG_POP([Objective C])
+dnl                                              ],
+dnl                             ["Objective C++"], [AC_LANG_PUSH([Objective C++])
+dnl                                               QM_CHECK_CC_LIB([$lib],[$failure])
+dnl                                               AC_LANG_POP([Objective C++])
+dnl                                              ],
+dnl
+                                [AC_MSG_WARN([Unrecognised language @<:@$test_lang@:>@ for package $1])
+                                 AC_MSG_WARN([Unable to check for presence of package])
+                                ]
+                               )
                         LeftToDo=`echo " $LeftToDo " | $SED "s/ $lib / /"`
                         RecentlyProcessed="$RecentlyProcessed $lib"
                        ]

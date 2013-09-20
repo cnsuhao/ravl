@@ -129,6 +129,11 @@ dnl    prql_enablement; testwith; to_add; virtual
 dnl
 AC_DEFUN([QM_PROCESS_EXTLIBS],
          [
+          # Force default of compilation checks to use C
+          AC_LANG([C])
+          dnl# We have to do this as an AC_LANG call can cause checks made
+          dnl# before it to be performed in the language it is setting.
+
           # If debugging, output what we've defined from the cmd-line
           if ( test X$DBG != X && test $DBG -ge 3 )
           then
