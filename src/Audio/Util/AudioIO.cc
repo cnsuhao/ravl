@@ -80,14 +80,14 @@ namespace RavlAudioN {
   } 
   
   //: Read bytes from audio stream.
-  // Returns false if error occured.
+  // Returns false if error occurred.
   
   bool AudioIOBaseC::Read(void *buf,IntT &len) {
     return false;
   }
   
   //: Write bytes to audio stream.
-  // Returns false if error occured.
+  // Returns false if error occurred.
   
   bool AudioIOBaseC::Write(const void *buf,IntT len) {
     return false;
@@ -229,4 +229,30 @@ namespace RavlAudioN {
   UIntT AudioIOBaseC::Size() const
   { return (UIntT) -1; }
   
+
+
+  //: Seek to location in stream.
+  bool AudioIOBaseC::Seek64(StreamPosT off)
+  {
+    if(off < 0)
+      return false;
+    if(off > (1<<31))
+      return false;
+    return Seek(off);
+  }
+
+  //: Find current location in stream.
+  // May return ((UInt64T) (-1)) if not implemented.
+  StreamPosT AudioIOBaseC::Tell64() const
+  {
+    return Tell();
+  }
+
+  //: Find the total size of the stream.  (assuming it starts from 0)
+  // May return ((UInt64T) (-1)) if not implemented.
+  StreamPosT AudioIOBaseC::Size64() const
+  {
+    return Size();
+  }
+
 }

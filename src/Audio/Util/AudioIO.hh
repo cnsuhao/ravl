@@ -61,18 +61,29 @@ namespace RavlAudioN {
     //: Get frequency of samples
     // Returns actual frequency.
     
-    bool Seek(UIntT off);
+    virtual bool Seek(UIntT off);
     //: Seek to location in stream.
     // Returns false, if seek failed. (Maybe because its
     // not implemented.)
     
-    UIntT Tell() const; 
+    virtual UIntT Tell() const;
     //: Find current location in stream.
     // May return ((UIntT) (-1)) if not implemented.
     
     virtual UIntT Size() const; 
     //: Find the total size of the stream.  (assuming it starts from 0)
     // May return ((UIntT) (-1)) if not implemented.
+
+    virtual bool Seek64(StreamPosT off);
+    //: Seek to location in stream.
+
+    virtual StreamPosT Tell64() const;
+    //: Find current location in stream.
+    // May return ((UInt64T) (-1)) if not implemented.
+
+    virtual StreamPosT Size64() const;
+    //: Find the total size of the stream.  (assuming it starts from 0)
+    // May return ((UInt64T) (-1)) if not implemented.
 
     bool Read(void *buf,IntT &len);
     //: Read bytes from audio stream.
@@ -123,7 +134,7 @@ namespace RavlAudioN {
   template<typename DataT,typename IOClassT> 
   class DPIAudioBodyC
     : public IOClassT,
-      public DPIPortBodyC<DataT>
+      public DPISPortBodyC<DataT>
   {
   public:
     DPIAudioBodyC()
@@ -193,6 +204,25 @@ namespace RavlAudioN {
     //: Find the total size of the stream.  (assuming it starts from 0)
     // May return ((UIntT) (-1)) if not implemented.
     
+    virtual bool Seek64(StreamPosT off)
+    { return IOClassT::Seek64(off); }
+    //: Seek to location in stream.
+    // Returns false, if seek failed. (Maybe because its
+    // not implemented.)
+    // if an error occurred (Seek returned False) then stream
+    // position will not be changed.
+
+    virtual StreamPosT Tell64() const
+    { return IOClassT::Tell64(); }
+    //: Find current location in stream.
+    // Defined as the index of the next object to be written or read.
+    // May return ((UIntT) (-1)) if not implemented.
+
+    virtual StreamPosT Size64() const
+    { return IOClassT::Size64(); }
+    //: Find the total size of the stream. (assuming it starts from 0)
+    // May return ((UIntT) (-1)) if not implemented.
+
     virtual bool GetAttr(const StringC &attrName,StringC &attrValue)
     { return this->HandleGetAttr(attrName,attrValue); }
     //: Get a stream attribute.

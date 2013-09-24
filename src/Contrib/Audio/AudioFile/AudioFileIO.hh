@@ -8,10 +8,10 @@
 #define RAVL_AUDIOFILEIO_HEADER 1
 //! docentry="Ravl.API.Audio.IO.Audio File"
 //! author="Charles Galambos"
-//! rcsid="$Id$"
 //! lib=RavlAudioFile
 //! file="Ravl/Contrib/Audio/AudioFile/AudioFileIO.hh"
 //! example =exAudioFile.cc
+
 #include "Ravl/DP/Port.hh"
 #include "Ravl/Audio/AudioIO.hh"
 
@@ -34,8 +34,6 @@ namespace RavlAudioN {
     
     virtual bool BuildAttributes ( AttributeCtrlBodyC & attributes ) ; 
     //: Build the list of attributes 
-
-    
 
     bool IOpen(const StringC &fn,int channel,const type_info &dtype);
     //: Open audio device.
@@ -77,14 +75,25 @@ namespace RavlAudioN {
     bool Seek(UIntT off);
     //: Seek to location in stream.
     
-    UIntT Tell() const;
+    virtual UIntT Tell() const;
     //: Find current location in stream.
     // May return ((UIntT) (-1)) if not implemented.
     
-    UIntT Size() const;
+    virtual UIntT Size() const;
     //: Find the total size of the stream.  (assuming it starts from 0)
     // May return ((UIntT) (-1)) if not implemented.
+
+    virtual bool Seek64(StreamPosT off);
+    //: Seek to location in stream.
+
+    virtual StreamPosT Tell64() const;
+    //: Find current location in stream.
+    // May return ((UInt64T) (-1)) if not implemented.
     
+    virtual StreamPosT Size64() const;
+    //: Find the total size of the stream.  (assuming it starts from 0)
+    // May return ((UInt64T) (-1)) if not implemented.
+
   protected:
     AFfilehandle handle;  
     AFfilesetup setup;

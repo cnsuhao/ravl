@@ -176,7 +176,7 @@ namespace RavlAudioN {
   //: Set frequency of samples
   // Returns actual frequency.
   
-bool AudioFileBaseC::SetSampleRate(RealT rate) {
+  bool AudioFileBaseC::SetSampleRate(RealT rate) {
     ONDEBUG(cerr << "\nAudioFileBaseC::SetSampleRate(RealT rate)") ; 
     if(forInput) {
       cerr << "AudioFileBaseC::SetSampleRate(), WARNING: Can't set sample rate for input. \n";
@@ -189,18 +189,18 @@ bool AudioFileBaseC::SetSampleRate(RealT rate) {
   //: Get number of bits to use in samples.
   // returns actual number of bits.
   
-bool AudioFileBaseC::GetSampleBits(IntT &bits) {
-  ONDEBUG(cerr << "\nAudioFileBaseC::GetSampleBits(IntT &bits)"); 
-  IntT rate ; 
-  afGetSampleFormat ( handle, AF_DEFAULT_TRACK, &rate, &bits) ;
-  return true;
-}
+  bool AudioFileBaseC::GetSampleBits(IntT &bits) {
+    ONDEBUG(cerr << "\nAudioFileBaseC::GetSampleBits(IntT &bits)");
+    IntT rate ;
+    afGetSampleFormat ( handle, AF_DEFAULT_TRACK, &rate, &bits) ;
+    return true;
+  }
 
   //: Get frequency of samples
   // Returns actual frequency.
   
   bool AudioFileBaseC::GetSampleRate(RealT &rate) {
- ONDEBUG(cerr << "\nAudioFileBaseC::GetSampleRate(RealT &rate)" ) ;
+    ONDEBUG(cerr << "\nAudioFileBaseC::GetSampleRate(RealT &rate)" ) ;
     if(!forInput) {
       rate = sampleRate;
       return true;
@@ -256,8 +256,7 @@ bool AudioFileBaseC::GetSampleBits(IntT &bits) {
   //: Seek to location in stream.
   
   bool AudioFileBaseC::Seek(UIntT off) {
-    IntT ret = afSeekFrame (handle,AF_DEFAULT_TRACK,off);
-    return ret > 0;
+    return afSeekFrame (handle,AF_DEFAULT_TRACK,off) == off;
   }
   
   //: Find current location in stream.
@@ -274,4 +273,19 @@ bool AudioFileBaseC::GetSampleBits(IntT &bits) {
     return afGetFrameCount (handle,AF_DEFAULT_TRACK);
   }
   
+  //: Seek to location in stream.
+  bool AudioFileBaseC::Seek64(StreamPosT off) {
+    return afSeekFrame(handle,AF_DEFAULT_TRACK,off) == off;
+  }
+
+  StreamPosT AudioFileBaseC::Tell64() const
+  {
+    return afTellFrame (handle,AF_DEFAULT_TRACK);
+  }
+
+  StreamPosT AudioFileBaseC::Size64() const
+  {
+    return afGetFrameCount (handle,AF_DEFAULT_TRACK);
+  }
+
 }
