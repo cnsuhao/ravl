@@ -71,10 +71,14 @@ namespace RavlN {
 
   protected:
     void Flush();
+
+    //! Create a temporary file.
+    StringC SetupTmpFile();
+
     ChildOSProcessC m_gnuPlot; //< The GnuPlot process
     RealRangeC m_xrange;
     RealRangeC m_yrange;
-
+    FilenameC m_tmpFile;
   };
 
   Plot2dC::RefT CreatePlot2d_gnuplot(const StringC & name);
