@@ -233,19 +233,19 @@ namespace RavlAudioN {
   bool AudioFileBaseC::Write(const void *buf,IntT len) {
     //ONDEBUG(cerr << "AudioFileBaseC::Write(), Called. \n");
     if(handle == 0) {
-      ONDEBUG (cerr << "\n handle is null, doing some setup, samplerate is  :" << sampleRate  ) ;
+      ONDEBUG (cerr << "\n handle is null, doing some setup, sample rate is  :" << sampleRate  ) ;
       RavlAssert(setup != 0);
       afInitRate(setup, AF_DEFAULT_TRACK, sampleRate);
       handle = afOpenFile(fileName.chars(),"w",setup);
       if(handle == 0)
-        throw DataNotReadyC("AudioFileBaseC::Write(), Failed to open file for writting. ");
+        throw DataNotReadyC("AudioFileBaseC::Write(), Failed to open file for writing. ");
       SetupChannel(channel,*dtype);
     }
     RavlAssert((len % frameSize) == 0);
     IntT ret = afWriteFrames(handle,AF_DEFAULT_TRACK,buf,len / frameSize);
     if(ret < 0) {
       //...
-      cerr << "AudioFileBaseC::Write(), Error writting data." << ret << "\n";
+      cerr << "AudioFileBaseC::Write(), Error writing data." << ret << "\n";
       return false;
     }
     //ONDEBUG(cerr << "AudioFileBaseC::Write(), Done. \n");

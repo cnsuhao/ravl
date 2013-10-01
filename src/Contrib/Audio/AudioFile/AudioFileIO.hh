@@ -62,11 +62,11 @@ namespace RavlAudioN {
     
     bool Read(void *buf,IntT &len);
     //: Read bytes from audio stream.
-    // Returns false if error occured.
+    // Returns false if error occurred.
     
     bool Write(const void *buf,IntT len);
     //: Write bytes to audio stream.
-    // Returns false if error occured.
+    // Returns false if error occurred.
     
     bool IsOpen() const
     { return handle != 0; }
