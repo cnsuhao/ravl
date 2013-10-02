@@ -4,13 +4,14 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-//! rcsid="$Id$"
 //! lib=RavlAudioFile
 //! file="Ravl/Contrib/Audio/AudioFile/AudioFileIO.cc"
 
 #include "Ravl/Audio/AudioFileIO.hh"
 #include "Ravl/TypeName.hh"
 #include "Ravl/DP/AttributeType.hh"
+#include "Ravl/SysLog.hh"
+#include "Ravl/TypeName.hh"
 
 #define DODEBUG 0
 #if DODEBUG
@@ -104,6 +105,10 @@ namespace RavlAudioN {
       frameSize = sizeof(SampleElemC<2,Int16T>);
     } else if(ndtype == typeid(SampleElemC<8,Int16T>)) {
       frameSize = sizeof(SampleElemC<8,Int16T>);
+    } else if(ndtype == typeid(SampleElemC<1,float>)) {
+      frameSize = sizeof(SampleElemC<1,float>);
+    } else if(ndtype == typeid(SampleElemC<2,float>)) {
+      frameSize = sizeof(SampleElemC<2,float>);
     } else {
       cerr << "AudioFileBaseC::IOpen(), ERROR: Unrecognised sample type:" << ndtype.name() << "\n";
       return false;
@@ -121,22 +126,6 @@ namespace RavlAudioN {
   
   bool AudioFileBaseC::OOpen(const StringC &fn,int nchannel,const type_info &ndtype) {
     ONDEBUG(cerr << "AudioFileBaseC::OOpen(), Called. \n");
-    IntT channels = 2 ; 
-     if(ndtype == typeid(SampleElemC<2,Int16T>)) {
-      frameSize = sizeof(SampleElemC<2,Int16T>); channels = 2 ;
-
-    } else if(ndtype == typeid(SampleElemC<1,Int16T> )) {
-      frameSize = sizeof(SampleElemC<1,Int16T> ) ; channels = 1 ;
-
-    } else if(ndtype == typeid(SampleElemC<2,float> )) {
-      frameSize = sizeof(SampleElemC<2,float> ) ; channels = 2 ;
-
-    } else if(ndtype == typeid(SampleElemC<1,float> )) {
-      frameSize = sizeof(SampleElemC<1,float> ) ; channels = 1 ;
-    } else {
-      cerr << "AudioFileBaseC::OOpen(), ERROR: Unrecognised sample type:" << ndtype.name() << "\n";
-      return false;
-    }
     dtype = &ndtype;
     channel = nchannel;
     setup = afNewFileSetup();
@@ -159,9 +148,40 @@ namespace RavlAudioN {
     } else if(ext == "au") {
       afInitFileFormat(setup, AF_FILE_RAWDATA);
     }
-    afInitSampleFormat(setup, AF_DEFAULT_TRACK, AF_SAMPFMT_TWOSCOMP, 16);
+
+    IntT channels = 2 ;
+
+    int format = 0;
+    int width = 0;
+
+    if(ndtype == typeid(SampleElemC<2,Int16T>)) {
+      frameSize = sizeof(SampleElemC<2,Int16T>);
+      channels = 2 ;
+      format = AF_SAMPFMT_TWOSCOMP;
+      width = 16;
+    } else if(ndtype == typeid(SampleElemC<1,Int16T> )) {
+      frameSize = sizeof(SampleElemC<1,Int16T> ) ;
+      channels = 1 ;
+      format = AF_SAMPFMT_TWOSCOMP;
+      width = 16;
+    } else if(ndtype == typeid(SampleElemC<2,float> )) {
+      frameSize = sizeof(SampleElemC<2,float> ) ;
+      channels = 2 ;
+      format = AF_SAMPFMT_FLOAT;
+      width = 32;
+    } else if(ndtype == typeid(SampleElemC<1,float> )) {
+      frameSize = sizeof(SampleElemC<1,float> ) ;
+      channels = 1 ;
+      format = AF_SAMPFMT_FLOAT;
+      width = 32;
+    } else {
+      RavlError("ERROR: Unrecognised sample type: %s ",RavlN::TypeName(ndtype.name()));
+      return false;
+    }
+
+    afInitSampleFormat(setup, AF_DEFAULT_TRACK, format,width);
     afInitChannels(setup, AF_DEFAULT_TRACK, channels);
-    ONDEBUG(cerr << "AudioFileBaseC::OOpen(), Done. \n");
+    ONDEBUG(RavlDebug("OOpen done. Channels=%d Format=%d width=%d Type=%s ",channels,format,width,TypeName(ndtype)));
     return true;
   }
   
@@ -169,7 +189,7 @@ namespace RavlAudioN {
   // returns actual number of bits.
   
   bool AudioFileBaseC::SetSampleBits(IntT bits) {
-    ONDEBUG(cerr << "\nAudioFileBaseC::SetSampleBits(IntT bits)") ;
+    ONDEBUG(cerr << "AudioFileBaseC::SetSampleBits(IntT bits)\n") ;
     return false;
   }
   
@@ -177,7 +197,7 @@ namespace RavlAudioN {
   // Returns actual frequency.
   
   bool AudioFileBaseC::SetSampleRate(RealT rate) {
-    ONDEBUG(cerr << "\nAudioFileBaseC::SetSampleRate(RealT rate)") ; 
+    ONDEBUG(cerr << "AudioFileBaseC::SetSampleRate(RealT rate)\n") ;
     if(forInput) {
       cerr << "AudioFileBaseC::SetSampleRate(), WARNING: Can't set sample rate for input. \n";
       return false;
@@ -190,7 +210,7 @@ namespace RavlAudioN {
   // returns actual number of bits.
   
   bool AudioFileBaseC::GetSampleBits(IntT &bits) {
-    ONDEBUG(cerr << "\nAudioFileBaseC::GetSampleBits(IntT &bits)");
+    ONDEBUG(cerr << "AudioFileBaseC::GetSampleBits(IntT &bits)\n");
     IntT rate ;
     afGetSampleFormat ( handle, AF_DEFAULT_TRACK, &rate, &bits) ;
     return true;
@@ -200,7 +220,7 @@ namespace RavlAudioN {
   // Returns actual frequency.
   
   bool AudioFileBaseC::GetSampleRate(RealT &rate) {
-    ONDEBUG(cerr << "\nAudioFileBaseC::GetSampleRate(RealT &rate)" ) ;
+    ONDEBUG(cerr << "AudioFileBaseC::GetSampleRate(RealT &rate)\n" ) ;
     if(!forInput) {
       rate = sampleRate;
       return true;

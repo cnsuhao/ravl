@@ -24,46 +24,49 @@ namespace RavlAudioN {
 
   //: Constructor from stream
   //: --------------------------------------------------------------------------------------------------------------------------
-  AudioFrameBodyC::AudioFrameBodyC ( BinIStreamC & stream ) 
-{
-  stream >> channels >> freq ; 
-  if ( channels  == 2 )  stream >> stereoData ; 
-}
+  AudioFrameBodyC::AudioFrameBodyC ( BinIStreamC & stream )
+   : channels(0),
+     freq(0)
+  {
+    stream >> channels >> freq ;
+    if ( channels  == 2 )  stream >> stereoData ;
+  }
 
 
   //: Constructor from binary stream 
   //: --------------------------------------------------------------------------------------------------------------------------
   AudioFrameBodyC::AudioFrameBodyC ( istream & stream ) 
-{
-  stream >> channels >> freq ; 
-  if ( channels == 2 )  stream >> stereoData ; 
-}
+  : channels(0),
+    freq(0)
+  {
+    stream >> channels >> freq ;
+    if ( channels == 2 )  stream >> stereoData ;
+  }
 
 
   //: Save to stream 
   //: --------------------------------------------------------------------------------------------------------------------------
- bool AudioFrameBodyC::Save(ostream & stream) const
-{
-  stream << channels << " " << freq << " " ; 
-  if ( channels == 2 ) 
-    stream << stereoData ; 
-  else 
-    return false;
-  return true ; 
-}
+  bool AudioFrameBodyC::Save(ostream & stream) const
+  {
+    stream << channels << " " << freq << " " ;
+    if ( channels == 2 )
+      stream << stereoData ;
+    else
+      return false;
+    return true ;
+  }
 
 
   //: Save to binary stream 
   //: --------------------------------------------------------------------------------------------------------------------------
   bool  AudioFrameBodyC::Save ( BinOStreamC & stream ) const 
-{
-  stream << channels << freq ; 
-  if ( channels == 2 ) 
-    stream << stereoData ; 
-  else 
-    return false;
-  return true ; 
-}
-
+  {
+    stream << channels << freq ;
+    if ( channels == 2 )
+      stream << stereoData ;
+    else
+      return false;
+    return true ;
+  }
 
 }

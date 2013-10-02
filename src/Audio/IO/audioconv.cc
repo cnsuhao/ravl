@@ -62,10 +62,10 @@ int main(int nargs,char **argv) {
     IntT samples = Round(sampleRate * len/ ((RealT) bufSize));
     cerr << "Sample rate = " << sampleRate << " Samples=" << samples << "\n";
     for(;samples != 0;samples--) {
-      if(in.GetArray(buff) == 0) {
-	break;
-      }
-      if(!out.PutArray(buff)) {
+      int len = in.GetArray(buff);
+      if(len == 0)
+        break;
+      if(!out.PutArray(buff.From(0,len))) {
 	cerr << "Failed to write array of data. \n";
 	break;
       }
@@ -95,10 +95,10 @@ int main(int nargs,char **argv) {
     IntT samples = Round(sampleRate * len / ((RealT) bufSize));
     cerr << "Sample rate = " << sampleRate << " No=" << samples << "\n";
     for(;samples != 0;samples--) {
-      if(in.GetArray(buff) == 0) {
+      int len = in.GetArray(buff);
+      if(len == 0)
 	break;
-      }
-      if(!out.PutArray(buff)) {
+      if(!out.PutArray(buff.From(0,len))) {
 	cerr << "Failed to write array of data. \n";
 	break;
       }
