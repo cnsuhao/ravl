@@ -36,7 +36,7 @@ namespace RavlAudioN {
       m_dtype(&ndtype),
       m_sampleRate(16000),
       m_forInput(nforInput),
-      m_framerPerBuffer(1024) // FIXME:- Should be an attribute.
+      m_framerPerBuffer(0) // FIXME:- Should be an attribute.
   {
     RavlN::MutexLockC lock(PortAudioMutex());
     const PaDeviceInfo *devInfo = Pa_GetDeviceInfo(m_channel);
@@ -121,13 +121,13 @@ namespace RavlAudioN {
 
     if(err != paNoError) {
       RavlError("Failed to open output. Error: %s ",Pa_GetErrorText (err));
-      if(err == paUnanticipatedHostError) {
+      //if(err == paUnanticipatedHostError) {
         const PaHostErrorInfo *lastHostError = Pa_GetLastHostErrorInfo();
         RavlError(" APIId:%u Code:%d Error text:%s ",
             (unsigned) lastHostError->hostApiType,
             (int) lastHostError->errorCode ,
             lastHostError->errorText);
-      }
+      //}
 
       return false;
     }
@@ -297,14 +297,14 @@ namespace RavlAudioN {
   // May return ((UIntT) (-1)) if not implemented.
   
   UIntT PortAudioBaseC::Tell() const {
-    return 0;
+    return ((UIntT) (-1));
   }
   
   //: Find the total size of the stream.  (assuming it starts from 0)
   // May return ((UIntT) (-1)) if not implemented.
   
   UIntT PortAudioBaseC::Size() const {
-    return 0;
+    return ((UIntT) (-1));
   }
   
 }

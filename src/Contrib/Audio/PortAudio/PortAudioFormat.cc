@@ -198,7 +198,7 @@ namespace RavlAudioN {
       return sizeof(SampleElemC<2,float>);
     if(obj_type == typeid(SampleElemC<1,float>))
       return sizeof(SampleElemC<1,float>);
-    RavlError("Format isFloat=%d Channels=%d not supported",RavlN::TypeName(obj_type));
+    RavlError("Format %s not supported",RavlN::TypeName(obj_type));
     RavlAssertMsg(0,"Unknown type");
     return 0;
   }
