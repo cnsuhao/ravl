@@ -1,0 +1,9 @@
+# Copyright (C) 2013, Charles Galambos.
+# file-header-ends-here
+ifndef LIBPULSEAUDIO_DEF
+LIBPULSEAUDIO_DEF = 1
+
+EXELIB :=  -L/sw/lib -lpulse-simple -lpulse $(EXELIB) 
+# INCLUDES += -I.../include 
+
+endif
