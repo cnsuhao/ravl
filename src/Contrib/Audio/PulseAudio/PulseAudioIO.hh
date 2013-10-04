@@ -91,6 +91,7 @@ namespace RavlAudioN {
 
     const std::type_info *m_dtype;
     bool m_forInput;
+    int m_bufferSize;
   };
   
 

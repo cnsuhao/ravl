@@ -52,7 +52,9 @@ namespace RavlAudioN {
     : m_stream(0),
       m_doneSetup(false),
       m_dtype(&ndtype),
-      m_forInput(nforInput)
+      m_forInput(nforInput),
+      m_bufferSize(4096)
+
   {
     m_sampleSpec.channels = FileFormatPulseAudioBodyC::Channels(ndtype);
     m_sampleSpec.rate = 44100;
@@ -82,6 +84,12 @@ namespace RavlAudioN {
     ONDEBUG(RavlDebug("PulseAudioBaseC::IOpen(), Called. "));
     m_doneSetup = true;
 
+    pa_buffer_attr bufferSetup;
+    bufferSetup.fragsize = m_bufferSize;
+    bufferSetup.maxlength = (uint32_t) -1;
+    bufferSetup.minreq = (uint32_t) -1;
+    bufferSetup.prebuf = (uint32_t) -1;
+    bufferSetup.tlength = (uint32_t) -1;
 
     //RavlN::MutexLockC lock(PulseAudioMutex());
 
@@ -92,7 +100,7 @@ namespace RavlAudioN {
                             "Music", // Description of our stream.
                             &m_sampleSpec, // Our sample format.
                             NULL, // Use default channel map
-                            NULL, // Use default buffering attributes.
+                            &bufferSetup, // Use default buffering attributes.
                             NULL // Ignore error code.
                             );
 
@@ -111,7 +119,13 @@ namespace RavlAudioN {
     ONDEBUG(RavlDebug("PulseAudioBaseC::OOpen(), Called. "));
     m_doneSetup = true;
 
-    //RavlN::MutexLockC lock(PulseAudioMutex());
+    pa_buffer_attr bufferSetup;
+    //bufferSetup.fragsize = m_bufferSize;
+    bufferSetup.fragsize = (uint32_t) -1;
+    bufferSetup.maxlength = (uint32_t) -1;
+    bufferSetup.minreq = (uint32_t) -1;
+    bufferSetup.prebuf = (uint32_t) -1;
+    bufferSetup.tlength = m_bufferSize;
 
     m_stream = pa_simple_new(NULL, // Use the default server.
                             "RAVL", // Our application's name.
