@@ -91,7 +91,7 @@ namespace RavlImageN {
     //: Seek to location in stream.
     // Returns FALSE, if seek failed. (Maybe because its
     // not implemented.)
-    // if an error occurered (Seek returned False) then stream
+    // if an error occurred (Seek returned False) then stream
     // position will not be changed.
     
     virtual bool DSeek(IntT off);
