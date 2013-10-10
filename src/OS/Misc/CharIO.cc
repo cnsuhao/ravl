@@ -2,10 +2,11 @@
 #include <termios.h>
 #include <cstdio>
 #include "Ravl/DP/CharIO.hh"
+#include "Ravl/config.h"
 
 
-//#if RAVL_OS_UNIX
-#warning 2
+#if RAVL_OS_UNIX
+
 char RavlN::GetKeypress() {
         char buf = 0;
         struct termios old = {0};
@@ -26,4 +27,4 @@ char RavlN::GetKeypress() {
         return (buf);
 }
 
-//#endif
+#endif
