@@ -10,7 +10,6 @@
 //! date="30/1/2003"
 //! author="Charles Galambos"
 //! docentry="Ravl.API.Images.Video"
-//! rcsid="$Id$"
 //! lib=RavlImageProc
 //! file="Ravl/Image/Processing/Filters/Misc/DeinterlaceStream.hh"
 
