@@ -403,7 +403,7 @@ namespace RavlImageN {
       field1 = ImageC<PixelT>(img.Frame().RowRange()/2, img.Frame().ColRange());
       Array2dIterC<PixelT> it0(field0);
       Array2dIterC<PixelT> it1(field1);
-      for(Array2dIterC<PixelT>it(img);it;) {
+      for(Array2dIterC<PixelT> it(img);it;) {
         // Do even lines.
         do {
           *it0 = *it;
