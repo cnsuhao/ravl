@@ -108,7 +108,7 @@ namespace RavlGUIN {
       return false;
     }
 
-    ONDEBUG(std::cerr << "View3DBodyC::Create(), Setting up canvas intialization. \n");
+    ONDEBUG(std::cerr << "View3DBodyC::Create(), Setting up canvas initialisation. \n");
 
     // Setup render options
     m_oRenderOpts[0] = MenuCheckItemC("Points", false);

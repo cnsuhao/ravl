@@ -345,27 +345,27 @@ namespace RavlGUIN {
   //: Create a new signal.
 
   void TreeModelBodyC::ConnectUp(StringC name) {
-    int id;
+
     //, "row-deleted","row-has-child-toggled","row-inserted","rows-reordered"
     Signal2C<TreeModelPathC,TreeModelIterC> &ret =  signals[name];
     if(name == "row-changed") {
-      id = g_signal_connect (model, name,G_CALLBACK (handle_row_changed),&ret);
+      g_signal_connect (model, name,G_CALLBACK (handle_row_changed),&ret);
       return;
     }
     if(name == "row-deleted") {
-      id = g_signal_connect (model, name,G_CALLBACK (handle_row_deleted),&ret);
+      g_signal_connect (model, name,G_CALLBACK (handle_row_deleted),&ret);
       return;
     }
     if(name == "row-has-child-toggled") {
-      id = g_signal_connect (model, name,G_CALLBACK (handle_row_has_child_toggled),&ret);
+      g_signal_connect (model, name,G_CALLBACK (handle_row_has_child_toggled),&ret);
       return;
     }
     if(name == "row-inserted") {
-      id = g_signal_connect (model, name,G_CALLBACK (handle_row_inserted),&ret);
+      g_signal_connect (model, name,G_CALLBACK (handle_row_inserted),&ret);
       return;
     }
     if(name == "rows-reordered") {
-      id = g_signal_connect (model, name,G_CALLBACK (handle_rows_reordered),&ret);
+      g_signal_connect (model, name,G_CALLBACK (handle_rows_reordered),&ret);
       return;
     }
     RavlAssertMsg(0,"Unknown signal type. ");
