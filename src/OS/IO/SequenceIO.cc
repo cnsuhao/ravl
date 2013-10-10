@@ -20,7 +20,7 @@
 #include "Ravl/DP/FileFormatRegistry.hh"
 #include "Ravl/SysLog.hh"
 
-#define DPDEBUG 0
+#define DPDEBUG 1
 #if DPDEBUG
 #include "Ravl/TypeName.hh"
 #define ONDEBUG(x) x
@@ -85,7 +85,7 @@ namespace RavlN {
       if(!SystemFileFormatRegistry().FindInputFormat(fmtInfo,fileSeq.Filename(),inStream,fileformat,obj_type,verbose))
 	return false; // Failed to find format.
     }
-    ONDEBUG(cerr << "OpenISequenceBase(), Building output stream.... \n");
+    ONDEBUG(cerr << "OpenISequenceBase(), Building input stream.... \n");
     
     DPIPortBaseC ipipe(fileSeq.Setup(fmtInfo));
     // Try a file sequence.
