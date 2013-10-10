@@ -11,9 +11,9 @@ PACKAGE=Ravl/OS
 
 DESCRIPTION=Interfaces for common computer hardware.
 
-HEADERS=UnixStreamIO.hh WinStreamIO.hh DMABuffer.hh SysLog.hh
+HEADERS=UnixStreamIO.hh WinStreamIO.hh DMABuffer.hh SysLog.hh CharIO.hh
 
-SOURCES=UnixStreamIO.cc WinStreamIO.cc
+SOURCES=UnixStreamIO.cc WinStreamIO.cc CharIO.cc
 
 PLIB=RavlOS
 
