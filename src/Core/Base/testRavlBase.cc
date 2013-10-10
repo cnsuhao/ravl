@@ -72,6 +72,12 @@ int main()
 #if RAVL_CPUTYPE_64
   std::cerr << "Linux 64 enabled. \n";
 #endif
+#if RAVL_OS_UNIX
+  std::cerr << "Unix system. \n";
+#endif
+#if RAVL_OS_WIN32
+  std::cerr << "Windows 32 system. \n";
+#endif
   int ln;
 #if 1
   RAVL_RUN_TEST(testTypes());

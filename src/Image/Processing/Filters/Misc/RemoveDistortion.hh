@@ -36,7 +36,7 @@ namespace RavlImageN {
 #define MIN_UND_ITERATIONS   6
 #define MAX_UND_ITERATIONS 100
 
-  // threshold on closness of camera coordinates to optical axis */
+  // threshold on closeness of camera coordinates to optical axis */
 #define SMALL_DR_THRES 0.001
 
   //! userlevel=Normal
@@ -241,7 +241,7 @@ namespace RavlImageN {
       // compute distortion value dR/R by solving linear equation for R
       return ( dR*outer_a/(dR - outer_b) );
                                           
-    // if initialization takes us outside the range of the camera,
+    // if initialisation takes us outside the range of the camera,
     // move the start point back to the middle of the range
     RealT R;
     if ( dR*dR >= thres_R2 )
