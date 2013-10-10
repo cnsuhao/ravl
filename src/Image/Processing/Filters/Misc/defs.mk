@@ -9,7 +9,7 @@
 
 PACKAGE=Ravl/Image
 
-MAINS=doHomomorphicFilter.cc unDistort.cc
+MAINS=doHomomorphicFilter.cc unDistort.cc Deinterlace.cc
 
 HEADERS=  HomomorphicFilter.hh HistogramEqualise.hh \
  PixelMixer.hh RemoveDistortion.hh DeinterlaceStream.hh \
