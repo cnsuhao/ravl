@@ -10,6 +10,7 @@
 //! lib=RavlImageProc
 //! docentry="Ravl.API.Images.Tracking"
 //! file="Ravl/Image/Processing/Tracking/ImageTracker.hh"
+//! example="exImageTracker.cc"
 
 #include "Ravl/Pair.hh"
 #include "Ravl/Image/Image.hh"
@@ -20,7 +21,9 @@ namespace RavlImageN {
   
   //! userlevel=Normal
   //: Track an image against a larger mosiac image.
-  
+  //  For each Susan corner in 1st image, searches corresponding patch in 2nd image for minimum sum of absolute differences.
+
+
   class ImageTrackerC {
   public:
     ImageTrackerC(IntT PatchSize,IntT SearchSize,IntT matchThreshold);
@@ -33,7 +36,7 @@ namespace RavlImageN {
     //: Track an image in a larger one.
     //!param: mosiac - Large mosaic image
     //!param: data - Smaller target image
-    //!param: proj - Estimate of the position of the smaller image relative to the larger one.
+    //!param: proj - Homography to estimate the position of the smaller image relative to the larger one.
     //!return: List of point pairs, one from 'data' image and corresponding point in the 'mosaic'.
     
   protected:

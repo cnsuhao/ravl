@@ -26,11 +26,10 @@ EHT= Ravl.API.Images.Tracking.html Ravl.API.Images.Mosaic.html
 MAINS=tracker.cc
 
 TESTEXES=testTracking.cc
-#testImageTracker.cc
 
-EXAMPLES=tracker.cc
+EXAMPLES=tracker.cc exImageTracker.cc
 
 USESLIBS=RavlImageProc 
 
-PROGLIBS=RavlVideoIO RavlImgIOV4L.opt RavlDPDisplay.opt CSPDriver.opt
+PROGLIBS=RavlVideoIO RavlImgIOV4L.opt RavlDPDisplay.opt CSPDriver.opt RavlExtImgIO
 
