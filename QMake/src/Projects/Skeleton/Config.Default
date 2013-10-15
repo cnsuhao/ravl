@@ -1,0 +1,127 @@
+# Default project name and version information. When creating a Config.Project
+# for your project, set these variables to reflect the your software.
+#
+# Preferred settings:
+#
+#    PROJECT_NAME=MyProject
+#    PROJECT_VERSION=0.1.1
+#    PROJECT_DISTDIR=$(PROJECT_NAME)-$(PROJECT_VERSION)
+#
+#  However, use of these (PROJECT_NAME in particular) requires all header files
+#  in your source to be included in the form #include "MyProject/HeaderFile.h".
+#  As existing projects may not be written to this form, the default set here
+#  omits the definition of PROJECT_NAME. You are recommended to migrate any
+#  existing projects to using headers from a project specific directory. Any
+#  new projects should be created in a similar vane and specify a value for
+#  PROJECT_NAME.
+#
+PROJECT_VERSION=0.1.1
+PROJECT_DISTDIR=ProjectFiles-$(PROJECT_VERSION)
+
+# Default locations
+#
+# Location for built binaries
+ifndef PROJECT_OUT
+  PROJECT_OUT=$(HOME)/build
+endif
+#
+# Location for libraries
+ifndef INSTALLHOME
+  INSTALLHOME=$(PROJECT_OUT)
+endif
+#
+# Location for intermediate files
+ifndef LOCALTMP
+  LOCALTMP=$(PROJECT_OUT)/transient
+endif
+
+# Default settings for compiling C
+#
+CONFIGURE_CFLAGS=$(QMAKE_CFLAGS)
+PKG_CHECK_CFLAGS=-DQMAKE_CHECK 
+PKG_DEBUG_CFLAGS=-DQMAKE_CHECK -DQMAKE_PARANOID 
+PKG_DEFAULT_CFLAGS=$(COMPILER_NON_OPT_CFLAGS) 
+PKG_GLOBAL_CFLAGS=$(COMPILER_SPECIFIC_CFLAGS) $(COMPILER_DEBUG_CFLAGS)
+# Move $(COMPILER_DEBUG_CFLAGS) to PKG_DEBUG_CFLAGS if you do not want debug
+# information included in the binaries by default
+#
+PKG_GPROF_CFLAGS=$(COMPILER_GPROF_CFLAGS)
+PKG_OPT_CFLAGS=$(COMPILER_OPT_CFLAGS)
+PKG_PROF_CFLAGS=$(COMPILER_PROF_CFLAGS)
+PKG_SHARED_CFLAGS=$(COMPILER_SHARED_CFLAGS)
+PKG_CANSIFLAG=$(COMPILER_ANSI_CFLAGS)
+# Drop $(COMPILER_ANSI_CFLAGS) if your source is not in ANSI C
+
+
+# Default settings for compiling C++
+#
+CONFIGURE_CCFLAGS=$(QMAKE_CCFLAGS)
+PKG_CHECK_CCFLAGS=-DQMAKE_CHECK 
+PKG_DEBUG_CCFLAGS=-DQMAKE_CHECK -DQMAKE_PARANOID 
+PKG_DEFAULT_CCFLAGS=$(COMPILER_NON_OPT_CCFLAGS) 
+PKG_GLOBAL_CCFLAGS=$(COMPILER_SPECIFIC_CCFLAGS) $(COMPILER_DEBUG_CCFLAGS)
+# Move $(COMPILER_DEBUG_CCFLAGS) to PKG_DEBUG_CCFLAGS if you do not want debug
+# information included in the binaries by default
+#
+PKG_GPROF_CCFLAGS=$(COMPILER_GPROF_CCFLAGS)
+PKG_OPT_CCFLAGS=$(COMPILER_OPT_CCFLAGS)
+PKG_PROF_CCFLAGS=$(COMPILER_PROF_CCFLAGS)
+PKG_SHARED_CCFLAGS=$(COMPILER_SHARED_CCFLAGS)
+PKG_CCANSIFLAG=$(COMPILER_ANSI_CCFLAGS)
+# Drop $(COMPILER_ANSI_CCFLAGS) if your source is not in ANSI C++
+
+
+# Default settings for linker (when linking binaries)
+#
+CONFIGURE_LDFLAGS=$(QMAKE_LDFLAGS)
+PKG_CHECK_LDFLAGS=
+PKG_DEBUG_LDFLAGS=
+PKG_DEFAULT_LDFLAGS=
+PKG_GLOBAL_LDFLAGS=$(LINKER_SPECIFIC_LDFLAGS)
+PKG_SHARED_LDFLAGS=$(LINKER_SHARED_LDFLAGS)
+PKG_OPT_LDFLAGS=
+PKG_PROF_LDFLAGS=
+PKG_SHARED_LDFLAGS= $(LINKER_SHARED_LDFLAGS)
+
+
+# Default settings for linker (when linking libraries)
+#
+CONFIGURE_LDLIBFLAGS=$(QMAKE_LDLIBFLAGS)
+PKG_CHECK_LDLIBFLAGS=
+PKG_DEBUG_LDLIBFLAGS=
+PKG_DEFAULT_LDLIBFLAGS=
+PKG_GLOBAL_LDLIBFLAGS=$(LINKER_SPECIFIC_LDLIBFLAGS)
+PKG_GPROF_LDLIBFLAGS= $(COMPILER_GPROF_CCFLAGS)
+PKG_OPT_LDLIBFLAGS=
+PKG_PROF_LDLIBFLAGS=
+PKG_SHARED_LDLIBFLAGS=$(LINKER_SHARED_LDLIBFLAGS)
+
+
+# Default settings for CUDA compilation
+#
+CONFIGURE_NVCCFLAGS=$(QMAKE_NVCCFLAGS)
+PKG_CHECK_NVCCFLAGS=-DQMAKE_CHECK 
+PKG_DEBUG_NVCCFLAGS=-DQMAKE_CHECK -DQMAKE_PARANOID 
+PKG_DEFAULT_NVCCFLAGS=$(NVCC_NON_OPT_NVCCFLAGS) 
+PKG_GLOBAL_NVCCFLAGS=$(NVCC_SPECIFIC_NVCCFLAGS) $(NVCC_DEBUG_NVCCFLAGS)
+# Move $(COMPILER_DEBUG_CCFLAGS) to PKG_DEBUG_CCFLAGS if you do not want debug
+# information included in the binaries by default
+#
+PKG_GPROF_NVCCFLAGS=$(NVCC_GPROF_NVCCFLAGS)
+PKG_OPT_NVCCFLAGS=$(NVCC_OPT_NVCCFLAGS)
+PKG_PROF_NVCCFLAGS=$(NVCC_PROF_NVCCFLAGS)
+PKG_SHARED_NVCCFLAGS=$(NVCC_SHARED_NVCCFLAGS)
+PKG_NVCCANSIFLAG=$(NVCC_ANSI_NVCCFLAGS)
+# Drop $(NVCC_ANSI_NVCCFLAGS) if your source is not in ANSI C++
+
+
+# Default settings for archive tool
+#
+PKG_ARFLAGS=$(AR_SPECIFIC_ARFLAGS)
+
+
+# Default settings for make 
+#
+CONFIGURE_MAKEFLAGS=$(QMAKE_MAKEFLAGS)
+PKG_MAKEFLAGS=$(MAKE_SPECIFIC_MAKEFLAGS)
+

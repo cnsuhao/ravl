@@ -1,0 +1,277 @@
+dnl This file is part of QMake, Quick Make System
+dnl Copyright (C) 2011-13, University of Surrey
+dnl This code may be redistributed under the terms of the GNU General
+dnl Public License (GPL). See the gpl.licence file for details or
+dnl see http://www.gnu.org/copyleft/gpl.html
+dnl
+dnl file-header-ends-here
+
+
+
+dnl QM_LOCATE_QMAKE
+dnl
+dnl Macro to locate any installed copy of QMake by using pkg-configure. This
+dnl macro will declare the --with-<lib>-pkgconf switch that explicitly sets
+dnl the pkg-config control file to use when checking for QMake. This switch
+dnl can be set to the full path of the QMake pkg-configure control file or to
+dnl Yes (when the default name of QMake.pc will be used as the control file)
+dnl to enable use of an existing installation of QMake. Setting the switch to
+dnl No or Local will prevent the use of any existing QMake and force the use
+dnl of the version of QMake provided with the source project to which this
+dnl configure script relates. If no installed version of QMake can be located
+dnl this macro will default to using the version provided with the project
+dnl source unless the user explicitly asked to use a pre-installed version of
+dnl QMake (by specifying the --with-QMake-pkgconf switch).
+dnl
+dnl No macro parameters
+dnl
+dnl Global variables used:
+dnl
+dnl       WORKING_QMAKE              Receives the location of the located
+dnl                                  QMake's data files (Makefiles, Support
+dnl                                  sub-directories, etc.). This variable
+dnl                                  is in makefile form so it should not be
+dnl                                  used within the configure script (it
+dnl                                  will be set to $(PROJECT_OUT)/... if we
+dnl                                  are using the local QMake shipped with
+dnl                                  the project).
+dnl       QMAKE_CFG                  Receives the location of the located
+dnl                                  QMake's configuration file.
+dnl       InheritCFG                 Records if we should be bootstrapping
+dnl                                  our configuration from an existing
+dnl                                  Config.QMake file (as specified by the
+dnl                                  QMAKE_CFG variable).
+dnl       QMAKE_CONFIGFILES          Receives the directory containing the
+dnl                                  located QMake's configuration files.
+dnl                                  This variable is in makefile form i.e.
+dnl                                  it should not be used within the
+dnl                                  configure script (it will be set to
+dnl                                  $(PROJECT_OUT)/... if we are using the
+dnl                                  local QMake shipped with the project).
+dnl       with_QMake_pkgconf         Value of similarly named cmd-line switch
+dnl                                  Specifies what name metafile pkg-config
+dnl                                  look use to look for QMake. Default is
+dnl                                  QMake.pc. This variable will be set to
+dnl                                  uselocal if the associated command-line
+dnl                                  switch is set to No or Local. This
+dnl                                  disables the use of any installed QMake
+dnl                                  in favour of the version embedded in the
+dnl                                  project's source.     
+dnl       NeededQMake                Substitution variable that receives the
+dnl                                  make targets that will be built when
+dnl                                  QMake is built. This will always include
+dnl                                  a release version of QMake (that can be
+dnl                                  installed as the live version on the
+dnl                                  system) and optionally (if there is no
+dnl                                  existing installation of QMake or if the
+dnl                                  user has requested to use the local copy
+dnl                                  of QMake embedded in the project's 
+dnl                                  source) the LocalQMake.
+dnl       PACKAGE_NAME               Standard autoconf variable containing the
+dnl                                  name of the currently installing package.
+dnl       PACKAGE_VERSION            Standard autoconf variable containing the
+dnl                                  version of the currently installing
+dnl                                  package. Only used in QMake's configure
+dnl       PKG_CONFIG                 Standard substitution variable pointing
+dnl                                  to the pkg-configure utility
+dnl       Require_QMake_pkgconf      Internal flag that indicates if the user
+dnl                                  has explicitly chosen whether to use
+dnl                                  QMake or if the default has taken over.
+dnl       SED                        Standard substitution variable pointing
+dnl                                  to the UNIX sed command.  
+dnl
+AC_DEFUN([QM_LOCATE_QMAKE],
+         [
+          WORKING_QMAKE=""
+          QMAKE_CONFIGFILES=""
+
+          AC_ARG_WITH([QMake-pkgconf],
+                      [AS_HELP_STRING([--with-QMake-pkgconf],
+                                      [Declare where to find the pkg-config file for the version of QMake with which to build
+                                      ]
+                                     )
+                      ],
+                      [trace 4 "--with-QMake-pkgconf=@<:@$with_QMake_pkgconf@:>@"
+                       if ( test x$with_QMake_pkgconf = x )
+                       then
+                         # Assume the setting: "--with_QMake_pkgconf=" implies the
+                         # user doesn't want to use pkgconf
+                         with_QMake_pkgconf=no
+                       fi
+                       case $with_QMake_pkgconf in
+                            'n' | 'N' | 'no' | 'No' | 'NO' | 'l' | 'L' | 'local' | 'Local' | 'LOCAL' ) 
+                                      # Disable the use of pkg-config and use the 
+                                      # version shipped with this project
+                                      with_QMake_pkgconf=uselocal
+                                      ;;
+                            'y' | 'Y' | 'yes' | 'Yes' | 'YES' )
+                                      Require_QMake_pkgconf=yes
+                                      # We do not know the path so just look
+                                      # for the package name rather than the
+                                      # .pc file
+                                      with_QMake_pkgconf=QMake
+                                      ;;
+                            * )       # Name of .pc for relevant install of QMake
+                                      Require_QMake_pkgconf=yes
+                                      ;;
+                       esac
+                      ],
+                      [# Not specified, as we do not know the path just look
+                       # for the package name rather than the .pc file
+                       with_QMake_pkgconf=QMake
+                       trace 4 "--with-QMake-pkgconf unset"
+                      ]
+                     )
+ 
+          if ( test $with_QMake_pkgconf != uselocal )
+          then
+            AC_MSG_CHECKING(pkg-config for QMake)
+            PKG_CHECK_EXISTS([$with_QMake_pkgconf],
+                             [if ( test x$Require_QMake_pkgconf = xyes )
+                              then
+                                WORKING_QMAKE=`$PKG_CONFIG --variable=datadir $with_QMake_pkgconf 2>/dev/null`/QMake
+                                #  "      "  = ${datadir}/QMake
+                                QMAKE_CONFIGFILES=`$PKG_CONFIG --variable=sysconfdir $with_QMake_pkgconf 2>/dev/null`/QMake
+                                # "        "     = ${sysconfdir}/QMake
+                                QMAKE_CFG=$QMAKE_CONFIGFILES/Config.QMake
+                                if ( test X$WORKING_QMAKE == X || test X$QMAKE_CONFIGFILES == X )
+                                then
+                                  AC_MSG_FAILURE([Required QMake is unavailable])
+                                else
+                                  AC_MSG_RESULT([yes])
+                                fi
+                              else
+                                # No user preference, use highest version
+                                InstalledVer=`$PKG_CONFIG --modversion $with_QMake_pkgconf 2>/dev/null`
+                                if ( test X$InstalledVer != X )
+                                then
+                                  sedPattern='/^\@{:@@<:@0-9@:>@@<:@0-9@:>@*\@:}@\.\@{:@@<:@0-9@:>@@<:@0-9@:>@*\@:}@\.\@{:@@<:@0-9@:>@@<:@0-9@:>@*\@:}@ *@S|@'
+                                  dnl# Pattern minus quadrigraphs is '/^\([0-9][0-9]*\)\.\([0-9][0-9]*\)\.\([0-9][0-9]*\) *$'
+                                  InstalledMajor=`echo $InstalledVer | $SED -n "$sedPattern/s//\1/p"`
+                                  InstalledMinor=`echo $InstalledVer | $SED -n "$sedPattern/s//\2/p"`
+                                  InstalledPatch=`echo $InstalledVer | $SED -n "$sedPattern/s//\3/p"`
+                                  if ( test "x$PACKAGE_NAME" != xQMake )
+                                  then
+                                    LocalVer=`$SED  -n '/^PACKAGE_VERSION *= *'\''\@{:@@<:@0-9@:>@@<:@0-9@:>@*\.@<:@0-9@:>@@<:@0-9@:>@*\.@<:@0-9@:>@@<:@0-9@:>@*\@:}@'\'' *@S|@/s//\1/p' $srcdir/../../QMake/configure`
+                                    dnl# above sed pattern without the quadrigraphs is:
+                                    dnl#    '/^PACKAGE_VERSION *= *'\''\([0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\)'\'' *$/s//\1/p'
+                                    dnl# and looks for PACKAGE_VERSION = 'n.n.n' in QMake's configure file.
+                                    dnl#
+                                    dnl# Above sed command uses $srcdir to locate the QMake configure file as 
+                                    dnl# abs_srcdir is not set up by the point where this macro is expanded.
+                                    # The '\'' put a single ' in the search pattern.
+                                  else
+                                    LocalVer=$PACKAGE_VERSION
+                                  fi
+                                  sedPattern='/^\@{:@@<:@0-9@:>@@<:@0-9@:>@*\@:}@\.\@{:@@<:@0-9@:>@@<:@0-9@:>@*\@:}@\.\@{:@@<:@0-9@:>@@<:@0-9@:>@*\@:}@ *@S|@'
+                                  dnl# Pattern minus quadrigraphs is '/^\([0-9][0-9]*\)\.\([0-9][0-9]*\)\.\([0-9][0-9]*\) *$'
+                                  LocalMajor=`echo $LocalVer | $SED -n "$sedPattern/s//\1/p"`
+                                  LocalMinor=`echo $LocalVer | $SED -n "$sedPattern/s//\2/p"`
+                                  LocalPatch=`echo $LocalVer | $SED -n "$sedPattern/s//\3/p"`
+                                  if ( test $LocalMajor -gt $InstalledMajor \
+                                            || ( test $LocalMajor -eq $InstalledMajor \
+                                                      && ( test $LocalMinor -gt $InstalledMinor \
+                                                                || ( test $LocalMinor -eq $InstalledMinor \
+                                                                          -a $LocalPatch -ge $InstalledPatch \
+                                                                   ) \
+                                                         ) \
+                                               ) \
+                                     )
+                                  then
+                                    # Local (supplied with client product) is latest version, use this.
+                                    WORKING_QMAKE=uselocal
+                                    AC_MSG_RESULT([older])
+                                  else
+                                    # Installed version is latest, use that
+                                    WORKING_QMAKE=`$PKG_CONFIG --variable=datadir $with_QMake_pkgconf 2>/dev/null`/QMake
+                                    #  "      "  = ${datadir}/QMake
+                                    if ( test X$WORKING_QMAKE == X )
+                                    then
+                                      AC_MSG_FAILURE([Unable to determine datadir of installed QMake.])
+                                    fi
+                                    QMAKE_CONFIGFILES=`$PKG_CONFIG --variable=sysconfdir $with_QMake_pkgconf 2>/dev/null`/QMake
+                                    # "        "     = ${sysconfdir}/QMake
+                                    if ( test X$QMAKE_CONFIGFILES == X )
+                                    then
+                                      AC_MSG_FAILURE([Unable to determine sysconfdir of installed QMake.])
+                                    fi
+                                    QMAKE_CFG=$QMAKE_CONFIGFILES/Config.QMake
+                                    AC_MSG_RESULT([yes])
+                                  fi
+                                  trace 4 Installed QMake version $InstalledMajor.$InstalledMinor.$InstalledPatch
+                                  trace 4 Local QMake version $LocalMajor.$LocalMinor.$LocalPatch
+                                else
+                                  # No existing version, use Local
+                                  WORKING_QMAKE=uselocal
+                                  AC_MSG_RESULT([local])
+                                fi
+                              fi
+                             ],
+                             [AC_MSG_RESULT([no])
+                              if ( test x$Require_QMake_pkgconf = xyes )
+                              then
+                                if ( test $with_QMake_pkgconf = QMake.pc )
+                                then
+                                  AC_MSG_FAILURE([Cannot find the QMake pkg-config file)])
+                                else
+                                  AC_MSG_FAILURE([Cannot find the specified QMake pkg-config file)])
+                                fi
+                              else
+                                if ( test "x$PACKAGE_NAME" != xQMake )
+                                then
+                                  AC_MSG_WARN([Cannot find an installed QMake, will use the embedded version])
+                                fi
+                              fi
+                             ]
+                            )
+          fi
+
+          if ( test x$WORKING_QMAKE = x || test x$WORKING_QMAKE = xuselocal )
+          then
+             trace 2 "Will use local QMake:"
+
+             # No installed QMake found or we explicitly want to use the use one staged
+             # from the source included with the project distribution. 
+             WORKING_QMAKE=\$\(PROJECT_OUT\)/share/QMake
+             QMAKE_CONFIGFILES=\$\(PROJECT_OUT\)/QMake
+             if ( test "x$PACKAGE_NAME" == xQMake )
+             then
+               QMAKE_CFG=`pwd`/Config.QMake
+
+               # If we are configuring QMake itself, we want to explicitly
+               # configure everything ourselves rather than bootstrap from
+               # any existing Config.QMake file.
+               InheritCFG=no
+             else
+               # If building a project, we can bootstrap from the local copy
+               # of QMake.
+               InheritCFG=yes
+               QMAKE_CFG=`cd ../..; pwd`/QMake/Config.QMake
+             fi
+
+             # We will also need to stage this copy as part of the project build, so add
+             # LocalQMake to the target for the required QMake builds
+             NeededQMake="LocalQMake QMake"
+          else
+             trace 2 "Will use pre-installed QMake:"
+
+             # We have an installed version of QMake to use so we don't need to stage
+             # our own copy for building the project. The project build should therefore only
+             # build the updated QMake for possible later installation.
+             NeededQMake="QMake"
+
+             # We can use the existing settings to bootstrap our own configuration
+             InheritCFG=yes
+          fi
+          AC_SUBST([QMAKE_CONFIGFILES])
+          AC_SUBST([WORKING_QMAKE])
+          AC_SUBST([NeededQMake])
+          trace 3 "   Config file $QMAKE_CONFIGFILES/Config.QMake"
+          trace 3 "   Live QMake under $WORKING_QMAKE"
+          trace 4 "   Build target(s) $NeededQMake"
+         ]
+        )
+
+
+
+

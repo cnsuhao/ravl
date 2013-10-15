@@ -1,0 +1,55 @@
+dnl This file is part of QMake, Quick Make System
+dnl Copyright (C) 2011, University of Surrey
+dnl This code may be redistributed under the terms of the GNU General
+dnl Public License (GPL). See the gpl.licence file for details or
+dnl see http://www.gnu.org/copyleft/gpl.html
+dnl
+dnl file-header-ends-here
+
+
+
+dnl QM_SET_ARCHIVER_ARFLAGS
+dnl
+dnl Macro to declare the ARFLAGS needed for QMake to use the archiver.
+dnl
+dnl No macro parameters
+dnl
+dnl Global variables used:
+dnl
+dnl       AR_SPECIFIC_ARFLAGS        Receives the specific ARFLAGS needed for
+dnl                                  QMake to drive the archiver in use. This
+dnl                                  variable is declared for substitution
+dnl                                  out to the configuration file where it
+dnl                                  provides the default value for priming
+dnl                                  the PKG_ARFLAGS makefile variable which
+dnl                                  is the switch actually employed in the
+dnl                                  QMake makefiles.
+dnl
+AC_DEFUN([QM_SET_ARCHIVER_ARFLAGS],
+         [trace 2 Set archiver specific ARFLAGS
+          
+          
+          dnl If redesigning this macro, bear in mind that no user specified
+          dnl ARFLAGS are allowed owing to the nature of how ar works, such
+          dnl flags would most likely break the build.
+          dnl
+          dnl Currently we do not know of any differing flags dependant on
+          dnl the particular implementation of the tool in use. If this
+          dnl situation changes, the following standard caveat must be
+          dnl maintained in this code, especially if we ever have to test
+          dnl the platform or OS in use:
+          dnl
+          dnl DO NOT PUT PLATFORM SPECIFICS HERE. If your platform has a
+          dnl non-standard ar that takes completely different flags then
+          dnl that is ok to list here (as it pertains to the tool itself,
+          dnl not the platform). If your platform uses the GNU version of ar
+          dnl but, for example requires an added 's' flag, that setting
+          dnl should be put in the platform specific code at the end of this
+          dnl script, not here.
+          dnl
+
+          AR_SPECIFIC_ARFLAGS=ruc
+          AC_SUBST([AR_SPECIFIC_ARFLAGS])
+         ]
+        )
+

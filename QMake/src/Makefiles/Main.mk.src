@@ -1,0 +1,1270 @@
+# This file is part of QMake, Quick Make System
+# Copyright (C) 2001-13, University of Surrey
+# This code may be redistributed under the terms of the GNU General
+# Public License (GPL). See the gpl.licence file for details or
+# see http://www.gnu.org/copyleft/gpl.html
+
+# file-header-ends-here
+
+ifndef QMAKE_MAKEFILES
+ QMAKE_MAKEFILES=@QMAKE_MAKEFILES@
+endif
+
+include $(QMAKE_MAKEFILES)/Definitions.mk
+
+export TARGET
+
+VPATH = $(QCWD)
+
+ifdef USERBUILD
+ ifneq ($(USESLIBS),None)
+  USESLIBS += Auto
+ endif
+ USE_LIBPATHSWITCH=Y
+endif
+
+#########################
+# Setup defaults.
+
+BINDEP := $(PERL) $(QMAKE_UTILS)/BinDep.pl
+QLIBS := $(PERL) $(QMAKE_UTILS)/QLibs.pl
+
+
+UNTOUCH:=$(QMAKE_UTILS)/untouch
+
+###########################
+# Platform supported ?
+
+ifneq (,$(SUPPORT_ONLY))
+ ifeq ($(ARC),$(filter $(ARC),$(SUPPORT_ONLY)))
+  SUPPORT_OK=yes
+ else
+  SUPPORT_OK=no
+  NOINCDEFS=1 # Tell the system to ignore the .def files.
+ endif
+else
+ ifeq ($(ARC),$(filter $(ARC),$(DONOT_SUPPORT)))
+  SUPPORT_OK=no
+  NOINCDEFS=1 # Tell the system to ignore the .def files.
+ else
+  SUPPORT_OK=yes
+ endif
+endif
+
+###########################
+# Required libraries available ?
+
+ifeq ($(SUPPORT_OK),yes)
+ ifeq ($(strip $(filter-out $(RESOURCES),$(REQUIRES))),)
+  SUPPORT_OK=yes
+ else
+  SUPPORT_OK=no
+ endif
+endif
+
+########################
+# Setup directories etc.
+
+# Compile examples as well when doing a test build.
+ifeq ($(TARGET),testbuild)
+ MAINS := $(sort $(MAINS) $(EXAMPLES))
+endif
+
+
+# Don't include this stuff, unless we're building this directory.
+ifeq ($(SUPPORT_OK),yes)
+
+ ifndef MKMUSTLINK
+  MKMUSTLINK := $(patsubst %$(CEXT),$(INST_FORCEOBJS)/%$(OBJEXT), $(patsubst %$(CXXEXT),%$(CEXT), $(MUSTLINK)))
+ endif
+
+ #######################################
+ # Sort out external library dependancies.
+
+ ifdef TARG_EXTERNALLIBS
+  # Remove the .def from the name to make it match other external libs.
+  USESLIBS += $(patsubst %,%.def,$(TARG_EXTERNALLIBS))
+ endif
+
+ #######################################
+ # Sort out library dependancies from USESLIBS
+
+ ifdef USESLIBS
+  ifndef LIBDEPS
+   ifdef PLIB
+    LOCAL_DEFBASE=$(PLIB)#
+    DEFVARNAME:=$(LOCAL_DEFBASE)_AUTO_DEF#
+    $(DEFVARNAME) := 1
+   endif
+  else
+   LOCAL_DEFBASE = $(patsubst %.def,%,$(LIBDEPS))
+   DEFVARNAME:=$(LOCAL_DEFBASE)_AUTO_DEF#
+   $(DEFVARNAME) := 1
+  endif
+  ifneq ($(USESLIBS),)
+   ifneq ($(USESLIBS),None)
+    ifneq ($(filter Auto,$(USESLIBS)),)
+     AUTOUSELIBS := Ravl.def
+     EXTRA_USESLIBS = $(AUTOUSELIBS) $(filter-out Auto,$(USESLIBS))
+     ifdef LIBDEPS
+      ifdef PLIB
+       AUTOUSELIBS := $(PLIB).def $(AUTOUSELIBS)
+      endif
+     endif
+    else # USELIBS != Auto
+     EXTRA_USESLIBS = $(USESLIBS)
+    endif
+    REQUIRED_USESLIBS=$(patsubst %.def.def,%.def,$(patsubst %,%.def,$(filter-out %.opt,$(EXTRA_USESLIBS))))
+    OPTIONAL_USESLIBS=$(filter %.opt,$(EXTRA_USESLIBS))
+    EXTRA_USESLIBS := $(REQUIRED_USESLIBS) $(OPTIONAL_USESLIBS)
+    ifndef NOINCDEFS
+     ifneq ($(strip $(REQUIRED_USESLIBS)),)
+      include $(REQUIRED_USESLIBS)
+     endif
+     OPTIONAL_USESLIBS_D=$(patsubst %.opt,%.def,$(OPTIONAL_USESLIBS))
+     ifneq ($(strip $(OPTIONAL_USESLIBS_D)),)
+      -include $(OPTIONAL_USESLIBS_D)
+
+$(OPTIONAL_USESLIBS_D) : $(INST_LIB)/.dir
+	@true;
+
+     endif
+    endif
+   endif
+  endif
+ else # i.e. ndef USESLIBS
+  ifdef LIBDEPS
+   # -include $(patsubst %,$(INST_LIBDEF)/%,$(LIBDEPS))
+   -include $(LIBDEPS)
+  endif
+ endif
+ ifdef PLIB
+  EXELIB := $(MKMUSTLINK) -l$(PLIB) $(EXELIB)
+ endif
+
+ ###########################
+ # Sort out libraries needed for executables from PROGLIBS
+
+
+ # Record the contents of EXELIB before we add prog libs in LIBLIBS
+ LIBLIBS := $(EXELIB)
+
+ ifndef NOEXEBUILD   # Don't even look if we're not building exe's
+
+  ifndef NOINCDEFS
+   REQUIRED_PROGLIBS=$(patsubst %,%.def,$(filter-out %.opt,$(PROGLIBS)))
+   OPTIONAL_PROGLIBS=$(patsubst %.opt,%.def,$(filter %.opt,$(PROGLIBS)))
+   ifneq ($(strip $(REQUIRED_PROGLIBS)),)
+    include $(REQUIRED_PROGLIBS)
+   endif
+   ifneq ($(strip $(OPTIONAL_PROGLIBS)),)
+    -include $(OPTIONAL_PROGLIBS)
+
+$(OPTIONAL_PROGLIBS) : $(INST_LIB)/.dir
+	@true;
+
+   endif
+  endif
+
+ # Has the user included Auto in there useslibs ?
+ # If so attempt to automaticly generate dependancies.
+
+  ifneq ($(filter Auto,$(USESLIBS)),)
+   ifneq ($(strip $(MAINS) $(TESTEXES)),)
+    AUTOPROGLIBS := Ravl.def
+    ifdef LIBDEPS
+     AUTOPROGLIBS := $(filter-out $(LIBDEPS),$(AUTOPROGLIBS))
+    endif
+    ifdef PLIB
+     AUTOPROGLIBS := $(PLIB).def $(AUTOPROGLIBS)
+    endif
+    ifndef NOINCDEFS
+     ifneq ($(strip $(filter-out $(PLIB).def,$(AUTOPROGLIBS))),)
+      include $(filter-out $(PLIB).def,$(AUTOPROGLIBS))
+     endif
+    endif
+   endif
+  endif
+
+ endif # ifndef NOEXEBUILD
+
+endif # ifdef SUPPORT_OK=yes
+
+LINKLIBS := $(EXELIB)
+
+######################################
+# Sort out libraries needed for test executables. TESTLIBS
+
+ifndef NOEXEBUILD  # Don't even look if we're not building exe's
+ ifndef NOINCDEFS
+  ifdef TESTLIBS
+   REQUIRED_TESTLIBS=$(patsubst %,%.def,$(filter-out %.opt,$(TESTLIBS)))
+   OPTIONAL_TESTLIBS=$(patsubst %.opt,%.def,$(filter %.opt,$(TESTLIBS)))
+   ifneq ($(strip $(REQUIRED_TESTLIBS)),)
+    include $(REQUIRED_TESTLIBS)
+   endif
+   ifneq ($(strip $(OPTIONAL_TESTLIBS)),)
+    -include $(OPTIONAL_TESTLIBS)
+
+$(OPTIONAL_TESTLIBS) : $(INST_LIB)/.dir
+	@true;
+
+   endif
+  endif
+ endif
+endif
+
+LINKTESTLIBS := $(EXELIB)
+
+# Restore EXELIB to be library libs
+EXELIB := $(LIBLIBS)
+ 
+.PRECIOUS : %$(CXXEXT) %$(CHXXEXT) %$(CEXT) %$(CHEXT) %.tcc %.icc %.def %.tab.cc %.yy.cc %_$(ARC)_wrap.cc %.m %.mm
+
+############################
+# Misc setup
+
+
+# Make sure current directory is included in path if we have local headers.
+
+ifdef LOCALHEADERS
+ INCLUDES+=-I.
+endif
+
+
+
+#########################
+# PKGCONFIG stuff
+
+ifdef USESPKGCONFIG
+  USES_PKGCONFIG_EXELIB = $(shell pkg-config $(USESPKGCONFIG) --libs )
+  USES_PKGCONFIG_INCLUDES = $(shell pkg-config $(USESPKGCONFIG) --cflags )
+  INCLUDES += $(USES_PKGCONFIG_INCLUDES)
+  EXELIB += $(USES_PKGCONFIG_EXELIB)
+endif
+
+#####################
+# Build targets.
+
+# $(LOCALHEADERS)
+JAVA_SRC = $(filter %.java,$(SOURCES) $(MAINS))
+
+ifeq ($(SUPPORT_OK),yes)
+ TARG_MUSTLINK_OBJS=$(patsubst %$(CEXT),$(INST_FORCEOBJS)/%$(OBJEXT), \
+    $(patsubst %$(CXXEXT),$(INST_FORCEOBJS)/%$(OBJEXT), $(MUSTLINK)))
+ TARG_BASEOBJS=$(patsubst %$(CEXT),$(INST_OBJS)/%$(OBJEXT), \
+    $(patsubst %.S,$(INST_OBJS)/%$(OBJEXT), \
+    $(patsubst %.cu,$(INST_OBJS)/%$(OBJEXT), \
+    $(patsubst %.m,$(INST_OBJS)/%$(OBJEXT), \
+    $(patsubst %.mm,$(INST_OBJS)/%$(OBJEXT), \
+    $(patsubst %.y,$(INST_OBJS)/%.tab$(OBJEXT), \
+    $(patsubst %.l,$(INST_OBJS)/%.yy$(OBJEXT), \
+    $(patsubst %.i,$(INST_OBJS)/%_$(ARC)_wrap$(OBJEXT), \
+    $(patsubst %$(CXXEXT),$(INST_OBJS)/%$(OBJEXT),$(SOURCES))))))))))
+ TARG_OBJS=$(patsubst %$(CXXAUXEXT),$(INST_OBJS)/%$(OBJEXT),$(TARG_BASEOBJS))
+ TARG_HDRS:=$(patsubst %,$(INST_HEADER)/%,$(HEADERS))
+ ifdef USE_INCLUDE_SYMINC
+  TARG_HDRSYMS:=$(patsubst %,$(INST_HEADERSYM)/%,$(HEADERS))
+ else
+  TARG_HDRSYMS=
+ endif
+
+ ifdef FULLCHECKING
+  TARG_HDRCERTS:=$(patsubst %$(CHXXEXT),$(INST_HEADERCERT)/%$(CHXXEXT),$(HEADERS)) $(patsubst %$(CHEXT),$(INST_HEADERCERT)/%$(CHEXT),$(HEADERS))
+ else
+  TARG_HDRCERTS=
+ endif
+#$(INST_DEPEND)/%.java.d
+ TARG_DEFS=$(patsubst %,$(INST_LIBDEF)/%,$(LIBDEPS)) 
+ TARG_EXE := $(patsubst %$(CEXT),$(INST_BIN)/%$(EXEEXT), $(patsubst %$(CXXEXT),$(INST_BIN)/%$(EXEEXT),$(patsubst %.mm,$(INST_BIN)/%$(EXEEXT),$(filter-out %.java,$(MAINS)))))
+ TARG_PUREEXE := $(patsubst %$(CEXT),$(INST_BIN)/pure_%$(EXEEXT), $(patsubst %$(CXXEXT),$(INST_BIN)/pure_%$(EXEEXT),$(patsubst %.mm,$(INST_BIN)/pure_%$(EXEEXT),$(filter-out %.java,$(MAINS)))))
+ TARG_EXEOBJS=$(patsubst %$(CEXT),$(INST_OBJS)/%$(OBJEXT),$(patsubst %$(CXXEXT),$(INST_OBJS)/%$(OBJEXT),$(filter-out %.java,$(MAINS))))
+ TARG_TESTEXE := $(patsubst %$(CEXT),$(INST_TESTBIN)/%$(EXEEXT), $(patsubst %$(CXXEXT),$(INST_TESTBIN)/%$(EXEEXT),$(TESTEXES)))
+ TARG_TESTEXEOBJS=$(patsubst %$(CEXT),$(INST_OBJS)/%$(OBJEXT),$(patsubst %$(CXXEXT),$(INST_OBJS)/%$(OBJEXT),$(TESTEXES)))
+ ifndef NOEXEBUILD
+  TARG_DEPEND:= $(patsubst %$(CXXAUXEXT),$(INST_DEPEND)/%.d, \
+	       $(patsubst %$(CEXT),$(INST_DEPEND)/%.d, \
+	       $(patsubst %.m,$(INST_DEPEND)/%.d, \
+	       $(patsubst %.mm,$(INST_DEPEND)/%.d, \
+	       $(patsubst %.cu,$(INST_DEPEND)/%.d, \
+	       $(patsubst %.S,$(INST_DEPEND)/%.S.d, \
+	       $(patsubst %.y,$(INST_DEPEND)/%.tab.d, \
+	       $(patsubst %.l,$(INST_DEPEND)/%.yy.d, \
+	       $(patsubst %.i,$(INST_DEPEND)/%_$(ARC)_wrap.d, \
+               $(patsubst %$(CXXEXT),$(INST_DEPEND)/%.d, \
+	       $(patsubst %.java,,$(SOURCES) $(MUSTLINK)))))))))))) \
+               $(patsubst %$(CEXT),$(INST_DEPEND)/%.d, \
+               $(patsubst %$(CXXEXT),$(INST_DEPEND)/%.d, \
+               $(patsubst %.m,$(INST_DEPEND)/%.d, \
+               $(patsubst %.mm,$(INST_DEPEND)/%.d, \
+	       $(patsubst %.java,$(INST_DEPEND)/%.java.d,$(MAINS) $(TESTEXES)))))) \
+               $(patsubst %$(CEXT),$(INST_DEPEND)/%.$(VAR)$(BINDEP_SHARED_INFIX).bin.d,  \
+               $(patsubst %$(CXXEXT),$(INST_DEPEND)/%.$(VAR)$(BINDEP_SHARED_INFIX).bin.d, \
+               $(patsubst %.m,$(INST_DEPEND)/%.$(VAR)$(BINDEP_SHARED_INFIX).bin.d,  \
+               $(patsubst %$.mm,$(INST_DEPEND)/%.$(VAR)$(BINDEP_SHARED_INFIX).bin.d, \
+               $(filter-out %.java,$(MAINS)))))) $(INST_DEPEND)/.dir
+ else
+  TARG_DEPEND:= $(patsubst %$(CXXAUXEXT),$(INST_DEPEND)/%.d, \
+	       $(patsubst %$(CEXT),$(INST_DEPEND)/%.d, \
+	       $(patsubst %.mm,$(INST_DEPEND)/%.d, \
+	       $(patsubst %.m,$(INST_DEPEND)/%.d, \
+	       $(patsubst %.cu,$(INST_DEPEND)/%.d, \
+	       $(patsubst %.S,$(INST_DEPEND)/%.S.d, \
+	       $(patsubst %.y,$(INST_DEPEND)/%.tab.d, \
+	       $(patsubst %.i,$(INST_DEPEND)/%_$(ARC)_wrap.d, \
+	       $(patsubst %.l,$(INST_DEPEND)/%.yy.d, \
+               $(patsubst %$(CXXEXT),$(INST_DEPEND)/%.d, \
+	       $(patsubst %.java,,$(SOURCES) $(MUSTLINK)))))))))))) $(INST_DEPEND)/.dir
+ endif
+ TARG_JAVA    =$(patsubst %.java,$(INST_JAVA)/%.class,$(JAVA_SRC))
+ TARG_JAVAEXE =$(patsubst %.java,$(INST_JAVAEXE)/%,$(filter %.java,$(MAINS)))
+ TARG_NESTED =$(patsubst %.r,%,$(filter %.r,$(NESTED)))
+ TARG_SCRIPT =$(patsubst %,$(INST_GENBIN)/%,$(SCRIPTS))
+ OBJS_DEPEND = $(patsubst %$(CEXT),$$(INST_OBJS)/%$(OBJEXT),$(patsubst %$(CXXEXT),$$(INST_OBJS)/%$(OBJEXT) ,$(patsubst %.mm,$$(INST_OBJS)/%$(OBJEXT) ,$(SOURCES) $(MUSTLINK))))
+ TARG_AUXFILES = $(patsubst %,$(INST_AUX)/%,$(AUXFILES))
+ TARG_EXTERNALLIBS= $(patsubst %,$(INST_LIBDEF)/%,$(EXTERNALLIBS))
+
+ ifdef USESLIBS
+  ifndef LIBDEPS
+   ifdef PLIB
+    TARG_DEFS=$(INST_LIBDEF)/$(LOCAL_DEFBASE).def
+    ifdef MAKEPKGCONFIG
+     ifdef SHAREDBUILD
+    TARG_PKGCONFIG=$(INST_PKGCONFIG)/$(PLIB).pc
+     else
+    TARG_PKGCONFIG=$(INST_PKGCONFIG)/$(PLIB).pc
+     endif
+    endif
+   endif
+  endif
+ endif
+
+ ifneq (,$(PLIB))
+  ifdef SHAREDBUILD
+   ifneq (,$(SINGLESO))
+    TARG_LIBS=$(strip $(patsubst %,$(INST_LIB)/single/%$(LIBEXT),$(SINGLESO)))#
+   else
+    TARG_LIBS=$(strip $(patsubst %,$(INST_LIB)/lib%$(LIBEXT),$(PLIB)))#
+   endif
+  else
+   TARG_LIBS=$(strip $(patsubst %,$(INST_LIB)/lib%$(LIBEXT),$(PLIB)))#
+  endif
+ else
+  TARG_LIBS=
+ endif
+
+else # SUPPORT_OK != yes
+ TARG_OBJS=
+ TARG_HDRS=
+ TARG_HDRSYMS=
+
+ TARG_HDRCERTS=
+ TARG_DEFS=
+ TARG_PKGCONFIG=
+ TARG_LIBS=
+ TARG_EXE=
+ TARG_EXEOBJS=
+ TARG_TESTEXE =
+ TARG_TESTEXEOBJS=
+ TARG_DEPEND=
+ TARG_NESTED=
+ TARG_SCRIPT=
+ OBJS_DEPEND=
+endif
+
+###############################
+# Misc.
+
+BASE_INSTALL := $(INSTALLHOME)#
+INCLUDES := -I$(INST_INCLUDE)/$(ARC) -I$(INST_INCLUDE) $(INCLUDES) -I$(BASE_INSTALL)/include/$(ARC) -I$(BASE_INSTALL)/include
+
+ifdef EXTPACKAGE
+ INCLUDES += -I$(ROOTDIR)\inc\$(PACKAGE)
+endif
+
+ifdef EXTERNAL_PROJECTS
+ INCLUDES += $(patsubst %,-I%/include/$(ARC),$(EXTERNAL_PROJECTS)) $(patsubst %,-I%/include,$(EXTERNAL_PROJECTS))
+endif
+
+CINCLUDES =  -I$(INST_HEADER) $(INCLUDES) -I$(BASE_INSTALL)/include/$(ARC) -I$(BASE_INSTALL)/include
+
+
+TESTBINLIBS += -L$(INST_LIB) -L$(BASE_INSTALL)/lib$(PROJECT_DIR)/$(ARC)/$(BASE_VAR)$(SHARED_LIB_POSTFIX) $(LINKTESTLIBS)
+BINLIBS += -L$(INST_LIB) -L$(BASE_INSTALL)/lib$(PROJECT_DIR)/$(ARC)/$(BASE_VAR)$(SHARED_LIB_POSTFIX) $(LINKLIBS)
+LIBS += -L$(INST_LIB) -L$(BASE_INSTALL)/lib$(PROJECT_DIR)/$(ARC)/$(BASE_VAR)$(SHARED_LIB_POSTFIX) $(EXELIB)
+
+EXTERNAL_PROJECT_LIBS = $(patsubst %,-L%/lib$(PROJECT_DIR)/$(ARC)/$(VAR)$(SHARED_LIB_POSTFIX),$(EXTERNAL_PROJECTS))
+
+ifdef EXTERNAL_PROJECTS
+ TESTBINLIBS += $(EXTERNAL_PROJECT_LIBS)
+ BINLIBS += $(EXTERNAL_PROJECT_LIBS)
+ LIBS += $(EXTERNAL_PROJECT_LIBS)
+endif
+
+
+
+
+# setup some library paths, so that binaries will always be able to find correct libraries.
+ifeq ($(USE_LIBPATHSWITCH),Y)
+ ifdef SHAREDBUILD
+  ifneq ($(BASE_VAR),none)
+   LDFLAGS += $(LINKER_LIBPATHSWITCH)=$(ROOTDIR)/lib$(PROJECT_DIR)/$(ARC)/$(VAR)/shared
+   LDFLAGS += $(LINKER_LIBPATHSWITCH)=$(BASE_INSTALL)/lib$(PROJECT_DIR)/$(ARC)/$(BASE_VAR)/shared
+  else
+   LDFLAGS += $(LINKER_LIBPATHSWITCH)=$(ROOTDIR)/lib$(PROJECT_DIR)/$(ARC)/$(BASE_VAR)/$(VAR)/shared
+  endif
+  ifdef EXTERNAL_PROJECTS
+   LDFLAGS += $(patsubst %,$(LINKER_LIBPATHSWITCH)=%/lib$(PROJECT_DIR)/$(ARC)/$(VAR)$(SHARED_LIB_POSTFIX),$(EXTERNAL_PROJECTS))
+  endif
+ endif
+endif
+
+###############################
+# Basic modes.
+
+ifdef FULLCHECKING
+.PHONY : all build_aux build_exe buildjavalibs build_libs build_pureexe \
+ build_subdirs build_test cheadbuild fullbuild info libbuild libinfo \
+ postbuildstep postbuildstepexe prebuildstep purifybuild src_all srcfiles \
+ testbuild
+
+# Difference is chead{build}  {} FULLCHECKING only
+else
+.PHONY : all build_aux build_exe buildjavalibs build_libs build_pureexe \
+ build_subdirs build_test chead fullbuild info libbuild libinfo \
+ postbuildstep postbuildstepexe prebuildstep purifybuild src_all srcfiles \
+ testbuild
+endif
+
+all: prebuildstep srcfiles build_aux
+	@echo "Internal error: No valid build target "
+
+fullbuild: prebuildstep build_subdirs build_libs build_exe build_aux  $(TARG_HDRCERTS) postbuildstepexe
+
+testbuild: prebuildstep build_subdirs build_libs build_test  $(TARG_HDRCERTS) postbuildstep
+
+libbuild: prebuildstep build_subdirs build_libs build_aux postbuildstep
+
+purifybuild: prebuildstep  build_subdirs build_libs build_pureexe
+
+srcfiles: $(TARG_DEFS) $(TARG_HDRS) $(LOCAL_FILES) $(LOCALHEADERS) $(SOURCES) $(MAINS) $(AUXFILES) $(HEADERS) \
+ $(EXAMPLES) $(TESTEXES) $(HTML) $(MAN1) $(MAN2) $(MAN3) $(EHT) $(MUSTLINK) $(EXTERNALLIBS) \
+ $(TARG_HDRSYMS) $(TARG_PKGCONFIG)
+
+prebuildstep:
+ifdef PREBUILDSTEP
+	@echo "--- Running prebuild step. "; \
+	$(PREBUILDSTEP)
+else
+	@true;
+endif
+
+postbuildstep:  build_subdirs build_libs
+ifdef POSTBUILDSTEP
+	@echo "--- Running postbuild step. "; \
+	$(POSTBUILDSTEP)
+else
+	@true;
+endif
+
+postbuildstepexe: build_subdirs build_libs build_exe
+ifdef POSTBUILDSTEP
+	@echo "--- Running postbuild step. "; \
+	$(POSTBUILDSTEP)
+else
+	@true;
+endif
+
+ifdef FULLCHECKING
+cheadbuild: build_subdirs $(TARG_HDRCERTS)
+else
+chead:
+	echo "ERROR: chead must be used with FULLCHECKING!" ; \
+	exit 1;
+endif
+
+###############################
+# Make directories
+
+.PRECIOUS : %/.dir
+
+%/.dir:
+	$(SHOWIT)if [ ! -d $* ] ; then \
+	  echo "--- Making dir $* "; \
+	  $(MKDIR_P) $* ; \
+	  $(TOUCH) -r $(QMAKE_MAKEFILES)/Main.mk $*/.dir ; \
+	else  \
+	  if [ ! -f $*/.dir ] ; then \
+	    $(TOUCH) -r $* $*/.dir ; \
+	  fi ; \
+	fi; \
+
+
+$(INST_GENBIN)/.dir:
+	$(SHOWIT)if [ ! -d $(INST_GENBIN) ] ; then \
+	  echo "--- Making dir $(INST_GENBIN) "; \
+	  $(MKDIR_P) $(INST_GENBIN) ; \
+	  $(TOUCH) -r $(QMAKE_MAKEFILES)/Main.mk $(INST_GENBIN)/.dir ; \
+	else  \
+	  if [ ! -f $(INST_GENBIN)/.dir ] ; then \
+	    $(TOUCH) -r $(INST_GENBIN) $(INST_GENBIN)/.dir ; \
+	  fi ; \
+	fi; \
+
+###########################
+# Nested directories
+
+build_subdirs: srcfiles
+ifneq ($(strip $(TARG_NESTED)),)
+	+ $(SHOWIT)for SUBDIR in $(TARG_NESTED) ; do \
+	  if [ -d $$SUBDIR ] ; then \
+	   echo "------ Making $(VAR_DISPLAY_NAME) $(DPATH)/"$$SUBDIR ; \
+	   if ( $(MAKEMD) $(TARGET) TARGET=$(TARGET) -C $$SUBDIR DPATH=$(DPATH)/$$SUBDIR ) ; then \
+	     true; \
+	   else \
+	     echo "Error making $(QCWD)/"$$SUBDIR ; \
+	     exit 1 ; \
+	   fi \
+	  else \
+	   echo "----- Directory $$SUBDIR not found, skipping. " ; \
+	  fi \
+	done
+else
+	@true
+endif
+
+src_all: srcfiles  build_aux
+ifneq ($(strip $(TARG_NESTED)),)
+	+ $(SHOWIT)for SUBDIR in $(TARG_NESTED) ; do \
+	  if [ -d $$SUBDIR ] ; then \
+	   echo "------ Source $(DPATH)/"$$SUBDIR; \
+	   if ( $(MAKEMO) src_all -C $$SUBDIR DPATH=$(DPATH)/$$SUBDIR ) ; then \
+	     true ; \
+	   else \
+	     echo "Error sourcing $(QCWD)/"$$SUBDIR ; \
+	     exit 1 ; \
+	   fi \
+	  else \
+	   echo "----- Directory $$SUBDIR not found, skipping. " ; \
+	  fi \
+	done
+else
+	@true
+endif
+
+
+###########################
+# Source header files.
+
+ifdef FULLCHECKING
+# Check headers.
+
+$(INST_HEADERCERT)/%$(CHXXEXT) : %$(CHXXEXT) $(TARG_HDRS) $(INST_HEADERCERT)/.dir $(WORKTMP)/.dir
+	$(SHOWIT)echo "--- Checking header $(@F)" ; \
+	cat $< $< > $(WORKTMP)/$<$(CXXEXT) ; \
+	if $(CCACHE) $(CXX) -c $(CCPPFLAGS) $(PKG_CCFLAGS) $(CCFLAGS) $(INCLUDES) -o $(WORKTMP)/$<$(OBJEXT) $(WORKTMP)/$<$(CXXEXT)  ; then \
+	  $(TOUCH) $(INST_HEADERCERT)/$< ; \
+	else  \
+	  $(RM) $(WORKTMP)/$<$(OBJEXT) $(WORKTMP)/$<$(CXXEXT) ; \
+	  exit 1 ; \
+	fi ; \
+	$(RM) $(WORKTMP)/$<$(OBJEXT) $(WORKTMP)/$<$(CXXEXT)
+
+$(INST_HEADERCERT)/%$(CHEXT) : %$(CHEXT) $(TARG_HDRS) $(INST_HEADERCERT)/.dir $(WORKTMP)/.dir
+	$(SHOWIT)echo "--- Checking header $(@F)" ; \
+	cat $< $< > $(WORKTMP)/$<$(CEXT) ; \
+	if $(CCACHE) $(CC) -c $(CPPFLAGS) $(PKG_CFLAGS) $(CFLAGS) $(CINCLUDES) -o $(WORKTMP)/$<$(OBJEXT) $(WORKTMP)/$<$(CEXT)  ; then \
+	  $(TOUCH) $(INST_HEADERCERT)/$< ; \
+	else \
+	  $(RM) $(WORKTMP)/$<$(OBJEXT) $(WORKTMP)/$<$(CEXT) ; \
+	  exit 1 ; \
+	fi ; \
+	$(RM) $(WORKTMP)/$<$(OBJEXT) $(WORKTMP)/$<$(CEXT)
+endif
+
+$(TARG_HDRS) : $(INST_HEADER)/% : % $(INST_HEADER)/.dir 
+ifndef USE_INCLUDE_SYMLINK 
+	$(SHOWIT)echo "--- Install header $(@F)" ; \
+	if [ -f $(INST_HEADER)/$(@F) ] ; then \
+		$(CHMOD) +w $(INST_HEADER)/$(@F) ; \
+	fi ; \
+	if [ -L $(INST_HEADER)/$(@F) ] ; then \
+	  $(RM) $(INST_HEADER)/$(@F) ; \
+	fi ; \
+	echo "#line 1 \"$(QCWD)/$(@F)\"" > $(INST_HEADER)/$(@F) ; \
+	cat  $< >> $(INST_HEADER)/$(@F) ; \
+	$(CHMOD) a-w,a+r,a-x $(INST_HEADER)/$(@F)
+else 
+	$(SHOWIT)if [ -e $(INST_HEADER)/$(@F) -o -L $(INST_HEADER)/$(@F) ] ; then \
+		if [ "`readlink -e $(INST_HEADER)/$(@F)`"  != "$(QCWD)/$(@F)" ] ; then \
+			echo "--- Update header link $(@F)" ; \
+			cd $(INST_HEADER); $(RM) $(@F); $(LN_S) $(QCWD)/$(@F) $(@F) ; \
+		fi ; \
+	else \
+		echo "--- Install header link $(@F)" ; \
+		cd $(INST_HEADER); $(LN_S) $(QCWD)/$(@F) $(@F) ; \
+	fi 
+endif
+
+$(TARG_HDRSYMS) : $(INST_HEADERSYM)/% : % $(INST_HEADERSYM)/.dir
+	$(SHOWIT)if [ -e $(INST_HEADERSYM)/$(@F) -o -L $(INST_HEADERSYM)/$(@F) ] ; then \
+		if [ "`readlink $(INST_HEADERSYM)/$(@F)`"  != "$(QCWD)/$(@F)" ] ; then \
+			cd $(INST_HEADERSYM); $(RM) $(@F); $(LN_S) $(QCWD)/$(@F) $(@F) ; \
+		fi ; \
+	else \
+	        echo "--- Creating syminc header $(@F)" ; \
+		cd $(INST_HEADERSYM); $(LN_S) $(QCWD)/$(@F) $(@F) ; \
+	fi 
+
+
+#	$(TOUCH) -r $< $(INST_HEADER)/$(@F) ; \
+
+build_aux: $(TARG_AUXFILES) $(TARG_EXTERNALLIBS)
+
+ifndef AUXINSTALL
+  AUXINSTALL=$(CP)
+endif
+
+$(TARG_AUXFILES) : $(INST_AUX)/% : % $(INST_AUX)/.dir
+	$(SHOWIT)echo "--- Install aux file $(@F)" ; \
+	if [ -f $(INST_AUX)/$(@F) ] ; then \
+	  $(CHMOD) +w $(INST_AUX)/$(@F) ; \
+	fi ; \
+	$(AUXINSTALL) $< $(INST_AUX)/$(@F) ; \
+	$(CHMOD) a-w $(INST_AUX)/$(@F)
+
+
+$(TARG_EXTERNALLIBS) : $(INST_LIBDEF)/% : % $(INST_LIBDEF)/.dir
+	$(SHOWIT)echo "--- Install def file $(@F)" ; \
+	if [ -f $(INST_LIBDEF)/$(@F) ] ; then \
+	  $(CHMOD) +w $(INST_LIBDEF)/$(@F) ; \
+	fi ; \
+	$(CP) $< $(INST_LIBDEF)/$(@F) ; \
+	$(CHMOD) a-w $(INST_LIBDEF)/$(@F)
+
+#############################
+# Build depends
+
+# Binary depends.
+
+$(INST_DEPEND)/%.$(VAR)$(BINDEP_SHARED_INFIX).bin.d : %$(CXXEXT) $(QCWD)/defs.mk $(QMAKE_MAKEFILES)/Definitions.mk $(TARG_DEFS) $(INST_DEPEND)/.dir
+	$(SHOWIT)echo "--- Binary dependency" $* ; \
+	$(BINDEP) $(PKG_LDFLAGS) $(LDFLAGS) -P'$$(INST_BIN)/$* : $$(INST_OBJS)/$*$(OBJEXT) $(OBJS_DEPEND)' -T$(INST_LIB)/lib$(PLIB)$(LIBEXT) $(BINLIBS) >$(INST_DEPEND)/$(@F)
+
+$(INST_DEPEND)/%.$(VAR)$(BINDEP_SHARED_INFIX).bin.d : %$(CEXT) $(QCWD)/defs.mk $(QMAKE_MAKEFILES)/Definitions.mk $(TARG_DEFS) $(INST_DEPEND)/.dir
+	$(SHOWIT)echo "--- Binary dependency" $* ; \
+	$(BINDEP) $(PKG_LDFLAGS) $(LDFLAGS) -P'$$(INST_BIN)/$* : $$(INST_OBJS)/$*$(OBJEXT) $(OBJS_DEPEND)' -T$(INST_LIB)/lib$(PLIB)$(LIBEXT) $(BINLIBS) >$(INST_DEPEND)/$(@F)
+
+# Depend flag
+
+$(TARG_DEPFLAG) :: $(INST_DEPEND)/.dir
+	@echo "#Just a dummy file. " > $(TARG_DEPFLAG)
+
+$(TARG_HDRFLAG) : $(TARG_HDRS) $(LOCAL_FILES) $(LOCALHEADERS) $(INST_DEPEND)/.dir
+	@echo "#Just a dummy file. " > $(TARG_HDRFLAG)
+
+ifdef LOCAL_DEFBASE
+ LOCALDEF_FILE = $(INST_LIBDEF)/$(LOCAL_DEFBASE).def
+endif
+
+###########################
+# compile objects.
+
+
+#define a name for the build type to be displayed to the user.
+VAR_DISPLAY_NAME=$(VAR)
+ifdef SHAREDBUILD
+VAR_DISPLAY_NAME +=  (shared)
+endif
+
+# Must link objects
+
+$(TARG_MUSTLINK_OBJS) : $(INST_FORCEOBJS)/%$(OBJEXT) : $(INST_OBJS)/%$(OBJEXT) $(INST_FORCEOBJS)/.dir
+	$(SHOWIT)echo "--- Must Link $(@F) " ; \
+	if [ -f $(INST_FORCEOBJS)/$(@F) ] ; then \
+	  $(CHMOD) +w $(INST_FORCEOBJS)/$(@F) ; \
+	fi ; \
+	$(CP) $(INST_OBJS)/$*$(OBJEXT) $(INST_FORCEOBJS)/$*$(OBJEXT) ; \
+	$(CHMOD) a-w $(INST_FORCEOBJS)/$*$(OBJEXT)
+
+$(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %$(CXXAUXEXT) $(INST_OBJS)/.dir $(INST_DEPEND)/.dir
+	$(SHOWIT)echo "--- Compile $(VAR_DISPLAY_NAME) $<" ; \
+	if [ -f $(WORKTMP)/$*.d ] ; then \
+	  $(RM) $(WORKTMP)/$*.d ; \
+	fi ; \
+	if $(CCACHE) $(CXX) -c $(CCPPFLAGS) $(PKG_CCFLAGS) $(CCFLAGS) $(INCLUDES) $(AMKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ; then \
+	  $(MKDEPUP) ; \
+	else \
+	  exit 1 ; \
+	fi ; \
+
+$(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %$(CXXEXT) $(INST_OBJS)/.dir $(INST_DEPEND)/.dir
+	$(SHOWIT)echo "--- Compile $(VAR_DISPLAY_NAME) $<" ; \
+	if [ -f $(WORKTMP)/$*.d ] ; then \
+	  $(RM) $(WORKTMP)/$*.d ; \
+	fi ; \
+	if $(CCACHE) $(CXX) -c $(CCPPFLAGS) $(PKG_CCFLAGS) $(CCFLAGS) $(INCLUDES) $(AMKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ;  then \
+	  $(MKDEPUP) ; \
+	else \
+	  exit 1 ; \
+	fi
+
+$(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %$(CEXT) $(INST_OBJS)/.dir $(INST_DEPEND)/.dir
+	$(SHOWIT)echo "--- Compile $(VAR_DISPLAY_NAME) $< "; \
+	if [ -f $(WORKTMP)/$*.d ] ; then \
+	  $(RM) $(WORKTMP)/$*.d ; \
+	fi ; \
+	if $(CCACHE) $(CC) -c $(CPPFLAGS) $(PKG_CFLAGS) $(CFLAGS) $(CINCLUDES)  $(AMKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ; then \
+	  $(MKDEPUP) ; \
+	else \
+	  exit 1 ; \
+	fi
+
+$(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %.mm $(INST_OBJS)/.dir $(INST_DEPEND)/.dir
+	$(SHOWIT)echo "--- Compile $(VAR_DISPLAY_NAME) $<" ; \
+	if [ -f $(WORKTMP)/$*.d ] ; then \
+	  $(RM) $(WORKTMP)/$*.d ; \
+	fi ; \
+	if $(CCACHE) $(CXX) -c $(CCPPFLAGS) $(PKG_CCFLAGS) $(CCFLAGS) $(INCLUDES) $(AMKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ;  then \
+	  $(MKDEPUP) ; \
+	else \
+	  exit 1 ; \
+	fi
+
+$(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %.m $(INST_OBJS)/.dir $(INST_DEPEND)/.dir
+	$(SHOWIT)echo "--- Compile $(VAR_DISPLAY_NAME) $< "; \
+	if [ -f $(WORKTMP)/$*.d ] ; then \
+	  $(RM) $(WORKTMP)/$*.d ; \
+	fi ; \
+	if $(CCACHE) $(CC) -c $(CPPFLAGS) $(PKG_CFLAGS) $(CFLAGS) $(CINCLUDES)  $(AMKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ; then \
+	  $(MKDEPUP) ; \
+	else \
+	  exit 1 ; \
+	fi
+
+ifneq ($(strip $(NVCC)),)
+$(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %.cu $(INST_OBJS)/.dir $(INST_DEPEND)/.dir
+	$(SHOWIT)echo "--- Compile $(VAR_DISPLAY_NAME) $< "; \
+	if [ -f $(WORKTMP)/$*.d ] ; then \
+	  $(RM) $(WORKTMP)/$*.d ; \
+	fi ; \
+	echo "---- Object $< "; \
+	if $(NVCC) -c $(CPPFLAGS) $(PKG_NVCCFLAGS) $(NVCCFLAGS) $(CINCLUDES) -o $(INST_OBJS)/$*$(OBJEXT) $< ; then \
+	  echo "---- Depends $< "; \
+	  if $(NVCC) -M $(CPPFLAGS) $(PKG_NVCCFLAGS) $(NVCCFLAGS) $(CINCLUDES) -o $(WORKTMP)/$*.d $< ; then \
+	    $(MKDEPUP) ; \
+	  else \
+	    exit 1 ; \
+	  fi ; \
+	else \
+	  exit 1 ; \
+	fi
+endif
+
+
+
+$(INST_OBJS)/%$(OBJEXT) : %.S $(INST_OBJS)/.dir
+	$(SHOWIT)echo "--- Assemble $(VAR_DISPLAY_NAME) $< "; \
+	$(CC) -c -D__ASSEMBLY__=1 $(CPPFLAGS) $(PKG_CFLAGS) $(CFLAGS) $(CINCLUDES) -o $(INST_OBJS)/$(@F) $<
+
+# $(UNTOUCH) $(INST_LIB)/lib$(PLIB)$(LIBEXT)  ; \
+
+# Sort out some defaults.
+
+ifndef BISON
+ BISON=bison
+endif
+ifndef FLEX
+ FLEX=flex
+endif
+ifndef SWIG
+ SWIG=swig
+endif
+ifndef SWIGOPTS
+ SWIGOPTS+=-python
+endif
+
+%.tab$(CXXEXT) %.tab$(CHEXT) : %.y
+ifndef BISON_DO_NOT_GENERATE
+ ifeq ($(SUPPORT_OK),yes)
+	$(SHOWIT)echo "--- Bison" $< ; \
+	$(BISON) -d -o$*.tab$(CEXT) $< ; \
+	mv $*.tab$(CEXT) $*.tab$(CXXEXT)
+ endif
+endif
+
+%.yy$(CXXEXT) : %.l
+ifndef FLEX_DO_NOT_GENERATE
+ ifeq ($(SUPPORT_OK),yes)
+	$(SHOWIT)echo "--- Flex" $< ; \
+	$(FLEX) -o$*.yy$(CXXEXT) $<
+ endif
+endif
+
+%_$(ARC)_wrap$(CXXEXT) %.py : %.i *.i
+ifndef SWIG_DO_NOT_GENERATE
+ ifeq ($(SUPPORT_OK),yes)
+	$(SHOWIT)echo "--- swig" $< ; \
+	$(SWIG) -c++ $(SWIGOPTS) -D$(ARC) $(INCLUDES) -o $*_$(ARC)_wrap$(CXXEXT) $<
+ endif
+endif
+
+#############################
+# Build libraries.
+
+.SECONDARY : $(INST_LIB)/dummymain$(OBJEXT)
+
+ifneq ($(strip $(TARG_JAVA)),)
+build_libs: $(TARG_LIBS) buildjavalibs prebuildstep
+else
+ ifneq ($(strip $(PLIB)),)
+  ifneq ($(strip $(SOURCES)),)
+build_libs: $(TARG_LIBS) prebuildstep
+  else
+build_libs: prebuildstep
+  endif
+ else
+build_libs: prebuildstep
+ endif
+endif
+
+#$(TARG_JAVA)
+
+$(INST_LIB)/dummymain$(OBJEXT) :: $(QMAKE_SUPPORT)/dummymain$(CEXT) $(INST_LIB)/.dir
+	$(SHOWIT)echo "--- Compile internal dummymain$(OBJEXT) " ; \
+	$(CCACHE) $(CC) -c $(QMAKE_SUPPORT)/dummymain$(CEXT) $(PKG_CFLAGS) $(CFLAGS) $(CPPFLAGS) -o $(INST_LIB)/dummymain$(OBJEXT)
+
+
+# This lib update is nasty but fast, especialy if you have many objects.
+
+ifndef SHAREDBUILD
+ ifeq ($(NOLIBRARYPRELINK),1)
+$(INST_LIB)/lib$(PLIB)$(LIBEXT) : $(TARG_OBJS) $(TARG_MUSTLINK_OBJS) $(INST_LIB)/dummymain$(OBJEXT) $(INST_LIB)/.dir
+	$(SHOWIT)echo "--- Building" $(@F) ; \
+	$(AR) $(PKG_ARFLAGS) $(INST_LIB)/$(@F) $(TARG_OBJS) ; \
+	$(UNTOUCH) $(INST_LIB)/$(@F) $(TARG_OBJS) $(TARG_MUSTLINK_OBJS) ;
+
+ else
+$(INST_LIB)/lib$(PLIB)$(LIBEXT) : $(TARG_OBJS) $(TARG_MUSTLINK_OBJS) $(INST_LIB)/dummymain$(OBJEXT) $(INST_LIB)/.dir
+	$(SHOWIT)echo "--- Building" $(@F) ; \
+	$(AR) $(PKG_ARFLAGS) $(INST_LIB)/$(@F) $(TARG_OBJS) ; \
+	if $(CXX) $(PKG_LDFLAGS) $(LDFLAGS) $(INST_LIB)/dummymain$(OBJEXT) $(TARG_OBJS) $(LIBS) -o $(WORKTMP)/a.out ; then \
+	  $(RM) $(WORKTMP)/a.out ; \
+	  $(AR) $(PKG_ARFLAGS) $(INST_LIB)/$(@F) $(TARG_OBJS) ; \
+	  $(UNTOUCH) $(INST_LIB)/$(@F) $(TARG_OBJS) $(TARG_MUSTLINK_OBJS) ; \
+	else \
+	  if [ -f $(WORKTMP)/a.out ] ; then \
+	    $(RM) $(WORKTMP)/a.out ; \
+	  fi ; \
+	  exit 1 ; \
+	fi
+
+ endif
+else
+ # We don't want to link the must link object files into the dynamic library. Ideally we'd include them
+ # in two different variables, but this would mean a huge reworking of the include mechanism, so instead
+ # we'll just remove all objects files from the library list. Hence the following line.
+
+ ifdef NOSHAREDLIBDEPENDS
+  LIBSONLY=
+ else
+  LIBSONLY=$(filter-out %$(OBJEXT),$(LIBS))
+ endif
+
+ DIRECTORYID=$(QCWD)#
+
+ # DIRECTORYID is used to keep a track of where an object file has come from so if the file is removed or
+ # renamed it can be taken out of the list. 
+
+
+ ifdef LIB_STAMP
+  ifneq ($(LIB_STAMP),NO)
+   # We want to vesion stamp shared libraries.
+
+   # libXXX.so is just a symbolic link to the fully quantified name. We also
+   # need to depend on libXXX.so.A.
+   #
+   # Codify this for PLIB
+   $(INST_LIB)/lib$(PLIB)$(LIBEXT) : $(INST_LIB)/lib$(PLIB)$(LIBEXT).$(PROJECT_MAJOR)
+	$(SHOWIT)if [ -h $(INST_LIB)/lib$(PLIB)$(LIBEXT) ] || [ -f $(INST_LIB)/lib$(PLIB)$(LIBEXT) ] ; \
+                 then \
+                    $(RM) $(INST_LIB)/lib$(PLIB)$(LIBEXT) ; \
+                 fi ; \
+                 cd $(INST_LIB); $(LN_S) lib$(PLIB)$(LIB_STAMP_EXT) lib$(PLIB)$(LIBEXT)
+
+   # libXXX.so definitition for SINGLESO (when stamping libraries)
+   $(INST_LIB)/single/$(SINGLESO)$(LIBEXT) : $(INST_LIB)/single/$(SINGLESO)$(LIBEXT).$(PROJECT_MAJOR)
+	$(SHOWIT)if [ -h $(INST_LIB)/single/$(SINGLESO)$(LIBEXT) ] || [ -f $(INST_LIB)/single/$(SINGLESO)$(LIBEXT) ] ; \
+                 then \
+                    $(RM) $(INST_LIB)/single/$(SINGLESO)$(LIBEXT) ; \
+                 fi ; \
+                 cd $(INST_LIB)/single; $(LN_S) $(SINGLESO)$(LIB_STAMP_EXT) $(SINGLESO)$(LIBEXT)
+
+   ifeq ($(LIB_STAMP),VER)
+    # We want to use the full version as the suffix
+
+    # libXXX.so.A is just a symbolic link to the fully quantified name. We also
+    # need to depend on libXXX.so.A.B.C
+    #
+    # Codify this for PLIB
+    $(INST_LIB)/lib$(PLIB)$(LIBEXT).$(PROJECT_MAJOR) : $(INST_LIB)/lib$(PLIB)$(LIBEXT).$(PROJECT_VERSION)
+	$(SHOWIT)if [ -h $(INST_LIB)/lib$(PLIB)$(LIBEXT).$(PROJECT_MAJOR) ] || [ -f $(INST_LIB)/lib$(PLIB)$(LIBEXT).$(PROJECT_MAJOR) ] ; \
+                 then \
+                    $(RM) $(INST_LIB)/lib$(PLIB)$(LIBEXT).$(PROJECT_MAJOR) ; \
+                 fi ; \
+                 cd $(INST_LIB); $(LN_S) lib$(PLIB)$(LIBEXT).$(PROJECT_VERSION) lib$(PLIB)$(LIBEXT).$(PROJECT_MAJOR)
+
+    # libXXX.so.A definition for SINGLESO
+    $(INST_LIB)/single/$(SINGLESO)$(LIBEXT).$(PROJECT_MAJOR) : $(INST_LIB)/single/$(SINGLESO)$(LIBEXT).$(PROJECT_VERSION)
+	$(SHOWIT)if [ -h $(INST_LIB)/single/$(SINGLESO)$(LIBEXT).$(PROJECT_MAJOR) ] || [ -f $(INST_LIB)/single/$(SINGLESO)$(LIBEXT).$(PROJECT_MAJOR) ] ; \
+                 then \
+                    $(RM) $(INST_LIB)/single/$(SINGLESO)$(LIBEXT).$(PROJECT_MAJOR) ; \
+                 fi ; \
+                 cd $(INST_LIB)/single; $(LN_S) $(SINGLESO)$(LIBEXT).$(PROJECT_VERSION) $(SINGLESO)$(LIBEXT).$(PROJECT_MAJOR)
+
+
+   endif # LIB_STAMP=VER
+
+  endif # LIB_STAMP != NO
+ endif # ifdef LIB_STAMP
+
+ # Recepie to create PLIB library. Dependant on LIB_STAMP, this will
+ # either create libXXX.so; libXXX.so.A or libXXX.so.A.B.C. Recepies
+ # immediately above this one create any necessary symbolic links to the
+ # actual file created. If LIB_STAMP is unused, this target falls back to
+ # being libXXX.so (or .whatever shared library suffix is in use).
+ # SET_PLIB_SONAME will set the SONAME (to libXXX.so.A) if we are appending
+ # a revision number to the library name (otherwise it will do nothing)
+ $(INST_LIB)/lib$(PLIB)$(LIB_STAMP_EXT) : $(TARG_OBJS) $(TARG_MUSTLINK_OBJS) $(INST_LIB)/dummymain$(OBJEXT) $(INST_LIB)/.dir
+	$(SHOWIT)echo "--- Building " $(@F) ; \
+	echo "$(patsubst %$(OBJEXT),%$(OBJEXT):$(DIRECTORYID)@,$(TARG_OBJS))" | $(TR) '@' '\n' > $(INST_OBJS)/libObjs.new ; \
+	if [ -f $(INST_OBJS)/libObjs.txt ] ; then \
+	  $(GREP) -v  ":$(DIRECTORYID)$$" $(INST_OBJS)/libObjs.txt | $(AWK) -F: '{ print $$1 ":" $$2 }' >> $(INST_OBJS)/libObjs.new ; \
+	fi ; \
+	$(SORT) -b -u $(INST_OBJS)/libObjs.new -t : -k 1,1 -o $(INST_OBJS)/libObjs.txt ; \
+	$(RM) $(INST_OBJS)/libObjs.new ; \
+        echo "---- Building shared library $(INST_LIB)/$(@F) " ; \
+	$(AWK) -F: '{ print $$1 }' $(INST_OBJS)/libObjs.txt | $(XARGS) $(CXX) $(PKG_LDLIBFLAGS) $(LDLIBFLAGS) $(filter-out -l$(PLIB),$(LIBSONLY)) $(SET_PLIB_SONAME) -o $(INST_LIB)/$(@F) && \
+	$(UNTOUCH) $(INST_LIB)/$(@F) $(TARG_OBJS) $(TARG_MUSTLINK_OBJS) ; 
+
+
+ # Single lib recepie, again this is dependant on LIB_STAMP as to what the
+ # target actually is (libXXX.so; libXXX.so.A or libXXX.so.A.B.C). Previous
+ # recepies will create any necessary symbolic links to this file.
+ # SET_SINGLESO_SONAME will set the SONAME (to libXXX.so.A) if we are appending
+ # a revision number to the library name (otherwise it will do nothing)
+ $(INST_LIB)/single/$(SINGLESO)$(LIB_STAMP_EXT) : $(INST_LIB)/lib$(PLIB)$(LIBEXT) $(patsubst %,$(INST_LIB)/lib%$(LIBEXT),$(PLIBDEPENDS))
+	@if [ ! -d $(INST_LIB)/single ] ; \
+         then \
+            if [ X$(QMAKE_INFO) != X ] ; \
+            then \
+               echo $(MKDIR_P) $(INST_LIB)/single ; \
+            fi ; \
+            $(MKDIR_P) $(INST_LIB)/single ; \
+         fi
+	$(SHOWIT)echo "--- Building " $(@F) ; \
+	echo "$(patsubst %,$(LOCALTMP)/$(ARC)/%/$(VAR)/shared/objs/libObjs.txt,$(PLIB) $(PLIBDEPENDS))" | $(XARGS) cat > $(INST_OBJS)/libSharedObjs.new ; \
+	$(SORT) -b -u $(INST_OBJS)/libSharedObjs.new -t : -k 1,1 | $(AWK) -F: '{ print $$1 }' | $(TR) '\n' ' ' > $(INST_OBJS)/libSharedObjs.txt; \
+	$(RM) $(INST_OBJS)/libSharedObjs.new ; \
+  echo "---- Building single shared library $(INST_LIB)/single/$(@F) " ; \
+	$(CXX) $(PKG_LDLIBFLAGS) $(LDLIBFLAGS) @$(INST_OBJS)/libSharedObjs.txt $(filter-out $(patsubst %,-l%,$(PLIB) $(PLIBDEPENDS)),$(LIBSONLY)) $(SET_SINGLESO_SONAME) -o $(INST_LIB)/single/$(@F) && \
+	$(UNTOUCH) $(INST_LIB)/single/$(@F) $(INST_LIB)/lib$(PLIB)$(LIBEXT) ;
+
+endif
+
+$(INST_LIB)/lib$(PLIB)$(LIBEXT)(%$(OBJEXT)) : $(INST_OBJS)/%$(OBJEXT)
+	@true
+
+$(INST_LIB)/%$(OBJEXT) : $(INST_OBJS)/%$(OBJEXT)
+	$(SHOWIT)echo "--- MustLink $(VAR_DISPLAY_NAME)" $*$(OBJEXT)  ; \
+	if [ -f $(INST_LIB)/$*$(OBJEXT) ] ; then \
+	  $(RM) -f $(INST_LIB)/$*$(OBJEXT); \
+	fi ; \
+	$(CP) /$< $(INST_LIB)/$*$(OBJEXT) ; \
+	$(CHMOD) a-w $(INST_LIB)/$*$(OBJEXT)
+
+#############################
+# Build executables.
+
+ifndef NOEXEBUILD
+build_exe: $(TARG_EXE) $(TARG_SCRIPT) $(TARG_JAVAEXE) prebuildstep
+else
+build_exe:
+	@true
+endif
+
+build_pureexe: $(TARG_PUREEXE)
+
+ifndef SCRIPT_INSTALL
+ SCRIPT_INSTALL=$(CP)
+endif
+
+$(TARG_SCRIPT) : $(INST_GENBIN)/% : % $(INST_GENBIN)/.dir
+	$(SHOWIT)echo "--- Script $(@F) " ; \
+	if [ -f $(INST_GENBIN)/$(@F) ] ; then \
+	  $(CHMOD) +w $(INST_GENBIN)/$(@F) ; \
+	fi ; \
+	$(SCRIPT_INSTALL) $* $(INST_GENBIN)/$* ; \
+	$(CHMOD) 555 $(INST_GENBIN)/$*
+
+
+# If there's no library include objects from SOURCES directly.
+# Always include MUSTLINK_OBJS from this directory.
+
+ifndef PLIB
+ EXTRAOBJS = $(TARG_OBJS) $(TARG_MUSTLINK_OBJS)
+else
+ EXTRAOBJS =
+ #$(TARG_MUSTLINK_OBJS)
+endif
+
+$(TARG_PUREEXE) : $(INST_BIN)/pure_%$(EXEEXT) : $(INST_OBJS)/%$(OBJEXT) $(EXTRAOBJS) $(TARG_LIBS) $(INST_BIN)/.dir $(TARG_HDRCERTS)
+	$(SHOWIT)echo "--- Purify $(@F)  ( $(INST_BIN)/$(@F) ) " ; \
+	purify -g++ -best-effort $(CXX) $(PKG_LDFLAGS) $(LDFLAGS) $(INST_OBJS)/$*$(OBJEXT) $(EXTRAOBJS) $(BINLIBS) -o $(INST_BIN)/$(@F)$(EXEEXT) ;
+
+$(TARG_EXE) : $(INST_BIN)/%$(EXEEXT) : $(INST_OBJS)/%$(OBJEXT) $(EXTRAOBJS) $(TARG_LIBS) $(INST_BIN)/.dir $(TARG_HDRCERTS)
+	$(SHOWIT)echo "--- Linking $(VAR_DISPLAY_NAME) $(@F) ( $(INST_BIN)/$*$(EXEEXT) ) " ; \
+	if [ -f $(INST_BIN)/$(@F) ] ; then \
+	  $(CHMOD) +w $(INST_BIN)/$(@F)$(EXEEXT) ; \
+	fi ; \
+	if $(CXX) $(PKG_LDFLAGS) $(LDFLAGS) $(INST_OBJS)/$*$(OBJEXT) $(EXTRAOBJS) $(BINLIBS) -o $(INST_BIN)/$(@F) ; then \
+	  $(SYNC) ; \
+	  $(CHMOD) 555 $(INST_BIN)/$(@F) ; \
+	  if [ -h $(ROOTDIR)/bin/$(@F) ] || [ -f $(ROOTDIR)/bin/$(@F) ] ; \
+          then \
+	    $(RM) $(ROOTDIR)/bin/$(@F) ; \
+	  fi ; \
+          cd $(ROOTDIR)/bin; $(LN_S) $(INST_BIN)/$(@F) $(@F) ; \
+	else \
+	  exit 1; \
+	fi
+
+
+ifndef NOEXEBUILD
+build_test: $(TARG_TESTEXE)
+else
+build_test:
+	@true
+endif
+
+
+$(TARG_TESTEXE) : $(INST_TESTBIN)/%$(EXEEXT) : $(INST_OBJS)/%$(OBJEXT) $(TARG_LIBS) $(EXTRAOBJS) $(TARG_HDRCERTS) $(INST_TESTBIN)/.dir
+	$(SHOWIT)echo "--- Linking test program $(@F)  ( $(INST_TESTBIN)/$(@F) ) " ; \
+	if [ -f $(INST_TESTBIN)/$(@F) ] ; then \
+	  $(CHMOD) +w $(INST_TESTBIN)/$(@F)$(EXEEXT) ; \
+	fi ; \
+	if $(CXX) $(PKG_LDFLAGS) $(LDFLAGS) $(INST_OBJS)/$*$(OBJEXT)  $(EXTRAOBJS) $(TESTBINLIBS) -o $(INST_TESTBIN)/$(@F) ; then \
+	  $(SYNC) ; \
+	  $(CHMOD) 555 $(INST_TESTBIN)/$(@F) ; \
+	  echo "$(@F)" >> $(INST_TESTDB) ; \
+	else \
+	  exit 1; \
+	fi
+
+
+###########################
+# Java
+
+ifndef JAVAC
+ JAVAC =javac
+endif
+
+# : $(INST_JAVA)/%.class %.java
+buildjavalibs : $(JAVA_SRC) $(INST_JAVA)/.dir
+ifneq ($(strip $(JAVA_SRC)),)
+	$(SHOWIT)echo "--- Compiling java $(filter-out $(INST_JAVA)/.dir,$?) " ; \
+	$(JAVAC) $(filter-out $(INST_JAVA)/.dir,$?) -d $(INST_JAVA) -classpath "$(CLASSPATH):$(INST_JAVA)"
+else
+	@true
+endif
+
+$(TARG_JAVAEXE) : $(INST_JAVAEXE)/% : %.java $(INST_JAVA)/%.class $(TARG_JAVA) $(INST_JAVAEXE)/.dir
+	$(SHOWIT)echo "--- Installing java program '$(@F)'   ( $(INST_BIN)/$(@F) )" ; \
+	if [ -f $(INST_BIN)/$(@F) ] ; then \
+	  $(CHMOD) +w $(INST_BIN)/$(@F) ; \
+	fi ; \
+	echo "#\!/bin/sh" > $(INST_BIN)/$(@F) ; \
+	echo "java -classpath $(CLASSPATH):$(INST_JAVA) $(@F) $1 $2 $3 $4 $5 $6 " >> $(INST_BIN)/$(@F) ; \
+	$(CHMOD) a-w+x $(INST_BIN)/$(@F)
+
+### .def files ############################################################################
+
+ifdef LIBDEPS
+ ifndef USESLIBS
+$(INST_LIBDEF)/$(LIBDEPS) : $(LIBDEPS) $(INST_LIBDEF)/.dir
+	$(SHOWIT)echo "--- Install def $(@F)" ;  \
+	if [ -f $(INST_LIBDEF)/$(@F) ] ; then \
+	  $(CHMOD) +w $(INST_LIBDEF)/$(@F) ; \
+	fi ; \
+	$(CP) $< $(INST_LIBDEF)/$(@F) ; \
+        $(SYNC) ; \
+	$(CHMOD) 444 $(INST_LIBDEF)/$(@F)
+
+ endif
+endif
+
+ifdef BASEINSTALL
+      MLOBJPATH=$(patsubst %$(CEXT),$$(INSTALLHOME)/lib$$(PROJECT_DIR)/$$(ARC)/obj/%$(OBJEXT), $(patsubst %$(CXXEXT),%$(CEXT), $(MUSTLINK)))
+else
+      MLOBJPATH=$(patsubst %$(CEXT),$$(ROOTDIR)/lib$$(PROJECT_DIR)/$$(ARC)/obj/%$(OBJEXT), $(patsubst %$(CXXEXT),%$(CEXT), $(MUSTLINK)))
+endif
+
+
+TARG_USESLIBS_R = $(patsubst %,%.def,$(filter-out %.opt,$(filter-out Auto,$(USESLIBS))))
+TARG_USESLIBS_O = $(patsubst %.opt,%.def,$(filter %.opt,$(filter-out Auto,$(USESLIBS))))
+EXTRA_USESLIBS_R = $(filter-out %.opt,$(EXTRA_USESLIBS))
+EXTRA_USESLIBS_O = $(patsubst %.opt,%.def,$(filter %.opt,$(EXTRA_USESLIBS)))
+
+ifdef REQUIRES	
+ REQUIRES_INDENT:='  '
+endif
+# Used for indenting the content in a .def file if REQUIRES is set (which causes 
+# an extra ifeq to be added to the file, so the lines inside that ifeq then need
+# to be indented by an extra couple of characters)
+
+ifdef LOCAL_DEFBASE
+ ifdef USESLIBS
+  ifeq ($(filter Auto,$(USESLIBS)),)
+   $(INST_LIBDEF)/$(LOCAL_DEFBASE).def: defs.mk $(INST_LIBDEF)/.dir
+  else
+   ifndef AUTOUSELIBS
+    AUTOUSELIBS := $(shell $(QLIBS) -use -d -p $(ROOTDIR))
+   endif
+    $(INST_LIBDEF)/$(LOCAL_DEFBASE).def: defs.mk $(INST_LIBDEF)/.dir $(HEADERS) $(SOURCES) $(MAINS)
+   endif
+	$(SHOWIT)echo "--- Creating $(@F)" ; \
+	if [ -f $(INST_LIBDEF)/$(@F) ] ; then \
+	  $(CHMOD) +w $(INST_LIBDEF)/$(@F) ; \
+	fi ; \
+	echo > $(INST_LIBDEF)/$(@F) ; \
+	echo 'ifndef $(LOCAL_DEFBASE)_AUTO_DEF' >> $(INST_LIBDEF)/$(@F) ; \
+	echo >> $(INST_LIBDEF)/$(@F) ; \
+	echo '  $(LOCAL_DEFBASE)_AUTO_DEF=1' >> $(INST_LIBDEF)/$(@F) ; \
+	echo >> $(INST_LIBDEF)/$(@F)
+ ifdef REQUIRES	
+	$(SHOWIT)echo '  ifeq ($$(strip $$(filter-out $$(RESOURCES),$(REQUIRES))),)' >> $(INST_LIBDEF)/$(@F) ; \
+	echo >> $(INST_LIBDEF)/$(@F)
+  endif	
+  ifdef USESLIBS
+   ifneq ($(USESLIBS),)
+    ifneq ($(USESLIBS),None)
+     ifeq ($(filter Auto,$(USESLIBS)),)
+      ifneq ($(strip $(TARG_USESLIBS_R)),)
+	$(SHOWIT)echo '$(REQUIRES_INDENT)  include $(TARG_USESLIBS_R)' >> $(INST_LIBDEF)/$(@F) ; \
+	echo >> $(INST_LIBDEF)/$(@F)
+      endif
+      ifneq ($(strip $(TARG_USESLIBS_O)),)
+	$(SHOWIT)echo '$(REQUIRES_INDENT)  -include $(TARG_USESLIBS_O)' >> $(INST_LIBDEF)/$(@F) ; \
+	echo >> $(INST_LIBDEF)/$(@F)
+      endif
+     else
+      ifneq ($(strip $(AUTOUSELIBS)),)
+       ifneq ($(strip $(EXTRA_USESLIBS_R)),)
+	$(SHOWIT)echo '$(REQUIRES_INDENT)  include $(EXTRA_USESLIBS_R)' >> $(INST_LIBDEF)/$(@F) ; \
+	echo >> $(INST_LIBDEF)/$(@F)
+       endif
+       ifneq ($(strip $(EXTRA_USESLIBS_O)),)
+	$(SHOWIT)echo '$(REQUIRES_INDENT)  -include $(EXTRA_USESLIBS_O)' >> $(INST_LIBDEF)/$(@F) ; \
+	echo >> $(INST_LIBDEF)/$(@F)
+       endif
+      endif
+     endif
+    endif
+   endif
+  endif
+	$(SHOWIT)echo '$(REQUIRES_INDENT)  PLIBDEPENDS += $(PLIB)' >> $(INST_LIBDEF)/$(@F) ; \
+	echo >> $(INST_LIBDEF)/$(@F)
+  ifdef PLIB
+   ifndef LIBDEPS
+	$(SHOWIT)echo '$(REQUIRES_INDENT)  EXELIB := -l$(PLIB) $$(EXELIB)' >> $(INST_LIBDEF)/$(@F) ; \
+	echo >> $(INST_LIBDEF)/$(@F)
+   endif
+  endif
+  ifdef MUSTLINK
+	$(SHOWIT)echo '$(REQUIRES_INDENT)  EXELIB := $(MLOBJPATH) $$(EXELIB)' >> $(INST_LIBDEF)/$(@F) ; \
+	echo >> $(INST_LIBDEF)/$(@F)
+  endif
+  ifdef USES_PKGCONFIG_EXELIB
+	$(SHOWIT)echo 'EXELIB := $(USES_PKGCONFIG_EXELIB)  $$(EXELIB)' >> $(INST_LIBDEF)/$(@F) ;
+	$(SHOWIT)echo 'INCLUDES += $(USES_PKGCONFIG_INCLUDES) ' >> $(INST_LIBDEF)/$(@F) ;
+  endif	
+  ifdef EXTPACKAGE
+        $(SHOWIT)echo '$(REQUIRES_INDENT)  INCLUDES := -I$$(INSTALLHOME)\include\$(PACKAGE) $$(INCLUDES) ' ; \
+	echo >> $(INST_LIBDEF)/$(@F) ; \
+        echo '$(REQUIRES_INDENT)  ifneq ($(BASE_VAR),none)' ; \
+	echo >> $(INST_LIBDEF)/$(@F) ; \
+        echo '$(REQUIRES_INDENT)    INCLUDES := -I$$(BASE_INC)\$(PACKAGE) $$(INCLUDES)' ; \
+	echo >> $(INST_LIBDEF)/$(@F) ; \
+        echo '$(REQUIRES_INDENT)  endif' ; \
+	echo >> $(INST_LIBDEF)/$(@F)
+  endif
+  ifdef REQUIRES	
+	$(SHOWIT)echo '  endif' >> $(INST_LIBDEF)/$(@F) ; \
+	echo >> $(INST_LIBDEF)/$(@F)
+  endif	
+	$(SHOWIT)echo 'endif' >> $(INST_LIBDEF)/$(@F) ; \
+	echo >> $(INST_LIBDEF)/$(@F)
+	$(SHOWIT)$(CHMOD) 444 $(INST_LIBDEF)/$(@F)
+ endif
+endif
+
+###########################
+# Generate pkgconfig file
+
+# Using the pkgconfig requires needs to be smarter as we need to ensure the contents of all .def
+# files are converted so its disabled for now
+
+$(INST_PKGCONFIG)/%.pc : defs.mk $(INST_PKGCONFIG)/.dir
+	$(SHOWIT)echo "--- Creating $(INST_PKGCONFIG)/$(@F) "; 
+	$(SHOWIT)echo "prefix=$(PROJECT_OUT)" >  $(INST_PKGCONFIG)/$(@F);
+	$(SHOWIT)echo "Name: $(PLIB)" >  $(INST_PKGCONFIG)/$(@F);
+	$(SHOWIT)echo "Description: Generated from $(PWD)/defs.mk by RAVL QMake " >> $(INST_PKGCONFIG)/$(@F);
+ifdef PKGCONFIG_VERSION 
+	$(SHOWIT)echo "Version: $(PKGCONFIG_VERSION) " >> $(INST_PKGCONFIG)/$(@F);
+endif
+ifndef USESPKGCONFIG
+	$(SHOWIT)echo "Requires: $(USESPKGCONFIG) " >> $(INST_PKGCONFIG)/$(@F);
+endif
+	$(SHOWIT)echo "Libs: $(LIBS) " >> $(INST_PKGCONFIG)/$(@F);
+	$(SHOWIT)echo "Cflags: $(INCLUDES)" >> $(INST_PKGCONFIG)/$(@F);
+
+###########################
+
+lib_info:
+	@echo "Libs: $(LIBS)"
+
+info:
+	@echo "C++ Compiler    :" $(CCACHE) $(CXX)
+	@echo "C++ Flags       :" $(CCPPFLAGS) $(PKG_CCFLAGS) $(CCFLAGS)
+	@echo "C Compiler      :" $(CCACHE) $(CC)
+	@echo "C Flags         :" $(CPPFLAGS) $(PKG_CFLAGS) $(CFLAGS)
+	@echo "Link Flags      :" $(PKG_LDFLAGS) $(LDFLAGS)
+	@echo "Includes        :" $(INCLUDES)
+	@echo "Library libs    :" $(EXELIB)
+	@echo "NVCC Flags      :" $(CCPPFLAGS) $(PKG_NVCCFLAGS) $(NVCCFLAGS)
+	@echo "Executable libs :" $(LIBS)
+	@echo "Test libs       :" $(BINLIBS)
+	@echo "Temp            :" $(LOCALTMP)
+	@echo "Auto            :" $(AUTOUSELIBS)
+	@echo "Resources       :" $(RESOURCES)
+	@echo "Object files    :" $(INST_OBJS)
+	@echo "External project:" $(EXTERNAL_PROJECTS)
+
+#	@echo "Supported       :" $(SUPPORT_OK)
+#   " - " $(findstring $(ARC),$(DONOT_SUPPORT)) " - " $(findstring $(ARC),$(SUPPORT_ONLY))
+#	@echo "Directory supported:" $(SUPPORT_ONLY) " - " $(DONOT_SUPPORT)
+
+%.def:
+	@
+#       Dummy rule to prevent default rule (below) complaining if an optional
+#       .def file does not exist. Will also block the error for those .def
+#       files that should exist and do not; but this is not a problem as the
+#       subsequent use of such a file will error anyway.
+
+%:
+	@echo "ERROR: Don't know how to make " $@ ; \
+	exit 1
+
+$(PROJECT_OUT)/Config.Project:
+	@if [ X$(QMAKE_INFO) != X ]; then echo No Config.Project - Using default settings; fi
+

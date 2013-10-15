@@ -1,0 +1,537 @@
+# This file is part of QMake, Quick Make System 
+# Copyright (C) 2001-12, University of Surrey
+# This code may be redistributed under the terms of the GNU General 
+# Public License (GPL). See the gpl.licence file for details or
+# see http://www.gnu.org/copyleft/gpl.html
+
+# file-header-ends-here
+
+
+# Declare location of QMake files
+
+# QMake configuration files
+ifndef QMAKE_CONFIGFILES
+  QMAKE_CONFIGFILES=@QMAKE_CONFIGFILES@
+endif
+
+# QMAKE_MAKEFILES has to be defined in each QMake makefile as it is needed to
+# locate this file.
+
+# Project specific QMake files (in same tree structure as generic files)
+ifndef QMAKE_PROJECTS
+  QMAKE_PROJECTS=@QMAKE_PROJECTS@
+endif
+
+# Misc QMake support files
+ifndef QMAKE_SUPPORT
+  QMAKE_SUPPORT=@QMAKE_SUPPORT@
+endif
+
+# Utilities called by QMake
+ifndef QMAKE_UTILS
+  QMAKE_UTILS=@QMAKE_UTILS@
+endif
+
+
+CPPFLAGS = -DPROJECT_OUT=\"$(PROJECT_OUT)\" -DCPUG_ARCH=\"$(ARC)\"
+CCPPFLAGS = -DPROJECT_OUT=\"$(PROJECT_OUT)\" -DCPUG_ARCH=\"$(ARC)\"
+ifdef SHAREDBUILD
+  CPPFLAGS += -DCPUG_VAR_SHARED=1
+  CCPPFLAGS += -DCPUG_VAR_SHARED=1
+endif
+
+LOCALBIN=$(INSTALLHOME)/bin
+# Utilities used during the build process
+# $(INSTALLHOME)/bin contains symbolic links to latest built copy of any binary
+
+NOLIBRARYPRELINK=1
+
+
+
+include $(QMAKE_CONFIGFILES)/Config.QMake
+
+ifdef CONFIGFILE
+  include $(CONFIGFILE)
+else
+  include $(QMAKE_PROJECTS)/Skeleton/Config.Default
+  -include $(PROJECT_OUT)/Config.Project
+endif
+
+
+ifndef QCWD
+ QCWD :=$(shell $(GET_CWD))#
+endif
+
+export DPATH:=$(notdir $(QCWD))
+
+# Include local definitions from the current build directory
+-include $(QCWD)/defs.mk
+
+# Sanitise relevant imported definitions
+# Anything that will possibly be used to form a file path or be used as a make
+# target must not have leading or trailing spaces. Lists (SOURCES, MAINS, etc.)
+# are usually safe as we normally extract those using makes string substitution
+# functions which work on space delimited words anyway.
+ifdef PLIB
+ PLIB:=$(strip $(PLIB))#
+endif
+ifdef USESLIBS
+ USESLIBS:=$(strip $(USESLIBS))#
+endif
+ifdef AUXDIR
+AUXDIR:=$(strip $(AUXDIR))#
+endif
+ifdef LIBDEPS
+LIBDEPS:=$(strip $(LIBDEPS))#
+endif
+ifdef EXTERNAL_PROJECTS
+EXTERNAL_PROJECTS:=$(strip $(EXTERNAL_PROJECTS))#
+endif
+ifdef AUXFILES
+AUXFILES:=$(strip $(AUXFILES))#
+endif
+
+# Directories used in making.
+
+
+# Select required ANSI setting
+#
+# Global over-ride (for effecting both the C and the C++ compilers and the 
+# CUDA compiler driver) is by ANSIFLAG; individual over-rides are: CANSIFLAG
+# for the C compiler; CCANSIFLAG for the C++ compiler; and NVCCANSIFLAG for
+# the CUDA compiler driver.
+#
+ifdef CANSIFLAG
+  PKG_GLOBAL_CFLAGS+=$(CANSIFLAG)
+else
+  ifdef ANSIFLAG
+    PKG_GLOBAL_CFLAGS+=$(ANSIFLAG)
+  else
+    PKG_GLOBAL_CFLAGS+=$(PKG_CANSIFLAG)
+  endif
+endif
+
+ifdef CCANSIFLAG
+  PKG_GLOBAL_CCFLAGS+=$(CCANSIFLAG)
+else
+  ifdef ANSIFLAG
+    PKG_GLOBAL_CCFLAGS+=$(ANSIFLAG)
+  else
+    PKG_GLOBAL_CCFLAGS+=$(PKG_CCANSIFLAG)
+  endif
+endif
+
+ifdef NVCCANSIFLAG
+  PKG_GLOBAL_NVCCFLAGS+=$(NVCCANSIFLAG)
+else
+  ifdef ANSIFLAG
+    PKG_GLOBAL_NVCCFLAGS+=$(ANSIFLAG)
+  else
+    PKG_GLOBAL_NVCCFLAGS+=$(PKG_NVCCANSIFLAG)
+  endif
+endif
+
+ifndef PACKAGE
+ PACKAGE=local
+endif
+
+ifdef QMAKE_INFO
+  SHOWIT = 
+else
+  SHOWIT = @
+endif
+
+
+PROJECT_NAME:=$(strip $(PROJECT_NAME))#
+
+ifeq ($(PROJECT_NAME),)
+  PROJECT_DIR=
+else
+  PROJECT_DIR=/$(PROJECT_NAME)
+endif
+
+PACKAGE:=$(strip $(PACKAGE))#
+
+ifndef PLIB
+  BASENAME:=$(PROJECT_DIR)/$(PACKAGE)/None#
+else
+  BASENAME:=/$(PLIB)#
+endif
+
+ifndef SHAREDBUILD
+ SHARED_LIB_POSTFIX=#
+ BINDEP_SHARED_INFIX=#
+else
+ SHARED_LIB_POSTFIX=/shared#
+ BINDEP_SHARED_INFIX=.shared
+endif
+
+ifndef PAGER
+  ifndef PKG_PAGER
+    PAGER=$(QMAKE_PAGER)
+  else
+    PAGER=$(PKG_PAGER)
+  endif
+endif
+
+##########################
+# Varient information
+
+ifndef NOVAR
+ ifndef VAR
+   VAR=check#
+ endif
+endif
+
+ifndef BASE_VAR
+ ifeq ($(VAR),prof)
+  BASE_VAR=opt#
+ else
+  ifeq ($(VAR),gprof)
+   BASE_VAR=opt#
+  else
+   ifeq ($(VAR),opt)
+    BASE_VAR=opt#
+   else
+    BASE_VAR=check#
+   endif 
+  endif
+ endif
+endif
+
+##########################
+# Roots of working directories.
+
+#################
+# Temporary directories...
+
+ifndef DEFAULTTMP 
+ TMP=/tmp
+else
+ TMP=$(DEFAULTTMP)
+endif
+
+WORKTMP=$(LOCALTMP)/$(ARC)$(BASENAME)/$(VAR)$(SHARED_LIB_POSTFIX)
+
+# A file that definitly doesn't exist.
+#NOFILE = /notme/hiya/fruitcake/whippy
+
+##########
+# Working directories...
+
+PROJ_ID := $(subst ~,,$(PROJECT_OUT))
+
+# ROOTDIR is where the software will be installed.
+
+ifndef ROOTDIR
+  ROOTDIR:=$(PROJECT_OUT)
+endif
+
+#########################
+# Target directories.
+
+# Admin files used in build but not needed after.
+
+INST_ADMIN=$(LOCALTMP)$(PROJECT_DIR)
+
+# Documentation
+
+INST_DOC= $(ROOTDIR)/share/doc$(PROJECT_DIR)
+INST_HTML=$(INST_DOC)/html
+INST_DOCEXAMPLES=$(INST_DOC)/examples
+INST_EHT= $(INST_ADMIN)/CxxDoc/EHT
+INST_MAN1=$(ROOTDIR)/share/man/man1
+INST_MAN3=$(ROOTDIR)/share/man/man3
+INST_MAN5=$(ROOTDIR)/share/man/man5
+
+# Auxilary files.
+INST_AUX=$(ROOTDIR)/$(AUXDIR)
+
+# Put this in a place easy to pickup.
+INST_PKGCONFIG=$(INST_LIB)/pkgconfig
+
+#Include it in path so child processes know where to look.
+ifdef  PKG_CONFIG_PATH
+PKG_CONFIG_PATH:=$(INST_PKGCONFIG):$(PKG_CONFIG_PATH)
+else
+PKG_CONFIG_PATH:=$(INST_PKGCONFIG)
+endif
+export PKG_CONFIG_PATH
+
+
+# Binaries
+
+INST_LIB=$(ROOTDIR)/lib$(PROJECT_DIR)/$(ARC)/$(VAR)$(SHARED_LIB_POSTFIX)
+INST_OBJS=$(WORKTMP)/objs
+INST_FORCEOBJS = $(ROOTDIR)/lib$(PROJECT_DIR)/$(ARC)/obj
+
+# Test stuff.
+INST_TEST=$(ROOTDIR)/test/$(VAR)$(SHARED_LIB_POSTFIX)
+INST_TESTBIN=$(INST_TEST)/bin
+INST_TESTLOG=$(INST_TEST)/log
+INST_TESTDB =$(INST_TEST)/TestExes
+
+INST_LIBDEF=$(ROOTDIR)/lib$(PROJECT_DIR)/libdep
+INST_BIN=$(ROOTDIR)/bin/utils/$(VAR)$(SHARED_LIB_POSTFIX)/bin
+INST_GENBIN=$(ROOTDIR)/bin# Machine independent scripts.
+INST_INCLUDE:=$(ROOTDIR)/include
+INST_DEPEND=$(INST_ADMIN)/$(ARC)/depend$(PROJECT_DIR)/$(PACKAGE)$(BASENAME)
+
+ifeq ($(PACKAGE),local)
+INST_HEADER:=$(INST_INCLUDE)$(PROJECT_DIR)
+INST_HEADERSYM:=$(INST_ADMIN)$(PROJECT_DIR)/syminc
+else
+INST_HEADER:=$(INST_INCLUDE)$(PROJECT_DIR)/$(PACKAGE)
+INST_HEADERSYM:=$(INST_ADMIN)/syminc$(PROJECT_DIR)/$(PACKAGE)
+endif
+
+INST_HEADERCERT:=$(INST_ADMIN)/Cert$(PROJECT_DIR)/$(PACKAGE)
+
+# Java classes
+
+INST_JAVA    = $(ROOTDIR)/java
+INST_JAVAEXE = $(INST_BIN)
+
+############################
+# include info on RAVL system.
+
+#INCLUDES=
+
+
+# Were to look for .def files, First in the current directory,
+# then the   current PROJECT_OUT def's and finally those that 
+# were installed with the make system. 
+
+DEF_INC = -I. -I$(INST_LIBDEF) -I$(INSTALLHOME)/lib$(PROJECT_DIR)/libdep  $(patsubst %,-I%/lib$(PROJECT_DIR)/libdep,$(EXTERNAL_PROJECTS)) $(patsubst %,-I%,$(wildcard $(QMAKE_PROJECTS)/*/libdep))
+
+############################
+# Some targets.
+
+# Published dependancy flag.
+TARG_DEPFLAG=$(INST_ADMIN)/$(ARC)/depend$(PROJECT_DIR)/$(PACKAGE)$(BASENAME)/.depend
+TARG_HDRFLAG=$(INST_ADMIN)/$(ARC)/depend$(PROJECT_DIR)/$(PACKAGE)$(BASENAME)/.header
+
+##############################
+# Make setup
+
+# Parallel Jobs
+ifndef PROCS
+  SYSCONF:=$(QMAKE_UTILS)/SysConf
+
+  PROCS=$(shell $(SYSCONF) -a)
+endif
+
+PAR_MAKE=$(MAKE_SPECIFIC_PARALLEL)
+
+# Basic make.
+MAKESM=$(MAKE) $(PKG_MAKEFLAGS) $(CONFIGURE_MAKEFLAGS) $(DEF_INC) 
+#$(PAR_MAKE)
+
+# Make with dependancies
+MAKEMD=$(MAKESM) -f $(QMAKE_MAKEFILES)/MainDep.mk
+
+# Make with dependancies
+MAKEMO=$(MAKESM) -f $(QMAKE_MAKEFILES)/Main.mk
+
+# Clean up makefile.
+MAKECL=$(MAKESM) -f $(QMAKE_MAKEFILES)/Clean.mk
+
+# Documentation makefile.
+MAKEDC=$(MAKESM) -f $(QMAKE_MAKEFILES)/Doc.mk
+
+# With Show it prefix.
+
+SMAKESM=+ $(SHOWIT)$(MAKESM)
+SMAKEMD=+ $(SHOWIT)$(MAKEMD)
+SMAKEMO=+ $(SHOWIT)$(MAKEMO)
+SMAKECL=+ $(SHOWIT)$(MAKECL)
+SMAKEDC=+ $(SHOWIT)$(MAKEDC)
+
+
+# Define default file extensions used (and ensure any user-specified extensions
+# do not have any erroneous spaces)
+
+ifndef SHAREDEXT 
+ SHAREDEXT:=so
+else
+ SHAREDEXT:=$(strip $(SHAREDEXT))#
+endif
+
+ifndef SHAREDBUILD
+ # we are performing a static build
+ LIBEXT:=.a
+
+ LIB_STAMP_EXT=$(LIBEXT)
+ # Should only be stamping shared libs, LIB_STAMP_EXT set here as it makes
+ # coding of the makefile more straightforward if we always use this variable.
+ # We do not need to set SET_xxxx_SONAME as a null value causes them to be
+ # ignored which is what we want for a static build.
+else 
+ # we are performing a SHAREDBUILD
+ LIBEXT:=.$(SHAREDEXT)
+
+ ifdef LIB_STAMP
+  # We want shared libraries stamped with a trailing version
+
+  ifeq ($(LIB_STAMP),VER)
+   # Suffix with full 3-part version number
+   LIB_STAMP_EXT=$(LIBEXT).$(PROJECT_VERSION)
+  else
+   ifeq ($(LIB_STAMP),NO)
+    # Explicitly disabling stamping
+    LIB_STAMP_EXT=$(LIBEXT)
+   else
+    # Only append major version number
+    LIB_STAMP_EXT=$(LIBEXT).$(PROJECT_MAJOR)
+   endif
+  endif
+
+  ifneq ($(LIB_STAMP),NO)
+   # If suffixing the library with a version number, the SONAME is always the
+   # name of the library with the major version number appended i.e. of the form
+   # libXXX.so.A
+   SET_PLIB_SONAME=$(LINKER_SET_SONAME)lib$(PLIB)$(LIBEXT).$(PROJECT_MAJOR)
+   SET_SINGLESO_SONAME=$(LINKER_SET_SONAME)$(SINGLESO)$(LIBEXT).$(PROJECT_MAJOR)
+   # N.B. PLIB is specified without the lib prefix to the library name, SINGLESO
+   # includes this (hence the extra lib in the above setting of SET_PLIB_SONAME)
+  endif
+  # We do not need to alter the default SONAME if we are not stamping the library
+  # hence SET_PLIB_SONAME and SET_SINGLESO_SONAME need not be set
+
+ else
+  # Default case, do not version stamp libraries
+  LIB_STAMP_EXT=$(LIBEXT)
+
+  # We do not need to alter the default SONAME if we are not version stamping the
+  # library, hence SET_PLIB_SONAME and SET_SINGLESO_SONAME need not be set.
+
+ endif # ifdef LIB_STAMP
+endif # ifndef SHAREDBUILD
+
+# Default Object file extension
+ifndef OBJEXT
+  OBJEXT:=.o#
+else
+ OBJEXT:=$(strip $(OBJEXT))#
+endif
+
+# Default C++ source file extension.
+ifndef CXXEXT
+  CXXEXT:=.cc#
+else
+ CXXEXT:=$(strip $(CXXEXT))#
+endif
+
+# Default C++ auxilary source file extension. (used to force template instansiation.)
+ifndef CXXAUXEXT
+  CXXAUXEXT:=.cxx#
+else
+ CXXAUXEXT:=$(strip $(CXXAUXEXT))#
+endif
+
+# Default C++ header file extension.
+ifndef CHXXEXT
+  CHXXEXT:=.hh#
+else
+ CHXXEXT:=$(strip $(CHXXEXT))#
+endif
+
+# Default C source file extension.
+ifndef CEXT
+  CEXT:=.c#
+else
+ CEXT:=$(strip $(CEXT))#
+endif
+
+# Default C header file extension.
+ifndef CHEXT
+  CHEXT:=.h#
+else
+ CHEXT:=$(strip $(CHEXT))#
+endif
+
+# Extension expected on executables.
+ifndef EXEEXT
+  EXEEXT:=#
+else
+ EXEEXT:=$(strip $(EXEEXT))#
+endif
+
+
+# Set flags for dependancy production
+
+MKDEPFLAGS=-MM
+AMKDEPFLAGS = -Wp,-MMD,$(WORKTMP)/$*.d
+MKDEPUP = echo '$$(INST_OBJS)' | $(TR) '\n' '/'  > $(INST_DEPEND)/$*.d ; cat $(WORKTMP)/$*.d  >> $(INST_DEPEND)/$*.d ; \
+ $(RM) $(WORKTMP)/$*.d
+
+
+# Set appropriate PKG_CFLAGS/CCFLAGS/LDFLAGS/LDLIBFLAGS/NVCCFLAGS for current build
+
+ifeq ($(VAR),check)
+  PKG_CFLAGS=$(CONFIGURE_CFLAGS) $(PKG_GLOBAL_CFLAGS) $(PKG_DEFAULT_CFLAGS) $(PKG_CHECK_CFLAGS)
+  PKG_CCFLAGS=$(CONFIGURE_CCFLAGS) $(PKG_GLOBAL_CCFLAGS) $(PKG_DEFAULT_CCFLAGS) $(PKG_CHECK_CCFLAGS)
+  PKG_LDFLAGS=$(CONFIGURE_LDFLAGS) $(PKG_GLOBAL_LDFLAGS) $(PKG_DEFAULT_LDFLAGS) $(PKG_CHECK_LDFLAGS)
+  PKG_LDLIBFLAGS=$(CONFIGURE_LDLIBFLAGS) $(PKG_GLOBAL_LDLIBFLAGS) $(PKG_DEFAULT_LDLIBFLAGS) $(PKG_CHECK_LDLIBFLAGS)
+
+  PKG_NVCCFLAGS=$(CONFIGURE_NVCCFLAGS) $(PKG_GLOBAL_NVCCFLAGS) $(PKG_DEFAULT_NVCCFLAGS) $(PKG_CHECK_NVCCFLAGS)
+endif
+
+ifeq ($(VAR),debug)
+  PKG_CFLAGS=$(CONFIGURE_CFLAGS) $(PKG_GLOBAL_CFLAGS) $(PKG_DEFAULT_CFLAGS) $(PKG_DEBUG_CFLAGS)
+  PKG_CCFLAGS=$(CONFIGURE_CCFLAGS) $(PKG_GLOBAL_CCFLAGS) $(PKG_DEFAULT_CCFLAGS) $(PKG_DEBUG_CCFLAGS)
+  PKG_LDFLAGS=$(CONFIGURE_LDFLAGS) $(PKG_GLOBAL_LDFLAGS) $(PKG_DEFAULT_LDFLAGS) $(PKG_DEBUG_LDFLAGS)
+  PKG_LDLIBFLAGS=$(CONFIGURE_LDLIBFLAGS) $(PKG_GLOBAL_LDLIBFLAGS) $(PKG_DEFAULT_LDLIBFLAGS) $(PKG_DEBUG_LDLIBFLAGS)
+
+  PKG_NVCCFLAGS=$(CONFIGURE_NVCCFLAGS) $(PKG_GLOBAL_NVCCFLAGS) $(PKG_DEFAULT_NVCCFLAGS) $(PKG_DEBUG_NVCCFLAGS)
+endif
+
+ifeq ($(VAR),opt)
+  PKG_CFLAGS=$(CONFIGURE_CFLAGS) $(PKG_GLOBAL_CFLAGS) $(PKG_OPT_CFLAGS)
+  PKG_CCFLAGS=$(CONFIGURE_CCFLAGS) $(PKG_GLOBAL_CCFLAGS) $(PKG_OPT_CCFLAGS)
+  PKG_LDFLAGS=$(CONFIGURE_LDFLAGS) $(PKG_GLOBAL_LDFLAGS) $(PKG_OPT_LDFLAGS)
+  PKG_LDLIBFLAGS=$(CONFIGURE_LDLIBFLAGS) $(PKG_GLOBAL_LDLIBFLAGS) $(PKG_OPT_LDLIBFLAGS)
+
+  PKG_NVCCFLAGS=$(CONFIGURE_NVCCFLAGS) $(PKG_GLOBAL_NVCCFLAGS) $(PKG_OPT_NVCCFLAGS)
+endif
+
+ifeq ($(VAR),prof)
+  PKG_CFLAGS=$(CONFIGURE_CFLAGS) $(PKG_GLOBAL_CFLAGS) $(PKG_OPT_CFLAGS) $(PKG_PROF_CFLAGS)
+  PKG_CCFLAGS=$(CONFIGURE_CCFLAGS) $(PKG_GLOBAL_CCFLAGS) $(PKG_OPT_CCFLAGS) $(PKG_PROF_CCFLAGS)
+  PKG_LDFLAGS=$(CONFIGURE_LDFLAGS) $(PKG_GLOBAL_LDFLAGS) $(PKG_OPT_LDFLAGS) $(PKG_PROF_LDFLAGS)
+  PKG_LDLIBFLAGS=$(CONFIGURE_LDLIBFLAGS) $(PKG_GLOBAL_LDLIBFLAGS) $(PKG_OPT_LDLIBFLAGS) $(PKG_PROF_LDLIBFLAGS)
+
+  PKG_NVCCFLAGS=$(CONFIGURE_NVCCFLAGS) $(PKG_GLOBAL_NVCCFLAGS) $(PKG_OPT_NVCCFLAGS) $(PKG_PROF_NVCCFLAGS)
+endif
+
+ifeq ($(VAR),gprof)
+  PKG_CFLAGS=$(CONFIGURE_CFLAGS) $(PKG_GLOBAL_CFLAGS) $(PKG_OPT_CFLAGS) $(PKG_GPROF_CFLAGS)
+  PKG_CCFLAGS=$(CONFIGURE_CCFLAGS) $(PKG_GLOBAL_CCFLAGS) $(PKG_OPT_CCFLAGS) $(PKG_GPROF_CCFLAGS)
+  PKG_LDFLAGS=$(CONFIGURE_LDFLAGS) $(PKG_GLOBAL_LDFLAGS) $(PKG_OPT_LDFLAGS) $(PKG_GPROF_LDFLAGS)
+  PKG_LDLIBFLAGS=$(CONFIGURE_LDLIBFLAGS) $(PKG_GLOBAL_LDLIBFLAGS) $(PKG_OPT_LDLIBFLAGS) $(PKG_GPROF_LDLIBFLAGS)
+
+  PKG_NVCCFLAGS=$(CONFIGURE_NVCCFLAGS) $(PKG_GLOBAL_NVCCFLAGS) $(PKG_OPT_NVCCFLAGS) $(PKG_GPROF_NVCCFLAGS)
+endif
+
+ifdef SHAREDBUILD
+  PKG_CFLAGS+=$(PKG_SHARED_CFLAGS)
+  PKG_CCFLAGS+=$(PKG_SHARED_CCFLAGS)
+  PKG_LDFLAGS+=$(PKG_SHARED_LDFLAGS)
+  PKG_LDLIBFLAGS+=$(PKG_SHARED_LDLIBFLAGS)
+
+  PKG_NVCCFLAGS+=$(PKG_SHARED_NVCCFLAGS)
+endif
+
+# Add in any USERxxFLAGS from .def file
+# Bear in mind QMake sports only a USERCFLAGS that doubles for C++ as well
+PKG_CFLAGS+=$(USERCFLAGS)
+PKG_CCFLAGS+=$(USERCFLAGS)
+PKG_LDFLAGS+=$(USERLDFLAGS)
+PKG_NVCCFLAGS += $(USERNVCCCFLAGS)
+
+# Use pre-processor flags directly as they do not really work in an additive
+# manner (it is not easy for a user to override global definitions already set,
+# i.e. they cannot override a previous -I by appending their own flags).
+# Again, remember QMake has no seperate C++ variable
+CPPFLAGS+=$(USERCPPFLAGS)
+CCPPFLAGS+=$(USERCPPFLAGS)

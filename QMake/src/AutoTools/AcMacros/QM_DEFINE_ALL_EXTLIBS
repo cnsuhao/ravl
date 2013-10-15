@@ -1,0 +1,305 @@
+dnl This file is part of QMake, Quick Make System
+dnl Copyright (C) 2013, University of Surrey
+dnl This code may be redistributed under the terms of the GNU General
+dnl Public License (GPL). See the gpl.licence file for details or
+dnl see http://www.gnu.org/copyleft/gpl.html
+dnl
+dnl file-header-ends-here
+
+
+
+
+dnl QM_DEFINE_ALL_EXTLIBS
+dnl
+dnl Macro to declare all the external libraries known to QMake
+dnl
+dnl No macro parameters
+dnl
+dnl No global variables used (directly, see individual macro documentation for
+dnl those variables employed by the macros uesd here):
+dnl
+AC_DEFUN([QM_DEFINE_ALL_EXTLIBS],
+         [
+          dnl First declare all those libraries implemented via pkg-config
+          dnl
+          dnl Parameters are:
+          dnl
+          dnl  1 QMake name for library. The name used for RESOURCES and also
+          dnl    for LIB_CFLAGS, LIB_LIBS, etc. used in Config.XX and the .def
+          dnl    files.
+          dnl  2 Name by which pkg-config knows the library. Can be over-ridden
+          dnl    by --with-<lib>-pkgconf
+          dnl
+          dnl                 Name,               pkg-config
+          dnl
+          QM_DEFINE_EXTLIB_PC([libdc1394],        [libdc1394])
+          QM_DEFINE_EXTLIB_PC([libavc1394],       [libavc1394])
+          QM_DEFINE_EXTLIB_PC([libAudioFile],     [audiofile])
+          QM_DEFINE_EXTLIB_PC([avifile],          [avifile])
+          QM_DEFINE_EXTLIB_PC([libCurl],          [libcurl])
+          QM_DEFINE_EXTLIB_PC([libDV],            [libdv])
+          QM_DEFINE_EXTLIB_PC([FFMPEGCDEC],       [libavcodec])
+          QM_DEFINE_EXTLIB_PC([FFMPEGCONT],       [libavformat])
+          QM_DEFINE_EXTLIB_PC([FFMPEGSWS],        [libswscale])
+          QM_DEFINE_EXTLIB_PC([FFMPEGUTIL],       [libavutil])
+          QM_DEFINE_EXTLIB_PC([iksemel],          [iksemel])
+          QM_DEFINE_EXTLIB_PC([libglade2],        [libglade-2.0])
+          QM_DEFINE_EXTLIB_PC([LibGnome],         [libgnome-2.0])
+          QM_DEFINE_EXTLIB_PC([libGTK2],          [gtk+-2.0])
+          QM_DEFINE_EXTLIB_PC([GTKGLExt],         [gtkglext-1.0])
+          QM_DEFINE_EXTLIB_PC([Loudmouth],        [loudmouth-1.0])
+          QM_DEFINE_EXTLIB_PC([OpenCV],           [opencv])
+          QM_DEFINE_EXTLIB_PC([libPNG],           [libpng])
+          QM_DEFINE_EXTLIB_PC([PortAudio],        [portaudio-2.0])
+          QM_DEFINE_EXTLIB_PC([libGL],            [gl])
+          QM_DEFINE_EXTLIB_PC([libGLU],           [glu])
+          QM_DEFINE_EXTLIB_PC([OpenSceneGraph],   [openscenegraph])
+          QM_DEFINE_EXTLIB_PC([OpenSceneGraphGTK],[osgGtk-1.0])
+          QM_DEFINE_EXTLIB_PC([RLog],             [librlog])
+          QM_DEFINE_EXTLIB_PC([devVideo4Linux2],  [libv4l2])
+          QM_DEFINE_EXTLIB_PC([ZeroMQ],           [libzmq])
+          dnl 
+          dnl Now define those libraries needing manual compilation checks:
+          dnl
+          dnl Parameters are:
+          dnl
+          dnl  1 QMake name for library. The name used for RESOURCES and also
+          dnl    for LIB_CFLAGS, LIB_LIBS, etc. used in Config.XX and the .def
+          dnl    files.
+          dnl  2 Fragment of code to verify that the library can be successfully
+          dnl    linked to. Usually this is just a single call to a function
+          dnl    declared by the external library. However, some libraries need
+          dnl    a little more set up - such as any library where we need to
+          dnl    test for a C++ class; or the Math library where some compilers 
+          dnl    perform extra prototype checking on those functions.
+          dnl  3 Space separated list of dependancies of the library. Specify
+          dnl    the QMake name of the library - e.g. for dependancies on Zlib
+          dnl    specify Zlib not -lz or z. 
+          dnl    *** N.B. ***
+          dnl         Dependancies on libraries reliant on pkg-config for their
+          dnl         location are not supported. I.E. if library A depends on
+          dnl         library B, library B must be specified here as a manual
+          dnl         check if library A is also specified as a manual check.
+          dnl         JFi:ToDo:Fix this limitation
+          dnl  4 Link line entry for the library - i.e. -l<libname>
+          dnl  5 Name(s) of header files needed to use the library (only really
+          dnl    need to provide one for a specimin test unless it is know that
+          dnl    sub-sets of the header files are regularly seen in the wild).
+          dnl    If specifying multiple headers, provide a space seperated list.
+          dnl  6 Language in which the test code is written. This is usually the
+          dnl    same language as the API for the external library. Currently
+          dnl    only C and C++ are supported languages for this setting.
+          dnl
+          dnl                 Name,
+          dnl                 Fn,
+          dnl                 Deps,
+          dnl                 -l,
+          dnl                 .h
+          dnl                 Lang
+          dnl
+          QM_DEFINE_EXTLIB_CC([blas],
+                              [sgemm_ ();],
+                              [],
+                              [-lblas],
+                              [],
+                              [C]
+                             )
+          dnl# Define BLAS support. This is a bit of a bodge as we should be
+          dnl# testing for more Fortran functionality/configurataion here than
+          dnl# we currently do. The problem with performing that testing is that
+          dnl# the required autotools macros would mandate a Fortran compiler be
+          dnl# present even when LAPACK support is omitted. 
+          dnl# An example of the type of extra testing we should be performing
+          dnl# comes from the fact that, dependant on the toolset in use,
+          dnl# Fortran functions may be upper or lowercase; with or without a
+          dnl# trailing underscore. By rights, we should use AC_F77_FUNC(sgemm)
+          dnl# to return the correct name of that BLAS function and test for
+          dnl# that rather than the hard coded lowercase_ form that we test for
+          dnl# here. Other Fortran related checking we should be doing here
+          dnl# includes determining any FLIBS setting that may be required
+          dnl# (by calling AC_F77_LIBRARY_LDFLAGS) and using the
+          dnl# AC_F77_DUMMY_MAIN macro. In addition to all this, we are only
+          dnl# looking for -lblas. In fact, this is one of many libraries that
+          dnl# may provide blas functionality (some boxes may even provide
+          dnl# direct support that needs no other library). These libraries may
+          dnl# be added at a later date on an as-needed basis. In the meantime,
+          dnl# using the --with-blas-library switch will provide support.
+          dnl
+          dnl                 Name,
+          dnl                 Test Code,
+          dnl                 Deps,
+          dnl                 -l,
+          dnl                 .h
+          dnl                 Lang
+          dnl 
+          QM_DEFINE_EXTLIB_CC([CUDA],
+                              [cudaMalloc ();],
+                              [],
+                              [-lcuda -lcudart],
+                              [cuda.h],
+                              [C]
+                             )
+          QM_DEFINE_EXTLIB_CC([GLUT],        
+                              [int *pargc;
+                               char **argv;
+                               glutInit(pargc, argv);
+                              ],
+                              [],
+                              [-lglut],
+                              [GL/glut.h],
+                              [C]
+                             )
+          QM_DEFINE_EXTLIB_CC([LibJasper],
+                              [jas_init ();],
+                              [],
+                              [-ljasper],
+                              [jasper/jasper.h],
+                              [C]
+                             )
+          QM_DEFINE_EXTLIB_CC([JPEG],
+                              [j_decompress_ptr cinfo;
+                               boolean require_image;
+                               jpeg_read_header (cinfo, require_image);
+                              ],
+                              [],
+                              [-ljpeg],
+                              [stdio.h jpeglib.h],
+                              [C]
+                             )
+          dnl# JPEG check will support either the standard or jpeg-turbo library
+          dnl# as they are a straight substitution for each other
+          dnl
+          dnl                 Name,
+          dnl                 Test Code,
+          dnl                 Deps,
+          dnl                 -l,
+          dnl                 .h
+          dnl                 Lang
+          dnl 
+          QM_DEFINE_EXTLIB_CC([LAPACK],
+                              [dgetri_ ();],
+                              [blas],
+                              [-llapack],
+                              [],
+                              [C]
+                             )
+          dnl# As for BLAS, the above definition for LAPACK should be performing
+          dnl# more involved Fortran testing (and utilising the extra checking
+          dnl# that should have been carried out for the BLAS library). However,
+          dnl# to prevent the requirement of a Fortran compiler, even if we are
+          dnl# not builing LAPACK into any client project, we do not do the
+          dnl# extra testing.
+          dnl
+          dnl                 Name,
+          dnl                 Test Code,
+          dnl                 Deps,
+          dnl                 -l,
+          dnl                 .h
+          dnl                 Lang
+          dnl 
+          QM_DEFINE_EXTLIB_CC([posixThreads],
+                              [pthread_self ();],
+                              [],
+                              [-lpthread],
+                              [pthread.h],
+                              [C]
+                             )
+          QM_DEFINE_EXTLIB_CC([LibTIFF],
+                              [TIFFGetVersion ();],
+                              [Zlib],
+                              [-ltiff],
+                              [],
+                              [C]
+                             )
+          QM_DEFINE_EXTLIB_CC([Zlib],
+                              [zlibCompileFlags ();],
+                              [],
+                              [-lz],
+                              [],
+                              [C]
+                             )
+          
+          dnl Virtual Pkgs
+          QM_DEFINE_VIRTUAL_EXTLIB([libffmpeg], [FFMPEGCDEC FFMPEGCONT FFMPEGSWS FFMPEGUTIL])
+          QM_DEFINE_VIRTUAL_EXTLIB([OpenGL], [libGL libGLU])
+          
+          
+          dnl#JFi:Develop code to prime these by ./configure
+          dnl#
+          dnl# Developer notes:
+          dnl#
+          dnl#   -l entries are from original .def files and may now not be
+          dnl#      wholly accurate (reflect current release of the library).
+          dnl#   -l entry (and 5 params for _HELPER call) do not necessarily
+          dnl#      mean pkg-config isn't supported
+          dnl#   _HELPER_PC or _HELPER_CC rather than _HELPER_xC imply the
+          dnl#   method to use. When adding support for these, remember to
+          dnl#   update the .def file to remove the $(error call.
+          dnl#
+          dnl#
+          dnl# Priorities
+          dnl#                Name,          Fn,                 Deps,   -l,           .h
+          dnl#
+          dnl#  ..._EXTLIB_CC([Socket],      [socket],           [],     [-lsocket],   [sys/socket.h])
+          dnl#  ..._EXTLIB_CC([NetDB],       [gethostbyname_r],  [],     [-lnsr],      [netdb.h])
+          dnl#
+          dnl#
+          dnl#
+          dnl# Less so
+          dnl#                Name,          Fn,                 Deps,   -l,           .h
+          dnl#
+          dnl#  ..._EXTLIB_CC([dvdread],     [TBA],              [],     [-ldvdread],  [])
+          dnl#  ..._EXTLIB_xC([libClipStationPro], [],           [],     [-ldvsoem],   [])
+          dnl#  ..._EXTLIB_xC([LibGd],       [],                 [],     [-lgd],       [])
+          dnl#  ..._EXTLIB_xC([libmcrypt],   [],                 [],     [-lmcrypt],   [])
+          dnl#  ..._EXTLIB_xC([libmkl],      [],                 [posixThreads Math], [-lmkl_ia32 -lguide], [])
+          dnl#  ..._EXTLIB_xC([libmpeg2],    [],                 [],     [-lmpeg2],    [])
+          dnl#  ..._EXTLIB_xC([LibPython],   [],                 [],     [],           [])
+          dnl#     May have to use:
+          dnl#       PYTHON_VERSION = $(shell python -c "import distutils.sysconfig; print distutils.sysconfig.get_config_var('VERSION')")
+          dnl#       PYTHON_INCLUDE = $(shell python -c "import distutils.sysconfig; print distutils.sysconfig.get_python_inc()")
+          dnl#       PYTHON_LIB = python$(PYTHON_VERSION)
+          dnl#
+          dnl#  ..._EXTLIB_xC([NumPy],       [],                 [Python], [],         [])
+          dnl#     May have to call Python to check for module availability.
+          dnl#  
+          dnl#  ..._EXTLIB_xC([SwigPython],  [],                 [Python Swig], [],    [])
+          dnl#  
+          dnl#
+          dnl# More or less dead
+          dnl#                Name,          Fn,                 Deps,   -l,           .h
+          dnl#
+          dnl#  ..._EXTLIB_xC([libehs],      [],                 [],     [-lpme -lehs], [])
+          dnl#  ..._EXTLIB_xC([libGuppi],    [],                 [],     [-lguppitank `gnome-config libguppi --libs`], [])
+          dnl#  ..._EXTLIB_xC([libmpeg],     [],                 [],     [-lmpeg],     [])
+          dnl#  ..._EXTLIB_xC([uEyeSDK],     [],                 [],     [-lueye_api], [])
+          dnl#  ..._EXTLIB_xC([UUIdTheo],    [],                 [],     [-luuid],     [])
+          dnl#  
+          dnl#
+          dnl# OS Specific
+          dnl#                Name,          Fn,                 Deps,   -l,           .h
+          dnl#
+          dnl#  ..._EXTLIB_xC([SGIVL],       [],                 [],     [-lvl -ldmedia], [])
+          dnl#  ..._EXTLIB_xC([LibDirectShow], [],               [],     [],           [])
+          dnl#  ..._EXTLIB_xC([posixRT],     [],                 [],     [-lrt],       [])
+          dnl#
+          dnl#
+          dnl#   Mac OSX Support:
+          dnl#     Currently global MacOSX REQUIRES flag. 
+          dnl#
+          dnl#                Name,          Fn,                 Deps,   -l,           .h
+          dnl#
+          dnl#    ...XTLIB_xC([MacOSXFoundation], [],            [],     [-framework Foundation], [])
+          dnl#    ...XTLIB_xC([MacOSXQuartzCore], [],            [],     [-framework QuartzCore], [])
+          dnl#    ...XTLIB_xC([MacOSXQTKit], [],                 [],     [-framework QTKit], [])
+          dnl#    ...XTLIB_xC([ObjC],        [],                 [],     [-lobjc],     [])
+          dnl#
+          dnl#
+          dnl# Dropped
+          dnl#
+          dnl#    CPPUnit DMedia FFTW glib {GNU}ReadLine JavaScript libmpeg Math
+          dnl#    Meteor1 Perl5 php libptp2 QtTestRunner SQLite3 Sys system
+          dnl#    Video4Linux Xaw Xerces Xt x11
+          dnl#
+         ]
+        )

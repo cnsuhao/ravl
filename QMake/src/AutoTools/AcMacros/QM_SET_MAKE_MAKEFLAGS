@@ -1,0 +1,72 @@
+dnl This file is part of QMake, Quick Make System
+dnl Copyright (C) 2011, University of Surrey
+dnl This code may be redistributed under the terms of the GNU General
+dnl Public License (GPL). See the gpl.licence file for details or
+dnl see http://www.gnu.org/copyleft/gpl.html
+dnl
+dnl file-header-ends-here
+
+
+
+dnl QM_SET_MAKE_MAKEFLAGS
+dnl
+dnl Macro to declare the flags required to configure make for operation with
+dnl QMake.
+dnl
+dnl No macro parameters.
+dnl
+dnl Global variables used:
+dnl
+dnl       GNU_MAKE                   Flag, originally set by QM_LOCATE_MAKE
+dnl                                  indicating if a GNU version of make is
+dnl                                  in use. Set to yes for GNU make.
+dnl       MAKE_SPECIFIC_MAKEFLAGS    Receives the MAKEFLAGS that relate to
+dnl                                  the specific make utility in use. The
+dnl                                  settings enable the make functionality
+dnl                                  required for the operation of QMake.
+dnl       MAKE_SPECIFIC_PARALLEL     Receives the MAKEFLAGS that relate to
+dnl                                  job control for the the specific make
+dnl                                  utility in use. This setting is intended
+dnl                                  to enable the execution of parallel make
+dnl                                  jobs.
+dnl       MAKEFLAGS                  Not actually modified or interrogated
+dnl                                  by this macro; merely declared for 
+dnl                                  output substitution into the configure
+dnl                                  settings file. Holds any user-supplied
+dnl                                  MAKEFLAGS.
+dnl
+AC_DEFUN([QM_SET_MAKE_MAKEFLAGS],
+         [trace 2 Set make specific MAKEFLAGS
+
+          dnl
+          dnl Currently we only know of differing flags if the GNU version
+          dnl of make is in use. If this situation changes, the following
+          dnl standard caveat must be maintained in this code, especially
+          dnl if we ever have to test the platform or OS in use:
+          dnl
+          dnl DO NOT PUT PLATFORM SPECIFICS HERE. If your platform has a
+          dnl non-standard make that takes completely different flags then
+          dnl that is ok to list here (as it pertains to the tool itself,
+          dnl not the platform). If your platform uses the GNU make but, for
+          dnl example requires an added 's' flag, that setting should be put
+          dnl in the platform specific code at the end of this script, not
+          dnl here.
+          dnl
+
+          if ( test X$GNU_MAKE = Xyes )
+          then
+             MAKE_SPECIFIC_MAKEFLAGS=" --no-print-directory -r"
+             MAKE_SPECIFIC_PARALLEL="--jobs \$(PROCS)"
+          else
+             # Potential to add further options here for particular versions of make
+             # However, at the moment we just have a standard option for all
+             MAKE_SPECIFIC_MAKEFLAGS=" -r "
+             MAKE_SPECIFIC_PARALLEL=""
+          fi
+          AC_SUBST([MAKEFLAGS])
+          # User-provided MAKEFLAGS will be recorded as QMAKE_MAKEFLAGS in Config.QMake 
+          AC_SUBST([MAKE_SPECIFIC_MAKEFLAGS])
+          AC_SUBST([MAKE_SPECIFIC_PARALLEL])
+         ]
+        )
+

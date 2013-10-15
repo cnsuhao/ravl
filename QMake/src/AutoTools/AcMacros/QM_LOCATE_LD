@@ -1,0 +1,248 @@
+dnl This file is part of QMake, Quick Make System
+dnl Copyright (C) 2011-13, University of Surrey
+dnl This code may be redistributed under the terms of the GNU General
+dnl Public License (GPL). See the gpl.licence file for details or
+dnl see http://www.gnu.org/copyleft/gpl.html
+dnl
+dnl file-header-ends-here
+
+
+
+dnl QM_LOCATE_LD
+dnl
+#     This section of code is inspired by LT_PATH_LD from libtool
+#
+       # libtool.m4 - Configure libtool for the host system. -*-Autoconf-*-
+       #
+       #   Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2003, 2004, 2005,
+       #                 2006, 2007, 2008 Free Software Foundation, Inc.
+       #   Written by Gordon Matzigkeit, 1996
+       #
+       # This file is free software; the Free Software Foundation gives
+       # unlimited permission to copy and/or distribute it, with or without
+       # modifications, as long as this notice is preserved.
+#
+dnl
+dnl Macro to locate the linker; preferring a GNU version (unless under AIX
+dnl when we should prefer the native linker). Deferrs to any user-specified
+dnl path for the linker (specified via the LD environment variable) otherwise
+dnl the macro attempts to locate a linker on the serach list and will use the
+dnl first (preferably GNU) linker that it can successfully run. The variable
+dnl GNU_LD is set to either yes or no to indicate if the linker found is GNU
+dnl software.
+dnl
+dnl No macro parameters
+dnl
+dnl Global variables used:
+dnl
+dnl       LD                         Receives the path of the linker selected
+dnl                                  May initially have been set by the user
+dnl                                  if they initially specified the linker
+dnl                                  to use (by setting the LD environment
+dnl                                  variable).
+dnl       GCC                        Flag, originally set by AC_PROG_CC
+dnl                                  indicating if a GNU C compiler is in
+dnl                                  use. Will be yes if we are currently
+dnl                                  using a GNU compiler.
+dnl       EXPR                       Standard substitution variable pointing
+dnl                                  to the UNIX expr command.
+dnl       host_os                    Holds the name of the operating system
+dnl                                  in use. Primed via a previous call of
+dnl                                  configure.guess
+dnl       TR                         Standard substitution variable pointing
+dnl                                  to the UNIX tr command.
+dnl       SED                        Standard substitution variable pointing
+dnl                                  to the UNIX sed command.
+dnl       GNU_LD                     Receives whether or not the linker is a
+dnl                                  GNU version (simple yes no setting).
+dnl                                  This variable is also used as an
+dnl                                  interim variable during the macro to
+dnl                                  hold the path of the first GNU linker
+dnl                                  that is found.
+dnl       ANO_LD                     Interim variable that holds the path to
+dnl                                  the first non-GNU linker that may be
+dnl                                  found.
+dnl       save_ifs                   Interim variable preserves the system
+dnl                                  IFS setting while the macro manipulates
+dnl                                  the active setting for processing the
+dnl                                  searchlist.
+dnl       IFS                        UNIX Internal Field Seperator variable,
+dnl                                  temporarily modified when processing
+dnl                                  the searchlist.
+dnl       PATH_SEPARATOR             Informs the macro of the path separator,
+dnl                                  originally set either in the system
+dnl                                  environment or by the initialisation
+dnl                                  code of the configure script
+dnl       PATH                       UNIX searchlist, use for locating the
+dnl                                  linker
+dnl       dir                        Interim variable set to the individual
+dnl                                  components of the PATH variable
+dnl       VER_STRING                 Interim variable receives the output
+dnl                                  from running make with the -v cmd-line
+dnl                                  option when checking if it is a GNU
+dnl                                  version
+dnl                                  
+dnl
+AC_DEFUN([QM_LOCATE_LD],
+         [
+          dnl# Preserve any user-supplied environment settings including any 
+          dnl# existing setting for LD
+          AC_REQUIRE([QM_READ_USER_ENV])
+
+          if ( test "x$LD" = x )
+          then
+             # We do not currently know of a specific linker: look for one
+     
+             if ( test "$GCC" = yes )
+             then
+                # If we have gcc we can try: $CC -print-prog-name=ld
+                AC_MSG_CHECKING([which ld is used by $CC])
+                LD=`$CC -print-prog-name=ld`
+                # Test host_os != mingw*
+                if ( test  X`$EXPR X$host_os : 'X\(mingw\).*'` != 'Xmingw' )
+                then
+                   # gcc leaves a trailing carriage return which upsets mingw
+                   LD=`echo $LD | $TR -d '\015'`
+                fi
+           
+                if ( test X`$EXPR X$LD : '\(X[[\\/]].*\)'` = XX$LD )
+                then
+                   # $LD is an absolute path
+                   # Fold all \ to /
+                   LD=`echo "$LD"| $SED 's%\\\\%/%g'`
+                   # $LD may be an absolute path but might still need 
+                   # cannonicalisation
+                   while test X`$EXPR X$LD : 'X\(.*/\.\./\.*\)'` != X
+                   do
+                      LD=`echo $LD | $SED -e "s%/*[[^/]][[^/]]*/\.\./%/%g" -e "s%^/*\.\./%/%"`
+                   done
+                   AC_MSG_RESULT([$LD])
+                else
+                   # $CC -print-prog-name=ld has not delivered us an absolute
+                   # path; we need to use the searchlist
+                   LD=""
+                   AC_MSG_RESULT([unhelpful])
+                fi
+             else
+                # Not using GCC so we don't know how to ask the compiler, we
+                # will have to look for ld on the searchlist
+                LD=""
+             fi
+       
+             if ( test X`$EXPR X$LD : '\(X[[\\/]].*\)'` != XX$LD )
+             then
+                # LD not set to an absolute path, must search for ld
+       
+                AC_MSG_CHECKING([for ld on the search-list])
+                GNU_LD=""
+                ANO_LD=""
+                save_ifs="$IFS"
+                IFS=$PATH_SEPARATOR
+                for dir in $PATH
+                do
+                   IFS="$save_ifs"
+                   if ( test X"$dir" != X && test $dir != '.' && test -x "$dir/ld" )
+                   then
+                      # Some variants of GNU ld only accept -v, so use that not --version
+                      case `"$dir/ld" -v 2>&1 </dev/null` in
+                       *GNU* | *'with BFD'*)  if ( test  X`$EXPR X$host_os : 'X\(aix\).*'` != 'Xaix' )
+                                              then
+                                                 # We are not using AIX so 
+                                                 # favour the GNU linker
+                                                 # (that we have just found)
+                                                 LD=$dir/ld
+                                                 break
+                                              else
+                                                 # We are on AIX so should
+                                                 # use the native linker if
+                                                 # possible but remember
+                                                 # where the GNU version is
+                                                 # should that be all we find
+                                                 if ( test X$GNU_LD = X )
+                                                 then
+                                                    # This is the first GNU 
+                                                    # version of ld on the
+                                                    # PATH so record it
+                                                    GNU_LD=$dir/ld
+                                                 fi
+                                              fi
+                                              ;;
+                       *)                     if ( test  X`$EXPR X$host_os : 'X\(aix\).*'` != 'Xaix' )
+                                              then
+                                                 # We are not on AIX so 
+                                                 # should favour the GNU
+                                                 # version of ld. As this is
+                                                 # not a GNU version, merely
+                                                 # remember where the first
+                                                 # non-GNU version is should
+                                                 # this be the only one we
+                                                 # actually find.
+                                                 if ( test X$ANO_LD = X )
+                                                 then
+                                                    ANO_LD=$dir/ld
+                                                 fi
+                                              else
+                                                 # As we are on AIX and have
+                                                 # found the non-GNU linker,
+                                                 # we should favour that.
+                                                 LD=$dir/ld
+                                              fi
+                                              ;;
+                      esac
+                   fi
+                done
+                IFS="$save_ifs"
+                if ( test X$LD = X )
+                then
+                   # Have not located preferred linker, is there a fall-back?
+                   if ( test  X`$EXPR X$host_os : 'X\(aix\).*'` != 'Xaix' )
+                   then
+                      # We are not using AIX but found no GNU linker, use any
+                      # other we found
+                      LD=$ANO_LD
+                   else
+                      # We are on AIX and wanted the native linker which we
+                      # did not locate. Try any GNU version we found
+                      LD=$GNU_LD
+                   fi
+                fi
+             fi # End of checking for ld on $PATH (LD not absolute pathname)
+       
+             # Have we actually found a linker?
+             if ( test "X$LD" != X && test -x $LD )
+             then
+                # We have, what type is it?
+                VER_STRING=`"$LD" -v 2>&1 </dev/null`
+                if ( test `$EXPR "$VER_STRING" : '.*GNU.*'` -gt 0 || test `$EXPR "$VER_STRING" : '.*with BFD.*'` -gt 0 )
+                then
+                   # GNU linker
+                   GNU_LD=yes
+                else
+                   GNU_LD=no
+                fi
+                AC_MSG_RESULT([$LD])
+             else
+                AC_MSG_RESULT([no])
+                AC_MSG_FAILURE([Cannot find a working ld required for building with])
+             fi
+          else
+             # We already know where ld is
+             if ( test -x $LD )
+             then
+                # What type is it?
+                VER_STRING=`"$LD" -v 2>&1 </dev/null`
+                if ( test `$EXPR "$VER_STRING" : '.*GNU.*'` -gt 0 || test `$EXPR "$VER_STRING" : '.*with BFD.*'` -gt 0 )
+                then
+                   # GNU linker
+                   GNU_LD=yes
+                else
+                   GNU_LD=no
+                fi
+             else
+                AC_MSG_FAILURE([\$LD does not appear to correctly specify a linker])
+             fi
+          fi
+         ]
+        )
+
+#     End of section inspired by LT_PATH_LD from libtool

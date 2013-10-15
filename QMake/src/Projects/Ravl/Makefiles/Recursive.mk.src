@@ -1,0 +1,267 @@
+# This file is part of QMake, Quick Make System
+# Copyright (C) 2011-12, University of Surrey
+# This code may be redistributed under the terms of the GNU General
+# Public License (GPL). See the gpl.licence file for details or
+# see http://www.gnu.org/copyleft/gpl.html
+
+
+ifndef QMAKE_MAKEFILES
+  QMAKE_MAKEFILES=@QMAKE_MAKEFILES@
+endif
+
+include $(QMAKE_MAKEFILES)/Definitions.mk
+
+OBJ_HOME=$(LOCALTMP)/$(ARC)
+
+
+REQUIRED_DIRS=$(patsubst %.r,%, $(filter %.r,$(filter-out QMake.r,$(NESTED))))
+
+# Some dirs specify programs as both examples and tests or examples and progs.
+# In these circumstances we're better off stripping the tests from the example
+# list so as to avoid any possible confusion over 'Test' depending on both
+# $(EG-Bin-Dir)/Test and $(Test-Bin-Dir)/Test or 'Util' depending on both
+# $(EG-Bin-Dir)/Util and $(Util-Bin-Dir)/Util.
+EGS=$(basename $(filter-out $(MAINS), $(filter-out $(TESTEXES),$(EXAMPLES))))
+
+
+
+# Declare what we link exes with
+ifdef SINGLELIB
+ifdef SHAREDBUILD
+    BIN_SUBDIR=$(VAR)/shared/single
+    DEPEND_ON=$(PROJECT_OUT)/lib$(PROJECT_DIR)/$(ARC)/$(VAR)/shared/single/libRavl.so
+    LINK_WITH= -L$(PROJECT_OUT)/lib$(PROJECT_DIR)/$(ARC)/$(VAR)/shared/single -lRavl $(ALL_EXTERNAL_LIBS)
+else
+    BIN_SUBDIR=$(VAR)/single
+    DEPEND_ON=$(PROJECT_OUT)/lib$(PROJECT_DIR)/$(ARC)/$(VAR)/single/libRavl.a
+    #LINK_WITH=$(patsubst )%.cc,$(OBJ_HOME)/$(PLIB)/$(VAR)/objs/%.o,$(MUSTLINK)) -L$(PROJECT_OUT)/lib$(PROJECT_DIR)/$(ARC)/$(VAR)/single -lRavl $(ALL_EXTERNAL_LIBS)
+    LINK_WITH= -Wl,--whole-archive -L$(PROJECT_OUT)/lib$(PROJECT_DIR)/$(ARC)/$(VAR)/single -lRavl -Wl,--no-whole-archive $(ALL_EXTERNAL_LIBS)
+endif
+else
+# LINK_WITH= $(PLIB) $(USESLIBS) (+ $(PROGLIBS)???) processed for AUTO keyword (& optionally supplemented vi QLibs)     
+$(error Standard builds not implemented yet - only SINGLELIB=1 currently supported)
+endif
+
+
+ifeq ($(strip $(PLIB)),)
+PLIB=$(PROJECT_DIR)$(PACKAGE)/None
+ifdef SHAREDBUILD
+NOLOCALLIB=$(addprefix $(OBJ_HOME)/$(PLIB)/$(VAR)/shared/objs/,$(addsuffix .o,$(basename $(SOURCES))))
+else
+NOLOCALLIB=$(addprefix $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/,$(addsuffix .o,$(basename $(SOURCES))))
+endif
+endif
+# Some dirs build no library, only exes using SOURCES as additional objs.
+# In these dirs, derive a list of '.o's from SOURCES and add them to the link 
+# and additionally force a value on PLIB so the .o's have a directory
+
+PROGS=$(basename $(MAINS))
+
+TESTS=$(basename $(TESTEXES))
+
+# Following definitions are used to block the cmd-line targets if RESOURCES
+# or SUPPORT_ONLY/DONOT_SUPPORT are not set appropriately. If the settings
+# are ok, these vars define what actual build target the cmd-line target
+# relates to. If the settings are incorrect the variables cause a suitable
+# error to be output instead of any build taking place. The 'recurse' target
+# will quietly return if the settings indicate not to build
+ifeq ($(strip $(filter-out $(RESOURCES),$(REQUIRES))),)
+ # RESOURCES ok
+ifeq ($(strip $(SUPPORT_ONLY)),)
+  # No list of specificly supported platforms - test for unsupported platforms
+ifneq ($(ARC), $(filter $(ARC),$(DONOT_SUPPORT)))
+   # Not an unsupported platform
+   $(foreach lib,$(filter %.def,$(EXTERNALLIBS)),$(eval include $(lib)))
+
+   BUILD_ALL=buildlib buildprogs buildtests buildegs cpheaders mkdoc recurse
+   BUILD_EGS=buildegs
+   BUILD_LIB=buildlib
+   BUILD_PROGS=buildprogs
+   BUILD_TESTS=buildtests
+   CP_HEADERS=cpheaders
+   MK_DOC=mkdoc
+   RECURSE=Yes
+else
+   BUILD_ALL=donotsupport
+   BUILD_EGS=donotsupport
+   BUILD_LIB=donotsupport
+   BUILD_PROGS=donotsupport
+   BUILD_TESTS=donotsupport
+   CP_HEADERS=donotsupport
+   MK_DOC=donotsupport
+   RECURSE=No
+endif
+else
+  # We have a specific list of supported platforms
+ifeq ($(ARC),$(filter $(ARC),$(SUPPORT_ONLY)))
+   # Platform is on the list of specifically supported platforms
+   $(foreach lib,$(filter %.def,$(EXTERNALLIBS)),$(eval include $(lib)))
+
+   BUILD_ALL=buildlib buildprogs buildtests buildegs cpheaders mkdoc recurse
+   BUILD_EGS=buildegs
+   BUILD_LIB=buildlib
+   BUILD_PROGS=buildprogs
+   BUILD_TESTS=buildtests
+   CP_HEADERS=cpheaders
+   MK_DOC=mkdoc
+   RECURSE=Yes
+else
+   # Not on the list of specifically supported platforms
+   BUILD_ALL=notsupportonly
+   BUILD_EGS=notsupportonly
+   BUILD_LIB=notsupportonly
+   BUILD_PROGS=notsupportonly
+   BUILD_TESTS=notsupportonly
+   CP_HEADERS=notsupportonly
+   MK_DOC=notsupportonly
+   RECURSE=No
+endif
+endif
+else
+ # RESOURCES not available
+   BUILD_ALL=noresources
+   BUILD_EGS=noresources
+   BUILD_LIB=noresources
+   BUILD_PROGS=noresources
+   BUILD_TESTS=noresources
+   CP_HEADERS=noresources
+   MK_DOC=noresources
+   RECURSE=No
+endif
+
+# cmdline targets
+all: $(BUILD_ALL)
+
+docn: $(MK_DOC)
+
+examples: $(BUILD_EGS)
+
+headers: $(CP_HEADERS)
+
+library: $(BUILD_LIB)
+
+programs: $(BUILD_PROGS)
+
+recurse:
+	@if [ $(RECURSE) = Yes ] ;then for d in $(REQUIRED_DIRS);do $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -I$(PROJECT_OUT)/lib$(PROJECT_DIR)/libdep/ -C $$d -f $(QMAKE_PROJECTS)/Ravl/Makefiles/Recursive.mk $(MAKECMDGOALS); RET=$$?; if [ $$RET -ne 0 ] ;then exit $$RET; fi; done; fi
+
+test: $(BUILD_TESTS)
+# Initial set-up not yet implemented - use QMake first
+
+# internal targets
+# first group perform the action associated with the relevant cmd-line targets
+
+buildegs: $(EGS)
+	@if [ X$(QMAKE_INFO) != X ] ; then if [ "X$(EGS)" = X ] ; then echo No EGS to be built for this directory tree; fi; fi
+
+buildlib:
+	: Not implemented
+
+buildprogs: $(PROGS)
+	@if [ X$(QMAKE_INFO) != X ] ; then if [ "X$(PROGS)" = X ] ; then echo No PROGS to be built for this directory tree; fi; fi
+
+buildtests: $(TESTS)
+	@if [ X$(QMAKE_INFO) != X ] ; then if [ "X$(TESTS)" = X ] ; then echo No TESTS to be built for this directory tree; fi; fi
+
+cpheaders: $(HEADERS)
+	: Not implememted
+
+donotsupport:
+	@if [ X$(QMAKE_INFO) != X ] ; then echo Platform is not supported for this directory tree; fi
+
+mkdoc:
+	: Not implememted
+
+noresources:
+	@if [ X$(QMAKE_INFO) != X ] ; then echo Insufficient RESOURCES for this directory tree; fi
+
+notsupportonly:
+	@if [ X$(QMAKE_INFO) != X ] ; then echo Platform not on the SUPPORT_ONLY list for this directory tree; fi
+
+
+
+# Declare recipies to build utilities from single src file and lib
+define buildutils
+  $1: $(PROJECT_OUT)/bin/utils/$(BIN_SUBDIR)/bin $(PROJECT_OUT)/bin/utils/$(BIN_SUBDIR)/bin/$1
+
+ifdef SHAREDBUILD
+  $(PROJECT_OUT)/bin/utils/$(BIN_SUBDIR)/bin/$1: $(OBJ_HOME)/$(PLIB)/$(VAR)/shared/objs/$1.o $2
+	$(CXX) $(PKG_LDFLAGS) $(LDFLAGS) $(OBJ_HOME)/$(PLIB)/$(VAR)/shared/objs/$1.o $3 -o $$@
+else
+  $(PROJECT_OUT)/bin/utils/$(BIN_SUBDIR)/bin/$1: $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $2
+	$(CXX) $(PKG_LDFLAGS) $(LDFLAGS) $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $3 -o $$@
+endif
+	@if [ -h $(PROJECT_OUT)/bin/$1 ] || [ -f  $(PROJECT_OUT)/bin/$1 ] ; \
+        then \
+	   if [ X$(QMAKE_INFO) != X ] ; then echo $(RM) $(PROJECT_OUT)/bin/$1; fi; \
+	   $(RM) $(PROJECT_OUT)/bin/$1; \
+        fi ; \
+	if [ X$(QMAKE_INFO) != X ] ; then echo cd $(PROJECT_OUT)/bin\; $(LN_S) utils/$(BIN_SUBDIR)/bin/$1 $1; fi; \
+        cd $(PROJECT_OUT)/bin; $(LN_S) utils/$(BIN_SUBDIR)/bin/$1 $1
+endef
+
+$(PROJECT_OUT)/bin/utils/$(BIN_SUBDIR)/bin:
+	@$(MKDIR_P) $@
+
+$(foreach bin,$(PROGS),$(eval $(call buildutils,$(bin),$(NOLOCALLIB) $(DEPEND_ON),$(NOLOCALLIB) $(LINK_WITH))))
+
+
+# Declare recipies to build examples from single src file and lib
+define buildexamples
+  $1: $(PROJECT_OUT)/bin/examples/$(BIN_SUBDIR)/bin $(PROJECT_OUT)/bin/examples/$(BIN_SUBDIR)/bin/$1
+
+ifdef SHAREDBUILD
+  $(PROJECT_OUT)/bin/examples/$(BIN_SUBDIR)/bin/$1: $(OBJ_HOME)/$(PLIB)/$(VAR)/shared/objs/$1.o $2
+	$(CXX) $(PKG_LDFLAGS) $(LDFLAGS) $(OBJ_HOME)/$(PLIB)/$(VAR)/shared/objs/$1.o $3 -o $$@
+else
+  $(PROJECT_OUT)/bin/examples/$(BIN_SUBDIR)/bin/$1: $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $2
+	$(CXX) $(PKG_LDFLAGS) $(LDFLAGS) $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $3 -o $$@
+endif
+endef
+
+$(PROJECT_OUT)/bin/examples/$(BIN_SUBDIR)/bin:
+	@$(MKDIR_P) $@
+
+$(foreach bin,$(EGS),$(eval $(call buildexamples,$(bin),$(NOLOCALLIB) $(DEPEND_ON),$(NOLOCALLIB) $(LINK_WITH))))
+
+
+# Declare recipies to build test binaries from single src file and lib
+define buildtest
+  $1: $(PROJECT_OUT)/test/$(BIN_SUBDIR)/bin \
+           $(PROJECT_OUT)/test/$(BIN_SUBDIR)/log \
+                $(PROJECT_OUT)/test/$(BIN_SUBDIR)/bin/$1
+
+ifdef SHAREDBUILD
+  $(PROJECT_OUT)/test/$(BIN_SUBDIR)/bin/$1: $(OBJ_HOME)/$(PLIB)/$(VAR)/shared/objs/$1.o $2
+	$(CXX) $(PKG_LDFLAGS) $(LDFLAGS) $(OBJ_HOME)/$(PLIB)/$(VAR)/shared/objs/$1.o $3 -o $$@
+else
+  $(PROJECT_OUT)/test/$(BIN_SUBDIR)/bin/$1: $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $2
+	$(CXX) $(PKG_LDFLAGS) $(LDFLAGS) $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $3 -o $$@
+endif
+endef
+
+$(PROJECT_OUT)/test/$(BIN_SUBDIR)/bin:
+	@$(MKDIR_P) $@
+
+$(PROJECT_OUT)/test/$(BIN_SUBDIR)/log:
+	@$(MKDIR_P) $@
+
+$(foreach bin,$(TESTS),$(eval $(call buildtest,$(bin),$(NOLOCALLIB) $(TESTLIBS) $(DEPEND_ON),$(NOLOCALLIB) $(TESTLIBS) $(LINK_WITH))))
+
+
+
+# Provide info that may be helpful for debugging
+dump:
+	@echo BIN_SUBDIR=$(BIN_SUBDIR)
+	@echo DIRS=$(DIRS)
+	@echo DEPEND_ON=$(DEPEND_ON)
+	@echo EGS=$(EGS)
+	@echo LINK_WITH=$(LINK_WITH)
+	@echo NOLOCALLIB=$(NOLOCALLIB)
+	@echo PLIB=$(PLIB)
+	@echo PROGS=$(PROGS)
+	@echo REQUIRED_DIRS=$(REQUIRED_DIRS)
+	@echo TESTS=$(TESTS)
+	@echo TESTLIBS=$(TESTLIBS)
+
+.PHONY: all buildegs $(EGS) buildlib  buildprogs $(PROGS) buildtests $(TESTS) cpheaders docn donotsupport dump examples headers library mkdoc noresources notsupportonly programs recurse test

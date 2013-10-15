@@ -1,0 +1,587 @@
+# This file is part of QMake, Quick Make System 
+# Copyright (C) 2001-12, University of Surrey
+# This code may be redistributed under the terms of the GNU General 
+# Public License (GPL). See the gpl.licence file for details or
+# see http://www.gnu.org/copyleft/gpl.html
+
+# file-header-ends-here
+
+# Setup make flags.
+
+ifndef QMAKE_MAKEFILES
+  QMAKE_MAKEFILES=@QMAKE_MAKEFILES@
+endif
+
+MAKEDEFS=$(PERL) -f $(QMAKE_UTILS)/mkdefs.pl
+
+# Set default uses lib to auto?
+
+ifdef USERBUILD
+  export USERBUILD
+endif
+
+export TARGET
+
+###############################################################################
+# Check for project out 
+
+# Basicly add BUILD_TAG=SomeName to your alias and then only QMake will only
+# work on project outs with the same tag.
+
+ifdef BUILD_TAG
+  PROJECT_OUT_BUILD_TAG :=$(strip $(shell cat $(PROJECT_OUT)/buildTag 2> /dev/null ))#
+  ifeq ($(PROJECT_OUT_BUILD_TAG),)
+    $(shell echo "$(BUILD_TAG)" > $(PROJECT_OUT)/buildTag )
+  else
+    ifneq ($(BUILD_TAG),$(PROJECT_OUT_BUILD_TAG))
+      $(error "Errr.. you didn't mean to do that.  (BUILD_TAG doesn't match the project. )")
+    endif
+    SOURCE_BUILD_TAG :=$(strip $(shell $(QMAKE_UTILS)/findBuildTag $(shell $(GET_CWD))))#
+    ifneq ($(BUILD_TAG),$(SOURCE_BUILD_TAG))
+      $(error "Errr.. you didn't mean to do that.  (BUILD_TAG doesn't match the source tag. )")
+    endif
+  endif
+endif
+
+##############################################################################
+
+# Setup default build target.
+TARGET=fullbuild
+
+# Include system config and Directories 
+
+NOVAR=1
+include $(QMAKE_MAKEFILES)/Definitions.mk
+
+VPATH=$(QCWD)
+
+ifdef QMAKE_INFO
+  export QMAKE_INFO
+endif
+
+.PHONY : all allns buildall chead check checkne checkshared checksharedne \
+ chkclean clean cleandep cleandoc cleanlib distclean dbclean \
+ debug debugall debugne debugneall debugshared debugsharedall debugsharedne \
+ debugsharedneall defs doc docinit ds dsne fullbuild fullcheck \
+ fullclean fulldebug fulldoc fullhdr fullinfo fullopt fullgprof fullshared \
+ fullsrc gprof gprofne help info libbuild lib_info mkdef ne novar \
+ opt optclean optshared optne optsharedne os osne \
+ pack prof purify redoc retest rpmbuild shared sharedne src test unpack 
+
+##################################
+# Do makes.
+
+# Where commands are prefixed by 'q' frozen dependancies are used.
+# NB. Frozen dependancies can only be used where  normal make has 
+#  successfully built ALL the depenacies for that directories, this
+#  can be done using the target depend.
+
+# Make with dependancies
+
+ifdef VAR
+all: novar
+else
+all: check
+endif
+allns: all
+
+############################
+# Some compile shortcuts.
+
+shared: checkshared
+
+ne: checkne
+
+sharedne: checksharedne
+
+os: optshared 
+
+osne: optsharedne
+
+ds: debugshared
+
+dsne: debugsharedne
+
+############################
+# Test targets
+
+override TEST_TARGET := $(firstword $(TEST_TARGET))
+
+# Default (check build)
+TEST_TARGET_PARAMS := VAR=check
+override TEST_TARGET := $(patsubst check%,%,$(TEST_TARGET))
+
+# set and remove 'debug' or 'opt' target component
+ifneq ($(strip $(filter debug%,$(TEST_TARGET))),)
+  override TEST_TARGET := $(patsubst debug%,%,$(TEST_TARGET))
+  TEST_TARGET_PARAMS := VAR=debug
+else
+  ifneq ($(strip $(filter opt%,$(TEST_TARGET))),)
+    override TEST_TARGET := $(patsubst opt%,%,$(TEST_TARGET))
+    TEST_TARGET_PARAMS := VAR=opt
+  else
+    ifneq ($(strip $(filter gprof%,$(TEST_TARGET))),)
+      override TEST_TARGET := $(patsubst gprof%,%,$(TEST_TARGET))
+      TEST_TARGET_PARAMS := VAR=gprof
+    endif
+  endif
+endif
+
+# set and remove 'shared' target component
+ifneq ($(strip $(filter shared%,$(TEST_TARGET))),)
+  override TEST_TARGET := $(patsubst shared%,%,$(TEST_TARGET))
+  TEST_TARGET_PARAMS += SHAREDBUILD=1
+endif
+
+# remove 'ne' target component
+override TEST_TARGET := $(patsubst ne%,%,$(TEST_TARGET))
+
+# set the 'all' debug target component
+ifneq ($(strip $(findstring VAR=debug,$(TEST_TARGET_PARAMS))),)
+  ifeq ($(strip $(TEST_TARGET)),all)
+    TEST_TARGET_PARAMS += BASE_VAR=debug
+  endif
+endif
+
+############################
+# Compilation targets.
+
+src:
+	$(SMAKEMO) $(PAR_MAKE) src_all TARGET=src_all NOINCDEFS=1 
+
+novar:
+	$(SMAKEMD) $(PAR_MAKE) fullbuild TARGET=fullbuild  
+
+check:
+	$(SMAKEMD) $(PAR_MAKE) fullbuild TARGET=fullbuild VAR=check  
+
+opt:
+	$(SMAKEMD) $(PAR_MAKE) fullbuild TARGET=fullbuild VAR=opt
+
+debug:
+	$(SMAKEMD) $(PAR_MAKE) fullbuild TARGET=fullbuild VAR=debug
+
+debugall:
+	$(SMAKEMD) $(PAR_MAKE) fullbuild TARGET=fullbuild VAR=debug                            BASE_VAR=debug
+
+checkshared:
+	$(SMAKEMD) $(PAR_MAKE) fullbuild TARGET=fullbuild VAR=check SHAREDBUILD=1  
+
+optshared:
+	$(SMAKEMD) $(PAR_MAKE) fullbuild TARGET=fullbuild VAR=opt   SHAREDBUILD=1 
+
+debugshared:
+	$(SMAKEMD) $(PAR_MAKE) fullbuild TARGET=fullbuild VAR=debug SHAREDBUILD=1
+
+debugsharedall:
+	$(SMAKEMD) $(PAR_MAKE) fullbuild TARGET=fullbuild VAR=debug SHAREDBUILD=1              BASE_VAR=debug
+
+checkne:	
+	$(SMAKEMD) $(PAR_MAKE) fullbuild TARGET=fullbuild VAR=check               NOEXEBUILD=1 
+
+optne:
+	$(SMAKEMD) $(PAR_MAKE) fullbuild TARGET=fullbuild VAR=opt                 NOEXEBUILD=1 
+
+debugne:
+	$(SMAKEMD) $(PAR_MAKE) fullbuild TARGET=fullbuild VAR=debug               NOEXEBUILD=1 
+
+debugneall:
+	$(SMAKEMD) $(PAR_MAKE) fullbuild TARGET=fullbuild VAR=debug               NOEXEBUILD=1 BASE_VAR=debug
+
+checksharedne:
+	$(SMAKEMD) $(PAR_MAKE) fullbuild TARGET=fullbuild VAR=check SHAREDBUILD=1 NOEXEBUILD=1
+
+optsharedne:
+	$(SMAKEMD) $(PAR_MAKE) fullbuild TARGET=fullbuild VAR=opt   SHAREDBUILD=1 NOEXEBUILD=1
+
+debugsharedne:
+	$(SMAKEMD) $(PAR_MAKE) fullbuild TARGET=fullbuild VAR=debug SHAREDBUILD=1 NOEXEBUILD=1
+
+debugsharedneall:
+	$(SMAKEMD) $(PAR_MAKE) fullbuild TARGET=fullbuild VAR=debug SHAREDBUILD=1 NOEXEBUILD=1 BASE_VAR=debug
+
+purify:
+	$(SMAKEMD) purifybuild TARGET=purifybuild VAR=debug 
+
+prof:
+	$(SMAKEMD) $(PAR_MAKE) fullbuild TARGET=fullbuild VAR=prof  
+
+gprof:
+	$(SMAKEMD) $(PAR_MAKE) fullbuild TARGET=fullbuild VAR=gprof  
+
+gprofne:
+	$(SMAKEMD) $(PAR_MAKE) fullbuild TARGET=fullbuild VAR=gprof NOEXEBUILD=1 
+
+chead:
+	$(SMAKEMD) $(PAR_MAKE) cheadbuild TARGET=cheadbuild FULLCHECKING=1  
+
+
+# For the tests, we need to let TEST_TARGET_PARAMS drive the settings for VAR,
+# etc. rather than use the variables themselves. So, pull out the relevant
+# info.. 
+TEST_TARGET_VAR=$(patsubst VAR=%,%,$(filter VAR=%,$(filter-out BASE_VAR=%,$(TEST_TARGET_PARAMS))))
+ifneq ($(strip $(filter SHAREDBUILD=1,$(TEST_TARGET_PARAMS))),)
+  TEST_TARGET_SHARED=/shared
+else
+  TEST_TARGET_SHARED=
+endif
+
+# For the same reason, we cannot use INST_TESTBIN, INST_TESTDB, etc. here
+# (they embed $VAR and $SHARED_LIB_POSTFIX) nor can we use INST_BIN or
+# INST_LIB in setting the UNIX paths. 
+test: src
+	@if [ ! -d $(ROOTDIR)/test/$(TEST_TARGET_VAR)$(TEST_TARGET_SHARED)/bin ] ; then \
+	  $(MKDIR_P) $(ROOTDIR)/test/$(TEST_TARGET_VAR)$(TEST_TARGET_SHARED)/bin; \
+	fi 
+	@if [ ! -d $(ROOTDIR)/test/$(TEST_TARGET_VAR)$(TEST_TARGET_SHARED)/log ] ; then \
+	  $(MKDIR_P) $(ROOTDIR)/test/$(TEST_TARGET_VAR)$(TEST_TARGET_SHARED)/log; \
+	fi 
+	+ $(SHOWIT)$(TOUCH) $(ROOTDIR)/test/$(TEST_TARGET_VAR)$(TEST_TARGET_SHARED)/TestExes; \
+	if $(MAKEMD) $(PAR_MAKE) testbuild TARGET=testbuild $(TEST_TARGET_PARAMS) FULLCHECKING=1 NOEXEBUILD=1 ; then true ; \
+	else \
+	  echo "test: Failed to do initial build for test. "; \
+	  exit 1 ; \
+	fi ; \
+	if $(MAKEMD) $(PAR_MAKE) testbuild TARGET=testbuild $(TEST_TARGET_PARAMS) FULLCHECKING=1 ; then true ; \
+	else \
+	  echo "test: Failed to do executable build. " ; \
+	  exit 1 ; \
+	fi ;
+	$(SHOWIT)$(SORT) -u -o$(ROOTDIR)/test/$(TEST_TARGET_VAR)$(TEST_TARGET_SHARED)/TestExes $(ROOTDIR)/test/$(TEST_TARGET_VAR)$(TEST_TARGET_SHARED)/TestExes
+ifdef SHAREDBUILD
+	cd $(ROOTDIR)/test/$(TEST_TARGET_VAR)$(TEST_TARGET_SHARED) && \
+           PATH=$(ROOTDIR)/test/$(TEST_TARGET_VAR)$(TEST_TARGET_SHARED)/bin:$(ROOTDIR)/bin/utils/$(TEST_TARGET_VAR)$(TEST_TARGET_SHARED)/bin:$$PATH \
+           LD_LIBRARY_PATH=$(ROOTDIR)/lib$(PROJECT_DIR)/$(ARC)/$(TEST_TARGET_VAR)$(TEST_TARGET_SHARED):$$LD_LIBRARY_PATH \
+           $(QMAKE_UTILS)/Validate -v $(ROOTDIR)/test/$(TEST_TARGET_VAR)$(TEST_TARGET_SHARED)
+else
+	cd $(ROOTDIR)/test/$(TEST_TARGET_VAR)$(TEST_TARGET_SHARED) && \
+           PATH=$(ROOTDIR)/test/$(TEST_TARGET_VAR)$(TEST_TARGET_SHARED)/bin:$(ROOTDIR)/bin/utils/$(TEST_TARGET_VAR)$(TEST_TARGET_SHARED)/bin:$$PATH \
+           $(QMAKE_UTILS)/Validate -v $(ROOTDIR)/test/$(TEST_TARGET_VAR)$(TEST_TARGET_SHARED)
+endif
+
+retest:
+	$(SHOWIT)$(SORT) -u -o$(ROOTDIR)/test/$(TEST_TARGET_VAR)$(TEST_TARGET_SHARED)/TestExes $(ROOTDIR)/test/$(TEST_TARGET_VAR)$(TEST_TARGET_SHARED)/TestExes
+ifdef SHAREDBUILD
+	cd $(ROOTDIR)/test/$(TEST_TARGET_VAR)$(TEST_TARGET_SHARED) && \
+           PATH=$(ROOTDIR)/test/$(TEST_TARGET_VAR)$(TEST_TARGET_SHARED)/bin:$(ROOTDIR)/bin/utils/$(TEST_TARGET_VAR)$(TEST_TARGET_SHARED)/bin:$$PATH \
+           LD_LIBRARY_PATH=$(ROOTDIR)/lib$(PROJECT_DIR)/$(ARC)/$(TEST_TARGET_VAR)$(TEST_TARGET_SHARED):$$LD_LIBRARY_PATH \
+           $(QMAKE_UTILS)/Validate -v $(ROOTDIR)/test/$(TEST_TARGET_VAR)$(TEST_TARGET_SHARED)
+else
+	cd $(ROOTDIR)/test/$(TEST_TARGET_VAR)$(TEST_TARGET_SHARED) && \
+           PATH=$(ROOTDIR)/test/$(TEST_TARGET_VAR)$(TEST_TARGET_SHARED)/bin:$(ROOTDIR)/bin/utils/$(TEST_TARGET_VAR)$(TEST_TARGET_SHARED)/bin:$$PATH \
+           $(QMAKE_UTILS)/Validate -v $(ROOTDIR)/test/$(TEST_TARGET_VAR)$(TEST_TARGET_SHARED)
+endif
+
+# Build everything.
+
+buildall:
+	$(SHOWIT)if $(MAKEMO) $(PAR_MAKE) FULLCHECKING=1 src_all NOINCDEFS=1 ; then true; \
+        else \
+	  echo "QMAKE: Installation of header files failed. " ; \
+	  exit 1; \
+        fi ; \
+	if $(MAKEMD) $(PAR_MAKE) libbuild TARGET=libbuild VAR=check NOEXEBUILD=1 ; then true; \
+        else \
+	  echo "QMAKE: check library build failed. " ; \
+	  exit 1; \
+        fi ; \
+	if $(MAKEMD) $(PAR_MAKE) libbuild TARGET=libbuild VAR=debug NOEXEBUILD=1 ; then true; \
+        else \
+	  echo "QMAKE: debug library build failed. " ; \
+	  exit 1; \
+        fi ; \
+	if $(MAKEMD) $(PAR_MAKE) libbuild TARGET=libbuild VAR=opt NOEXEBUILD=1 ; then true; \
+        else \
+	  echo "QMAKE: opt library build failed. " ; \
+	  exit 1; \
+        fi ; \
+	if $(MAKEMD) $(PAR_MAKE) fullbuild TARGET=fullbuild VAR=opt ; then true; \
+        else \
+	  echo "QMAKE: executable build failed. " ; \
+	  exit 1; \
+        fi ; \
+	echo "Building documentation. " ; \
+	$(MAKEDC) doc 
+
+
+FULLBUILDSRC := FULLCHECKING=1
+
+FULLBUILDFLAGS = NOCHECKOUT=1  $(FULLBUILDSRC)
+
+# Check out latest version.
+
+fullsrc:	
+	$(SMAKEMO) $(PAR_MAKE) NOINCDEFS=1 src_all $(FULLBUILDSRC)
+
+fullhdr:	
+	$(SMAKEMO) $(PAR_MAKE) NOINCDEFS=1 src_all $(FULLBUILDFLAGS)
+
+# Build check of latest version.
+
+fullcheck:	
+	$(SMAKEMD) $(PAR_MAKE) fullbuild VAR=check $(FULLBUILDFLAGS) TARGET=fullbuild
+
+fulldebug:	
+	$(SMAKEMD) $(PAR_MAKE) fullbuild VAR=debug $(FULLBUILDFLAGS) TARGET=fullbuild
+
+fullopt:	
+	$(SMAKEMD) $(PAR_MAKE) fullbuild VAR=opt $(FULLBUILDFLAGS) TARGET=fullbuild
+
+fullgprof:	
+	$(SMAKEMD) $(PAR_MAKE) fullbuild VAR=gprof $(FULLBUILDFLAGS) TARGET=fullbuild
+
+fullinfo:	
+	$(SMAKEMO) $(PAR_MAKE) info VAR=check $(FULLBUILDFLAGS)
+
+fullclean:
+	$(SMAKECL) $(PAR_MAKE) clean VAR=check $(FULLBUILDFLAGS) TARGET=clean
+
+libbuild: 
+	$(SMAKEMD) $(PAR_MAKE) libbuild  $(FULLBUILDFLAGS) TARGET=libbuild
+
+# Build Product.
+# Proceeds as follows:
+#  1-Src the latest version of the source.
+#  2-Compile all libraries.
+#  3-Build executables.
+#  4-Build documentation
+
+#add some defaults if FULLBUILD_TARGETS has not been defined
+FULLBUILD_TARGETS ?= check opt checkshared optbin doc
+
+# replace shared alias for checkshared
+ifneq ($(strip $(filter shared,$(FULLBUILD_TARGETS))),)
+  FULLBUILD_TARGETS := $(patsubst shared,checkshared,$(FULLBUILD_TARGETS))
+endif 
+
+# make sure check libs get built before trying to build check binaries 
+ifneq ($(strip $(filter checkbin,$(FULLBUILD_TARGETS))),)
+  FULLBUILD_TARGETS += check 
+endif 
+
+# make sure opt libs get built before trying to build opt binaries 
+ifneq ($(strip $(filter optbin,$(FULLBUILD_TARGETS))),)
+  FULLBUILD_TARGETS += opt 
+endif 
+
+fullbuild:
+	+ $(SHOWIT)if $(MAKEMO) $(PAR_MAKE) $(FULLBUILDFLAGS) src_all NOINCDEFS=1 ; then true; \
+        else \
+	  echo "QMAKE: Installation of header files failed. " ; \
+	  exit 1; \
+        fi ; 
+
+        # check build
+        ifeq ($(strip $(filter-out $(FULLBUILD_TARGETS),check)),)
+	+ $(SHOWIT)if $(MAKEMD) $(PAR_MAKE) $(FULLBUILDFLAGS) libbuild TARGET=libbuild VAR=check NOEXEBUILD=1 ; then true; \
+        else \
+	  echo "QMAKE: check library build failed. " ; \
+	  exit 1; \
+        fi ; 
+        endif 
+
+        # debug build
+        ifeq ($(strip $(filter-out $(FULLBUILD_TARGETS),debug)),)
+	+ $(SHOWIT)if $(MAKEMD) $(PAR_MAKE) $(FULLBUILDFLAGS) libbuild TARGET=libbuild VAR=debug NOEXEBUILD=1 ; then true; \
+        else \
+	  echo "QMAKE: debug library build failed. " ; \
+	  exit 1; \
+        fi ; 
+        endif
+
+        # opt build
+        ifeq ($(strip $(filter-out $(FULLBUILD_TARGETS),opt)),)
+	+ $(SHOWIT)if $(MAKEMD) $(PAR_MAKE) $(FULLBUILDFLAGS) libbuild TARGET=libbuild VAR=opt NOEXEBUILD=1 ; then true; \
+        else \
+	  echo "QMAKE: opt library build failed. " ; \
+	  exit 1; \
+        fi ; 
+        endif 
+
+        # checkshared build 
+        ifeq ($(strip $(filter-out $(FULLBUILD_TARGETS),checkshared)),)
+	+ $(SHOWIT)if $(MAKEMD) $(PAR_MAKE) $(FULLBUILDFLAGS) libbuild TARGET=libbuild VAR=check SHAREDBUILD=1 NOEXEBUILD=1 ; then true; \
+        else \
+	  echo "QMAKE: check shared library build failed. " ; \
+	  exit 1; \
+        fi ;
+        endif
+
+        # debugshared build 
+        ifeq ($(strip $(filter-out $(FULLBUILD_TARGETS),debugshared)),)
+	+ $(SHOWIT)if $(MAKEMD) $(PAR_MAKE) $(FULLBUILDFLAGS) libbuild TARGET=libbuild VAR=debug SHAREDBUILD=1 NOEXEBUILD=1 ; then true; \
+        else \
+	  echo "QMAKE: debug-shared library build failed. " ; \
+	  exit 1; \
+        fi ; 
+        endif 
+
+         # optshared build
+        ifeq ($(strip $(filter-out $(FULLBUILD_TARGETS),optshared)),)
+	+ $(SHOWIT)if $(MAKEMD) $(PAR_MAKE) $(FULLBUILDFLAGS) libbuild TARGET=libbuild VAR=opt SHAREDBUILD=1 NOEXEBUILD=1 ; then true; \
+        else \
+	  echo "QMAKE: opt-shared library build failed. " ; \
+	  exit 1; \
+        fi ;
+        endif
+
+        # checkbin build (builds the binaries - must have libs already)
+        ifeq ($(strip $(filter-out $(FULLBUILD_TARGETS),checkbin)),)
+	+ $(SHOWIT)if $(MAKEMD) $(PAR_MAKE) $(FULLBUILDFLAGS) fullbuild TARGET=fullbuild VAR=check ; then true; \
+        else \
+	  echo "QMAKE: check binaries build failed. " ; \
+	  exit 1; \
+        fi ;
+        endif 
+
+        # optbin build (builds the binaries - must have libs already)
+        ifeq ($(strip $(filter-out $(FULLBUILD_TARGETS),optbin)),)
+	+ $(SHOWIT)if $(MAKEMD) $(PAR_MAKE) $(FULLBUILDFLAGS) fullbuild TARGET=fullbuild VAR=opt ; then true; \
+        else \
+	  echo "QMAKE: opt binaries build failed. " ; \
+	  exit 1; \
+        fi ;
+        endif 
+
+        # documentation 
+        ifeq ($(strip $(filter-out $(FULLBUILD_TARGETS),doc)),)
+	$(SHOWIT)echo "Building documentation. " ; \
+	$(MAKEDC) $(PAR_MAKE) $(FULLBUILDFLAGS) doc 
+         endif 
+
+rpmbuild:
+	+ $(SHOWIT)if $(MAKEMO) $(PAR_MAKE) $(FULLBUILDFLAGS) src_all NOINCDEFS=1 ; then true; \
+        else \
+	  echo "QMAKE: Installation of header files failed. " ; \
+	  exit 1; \
+        fi ; \
+	if $(MAKEMD) $(PAR_MAKE) $(FULLBUILDFLAGS) libbuild TARGET=libbuild VAR=check NOEXEBUILD=1 ; then true; \
+        else \
+	  echo "QMAKE: check library build failed. " ; \
+	  exit 1; \
+        fi ; \
+	if $(MAKEMD) $(PAR_MAKE) $(FULLBUILDFLAGS) libbuild TARGET=libbuild VAR=debug NOEXEBUILD=1 ; then true; \
+        else \
+	  echo "QMAKE: debug library build failed. " ; \
+	  exit 1; \
+        fi ; \
+	if $(MAKEMD) $(PAR_MAKE) $(FULLBUILDFLAGS) libbuild TARGET=libbuild VAR=opt NOEXEBUILD=1 ; then true; \
+        else \
+	  echo "QMAKE: opt library build failed. " ; \
+	  exit 1; \
+        fi ; \
+	if $(MAKEMD) $(PAR_MAKE) $(FULLBUILDFLAGS) libbuild TARGET=libbuild VAR=check SHAREDBUILD=1 NOEXEBUILD=1 ; then true; \
+        else \
+	  echo "QMAKE: check shared library build failed. " ; \
+	  exit 1; \
+        fi ; \
+	if $(MAKEMD) $(PAR_MAKE) $(FULLBUILDFLAGS) fullbuild TARGET=fullbuild VAR=check SHAREDBUILD=1 ; then true; \
+        else \
+	  echo "QMAKE: check binary build failed. " ; \
+	  exit 1; \
+        fi ; \
+	echo "Building documentation. " ; \
+	$(MAKEDC) $(PAR_MAKE) $(FULLBUILDFLAGS) doc 
+
+fullshared:
+	+ $(SHOWIT)if $(MAKEMD) $(PAR_MAKE) $(FULLBUILDFLAGS) fullbuild TARGET=fullbuild VAR=check SHAREDBUILD=1 NOEXEBUILD=1 ; then true; \
+        else \
+	  echo "QMAKE: Shared library build failed. " ; \
+	  exit 1; \
+        fi ; \
+
+fulldoc:
+	$(SMAKEDC) $(PAR_MAKE) doc $(FULLBUILDFLAGS)
+
+# Make a defs.mk file automaticly.
+
+mkdef:
+	$(MAKEDEFS) -i .
+
+################################
+# Admin
+
+dist:
+	$(SMAKESM) -f $(QMAKE_MAKEFILES)/Dist.mk dist
+
+clean:
+	-$(SMAKECL) clean TARGET=clean
+
+cleanlib:
+	$(SMAKECL) cleanlib TARGET=cleanlib
+
+cleandep:
+	$(SMAKECL) cleandep TARGET=cleandep
+
+cleandoc:
+	$(SMAKECL) cleandoc TARGET=cleandoc 
+
+optclean:
+	$(SMAKECL) clean TARGET=clean VAR=opt
+
+dbclean:
+	$(SMAKECL) clean TARGET=clean VAR=debug
+
+chkclean:
+	$(SMAKECL) clean TARGET=clean VAR=check
+
+lib_info:
+	$(SMAKEMO) lib_info
+
+info:
+	$(SMAKEMO) info
+
+pack:
+	$(SMAKEMO) NOINCDEFS=1 pack
+
+unpack:
+	$(SMAKEMO) NOINCDEFS=1 unpack
+
+################################
+# Documentation.
+
+# Install files, build documentation
+doc: src
+	$(SMAKEDC) $(PAR_MAKE) doc
+
+# Just install files.
+docinit: src
+	$(SMAKEDC) $(PAR_MAKE) docinit
+
+# Just build documentation
+redoc:
+	$(SMAKEDC) $(PAR_MAKE) doc
+
+
+###################################
+# Clean up.
+
+distclean:
+	@echo "--- Cleaning project out. "; \
+	$(RM) -rf $(ROOTDIR)/* ; \
+	$(RM) -rf $(LOCALTMP)/*
+
+###############################################
+# Help
+
+defs:
+	@$(PAGER) $(QMAKE_SUPPORT)/Defs.txt
+
+defs.mk:
+	@echo "Can't find defs.mk in current directory, aborting. ";
+	@echo "Use 'qm defs' for more information. ";
+
+
+help:
+	@$(PAGER) $(QMAKE_SUPPORT)/Help.txt
+
+.DEFAULT:
+	@echo
+	@echo Unknown target: $@
+	@echo
+	@$(PAGER) $(QMAKE_SUPPORT)/Help.txt
+	@echo QMake aborted owing to unknown target: $@
+
+$(PROJECT_OUT)/Config.Project:
+	@if [ X$(QMAKE_INFO) != X ]; then echo No Config.Project - Using default settings; fi
+

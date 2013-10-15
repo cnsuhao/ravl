@@ -1,0 +1,72 @@
+# This file is part of QMake, Quick Make Utility
+# Copyright (C) 2001-12,  University of Surrey.
+# This code may be redistributed under the terms of the GNU Lesser
+# General Public License (LGPL). See the lgpl.licence file for details or
+# see http://www.gnu.org/copyleft/lesser.html
+# file-header-ends-here
+
+
+
+# Instructions.
+# -------------
+#
+# This pro-forma file may be used to create a .def file to allow the use of an
+# external library in a QMake project. To use this file, simply replace all
+# ocurrences of SKELETON_ with an appropriate identifier for your external
+# library. You should then save the modified file as XX.def where XX is the
+# identifier that you chose to use. Finally, add a EXTERNALLIBS=XX entry (once
+# again, where XX is your chosen identifier) to the defs.mk file in the current
+# directory.
+#
+# When you wish to use the external library from your code, simply add the XX
+# identifier to the appropriate PROGLIBS, USESLIBS or TESTLIBS setting in the
+# defs.mk file for the code that will use the external library.
+#
+# As can be seen from studying this file, the standard mechanism used here
+# relies on the configuration variables XX_LIBS and XX_CFLAGS (for your
+# identifier, XX) being defined. These should be set in your Config.Project
+# file. They should be set to the options needed to compile with the external
+# library that you are attmepting to use. If the external library supports the
+# pkg-config utility, you may determine what the required setting for XX_LIBS
+# is by issuing the command:
+#
+#        pkg-config --libs /path/to/external/libs/pkgconfig/file
+#
+# and determine the setting for XX_CFLAGS by issuing the command:
+#
+#       pkg-config --cflags /path/to/external/libs/pkgconfig/file
+#
+#
+# If you wish, when you create your new .def file, you may remove this
+# Instructions comment and all of the following illustrative comments. Please
+# retain the file header.
+
+
+
+# The following two lines provide a guard to stop the file being included multiple times
+ifndef SKELETON_DEF
+
+  SKELETON_DEF = 1
+
+
+  # The EXELIB variable instructs QMake of the libraries that should be linked
+  # in when building the current program. The following line prepends the
+  # existing list of libraries with the libraries associated with your external
+  # library. It relies on the actual values being defined in the Config.Project
+  # file as the initial setting of the XXX_LIBS variable (where XX is the
+  # identifier you choose to to identify the external library with). You should
+  # ensure that the Config.Project file includes the XXX_LIBS=... setting that
+  # is appropriate for your machine/external library configuration.
+  EXELIB := $(SKELETON_LIBS) $(EXELIB)
+
+  # The INCLUDES variable instructs QMake where to locate the header files
+  # associated with the external library. It relies on the actual values being
+  # defined in the XX_CFLAGS variable (where XX is the identifier you choose to
+  # use to identify the external library). This variable must be defined in your
+  # Config.Project file.
+  INCLUDES += $(SKELETON_CFLAGS)
+
+
+
+# close the include guard
+endif 

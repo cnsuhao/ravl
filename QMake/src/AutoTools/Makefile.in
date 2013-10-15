@@ -1,0 +1,594 @@
+# @configure_input@
+# This file is part of QMake, Quick Make System
+# Copyright (C) 2011-13, University of Surrey
+# This code may be redistributed under the terms of the GNU General
+# Public License (GPL). See the gpl.licence file for details or
+# see http://www.gnu.org/copyleft/gpl.html
+
+# JFi:To Do: Add StageDoc InstallDoc
+
+
+# Initial set-up
+
+# Include QMake configuration to pick up local tool definitions (MKDIR_P, etc)
+include @abs_top_builddir@/Config.QMake
+
+# Include site-tailored standard GNU installation variables
+include @abs_top_builddir@/Targets.QMake
+
+# Define the staging area (the location of the intermediate, configured but 
+# un-installed, QMake).
+#
+ifndef $(STAGING)
+  STAGING=@abs_builddir@
+endif
+# This variable is also used in combination with setting bindir, datadir, et al
+# to provide a local copy for building any particular project when QMake is not
+# currently installed. In this situation, the project build process will run
+# something of the form:
+#
+#     make -f $(PKG_HOME)/QMake/Makefile DESTDIR=staging
+#            bindir=$(PKG_HOME)/local/QMake/bin
+#               datadir=$(PKG_HOME)/local
+#                  STAGING=$(PKG_HOME)/local/QMake
+#                     sysconfdir=$(PKG_HOME)
+#
+# DESTDIR=staging is neccessary to prevent make complaining because this 
+# effectivly sets the staging and installation targets to be the same. This is
+# not otherwise as issue as we only need to perform the staging stage, not the
+# install phase. As data files are automatically placed in a QMake subdirectory
+# there is no trailing /QMake on the setting for datadir. As the main config
+# files (Config.QMake & Targets.QMake) are not recreated under the staging
+# directory, sysconfdir is set to $(PKG_DIR) to pick up the original files 
+# created by QMake's configure process (in $(PKG_HOME)/QMake as we always append
+# /QMake to all installation paths execp bindir)
+
+# Location of the QMake source
+ifndef $(SRC)
+  SRC=@abs_srcdir@/src
+endif
+
+
+# Lists of QMake files requiring staging and installation. Most of these lists
+# are calculated from the files supplied as part of the distribution but some
+# (notibly the config files) need to be explicitly listed here and manually
+# maintained if new files are added to QMake.
+
+
+# Determine the list of QMake makefiles
+#
+# -  List all *.mk.src makefiles in the QMake Makefiles directories (generic
+#    makefiles in $(SRC)/Makefiles and project specific makefiles under the
+#    $(SRC)/Projects/$(PKG_NAME)/Makefiles directory). Strip the leading $(SRC)
+#    and the trailing .src from the pathnames.
+ALL_MAKEFILES=$(patsubst %.src,%,$(patsubst $(SRC)/%,%,$(wildcard $(SRC)/Makefiles/*.mk.src) $(wildcard $(SRC)/Projects/*/Makefiles/*.mk.src)))
+
+
+#  Specify the list of AutoBuild config files
+#
+AUTOBUILD_CFGFILES=AutoBuild.sample.conf
+
+#  Determine the list of AutoBuild Perl scripts
+#
+# -  List all *.pl.src utilities in the QMake AutoBuild directory. Strip the
+#    leading $(SRC)/AutoBuild and trailing .src from the pathnames.
+AUTOBUILD_PERL=$(patsubst $(SRC)/AutoBuild/%.src,%,$(wildcard $(SRC)/AutoBuild/*.pl.src))
+
+# Determine the list of AutoBuild shell scripts
+#
+# -  List all shell utilities in the QMake AutoBuild directory (*.sh.src,
+#    *.csh.src and *.cshrc.src). Strip the leading $(SRC)/AutoBuild and trailing
+#    .src from the pathnames.
+AUTOBUILD_SCRIPTS=$(patsubst $(SRC)/AutoBuild/%.src,%,$(wildcard $(SRC)/AutoBuild/*.sh.src) $(wildcard $(SRC)/AutoBuild/*.csh.src) $(wildcard $(SRC)/AutoBuild/*.cshrc.src))
+
+# Determine the list of QMake compiled utilities
+#
+# -  List all the C and C++ utilities in the QMake Utils directory. Strip the
+#    leading $(SRC)/Utils and tailing extension from the pathnames.
+COMPILED_UTILS=$(patsubst $(SRC)/Utils/%.c,%,$(wildcard $(SRC)/Utils/*.c)) $(patsubst $(SRC)/Utils/%.cc,%,$(wildcard $(SRC)/Utils/*.cc))
+
+# Specify the list of QMake default package config files
+#
+DEFAULT_PKG_CFGFILES=Config.Default
+
+# Determine the list of QMake Perl utilities
+#
+# -  List all *.pl.src utilities in the QMake Utils directory. Strip the
+#    leading $(SRC)/Utils and trailing .src from the pathnames.
+PERL_UTILS=$(patsubst $(SRC)/Utils/%.src,%,$(wildcard $(SRC)/Utils/*.pl.src))
+
+
+# Specify the list of QMake config files
+#
+QMAKE_CFGFILES=Config.QMake Targets.QMake
+
+
+# Determine the list of QMake shell scripts
+#
+# -  List all shell utilities in the QMake Utils directory. Strip the leading 
+#    $(SRC)/Utils and the trailing .sh.src from the pathnames. 
+SHELL_UTILS=$(patsubst $(SRC)/Utils/%.sh.src,%,$(wildcard $(SRC)/Utils/*.sh.src))
+
+# Determine the list of QMake miscellaneous support files
+#
+# -  List all files in the QMake Support directory other than the Perl and shell
+#    scripts and any defs.mk file. Strip the leading $(SRC) from the pathname.
+SUPPORT_FILES=$(filter-out Support/defs.mk $(patsubst %,%.src,$(SUPPORT_PERL) $(SUPPORT_SCRIPTS)), $(patsubst $(SRC)/%,%,$(wildcard $(SRC)/Support/*)))
+
+# Determine the list of QMake Perl support utilities
+#
+# -  List all *.pl.src utilities in the QMake Support directory. Strip the
+#    leading $(SRC) and trailing .src from the pathnames.
+SUPPORT_PERL=$(patsubst $(SRC)/%.src,%,$(wildcard $(SRC)/Support/*.pl.src))
+
+# Determine the list of QMake support scripts
+#
+# -  List all shell utilities in the QMake Support directory (*.sh.src,
+#    *.csh.src and *.cshrc.src). Strip the leading $(SRC) and trailing .src from
+#    the pathnames.
+SUPPORT_SCRIPTS=$(patsubst $(SRC)/%.src,%,$(wildcard $(SRC)/Support/*.sh.src) $(wildcard $(SRC)/Support/*.csh.src) $(wildcard $(SRC)/Support/*.cshrc.src))
+
+
+# Standard sed substitution for configuring embedded paths
+#
+SED_SUBSTITUTION=$(SED) \
+            -e 's![@]MAKE[@]!$(MAKE)!g' \
+            -e 's![@]PERL[@]!$(PERL)!g' \
+	    -e 's![@]QMAKE_CONFIGFILES[@]!$(sysconfdir)/QMake!g' \
+            -e 's![@]QMAKE_MAKEFILES[@]!$(datadir)/QMake/Makefiles!g' \
+	    -e 's![@]QMAKE_PROJECTS[@]!$(datadir)/QMake/Projects!g' \
+	    -e 's![@]QMAKE_SUPPORT[@]!$(datadir)/QMake/Support!g' \
+	    -e 's![@]QMAKE_UTILS[@]!$(bindir)!g' \
+	    -e 's![@]SHELL[@]!/bin/sh!g'
+
+
+
+# Limit output of what make is doing unless the user requests it
+ifdef QMAKE_INFO
+  SHOWIT = 
+else
+  SHOWIT = @
+endif
+
+
+
+
+# Main body of Makefile
+
+
+
+# Default target just prepares the staged version
+default: StageQMake
+	@:
+
+
+# Targets for preparing QMake source in the staging area
+
+StageQMake: ProcessMakefiles StageUtils StageSupport StageDefaults StageAB StagePkgConf
+	@:
+# The configuration files do not get staged as install directly uses the live 
+# version (these files are unmodified by the staging process so a second copy
+# is unnecessary and, in fact, undesirable)
+# 
+
+
+# Recipes for creating the staging area for the pre-install build of QMake
+#
+$(STAGING)/AutoBuild:
+	$(MKDIR_P) $@
+
+$(STAGING)/bin:
+	$(MKDIR_P) $@
+
+$(STAGING)/lib/pkgconfig:
+	$(MKDIR_P) $@
+
+$(STAGING)/Projects/Skeleton:
+	$(MKDIR_P) $@
+
+$(STAGING)/Support:
+	$(MKDIR_P) $@
+
+
+
+# ProcessMakefiles
+#      - turn source copy into deployable makefiles held in the staging area
+ProcessMakefiles:$(patsubst %,$(STAGING)/%,$(ALL_MAKEFILES))
+	@:
+
+# Define how to make the staged copy of each makefile
+#
+# - Set QMAKE_xxx to the final installation path ($(datadir)/Makefiles).
+#   We cannot use the standard installation variable in the makefile
+#   because if we did, QMake would start looking for its makefiles in 
+#   the datadir of the project it was building rather than its own 
+#   deployed directory
+#
+define MAKE_MAKEFILE
+$(STAGING)/$(1): $(SRC)/$(1).src
+	$(MKDIR_P) $(STAGING)/$(dir $(1))
+	$(SED_SUBSTITUTION) $(SRC)/$(1).src > $(STAGING)/$(1)
+endef
+
+$(foreach makefile,$(ALL_MAKEFILES),$(eval $(call MAKE_MAKEFILE,$(makefile))))
+
+
+
+# Stage Utils
+#      - Copy scripts across and build compiled binaries into the staging area
+StageUtils: $(STAGING)/bin BuildUtils StagePerl StageShScripts
+	@:
+
+
+
+# Build compiled utilities (into staging area)
+BuildUtils: $(STAGING)/bin $(patsubst %,$(STAGING)/bin/%,$(COMPILED_UTILS))
+	@:
+
+$(STAGING)/bin/%: $(SRC)/Utils/%.c
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(INCLUDES) $? -o $@
+
+$(STAGING)/bin/%: $(SRC)/Utils/%.cc
+	$(CXX) $(CCPPFLAGS) $(CCFLAGS) $(INCLUDES) $? -o $@
+
+
+
+
+# Stage Perl scripts
+StagePerl: $(STAGING)/bin $(patsubst %,$(STAGING)/bin/%,$(PERL_UTILS))
+	@:
+
+$(STAGING)/bin/%.pl: $(SRC)/Utils/%.pl.src
+	$(SED_SUBSTITUTION) $< > $@
+
+
+
+
+# Stage shell scripts
+StageShScripts: $(STAGING)/bin $(patsubst %,$(STAGING)/bin/%,$(SHELL_UTILS))
+	@:
+
+$(STAGING)/bin/%: $(SRC)/Utils/%.sh.src 
+	$(SED_SUBSTITUTION) $< > $@
+
+
+
+
+
+# Stage QMake support files
+StageSupport: $(STAGING)/Support $(patsubst %,$(STAGING)/%,$(SUPPORT_FILES) $(SUPPORT_PERL) $(SUPPORT_SCRIPTS))
+	@:
+
+$(STAGING)/Support/%: $(SRC)/Support/%
+	$(INSTALL_DATA) $< $@
+
+$(STAGING)/Support/%.csh: $(SRC)/Support/%.csh.src
+	$(SED_SUBSTITUTION) $< > $@
+
+$(STAGING)/Support/%.cshrc: $(SRC)/Support/%.cshrc.src
+	$(SED_SUBSTITUTION) $< > $@
+
+$(STAGING)/Support/%.pl: $(SRC)/Support/%.pl.src
+	$(SED_SUBSTITUTION) $< > $@
+
+$(STAGING)/Support/%.sh: $(SRC)/Support/%.sh.src
+	$(SED_SUBSTITUTION) $< > $@
+
+
+
+
+# Stage default client-build settings
+StageDefaults: $(STAGING)/Projects/Skeleton $(patsubst %,$(STAGING)/Projects/Skeleton/%,$(DEFAULT_PKG_CFGFILES))
+
+$(STAGING)/Projects/Skeleton/%: $(SRC)/Projects/Skeleton/%
+	$(INSTALL_DATA) $< $@
+
+
+
+# Stage AutoBuild
+StageAB: $(STAGING)/AutoBuild $(patsubst %,$(STAGING)/AutoBuild/%,$(AUTOBUILD_CFGFILES) $(AUTOBUILD_PERL) $(AUTOBUILD_SCRIPTS))
+	@:
+
+$(STAGING)/AutoBuild/%: $(SRC)/AutoBuild/%
+	$(INSTALL_DATA) $< $@
+
+$(STAGING)/AutoBuild/%.csh: $(SRC)/AutoBuild/%.csh.src
+	$(SED_SUBSTITUTION) $< > $@
+
+$(STAGING)/AutoBuild/%.cshrc: $(SRC)/AutoBuild/%.cshrc.src
+	$(SED_SUBSTITUTION) $< > $@
+
+$(STAGING)/AutoBuild/%.pl: $(SRC)/AutoBuild/%.pl.src
+	$(SED_SUBSTITUTION) $< > $@
+
+$(STAGING)/AutoBuild/%.sh: $(SRC)/AutoBuild/%.sh.src
+	$(SED_SUBSTITUTION) $< > $@
+
+
+
+
+# Stage pkg-config file
+StagePkgConf: $(STAGING)/lib/pkgconfig $(STAGING)/lib/pkgconfig/QMake.pc
+	@:
+
+$(STAGING)/lib/pkgconfig/QMake.pc: @abs_top_builddir@/Config.QMake
+	@echo prefix=$(prefix) > $@
+	@echo datarootdir=$(datarootdir) >> $@
+	@echo datadir=$(datadir) >> $@
+	@echo sysconfdir=$(sysconfdir) >> $@
+	@echo libdir=$(libdir) >> $@
+	@echo >> $@
+	@echo Name: QMake >> $@
+	@echo Version: @PACKAGE_VERSION@ >> $@
+	@echo Description: QuickMake flexible compilation aid and build tool >> $@
+	@echo URL: http://sourceforge.net/projects/quickmake >> $@
+	@echo >> $@
+
+
+
+
+
+
+# Targets for installing QMake
+
+install: InstallPreCheck InstallConfig InstallMakefiles InstallUtils InstallSupport InstallDefaults InstallAB InstallPkgConf
+# JFi:To Do: Add InstallDoc
+
+install-strip:
+	$(MAKE) STRIP_SWITCH="-s" install
+
+uninstall: UinsConfig UinsMakefiles UinsUtils UinsSupport UinsDefaults UinsAB UinsPkgConf
+
+
+# Recipes for creating the directories to receive the install
+# (minus the directories to receive the makefiles as these are created inlilne) 
+$(DESTDIR)$(bindir):
+	$(MKDIR_P) $@
+
+$(DESTDIR)$(datadir)/QMake/Projects/Skeleton:
+	$(MKDIR_P) $@
+
+$(DESTDIR)$(datadir)/QMake/Support:
+	$(MKDIR_P) $@
+
+$(DESTDIR)$(libdir)/pkgconfig:
+	$(MKDIR_P) $@
+
+$(DESTDIR)$(sysconfdir)/QMake:
+	$(MKDIR_P) $@
+
+
+
+# Check if we are updating over an existing installation. Warn if we are
+# updating, ask for confirmation if we are downgrading.
+InstallPreCheck:
+	$(SHOWIT)if ( test -f $(DESTDIR)$(libdir)/pkgconfig/QMake.pc ) ;\
+         then \
+            InstalledVer=`$(PKG_CONFIG) --modversion $(DESTDIR)$(libdir)/pkgconfig/QMake.pc 2>/dev/null` ;\
+            InstalledMajor=`echo $$InstalledVer | $(SED) -n '/^\([0-9][0-9]*\)\.\([0-9][0-9]*\)\.\([0-9][0-9]*\) *$$/s//\1/p'` ;\
+            InstalledMinor=`echo $$InstalledVer | $(SED) -n '/^\([0-9][0-9]*\)\.\([0-9][0-9]*\)\.\([0-9][0-9]*\) *$$/s//\2/p'` ;\
+            InstalledPatch=`echo $$InstalledVer | $(SED) -n '/^\([0-9][0-9]*\)\.\([0-9][0-9]*\)\.\([0-9][0-9]*\) *$$/s//\3/p'` ;\
+            NewVer=`$(PKG_CONFIG) --modversion $(STAGING)/lib/pkgconfig/QMake.pc 2>/dev/null` ;\
+            NewMajor=`echo $$NewVer | $(SED) -n '/^\([0-9][0-9]*\)\.\([0-9][0-9]*\)\.\([0-9][0-9]*\) *$$/s//\1/p'` ;\
+            NewMinor=`echo $$NewVer | $(SED) -n '/^\([0-9][0-9]*\)\.\([0-9][0-9]*\)\.\([0-9][0-9]*\) *$$/s//\2/p'` ;\
+            NewPatch=`echo $$NewVer | $(SED) -n '/^\([0-9][0-9]*\)\.\([0-9][0-9]*\)\.\([0-9][0-9]*\) *$$/s//\3/p'` ;\
+            if ( test $$NewMajor -gt $$InstalledMajor \
+                     || ( test $$NewMajor -eq $$InstalledMajor \
+                               && ( test $$NewMinor -gt $$InstalledMinor \
+                                         || ( test $$NewMinor -eq $$InstalledMinor -a $$NewPatch -ge $$InstalledPatch )))) ;\
+            then \
+               printf "Updating existing QMake (version $$InstalledVer) to newly built version of $$NewVer\n" ;\
+            else \
+               printf "Are you sure you want to downgrade QMake from version $$InstalledVer to $$NewVer ?\n" ;\
+               printf "Type yes to install over the newer revision : " ;\
+               read Response ;\
+               if ( test "x$$Response" != xyes ) ;\
+               then \
+                  printf "Installation aborted. To install everything except QMake, please type:\n" ;\
+                  printf " make installProject\n" ;\
+                  exit 1 ;\
+               fi ;\
+            fi ;\
+         fi
+
+
+# Define how to install the config files for QMake
+InstallConfig: $(DESTDIR)$(sysconfdir)/QMake $(patsubst %,$(DESTDIR)$(sysconfdir)/QMake/%,$(QMAKE_CFGFILES))
+
+$(DESTDIR)$(sysconfdir)/QMake/%: @abs_top_builddir@/%
+	$(INSTALL_DATA)  $< $@
+
+UinsConfig:
+	$(if $(QMAKE_CFGFILES),$(RM) -f $(patsubst %,$(DESTDIR)$(sysconfdir)/QMake/%,$(QMAKE_CFGFILES)))
+
+
+
+InstallMakefiles: $(patsubst %,$(DESTDIR)$(datadir)/QMake/%,$(ALL_MAKEFILES)) 
+
+# Define how to install each individual makefile
+define INSTALL_MAKEFILE
+$(DESTDIR)$(datadir)/QMake/$(1): $(STAGING)/$(1)
+	$(MKDIR_P) $(DESTDIR)$(datadir)/QMake/$(dir $(1))
+	$(INSTALL_DATA) $(STAGING)/$(1) $(DESTDIR)$(datadir)/QMake/$(1)
+endef
+
+$(foreach makefile,$(ALL_MAKEFILES),$(eval $(call INSTALL_MAKEFILE,$(makefile))))
+
+UinsMakefiles:
+	$(if $(ALL_MAKEFILES),$(RM) -f $(patsubst %,$(DESTDIR)$(datadir)/QMake/%,$(ALL_MAKEFILES)),@:)
+
+
+# Install the QMake executables
+InstallUtils: InstallBuiltUtils InstallPerl InstallScripts
+	@:
+
+UinsUtils:
+	$(if $(COMPILED_UTILS) $(PERL_UTILS) $(SHELL_UTILS),$(RM) -f $(patsubst %,$(DESTDIR)$(bindir)/%,$(COMPILED_UTILS) $(PERL_UTILS) $(SHELL_UTILS)),@:)
+
+
+InstallBuiltUtils: $(DESTDIR)$(bindir) $(patsubst %,$(DESTDIR)$(bindir)/%,$(COMPILED_UTILS))
+	@:
+
+InstallPerl: $(DESTDIR)$(bindir) $(patsubst %,$(DESTDIR)$(bindir)/%,$(PERL_UTILS))
+	@:
+
+InstallScripts: $(DESTDIR)$(bindir) $(patsubst %,$(DESTDIR)$(bindir)/%,$(SHELL_UTILS))
+	@:
+
+$(DESTDIR)$(bindir)/%: $(STAGING)/bin/%
+	$(if $(filter $(@F),$(COMPILED_UTILS)),$(INSTALL_PROGRAM) $(STRIP_SWITCH) $< $@,$(INSTALL_PROGRAM) $< $@)
+
+
+
+
+
+
+# Install QMake support files
+InstallSupport: $(DESTDIR)$(datadir)/QMake/Support $(patsubst %,$(DESTDIR)$(datadir)/QMake/%,$(SUPPORT_FILES) $(SUPPORT_PERL) $(SUPPORT_SCRIPTS))
+	@:
+
+$(DESTDIR)$(datadir)/QMake/Support/%: $(STAGING)/Support/%
+	$(INSTALL_DATA) $< $@
+
+$(DESTDIR)$(datadir)/QMake/Support/%.csh: $(STAGING)/Support/%.csh
+	$(INSTALL_PROGRAM) $< $@
+
+$(DESTDIR)$(datadir)/QMake/Support/%.cshrc: $(STAGING)/Support/%.cshrc
+	$(INSTALL_PROGRAM) $< $@
+
+$(DESTDIR)$(datadir)/QMake/Support/%.pl: $(STAGING)/Support/%.pl
+	$(INSTALL_PROGRAM) $< $@
+
+$(DESTDIR)$(datadir)/QMake/Support/%.sh: $(STAGING)/Support/%.sh
+	$(INSTALL_PROGRAM) $< $@
+
+
+UinsSupport:
+	$(if $(SUPPORT_FILES) $(SUPPORT_PERL) $(SUPPORT_SCRIPTS),$(RM) -f $(patsubst %,$(DESTDIR)$(datadir)/QMake/%,$(SUPPORT_FILES) $(SUPPORT_PERL) $(SUPPORT_SCRIPTS)),@:)
+
+
+# Install default client-build settings
+InstallDefaults: $(DESTDIR)$(datadir)/QMake/Projects/Skeleton $(patsubst %,$(DESTDIR)$(datadir)/QMake/Projects/Skeleton/%, $(DEFAULT_PKG_CFGFILES))
+
+$(DESTDIR)$(datadir)/QMake/Projects/Skeleton/%: $(STAGING)/Projects/Skeleton/%
+	$(INSTALL_DATA) $< $@
+
+UinsDefaults:
+	$(if $(DEFAULT_PKG_CFGFILES),$(RM) -f $(patsubst %,$(DESTDIR)$(datadir)/QMake/Projects/Skeleton/%, $(DEFAULT_PKG_CFGFILES)),@:)
+
+
+
+# Install AutoBuild
+InstallAB: InstallABConfig InstallABProgs
+
+
+UinsAB: UinsABConfig UinsABProgs
+
+
+InstallABConfig: $(DESTDIR)$(sysconfdir)/QMake $(patsubst %,$(DESTDIR)$(sysconfdir)/QMake/%,$(AUTOBUILD_CFGFILES))
+	@:
+
+$(DESTDIR)$(sysconfdir)/QMake/%: $(STAGING)/AutoBuild/%
+	$(INSTALL_DATA) $< $@
+
+
+UinsABConfig:
+	$(if $(AUTOBUILD_CFGFILES),$(RM) -f $(patsubst %,$(DESTDIR)$(sysconfdir)/QMake/%,$(AUTOBUILD_CFGFILES)),@:)
+
+InstallABProgs: $(DESTDIR)$(bindir) $(patsubst %,$(DESTDIR)$(bindir)/%,$(AUTOBUILD_PERL) $(AUTOBUILD_SCRIPTS))
+
+$(DESTDIR)$(bindir)/%: $(STAGING)/AutoBuild/%
+	$(INSTALL_PROGRAM) $< $@
+
+UinsABProgs:
+	$(if $(AUTOBUILD_PERL) $(AUTOBUILD_SCRIPTS),$(RM) -f $(patsubst %,$(DESTDIR)$(bindir)/%,$(AUTOBUILD_PERL) $(AUTOBUILD_SCRIPTS)),@:)
+
+
+
+
+# Install pkg-config file
+InstallPkgConf: $(DESTDIR)$(libdir)/pkgconfig $(DESTDIR)$(libdir)/pkgconfig/QMake.pc
+	@:
+ 
+$(DESTDIR)$(libdir)/pkgconfig/QMake.pc: $(STAGING)/lib/pkgconfig/QMake.pc
+	$(INSTALL_DATA) $< $@
+
+UinsPkgConf:
+	$(RM) -f $(DESTDIR)$(libdir)/pkgconfig/QMake.pc
+
+
+
+.PHONY: BuildUtils default info install InstallAB InstallABConfig \
+ InstallABProgs InstallBuiltUtils InstallConfig InstallDefaults \
+ InstallMakefiles InstallPerl InstallPkgConf InstallPreCheck InstallScripts \
+ InstallSupport InstallUtils ProcessMakefiles StageAB StageDefaults StagePerl \
+ StagePkgConf StageQMake StageShScripts StageSupport StageUtils uninstall \
+ UinsAB UinsABConfig UinsABProgs UinsConfig UinsDefaults UinsMakefiles \
+ UinsPkgConf UinsSupport UinsUtils
+
+
+# Basic debug information
+info:
+	@echo
+	@echo Effective Makefile settings...
+	@echo
+	@echo Source directory:
+	@echo "    [ $(SRC) ]"
+	@echo
+	@echo Staging directory:
+	@echo "    [ $(STAGING) ]"
+	@echo
+	@echo AutoBuild config files:
+	@echo "    [ $(AUTOBUILD_CFGFILES) ]"
+	@echo
+	@echo AutoBuild Perl scripts:
+	@echo "    [ $(AUTOBUILD_PERL) ]"
+	@echo
+	@echo AutoBuild shell script files:
+	@echo "    [ $(AUTOBUILD_SCRIPTS) ]"
+	@echo
+	@echo Compiled utilities list:
+	@echo "    [ $(COMPILED_UTILS) ]"
+	@echo
+	@echo Package default config files:
+	@echo "    [ $(DEFAULT_PKG_CFGFILES) ]"
+	@echo
+	@echo List of Makefiles:
+	@echo "    [ $(ALL_MAKEFILES) ]"
+	@echo
+	@echo Perl utilities:
+	@echo "    [ $(PERL_UTILS) ]"
+	@echo
+	@echo QMake config files:
+	@echo "    [ $(QMAKE_CFGFILES) ]"
+	@echo
+	@echo Shell scripts:
+	@echo "    [ $(SHELL_UTILS) ]"
+	@echo
+	@echo Misc support files:
+	@echo "    [ $(SUPPORT_FILES) ]"
+	@echo
+	@echo Support Perl scripts:
+	@echo "    [ $(SUPPORT_PERL) ]"
+	@echo
+	@echo Support shell scripts:
+	@echo "    [ $(SUPPORT_SCRIPTS) ]"
+	@echo
+	@echo GNU standard installation variables:
+	@echo "    DESTDIR         [ $(DESTDIR) ]"
+	@echo "    prefix          [ $(prefix) ]"
+	@echo "    datarootdir     [ $(datarootdir) ]"
+	@echo "    datadir         [ $(datadir) ]"
+	@echo "    sysconfdir      [ $(sysconfdir) ]"
+	@echo "    sharedstatedir  [ $(sharedstatedir) ]"
+	@echo "    localstatedir   [ $(localstatedir) ]"
+	@echo "    includedir      [ $(includedir) ]"
+	@echo "    oldincludedir   [ $(oldincludedir) ]"
+	@echo "    exec_prefix     [ $(exec_prefix) ]"
+	@echo "    bindir          [ $(bindir) ]"
+	@echo "    libdir          [ $(libdir) ]"
+	@echo "    libexecdir      [ $(libexecdir) ]"
+	@echo "    sbindir         [ $(sbindir) ]"
+	@echo "    docdir          [ $(docdir) ]"
+	@echo
+

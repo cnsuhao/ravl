@@ -1,0 +1,900 @@
+dnl This file is part of QMake, Quick Make System
+dnl Copyright (C) 2011-3, University of Surrey
+dnl This code may be redistributed under the terms of the GNU General
+dnl Public License (GPL). See the gpl.licence file for details or
+dnl see http://www.gnu.org/copyleft/gpl.html
+dnl
+dnl file-header-ends-here
+
+
+
+dnl QM_DEFINE_EXTLIB_CC
+dnl
+dnl Macro to define all helper libs that require a manual, compilation, check
+dnl to see if they are available . Will declare the --with-<lib> command-line
+dnl switch and create the simple --help text. The command-line switch will 
+dnl support simple Yes/No (upper, lower and sentence case accepted; plus Y,N)
+dnl to explicitly en/disable use of the library; check (C, Ck, or Check etc.)
+dnl to ask to utilise the library if available (the default option); and a
+dnl path  to a directory where a specific version of the library resides. The
+dnl macro also declare the --with-<lib>-library and --with-<lib>-include
+dnl cmd-line switches (and their help text). These two switches accept a path
+dnl to the relevant support file from the external library (the library and
+dnl header files respectivly). The include path must point to a directory
+dnl while the path to the library may just be the library's name (minus an
+dnl extension, with or without the lib prefix); a path to the containing
+dnl directory; or both aspects in the form 'path/name'. This method of
+dnl library path specification also applies to --with-<lib>. The switch,
+dnl --with-<lib>-pkgconf, is also created to allow the user to ask configure
+dnl to use pkg-config with this particular helper package. The value of
+dnl --with-<lib>-pkgconf must be set to the full path of the relevant
+dnl pkg-config file.
+dnl
+dnl Macro parameters are:
+dnl       p1: QMake name for library. This is used for naming the cmd-line
+dnl           switch (LIB => --with-LIB, --with-LIB-include, etc.). It 
+dnl           should be the name QMake expects the RESOURCES string to take
+dnl           to enable the library's functionality in the client project. It
+dnl           will also be the name used for the LIB_CFLAGS and LIB_LIBS used
+dnl           in the relevant .def file and Config.Project
+dnl       p2: Fragment of code to verify that the library can be successfully
+dnl           linked to. Usually this is just a single call to a function
+dnl           declared by the external library. However, some libraries need
+dnl           a little more set up - such as any library where we need to
+dnl           test for a C++ class; or the Math library where some compilers 
+dnl           perform extra prototype checking on those functions.
+dnl       p3: Name of all prerequisite libraries that this one depends on
+dnl           Specify as a space-separated list of QMake names
+dnl       p4: Name(s) of the library as specified on the link line i.e. in
+dnl           -lXXXX -lYYYY form
+dnl       p5: Name of any header files provided by the library package. It is
+dnl           usually sufficient to only test for one file unless it is known
+dnl           that incomplete subsets of the header files are regularly found
+dnl       p6: Language in which to perform the test compilation/link. This is 
+dnl           usually the language of the API of the external library.
+dnl           Currently only C and C++ are supported languages for this setting
+dnl
+dnl Global variables used:
+dnl
+dnl   All variables listed with a <lib> in their name are created with the
+dnl   <lib> being replaced by the QMake name of the package (the name passed
+dnl   into this macro as the first parameter). For example,the OpenCV package
+dnl   will have variables named with_OpenCV; with_OpenCV; etc.
+dnl
+dnl       with_<Lib>                 Value of similarly named cmd-line switch
+dnl                                  Enables (actually requires) the use of
+dnl                                  the particular library. Can also be used
+dnl                                  to specify the location of the library
+dnl                                  and header files when the specific
+dnl                                  cmd-line switches are not used (ideal if
+dnl                                  both file types reside in the same
+dnl                                  directory).
+dnl       with_<Lib>_include         Value of similarly named cmd-line switch
+dnl                                  Specifies where the header files for the
+dnl                                  library reside.
+dnl       with_<Lib>_library         Value of similarly named cmd-line switch
+dnl                                  Specifies where the library file of the
+dnl                                  library resides. Can be used to alter
+dnl                                  the name of the library to be used.
+dnl       with_<Lib>_pkgconf         Value of similarly named cmd-line switch
+dnl                                  Specifies what name pkg-config will know
+dnl                                  the library as.
+dnl       with_<Lib>_virtual         Flag specifying if the library in
+dnl                                  question is a virtual package set.
+dnl                                  Initialised to no in this macro. 
+dnl       use_<Lib>                  Flag specifying useage of library,
+dnl                                  primed initially by --with-<Lib> or
+dnl                                  as part of a dependancy check. 
+dnl       with_<Lib>_libpath         Path to the location of the library
+dnl       with_<Lib>_lnklibs         List of the library files (in -lXXXX 
+dnl                                  form).
+dnl       with_<Lib>_hdr             Name(s) of the library package's headers
+dnl       with_<Lib>_inc             Path to the library's headers
+dnl       with_<Lib>_tstcd           Code with which to test that the external
+dnl                                  library will link.
+dnl       with_<Lib>_lang            Language of the with_<lib>_tstcd linkage
+dnl                                  test code.
+dnl       with_<Lib>_prq             Space separated list of pre-requisites
+dnl                                  of the library.
+dnl       <lib>_CFLAGS               Substitution variable (variable that is
+dnl                                  output to the configuration file for the
+dnl                                  (QMake) client project (i.e. to the
+dnl                                  Config.Project file) that receives the
+dnl                                  CFLAGS required when compiling with the
+dnl                                  external library. This macros does not
+dnl                                  set this variable, merely declare it for
+dnl                                  substitution out to the configuration
+dnl                                  file.
+dnl       <lib>_LIBS                 Substitution variable that receives the
+dnl                                  link line settings needed to link with
+dnl                                  the <lib> package. This info is supplied
+dnl                                  as on the link line itself  i.e. library
+dnl                                  names are specified in -lX form and the
+dnl                                  setting may include -Lpath entries. This
+dnl                                  macros does not set this variable,
+dnl                                  merely declare it for substitution out
+dnl                                  to the configuration file.
+dnl       KnownLibs                  Appended with the QMake name for the
+dnl                                  library to maintain a list of all the
+dnl                                  external libraries known to the script.
+dnl       ConfiguredLibs             Appended with the QMake name for the
+dnl                                  library only if the user supplied a
+dnl                                  command-line option for the library.
+dnl                                  This variable maintains a list of all
+dnl                                  the external libraries known to the
+dnl                                  configure script.
+dnl       fallback_file              Intermediate variable, used for 
+dnl                                  extracting any file component from the
+dnl                                  --with-<Lib> flag for possible use if
+dnl                                  required to provide name details for
+dnl                                  one of the other cmd-line options (e.g.
+dnl                                  if --with-<Lib>-pkgconf=Y, the value
+dnl                                  of this variable can be used as the
+dnl                                  name of the pkg-config metafile). Also
+dnl                                  used when comparing settings between
+dnl                                  the different cmd-line options to check
+dnl                                  for consistency.
+dnl       fallback_path              Intermediate variable, used for 
+dnl                                  extracting any pathcomponent from the
+dnl                                  --with-<Lib> flag for possible use if
+dnl                                  required to provide pathdetails for
+dnl                                  one of the other cmd-line options. Also
+dnl                                  used in consistency checking.
+dnl       file                   } { Intermediate variable used in processing
+dnl       lib                    } { the cmd-line options.
+dnl       path                   }
+dnl       EXPR                       Standard substitution variable pointing
+dnl                                  to the UNIX expr command.
+dnl       SED                        Standard substitution variable pointing
+dnl                                  to the UNIX sed command.
+dnl
+AC_DEFUN([QM_DEFINE_EXTLIB_CC],
+         [AC_ARG_WITH([$1-pkgconf],
+                      [AS_HELP_STRING([--with-$1-pkgconf],
+                                      [Enable the $1 library package via pkg-config and declare the name by which the $1 library package is know to pkg-config]
+                                     )
+                      ],
+                      [case $with_$1_pkgconf in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                          with_$1_pkgconf=no
+                                          trace 4 --with-$1-pkgconf disabling pkg-config use
+                                          ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' | 'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                          AC_MSG_FAILURE([Asking to configure $1 via pkg-config but configure is unaware of the name of the DOTpc metadata file])
+                                          ;;
+                        * )               use_$1=yes
+                                          trace 4 --with-$1-pkgconf set to @<:@$with_$1_pkgconf@:>@
+                                          ;;
+                       esac
+                      ],
+                      [trace 4 No --with-$1-pkgconf specified
+                       with_$1_pkgconf=notset
+                      ]
+                     )
+          AC_ARG_WITH([$1],
+                      [AS_HELP_STRING([--with-$1],
+                                      [Enable functionality that relies on the $1 library @<:@default=check@:>@]
+                                     )
+                      ],
+                      [case $with_$1 in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                          use_$1=no
+                                          with_$1=no
+                                          ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                          use_$1=yes
+                                          with_$1=yes
+                                          ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                          use_$1=check
+                                          with_$1=check
+                                          ;;
+                        * )               use_$1=yes
+                                          ;;
+                       esac
+                      ],
+                      [trace 4 No --with-$1 specified
+                       with_$1=notset
+                      ]
+                     )
+          AC_ARG_WITH([$1-library],
+                      [AS_HELP_STRING([--with-$1-library],
+                                      [Declare the location of the $1 library and enable its functionality]
+                                     )
+                      ],
+                      [case "$with_$1_library" in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                          use_$1=no
+                                          with_$1_library=no
+                                          ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                          use_$1=yes
+                                          with_$1_library=yes
+                                          ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                          use_$1=check
+                                          with_$1_library=check
+                                          ;;
+                        * )               use_$1=yes
+                                          ;;
+                       esac
+                      ],
+                      [trace 4 No --with-$1-library specified
+                       with_$1_library=notset
+                      ]
+                     )
+          AC_ARG_WITH([$1-include],
+                      [AS_HELP_STRING([--with-$1-include],
+                                      [Declare the location of the $1 header files and enable their functionality]
+                                     )
+                      ],
+                      [case "$with_$1_include" in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                          use_$1=no
+                                          with_$1_include=no
+                                          ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                          use_$1=yes
+                                          with_$1_include=yes
+                                          ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                          use_$1=check
+                                          with_$1_include=check
+                                          ;;
+                        * )               use_$1=yes
+                                          ;;
+                       esac
+                      ],
+                      [trace 4 No --with-$1-include specified
+                       with_$1_include=notset
+                      ]
+                     )
+          # Having read the command-line options, check none are mutually
+          # exclusive or contradictory
+          #
+          # First test --with-$1 compatability with the rest
+          if ( test $with_$1 = no )
+          then
+             if ( test $with_$1_pkgconf != no && test $with_$1_pkgconf != notset )
+             then
+                # --with-$1-pkgconf=path (is neither no or notset and cannot
+                # be yes or check as they would have errored above.
+                AC_MSG_FAILURE([Asking to $1 via pkg-config but --with-$1 disabled it])
+             fi
+
+             if ( test "$with_$1_library" != no && test "$with_$1_library" != notset )
+             then
+                if ( test "$with_$1_library" = check )
+                then
+                   AC_MSG_WARN([--with-$1 specifically disables library but --with-$1-library])
+                   AC_MSG_WARN([asking to check for it; --with-$1-library ignored])
+                   use_$1=no
+                else
+                   # --with-$1-library is yes or points to the library
+                   AC_MSG_FAILURE([--with-$1-library asking to use $1 but --with-$1 disabled it])
+                fi
+              fi
+
+             if ( test "$with_$1_include" != no && test "$with_$1_include" != notset )
+             then
+                if ( test "$with_$1_include" = check )
+                then
+                   AC_MSG_WARN([--with-$1 specifically disables library but --with-$1-include])
+                   AC_MSG_WARN([asking to check for it; --with-$1-include ignored])
+                   use_$1=no
+                else
+                   # --with-$1-include is yes or points to the include
+                   # directory
+                   AC_MSG_FAILURE([--with-$1-include asking to use $1 but --with-$1 disabled it])
+                fi
+             fi
+
+          else 
+             # test --with-$1 != no
+
+             if ( test $with_$1 = check )
+             then
+                if ( test $with_$1_pkgconf != no && test $with_$1_pkgconf != notset )
+                then
+                   # --with-$1-pkgconf must point to the metafile
+                   AC_MSG_WARN([Explicitly asking for $1 via pkg-config but --with-$1 is])
+                   AC_MSG_WARN([asking to check for it; --with-$1 ignored.])
+                   use_$1=yes
+                fi
+
+                if ( test "$with_$1_library" != check && test "$with_$1_library" != notset )
+                then
+                   if ( test "$with_$1_library" = no )
+                   then
+                      AC_MSG_WARN([Asking to check for $1 via --with-$1 but --with-$1-library])
+                      AC_MSG_WARN([explicitly disables it; --with-$1 ignored.])
+                      use_$1=no
+                   else
+                      AC_MSG_WARN([Explicitly asking for $1 via --with-$1-library but --with-$1])
+                      AC_MSG_WARN([asking to check for it; --with-$1 ignored.])
+                      use_$1=yes
+                   fi
+                fi
+   
+                if ( test "$with_$1_include" != check && test "$with_$1_include" != notset )
+                then
+                   if ( test "$with_$1_include" = no )
+                   then
+                      AC_MSG_WARN([Asking to check for $1 via --with-$1 but --with-$1-include])
+                      AC_MSG_WARN([explicitly disables it; --with-$1 ignored.])
+                      use_$1=no
+                   else
+                      AC_MSG_WARN([Explicitly asking for $1 via --with-$1-include but --with-$1])
+                      AC_MSG_WARN([asking to check for it; --with-$1 ignored.])
+                      use_$1=yes
+                   fi
+                fi
+
+             else 
+                # --with-$1 != no && != check
+                if ( test $with_$1 != notset )
+                then
+                   # --with-$1 = path or yes
+
+                   # We need not check --with-$1-pkgconf as there is no
+                   # possible conflict (cannot be check and we take no to
+                   # be a request to disable pkg-config, rather than the
+                   # library as a whole)
+
+                   if ( test "$with_$1_library" = no )
+                   then
+                      AC_MSG_FAILURE([--with-$1-library disabling $1 but --with-$1 enabled it])
+                   else
+                      if ( test "$with_$1_library" = check )
+                      then
+                         AC_MSG_WARN([Explicitly enabling $1 via --with-$1 but --with-$1-library])
+                         AC_MSG_WARN([ asking to check for it; --with-$1-include ignored.])
+                         use_$1=no
+                      fi
+                   fi
+
+                   if ( test "$with_$1_include" = no )
+                   then
+                      AC_MSG_FAILURE([--with-$1-include disabling $1 but --with-$1 enabled it])
+                   else
+                      if ( test "$with_$1_include" = check )
+                      then
+                         AC_MSG_WARN([Explicitly enabling $1 via --with-$1 but --with-$1-include])
+                         AC_MSG_WARN([ asking to check for it; --with-$1-include ignored.])
+                         use_$1=no
+                      fi
+                   fi
+                fi
+             fi
+          fi
+
+          # Now test --with-$1-pkgconf is not in conflict with the other two
+          # command-line switches.
+          if ( test $with_$1_pkgconf != notset && test $with_$1_pkgconf != no )
+          then
+             # --with-$1-pkgconf = path (cannot be yes or check)
+             if ( test "$with_$1_library" = check )
+             then
+                AC_MSG_WARN([--with-$1-library asking to check for $1 but --with-$1-pkgconf asking])
+                AC_MSG_WARN([to use pkg-config, --with-$1-library ignored.])
+                use_$1=yes
+             else
+                if ( test "$with_$1_library" != no && test "$with_$1_library" != notset )
+                then
+                   AC_MSG_FAILURE([--with-$1-library enabling compile check for $1 but --with-$1-pkgconf asking to use pkg-config])
+                fi
+             fi
+                 
+             if ( test "$with_$1_include" = check )
+             then
+                AC_MSG_WARN([--with-$1-include asking to check for $1 but --with-$1-pkgconf asking])
+                AC_MSG_WARN([to use pkg-config, --with-$1-include ignored.])
+                use_$1=yes
+             else
+                if ( test "$with_$1_include" != no && test "$with_$1_include" != notset )
+                then
+                   AC_MSG_FAILURE([--with-$1-include enabling compile check for $1 but --with-$1-pkgconf asking to use pkg-config])
+                fi
+             fi
+          fi
+
+
+          # Check consistency between library and include switches
+          if ( test "$with_$1_library" = no )
+          then 
+             if ( test "$with_$1_include" != no && test "$with_$1_include" != notset )
+             then
+                if ( test "$with_$1_include" = check )
+                then
+                   AC_MSG_WARN([--with-$1-include asking to check for $1 but --with-$1-library has])
+                   AC_MSG_WARN([explicitly disabled it; --with-$1-include ignored.])
+                   use_$1=no
+                else
+                   # --with-$1-include = yes or path
+                   AC_MSG_FAILURE([--with-$1-include enabling $1 but --with-$1-library disabled it.])
+                fi
+             fi
+          else
+             # --with-$1-library != no
+             if ( test "$with_$1_library" = check )
+             then 
+                if ( test "$with_$1_include" = no )
+                then
+                   AC_MSG_WARN([--with-$1-library asking to check for $1 but --with-$1-include has])
+                   AC_MSG_WARN([explicitly disabled it; --with-$1-library ignored.])
+                   use_$1=no
+                else
+                   if ( test "$with_$1_include" != check && test "$with_$1_include" != notset )
+                   then
+                      # --with-$1-include = yes or path
+                      AC_MSG_WARN([--with-$1-library asking to check for $1 but --with-$1-include has])
+                      AC_MSG_WARN([explicitly enabled it; --with-$1-library ignored.])
+                      use_$1=yes
+                   fi
+                fi
+             else
+                if ( test "$with_$1_library" != notset )
+                then 
+                   # --with-$1-library a path or yes
+                   if ( test "$with_$1_include" = no )
+                   then
+                      AC_MSG_FAILURE([--with-$1-library enabling $1 but --with-$1-include disabled it.])
+                   else
+                      if ( test "$with_$1_include" = check )
+                      then
+                         AC_MSG_WARN([--with-$1-include asking to check for $1 but --with-$1-library has])
+                         AC_MSG_WARN([explicitly enabled it; --with-$1-include ignored.])
+                         use_$1=yes
+                      fi
+                   fi
+                fi
+             fi
+          fi
+
+
+          # Now process --with-$1 to see if it is a fallback path
+          #
+          # Initialise fallback components
+          fallback_path=""
+          fallback_file=""
+          # Check for viable switch setting
+          if ( test $with_$1 != notset && test $with_$1 != no && test $with_$1 != check && test $with_$1 != yes )
+          then
+             # We have a path to use
+             if ( test -d $with_$1 )
+             then
+                # Parameter is a directory path
+                fallback_path=$with_$1
+                trace 3 with-$1 provides a fallback path @<:@$fallback_path@:>@
+             else
+                fallback_path=`AS_DIRNAME([$with_$1])`
+                if ( test -d $fallback_path  )
+                then
+                   # strip leading path
+                   fallback_file=`$EXPR "//$with_$1" : '.*/\(@<:@^/@:>@*\)'`
+                   # portable version of fallback_file=`basename $with_$1`
+                   if ( test X$with_$1 = X$fallback_path/$fallback_file )
+                   then
+                      # Parameter is a file path
+                      trace 3 with-$1 provides a fallback path @<:@$fallback_path@:>@ and a file @<:@$fallback_file@:>@
+                   else
+                      # Somehow dirname($x)/basename($x) != $x
+                      AC_MSG_WARN([Problem processing --with-$1, parameter ignored])
+                      fallback_path=""
+                      fallback_file=""
+                   fi
+                else
+                   # --with-$1=/path/is/not/a/dir/something
+                   AC_MSG_WARN([Illegal command-line option for --with-$1, parameter ignored])
+                   fallback_path=""
+                   fallback_file=""
+                fi
+             fi
+          fi
+
+
+          if ( test X$use_$1 != Xno )
+          then
+             if ( test $with_$1_pkgconf = no ||  test $with_$1_pkgconf = notset )
+             then
+                # Not using pkg-config, set any paths for compile checks
+
+                # Check if --with-$1-library is a specification rather than a
+                # simple switch
+                if ( test "$with_$1_library" != notset && test "$with_$1_library" != no && test "$with_$1_library" != check && test "$with_$1_library" != yes )
+                then
+                   # We have a path specification to parse
+                   # 
+                   # If the specification is a straight forward link line (of
+                   # the form "-L/a/b/c -ld .. -L/w/x/y -lz" we want to split
+                   # off the last -l entries into with_$1_lnklibs and include
+                   # the initial part of the link line in with_$1_libpath.
+                   # If we just have directory and library paths, we need to
+                   # add the relevant linker switch, and assign the parameter
+                   # to the appropriate variable.
+                   #
+                   with_$1_lnklibs=""
+                   with_$1_libpath=""
+                   use_$1=yes
+                   trace 6 Parsing --with-$1-library setting
+                   with_$1_library=`echo " $with_$1_library " | $SED 's/ -L */ -L/g;s/ -l */ -l/g'`
+                   # Collapse down spaces following -L and -l entries. This is
+                   # mainly for ease of parsing but does make any user input
+                   # compatible with the form of the default values used 
+                   # throughout this configure script. Downsides are that any
+                   # other -X <arg> switches provided by the user will not
+                   # parse correctly and a general issue awaiting any systems
+                   # that must have the space between the switch and its
+                   # argument. The latter issue is the bigger problem as such
+                   # a limitation will have big consequences for this script
+                   # if we ever hit such a constrained toolset.
+                   for part in $with_$1_library
+                   do
+                      case $part in
+                      -L* )   # Library path specifier. Any previous library
+                              # names ought to be recorded as part of libpath
+                              # to maintain any order significance of the
+                              # supplied link command.
+                              TRACE_INDENT="     "
+                              trace 6 Appending @<:@$part@:>@ to library path
+                              with_$1_libpath="$with_$1_libpath$with_$1_lnklibs$part "
+                              with_$1_lnklibs=""
+                              ;;
+                      -l* )   # Library specifier. Append to the linklib
+                              # variable.
+                              TRACE_INDENT="     "
+                              trace 6 Appending @<:@$part@:>@ to library list
+                              with_$1_lnklibs="$with_$1_lnklibs$part "
+                              ;;
+                      -* )    # Presume linker switch. Append to libpath after
+                              # adding any existing library specs (so as to 
+                              # maintain any order specific requirements).
+                              TRACE_INDENT="     "
+                              trace 6 Appending @<:@$part@:>@ to link line
+                              with_$1_libpath="$with_$1_libpath$with_$1_lnklibs$part "
+                              with_$1_lnklibs=""
+                              ;;
+                      * )     # Non-linker format, see if we can work out
+                              # what it is
+                              if ( test -d $part )
+                              then
+                                 # We have a directory, add to libpath with
+                                 # a -L prefix having moved across any 
+                                 # libraries from lnklibs to preserve ordering 
+                                 # constraints
+                                 TRACE_INDENT="     "
+                                 trace 6 Adding @<:@-L$part@:>@ to link line
+                                 with_$1_libpath="$with_$1_libpath${with_$1_lnklibs}-L$part "
+                                 with_$1_lnklibs=""
+                              else
+                                 # Not a directory, is it directory/file?
+                                 path=`AS_DIRNAME([$part])`
+                                 if ( test X$path != X && test $path != . )
+                                 then
+                                    # We have "something/file" does the
+                                    # "something" point to a directory?
+                                    if ( test -d $path  )
+                                    then
+                                       # We have "directory/presumed-library-name"
+                                       # Find candidate library name
+                                       file=`$EXPR "//$part" : '.*/\(@<:@^/@:>@*\)'`
+                                       if ( test $part = $path/$file )
+                                       then
+                                          # Parameter is a file path
+                                          # Does it have a '.a' extension
+                                          lib=`$EXPR "X$file" : 'X\(.*\)\.a$'`
+                                          if ( test X$lib != X  )
+                                          then
+                                             lib=`echo $lib | $SED 's/^lib//'`
+                                             AC_MSG_WARN([Specifying --with-$1_library pointing to a .a])
+                                             AC_MSG_WARN([will cause problems building with shared libraries.])
+                                             AC_MSG_WARN([Instead we will use -l$lib])
+                                          else
+                                             # Does it have a '.so' extension
+                                             lib=`$EXPR "X$file" : 'X\(.*\)\.so$'`
+                                             if ( test X$lib != X )
+                                             then
+                                                lib=`echo $lib | $SED 's/^lib//'`
+                                                AC_MSG_WARN([Specifying --with-$1_library pointing to])
+                                                AC_MSG_WARN([a .so will cause problems building with ])
+                                                AC_MSG_WARN([static libraries. Instead, we will use])
+                                                AC_MSG_WARN([-l$lib])
+                                             else
+                                                # Parameter is path and name fragment
+                                                lib=`echo $file | $SED 's/^lib//'`
+                                             fi
+                                          fi
+                                          # As the user specified the library
+                                          # as a path rather than with a -L
+                                          # and a -l entry, it would be good
+                                          # to continue in the same vein.
+                                          # However, as -l/full/path is not
+                                          # supported, we have to revert to
+                                          # the seperate specifiers.
+                                          TRACE_INDENT="     "
+                                          trace 6 Adding @<:@-L$path@:>@ to library path
+                                          with_$1_libpath="$with_$1_libpath$with_$1_lnklibs-L$path "
+                                          with_$1_lnklibs=""
+                                          TRACE_INDENT="     "
+                                          trace 6 Adding @<:@-l$lib@:>@ to library list
+                                          with_$1_lnklibs="-l$lib "
+                                       else
+                                          # Somehow dirname($x)/basename($x) != $x
+                                          AC_MSG_WARN([Problem processing --with-$1-library, @<:@$part@:>@ ignored])
+                                       fi
+                                    else
+                                       # Parameter is "not-a-dir-path/something"
+                                       AC_MSG_WARN([Illegal value for --with-$1-library, @<:@$part@:>@ ignored])
+                                    fi
+                                 else
+                                    # Parameter is just "something" - assume library name
+                                    #
+                                    # Does it have a '.a' extension
+                                    lib=`$EXPR "X$part" : 'X\(.*\)\.a$'`
+                                    if ( test X$lib != X  )
+                                    then
+                                       lib=`echo $lib | $SED 's/^lib//'`
+                                       AC_MSG_WARN([Specifying --with-$1_library pointing to a .a])
+                                       AC_MSG_WARN([will cause problems building with shared libraries.])
+                                       AC_MSG_WARN([Instead we will use -l$lib])
+                                    else
+                                       # Does it have a '.so' extension
+                                       lib=`$EXPR "X$part" : 'X\(.*\)\.so$'`
+                                       if ( test X$lib != X )
+                                       then
+                                          lib=`echo $lib | $SED 's/^lib//'`
+                                          AC_MSG_WARN([Specifying --with-$1_library pointing to])
+                                          AC_MSG_WARN([a .so will cause problems building with ])
+                                          AC_MSG_WARN([static libraries. Instead, we will use])
+                                          AC_MSG_WARN([-l$lib])
+                                       else
+                                          # Parameter is name fragment
+                                          lib=`echo $part | $SED 's/^lib//'`
+                                       fi
+                                    fi
+                                    TRACE_INDENT="     "
+                                    trace 6 Adding @<:@-l$lib@:>@ to library list
+                                    with_$1_lnklibs="${with_$1_lnklibs}-l$lib "
+                                 fi
+                              fi
+                              ;;
+                      esac
+                   done
+                   trace 3 Link line assembled from --with-$1-library is @<:@$with_$1_libpath $with_$1_lnklibs@:>@
+                   # Now verify what we have
+                   if ( test X`$EXPR "X $with_$1_libpath $with_$1_lnklibs" : '.* \(-l@<:@^ @:>@*\).*$'` == X )
+                   then
+                      # no -lxxx in libpath or lnklibs - use any fallback or the
+                      # default library name
+                      if ( test X$fallback_file != X )
+                      then
+                         # --with_$1 specified a fallback name, use that but
+                         # sanitise it first
+                         lib=`$EXPR "X$fallback_file" : 'X\(.*\)\.a$'`
+                         if ( test X$lib != X  )
+                         then
+                            # Removed an unwanted .a suffix
+                            # Now strip any leading -l or lib prefix
+                            with_$1_lnklibs=-l`echo $lib | $SED 's/^-l//;s/^lib//'`
+                            AC_MSG_WARN([Specifying --with-$1 pointing to a .a])
+                            AC_MSG_WARN([will cause problems building with shared libraries.])
+                            AC_MSG_WARN([Instead we will use -l$lib])
+                         else
+                            lib=`$EXPR "X$fallback_file" : 'X\(.*\)\.so$'`
+                            if ( test X$lib != X )
+                            then
+                               # Removed an unwanted .so suffix
+                               # Now strip any leading -l or lib prefix
+                               with_$1_lnklibs=-l`echo $lib | $SED 's/^-l//;s/^lib//'`
+                               AC_MSG_WARN([Specifying --with-$1 pointing to a .so])
+                               AC_MSG_WARN([will cause problems building with static libraries.])
+                               AC_MSG_WARN([Instead, we will use -l$lib])
+                               AC_MSG_WARN([])
+                            else
+                               # No suffix to strip
+                               # Strip any leading -l or lib prefix
+                               with_$1_lnklibs=-l`echo $fallback_file | $SED 's/^-l//;s/^lib//'`
+                            fi
+                         fi
+                         trace 3 No library name specified by --with-$1-library, using --with-$1 value @<:@$with_$1_lnklibs@:>@
+                      else
+                         trace 3 No library name specified by --with-$1-library, using default @<:@$4@:>@
+                         with_$1_lnklibs="$4"
+                      fi
+
+                      if ( test X$fallback_path != X )
+                      then
+                         # --with_$1 specified a fallback path, are we using
+                         # it?
+                         if ( test X`$EXPR "X $with_$1_libpath " : '.* \(-L@<:@^ @:>@*\).*$'` == X )
+                         then
+                            # We do not have a library path; add the fallback
+                            with_$1_libpath="-L$fallback_path $with_$1_libpath"
+                            # It is an assumption to put it first, but we do
+                            # not know where the relevant library is in the
+                            # link specification, so we have to put it there.
+                            trace 3 No path component of --with-$1-library, using --with-$1 to set library path for $1 @<:@-L$fallback_path@:>@
+                         else
+                            if ( test X`$EXPR "X $with_$1_libpath " : ".* \(-L$fallback_path\)/* .*"` == X )
+                            then
+                               AC_MSG_WARN([--with-$1-library and --with-$1 specify different paths, --with-$1 path ignored])
+                            fi
+                         fi
+                      fi
+                   else
+                      # We already have a library specified, confirm that any
+                      # --with_$1 setting agreed
+                      if ( test X$fallback_file != X )
+                      then
+                         lib=`echo $fallback_file | $SED 's/^-l//;s/^lib//;s/\(.*\)\.a/\1/;s/\(.*\).so/\1/'`
+                         # strip any leading -l or lib prefix; any trailing .a 
+                         # or .so suffixes
+                         if ( test X`$EXPR "X $with_$1_libpath $with_$1_lnklibs " : ".* \(-l$lib\) .*"` == X )
+                         then
+                            # No -l<fallback>
+                            AC_MSG_WARN([--with-$1-library and --with-$1 specify different libraries, --with-$1 library setting ignored])
+                         fi
+                      fi
+                      
+                      if ( test X$fallback_path != X )
+                      then
+                         # --with_$1 specified a fallback path, are we using
+                         # it?
+                         if ( test X`$EXPR "X $with_$1_libpath " : '.* \(-L@<:@^ @:>@*\).*$'` == X )
+                         then
+                            # We do not have any library path; add the fallback
+                            trace 3 No path specified by --with-$1-library, using --with-$1 value @<:@-L$fallback_path@:>@
+                            with_$1_libpath="-L$fallback_path $with_$1_libpath"
+                            # It is an assumption to put it first, but we do
+                            # not know where the relevant library is in the
+                            # link specification, so we have to put it there.
+                         else
+                            if ( test X`$EXPR "X $with_$1_libpath " : ".* \(-L$fallback_path\)/* .*"` == X )
+                            then
+                               # No -L entry for the fallback path.
+                               AC_MSG_WARN([--with-$1-library and --with-$1 specify different paths, --with-$1 path ignored])
+                            fi
+                         fi
+                      fi
+                   fi
+                else
+                   # --with-$1-library used as a switch; employ fallback/default paths
+                   if ( test X$fallback_path != X )
+                   then
+                      trace 3 Using path component of --with-$1 to set library path for $1 @<:@-L$fallback_path@:>@
+                      with_$1_libpath=-L$fallback_path
+                      use_$1=yes
+                   else
+                      with_$1_libpath=""
+                   fi
+                   if ( test X$fallback_file != X )
+                   then
+                         # --with_$1 specified a fallback name, use that but
+                         # sanitise it first
+                         lib=`$EXPR "X$fallback_file" : 'X\(.*\)\.a$'`
+                         if ( test X$lib != X  )
+                         then
+                            # Removed an unwanted .a suffix
+                            # Now strip any leading -l or lib prefix
+                            with_$1_lnklibs=-l`echo $lib | $SED 's/^-l//;s/^lib//'`
+                            AC_MSG_WARN([Specifying --with-$1 pointing to a .a])
+                            AC_MSG_WARN([will cause problems building with shared libraries.])
+                            AC_MSG_WARN([Instead we will use -l$lib])
+                         else
+                            lib=`$EXPR "X$fallback_file" : 'X\(.*\)\.so$'`
+                            if ( test X$lib != X )
+                            then
+                               # Removed an unwanted .so suffix
+                               # Now strip any leading -l or lib prefix
+                               with_$1_lnklibs=-l`echo $lib | $SED 's/^-l//;s/^lib//'`
+                               AC_MSG_WARN([Specifying --with-$1 pointing to a .so])
+                               AC_MSG_WARN([will cause problems building with static libraries.])
+                               AC_MSG_WARN([Instead, we will use -l$lib])
+                               AC_MSG_WARN([])
+                            else
+                               # No suffix to strip
+                               # Strip any leading -l or lib prefix
+                               with_$1_lnklibs=-l`echo $fallback_file | $SED 's/^-l//;s/^lib//'`
+                            fi
+                         fi
+                         trace 3 Using file component of --with-$1 to set library name for $1 @<:@$with_$1_lnklibs@:>@
+                   else
+                      trace 3 Using default library name for $1 @<:@$4@:>@
+                      with_$1_lnklibs="$4"
+                   fi
+                fi
+
+
+                # Check if --with-$1-include is a provided
+                if ( test "$with_$1_include" != notset && test "$with_$1_include" != no && test "$with_$1_include" != check && test "$with_$1_include" != yes )
+                then
+                   # we have a parameter rather than a switch to use
+                   with_$1_inc=""
+                   use_$1=yes
+                   if ( test X$fallback_path != X )
+                   then
+                      fallback_match=no
+                      # If we have a fallback path, we want to check it is
+                      # included in the -include setting and warn if not
+                   else
+                      fallback_match=yes
+                      # We have no fallback, so we never need to warn the user
+                   fi
+                   trace 6 Parsing --with-$1-include setting
+                   # Strip any provided -I entries for ease of parsing.
+                   for path in `echo " $with_$1_include " | $SED 's/ -I *//g'`
+                   do
+                      if ( test -d $path )
+                      then
+                         TRACE_INDENT="     "
+                         trace 6 Appending @<:@-I$path@:>@ to set include path for $1
+                         with_$1_inc="$with_$1_inc-I$path "
+                         if ( test $fallback_match == no && test $fallback_path == $path )
+                         then
+                            fallback_match=yes
+                         fi
+                      else
+                         AC_MSG_WARN([Illegal component of --with-$1-include, @<:@$path@:>@ ignored])
+                      fi
+                   done
+                   if ( test X$with_$1_inc == X )
+                   then
+                      # No path from argument, any fallback?
+                      if ( test X$fallback_path != X )
+                      then
+                         AC_MSG_WARN([Will use --with-$1 value @<:@-I$fallback_path@:>@])
+                         with_$1_inc=-I$fallback_path
+                      else
+                         AC_MSG_WARN([Will use default system include path])
+                         with_$1_inc=""
+                      fi
+                   else
+                      # We have valid path(es) supplied by the user, do they
+                      # encompass the fallback setting?
+                      if ( test $fallback_match != yes )
+                      then
+                         AC_MSG_WARN([--with-$1-include and --with-$1 specify different paths, --with-$1 ignored])
+                      fi
+                   fi
+                else
+                   # --with-$1-include is a switch setting rather than a path,
+                   # use any available fallback
+                   if ( test X$fallback_path != X )
+                   then
+                      trace 3 No path specified by --with-$1-include, using --with-$1 value @<:@-I$fallback_path@:>@
+                      with_$1_inc=-I$fallback_path
+                      use_$1=yes
+                   else
+                      trace 3 Will use default system include path
+                      with_$1_inc=""
+                   fi
+                fi
+             fi # End of: if ( test $with_$1_pkgconf = no || notset
+          else
+             trace 4 Library $1 disabled
+          fi
+
+          KnownLibs=$KnownLibs" "$1
+          if ( test X$use_$1 = X )
+          then
+             use_$1=check
+             UnconfiguredLibs=$UnconfiguredLibs" "$1
+          else
+             ConfiguredLibs=$ConfiguredLibs" "$1
+          fi
+
+          with_$1_tstcd='$2'
+          dnl# The single quotes are to prevent any expansion of the supplied
+          dnl# code (particularly the * of any pointer definitions).
+          dnl# This does not prevent the dollar-2 expanding as this is an M4
+          dnl# macro parameter and not a shell variable.
+          with_$1_prq="$3"
+          with_$1_hdr="$5"
+          with_$1_lang="$6"
+          with_$1_virtual="no"
+
+          AC_SUBST([$1_CFLAGS])
+          AC_SUBST([$1_LIBS])
+         ]
+        )
+

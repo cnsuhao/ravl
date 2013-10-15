@@ -1,0 +1,68 @@
+# This file is part of QMake, Quick Make System
+# Copyright (C) 2012, University of Surrey
+# This code may be redistributed under the terms of the GNU General
+# Public License (GPL). See the gpl.licence file for details or
+# see http://www.gnu.org/copyleft/gpl.html
+
+# file-header-ends-here
+
+ifndef QMAKE_MAKEFILES
+  QMAKE_MAKEFILES=@QMAKE_MAKEFILES@
+endif
+
+include $(QMAKE_MAKEFILES)/Definitions.mk
+
+
+SUBDIRS=$(patsubst %.r,%,$(filter %.r,$(NESTED))) $(EXTRA_DIST_DIRS)
+
+SOURCE_FILES=defs.mk $(MAINS) $(SCRIPTS) $(SOURCES) $(MUSTLINK) $(HEADERS) \
+             $(LOCALHEADERS) $(EXAMPLES) $(TESTEXES) $(AUXFILES) \
+             $(LOCAL_FILES) $(EHT) $(HTML) $(MAN1) $(MAN3) $(MAN5) \
+             $(EXTERNALLIBS)
+
+dist: $(PROJECT_OUT)/$(PROJECT_DISTDIR).tgz
+	$(SHOWIT)echo Dist file is $(PROJECT_OUT)/$(PROJECT_DISTDIR).tgz
+
+$(PROJECT_OUT)/$(PROJECT_DISTDIR).tgz: $(PROJECT_OUT)/$(PROJECT_DISTDIR)
+	$(SHOWIT)cd $(PROJECT_OUT)/$(PROJECT_DISTDIR) ; \
+	         tar -cvf - . | gzip -9 -c >$(PROJECT_OUT)/$(PROJECT_DISTDIR).tgz 
+
+$(PROJECT_OUT)/$(PROJECT_DISTDIR): remake_distdir populate_distdir
+	@
+
+remake_distdir:
+	$(SHOWIT)if [ -d $(PROJECT_OUT)/$(PROJECT_DISTDIR) ] ; \
+	         then \
+	           rm -rf $(PROJECT_OUT)/$(PROJECT_DISTDIR) ; \
+	         fi
+	$(SHOWIT)$(MKDIR_P) $(PROJECT_OUT)/$(PROJECT_DISTDIR)
+
+populate_distdir:
+ifneq ($(strip $(DPATH)),)
+	$(SHOWIT)$(MKDIR_P) $(PROJECT_OUT)/$(PROJECT_DISTDIR)/$(DPATH)
+endif
+	$(SHOWIT)for FILE in $(SOURCE_FILES) ; \
+	         do \
+	             cp $$FILE $(PROJECT_OUT)/$(PROJECT_DISTDIR)/$(DPATH)/$$FILE ; \
+	         done
+ifneq ($(strip $(SUBDIRS)),)
+	$(SHOWIT)for SUBDIR in $(SUBDIRS) ; \
+	         do \
+	             if [ -d $$SUBDIR ] ; \
+	             then \
+	                 echo "------ Source $(DPATH)/"$$SUBDIR; \
+	                 if ( $(MAKE) -f $(QMAKE_MAKEFILES)/Dist.mk populate_distdir -C $$SUBDIR DPATH=$(DPATH)/$$SUBDIR ) ; \
+	                 then \
+	                     true ; \
+	                 else \
+	                     echo "Error copying from $(QCWD)/"$$SUBDIR ; \
+	                     exit 1 ; \
+	                 fi \
+	             else \
+	                 echo "----- Directory $$SUBDIR not found, skipping. " ; \
+	             fi \
+	         done
+endif
+
+.PHONY:remake_distdir populate_distdir
+

@@ -1,0 +1,161 @@
+dnl This file is part of QMake, Quick Make System
+dnl Copyright (C) 2011, University of Surrey
+dnl This code may be redistributed under the terms of the GNU General
+dnl Public License (GPL). See the gpl.licence file for details or
+dnl see http://www.gnu.org/copyleft/gpl.html
+dnl
+dnl file-header-ends-here
+
+
+
+dnl QM_SET_COMPILER_CFLAGS
+dnl
+dnl Macro to declare the flags required to configure the C compiler to
+dnl operate in a manner usable by QMake.
+dnl
+dnl No macro parameters
+dnl
+dnl Global variables used:
+dnl
+dnl       CC                         Holds the path to the C compiler in
+dnl                                  use. May be updated to include extra
+dnl                                  global compiler options. 
+dnl       COMPILER_ANSI_CFLAGS     } { Receive the compiler specific flags
+dnl       COMPILER_DEBUG_CFLAGS    } { for setting the appropriate mode of
+dnl       COMPILER_GPROF_CFLAGS    } { compiler operation required by QMake.
+dnl       COMPILER_NON_OPT_CFLAGS  } {  .._ANSI_.. is used for compiling
+dnl       COMPILER_OPT_CFLAGS      } { ANSI-C source code; .._DEBUG_.. to
+dnl       COMPILER_PROF_CFLAGS     } { include debug info; .._GPROF_.. for
+dnl       COMPILER_SHARED_CFLAGS   } { compiling code that can be analysed
+dnl                                } { by the gprof utility (.._PROF_.. by
+dnl                                } { the prof utility) and .._SHARED_..
+dnl                                  { to compiled shared objects. With the
+dnl                                  { exception of the .._NON_OPT_.. flag,
+dnl                                  { all of these flags drive the default
+dnl                                  { value of the appropriately named
+dnl                                  { PKG_... flag (which is the actual
+dnl                                  { variable used in the QMake makefiles).
+dnl                                  { .._NON_OPT_.. is appended to the
+dnl                                  { PKG_DEFAULT... flags used for the
+dnl                                  { non-optimised builds. All of these
+dnl                                  { variables are primed based on the
+dnl                                  { compiler in use and declare the
+dnl                                  { variable for output to the config.X
+dnl                                  { configuration file.
+dnl       COMPILER_SPECIFIC_CFLAGS   Receive any compiler specific flags
+dnl                                  required to configure the C compiler
+dnl                                  to work with QMake. Unlike the above
+dnl                                  variables, this value is used on every
+dnl                                  compilation via the PKG_GLOBAL_CFLAGS
+dnl                                  makefile variable. This variable is set
+dnl                                  based on the compiler in use and is
+dnl                                  declared to output to the config.X
+dnl                                  configuration file.
+dnl       CONFIGURE_CFLAGS           Not actually modified or interrogated
+dnl                                  by this macro; merely declared for 
+dnl                                  output substitution into the configure
+dnl                                  settings file. Holds any user-supplied
+dnl                                  CFLAGS, originally primed in the macro
+dnl                                  QM_LOCATE_KEY_TOOLS.
+dnl       GCC                        Flag, originally set by AC_PROG_CC
+dnl                                  indicating if a GNU C compiler is in
+dnl                                  use. Set to yes for a GNU compiler.
+dnl
+AC_DEFUN([QM_SET_COMPILER_CFLAGS],
+         [trace 2 Set compiler specific CFLAGS
+          
+          if ( test x$GCC = xyes )
+          then
+             trace 3 We have a GNU C Compiler
+             COMPILER_ANSI_CFLAGS=" -ansi "
+             COMPILER_DEBUG_CFLAGS=" -g "
+             COMPILER_GPROF_CFLAGS=" -pg "
+             COMPILER_NON_OPT_CFLAGS=" -O "
+             # Optimisation flags depend on version of GCC in use
+             dnl Using @S|@ glyph to prevent expansion of $1/2/3 as macro arg
+             CC_VERSION=`$CC --v 2>&1 | $GREP 'gcc version' | $AWK '{ print @S|@3 }'`
+             CC_MAJOR=`echo $CC_VERSION | $AWK -F. '{ print @S|@1 }'`
+             CC_MINOR=`echo $CC_VERSION | $AWK -F. '{ print @S|@2 }'`
+             CC_PATCH=`echo $CC_VERSION | $AWK -F. '{ print @S|@3 }'`
+             if ( test X$CC_MAJOR = X4 && test $(($CC_MINOR)) -lt 3 )
+             then
+                # -funsafe-math-optimisation (implied by -ffast-math) was indeed, unsafe
+                # on versions 4.0/1/2 of GCC, so just implement the parts of -ffast-math
+                # that work with the Ravl source and employ -O3 as compensation
+                COMPILER_OPT_CFLAGS=" -O3 -fno-math-errno -fno-trapping-math -fno-signaling-nans -D__FAST_MATH__ -Wstrict-aliasing=2 -fno-strict-aliasing "
+             else
+                COMPILER_OPT_CFLAGS=" -O2 -ffast-math -fno-strict-aliasing "
+             fi
+             COMPILER_OPT_CFLAGS=$COMPILER_OPT_CFLAGS" -march=native -mtune=native "
+             COMPILER_PROF_CFLAGS=" -p "
+             COMPILER_SHARED_CFLAGS=" -shared -fPIC "
+             COMPILER_SPECIFIC_CFLAGS=" -Wall -pipe -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE "
+          else
+             trace 3 We do not have a GNU C compiler
+             # Try relevant machine specific options we have used before
+             dnl 
+             dnl Although testing the host OS, we are using that to identify the native
+             dnl tool set that may be in use. These are not platform specific settings
+             dnl per se. DO NOT PUT PLATFORM SPECIFIC SETTINGS HERE. This section is for
+             dnl settings that relate to specific tool sets. They may or may not relate
+             dnl to specific platforms but that is coincidental. Platform specific
+             dnl settings must go in the section at the end of this script. If you have a
+             dnl specific compiler on a platform, put its settings here. If you have
+             dnl specific settings for a common tool (say the GNU compilers) when run on
+             dnl a particular platform, put those settings at the end of this script.
+             dnl 
+             case X$host_os in
+              Xirix* )    trace 3 Setting CFLAGS we have previously used under Irix
+                          CC=$CC" -n32 -J4 -mp "
+                          # Not sure why this originally was done this way rather than
+                          # use CFLAGS, but assume there was a reason and propogate the
+                          # method
+                          COMPILER_ANSI_CFLAGS=" -ansi "
+                          COMPILER_DEBUG_CFLAGS=""
+                          COMPILER_GPROF_CFLAGS=""
+                          COMPILER_NON_OPT_CFLAGS=" -O1 -OPT:Olimit_opt=on "
+                          COMPILER_OPT_CFLAGS=" -O3 -OPT:condt_copy_limit=50000:Olimit=80000 "
+                          COMPILER_PROF_CFLAGS=""
+                          COMPILER_SHARED_CFLAGS=""
+                          COMPILER_SPECIFIC_CFLAGS=" -mips4 -r1000 "
+                          ;;
+              Xsolaris* ) trace 3 Setting CFLAGS we have previously used on Solaris
+                          COMPILER_ANSI_CFLAGS=" -ansi "
+                          COMPILER_DEBUG_CFLAGS=""
+                          COMPILER_GPROF_CFLAGS=" -pg "
+                          COMPILER_NON_OPT_CFLAGS=" -O "
+                          COMPILER_OPT_CFLAGS=" -O2 "
+                          COMPILER_PROF_CFLAGS=" -p "
+                          COMPILER_SHARED_CFLAGS=" -KPIC "
+                          COMPILER_SPECIFIC_CFLAGS=""
+                          ;;
+              * )         trace 3 Setting default CFLAGS
+                          COMPILER_ANSI_CFLAGS=" -ansi "
+                          COMPILER_DEBUG_CFLAGS=""
+                          COMPILER_GPROF_CFLAGS=""
+                          COMPILER_NON_OPT_CFLAGS=" -O "
+                          COMPILER_OPT_CFLAGS=" -O2 "
+                          COMPILER_PROF_CFLAGS=""
+                          COMPILER_SHARED_CFLAGS=""
+                          COMPILER_SPECIFIC_CFLAGS=""
+                          ;;
+             esac
+          fi
+          # Allow C compiler switches to be written to Config.QMake
+
+          # Allow output of any user provided CFLAGS
+          AC_SUBST([CONFIGURE_CFLAGS])
+          # any user-provided CFLAGS will be recorded in Config.QMake as QMAKE_CFLAGS
+
+          # Allow output of compiler specific settings
+          AC_SUBST([COMPILER_ANSI_CFLAGS])
+          AC_SUBST([COMPILER_DEBUG_CFLAGS])
+          AC_SUBST([COMPILER_GPROF_CFLAGS])
+          AC_SUBST([COMPILER_NON_OPT_CFLAGS])
+          AC_SUBST([COMPILER_OPT_CFLAGS])
+          AC_SUBST([COMPILER_PROF_CFLAGS])
+          AC_SUBST([COMPILER_SHARED_CFLAGS])
+          AC_SUBST([COMPILER_SPECIFIC_CFLAGS])
+         ]
+        )
+

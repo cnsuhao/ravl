@@ -1,0 +1,6 @@
+#!@SHELL@
+QMAKE_MAKEFILES=@QMAKE_MAKEFILES@
+if test -z ${PROJECT_OUT} ; then
+  PROJECT_OUT=${HOME}/build 
+fi
+@MAKE@ -f ${QMAKE_MAKEFILES}/QMake.mk USERBUILD=1 $*

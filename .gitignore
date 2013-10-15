@@ -1,6 +1,8 @@
+core
 core.*
-/QMake
 /Makefile.in
+QMake/Makefile.in
+QMake/src/AutoTools/configure
 autom4te.cache
 tmp.ppm
 *.swp

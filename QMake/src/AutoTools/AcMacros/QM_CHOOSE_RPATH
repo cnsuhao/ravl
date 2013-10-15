@@ -1,0 +1,64 @@
+dnl This file is part of QMake, Quick Make System
+dnl Copyright (C) 2011, University of Surrey
+dnl This code may be redistributed under the terms of the GNU General
+dnl Public License (GPL). See the gpl.licence file for details or
+dnl see http://www.gnu.org/copyleft/gpl.html
+dnl
+dnl file-header-ends-here
+
+
+
+dnl QM_CHOOSE_RPATH
+dnl
+dnl Macro to allow user selection over the inclusion of paths to linked
+dnl libraries when creating a binary or other library. Creates the cmd-line
+dnl switch --with-rpath which is a simple Yes/No switch (usual abbreviation
+dnl andcase rules apply) that enables or disables this functionality. There
+dnl is no default value (for this switch) implemented by this macro.
+dnl
+dnl No macro parameters
+dnl
+dnl Global variables used:
+dnl
+dnl       with_rpath                 Value of similarly named cmd-line switch
+dnl                                  Selects whether or not library paths
+dnl                                  are automatically added to the runtime
+dnl                                  searchlist of any produced binary. This
+dnl                                  is a simple switch that takes a Y or N
+dnl                                  as its value.
+dnl       USR_with_rpath             Used to indicate if the user explicitly
+dnl                                  caused with_rpath to be set, or if it
+dnl                                  was subsiquently defaulted (variable
+dnl                                  will only be set if the user specified
+dnl                                  the with_rpath setting).
+dnl
+AC_DEFUN([QM_CHOOSE_RPATH],
+         [AC_ARG_WITH([rpath],
+                      [AS_HELP_STRING([--with-rpath],
+                                      [Add all library include paths (-L) to the runtime search path of the binary
+                                      ]
+                                     )
+                      ],
+                      [case $with_rpath in
+                        'y' | 'Y' | 'yes' | 'Yes' | 'YES' )
+                                  with_rpath=Y
+                                  USER_with_rpath=Y
+                                  ;;
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                  with_rpath=N
+                                  USER_with_rpath=N
+                                  ;;
+                        * )       AC_MSG_WARN([--with-rpath set to an unknown option, setting ignored])
+                                  ;;
+                       esac
+                      ],
+                      [trace 5 No --with-rpath specified
+                       with_rpath=N
+                       # Default to N. Do not set USER_with_rpath so that
+                       # the calling code knows to use default from QMake
+                       # configuration.
+                      ]
+                     )
+         ]
+        )
+

@@ -1,0 +1,102 @@
+dnl This file is part of QMake, Quick Make System
+dnl Copyright (C) 2011, University of Surrey
+dnl This code may be redistributed under the terms of the GNU General
+dnl Public License (GPL). See the gpl.licence file for details or
+dnl see http://www.gnu.org/copyleft/gpl.html
+dnl
+dnl file-header-ends-here
+
+
+
+dnl QM_CHOOSE_GETCWD
+dnl
+dnl Macro to allow user selection of the utility used to return the current
+dnl working directory. Creates the cmd-line switch --with-pawd which allows
+dnl the user to prefer pawd over pwd as the utility used to return the 
+dnl current directory. The switch accepts a simple Yes/No (usual case and
+dnl abbreviation rules apply) that enables or disables the use of pawd; it
+dnl also accpets check (Check, ck, C, etc.) to use pawd if it is to be found
+dnl on the searchlist and finally, the switch can also accept the pathname of
+dnl pawd (or any other similar command) to be used in preference to pwd. 
+dnl There is no default setting for this macro so calling programs that need
+dnl a value for GET_CWD to be asserted, will need to default as appropriate
+dnl (maybe by employing code similar to:)
+dnl
+dnl AS_IF([test x$GET_CWD = x],
+dnl       [AC_PATH_PROG([GET_CWD],[pwd],[missing])
+dnl        AS_IF([test $GET_CWD = missing],
+dnl              [AC_MSG_FAILURE([Cannot find a working pawd or pwd required for building with])]
+dnl             )
+dnl       ]
+dnl      )
+dnl
+dnl
+dnl No macro parameters
+dnl
+dnl Global variables used:
+dnl
+dnl       with_pawd                  Value of similarly named cmd-line switch
+dnl                                  Selects whether or not pawd is used in
+dnl                                  preference to pwd. Alternativly, the
+dnl                                  switch may be used to specify the path
+dnl                                  of any similar command to be used in
+dnl                                  place of pwd.
+dnl       GET_CWD                    The actual substitution variable used
+dnl                                  by QMake when it requires a command to
+dnl                                  return the current working directory.
+dnl
+AC_DEFUN([QM_CHOOSE_GETCWD],
+         [AC_ARG_WITH([pawd],
+                      [AS_HELP_STRING([--with-pawd],
+                                      [Employ pawd rather than pwd to return the current directory @<:@default=No@:>@]
+                                     )
+                      ],
+                      [case $with_pawd in
+                        'n' | 'N' | 'no' | 'No' | 'NO' ) 
+                                  trace 4 --with-pawd disabling use of pawd
+                                  AC_PATH_PROG([GET_CWD],[pwd],[missing])
+                                  AS_IF([test $GET_CWD = missing],
+                                        [AC_MSG_FAILURE([Cannot find a working pwd required for building with])
+                                        ]
+                                       )
+                                  ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' ) 
+                                  trace 4 --with-pawd forcing use of pawd
+                                  AC_PATH_PROG([GET_CWD],[pawd],[missing])
+                                  AS_IF([test $GET_CWD = missing],
+                                        [AC_MSG_FAILURE([Asking to enable pawd via --with-pawd but it cannot be found])
+                                        ]
+                                       )
+                                  ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                  trace 4 --with-pawd asking to use pawd if available
+                                  AC_PATH_PROG([GET_CWD],[pawd],[missing])
+                                  AS_IF([test $GET_CWD = missing],
+                                        [AC_PATH_PROG([GET_CWD],[pwd],[missing])
+                                         AS_IF([test $GET_CWD = missing],
+                                               [AC_MSG_FAILURE([Cannot find a working pawd or pwd required for building with])
+                                               ]
+                                              )
+                                        ]
+                                       )
+                                  ;;
+                        * )       AS_IF([test -x $with_pawd],
+                                        [trace 4 --with-pawd asking to use "@<:@$with_pawd@:>@"
+                                         GET_CWD=$with_pawd
+                                        ],
+                                        [AC_MSG_WARN([--with-pawd set to an unknown option, setting ignored])
+                                        ]
+                                       )
+                                  ;;
+                       esac
+                     ],
+                     [trace 5 No --with-pawd specified
+                      dnl Not defaulting GET_CWD so that any calling code can
+                      dnl distinguish that the user did not specify the value
+                      dnl In situations where a value for GET_CWD is a must,
+                      dnl the calling code will have to provide its own
+                      dnl default as appropriate.
+                     ]
+                    )
+         ]
+        )
