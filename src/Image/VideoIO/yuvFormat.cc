@@ -12,6 +12,8 @@
 #include "Ravl/Image/yuvFormat.hh"
 #include "Ravl/Image/ImgIOyuv.hh"
 #include "Ravl/TypeName.hh"
+#include "Ravl/Exception.hh"
+#include "Ravl/OS/Filename.hh"
 #include <ctype.h>
 
 #define DODEBUG 0
@@ -22,6 +24,19 @@
 #endif
 
 namespace RavlImageN {
+
+  // Get the yuv image size from the file size if available.
+  static Index2dC YUVSize(const FilenameC& File) {
+    Index2dC vSize;
+    if (File.Exists()) {
+      switch (File.FileSize()) {
+      case 829440:   vSize = Index2dC( 576, 720); break;
+      case 4147200:  vSize = Index2dC(1080,1920); break;
+      default: throw ExceptionInvalidStreamC(StringC("Unknown yuv file size: ") + (UIntT) File.FileSize() + " bytes");
+      }
+    }
+    return vSize;
+  }
 
   void InitYUVFormat() 
   {}
@@ -76,8 +91,10 @@ namespace RavlImageN {
     ONDEBUG(cerr << "FileFormatYUVBodyC::CreateInput(IStreamC &,const std::type_info &), Called. \n");
     if(!in.good())
       return DPIPortBaseC();
-    if(obj_type == typeid(ImageC<ByteYUVValueC>))
+    if(obj_type == typeid(ImageC<ByteYUVValueC>)){
+      vSize = YUVSize(in.Name());
       return DPIImageYUVC(in,vSize);
+    }
     return DPIPortBaseC();
   }
   
@@ -98,6 +115,7 @@ namespace RavlImageN {
   DPIPortBaseC FileFormatYUVBodyC::CreateInput(const StringC &filename,const std::type_info &obj_type) const {
     ONDEBUG(cerr << "FileFormatYUVBodyC::CreateInput(const StringC &,const std::type_info &), Called. \n");
     if(obj_type == typeid(ImageC<ByteYUVValueC>)) {
+      vSize = YUVSize(filename);
       IStreamC strm(filename);
       if(!strm)
 	return DPIPortBaseC();

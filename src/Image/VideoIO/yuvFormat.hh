@@ -73,7 +73,7 @@ namespace RavlImageN {
     
   protected:
     StringC vName;  // Variant name.
-    Index2dC vSize; // Variant image size.
+    mutable Index2dC vSize; // Variant image size.
   };
   
   /////////////////////////////
