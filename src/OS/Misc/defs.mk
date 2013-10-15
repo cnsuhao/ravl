@@ -24,3 +24,5 @@ USESLIBS=RavlCore RavlIO
 LIBDEPS=RavlOSMisc.def
 
 TESTEXES=testOSMisc.cc
+
+EXAMPLES=exReadWithoutReturn.cc
