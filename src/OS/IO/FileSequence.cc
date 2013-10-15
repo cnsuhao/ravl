@@ -175,7 +175,7 @@ namespace RavlN {
     return true;
   }
   
-  //: Is there a number between the filename and the extention ?
+  //: Is there a number between the filename and the extension ?
   // Returns false if fail.
   
   bool DPFileSequenceBaseBodyC::ProbeImplicit(FilenameC rootFn) {
@@ -187,7 +187,7 @@ namespace RavlN {
       pathComp = StringC('.');
     StringC prefix; 
     StringC postfix;
-    // Look for extention.
+    // Look for extension.
     // Build template filename.
     IntT extStart = nameComp.index('.');
     if(extStart >= 0) { // Found a '.' ?
