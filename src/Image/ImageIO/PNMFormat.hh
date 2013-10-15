@@ -13,7 +13,7 @@
 //! author="Charles Galambos"
 //! docentry="Ravl.API.Images.IO.Formats"
 //! date="29/10/98"
-//! userlevel=Default
+//! userlevel=Develop
 
 #include "Ravl/DP/FileFormat.hh"
 #include "Ravl/Image/Image.hh"
@@ -101,7 +101,7 @@ namespace RavlImageN {
   };
   
   //! userlevel=Develop
-  //: PGM File format information.
+  //: PBM File format information.
 
   class FileFormatPBMBodyC 
     : public FileFormatBodyC 
@@ -166,7 +166,7 @@ namespace RavlImageN {
   
   /////////////////////////////
   //! userlevel=Advanced
-  //: Create an instance of a PGM File Format.
+  //: Create an instance of a PBM File Format.
   
   class FileFormatPBMC : public FileFormatC<ImageC<ByteT> > {
   public:
