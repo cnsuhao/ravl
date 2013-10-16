@@ -40,7 +40,7 @@ namespace RavlN {
     {}
     //: Default constructor.
     
-    virtual bool Seek(UIntT off);
+    virtual bool Seek(UIntT posn);
     //: Seek to location in stream.
     // Returns false, if seek failed. (Maybe because its
     // not implemented.)
@@ -66,10 +66,10 @@ namespace RavlN {
     // May return ((UIntT) (-1)) if not implemented.
     
     virtual UIntT Start() const; 
-    //: Find the offset where the stream begins, normally zero.
+    //: Find the position where the stream begins, normally zero.
     // Defaults to 0
     
-    virtual bool Seek64(StreamPosT off);
+    virtual bool Seek64(StreamPosT posn);
     //: Seek to location in stream.
     // Returns false, if seek failed. (Maybe because its
     // not implemented.)
@@ -94,7 +94,7 @@ namespace RavlN {
     // May return ((UIntT) (-1)) if not implemented.
     
     virtual StreamPosT Start64() const; 
-    //: Find the offset where the stream begins, normally zero.
+    //: Find the position where the stream begins, normally zero.
     // Defaults to 0
 
   protected:
@@ -124,7 +124,7 @@ namespace RavlN {
     DPSeekCtrlStubBodyC(const DPPortC &pb);
     //: Constructor.
    
-    virtual bool Seek(UIntT off);
+    virtual bool Seek(UIntT posn);
     //: Seek to location in stream.
     // Returns false, if seek failed. (Maybe because its
     // not implemented.)
@@ -195,8 +195,8 @@ namespace RavlN {
     //: Access body class.
 
   public:    
-    inline bool Seek(UIntT off)
-    { return Body().Seek(off); }
+    inline bool Seek(UIntT posn)
+    { return Body().Seek(posn); }
     //: Seek to location in stream.
     // Returns false, if seek failed. (Maybe because its
     // not implemented.)
@@ -225,11 +225,11 @@ namespace RavlN {
     
     inline UIntT Start() const
     { return Body().Start(); }
-    //: Find the offset where the stream begins, normally zero.
+    //: Find the position where the stream begins, normally zero.
     // Defaults to 0
     
-    inline bool Seek64(StreamPosT off)
-    { return Body().Seek64(off); }
+    inline bool Seek64(StreamPosT posn)
+    { return Body().Seek64(posn); }
     //: Seek to location in stream.
     // Returns false, if seek failed. (Maybe because its
     // not implemented.)
@@ -258,7 +258,7 @@ namespace RavlN {
     
     inline StreamPosT Start64() const
     { return Body().Start64(); }
-    //: Find the offset where the stream begins, normally zero.
+    //: Find the position where the stream begins, normally zero.
     // Defaults to 0
     
   };
@@ -266,8 +266,7 @@ namespace RavlN {
   //////////////////////////////////////////////////
   //! userlevel=Develop
   //: Seekable port input body.
-  // Note: changes in stream position attribute are not automaticly 
-  // reported.
+  // Note: changes in stream position attribute are not automatically reported.
   
   template<class DataT>
   class DPISPortBodyC
@@ -283,12 +282,12 @@ namespace RavlN {
     { return DPIPortBodyC<DataT>::Save(out); }
     //: Save to std::ostream.
     
-    virtual bool GetAt(StreamPosT off,DataT &buffer) {
-      if(!Seek64(off)) return false;
+    virtual bool GetAt(StreamPosT posn,DataT &buffer) {
+      if(!Seek64(posn)) return false;
       return this->Get(buffer);
     }
-    //: Get data from the given offset.
-    //!param: off - Offset to retrieve data from.
+    //: Get data from the given stream position.
+    //!param: posn - Absolute position to retrieve data from (not relative to start point)
     //!param: buffer - buffer to store retrieved data in.
     //!return: true if data retrieved successfully.
     // Note: The position next get in stream after this operation is not garanteed.
@@ -368,14 +367,14 @@ namespace RavlN {
     { return DPOPortBodyC<DataT>::Save(out); }
     //: Save to std::ostream.
     
-    virtual bool PutAt(StreamPosT off,const DataT &buffer) {
-      if(!Seek64(off)) return false;
+    virtual bool PutAt(StreamPosT posn,const DataT &buffer) {
+      if(!Seek64(posn)) return false;
       return this->Put(buffer);
     }
-    //: Put data to given given offset.
-    //!param: off - Offset to retrieve data from.
-    //!param: buffer - buffer to store retrieved data from
-    //!return: true if data retrieved successfully.
+    //: Put data at the given stream position.
+    //!param: posn - Absolute position to store data at (not relative to start point)
+    //!param: buffer - buffer for stored data
+    //!return: true if data stored successfully.
     // Note: The position next put in stream after this operation is not garanteed.
     
     virtual bool GetAttr(const StringC &attrName,IntT &attrValue) {
@@ -468,10 +467,10 @@ namespace RavlN {
     }
     //: Assigment.  
     
-    bool GetAt(StreamPosT off,DataT &buffer) 
-    { return Body().GetAt(off,buffer); }
-    //: Get data from the given offset.
-    //!param: off - Offset to retrieve data from.
+    bool GetAt(StreamPosT posn,DataT &buffer) 
+    { return Body().GetAt(posn,buffer); }
+    //: Get data from the given stream position.
+    //!param: posn - Absolute position to retrieve data from (not relative to start point)
     //!param: buffer - buffer to store retrieved data in.
     //!return: true if data retrieved successfully.
     // Note: The position next get in stream after this operation is not garanteed.
@@ -517,12 +516,12 @@ namespace RavlN {
     }
     //: Assigment.
     
-    bool PutAt(StreamPosT off,const DataT &buffer) 
-    { return Body().PutAt(off,buffer); }
-    //: Put data to given given offset.
-    //!param: off - Offset to retrieve data from.
-    //!param: buffer - buffer to store retrieved data from
-    //!return: true if data retrieved successfully.
+    bool PutAt(StreamPosT posn,const DataT &buffer) 
+    { return Body().PutAt(posn,buffer); }
+    //: Put data at the given stream position.
+    //!param: posn - Absolute position to store data at (not relative to start point)
+    //!param: buffer - buffer for stored data
+    //!return: true if data stored successfully.
     // Note: The position next put in stream after this operation is not garanteed.
     
   protected:
