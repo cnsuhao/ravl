@@ -391,6 +391,9 @@ int doVPlay(int nargs,char *args[])
     exit (0);
   }
   
+  if(deinterlace)
+    vidIn = DeinterlaceStreamC<ByteRGBValueC>(vidIn);
+
   ONDEBUG(std::cerr << "VPlay: Sequence opened.\n");
   if(start < 0) {
     start = vidIn.Tell();
@@ -399,8 +402,6 @@ int doVPlay(int nargs,char *args[])
   }
   UIntT endFrame = (noOfFrames<0) ? -1 : start + noOfFrames - 1;
   
-  if(deinterlace) 
-    vidIn = DeinterlaceStreamC<ByteRGBValueC>(vidIn);
   
   DPIPlayControlC<ImageC<ByteRGBValueC> > vpCtrl(vidIn,false,start,endFrame);  
 
