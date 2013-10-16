@@ -367,7 +367,7 @@ namespace RavlImageN {
     DPIPortC<ImageC<PixelT> > input; // Where to get data from.
     bool rescale; // Rescale field to frame size
     bool fieldAlign; // If no rescaling done, align odd and even fields
-    PairC<ConvolveVert2dC<PixelT,PixelT,RealT> > deinterlaceFilter; // field alighnment filters
+    PairC<ConvolveVert2dC<PixelT,PixelT,RealT> > deinterlaceFilter; // field alignment filters
   };
   
   
