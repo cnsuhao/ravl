@@ -108,6 +108,11 @@ namespace RavlImageN {
     // If fields are not rescaled to full image size, each field is shifted by &frac14; line up or down as appropriate so that the content is aligned.<br>
     // If fields are rescaled, this method has no effect.
 
+    bool IsOdd()
+    { return (state%2) == 1; }
+    //: True if current field read is an odd field
+
+
     virtual StringC OpName() const
     { return StringC("deinterlace"); }
     //: Op type name.
@@ -347,6 +352,10 @@ namespace RavlImageN {
     //: Align fields to remove &frac12;-line inter-field jitter
     // If fields are not rescaled to full image size, each field is shifted by &frac14; line up or down as appropriate so that the content is aligned.<br>
     // If fields are rescaled, this method has no effect.
+
+    bool IsOdd()
+    { return Body().IsOdd(); }
+    //: True if current field read is an odd field
 
   protected:
     DeinterlaceStreamBodyC<PixelT> &Body()

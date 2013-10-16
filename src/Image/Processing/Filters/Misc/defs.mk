@@ -28,6 +28,6 @@ PLIB=RavlImageProc
 
 USESLIBS=RavlImageProc
 
-PROGLIBS=RavlIO RavlImageIO RavlExtImgIO RavlOSIO RavlOptimise  RavlThreads RavlDPDisplay.opt
+PROGLIBS=RavlIO RavlImageIO RavlExtImgIO RavlOSIO RavlOS RavlOptimise  RavlThreads RavlDPDisplay.opt RavlVideoIO
 
 
