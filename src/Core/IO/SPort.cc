@@ -35,7 +35,7 @@ namespace RavlN {
     if(at == ((UIntT) (-1)))
       return false; // Tell failed.
     if(((IntT) at + off) < 0)
-      return false; // Seek before begining of file.
+      return false; // Seek before beginning of file.
     return Seek((UIntT) ((IntT) at + off));
   }
   
@@ -61,7 +61,7 @@ namespace RavlN {
   //: Seek to location in stream.
   // Returns false, if seek failed. (Maybe because its
   // not implemented.)
-  // if an error occurered (Seek returned False) then stream
+  // if an error occurred (Seek returned False) then stream
   // position will not be changed.
   
   bool DPSeekCtrlBodyC::Seek64(StreamPosT off) {
@@ -75,10 +75,10 @@ namespace RavlN {
   }
   
   //: Delta Seek, goto location relative to the current one.
-  // The default behavour of this functions is :
+  // The default behaviour of this functions is :
   // Do some error checking then:
   //   Seek((UIntT)((IntT) Tell() + off));
-  // if an error occurered (DSeek returned False) then stream
+  // if an error occurred (DSeek returned False) then stream
   // position will not be changed.
   
   bool DPSeekCtrlBodyC::DSeek64(StreamPosT off) {
@@ -154,7 +154,7 @@ namespace RavlN {
   //: Seek to location in stream.
   // Returns false, if seek failed. (Maybe because its
   // not implemented.)
-  // if an error occurered (Seek returned False) then stream
+  // if an error occurred (Seek returned False) then stream
   // position will not be changed.
   bool DPSeekCtrlStubBodyC::Seek(UIntT) { 
     ONDEBUG(cerr << "DPSeekCtrlStubBodyC::Seek(UIntT), Called. \n");
@@ -162,10 +162,10 @@ namespace RavlN {
   }
   
   //: Delta Seek, goto location relative to the current one.
-  // The default behavour of this functions is :
+  // The default behaviour of this functions is :
   // Do some error checking then:
   //   Seek((UIntT)((IntT) Tell() + off));
-  // if an error occurered (DSeek returned False) then stream
+  // if an error occurred (DSeek returned False) then stream
   // position will not be changed.
   
   bool DPSeekCtrlStubBodyC::DSeek(IntT d) { 
