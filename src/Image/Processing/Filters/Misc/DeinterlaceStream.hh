@@ -168,8 +168,11 @@ namespace RavlImageN {
     //: Try and get next piece of data.
     
     virtual bool Seek(UIntT off) {
-      if(!seekCtrl.Seek(off/2))
+      int rawOff = off/2;
+      if(!seekCtrl.Seek(rawOff)) {
+        RavlError("Seek to %d failed.",rawOff);
 	return false;
+      }
       state = (off % 2);
       if(state == 1)
 	state = 2; // Make sure we load the appropriate frame.
@@ -189,9 +192,9 @@ namespace RavlImageN {
       //std::cerr << "DSeek by " << off << " " << at  << " State=" << state << "\n";
       // There may be slight more efficient ways of doing this, but
       // it will work for now.
-      if(off < 0 && (-off) > at)
-	return false;
       at += off;
+      if(at < 0)
+        return false;
       return Seek(at);
     }
     //: Delta Seek, goto location relative to the current one.
@@ -233,6 +236,57 @@ namespace RavlImageN {
     { return seekCtrl.Start() * 2; }
     //: Find the offset where the stream begins, normally zero.
     // Defaults to 0
+
+    virtual bool Seek64(StreamPosT off)
+    {
+      StreamPosT rawOff = off/2;
+      if(!seekCtrl.Seek(rawOff)) {
+        RavlError("Seek to %s failed.",RavlN::StringOf(rawOff).c_str());
+        return false;
+      }
+      //RavlDebug("Seek to %s ",RavlN::StringOf(rawOff).c_str());
+      state = (off % 2);
+      if(state == 1)
+        state = 2; // Make sure we load the appropriate frame.
+      //std::cerr << "Seek to " << off << " Frame=" << (off/2) << " State=" << state << "\n";
+      return true;
+    }
+    //: Seek to location in stream.
+
+    virtual bool DSeek64(StreamPosT off)
+    { return Seek64(Tell64() + off); }
+    //: Delta Seek, goto location relative to the current one.
+
+    virtual StreamPosT Tell64() const
+    {
+      StreamPosT at =seekCtrl.Tell();
+      StreamPosT fn = at * 2;
+      switch(state) {
+      case 2: fn += 1; break;
+      case 1: fn -= 1; break;
+      case 0:
+      case 10: // Error.
+      case 11: // Error.
+        break;
+      default: // Fatal error.
+        RavlAssert(0);
+        break;
+      }
+      return fn;
+    }
+    //: Find current location in stream.
+
+    virtual StreamPosT Size64() const
+    {
+      StreamPosT size = seekCtrl.Size();
+      if(size < 0) return size;
+      return size * 2;
+    }
+    //: Find the total size of the stream. (assuming it starts from 0)
+
+    virtual StreamPosT Start64() const
+    { return seekCtrl.Start64() * 2; }
+    //: Find the offset where the stream begins, normally zero.
 
     virtual bool IsGetReady() const {
       if(!input.IsValid())
@@ -313,7 +367,7 @@ namespace RavlImageN {
     DPIPortC<ImageC<PixelT> > input; // Where to get data from.
     bool rescale; // Rescale field to frame size
     bool fieldAlign; // If no rescaling done, align odd and even fields
-    PairC<ConvolveVert2dC<PixelT,PixelT,RealT> > deinterlaceFilter; // field alighnment filters
+    PairC<ConvolveVert2dC<PixelT,PixelT,RealT> > deinterlaceFilter; // field alignment filters
   };
   
   
