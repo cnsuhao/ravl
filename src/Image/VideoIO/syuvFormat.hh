@@ -58,7 +58,7 @@ namespace RavlImageN {
     // Will create an Invalid port if not supported. <p>
     
     virtual const std::type_info &DefaultType() const; 
-    //: Get prefered IO type.
+    //: Get preferred IO type.
     
     virtual IntT Priority() const { return 0; }
     //: Find the priority of the format. the higher the better.
@@ -67,7 +67,7 @@ namespace RavlImageN {
     virtual bool IsStream() const { return true; }
     //: Test if format is a fully streamable.
     // i.e. check if you can read/write more than object object.
-    // This could easly be, but the abakas doesn't use it like that.
+    // This could easily be, but the abakas doesn't use it like that.
     // (I think.)
     
   protected:

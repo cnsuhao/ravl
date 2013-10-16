@@ -137,13 +137,13 @@ namespace RavlImageN {
     return DPOPortBaseC();
   }
   
-  //: Get prefered IO type.
+  //: Get preferred IO type.
   
   const std::type_info &FileFormatYUVBodyC::DefaultType() const 
   { return typeid(ImageC<ByteYUVValueC>); }
   
   
-  // Some common cif formats.
+  // Some common  formats.
   
   FileFormatYUVC RegisterFileFormatYUV  ("yuv"  ,Index2dC(576,720));
 }
