@@ -16,10 +16,14 @@ using namespace RavlImageN;
 int main (int argc, char* argv[])
 {
   RavlN::OptionC opts(argc,argv);
-  bool waitForKey = !opts.Boolean("r","Run file continuously.");
+  opts.Comment("Runs either continuously (-r option) or using keystrokes (default)."
+               "Valid keys are:"
+               "    <- -> (L/R arrow keys) - increment / decrement field"
+               "    q                      - quit");
+  bool waitForKey = !opts.Boolean("r","Run file continuously. (Default: brows with keys)");
   StringC inFile = opts.String("","","Input file");
-  StringC outFile = opts.String("","","Output file");
-  bool verbose = opts.Boolean("v", "Adds diagnostic information to display");
+  StringC outFile = opts.String("","@X","Output file");
+  bool verbose = opts.Boolean("v", "Adds field no. to display");
   opts.Check();
 
   DPISPortC<ImageC<ByteRGBValueC> > in;
@@ -35,32 +39,31 @@ int main (int argc, char* argv[])
 
   DeinterlaceStreamC<ByteRGBValueC> di(in);
   ImageC<ByteRGBValueC> im;
-  int i(0);
+  int i(di.Start());
   if (waitForKey) {
     UInt64T c(0x484f1b);
-    SizeT oldi = 0;
+    SizeT oldi = di.Start();
     while (c != 'q') {
       switch (c) {
       case 0x435b1b: ++i; break;
       case 0x445b1b: --i; break;
-      case 0x484f1b: i=0; break;
+      case 0x484f1b: i=di.Start(); break;
       }
       if (di.GetAt((UIntT)i, im)) {
-        cout << "good :)" << endl;
-        if (verbose)
-          DrawText<ByteRGBValueC>(im, ByteRGBValueC(255,255,255), Index2dC(15,15), StringC(i));
+        if (verbose) {
+          DrawText<ByteRGBValueC>(im, ByteRGBValueC(255,0,0), Index2dC(15,15), StringC(i));
+        }
         out.Put(im);
         oldi = i;
       }
-      else { i = oldi;
-        cout << "bad :(" << endl;}
+      else  i = oldi;
       c = GetKeypress();
     }
   }
   else {
     while (di.Get(im)) {
       if (verbose)
-        DrawText<ByteRGBValueC>(im, ByteRGBValueC(255,255,255), Index2dC(15,15), StringC(i++));
+        DrawText<ByteRGBValueC>(im, ByteRGBValueC(255,0,0), Index2dC(15,15), StringC(i++));
       out.Put(im);
       Sleep(0.02);
       ++i;
