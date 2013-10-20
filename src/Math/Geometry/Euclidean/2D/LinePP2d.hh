@@ -89,8 +89,8 @@ namespace RavlN {
     //!return: true if the lines intersect or false if they are parallel
     
     bool IntersectRow(RealT Row,RealT &Col) const;
-    //: Find the column position which itersects the given row.
-    //!param: row - Row for which we want to find the interecting column
+    //: Find the column position which intersects the given row.
+    //!param: row - Row for which we want to find the intersecting column
     //!param: col - Place to store the intersecting col.
     //!return: True if position exists, false if there is no intersection
     
@@ -123,7 +123,7 @@ namespace RavlN {
     { 
       return Point(ParClosest(Pt));
     }
-    //: Returns intersction of line with perpendicular from Pt to line
+    //: Returns intersection of line with perpendicular from Pt to line
     
     RealT DistanceWithin(const Point2dC & pt) const;
     //: Returns distance of pt to nearest point on the line within the segment limits 
