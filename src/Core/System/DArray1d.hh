@@ -613,11 +613,11 @@ namespace RavlN {
   protected:
     bool FindChunk(int i,IntrDLIterC<DChunkC<DataT> > &it) const
     { return Body().FindChunk(i,it); }
-    //: Find the chunk containing the interest.
+    //: Find the chunk containing the index of interest.
     
     bool FindNthChunk(UIntT i,UIntT &at,IntrDLIterC<DChunkC<DataT> > &it) const
     { return Body().FindNthChunk(i,at,it); }    
-    //: Find the chunk containing the interest.
+    //: Find the chunk containing the index of interest.
     
     DArray1dBodyC<DataT> &Body()
     { return RCHandleC<DArray1dBodyC<DataT> >::Body(); }
@@ -910,7 +910,7 @@ namespace RavlN {
       it->Data().SetSubRange(it->IMin(),it->IMax()-1);
       return true;
     }
-    if(it->IMin() == i) { // At the beginnig of a chunk ?
+    if(it->IMin() == i) { // At the beginning of a chunk ?
       // If the block sizes were equal we wouldn't get this far.
       // so we don't have to worry about deleting blocks.
       it->Data().SetSubRange(it->IMin()+1,it->IMax());
@@ -933,7 +933,7 @@ namespace RavlN {
       chunk.Data().SetSubRange(chunk.IMin()+1,chunk.IMax());
     else
       chunks.DelFirst();
-    // FIXME :- We could actually be more clever about manging the lastBlk
+    // FIXME :- We could actually be more clever about managing the lastBlk
     lastBlk = Array1dC<DataT>(); // Empty last block holder.
     return true;    
   }
@@ -947,7 +947,7 @@ namespace RavlN {
       chunk.Data().SetSubRange(chunk.IMin(),chunk.IMax()-1);
     else
       chunks.DelLast();
-    // FIXME :- We could actually be more clever about manging the lastBlk
+    // FIXME :- We could actually be more clever about managing the lastBlk
     lastBlk = Array1dC<DataT>(); // Empty last block holder.
     return true;
   }
@@ -981,7 +981,7 @@ namespace RavlN {
         lastBlk = Array1dC<DataT>(); // Empty last block holder.
       it.Del();
     }
-    // Cut off begining of chunk before max.
+    // Cut off beginning of chunk before max.
     if(it && it->Contains(max))
       it->Data().SetSubRange(max+1,it->IMax());
     return true;
