@@ -20,7 +20,7 @@
 #include "Ravl/DP/FileFormatRegistry.hh"
 #include "Ravl/SysLog.hh"
 
-#define DPDEBUG 1
+#define DPDEBUG 0
 #if DPDEBUG
 #include "Ravl/TypeName.hh"
 #define ONDEBUG(x) x
