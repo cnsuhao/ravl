@@ -34,7 +34,16 @@ dnl                                  of the library files needed to compile
 dnl                                  with library package <Lib>.
 dnl       with_<Lib>_lnklibs         List of the library files (in -lXXXX 
 dnl                                  form) needed to compile with library
-dnl                                  package <Lib>.
+dnl                                  package <Lib>. For library packages that
+dnl                                  vary the names of the libraries required,
+dnl                                  this may be a set of alternative lists
+dnl                                  seperated by a pipe symbol (|). As an
+dnl                                  example, the DynLink package offers the
+dnl                                  setting " | -ldl " as the dlopen function
+dnl                                  may be available in the default libraries
+dnl                                  (no additional library is required - hence
+dnl                                  the leading " | " setting, i.e. a null set
+dnl                                  of libraries) or in the dl library itself.
 dnl       with_<Lib>_prq             Space separated list of pre-requisites
 dnl                                  of the library package <Lib>.
 dnl       with_<Lib>_tstcd           Code with which to test that the external
@@ -139,7 +148,6 @@ AC_DEFUN([QM_CHECK_CC_LIB],
           preserve_CPPFLAGS=$CPPFLAGS
           preserve_LIBS=$LIBS
           CPPFLAGS=$LIB_CPPFLAGS
-          eval LIBS=\"\$LIB_LDFLAGS \$with_${fix_expan}_lnklibs \$prereqlibs\"
           AC_MSG_NOTICE([checking for external package $1...])
           eval hdr_lst="\$with_${fix_expan}_hdr"
           preamble=""
@@ -168,16 +176,46 @@ AC_DEFUN([QM_CHECK_CC_LIB],
           # Did we find all the header files?
           if ( test X$found = Xtrue )
           then
-             # We did, perform the link test
-             AC_MSG_CHECKING([ability to link against $LIBS])
+             # We did: perform the link test...
+
              eval test_code="\$with_${fix_expan}_tstcd"
-             AC_LINK_IFELSE([AC_LANG_PROGRAM([$preamble],[$test_code])], [found=true], [found=false])
-             if ( test X$found = Xtrue )
-             then
-                AC_MSG_RESULT([yes])
-             else
-                AC_MSG_RESULT([no])
-             fi
+
+             eval lib_sets=\"\$with_${fix_expan}_lnklibs\"
+
+             # with_<Lib>_lnklibs is either a single set of libraries we need
+             # to attempt to link with or, possibly, a | seperated list of
+             # multiple sets libraries we need to try.
+             #
+             # Change IFS to split on the set seperator (|) and loop over the
+             # library sets specified...
+
+             liveIFS=$IFS
+             IFS="|"
+             for try_libs in $lib_sets
+             do
+                IFS=$liveIFS
+                # Reset IFS as soon as possible. The for should have the
+                # possible sets already cached so we do not need to reset IFS
+                # back to the pipe symbol on any further iteration through the
+                # loop.
+
+                LIBS="$LIB_LDFLAGS $try_libs $prereqlibs"
+                AC_MSG_CHECKING([ability to link against @<:@$LIBS@:>@])
+                AC_LINK_IFELSE([AC_LANG_PROGRAM([$preamble],[$test_code])], [found=true], [found=false])
+
+                if ( test X$found = Xtrue )
+                then
+                   AC_MSG_RESULT([yes])
+                   LIB_LDFLAGS=$LIBS
+                   # Set LIB_LDFLAGS to the LDFLAGS we were successful with
+                   break
+                   # We accept the first set of libs that compile, hence we
+                   # break out of the loop to not consider any remaining
+                   # library sets
+                else
+                   AC_MSG_RESULT([no])
+                fi
+             done
           fi
           CPPFLAGS=$preserve_CPPFLAGS
           LDFLAGS=$preserve_LDFLAGS
@@ -187,16 +225,6 @@ AC_DEFUN([QM_CHECK_CC_LIB],
              TRACE_INDENT="     "
              trace 4 Library package $1 found
              AS_VAR_SET(${fix_expan}_CFLAGS, [$LIB_CPPFLAGS])
-             if ( test X$LIB_LDFLAGS != X )
-             then
-                eval LIB_LDFLAGS=\"\$LIB_LDFLAGS \$with_${fix_expan}_lnklibs\"
-             else
-                eval LIB_LDFLAGS="\$with_${fix_expan}_lnklibs"
-             fi
-             if ( test "X$prereqlibs" != X )
-             then
-                LIB_LDFLAGS="$LIB_LDFLAGS $prereqlibs"
-             fi
              AS_VAR_SET(${fix_expan}_LIBS, [$LIB_LDFLAGS])
              AS_VAR_SET(use_${fix_expan}, [present])
           else

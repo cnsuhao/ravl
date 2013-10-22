@@ -81,7 +81,15 @@ AC_DEFUN([QM_DEFINE_ALL_EXTLIBS],
           dnl         library B, library B must be specified here as a manual
           dnl         check if library A is also specified as a manual check.
           dnl         JFi:ToDo:Fix this limitation
-          dnl  4 Link line entry for the library - i.e. -l<libname>
+          dnl  4 Link line entry for the library (in -lXXXX form) needed to
+          dnl    compile against the library package <Lib>. For library
+          dnl    packages that vary the names of the libraries required, this
+          dnl    may be a set of alternative lists seperated by a pipe symbol.
+          dnl    For example, the DynLink package offers the setting
+          dnl    " | -ldl " as the dlopen() function may be available in
+          dnl    either the default libraries (no additional library is required
+          dnl    hence the leading " | " setting, i.e. a null set of libraries)
+          dnl    or in the dl library itself.
           dnl  5 Name(s) of header files needed to use the library (only really
           dnl    need to provide one for a specimin test unless it is know that
           dnl    sub-sets of the header files are regularly seen in the wild).
@@ -137,6 +145,13 @@ AC_DEFUN([QM_DEFINE_ALL_EXTLIBS],
                               [],
                               [-lcuda -lcudart],
                               [cuda.h],
+                              [C]
+                             )
+          QM_DEFINE_EXTLIB_CC([DynLink],
+                              [dlopen ();],
+                              [],
+                              [ | -ldl],
+                              [],
                               [C]
                              )
           QM_DEFINE_EXTLIB_CC([GLUT],        

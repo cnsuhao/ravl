@@ -115,26 +115,6 @@ AC_SUBST([SWIG])
 RESOURCES+="PERL "
 
 
-# Check for common system functions that appear in different system libraries 
-# dependant on the platform in use
-
-# dlopen is usually in libdl but can vary (e.g. for BSD it's in libc)
-AC_SEARCH_LIBS([dlopen],
-               [dl],
-               [if ( test "X$ac_cv_search_dlopen" != "Xnone required" )
-                then
-                        DynLink_LIBS="$ac_cv_search_dlopen"
-                else
-                        DynLink_LIBS=""
-                fi
-                RESOURCES+="DynLink "
-               ],
-               [AC_MSG_WARN([Cannot find a working dlopen function])],
-               []
-              )
-AC_SUBST([DynLink_LIBS])
-
-
 # Process Architecture specific issues
 QM_SET_ARC
 AC_SUBST([ARC])

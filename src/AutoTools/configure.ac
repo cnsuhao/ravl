@@ -698,6 +698,10 @@ dnl# Config.Project.in template, hence we need to declare it as a substitution
 dnl# variable here.
 dnl#
 AC_SUBST([CUDA_SUPPORT])
+AC_SUBST([DynLink_SUPPORT])
+dnl# Although Ravl does use Dynamic loading, its absence does not directly
+dnl# control the available Ravl libraries, hence no setting for the _SUPPORT
+dnl# variable is required. 
 
 
 # If debugging, output what libraries are defined
@@ -868,26 +872,6 @@ AS_IF([test "X$SWIG" != X], [ RESOURCES+="Swig "])
 AC_SUBST([SWIG])
 TRACE_INDENT="     "
 trace 3 RESOURCES now set to "@<:@$RESOURCES@:>@"
-
-
-# Check for common system functions that appear in different system libraries 
-# dependant on the platform in use
-
-# dlopen is usually in libdl but can vary (e.g. for BSD it's in libc)
-AC_SEARCH_LIBS([dlopen],
-               [dl],
-               [],
-               [AC_MSG_FAILURE([Cannot find a working dlopen function])],
-               []
-              )
-if ( test "X$ac_cv_search_dlopen" != "Xnone required" )
-then
-        DynLink_LIBS="$ac_cv_search_dlopen"
-else
-        DynLink_LIBS=""
-fi
-AC_SUBST([DynLink_LIBS])
-
 
 
 # Now check if we need to disallow any RESOURCES inherited from the QMake
@@ -1385,23 +1369,6 @@ echo "SWIG=@SWIG@" >> ./Config.Project.in
 echo >> ./Config.Project.in
 
 
-# Declare which libraries are needed for particular system calls that can move
-# about on different platforms
-#
-# First initialise ALL_EXTERNAL_xxxS here as we need to record these libraries
-# as well as the external libs
-ALL_EXTERNAL_LIBS=""
-ALL_EXTERNAL_CFLAGS=""
-echo >> ./Config.Project.in
-echo \# Location of system calls that can vary their parent library >> ./Config.Project.in
-echo >> ./Config.Project.in
-# Location of dlopen
-echo "DynLink_LIBS=@DynLink_LIBS@" >> ./Config.Project.in
-echo >> ./Config.Project.in
-ALL_EXTERNAL_LIBS+=" "$DynLink_LIBS
-ALL_EXTERNAL_CFLAGS+=" "$DynLink_CFLAGS
-
-
 # Apply any "rpath" setting to the user-configured libraries
 #
 if ( test "$with_rpath" = 'Y' )
@@ -1657,6 +1624,11 @@ trace 3 RESOURCES now "@<:@$RESOURCES@:>@"
 # by the user, but also those already configured by any existing QMake
 # configuration. 
 #
+# First initialise ALL_EXTERNAL_xxxS ...
+ALL_EXTERNAL_LIBS=""
+ALL_EXTERNAL_CFLAGS=""
+
+# Now add all the external library packages that are present
 for lib in $KnownLibs
 do
    eval lib_enablement=\$use_${lib}

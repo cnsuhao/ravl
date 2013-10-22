@@ -642,10 +642,10 @@ USER_CC
 USER_AWK
 USER_AR
 PROJECT_MAJOR
-DynLink_LIBS
 SWIG
 GnuPlot
 EGREP
+DynLink_SUPPORT
 CUDA_SUPPORT
 Meteor1_SUPPORT
 devVideo4Linux_SUPPORT
@@ -720,6 +720,8 @@ LibJasper_LIBS
 LibJasper_CFLAGS
 GLUT_LIBS
 GLUT_CFLAGS
+DynLink_LIBS
+DynLink_CFLAGS
 CUDA_LIBS
 CUDA_CFLAGS
 blas_LIBS
@@ -1025,6 +1027,10 @@ with_CUDA_pkgconf
 with_CUDA
 with_CUDA_library
 with_CUDA_include
+with_DynLink_pkgconf
+with_DynLink
+with_DynLink_library
+with_DynLink_include
 with_GLUT_pkgconf
 with_GLUT
 with_GLUT_library
@@ -1951,6 +1957,19 @@ Optional Packages:
                           its functionality
 
   --with-CUDA-include     Declare the location of the CUDA header files and
+                          enable their functionality
+
+  --with-DynLink-pkgconf  Enable the DynLink library package via pkg-config
+                          and declare the name by which the DynLink library
+                          package is know to pkg-config
+
+  --with-DynLink          Enable functionality that relies on the DynLink
+                          library [default=check]
+
+  --with-DynLink-library  Declare the location of the DynLink library and
+                          enable its functionality
+
+  --with-DynLink-include  Declare the location of the DynLink header files and
                           enable their functionality
 
   --with-GLUT-pkgconf     Enable the GLUT library package via pkg-config and
@@ -11936,7 +11955,7 @@ $as_echo "$as_me: WARNING: " >&2;}
                          fi
                          trace 3 No library name specified by --with-blas-library, using --with-blas value [$with_blas_lnklibs]
                       else
-                         trace 3 No library name specified by --with-blas-library, using default [-lblas]
+                         trace 3 No library name specified by --with-blas-library, using default ["-lblas"]
                          with_blas_lnklibs="-lblas"
                       fi
 
@@ -12047,7 +12066,7 @@ $as_echo "$as_me: WARNING: " >&2;}
                          fi
                          trace 3 Using file component of --with-blas to set library name for blas [$with_blas_lnklibs]
                    else
-                      trace 3 Using default library name for blas [-lblas]
+                      trace 3 Using default library name for blas ["-lblas"]
                       with_blas_lnklibs="-lblas"
                    fi
                 fi
@@ -12828,7 +12847,7 @@ $as_echo "$as_me: WARNING: " >&2;}
                          fi
                          trace 3 No library name specified by --with-CUDA-library, using --with-CUDA value [$with_CUDA_lnklibs]
                       else
-                         trace 3 No library name specified by --with-CUDA-library, using default [-lcuda -lcudart]
+                         trace 3 No library name specified by --with-CUDA-library, using default ["-lcuda -lcudart"]
                          with_CUDA_lnklibs="-lcuda -lcudart"
                       fi
 
@@ -12939,7 +12958,7 @@ $as_echo "$as_me: WARNING: " >&2;}
                          fi
                          trace 3 Using file component of --with-CUDA to set library name for CUDA [$with_CUDA_lnklibs]
                    else
-                      trace 3 Using default library name for CUDA [-lcuda -lcudart]
+                      trace 3 Using default library name for CUDA ["-lcuda -lcudart"]
                       with_CUDA_lnklibs="-lcuda -lcudart"
                    fi
                 fi
@@ -13033,6 +13052,898 @@ $as_echo "$as_me: WARNING: --with-CUDA-include and --with-CUDA specify different
           with_CUDA_lang="C
                              "
           with_CUDA_virtual="no"
+
+
+
+
+
+
+# Check whether --with-DynLink-pkgconf was given.
+if test "${with_DynLink_pkgconf+set}" = set; then :
+  withval=$with_DynLink_pkgconf; case $with_DynLink_pkgconf in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                          with_DynLink_pkgconf=no
+                                          trace 4 --with-DynLink-pkgconf disabling pkg-config use
+                                          ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' | 'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                          { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Asking to configure DynLink via pkg-config but configure is unaware of the name of the DOTpc metadata file
+See \`config.log' for more details." "$LINENO" 5; }
+                                          ;;
+                        * )               use_DynLink=yes
+                                          trace 4 --with-DynLink-pkgconf set to [$with_DynLink_pkgconf]
+                                          ;;
+                       esac
+
+else
+  trace 4 No --with-DynLink-pkgconf specified
+                       with_DynLink_pkgconf=notset
+
+
+fi
+
+
+# Check whether --with-DynLink was given.
+if test "${with_DynLink+set}" = set; then :
+  withval=$with_DynLink; case $with_DynLink in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                          use_DynLink=no
+                                          with_DynLink=no
+                                          ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                          use_DynLink=yes
+                                          with_DynLink=yes
+                                          ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                          use_DynLink=check
+                                          with_DynLink=check
+                                          ;;
+                        * )               use_DynLink=yes
+                                          ;;
+                       esac
+
+else
+  trace 4 No --with-DynLink specified
+                       with_DynLink=notset
+
+
+fi
+
+
+# Check whether --with-DynLink-library was given.
+if test "${with_DynLink_library+set}" = set; then :
+  withval=$with_DynLink_library; case "$with_DynLink_library" in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                          use_DynLink=no
+                                          with_DynLink_library=no
+                                          ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                          use_DynLink=yes
+                                          with_DynLink_library=yes
+                                          ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                          use_DynLink=check
+                                          with_DynLink_library=check
+                                          ;;
+                        * )               use_DynLink=yes
+                                          ;;
+                       esac
+
+else
+  trace 4 No --with-DynLink-library specified
+                       with_DynLink_library=notset
+
+
+fi
+
+
+# Check whether --with-DynLink-include was given.
+if test "${with_DynLink_include+set}" = set; then :
+  withval=$with_DynLink_include; case "$with_DynLink_include" in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                          use_DynLink=no
+                                          with_DynLink_include=no
+                                          ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                          use_DynLink=yes
+                                          with_DynLink_include=yes
+                                          ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                          use_DynLink=check
+                                          with_DynLink_include=check
+                                          ;;
+                        * )               use_DynLink=yes
+                                          ;;
+                       esac
+
+else
+  trace 4 No --with-DynLink-include specified
+                       with_DynLink_include=notset
+
+
+fi
+
+          # Having read the command-line options, check none are mutually
+          # exclusive or contradictory
+          #
+          # First test --with-DynLink compatability with the rest
+          if ( test $with_DynLink = no )
+          then
+             if ( test $with_DynLink_pkgconf != no && test $with_DynLink_pkgconf != notset )
+             then
+                # --with-DynLink-pkgconf=path (is neither no or notset and cannot
+                # be yes or check as they would have errored above.
+                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Asking to DynLink via pkg-config but --with-DynLink disabled it
+See \`config.log' for more details." "$LINENO" 5; }
+             fi
+
+             if ( test "$with_DynLink_library" != no && test "$with_DynLink_library" != notset )
+             then
+                if ( test "$with_DynLink_library" = check )
+                then
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-DynLink specifically disables library but --with-DynLink-library" >&5
+$as_echo "$as_me: WARNING: --with-DynLink specifically disables library but --with-DynLink-library" >&2;}
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: asking to check for it; --with-DynLink-library ignored" >&5
+$as_echo "$as_me: WARNING: asking to check for it; --with-DynLink-library ignored" >&2;}
+                   use_DynLink=no
+                else
+                   # --with-DynLink-library is yes or points to the library
+                   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "--with-DynLink-library asking to use DynLink but --with-DynLink disabled it
+See \`config.log' for more details." "$LINENO" 5; }
+                fi
+              fi
+
+             if ( test "$with_DynLink_include" != no && test "$with_DynLink_include" != notset )
+             then
+                if ( test "$with_DynLink_include" = check )
+                then
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-DynLink specifically disables library but --with-DynLink-include" >&5
+$as_echo "$as_me: WARNING: --with-DynLink specifically disables library but --with-DynLink-include" >&2;}
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: asking to check for it; --with-DynLink-include ignored" >&5
+$as_echo "$as_me: WARNING: asking to check for it; --with-DynLink-include ignored" >&2;}
+                   use_DynLink=no
+                else
+                   # --with-DynLink-include is yes or points to the include
+                   # directory
+                   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "--with-DynLink-include asking to use DynLink but --with-DynLink disabled it
+See \`config.log' for more details." "$LINENO" 5; }
+                fi
+             fi
+
+          else
+             # test --with-DynLink != no
+
+             if ( test $with_DynLink = check )
+             then
+                if ( test $with_DynLink_pkgconf != no && test $with_DynLink_pkgconf != notset )
+                then
+                   # --with-DynLink-pkgconf must point to the metafile
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Explicitly asking for DynLink via pkg-config but --with-DynLink is" >&5
+$as_echo "$as_me: WARNING: Explicitly asking for DynLink via pkg-config but --with-DynLink is" >&2;}
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: asking to check for it; --with-DynLink ignored." >&5
+$as_echo "$as_me: WARNING: asking to check for it; --with-DynLink ignored." >&2;}
+                   use_DynLink=yes
+                fi
+
+                if ( test "$with_DynLink_library" != check && test "$with_DynLink_library" != notset )
+                then
+                   if ( test "$with_DynLink_library" = no )
+                   then
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Asking to check for DynLink via --with-DynLink but --with-DynLink-library" >&5
+$as_echo "$as_me: WARNING: Asking to check for DynLink via --with-DynLink but --with-DynLink-library" >&2;}
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: explicitly disables it; --with-DynLink ignored." >&5
+$as_echo "$as_me: WARNING: explicitly disables it; --with-DynLink ignored." >&2;}
+                      use_DynLink=no
+                   else
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Explicitly asking for DynLink via --with-DynLink-library but --with-DynLink" >&5
+$as_echo "$as_me: WARNING: Explicitly asking for DynLink via --with-DynLink-library but --with-DynLink" >&2;}
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: asking to check for it; --with-DynLink ignored." >&5
+$as_echo "$as_me: WARNING: asking to check for it; --with-DynLink ignored." >&2;}
+                      use_DynLink=yes
+                   fi
+                fi
+
+                if ( test "$with_DynLink_include" != check && test "$with_DynLink_include" != notset )
+                then
+                   if ( test "$with_DynLink_include" = no )
+                   then
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Asking to check for DynLink via --with-DynLink but --with-DynLink-include" >&5
+$as_echo "$as_me: WARNING: Asking to check for DynLink via --with-DynLink but --with-DynLink-include" >&2;}
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: explicitly disables it; --with-DynLink ignored." >&5
+$as_echo "$as_me: WARNING: explicitly disables it; --with-DynLink ignored." >&2;}
+                      use_DynLink=no
+                   else
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Explicitly asking for DynLink via --with-DynLink-include but --with-DynLink" >&5
+$as_echo "$as_me: WARNING: Explicitly asking for DynLink via --with-DynLink-include but --with-DynLink" >&2;}
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: asking to check for it; --with-DynLink ignored." >&5
+$as_echo "$as_me: WARNING: asking to check for it; --with-DynLink ignored." >&2;}
+                      use_DynLink=yes
+                   fi
+                fi
+
+             else
+                # --with-DynLink != no && != check
+                if ( test $with_DynLink != notset )
+                then
+                   # --with-DynLink = path or yes
+
+                   # We need not check --with-DynLink-pkgconf as there is no
+                   # possible conflict (cannot be check and we take no to
+                   # be a request to disable pkg-config, rather than the
+                   # library as a whole)
+
+                   if ( test "$with_DynLink_library" = no )
+                   then
+                      { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "--with-DynLink-library disabling DynLink but --with-DynLink enabled it
+See \`config.log' for more details." "$LINENO" 5; }
+                   else
+                      if ( test "$with_DynLink_library" = check )
+                      then
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Explicitly enabling DynLink via --with-DynLink but --with-DynLink-library" >&5
+$as_echo "$as_me: WARNING: Explicitly enabling DynLink via --with-DynLink but --with-DynLink-library" >&2;}
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING:  asking to check for it; --with-DynLink-include ignored." >&5
+$as_echo "$as_me: WARNING:  asking to check for it; --with-DynLink-include ignored." >&2;}
+                         use_DynLink=no
+                      fi
+                   fi
+
+                   if ( test "$with_DynLink_include" = no )
+                   then
+                      { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "--with-DynLink-include disabling DynLink but --with-DynLink enabled it
+See \`config.log' for more details." "$LINENO" 5; }
+                   else
+                      if ( test "$with_DynLink_include" = check )
+                      then
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Explicitly enabling DynLink via --with-DynLink but --with-DynLink-include" >&5
+$as_echo "$as_me: WARNING: Explicitly enabling DynLink via --with-DynLink but --with-DynLink-include" >&2;}
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING:  asking to check for it; --with-DynLink-include ignored." >&5
+$as_echo "$as_me: WARNING:  asking to check for it; --with-DynLink-include ignored." >&2;}
+                         use_DynLink=no
+                      fi
+                   fi
+                fi
+             fi
+          fi
+
+          # Now test --with-DynLink-pkgconf is not in conflict with the other two
+          # command-line switches.
+          if ( test $with_DynLink_pkgconf != notset && test $with_DynLink_pkgconf != no )
+          then
+             # --with-DynLink-pkgconf = path (cannot be yes or check)
+             if ( test "$with_DynLink_library" = check )
+             then
+                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-DynLink-library asking to check for DynLink but --with-DynLink-pkgconf asking" >&5
+$as_echo "$as_me: WARNING: --with-DynLink-library asking to check for DynLink but --with-DynLink-pkgconf asking" >&2;}
+                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: to use pkg-config, --with-DynLink-library ignored." >&5
+$as_echo "$as_me: WARNING: to use pkg-config, --with-DynLink-library ignored." >&2;}
+                use_DynLink=yes
+             else
+                if ( test "$with_DynLink_library" != no && test "$with_DynLink_library" != notset )
+                then
+                   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "--with-DynLink-library enabling compile check for DynLink but --with-DynLink-pkgconf asking to use pkg-config
+See \`config.log' for more details." "$LINENO" 5; }
+                fi
+             fi
+
+             if ( test "$with_DynLink_include" = check )
+             then
+                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-DynLink-include asking to check for DynLink but --with-DynLink-pkgconf asking" >&5
+$as_echo "$as_me: WARNING: --with-DynLink-include asking to check for DynLink but --with-DynLink-pkgconf asking" >&2;}
+                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: to use pkg-config, --with-DynLink-include ignored." >&5
+$as_echo "$as_me: WARNING: to use pkg-config, --with-DynLink-include ignored." >&2;}
+                use_DynLink=yes
+             else
+                if ( test "$with_DynLink_include" != no && test "$with_DynLink_include" != notset )
+                then
+                   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "--with-DynLink-include enabling compile check for DynLink but --with-DynLink-pkgconf asking to use pkg-config
+See \`config.log' for more details." "$LINENO" 5; }
+                fi
+             fi
+          fi
+
+
+          # Check consistency between library and include switches
+          if ( test "$with_DynLink_library" = no )
+          then
+             if ( test "$with_DynLink_include" != no && test "$with_DynLink_include" != notset )
+             then
+                if ( test "$with_DynLink_include" = check )
+                then
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-DynLink-include asking to check for DynLink but --with-DynLink-library has" >&5
+$as_echo "$as_me: WARNING: --with-DynLink-include asking to check for DynLink but --with-DynLink-library has" >&2;}
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: explicitly disabled it; --with-DynLink-include ignored." >&5
+$as_echo "$as_me: WARNING: explicitly disabled it; --with-DynLink-include ignored." >&2;}
+                   use_DynLink=no
+                else
+                   # --with-DynLink-include = yes or path
+                   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "--with-DynLink-include enabling DynLink but --with-DynLink-library disabled it.
+See \`config.log' for more details." "$LINENO" 5; }
+                fi
+             fi
+          else
+             # --with-DynLink-library != no
+             if ( test "$with_DynLink_library" = check )
+             then
+                if ( test "$with_DynLink_include" = no )
+                then
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-DynLink-library asking to check for DynLink but --with-DynLink-include has" >&5
+$as_echo "$as_me: WARNING: --with-DynLink-library asking to check for DynLink but --with-DynLink-include has" >&2;}
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: explicitly disabled it; --with-DynLink-library ignored." >&5
+$as_echo "$as_me: WARNING: explicitly disabled it; --with-DynLink-library ignored." >&2;}
+                   use_DynLink=no
+                else
+                   if ( test "$with_DynLink_include" != check && test "$with_DynLink_include" != notset )
+                   then
+                      # --with-DynLink-include = yes or path
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-DynLink-library asking to check for DynLink but --with-DynLink-include has" >&5
+$as_echo "$as_me: WARNING: --with-DynLink-library asking to check for DynLink but --with-DynLink-include has" >&2;}
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: explicitly enabled it; --with-DynLink-library ignored." >&5
+$as_echo "$as_me: WARNING: explicitly enabled it; --with-DynLink-library ignored." >&2;}
+                      use_DynLink=yes
+                   fi
+                fi
+             else
+                if ( test "$with_DynLink_library" != notset )
+                then
+                   # --with-DynLink-library a path or yes
+                   if ( test "$with_DynLink_include" = no )
+                   then
+                      { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "--with-DynLink-library enabling DynLink but --with-DynLink-include disabled it.
+See \`config.log' for more details." "$LINENO" 5; }
+                   else
+                      if ( test "$with_DynLink_include" = check )
+                      then
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-DynLink-include asking to check for DynLink but --with-DynLink-library has" >&5
+$as_echo "$as_me: WARNING: --with-DynLink-include asking to check for DynLink but --with-DynLink-library has" >&2;}
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: explicitly enabled it; --with-DynLink-include ignored." >&5
+$as_echo "$as_me: WARNING: explicitly enabled it; --with-DynLink-include ignored." >&2;}
+                         use_DynLink=yes
+                      fi
+                   fi
+                fi
+             fi
+          fi
+
+
+          # Now process --with-DynLink to see if it is a fallback path
+          #
+          # Initialise fallback components
+          fallback_path=""
+          fallback_file=""
+          # Check for viable switch setting
+          if ( test $with_DynLink != notset && test $with_DynLink != no && test $with_DynLink != check && test $with_DynLink != yes )
+          then
+             # We have a path to use
+             if ( test -d $with_DynLink )
+             then
+                # Parameter is a directory path
+                fallback_path=$with_DynLink
+                trace 3 with-DynLink provides a fallback path [$fallback_path]
+             else
+                fallback_path=`$as_dirname -- $with_DynLink ||
+$as_expr X$with_DynLink : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
+	 X$with_DynLink : 'X\(//\)[^/]' \| \
+	 X$with_DynLink : 'X\(//\)$' \| \
+	 X$with_DynLink : 'X\(/\)' \| . 2>/dev/null ||
+$as_echo X$with_DynLink |
+    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)[^/].*/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\).*/{
+	    s//\1/
+	    q
+	  }
+	  s/.*/./; q'`
+                if ( test -d $fallback_path  )
+                then
+                   # strip leading path
+                   fallback_file=`$EXPR "//$with_DynLink" : '.*/\([^/]*\)'`
+                   # portable version of fallback_file=`basename $with_DynLink`
+                   if ( test X$with_DynLink = X$fallback_path/$fallback_file )
+                   then
+                      # Parameter is a file path
+                      trace 3 with-DynLink provides a fallback path [$fallback_path] and a file [$fallback_file]
+                   else
+                      # Somehow dirname($x)/basename($x) != $x
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Problem processing --with-DynLink, parameter ignored" >&5
+$as_echo "$as_me: WARNING: Problem processing --with-DynLink, parameter ignored" >&2;}
+                      fallback_path=""
+                      fallback_file=""
+                   fi
+                else
+                   # --with-DynLink=/path/is/not/a/dir/something
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Illegal command-line option for --with-DynLink, parameter ignored" >&5
+$as_echo "$as_me: WARNING: Illegal command-line option for --with-DynLink, parameter ignored" >&2;}
+                   fallback_path=""
+                   fallback_file=""
+                fi
+             fi
+          fi
+
+
+          if ( test X$use_DynLink != Xno )
+          then
+             if ( test $with_DynLink_pkgconf = no ||  test $with_DynLink_pkgconf = notset )
+             then
+                # Not using pkg-config, set any paths for compile checks
+
+                # Check if --with-DynLink-library is a specification rather than a
+                # simple switch
+                if ( test "$with_DynLink_library" != notset && test "$with_DynLink_library" != no && test "$with_DynLink_library" != check && test "$with_DynLink_library" != yes )
+                then
+                   # We have a path specification to parse
+                   #
+                   # If the specification is a straight forward link line (of
+                   # the form "-L/a/b/c -ld .. -L/w/x/y -lz" we want to split
+                   # off the last -l entries into with_DynLink_lnklibs and include
+                   # the initial part of the link line in with_DynLink_libpath.
+                   # If we just have directory and library paths, we need to
+                   # add the relevant linker switch, and assign the parameter
+                   # to the appropriate variable.
+                   #
+                   with_DynLink_lnklibs=""
+                   with_DynLink_libpath=""
+                   use_DynLink=yes
+                   trace 6 Parsing --with-DynLink-library setting
+                   with_DynLink_library=`echo " $with_DynLink_library " | $SED 's/ -L */ -L/g;s/ -l */ -l/g'`
+                   # Collapse down spaces following -L and -l entries. This is
+                   # mainly for ease of parsing but does make any user input
+                   # compatible with the form of the default values used
+                   # throughout this configure script. Downsides are that any
+                   # other -X <arg> switches provided by the user will not
+                   # parse correctly and a general issue awaiting any systems
+                   # that must have the space between the switch and its
+                   # argument. The latter issue is the bigger problem as such
+                   # a limitation will have big consequences for this script
+                   # if we ever hit such a constrained toolset.
+                   for part in $with_DynLink_library
+                   do
+                      case $part in
+                      -L* )   # Library path specifier. Any previous library
+                              # names ought to be recorded as part of libpath
+                              # to maintain any order significance of the
+                              # supplied link command.
+                              TRACE_INDENT="     "
+                              trace 6 Appending [$part] to library path
+                              with_DynLink_libpath="$with_DynLink_libpath$with_DynLink_lnklibs$part "
+                              with_DynLink_lnklibs=""
+                              ;;
+                      -l* )   # Library specifier. Append to the linklib
+                              # variable.
+                              TRACE_INDENT="     "
+                              trace 6 Appending [$part] to library list
+                              with_DynLink_lnklibs="$with_DynLink_lnklibs$part "
+                              ;;
+                      -* )    # Presume linker switch. Append to libpath after
+                              # adding any existing library specs (so as to
+                              # maintain any order specific requirements).
+                              TRACE_INDENT="     "
+                              trace 6 Appending [$part] to link line
+                              with_DynLink_libpath="$with_DynLink_libpath$with_DynLink_lnklibs$part "
+                              with_DynLink_lnklibs=""
+                              ;;
+                      * )     # Non-linker format, see if we can work out
+                              # what it is
+                              if ( test -d $part )
+                              then
+                                 # We have a directory, add to libpath with
+                                 # a -L prefix having moved across any
+                                 # libraries from lnklibs to preserve ordering
+                                 # constraints
+                                 TRACE_INDENT="     "
+                                 trace 6 Adding [-L$part] to link line
+                                 with_DynLink_libpath="$with_DynLink_libpath${with_DynLink_lnklibs}-L$part "
+                                 with_DynLink_lnklibs=""
+                              else
+                                 # Not a directory, is it directory/file?
+                                 path=`$as_dirname -- $part ||
+$as_expr X$part : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
+	 X$part : 'X\(//\)[^/]' \| \
+	 X$part : 'X\(//\)$' \| \
+	 X$part : 'X\(/\)' \| . 2>/dev/null ||
+$as_echo X$part |
+    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)[^/].*/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\).*/{
+	    s//\1/
+	    q
+	  }
+	  s/.*/./; q'`
+                                 if ( test X$path != X && test $path != . )
+                                 then
+                                    # We have "something/file" does the
+                                    # "something" point to a directory?
+                                    if ( test -d $path  )
+                                    then
+                                       # We have "directory/presumed-library-name"
+                                       # Find candidate library name
+                                       file=`$EXPR "//$part" : '.*/\([^/]*\)'`
+                                       if ( test $part = $path/$file )
+                                       then
+                                          # Parameter is a file path
+                                          # Does it have a '.a' extension
+                                          lib=`$EXPR "X$file" : 'X\(.*\)\.a$'`
+                                          if ( test X$lib != X  )
+                                          then
+                                             lib=`echo $lib | $SED 's/^lib//'`
+                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-DynLink_library pointing to a .a" >&5
+$as_echo "$as_me: WARNING: Specifying --with-DynLink_library pointing to a .a" >&2;}
+                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: will cause problems building with shared libraries." >&5
+$as_echo "$as_me: WARNING: will cause problems building with shared libraries." >&2;}
+                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Instead we will use -l$lib" >&5
+$as_echo "$as_me: WARNING: Instead we will use -l$lib" >&2;}
+                                          else
+                                             # Does it have a '.so' extension
+                                             lib=`$EXPR "X$file" : 'X\(.*\)\.so$'`
+                                             if ( test X$lib != X )
+                                             then
+                                                lib=`echo $lib | $SED 's/^lib//'`
+                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-DynLink_library pointing to" >&5
+$as_echo "$as_me: WARNING: Specifying --with-DynLink_library pointing to" >&2;}
+                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: a .so will cause problems building with " >&5
+$as_echo "$as_me: WARNING: a .so will cause problems building with " >&2;}
+                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: static libraries. Instead, we will use" >&5
+$as_echo "$as_me: WARNING: static libraries. Instead, we will use" >&2;}
+                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: -l$lib" >&5
+$as_echo "$as_me: WARNING: -l$lib" >&2;}
+                                             else
+                                                # Parameter is path and name fragment
+                                                lib=`echo $file | $SED 's/^lib//'`
+                                             fi
+                                          fi
+                                          # As the user specified the library
+                                          # as a path rather than with a -L
+                                          # and a -l entry, it would be good
+                                          # to continue in the same vein.
+                                          # However, as -l/full/path is not
+                                          # supported, we have to revert to
+                                          # the seperate specifiers.
+                                          TRACE_INDENT="     "
+                                          trace 6 Adding [-L$path] to library path
+                                          with_DynLink_libpath="$with_DynLink_libpath$with_DynLink_lnklibs-L$path "
+                                          with_DynLink_lnklibs=""
+                                          TRACE_INDENT="     "
+                                          trace 6 Adding [-l$lib] to library list
+                                          with_DynLink_lnklibs="-l$lib "
+                                       else
+                                          # Somehow dirname($x)/basename($x) != $x
+                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Problem processing --with-DynLink-library, [$part] ignored" >&5
+$as_echo "$as_me: WARNING: Problem processing --with-DynLink-library, [$part] ignored" >&2;}
+                                       fi
+                                    else
+                                       # Parameter is "not-a-dir-path/something"
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Illegal value for --with-DynLink-library, [$part] ignored" >&5
+$as_echo "$as_me: WARNING: Illegal value for --with-DynLink-library, [$part] ignored" >&2;}
+                                    fi
+                                 else
+                                    # Parameter is just "something" - assume library name
+                                    #
+                                    # Does it have a '.a' extension
+                                    lib=`$EXPR "X$part" : 'X\(.*\)\.a$'`
+                                    if ( test X$lib != X  )
+                                    then
+                                       lib=`echo $lib | $SED 's/^lib//'`
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-DynLink_library pointing to a .a" >&5
+$as_echo "$as_me: WARNING: Specifying --with-DynLink_library pointing to a .a" >&2;}
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: will cause problems building with shared libraries." >&5
+$as_echo "$as_me: WARNING: will cause problems building with shared libraries." >&2;}
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Instead we will use -l$lib" >&5
+$as_echo "$as_me: WARNING: Instead we will use -l$lib" >&2;}
+                                    else
+                                       # Does it have a '.so' extension
+                                       lib=`$EXPR "X$part" : 'X\(.*\)\.so$'`
+                                       if ( test X$lib != X )
+                                       then
+                                          lib=`echo $lib | $SED 's/^lib//'`
+                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-DynLink_library pointing to" >&5
+$as_echo "$as_me: WARNING: Specifying --with-DynLink_library pointing to" >&2;}
+                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: a .so will cause problems building with " >&5
+$as_echo "$as_me: WARNING: a .so will cause problems building with " >&2;}
+                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: static libraries. Instead, we will use" >&5
+$as_echo "$as_me: WARNING: static libraries. Instead, we will use" >&2;}
+                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: -l$lib" >&5
+$as_echo "$as_me: WARNING: -l$lib" >&2;}
+                                       else
+                                          # Parameter is name fragment
+                                          lib=`echo $part | $SED 's/^lib//'`
+                                       fi
+                                    fi
+                                    TRACE_INDENT="     "
+                                    trace 6 Adding [-l$lib] to library list
+                                    with_DynLink_lnklibs="${with_DynLink_lnklibs}-l$lib "
+                                 fi
+                              fi
+                              ;;
+                      esac
+                   done
+                   trace 3 Link line assembled from --with-DynLink-library is [$with_DynLink_libpath $with_DynLink_lnklibs]
+                   # Now verify what we have
+                   if ( test X`$EXPR "X $with_DynLink_libpath $with_DynLink_lnklibs" : '.* \(-l[^ ]*\).*$'` == X )
+                   then
+                      # no -lxxx in libpath or lnklibs - use any fallback or the
+                      # default library name
+                      if ( test X$fallback_file != X )
+                      then
+                         # --with_DynLink specified a fallback name, use that but
+                         # sanitise it first
+                         lib=`$EXPR "X$fallback_file" : 'X\(.*\)\.a$'`
+                         if ( test X$lib != X  )
+                         then
+                            # Removed an unwanted .a suffix
+                            # Now strip any leading -l or lib prefix
+                            with_DynLink_lnklibs=-l`echo $lib | $SED 's/^-l//;s/^lib//'`
+                            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-DynLink pointing to a .a" >&5
+$as_echo "$as_me: WARNING: Specifying --with-DynLink pointing to a .a" >&2;}
+                            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: will cause problems building with shared libraries." >&5
+$as_echo "$as_me: WARNING: will cause problems building with shared libraries." >&2;}
+                            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Instead we will use -l$lib" >&5
+$as_echo "$as_me: WARNING: Instead we will use -l$lib" >&2;}
+                         else
+                            lib=`$EXPR "X$fallback_file" : 'X\(.*\)\.so$'`
+                            if ( test X$lib != X )
+                            then
+                               # Removed an unwanted .so suffix
+                               # Now strip any leading -l or lib prefix
+                               with_DynLink_lnklibs=-l`echo $lib | $SED 's/^-l//;s/^lib//'`
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-DynLink pointing to a .so" >&5
+$as_echo "$as_me: WARNING: Specifying --with-DynLink pointing to a .so" >&2;}
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: will cause problems building with static libraries." >&5
+$as_echo "$as_me: WARNING: will cause problems building with static libraries." >&2;}
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Instead, we will use -l$lib" >&5
+$as_echo "$as_me: WARNING: Instead, we will use -l$lib" >&2;}
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: " >&5
+$as_echo "$as_me: WARNING: " >&2;}
+                            else
+                               # No suffix to strip
+                               # Strip any leading -l or lib prefix
+                               with_DynLink_lnklibs=-l`echo $fallback_file | $SED 's/^-l//;s/^lib//'`
+                            fi
+                         fi
+                         trace 3 No library name specified by --with-DynLink-library, using --with-DynLink value [$with_DynLink_lnklibs]
+                      else
+                         trace 3 No library name specified by --with-DynLink-library, using default [" | -ldl"]
+                         with_DynLink_lnklibs=" | -ldl"
+                      fi
+
+                      if ( test X$fallback_path != X )
+                      then
+                         # --with_DynLink specified a fallback path, are we using
+                         # it?
+                         if ( test X`$EXPR "X $with_DynLink_libpath " : '.* \(-L[^ ]*\).*$'` == X )
+                         then
+                            # We do not have a library path; add the fallback
+                            with_DynLink_libpath="-L$fallback_path $with_DynLink_libpath"
+                            # It is an assumption to put it first, but we do
+                            # not know where the relevant library is in the
+                            # link specification, so we have to put it there.
+                            trace 3 No path component of --with-DynLink-library, using --with-DynLink to set library path for DynLink [-L$fallback_path]
+                         else
+                            if ( test X`$EXPR "X $with_DynLink_libpath " : ".* \(-L$fallback_path\)/* .*"` == X )
+                            then
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-DynLink-library and --with-DynLink specify different paths, --with-DynLink path ignored" >&5
+$as_echo "$as_me: WARNING: --with-DynLink-library and --with-DynLink specify different paths, --with-DynLink path ignored" >&2;}
+                            fi
+                         fi
+                      fi
+                   else
+                      # We already have a library specified, confirm that any
+                      # --with_DynLink setting agreed
+                      if ( test X$fallback_file != X )
+                      then
+                         lib=`echo $fallback_file | $SED 's/^-l//;s/^lib//;s/\(.*\)\.a/\1/;s/\(.*\).so/\1/'`
+                         # strip any leading -l or lib prefix; any trailing .a
+                         # or .so suffixes
+                         if ( test X`$EXPR "X $with_DynLink_libpath $with_DynLink_lnklibs " : ".* \(-l$lib\) .*"` == X )
+                         then
+                            # No -l<fallback>
+                            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-DynLink-library and --with-DynLink specify different libraries, --with-DynLink library setting ignored" >&5
+$as_echo "$as_me: WARNING: --with-DynLink-library and --with-DynLink specify different libraries, --with-DynLink library setting ignored" >&2;}
+                         fi
+                      fi
+
+                      if ( test X$fallback_path != X )
+                      then
+                         # --with_DynLink specified a fallback path, are we using
+                         # it?
+                         if ( test X`$EXPR "X $with_DynLink_libpath " : '.* \(-L[^ ]*\).*$'` == X )
+                         then
+                            # We do not have any library path; add the fallback
+                            trace 3 No path specified by --with-DynLink-library, using --with-DynLink value [-L$fallback_path]
+                            with_DynLink_libpath="-L$fallback_path $with_DynLink_libpath"
+                            # It is an assumption to put it first, but we do
+                            # not know where the relevant library is in the
+                            # link specification, so we have to put it there.
+                         else
+                            if ( test X`$EXPR "X $with_DynLink_libpath " : ".* \(-L$fallback_path\)/* .*"` == X )
+                            then
+                               # No -L entry for the fallback path.
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-DynLink-library and --with-DynLink specify different paths, --with-DynLink path ignored" >&5
+$as_echo "$as_me: WARNING: --with-DynLink-library and --with-DynLink specify different paths, --with-DynLink path ignored" >&2;}
+                            fi
+                         fi
+                      fi
+                   fi
+                else
+                   # --with-DynLink-library used as a switch; employ fallback/default paths
+                   if ( test X$fallback_path != X )
+                   then
+                      trace 3 Using path component of --with-DynLink to set library path for DynLink [-L$fallback_path]
+                      with_DynLink_libpath=-L$fallback_path
+                      use_DynLink=yes
+                   else
+                      with_DynLink_libpath=""
+                   fi
+                   if ( test X$fallback_file != X )
+                   then
+                         # --with_DynLink specified a fallback name, use that but
+                         # sanitise it first
+                         lib=`$EXPR "X$fallback_file" : 'X\(.*\)\.a$'`
+                         if ( test X$lib != X  )
+                         then
+                            # Removed an unwanted .a suffix
+                            # Now strip any leading -l or lib prefix
+                            with_DynLink_lnklibs=-l`echo $lib | $SED 's/^-l//;s/^lib//'`
+                            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-DynLink pointing to a .a" >&5
+$as_echo "$as_me: WARNING: Specifying --with-DynLink pointing to a .a" >&2;}
+                            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: will cause problems building with shared libraries." >&5
+$as_echo "$as_me: WARNING: will cause problems building with shared libraries." >&2;}
+                            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Instead we will use -l$lib" >&5
+$as_echo "$as_me: WARNING: Instead we will use -l$lib" >&2;}
+                         else
+                            lib=`$EXPR "X$fallback_file" : 'X\(.*\)\.so$'`
+                            if ( test X$lib != X )
+                            then
+                               # Removed an unwanted .so suffix
+                               # Now strip any leading -l or lib prefix
+                               with_DynLink_lnklibs=-l`echo $lib | $SED 's/^-l//;s/^lib//'`
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-DynLink pointing to a .so" >&5
+$as_echo "$as_me: WARNING: Specifying --with-DynLink pointing to a .so" >&2;}
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: will cause problems building with static libraries." >&5
+$as_echo "$as_me: WARNING: will cause problems building with static libraries." >&2;}
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Instead, we will use -l$lib" >&5
+$as_echo "$as_me: WARNING: Instead, we will use -l$lib" >&2;}
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: " >&5
+$as_echo "$as_me: WARNING: " >&2;}
+                            else
+                               # No suffix to strip
+                               # Strip any leading -l or lib prefix
+                               with_DynLink_lnklibs=-l`echo $fallback_file | $SED 's/^-l//;s/^lib//'`
+                            fi
+                         fi
+                         trace 3 Using file component of --with-DynLink to set library name for DynLink [$with_DynLink_lnklibs]
+                   else
+                      trace 3 Using default library name for DynLink [" | -ldl"]
+                      with_DynLink_lnklibs=" | -ldl"
+                   fi
+                fi
+
+
+                # Check if --with-DynLink-include is a provided
+                if ( test "$with_DynLink_include" != notset && test "$with_DynLink_include" != no && test "$with_DynLink_include" != check && test "$with_DynLink_include" != yes )
+                then
+                   # we have a parameter rather than a switch to use
+                   with_DynLink_inc=""
+                   use_DynLink=yes
+                   if ( test X$fallback_path != X )
+                   then
+                      fallback_match=no
+                      # If we have a fallback path, we want to check it is
+                      # included in the -include setting and warn if not
+                   else
+                      fallback_match=yes
+                      # We have no fallback, so we never need to warn the user
+                   fi
+                   trace 6 Parsing --with-DynLink-include setting
+                   # Strip any provided -I entries for ease of parsing.
+                   for path in `echo " $with_DynLink_include " | $SED 's/ -I *//g'`
+                   do
+                      if ( test -d $path )
+                      then
+                         TRACE_INDENT="     "
+                         trace 6 Appending [-I$path] to set include path for DynLink
+                         with_DynLink_inc="$with_DynLink_inc-I$path "
+                         if ( test $fallback_match == no && test $fallback_path == $path )
+                         then
+                            fallback_match=yes
+                         fi
+                      else
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Illegal component of --with-DynLink-include, [$path] ignored" >&5
+$as_echo "$as_me: WARNING: Illegal component of --with-DynLink-include, [$path] ignored" >&2;}
+                      fi
+                   done
+                   if ( test X$with_DynLink_inc == X )
+                   then
+                      # No path from argument, any fallback?
+                      if ( test X$fallback_path != X )
+                      then
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Will use --with-DynLink value [-I$fallback_path]" >&5
+$as_echo "$as_me: WARNING: Will use --with-DynLink value [-I$fallback_path]" >&2;}
+                         with_DynLink_inc=-I$fallback_path
+                      else
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Will use default system include path" >&5
+$as_echo "$as_me: WARNING: Will use default system include path" >&2;}
+                         with_DynLink_inc=""
+                      fi
+                   else
+                      # We have valid path(es) supplied by the user, do they
+                      # encompass the fallback setting?
+                      if ( test $fallback_match != yes )
+                      then
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-DynLink-include and --with-DynLink specify different paths, --with-DynLink ignored" >&5
+$as_echo "$as_me: WARNING: --with-DynLink-include and --with-DynLink specify different paths, --with-DynLink ignored" >&2;}
+                      fi
+                   fi
+                else
+                   # --with-DynLink-include is a switch setting rather than a path,
+                   # use any available fallback
+                   if ( test X$fallback_path != X )
+                   then
+                      trace 3 No path specified by --with-DynLink-include, using --with-DynLink value [-I$fallback_path]
+                      with_DynLink_inc=-I$fallback_path
+                      use_DynLink=yes
+                   else
+                      trace 3 Will use default system include path
+                      with_DynLink_inc=""
+                   fi
+                fi
+             fi # End of: if ( test $with_DynLink_pkgconf = no || notset
+          else
+             trace 4 Library DynLink disabled
+          fi
+
+          KnownLibs=$KnownLibs" "DynLink
+          if ( test X$use_DynLink = X )
+          then
+             use_DynLink=check
+             UnconfiguredLibs=$UnconfiguredLibs" "DynLink
+          else
+             ConfiguredLibs=$ConfiguredLibs" "DynLink
+          fi
+
+          with_DynLink_tstcd='dlopen ();'
+                                                  with_DynLink_prq=""
+          with_DynLink_hdr=""
+          with_DynLink_lang="C
+                             "
+          with_DynLink_virtual="no"
 
 
 
@@ -13720,7 +14631,7 @@ $as_echo "$as_me: WARNING: " >&2;}
                          fi
                          trace 3 No library name specified by --with-GLUT-library, using --with-GLUT value [$with_GLUT_lnklibs]
                       else
-                         trace 3 No library name specified by --with-GLUT-library, using default [-lglut]
+                         trace 3 No library name specified by --with-GLUT-library, using default ["-lglut"]
                          with_GLUT_lnklibs="-lglut"
                       fi
 
@@ -13831,7 +14742,7 @@ $as_echo "$as_me: WARNING: " >&2;}
                          fi
                          trace 3 Using file component of --with-GLUT to set library name for GLUT [$with_GLUT_lnklibs]
                    else
-                      trace 3 Using default library name for GLUT [-lglut]
+                      trace 3 Using default library name for GLUT ["-lglut"]
                       with_GLUT_lnklibs="-lglut"
                    fi
                 fi
@@ -14615,7 +15526,7 @@ $as_echo "$as_me: WARNING: " >&2;}
                          fi
                          trace 3 No library name specified by --with-LibJasper-library, using --with-LibJasper value [$with_LibJasper_lnklibs]
                       else
-                         trace 3 No library name specified by --with-LibJasper-library, using default [-ljasper]
+                         trace 3 No library name specified by --with-LibJasper-library, using default ["-ljasper"]
                          with_LibJasper_lnklibs="-ljasper"
                       fi
 
@@ -14726,7 +15637,7 @@ $as_echo "$as_me: WARNING: " >&2;}
                          fi
                          trace 3 Using file component of --with-LibJasper to set library name for LibJasper [$with_LibJasper_lnklibs]
                    else
-                      trace 3 Using default library name for LibJasper [-ljasper]
+                      trace 3 Using default library name for LibJasper ["-ljasper"]
                       with_LibJasper_lnklibs="-ljasper"
                    fi
                 fi
@@ -15507,7 +16418,7 @@ $as_echo "$as_me: WARNING: " >&2;}
                          fi
                          trace 3 No library name specified by --with-JPEG-library, using --with-JPEG value [$with_JPEG_lnklibs]
                       else
-                         trace 3 No library name specified by --with-JPEG-library, using default [-ljpeg]
+                         trace 3 No library name specified by --with-JPEG-library, using default ["-ljpeg"]
                          with_JPEG_lnklibs="-ljpeg"
                       fi
 
@@ -15618,7 +16529,7 @@ $as_echo "$as_me: WARNING: " >&2;}
                          fi
                          trace 3 Using file component of --with-JPEG to set library name for JPEG [$with_JPEG_lnklibs]
                    else
-                      trace 3 Using default library name for JPEG [-ljpeg]
+                      trace 3 Using default library name for JPEG ["-ljpeg"]
                       with_JPEG_lnklibs="-ljpeg"
                    fi
                 fi
@@ -16402,7 +17313,7 @@ $as_echo "$as_me: WARNING: " >&2;}
                          fi
                          trace 3 No library name specified by --with-LAPACK-library, using --with-LAPACK value [$with_LAPACK_lnklibs]
                       else
-                         trace 3 No library name specified by --with-LAPACK-library, using default [-llapack]
+                         trace 3 No library name specified by --with-LAPACK-library, using default ["-llapack"]
                          with_LAPACK_lnklibs="-llapack"
                       fi
 
@@ -16513,7 +17424,7 @@ $as_echo "$as_me: WARNING: " >&2;}
                          fi
                          trace 3 Using file component of --with-LAPACK to set library name for LAPACK [$with_LAPACK_lnklibs]
                    else
-                      trace 3 Using default library name for LAPACK [-llapack]
+                      trace 3 Using default library name for LAPACK ["-llapack"]
                       with_LAPACK_lnklibs="-llapack"
                    fi
                 fi
@@ -17294,7 +18205,7 @@ $as_echo "$as_me: WARNING: " >&2;}
                          fi
                          trace 3 No library name specified by --with-posixThreads-library, using --with-posixThreads value [$with_posixThreads_lnklibs]
                       else
-                         trace 3 No library name specified by --with-posixThreads-library, using default [-lpthread]
+                         trace 3 No library name specified by --with-posixThreads-library, using default ["-lpthread"]
                          with_posixThreads_lnklibs="-lpthread"
                       fi
 
@@ -17405,7 +18316,7 @@ $as_echo "$as_me: WARNING: " >&2;}
                          fi
                          trace 3 Using file component of --with-posixThreads to set library name for posixThreads [$with_posixThreads_lnklibs]
                    else
-                      trace 3 Using default library name for posixThreads [-lpthread]
+                      trace 3 Using default library name for posixThreads ["-lpthread"]
                       with_posixThreads_lnklibs="-lpthread"
                    fi
                 fi
@@ -18186,7 +19097,7 @@ $as_echo "$as_me: WARNING: " >&2;}
                          fi
                          trace 3 No library name specified by --with-LibTIFF-library, using --with-LibTIFF value [$with_LibTIFF_lnklibs]
                       else
-                         trace 3 No library name specified by --with-LibTIFF-library, using default [-ltiff]
+                         trace 3 No library name specified by --with-LibTIFF-library, using default ["-ltiff"]
                          with_LibTIFF_lnklibs="-ltiff"
                       fi
 
@@ -18297,7 +19208,7 @@ $as_echo "$as_me: WARNING: " >&2;}
                          fi
                          trace 3 Using file component of --with-LibTIFF to set library name for LibTIFF [$with_LibTIFF_lnklibs]
                    else
-                      trace 3 Using default library name for LibTIFF [-ltiff]
+                      trace 3 Using default library name for LibTIFF ["-ltiff"]
                       with_LibTIFF_lnklibs="-ltiff"
                    fi
                 fi
@@ -19078,7 +19989,7 @@ $as_echo "$as_me: WARNING: " >&2;}
                          fi
                          trace 3 No library name specified by --with-Zlib-library, using --with-Zlib value [$with_Zlib_lnklibs]
                       else
-                         trace 3 No library name specified by --with-Zlib-library, using default [-lz]
+                         trace 3 No library name specified by --with-Zlib-library, using default ["-lz"]
                          with_Zlib_lnklibs="-lz"
                       fi
 
@@ -19189,7 +20100,7 @@ $as_echo "$as_me: WARNING: " >&2;}
                          fi
                          trace 3 Using file component of --with-Zlib to set library name for Zlib [$with_Zlib_lnklibs]
                    else
-                      trace 3 Using default library name for Zlib [-lz]
+                      trace 3 Using default library name for Zlib ["-lz"]
                       with_Zlib_lnklibs="-lz"
                    fi
                 fi
@@ -19619,6 +20530,7 @@ echo devVideo4Linux_SUPPORT=@devVideo4Linux_SUPPORT@ >> ./ExtPkgSupp.$$
 
 Meteor1_SUPPORT=""
 echo Meteor1_SUPPORT=@Meteor1_SUPPORT@ >> ./ExtPkgSupp.$$
+
 
 
 
@@ -21123,7 +22035,6 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
           preserve_CPPFLAGS=$CPPFLAGS
           preserve_LIBS=$LIBS
           CPPFLAGS=$LIB_CPPFLAGS
-          eval LIBS=\"\$LIB_LDFLAGS \$with_${fix_expan}_lnklibs \$prereqlibs\"
           { $as_echo "$as_me:${as_lineno-$LINENO}: checking for external package $lib..." >&5
 $as_echo "$as_me: checking for external package $lib..." >&6;}
           eval hdr_lst="\$with_${fix_expan}_hdr"
@@ -21160,11 +22071,33 @@ fi
           # Did we find all the header files?
           if ( test X$found = Xtrue )
           then
-             # We did, perform the link test
-             { $as_echo "$as_me:${as_lineno-$LINENO}: checking ability to link against $LIBS" >&5
-$as_echo_n "checking ability to link against $LIBS... " >&6; }
+             # We did: perform the link test...
+
              eval test_code="\$with_${fix_expan}_tstcd"
-             cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+
+             eval lib_sets=\"\$with_${fix_expan}_lnklibs\"
+
+             # with_<Lib>_lnklibs is either a single set of libraries we need
+             # to attempt to link with or, possibly, a | seperated list of
+             # multiple sets libraries we need to try.
+             #
+             # Change IFS to split on the set seperator (|) and loop over the
+             # library sets specified...
+
+             liveIFS=$IFS
+             IFS="|"
+             for try_libs in $lib_sets
+             do
+                IFS=$liveIFS
+                # Reset IFS as soon as possible. The for should have the
+                # possible sets already cached so we do not need to reset IFS
+                # back to the pipe symbol on any further iteration through the
+                # loop.
+
+                LIBS="$LIB_LDFLAGS $try_libs $prereqlibs"
+                { $as_echo "$as_me:${as_lineno-$LINENO}: checking ability to link against [$LIBS]" >&5
+$as_echo_n "checking ability to link against [$LIBS]... " >&6; }
+                cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 $preamble
 int
@@ -21182,14 +22115,22 @@ else
 fi
 rm -f core conftest.err conftest.$ac_objext \
     conftest$ac_exeext conftest.$ac_ext
-             if ( test X$found = Xtrue )
-             then
-                { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+
+                if ( test X$found = Xtrue )
+                then
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 $as_echo "yes" >&6; }
-             else
-                { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+                   LIB_LDFLAGS=$LIBS
+                   # Set LIB_LDFLAGS to the LDFLAGS we were successful with
+                   break
+                   # We accept the first set of libs that compile, hence we
+                   # break out of the loop to not consider any remaining
+                   # library sets
+                else
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
 $as_echo "no" >&6; }
-             fi
+                fi
+             done
           fi
           CPPFLAGS=$preserve_CPPFLAGS
           LDFLAGS=$preserve_LDFLAGS
@@ -21199,16 +22140,6 @@ $as_echo "no" >&6; }
              TRACE_INDENT="     "
              trace 4 Library package $lib found
              eval "${fix_expan}_CFLAGS=\$LIB_CPPFLAGS"
-             if ( test X$LIB_LDFLAGS != X )
-             then
-                eval LIB_LDFLAGS=\"\$LIB_LDFLAGS \$with_${fix_expan}_lnklibs\"
-             else
-                eval LIB_LDFLAGS="\$with_${fix_expan}_lnklibs"
-             fi
-             if ( test "X$prereqlibs" != X )
-             then
-                LIB_LDFLAGS="$LIB_LDFLAGS $prereqlibs"
-             fi
              eval "${fix_expan}_LIBS=\$LIB_LDFLAGS"
              eval "use_${fix_expan}=present"
           else
@@ -21268,7 +22199,6 @@ ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
           preserve_CPPFLAGS=$CPPFLAGS
           preserve_LIBS=$LIBS
           CPPFLAGS=$LIB_CPPFLAGS
-          eval LIBS=\"\$LIB_LDFLAGS \$with_${fix_expan}_lnklibs \$prereqlibs\"
           { $as_echo "$as_me:${as_lineno-$LINENO}: checking for external package $lib..." >&5
 $as_echo "$as_me: checking for external package $lib..." >&6;}
           eval hdr_lst="\$with_${fix_expan}_hdr"
@@ -21305,11 +22235,33 @@ fi
           # Did we find all the header files?
           if ( test X$found = Xtrue )
           then
-             # We did, perform the link test
-             { $as_echo "$as_me:${as_lineno-$LINENO}: checking ability to link against $LIBS" >&5
-$as_echo_n "checking ability to link against $LIBS... " >&6; }
+             # We did: perform the link test...
+
              eval test_code="\$with_${fix_expan}_tstcd"
-             cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+
+             eval lib_sets=\"\$with_${fix_expan}_lnklibs\"
+
+             # with_<Lib>_lnklibs is either a single set of libraries we need
+             # to attempt to link with or, possibly, a | seperated list of
+             # multiple sets libraries we need to try.
+             #
+             # Change IFS to split on the set seperator (|) and loop over the
+             # library sets specified...
+
+             liveIFS=$IFS
+             IFS="|"
+             for try_libs in $lib_sets
+             do
+                IFS=$liveIFS
+                # Reset IFS as soon as possible. The for should have the
+                # possible sets already cached so we do not need to reset IFS
+                # back to the pipe symbol on any further iteration through the
+                # loop.
+
+                LIBS="$LIB_LDFLAGS $try_libs $prereqlibs"
+                { $as_echo "$as_me:${as_lineno-$LINENO}: checking ability to link against [$LIBS]" >&5
+$as_echo_n "checking ability to link against [$LIBS]... " >&6; }
+                cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 $preamble
 int
@@ -21327,14 +22279,22 @@ else
 fi
 rm -f core conftest.err conftest.$ac_objext \
     conftest$ac_exeext conftest.$ac_ext
-             if ( test X$found = Xtrue )
-             then
-                { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+
+                if ( test X$found = Xtrue )
+                then
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 $as_echo "yes" >&6; }
-             else
-                { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+                   LIB_LDFLAGS=$LIBS
+                   # Set LIB_LDFLAGS to the LDFLAGS we were successful with
+                   break
+                   # We accept the first set of libs that compile, hence we
+                   # break out of the loop to not consider any remaining
+                   # library sets
+                else
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
 $as_echo "no" >&6; }
-             fi
+                fi
+             done
           fi
           CPPFLAGS=$preserve_CPPFLAGS
           LDFLAGS=$preserve_LDFLAGS
@@ -21344,16 +22304,6 @@ $as_echo "no" >&6; }
              TRACE_INDENT="     "
              trace 4 Library package $lib found
              eval "${fix_expan}_CFLAGS=\$LIB_CPPFLAGS"
-             if ( test X$LIB_LDFLAGS != X )
-             then
-                eval LIB_LDFLAGS=\"\$LIB_LDFLAGS \$with_${fix_expan}_lnklibs\"
-             else
-                eval LIB_LDFLAGS="\$with_${fix_expan}_lnklibs"
-             fi
-             if ( test "X$prereqlibs" != X )
-             then
-                LIB_LDFLAGS="$LIB_LDFLAGS $prereqlibs"
-             fi
              eval "${fix_expan}_LIBS=\$LIB_LDFLAGS"
              eval "use_${fix_expan}=present"
           else
@@ -21688,82 +22638,6 @@ fi
 
 TRACE_INDENT="     "
 trace 3 RESOURCES now set to "[$RESOURCES]"
-
-
-# Check for common system functions that appear in different system libraries
-# dependant on the platform in use
-
-# dlopen is usually in libdl but can vary (e.g. for BSD it's in libc)
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for library containing dlopen" >&5
-$as_echo_n "checking for library containing dlopen... " >&6; }
-if test "${ac_cv_search_dlopen+set}" = set; then :
-  $as_echo_n "(cached) " >&6
-else
-  ac_func_search_save_LIBS=$LIBS
-cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-/* Override any GCC internal prototype to avoid an error.
-   Use char because int might match the return type of a GCC
-   builtin and then its argument prototype would still apply.  */
-#ifdef __cplusplus
-extern "C"
-#endif
-char dlopen ();
-int
-main ()
-{
-return dlopen ();
-  ;
-  return 0;
-}
-_ACEOF
-for ac_lib in '' dl; do
-  if test -z "$ac_lib"; then
-    ac_res="none required"
-  else
-    ac_res=-l$ac_lib
-    LIBS="-l$ac_lib
-               $ac_func_search_save_LIBS"
-  fi
-  if ac_fn_c_try_link "$LINENO"; then :
-  ac_cv_search_dlopen=$ac_res
-fi
-rm -f core conftest.err conftest.$ac_objext \
-    conftest$ac_exeext
-  if test "${ac_cv_search_dlopen+set}" = set; then :
-  break
-fi
-done
-if test "${ac_cv_search_dlopen+set}" = set; then :
-
-else
-  ac_cv_search_dlopen=no
-fi
-rm conftest.$ac_ext
-LIBS=$ac_func_search_save_LIBS
-fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_search_dlopen" >&5
-$as_echo "$ac_cv_search_dlopen" >&6; }
-ac_res=$ac_cv_search_dlopen
-if test "$ac_res" != no; then :
-  test "$ac_res" = "none required" || LIBS="$ac_res $LIBS"
-
-else
-  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error "Cannot find a working dlopen function
-See \`config.log' for more details." "$LINENO" 5; }
-fi
-
-if ( test "X$ac_cv_search_dlopen" != "Xnone required" )
-then
-        DynLink_LIBS="$ac_cv_search_dlopen"
-else
-        DynLink_LIBS=""
-fi
-
-
 
 
 # Now check if we need to disallow any RESOURCES inherited from the QMake
@@ -22251,23 +23125,6 @@ echo "SWIG=@SWIG@" >> ./Config.Project.in
 echo >> ./Config.Project.in
 
 
-# Declare which libraries are needed for particular system calls that can move
-# about on different platforms
-#
-# First initialise ALL_EXTERNAL_xxxS here as we need to record these libraries
-# as well as the external libs
-ALL_EXTERNAL_LIBS=""
-ALL_EXTERNAL_CFLAGS=""
-echo >> ./Config.Project.in
-echo \# Location of system calls that can vary their parent library >> ./Config.Project.in
-echo >> ./Config.Project.in
-# Location of dlopen
-echo "DynLink_LIBS=@DynLink_LIBS@" >> ./Config.Project.in
-echo >> ./Config.Project.in
-ALL_EXTERNAL_LIBS+=" "$DynLink_LIBS
-ALL_EXTERNAL_CFLAGS+=" "$DynLink_CFLAGS
-
-
 # Apply any "rpath" setting to the user-configured libraries
 #
 if ( test "$with_rpath" = 'Y' )
@@ -22519,6 +23376,11 @@ trace 3 RESOURCES now "[$RESOURCES]"
 # by the user, but also those already configured by any existing QMake
 # configuration.
 #
+# First initialise ALL_EXTERNAL_xxxS ...
+ALL_EXTERNAL_LIBS=""
+ALL_EXTERNAL_CFLAGS=""
+
+# Now add all the external library packages that are present
 for lib in $KnownLibs
 do
    eval lib_enablement=\$use_${lib}

@@ -698,7 +698,7 @@ AC_DEFUN([QM_DEFINE_EXTLIB_CC],
                          fi
                          trace 3 No library name specified by --with-$1-library, using --with-$1 value @<:@$with_$1_lnklibs@:>@
                       else
-                         trace 3 No library name specified by --with-$1-library, using default @<:@$4@:>@
+                         trace 3 No library name specified by --with-$1-library, using default @<:@"$4"@:>@
                          with_$1_lnklibs="$4"
                       fi
 
@@ -799,7 +799,7 @@ AC_DEFUN([QM_DEFINE_EXTLIB_CC],
                          fi
                          trace 3 Using file component of --with-$1 to set library name for $1 @<:@$with_$1_lnklibs@:>@
                    else
-                      trace 3 Using default library name for $1 @<:@$4@:>@
+                      trace 3 Using default library name for $1 @<:@"$4"@:>@
                       with_$1_lnklibs="$4"
                    fi
                 fi
