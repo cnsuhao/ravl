@@ -7,6 +7,8 @@
 #! file="Ravl/OS/Network/defs.mk"
 DONOT_SUPPORT=cygwin
 
+REQUIRES = Socket
+
 PACKAGE=Ravl/OS
 
 HEADERS = SktError.hh Socket.hh NetStream.hh Packet.hh \

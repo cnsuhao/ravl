@@ -521,6 +521,8 @@ OpenSceneGraphGTK_RavlLib=libRavlGUIOpenSceneGraph
 AC_SUBST([OpenSceneGraphGTK_SUPPORT])
 RLog_RavlLib=libRavlRLog
 AC_SUBST([RLog_SUPPORT])
+Socket_RavlLib=libRavlNet
+AC_SUBST([Socket_SUPPORT])
 devVideo4Linux2_RavlLib=libRavlImgIOV4L2
 AC_SUBST([devVideo4Linux2_SUPPORT])
 ZeroMQ_RavlLib=libRavlZmq
@@ -1728,7 +1730,6 @@ RavlFace_LIBS="libMarkupTool libRavlFace"
 RavlGUI=libRavlGUI
 RavlImageProc=libRavlImageProc
 RavlLogic_LIBS="libRavlLogicAgent libRavlLogicNLP libRavlLogic"
-RavlNet=libRavlNet
 RavlRawVidIO=""
 # libRavlRawVidIO currently dropped
 RavlVDF=""
@@ -1775,8 +1776,6 @@ AC_SUBST([RavlImageProc])
 echo RavlImageProc=@RavlImageProc@ >> ./ExtPkgSupp.$$
 AC_SUBST([RavlLogic_LIBS])
 echo RavlLogic_LIBS=@RavlLogic_LIBS@ >> ./ExtPkgSupp.$$
-AC_SUBST([RavlNet])
-echo RavlNet=@RavlNet@ >> ./ExtPkgSupp.$$
 AC_SUBST([RavlRawVidIO])
 echo RavlRawVidIO=@RavlRawVidIO@ >> ./ExtPkgSupp.$$
 AC_SUBST([RavlVDF])
@@ -1888,6 +1887,15 @@ then
    trace 3 Lack of RLog blocking RavlFace PortAudio, XMPP \(indirectly blocks iksemel\) and RavlZmqOptimisation
 fi
 
+if ( test X$use_Socket != 'Xpresent' )
+then
+   # Lack of Socket blocks RavlNet (which in-turn blocks libRavlPythonSwig 
+   # and libRavlPythonSwig2 by dependancy)
+   Socket_SUPPORT=""
+   SwigPython_SUPPORT=""
+   trace 3 Lack of Socket blocking RavlNet \(indirectly blocks SwigPython\).
+fi
+
 if ( test X$use_ZeroMQ != 'Xpresent' )
 then
    # Lack of ZeroMQ blocks RavlZmqOptimisation.
@@ -1965,7 +1973,7 @@ then
                    RavlVPlay=""
 
                 # RavlNet unavailable under Cygwin
-                   RavlNet=""
+                   Socket_SUPPORT=""
                       # Absence of libRavlNet blocks libRavlPythonSwig & libRavlPythonSwig2 by dependancy
                       SwigPython_SUPPORT=""
                 trace 3 Amending compile settings for Cygwin
@@ -2118,7 +2126,7 @@ $SORT ./ExtPkgSupp.$$ >> ./Config.Project.in
 rm ./ExtPkgSupp.$$
 echo >> ./Config.Project.in
 echo \# Ordered list of the libraries we want in libRavl.\*  >> ./Config.Project.in
-echo SINGLE_RECIPE=\$\(NumPy_SUPPORT\) \$\(avifile_SUPPORT\) libRavlMPEG2 \$\(devVideo4Linux_SUPPORT\) \$\(libffmpeg_SUPPORT\) libRavlVideoIO \$\(dvdread_SUPPORT\) \$\(libmpeg2_SUPPORT\) \$\(libavc1394_SUPPORT\) \$\(libDV_SUPPORT\) \$\(RavlRawVidIO\) \$\(RavlExtImgIO\) \$\(MacOSXVideoCapture_SUPPORT\) \$\(MacOSXRunLoop_SUPPORT\) \$\(RavlVDF\) \$\(SwigPython_SUPPORT\) \$\(RavlDPDisplay\) \$\(Meteor1_SUPPORT\) libRavlAV \$\(RavlChartDetector\) \$\(RavlAAM\) \$\(RavlFace_LIBS\) libRavlTwoWayMap \$\(RavlImageProc\) \$\(uEyeSDK_SUPPORT\) \$\(libmpeg_SUPPORT\) \$\(OpenGL_SUPPORT\) libRavlImageXMLFactory \$\(libClipStationPro_SUPPORT\) libRavlMemModules libRavlImageIO \$\(LibJasper_SUPPORT\) \$\(OpenCV_SUPPORT\) \$\(RavlVPlay\) \$\(Ravl2dGUI_LIBS\) \$\(libdc1394_SUPPORT\) libRavlVideo \$\(LibGd_SUPPORT\) \$\(devVideo4Linux2_SUPPORT\) \$\(OpenSceneGraphGTK_SUPPORT\) \$\(Ravl3d_LIBS\) \$\(LibDirectShow_SUPPORT\) libRavlImage \$\(libAudioFile_SUPPORT\) \$\(RavlDevAudio\) libRavlAudioFeatures \$\(PortAudio_SUPPORT\) libRavlAudioIO libRavlAudioUtil \$\(iksemel_SUPPORT\) \$\(Loudmouth_SUPPORT\) \$\(RavlXMPP\) \$\(RavlZmqOptimisation\) \$\(RLog_SUPPORT\) \$\(SGIVL_SUPPORT\) \$\(RavlDataServer\) libOptimisation \$\(RavlLogic_LIBS\) libRavlPatternRecIO libRavlKalmanFilter libRavlSVM libRavlGnuPlot libRavlPatternRec libRavlDataSet libRavlFileIDX libRavlOSIO  \$\(ParallelIO_SUPPORT\) \$\(SerialIO_SUPPORT\) \$\(libGuppi_SUPPORT\) libRavlPlot \$\(RavlClassWizard\) libRavlCxxDoc \$\(RavlAutoPort\) libRavlAutoPort2 libRavlSourceTools \$\(LibPython_SUPPORT\) \$\(RavlNet\) \$\(libehs_SUPPORT\) libRavlDPMT \$\(UUIdTheo_SUPPORT\) \$\(LibGnome_SUPPORT\) \$\(libglade2_SUPPORT\) \$\(RavlGUI\) libRavlMathIO libRavlGeneticProgram libRavlGeneticOptimisation \$\(ZeroMQ_SUPPORT\) libRavlService libRavlXMLFactory \$\(libCurl_SUPPORT\) libRavlThreads libRavlHtml libRavlOS libRavlIO \$\(libmcrypt_SUPPORT\) libRavlOptimise \$\(RavlCameraCal\) \$\(libmkl_SUPPORT\) \$\(LAPACK_SUPPORT\) libRavlMath libccmath libfann libArffIO \$\(Zlib_SUPPORT\) libRavlHMM libRavlCore  >> ./Config.Project.in
+echo SINGLE_RECIPE=\$\(NumPy_SUPPORT\) \$\(avifile_SUPPORT\) libRavlMPEG2 \$\(devVideo4Linux_SUPPORT\) \$\(libffmpeg_SUPPORT\) libRavlVideoIO \$\(dvdread_SUPPORT\) \$\(libmpeg2_SUPPORT\) \$\(libavc1394_SUPPORT\) \$\(libDV_SUPPORT\) \$\(RavlRawVidIO\) \$\(RavlExtImgIO\) \$\(MacOSXVideoCapture_SUPPORT\) \$\(MacOSXRunLoop_SUPPORT\) \$\(RavlVDF\) \$\(SwigPython_SUPPORT\) \$\(RavlDPDisplay\) \$\(Meteor1_SUPPORT\) libRavlAV \$\(RavlChartDetector\) \$\(RavlAAM\) \$\(RavlFace_LIBS\) libRavlTwoWayMap \$\(RavlImageProc\) \$\(uEyeSDK_SUPPORT\) \$\(libmpeg_SUPPORT\) \$\(OpenGL_SUPPORT\) libRavlImageXMLFactory \$\(libClipStationPro_SUPPORT\) libRavlMemModules libRavlImageIO \$\(LibJasper_SUPPORT\) \$\(OpenCV_SUPPORT\) \$\(RavlVPlay\) \$\(Ravl2dGUI_LIBS\) \$\(libdc1394_SUPPORT\) libRavlVideo \$\(LibGd_SUPPORT\) \$\(devVideo4Linux2_SUPPORT\) \$\(OpenSceneGraphGTK_SUPPORT\) \$\(Ravl3d_LIBS\) \$\(LibDirectShow_SUPPORT\) libRavlImage \$\(libAudioFile_SUPPORT\) \$\(RavlDevAudio\) libRavlAudioFeatures \$\(PortAudio_SUPPORT\) libRavlAudioIO libRavlAudioUtil \$\(iksemel_SUPPORT\) \$\(Loudmouth_SUPPORT\) \$\(RavlXMPP\) \$\(RavlZmqOptimisation\) \$\(RLog_SUPPORT\) \$\(SGIVL_SUPPORT\) \$\(RavlDataServer\) libOptimisation \$\(RavlLogic_LIBS\) libRavlPatternRecIO libRavlKalmanFilter libRavlSVM libRavlGnuPlot libRavlPatternRec libRavlDataSet libRavlFileIDX libRavlOSIO  \$\(ParallelIO_SUPPORT\) \$\(SerialIO_SUPPORT\) \$\(libGuppi_SUPPORT\) libRavlPlot \$\(RavlClassWizard\) libRavlCxxDoc \$\(RavlAutoPort\) libRavlAutoPort2 libRavlSourceTools \$\(LibPython_SUPPORT\) \$\(Socket_SUPPORT\) \$\(libehs_SUPPORT\) libRavlDPMT \$\(UUIdTheo_SUPPORT\) \$\(LibGnome_SUPPORT\) \$\(libglade2_SUPPORT\) \$\(RavlGUI\) libRavlMathIO libRavlGeneticProgram libRavlGeneticOptimisation \$\(ZeroMQ_SUPPORT\) libRavlService libRavlXMLFactory \$\(libCurl_SUPPORT\) libRavlThreads libRavlHtml libRavlOS libRavlIO \$\(libmcrypt_SUPPORT\) libRavlOptimise \$\(RavlCameraCal\) \$\(libmkl_SUPPORT\) \$\(LAPACK_SUPPORT\) libRavlMath libccmath libfann libArffIO \$\(Zlib_SUPPORT\) libRavlHMM libRavlCore  >> ./Config.Project.in
 echo >> ./Config.Project.in
 echo >> ./Config.Project.in
 

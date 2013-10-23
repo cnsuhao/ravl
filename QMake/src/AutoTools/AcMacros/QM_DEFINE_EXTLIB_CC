@@ -46,7 +46,9 @@ dnl           perform extra prototype checking on those functions.
 dnl       p3: Name of all prerequisite libraries that this one depends on
 dnl           Specify as a space-separated list of QMake names
 dnl       p4: Name(s) of the library as specified on the link line i.e. in
-dnl           -lXXXX -lYYYY form
+dnl           -lXXXX -lYYYY form. For library packages that vary the names
+dnl           of the libraries required, this may be a set of alternative
+dnl           lists seperated by a pipe symbol (|). 
 dnl       p5: Name of any header files provided by the library package. It is
 dnl           usually sufficient to only test for one file unless it is known
 dnl           that incomplete subsets of the header files are regularly found
@@ -87,7 +89,19 @@ dnl                                  primed initially by --with-<Lib> or
 dnl                                  as part of a dependancy check. 
 dnl       with_<Lib>_libpath         Path to the location of the library
 dnl       with_<Lib>_lnklibs         List of the library files (in -lXXXX 
-dnl                                  form).
+dnl                                  form) needed to compile with library
+dnl                                  package <Lib>. For library packages that
+dnl                                  vary the names of the libraries required,
+dnl                                  this may be a set of alternative lists
+dnl                                  seperated by a pipe symbol (|). As an
+dnl                                  example, the Socket package offers the
+dnl                                  setting " | -lsocket | -lsocket -lnsl "
+dnl                                  as the socket() function may be available
+dnl                                  in the default libraries (no additional
+dnl                                  library is required - hence the leading
+dnl                                  " | " setting, i.e. a null list); in the
+dnl                                  socket library itself; or the socket 
+dnl                                  library may also depend on libnsl.
 dnl       with_<Lib>_hdr             Name(s) of the library package's headers
 dnl       with_<Lib>_inc             Path to the library's headers
 dnl       with_<Lib>_tstcd           Code with which to test that the external

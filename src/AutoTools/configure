@@ -605,7 +605,6 @@ RavlXMPP
 RavlVPlay
 RavlVDF
 RavlRawVidIO
-RavlNet
 RavlLogic_LIBS
 RavlImageProc
 RavlGUI
@@ -678,6 +677,7 @@ LibJasper_SUPPORT
 GLUT_SUPPORT
 ZeroMQ_SUPPORT
 devVideo4Linux2_SUPPORT
+Socket_SUPPORT
 RLog_SUPPORT
 OpenSceneGraphGTK_SUPPORT
 OpenSceneGraph_SUPPORT
@@ -710,6 +710,8 @@ Zlib_LIBS
 Zlib_CFLAGS
 LibTIFF_LIBS
 LibTIFF_CFLAGS
+Socket_LIBS
+Socket_CFLAGS
 posixThreads_LIBS
 posixThreads_CFLAGS
 LAPACK_LIBS
@@ -1051,6 +1053,10 @@ with_posixThreads_pkgconf
 with_posixThreads
 with_posixThreads_library
 with_posixThreads_include
+with_Socket_pkgconf
+with_Socket
+with_Socket_library
+with_Socket_include
 with_LibTIFF_pkgconf
 with_LibTIFF
 with_LibTIFF_library
@@ -2042,6 +2048,19 @@ Optional Packages:
   --with-posixThreads-include
                           Declare the location of the posixThreads header
                           files and enable their functionality
+
+  --with-Socket-pkgconf   Enable the Socket library package via pkg-config and
+                          declare the name by which the Socket library package
+                          is know to pkg-config
+
+  --with-Socket           Enable functionality that relies on the Socket
+                          library [default=check]
+
+  --with-Socket-library   Declare the location of the Socket library and
+                          enable its functionality
+
+  --with-Socket-include   Declare the location of the Socket header files and
+                          enable their functionality
 
   --with-LibTIFF-pkgconf  Enable the LibTIFF library package via pkg-config
                           and declare the name by which the LibTIFF library
@@ -18416,6 +18435,900 @@ $as_echo "$as_me: WARNING: --with-posixThreads-include and --with-posixThreads s
 
 
 
+# Check whether --with-Socket-pkgconf was given.
+if test "${with_Socket_pkgconf+set}" = set; then :
+  withval=$with_Socket_pkgconf; case $with_Socket_pkgconf in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                          with_Socket_pkgconf=no
+                                          trace 4 --with-Socket-pkgconf disabling pkg-config use
+                                          ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' | 'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                          { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Asking to configure Socket via pkg-config but configure is unaware of the name of the DOTpc metadata file
+See \`config.log' for more details." "$LINENO" 5; }
+                                          ;;
+                        * )               use_Socket=yes
+                                          trace 4 --with-Socket-pkgconf set to [$with_Socket_pkgconf]
+                                          ;;
+                       esac
+
+else
+  trace 4 No --with-Socket-pkgconf specified
+                       with_Socket_pkgconf=notset
+
+
+fi
+
+
+# Check whether --with-Socket was given.
+if test "${with_Socket+set}" = set; then :
+  withval=$with_Socket; case $with_Socket in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                          use_Socket=no
+                                          with_Socket=no
+                                          ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                          use_Socket=yes
+                                          with_Socket=yes
+                                          ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                          use_Socket=check
+                                          with_Socket=check
+                                          ;;
+                        * )               use_Socket=yes
+                                          ;;
+                       esac
+
+else
+  trace 4 No --with-Socket specified
+                       with_Socket=notset
+
+
+fi
+
+
+# Check whether --with-Socket-library was given.
+if test "${with_Socket_library+set}" = set; then :
+  withval=$with_Socket_library; case "$with_Socket_library" in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                          use_Socket=no
+                                          with_Socket_library=no
+                                          ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                          use_Socket=yes
+                                          with_Socket_library=yes
+                                          ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                          use_Socket=check
+                                          with_Socket_library=check
+                                          ;;
+                        * )               use_Socket=yes
+                                          ;;
+                       esac
+
+else
+  trace 4 No --with-Socket-library specified
+                       with_Socket_library=notset
+
+
+fi
+
+
+# Check whether --with-Socket-include was given.
+if test "${with_Socket_include+set}" = set; then :
+  withval=$with_Socket_include; case "$with_Socket_include" in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                          use_Socket=no
+                                          with_Socket_include=no
+                                          ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                          use_Socket=yes
+                                          with_Socket_include=yes
+                                          ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                          use_Socket=check
+                                          with_Socket_include=check
+                                          ;;
+                        * )               use_Socket=yes
+                                          ;;
+                       esac
+
+else
+  trace 4 No --with-Socket-include specified
+                       with_Socket_include=notset
+
+
+fi
+
+          # Having read the command-line options, check none are mutually
+          # exclusive or contradictory
+          #
+          # First test --with-Socket compatability with the rest
+          if ( test $with_Socket = no )
+          then
+             if ( test $with_Socket_pkgconf != no && test $with_Socket_pkgconf != notset )
+             then
+                # --with-Socket-pkgconf=path (is neither no or notset and cannot
+                # be yes or check as they would have errored above.
+                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Asking to Socket via pkg-config but --with-Socket disabled it
+See \`config.log' for more details." "$LINENO" 5; }
+             fi
+
+             if ( test "$with_Socket_library" != no && test "$with_Socket_library" != notset )
+             then
+                if ( test "$with_Socket_library" = check )
+                then
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-Socket specifically disables library but --with-Socket-library" >&5
+$as_echo "$as_me: WARNING: --with-Socket specifically disables library but --with-Socket-library" >&2;}
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: asking to check for it; --with-Socket-library ignored" >&5
+$as_echo "$as_me: WARNING: asking to check for it; --with-Socket-library ignored" >&2;}
+                   use_Socket=no
+                else
+                   # --with-Socket-library is yes or points to the library
+                   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "--with-Socket-library asking to use Socket but --with-Socket disabled it
+See \`config.log' for more details." "$LINENO" 5; }
+                fi
+              fi
+
+             if ( test "$with_Socket_include" != no && test "$with_Socket_include" != notset )
+             then
+                if ( test "$with_Socket_include" = check )
+                then
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-Socket specifically disables library but --with-Socket-include" >&5
+$as_echo "$as_me: WARNING: --with-Socket specifically disables library but --with-Socket-include" >&2;}
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: asking to check for it; --with-Socket-include ignored" >&5
+$as_echo "$as_me: WARNING: asking to check for it; --with-Socket-include ignored" >&2;}
+                   use_Socket=no
+                else
+                   # --with-Socket-include is yes or points to the include
+                   # directory
+                   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "--with-Socket-include asking to use Socket but --with-Socket disabled it
+See \`config.log' for more details." "$LINENO" 5; }
+                fi
+             fi
+
+          else
+             # test --with-Socket != no
+
+             if ( test $with_Socket = check )
+             then
+                if ( test $with_Socket_pkgconf != no && test $with_Socket_pkgconf != notset )
+                then
+                   # --with-Socket-pkgconf must point to the metafile
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Explicitly asking for Socket via pkg-config but --with-Socket is" >&5
+$as_echo "$as_me: WARNING: Explicitly asking for Socket via pkg-config but --with-Socket is" >&2;}
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: asking to check for it; --with-Socket ignored." >&5
+$as_echo "$as_me: WARNING: asking to check for it; --with-Socket ignored." >&2;}
+                   use_Socket=yes
+                fi
+
+                if ( test "$with_Socket_library" != check && test "$with_Socket_library" != notset )
+                then
+                   if ( test "$with_Socket_library" = no )
+                   then
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Asking to check for Socket via --with-Socket but --with-Socket-library" >&5
+$as_echo "$as_me: WARNING: Asking to check for Socket via --with-Socket but --with-Socket-library" >&2;}
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: explicitly disables it; --with-Socket ignored." >&5
+$as_echo "$as_me: WARNING: explicitly disables it; --with-Socket ignored." >&2;}
+                      use_Socket=no
+                   else
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Explicitly asking for Socket via --with-Socket-library but --with-Socket" >&5
+$as_echo "$as_me: WARNING: Explicitly asking for Socket via --with-Socket-library but --with-Socket" >&2;}
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: asking to check for it; --with-Socket ignored." >&5
+$as_echo "$as_me: WARNING: asking to check for it; --with-Socket ignored." >&2;}
+                      use_Socket=yes
+                   fi
+                fi
+
+                if ( test "$with_Socket_include" != check && test "$with_Socket_include" != notset )
+                then
+                   if ( test "$with_Socket_include" = no )
+                   then
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Asking to check for Socket via --with-Socket but --with-Socket-include" >&5
+$as_echo "$as_me: WARNING: Asking to check for Socket via --with-Socket but --with-Socket-include" >&2;}
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: explicitly disables it; --with-Socket ignored." >&5
+$as_echo "$as_me: WARNING: explicitly disables it; --with-Socket ignored." >&2;}
+                      use_Socket=no
+                   else
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Explicitly asking for Socket via --with-Socket-include but --with-Socket" >&5
+$as_echo "$as_me: WARNING: Explicitly asking for Socket via --with-Socket-include but --with-Socket" >&2;}
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: asking to check for it; --with-Socket ignored." >&5
+$as_echo "$as_me: WARNING: asking to check for it; --with-Socket ignored." >&2;}
+                      use_Socket=yes
+                   fi
+                fi
+
+             else
+                # --with-Socket != no && != check
+                if ( test $with_Socket != notset )
+                then
+                   # --with-Socket = path or yes
+
+                   # We need not check --with-Socket-pkgconf as there is no
+                   # possible conflict (cannot be check and we take no to
+                   # be a request to disable pkg-config, rather than the
+                   # library as a whole)
+
+                   if ( test "$with_Socket_library" = no )
+                   then
+                      { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "--with-Socket-library disabling Socket but --with-Socket enabled it
+See \`config.log' for more details." "$LINENO" 5; }
+                   else
+                      if ( test "$with_Socket_library" = check )
+                      then
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Explicitly enabling Socket via --with-Socket but --with-Socket-library" >&5
+$as_echo "$as_me: WARNING: Explicitly enabling Socket via --with-Socket but --with-Socket-library" >&2;}
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING:  asking to check for it; --with-Socket-include ignored." >&5
+$as_echo "$as_me: WARNING:  asking to check for it; --with-Socket-include ignored." >&2;}
+                         use_Socket=no
+                      fi
+                   fi
+
+                   if ( test "$with_Socket_include" = no )
+                   then
+                      { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "--with-Socket-include disabling Socket but --with-Socket enabled it
+See \`config.log' for more details." "$LINENO" 5; }
+                   else
+                      if ( test "$with_Socket_include" = check )
+                      then
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Explicitly enabling Socket via --with-Socket but --with-Socket-include" >&5
+$as_echo "$as_me: WARNING: Explicitly enabling Socket via --with-Socket but --with-Socket-include" >&2;}
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING:  asking to check for it; --with-Socket-include ignored." >&5
+$as_echo "$as_me: WARNING:  asking to check for it; --with-Socket-include ignored." >&2;}
+                         use_Socket=no
+                      fi
+                   fi
+                fi
+             fi
+          fi
+
+          # Now test --with-Socket-pkgconf is not in conflict with the other two
+          # command-line switches.
+          if ( test $with_Socket_pkgconf != notset && test $with_Socket_pkgconf != no )
+          then
+             # --with-Socket-pkgconf = path (cannot be yes or check)
+             if ( test "$with_Socket_library" = check )
+             then
+                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-Socket-library asking to check for Socket but --with-Socket-pkgconf asking" >&5
+$as_echo "$as_me: WARNING: --with-Socket-library asking to check for Socket but --with-Socket-pkgconf asking" >&2;}
+                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: to use pkg-config, --with-Socket-library ignored." >&5
+$as_echo "$as_me: WARNING: to use pkg-config, --with-Socket-library ignored." >&2;}
+                use_Socket=yes
+             else
+                if ( test "$with_Socket_library" != no && test "$with_Socket_library" != notset )
+                then
+                   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "--with-Socket-library enabling compile check for Socket but --with-Socket-pkgconf asking to use pkg-config
+See \`config.log' for more details." "$LINENO" 5; }
+                fi
+             fi
+
+             if ( test "$with_Socket_include" = check )
+             then
+                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-Socket-include asking to check for Socket but --with-Socket-pkgconf asking" >&5
+$as_echo "$as_me: WARNING: --with-Socket-include asking to check for Socket but --with-Socket-pkgconf asking" >&2;}
+                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: to use pkg-config, --with-Socket-include ignored." >&5
+$as_echo "$as_me: WARNING: to use pkg-config, --with-Socket-include ignored." >&2;}
+                use_Socket=yes
+             else
+                if ( test "$with_Socket_include" != no && test "$with_Socket_include" != notset )
+                then
+                   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "--with-Socket-include enabling compile check for Socket but --with-Socket-pkgconf asking to use pkg-config
+See \`config.log' for more details." "$LINENO" 5; }
+                fi
+             fi
+          fi
+
+
+          # Check consistency between library and include switches
+          if ( test "$with_Socket_library" = no )
+          then
+             if ( test "$with_Socket_include" != no && test "$with_Socket_include" != notset )
+             then
+                if ( test "$with_Socket_include" = check )
+                then
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-Socket-include asking to check for Socket but --with-Socket-library has" >&5
+$as_echo "$as_me: WARNING: --with-Socket-include asking to check for Socket but --with-Socket-library has" >&2;}
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: explicitly disabled it; --with-Socket-include ignored." >&5
+$as_echo "$as_me: WARNING: explicitly disabled it; --with-Socket-include ignored." >&2;}
+                   use_Socket=no
+                else
+                   # --with-Socket-include = yes or path
+                   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "--with-Socket-include enabling Socket but --with-Socket-library disabled it.
+See \`config.log' for more details." "$LINENO" 5; }
+                fi
+             fi
+          else
+             # --with-Socket-library != no
+             if ( test "$with_Socket_library" = check )
+             then
+                if ( test "$with_Socket_include" = no )
+                then
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-Socket-library asking to check for Socket but --with-Socket-include has" >&5
+$as_echo "$as_me: WARNING: --with-Socket-library asking to check for Socket but --with-Socket-include has" >&2;}
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: explicitly disabled it; --with-Socket-library ignored." >&5
+$as_echo "$as_me: WARNING: explicitly disabled it; --with-Socket-library ignored." >&2;}
+                   use_Socket=no
+                else
+                   if ( test "$with_Socket_include" != check && test "$with_Socket_include" != notset )
+                   then
+                      # --with-Socket-include = yes or path
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-Socket-library asking to check for Socket but --with-Socket-include has" >&5
+$as_echo "$as_me: WARNING: --with-Socket-library asking to check for Socket but --with-Socket-include has" >&2;}
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: explicitly enabled it; --with-Socket-library ignored." >&5
+$as_echo "$as_me: WARNING: explicitly enabled it; --with-Socket-library ignored." >&2;}
+                      use_Socket=yes
+                   fi
+                fi
+             else
+                if ( test "$with_Socket_library" != notset )
+                then
+                   # --with-Socket-library a path or yes
+                   if ( test "$with_Socket_include" = no )
+                   then
+                      { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "--with-Socket-library enabling Socket but --with-Socket-include disabled it.
+See \`config.log' for more details." "$LINENO" 5; }
+                   else
+                      if ( test "$with_Socket_include" = check )
+                      then
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-Socket-include asking to check for Socket but --with-Socket-library has" >&5
+$as_echo "$as_me: WARNING: --with-Socket-include asking to check for Socket but --with-Socket-library has" >&2;}
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: explicitly enabled it; --with-Socket-include ignored." >&5
+$as_echo "$as_me: WARNING: explicitly enabled it; --with-Socket-include ignored." >&2;}
+                         use_Socket=yes
+                      fi
+                   fi
+                fi
+             fi
+          fi
+
+
+          # Now process --with-Socket to see if it is a fallback path
+          #
+          # Initialise fallback components
+          fallback_path=""
+          fallback_file=""
+          # Check for viable switch setting
+          if ( test $with_Socket != notset && test $with_Socket != no && test $with_Socket != check && test $with_Socket != yes )
+          then
+             # We have a path to use
+             if ( test -d $with_Socket )
+             then
+                # Parameter is a directory path
+                fallback_path=$with_Socket
+                trace 3 with-Socket provides a fallback path [$fallback_path]
+             else
+                fallback_path=`$as_dirname -- $with_Socket ||
+$as_expr X$with_Socket : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
+	 X$with_Socket : 'X\(//\)[^/]' \| \
+	 X$with_Socket : 'X\(//\)$' \| \
+	 X$with_Socket : 'X\(/\)' \| . 2>/dev/null ||
+$as_echo X$with_Socket |
+    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)[^/].*/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\).*/{
+	    s//\1/
+	    q
+	  }
+	  s/.*/./; q'`
+                if ( test -d $fallback_path  )
+                then
+                   # strip leading path
+                   fallback_file=`$EXPR "//$with_Socket" : '.*/\([^/]*\)'`
+                   # portable version of fallback_file=`basename $with_Socket`
+                   if ( test X$with_Socket = X$fallback_path/$fallback_file )
+                   then
+                      # Parameter is a file path
+                      trace 3 with-Socket provides a fallback path [$fallback_path] and a file [$fallback_file]
+                   else
+                      # Somehow dirname($x)/basename($x) != $x
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Problem processing --with-Socket, parameter ignored" >&5
+$as_echo "$as_me: WARNING: Problem processing --with-Socket, parameter ignored" >&2;}
+                      fallback_path=""
+                      fallback_file=""
+                   fi
+                else
+                   # --with-Socket=/path/is/not/a/dir/something
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Illegal command-line option for --with-Socket, parameter ignored" >&5
+$as_echo "$as_me: WARNING: Illegal command-line option for --with-Socket, parameter ignored" >&2;}
+                   fallback_path=""
+                   fallback_file=""
+                fi
+             fi
+          fi
+
+
+          if ( test X$use_Socket != Xno )
+          then
+             if ( test $with_Socket_pkgconf = no ||  test $with_Socket_pkgconf = notset )
+             then
+                # Not using pkg-config, set any paths for compile checks
+
+                # Check if --with-Socket-library is a specification rather than a
+                # simple switch
+                if ( test "$with_Socket_library" != notset && test "$with_Socket_library" != no && test "$with_Socket_library" != check && test "$with_Socket_library" != yes )
+                then
+                   # We have a path specification to parse
+                   #
+                   # If the specification is a straight forward link line (of
+                   # the form "-L/a/b/c -ld .. -L/w/x/y -lz" we want to split
+                   # off the last -l entries into with_Socket_lnklibs and include
+                   # the initial part of the link line in with_Socket_libpath.
+                   # If we just have directory and library paths, we need to
+                   # add the relevant linker switch, and assign the parameter
+                   # to the appropriate variable.
+                   #
+                   with_Socket_lnklibs=""
+                   with_Socket_libpath=""
+                   use_Socket=yes
+                   trace 6 Parsing --with-Socket-library setting
+                   with_Socket_library=`echo " $with_Socket_library " | $SED 's/ -L */ -L/g;s/ -l */ -l/g'`
+                   # Collapse down spaces following -L and -l entries. This is
+                   # mainly for ease of parsing but does make any user input
+                   # compatible with the form of the default values used
+                   # throughout this configure script. Downsides are that any
+                   # other -X <arg> switches provided by the user will not
+                   # parse correctly and a general issue awaiting any systems
+                   # that must have the space between the switch and its
+                   # argument. The latter issue is the bigger problem as such
+                   # a limitation will have big consequences for this script
+                   # if we ever hit such a constrained toolset.
+                   for part in $with_Socket_library
+                   do
+                      case $part in
+                      -L* )   # Library path specifier. Any previous library
+                              # names ought to be recorded as part of libpath
+                              # to maintain any order significance of the
+                              # supplied link command.
+                              TRACE_INDENT="     "
+                              trace 6 Appending [$part] to library path
+                              with_Socket_libpath="$with_Socket_libpath$with_Socket_lnklibs$part "
+                              with_Socket_lnklibs=""
+                              ;;
+                      -l* )   # Library specifier. Append to the linklib
+                              # variable.
+                              TRACE_INDENT="     "
+                              trace 6 Appending [$part] to library list
+                              with_Socket_lnklibs="$with_Socket_lnklibs$part "
+                              ;;
+                      -* )    # Presume linker switch. Append to libpath after
+                              # adding any existing library specs (so as to
+                              # maintain any order specific requirements).
+                              TRACE_INDENT="     "
+                              trace 6 Appending [$part] to link line
+                              with_Socket_libpath="$with_Socket_libpath$with_Socket_lnklibs$part "
+                              with_Socket_lnklibs=""
+                              ;;
+                      * )     # Non-linker format, see if we can work out
+                              # what it is
+                              if ( test -d $part )
+                              then
+                                 # We have a directory, add to libpath with
+                                 # a -L prefix having moved across any
+                                 # libraries from lnklibs to preserve ordering
+                                 # constraints
+                                 TRACE_INDENT="     "
+                                 trace 6 Adding [-L$part] to link line
+                                 with_Socket_libpath="$with_Socket_libpath${with_Socket_lnklibs}-L$part "
+                                 with_Socket_lnklibs=""
+                              else
+                                 # Not a directory, is it directory/file?
+                                 path=`$as_dirname -- $part ||
+$as_expr X$part : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
+	 X$part : 'X\(//\)[^/]' \| \
+	 X$part : 'X\(//\)$' \| \
+	 X$part : 'X\(/\)' \| . 2>/dev/null ||
+$as_echo X$part |
+    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)[^/].*/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\).*/{
+	    s//\1/
+	    q
+	  }
+	  s/.*/./; q'`
+                                 if ( test X$path != X && test $path != . )
+                                 then
+                                    # We have "something/file" does the
+                                    # "something" point to a directory?
+                                    if ( test -d $path  )
+                                    then
+                                       # We have "directory/presumed-library-name"
+                                       # Find candidate library name
+                                       file=`$EXPR "//$part" : '.*/\([^/]*\)'`
+                                       if ( test $part = $path/$file )
+                                       then
+                                          # Parameter is a file path
+                                          # Does it have a '.a' extension
+                                          lib=`$EXPR "X$file" : 'X\(.*\)\.a$'`
+                                          if ( test X$lib != X  )
+                                          then
+                                             lib=`echo $lib | $SED 's/^lib//'`
+                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-Socket_library pointing to a .a" >&5
+$as_echo "$as_me: WARNING: Specifying --with-Socket_library pointing to a .a" >&2;}
+                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: will cause problems building with shared libraries." >&5
+$as_echo "$as_me: WARNING: will cause problems building with shared libraries." >&2;}
+                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Instead we will use -l$lib" >&5
+$as_echo "$as_me: WARNING: Instead we will use -l$lib" >&2;}
+                                          else
+                                             # Does it have a '.so' extension
+                                             lib=`$EXPR "X$file" : 'X\(.*\)\.so$'`
+                                             if ( test X$lib != X )
+                                             then
+                                                lib=`echo $lib | $SED 's/^lib//'`
+                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-Socket_library pointing to" >&5
+$as_echo "$as_me: WARNING: Specifying --with-Socket_library pointing to" >&2;}
+                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: a .so will cause problems building with " >&5
+$as_echo "$as_me: WARNING: a .so will cause problems building with " >&2;}
+                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: static libraries. Instead, we will use" >&5
+$as_echo "$as_me: WARNING: static libraries. Instead, we will use" >&2;}
+                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: -l$lib" >&5
+$as_echo "$as_me: WARNING: -l$lib" >&2;}
+                                             else
+                                                # Parameter is path and name fragment
+                                                lib=`echo $file | $SED 's/^lib//'`
+                                             fi
+                                          fi
+                                          # As the user specified the library
+                                          # as a path rather than with a -L
+                                          # and a -l entry, it would be good
+                                          # to continue in the same vein.
+                                          # However, as -l/full/path is not
+                                          # supported, we have to revert to
+                                          # the seperate specifiers.
+                                          TRACE_INDENT="     "
+                                          trace 6 Adding [-L$path] to library path
+                                          with_Socket_libpath="$with_Socket_libpath$with_Socket_lnklibs-L$path "
+                                          with_Socket_lnklibs=""
+                                          TRACE_INDENT="     "
+                                          trace 6 Adding [-l$lib] to library list
+                                          with_Socket_lnklibs="-l$lib "
+                                       else
+                                          # Somehow dirname($x)/basename($x) != $x
+                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Problem processing --with-Socket-library, [$part] ignored" >&5
+$as_echo "$as_me: WARNING: Problem processing --with-Socket-library, [$part] ignored" >&2;}
+                                       fi
+                                    else
+                                       # Parameter is "not-a-dir-path/something"
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Illegal value for --with-Socket-library, [$part] ignored" >&5
+$as_echo "$as_me: WARNING: Illegal value for --with-Socket-library, [$part] ignored" >&2;}
+                                    fi
+                                 else
+                                    # Parameter is just "something" - assume library name
+                                    #
+                                    # Does it have a '.a' extension
+                                    lib=`$EXPR "X$part" : 'X\(.*\)\.a$'`
+                                    if ( test X$lib != X  )
+                                    then
+                                       lib=`echo $lib | $SED 's/^lib//'`
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-Socket_library pointing to a .a" >&5
+$as_echo "$as_me: WARNING: Specifying --with-Socket_library pointing to a .a" >&2;}
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: will cause problems building with shared libraries." >&5
+$as_echo "$as_me: WARNING: will cause problems building with shared libraries." >&2;}
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Instead we will use -l$lib" >&5
+$as_echo "$as_me: WARNING: Instead we will use -l$lib" >&2;}
+                                    else
+                                       # Does it have a '.so' extension
+                                       lib=`$EXPR "X$part" : 'X\(.*\)\.so$'`
+                                       if ( test X$lib != X )
+                                       then
+                                          lib=`echo $lib | $SED 's/^lib//'`
+                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-Socket_library pointing to" >&5
+$as_echo "$as_me: WARNING: Specifying --with-Socket_library pointing to" >&2;}
+                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: a .so will cause problems building with " >&5
+$as_echo "$as_me: WARNING: a .so will cause problems building with " >&2;}
+                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: static libraries. Instead, we will use" >&5
+$as_echo "$as_me: WARNING: static libraries. Instead, we will use" >&2;}
+                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: -l$lib" >&5
+$as_echo "$as_me: WARNING: -l$lib" >&2;}
+                                       else
+                                          # Parameter is name fragment
+                                          lib=`echo $part | $SED 's/^lib//'`
+                                       fi
+                                    fi
+                                    TRACE_INDENT="     "
+                                    trace 6 Adding [-l$lib] to library list
+                                    with_Socket_lnklibs="${with_Socket_lnklibs}-l$lib "
+                                 fi
+                              fi
+                              ;;
+                      esac
+                   done
+                   trace 3 Link line assembled from --with-Socket-library is [$with_Socket_libpath $with_Socket_lnklibs]
+                   # Now verify what we have
+                   if ( test X`$EXPR "X $with_Socket_libpath $with_Socket_lnklibs" : '.* \(-l[^ ]*\).*$'` == X )
+                   then
+                      # no -lxxx in libpath or lnklibs - use any fallback or the
+                      # default library name
+                      if ( test X$fallback_file != X )
+                      then
+                         # --with_Socket specified a fallback name, use that but
+                         # sanitise it first
+                         lib=`$EXPR "X$fallback_file" : 'X\(.*\)\.a$'`
+                         if ( test X$lib != X  )
+                         then
+                            # Removed an unwanted .a suffix
+                            # Now strip any leading -l or lib prefix
+                            with_Socket_lnklibs=-l`echo $lib | $SED 's/^-l//;s/^lib//'`
+                            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-Socket pointing to a .a" >&5
+$as_echo "$as_me: WARNING: Specifying --with-Socket pointing to a .a" >&2;}
+                            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: will cause problems building with shared libraries." >&5
+$as_echo "$as_me: WARNING: will cause problems building with shared libraries." >&2;}
+                            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Instead we will use -l$lib" >&5
+$as_echo "$as_me: WARNING: Instead we will use -l$lib" >&2;}
+                         else
+                            lib=`$EXPR "X$fallback_file" : 'X\(.*\)\.so$'`
+                            if ( test X$lib != X )
+                            then
+                               # Removed an unwanted .so suffix
+                               # Now strip any leading -l or lib prefix
+                               with_Socket_lnklibs=-l`echo $lib | $SED 's/^-l//;s/^lib//'`
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-Socket pointing to a .so" >&5
+$as_echo "$as_me: WARNING: Specifying --with-Socket pointing to a .so" >&2;}
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: will cause problems building with static libraries." >&5
+$as_echo "$as_me: WARNING: will cause problems building with static libraries." >&2;}
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Instead, we will use -l$lib" >&5
+$as_echo "$as_me: WARNING: Instead, we will use -l$lib" >&2;}
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: " >&5
+$as_echo "$as_me: WARNING: " >&2;}
+                            else
+                               # No suffix to strip
+                               # Strip any leading -l or lib prefix
+                               with_Socket_lnklibs=-l`echo $fallback_file | $SED 's/^-l//;s/^lib//'`
+                            fi
+                         fi
+                         trace 3 No library name specified by --with-Socket-library, using --with-Socket value [$with_Socket_lnklibs]
+                      else
+                         trace 3 No library name specified by --with-Socket-library, using default [" | -lsocket | -lsocket -lnsl "]
+                         with_Socket_lnklibs=" | -lsocket | -lsocket -lnsl "
+                      fi
+
+                      if ( test X$fallback_path != X )
+                      then
+                         # --with_Socket specified a fallback path, are we using
+                         # it?
+                         if ( test X`$EXPR "X $with_Socket_libpath " : '.* \(-L[^ ]*\).*$'` == X )
+                         then
+                            # We do not have a library path; add the fallback
+                            with_Socket_libpath="-L$fallback_path $with_Socket_libpath"
+                            # It is an assumption to put it first, but we do
+                            # not know where the relevant library is in the
+                            # link specification, so we have to put it there.
+                            trace 3 No path component of --with-Socket-library, using --with-Socket to set library path for Socket [-L$fallback_path]
+                         else
+                            if ( test X`$EXPR "X $with_Socket_libpath " : ".* \(-L$fallback_path\)/* .*"` == X )
+                            then
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-Socket-library and --with-Socket specify different paths, --with-Socket path ignored" >&5
+$as_echo "$as_me: WARNING: --with-Socket-library and --with-Socket specify different paths, --with-Socket path ignored" >&2;}
+                            fi
+                         fi
+                      fi
+                   else
+                      # We already have a library specified, confirm that any
+                      # --with_Socket setting agreed
+                      if ( test X$fallback_file != X )
+                      then
+                         lib=`echo $fallback_file | $SED 's/^-l//;s/^lib//;s/\(.*\)\.a/\1/;s/\(.*\).so/\1/'`
+                         # strip any leading -l or lib prefix; any trailing .a
+                         # or .so suffixes
+                         if ( test X`$EXPR "X $with_Socket_libpath $with_Socket_lnklibs " : ".* \(-l$lib\) .*"` == X )
+                         then
+                            # No -l<fallback>
+                            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-Socket-library and --with-Socket specify different libraries, --with-Socket library setting ignored" >&5
+$as_echo "$as_me: WARNING: --with-Socket-library and --with-Socket specify different libraries, --with-Socket library setting ignored" >&2;}
+                         fi
+                      fi
+
+                      if ( test X$fallback_path != X )
+                      then
+                         # --with_Socket specified a fallback path, are we using
+                         # it?
+                         if ( test X`$EXPR "X $with_Socket_libpath " : '.* \(-L[^ ]*\).*$'` == X )
+                         then
+                            # We do not have any library path; add the fallback
+                            trace 3 No path specified by --with-Socket-library, using --with-Socket value [-L$fallback_path]
+                            with_Socket_libpath="-L$fallback_path $with_Socket_libpath"
+                            # It is an assumption to put it first, but we do
+                            # not know where the relevant library is in the
+                            # link specification, so we have to put it there.
+                         else
+                            if ( test X`$EXPR "X $with_Socket_libpath " : ".* \(-L$fallback_path\)/* .*"` == X )
+                            then
+                               # No -L entry for the fallback path.
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-Socket-library and --with-Socket specify different paths, --with-Socket path ignored" >&5
+$as_echo "$as_me: WARNING: --with-Socket-library and --with-Socket specify different paths, --with-Socket path ignored" >&2;}
+                            fi
+                         fi
+                      fi
+                   fi
+                else
+                   # --with-Socket-library used as a switch; employ fallback/default paths
+                   if ( test X$fallback_path != X )
+                   then
+                      trace 3 Using path component of --with-Socket to set library path for Socket [-L$fallback_path]
+                      with_Socket_libpath=-L$fallback_path
+                      use_Socket=yes
+                   else
+                      with_Socket_libpath=""
+                   fi
+                   if ( test X$fallback_file != X )
+                   then
+                         # --with_Socket specified a fallback name, use that but
+                         # sanitise it first
+                         lib=`$EXPR "X$fallback_file" : 'X\(.*\)\.a$'`
+                         if ( test X$lib != X  )
+                         then
+                            # Removed an unwanted .a suffix
+                            # Now strip any leading -l or lib prefix
+                            with_Socket_lnklibs=-l`echo $lib | $SED 's/^-l//;s/^lib//'`
+                            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-Socket pointing to a .a" >&5
+$as_echo "$as_me: WARNING: Specifying --with-Socket pointing to a .a" >&2;}
+                            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: will cause problems building with shared libraries." >&5
+$as_echo "$as_me: WARNING: will cause problems building with shared libraries." >&2;}
+                            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Instead we will use -l$lib" >&5
+$as_echo "$as_me: WARNING: Instead we will use -l$lib" >&2;}
+                         else
+                            lib=`$EXPR "X$fallback_file" : 'X\(.*\)\.so$'`
+                            if ( test X$lib != X )
+                            then
+                               # Removed an unwanted .so suffix
+                               # Now strip any leading -l or lib prefix
+                               with_Socket_lnklibs=-l`echo $lib | $SED 's/^-l//;s/^lib//'`
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-Socket pointing to a .so" >&5
+$as_echo "$as_me: WARNING: Specifying --with-Socket pointing to a .so" >&2;}
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: will cause problems building with static libraries." >&5
+$as_echo "$as_me: WARNING: will cause problems building with static libraries." >&2;}
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Instead, we will use -l$lib" >&5
+$as_echo "$as_me: WARNING: Instead, we will use -l$lib" >&2;}
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: " >&5
+$as_echo "$as_me: WARNING: " >&2;}
+                            else
+                               # No suffix to strip
+                               # Strip any leading -l or lib prefix
+                               with_Socket_lnklibs=-l`echo $fallback_file | $SED 's/^-l//;s/^lib//'`
+                            fi
+                         fi
+                         trace 3 Using file component of --with-Socket to set library name for Socket [$with_Socket_lnklibs]
+                   else
+                      trace 3 Using default library name for Socket [" | -lsocket | -lsocket -lnsl "]
+                      with_Socket_lnklibs=" | -lsocket | -lsocket -lnsl "
+                   fi
+                fi
+
+
+                # Check if --with-Socket-include is a provided
+                if ( test "$with_Socket_include" != notset && test "$with_Socket_include" != no && test "$with_Socket_include" != check && test "$with_Socket_include" != yes )
+                then
+                   # we have a parameter rather than a switch to use
+                   with_Socket_inc=""
+                   use_Socket=yes
+                   if ( test X$fallback_path != X )
+                   then
+                      fallback_match=no
+                      # If we have a fallback path, we want to check it is
+                      # included in the -include setting and warn if not
+                   else
+                      fallback_match=yes
+                      # We have no fallback, so we never need to warn the user
+                   fi
+                   trace 6 Parsing --with-Socket-include setting
+                   # Strip any provided -I entries for ease of parsing.
+                   for path in `echo " $with_Socket_include " | $SED 's/ -I *//g'`
+                   do
+                      if ( test -d $path )
+                      then
+                         TRACE_INDENT="     "
+                         trace 6 Appending [-I$path] to set include path for Socket
+                         with_Socket_inc="$with_Socket_inc-I$path "
+                         if ( test $fallback_match == no && test $fallback_path == $path )
+                         then
+                            fallback_match=yes
+                         fi
+                      else
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Illegal component of --with-Socket-include, [$path] ignored" >&5
+$as_echo "$as_me: WARNING: Illegal component of --with-Socket-include, [$path] ignored" >&2;}
+                      fi
+                   done
+                   if ( test X$with_Socket_inc == X )
+                   then
+                      # No path from argument, any fallback?
+                      if ( test X$fallback_path != X )
+                      then
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Will use --with-Socket value [-I$fallback_path]" >&5
+$as_echo "$as_me: WARNING: Will use --with-Socket value [-I$fallback_path]" >&2;}
+                         with_Socket_inc=-I$fallback_path
+                      else
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Will use default system include path" >&5
+$as_echo "$as_me: WARNING: Will use default system include path" >&2;}
+                         with_Socket_inc=""
+                      fi
+                   else
+                      # We have valid path(es) supplied by the user, do they
+                      # encompass the fallback setting?
+                      if ( test $fallback_match != yes )
+                      then
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-Socket-include and --with-Socket specify different paths, --with-Socket ignored" >&5
+$as_echo "$as_me: WARNING: --with-Socket-include and --with-Socket specify different paths, --with-Socket ignored" >&2;}
+                      fi
+                   fi
+                else
+                   # --with-Socket-include is a switch setting rather than a path,
+                   # use any available fallback
+                   if ( test X$fallback_path != X )
+                   then
+                      trace 3 No path specified by --with-Socket-include, using --with-Socket value [-I$fallback_path]
+                      with_Socket_inc=-I$fallback_path
+                      use_Socket=yes
+                   else
+                      trace 3 Will use default system include path
+                      with_Socket_inc=""
+                   fi
+                fi
+             fi # End of: if ( test $with_Socket_pkgconf = no || notset
+          else
+             trace 4 Library Socket disabled
+          fi
+
+          KnownLibs=$KnownLibs" "Socket
+          if ( test X$use_Socket = X )
+          then
+             use_Socket=check
+             UnconfiguredLibs=$UnconfiguredLibs" "Socket
+          else
+             ConfiguredLibs=$ConfiguredLibs" "Socket
+          fi
+
+          with_Socket_tstcd='int ret, domain, type, protocol;
+                               ret=socket (domain, type, protocol);
+                              '
+                                                  with_Socket_prq=""
+          with_Socket_hdr="sys/socket.h"
+          with_Socket_lang="C
+                             "
+          with_Socket_virtual="no"
+
+
+
+
+
+
 # Check whether --with-LibTIFF-pkgconf was given.
 if test "${with_LibTIFF_pkgconf+set}" = set; then :
   withval=$with_LibTIFF_pkgconf; case $with_LibTIFF_pkgconf in
@@ -20446,6 +21359,8 @@ PortAudio_RavlLib=libRavlPortAudio
 OpenSceneGraphGTK_RavlLib=libRavlGUIOpenSceneGraph
 
 RLog_RavlLib=libRavlRLog
+
+Socket_RavlLib=libRavlNet
 
 devVideo4Linux2_RavlLib=libRavlImgIOV4L2
 
@@ -23480,7 +24395,6 @@ RavlFace_LIBS="libMarkupTool libRavlFace"
 RavlGUI=libRavlGUI
 RavlImageProc=libRavlImageProc
 RavlLogic_LIBS="libRavlLogicAgent libRavlLogicNLP libRavlLogic"
-RavlNet=libRavlNet
 RavlRawVidIO=""
 # libRavlRawVidIO currently dropped
 RavlVDF=""
@@ -23526,8 +24440,6 @@ echo RavlGUI=@RavlGUI@ >> ./ExtPkgSupp.$$
 echo RavlImageProc=@RavlImageProc@ >> ./ExtPkgSupp.$$
 
 echo RavlLogic_LIBS=@RavlLogic_LIBS@ >> ./ExtPkgSupp.$$
-
-echo RavlNet=@RavlNet@ >> ./ExtPkgSupp.$$
 
 echo RavlRawVidIO=@RavlRawVidIO@ >> ./ExtPkgSupp.$$
 
@@ -23639,6 +24551,15 @@ then
    trace 3 Lack of RLog blocking RavlFace PortAudio, XMPP \(indirectly blocks iksemel\) and RavlZmqOptimisation
 fi
 
+if ( test X$use_Socket != 'Xpresent' )
+then
+   # Lack of Socket blocks RavlNet (which in-turn blocks libRavlPythonSwig
+   # and libRavlPythonSwig2 by dependancy)
+   Socket_SUPPORT=""
+   SwigPython_SUPPORT=""
+   trace 3 Lack of Socket blocking RavlNet \(indirectly blocks SwigPython\).
+fi
+
 if ( test X$use_ZeroMQ != 'Xpresent' )
 then
    # Lack of ZeroMQ blocks RavlZmqOptimisation.
@@ -23708,7 +24629,7 @@ then
                    RavlVPlay=""
 
                 # RavlNet unavailable under Cygwin
-                   RavlNet=""
+                   Socket_SUPPORT=""
                       # Absence of libRavlNet blocks libRavlPythonSwig & libRavlPythonSwig2 by dependancy
                       SwigPython_SUPPORT=""
                 trace 3 Amending compile settings for Cygwin
@@ -23916,7 +24837,7 @@ $SORT ./ExtPkgSupp.$$ >> ./Config.Project.in
 rm ./ExtPkgSupp.$$
 echo >> ./Config.Project.in
 echo \# Ordered list of the libraries we want in libRavl.\*  >> ./Config.Project.in
-echo SINGLE_RECIPE=\$\(NumPy_SUPPORT\) \$\(avifile_SUPPORT\) libRavlMPEG2 \$\(devVideo4Linux_SUPPORT\) \$\(libffmpeg_SUPPORT\) libRavlVideoIO \$\(dvdread_SUPPORT\) \$\(libmpeg2_SUPPORT\) \$\(libavc1394_SUPPORT\) \$\(libDV_SUPPORT\) \$\(RavlRawVidIO\) \$\(RavlExtImgIO\) \$\(MacOSXVideoCapture_SUPPORT\) \$\(MacOSXRunLoop_SUPPORT\) \$\(RavlVDF\) \$\(SwigPython_SUPPORT\) \$\(RavlDPDisplay\) \$\(Meteor1_SUPPORT\) libRavlAV \$\(RavlChartDetector\) \$\(RavlAAM\) \$\(RavlFace_LIBS\) libRavlTwoWayMap \$\(RavlImageProc\) \$\(uEyeSDK_SUPPORT\) \$\(libmpeg_SUPPORT\) \$\(OpenGL_SUPPORT\) libRavlImageXMLFactory \$\(libClipStationPro_SUPPORT\) libRavlMemModules libRavlImageIO \$\(LibJasper_SUPPORT\) \$\(OpenCV_SUPPORT\) \$\(RavlVPlay\) \$\(Ravl2dGUI_LIBS\) \$\(libdc1394_SUPPORT\) libRavlVideo \$\(LibGd_SUPPORT\) \$\(devVideo4Linux2_SUPPORT\) \$\(OpenSceneGraphGTK_SUPPORT\) \$\(Ravl3d_LIBS\) \$\(LibDirectShow_SUPPORT\) libRavlImage \$\(libAudioFile_SUPPORT\) \$\(RavlDevAudio\) libRavlAudioFeatures \$\(PortAudio_SUPPORT\) libRavlAudioIO libRavlAudioUtil \$\(iksemel_SUPPORT\) \$\(Loudmouth_SUPPORT\) \$\(RavlXMPP\) \$\(RavlZmqOptimisation\) \$\(RLog_SUPPORT\) \$\(SGIVL_SUPPORT\) \$\(RavlDataServer\) libOptimisation \$\(RavlLogic_LIBS\) libRavlPatternRecIO libRavlKalmanFilter libRavlSVM libRavlGnuPlot libRavlPatternRec libRavlDataSet libRavlFileIDX libRavlOSIO  \$\(ParallelIO_SUPPORT\) \$\(SerialIO_SUPPORT\) \$\(libGuppi_SUPPORT\) libRavlPlot \$\(RavlClassWizard\) libRavlCxxDoc \$\(RavlAutoPort\) libRavlAutoPort2 libRavlSourceTools \$\(LibPython_SUPPORT\) \$\(RavlNet\) \$\(libehs_SUPPORT\) libRavlDPMT \$\(UUIdTheo_SUPPORT\) \$\(LibGnome_SUPPORT\) \$\(libglade2_SUPPORT\) \$\(RavlGUI\) libRavlMathIO libRavlGeneticProgram libRavlGeneticOptimisation \$\(ZeroMQ_SUPPORT\) libRavlService libRavlXMLFactory \$\(libCurl_SUPPORT\) libRavlThreads libRavlHtml libRavlOS libRavlIO \$\(libmcrypt_SUPPORT\) libRavlOptimise \$\(RavlCameraCal\) \$\(libmkl_SUPPORT\) \$\(LAPACK_SUPPORT\) libRavlMath libccmath libfann libArffIO \$\(Zlib_SUPPORT\) libRavlHMM libRavlCore  >> ./Config.Project.in
+echo SINGLE_RECIPE=\$\(NumPy_SUPPORT\) \$\(avifile_SUPPORT\) libRavlMPEG2 \$\(devVideo4Linux_SUPPORT\) \$\(libffmpeg_SUPPORT\) libRavlVideoIO \$\(dvdread_SUPPORT\) \$\(libmpeg2_SUPPORT\) \$\(libavc1394_SUPPORT\) \$\(libDV_SUPPORT\) \$\(RavlRawVidIO\) \$\(RavlExtImgIO\) \$\(MacOSXVideoCapture_SUPPORT\) \$\(MacOSXRunLoop_SUPPORT\) \$\(RavlVDF\) \$\(SwigPython_SUPPORT\) \$\(RavlDPDisplay\) \$\(Meteor1_SUPPORT\) libRavlAV \$\(RavlChartDetector\) \$\(RavlAAM\) \$\(RavlFace_LIBS\) libRavlTwoWayMap \$\(RavlImageProc\) \$\(uEyeSDK_SUPPORT\) \$\(libmpeg_SUPPORT\) \$\(OpenGL_SUPPORT\) libRavlImageXMLFactory \$\(libClipStationPro_SUPPORT\) libRavlMemModules libRavlImageIO \$\(LibJasper_SUPPORT\) \$\(OpenCV_SUPPORT\) \$\(RavlVPlay\) \$\(Ravl2dGUI_LIBS\) \$\(libdc1394_SUPPORT\) libRavlVideo \$\(LibGd_SUPPORT\) \$\(devVideo4Linux2_SUPPORT\) \$\(OpenSceneGraphGTK_SUPPORT\) \$\(Ravl3d_LIBS\) \$\(LibDirectShow_SUPPORT\) libRavlImage \$\(libAudioFile_SUPPORT\) \$\(RavlDevAudio\) libRavlAudioFeatures \$\(PortAudio_SUPPORT\) libRavlAudioIO libRavlAudioUtil \$\(iksemel_SUPPORT\) \$\(Loudmouth_SUPPORT\) \$\(RavlXMPP\) \$\(RavlZmqOptimisation\) \$\(RLog_SUPPORT\) \$\(SGIVL_SUPPORT\) \$\(RavlDataServer\) libOptimisation \$\(RavlLogic_LIBS\) libRavlPatternRecIO libRavlKalmanFilter libRavlSVM libRavlGnuPlot libRavlPatternRec libRavlDataSet libRavlFileIDX libRavlOSIO  \$\(ParallelIO_SUPPORT\) \$\(SerialIO_SUPPORT\) \$\(libGuppi_SUPPORT\) libRavlPlot \$\(RavlClassWizard\) libRavlCxxDoc \$\(RavlAutoPort\) libRavlAutoPort2 libRavlSourceTools \$\(LibPython_SUPPORT\) \$\(Socket_SUPPORT\) \$\(libehs_SUPPORT\) libRavlDPMT \$\(UUIdTheo_SUPPORT\) \$\(LibGnome_SUPPORT\) \$\(libglade2_SUPPORT\) \$\(RavlGUI\) libRavlMathIO libRavlGeneticProgram libRavlGeneticOptimisation \$\(ZeroMQ_SUPPORT\) libRavlService libRavlXMLFactory \$\(libCurl_SUPPORT\) libRavlThreads libRavlHtml libRavlOS libRavlIO \$\(libmcrypt_SUPPORT\) libRavlOptimise \$\(RavlCameraCal\) \$\(libmkl_SUPPORT\) \$\(LAPACK_SUPPORT\) libRavlMath libccmath libfann libArffIO \$\(Zlib_SUPPORT\) libRavlHMM libRavlCore  >> ./Config.Project.in
 echo >> ./Config.Project.in
 echo >> ./Config.Project.in
 

@@ -38,12 +38,14 @@ dnl                                  package <Lib>. For library packages that
 dnl                                  vary the names of the libraries required,
 dnl                                  this may be a set of alternative lists
 dnl                                  seperated by a pipe symbol (|). As an
-dnl                                  example, the DynLink package offers the
-dnl                                  setting " | -ldl " as the dlopen function
-dnl                                  may be available in the default libraries
-dnl                                  (no additional library is required - hence
-dnl                                  the leading " | " setting, i.e. a null set
-dnl                                  of libraries) or in the dl library itself.
+dnl                                  example, the Socket package offers the
+dnl                                  setting " | -lsocket | -lsocket -lnsl "
+dnl                                  as the socket() function may be available
+dnl                                  in the default libraries (no additional
+dnl                                  library is required - hence the leading
+dnl                                  " | " setting, i.e. a null list); in the
+dnl                                  socket library itself; or the socket 
+dnl                                  library may also depend on libnsl.
 dnl       with_<Lib>_prq             Space separated list of pre-requisites
 dnl                                  of the library package <Lib>.
 dnl       with_<Lib>_tstcd           Code with which to test that the external
