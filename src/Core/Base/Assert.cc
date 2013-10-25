@@ -13,6 +13,7 @@
 #include "Ravl/config.h"
 #include "Ravl/Assert.hh"
 #include "Ravl/String.hh"
+#include "Ravl/SysLog.hh"
 
 // Do some sanity checking.
 
@@ -159,7 +160,7 @@ namespace RavlN {
     *ptr = 1;// Cause a segfault.
   }
 
-  //: Call when program encounters an a unexpected occurance.
+  //: Call when program encounters an a unexpected occurrence.
   // this prints the message and continues.
   
   void IssueWarning(const char *file,int lineNo,const char *msg ...) {
@@ -173,14 +174,14 @@ namespace RavlN {
     int x = vsprintf(buff,msg,args);
 #endif
     if(x > (formSize - 256)) 
-      std::cerr << "OStreamC::form(...), WARNING: Ouput string is near or over buffer length. \n";
+      std::cerr << "OStreamC::form(...), WARNING: Output string is near or over buffer length. \n";
     std::cerr << buff << "\n";
     va_end(args);
   }
 
   //: Call when program encounters an error.
   // This will either cause the program to trap to the debugger
-  // or thow an 'ExceptionAssertionFailedC'
+  // or throw an 'ExceptionAssertionFailedC'
   
   void IssueError(const char *file,int lineNo,const StringC &str) {
     std::cerr << "ERROR " << file << ":" << lineNo << " :" << str << "\n";
@@ -200,7 +201,7 @@ namespace RavlN {
     *ptr = 1;// Cause a segfault.    
   }
   
-  //: Call when program encounters an a unexpected occurance.
+  //: Call when program encounters an a unexpected occurrence.
   // this prints the message and continues.
   
   void IssueWarning(const char *file,int lineNo,const StringC &str) {
