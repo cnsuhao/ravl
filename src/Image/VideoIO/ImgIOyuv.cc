@@ -199,6 +199,11 @@ namespace RavlImageN {
   // Returns false if can't.
   
   bool DPOImageYUVBodyC::Put(const ImageC<ByteYUVValueC> &Img) {
+    // temporary hack: should match yuvFormat.cc:YUVSize()
+    if ((Img.Frame() == Index2dC( 576, 720)) ||
+        (Img.Frame() == Index2dC(1080,1920)))
+      rect = Img.Frame();
+
     const IntT rows = rect.Rows();
     const IntT cols = rect.Cols();
     if(!strm.good())
