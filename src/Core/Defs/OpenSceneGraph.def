@@ -1,0 +1,19 @@
+ifndef OSG_DEF
+
+  OSG_DEF = 1
+
+  EXELIB := -lOpenThreads -losg -losgAnimation -losgDB -losgFX -losgGA \
+   -losgManipulator -losgParticle -losgShadow -losgSim -losgTerrain -losgText \
+   -losgUtil -losgViewer -losgVolume -losgWidget
+
+ifdef OSG_HOME
+
+    INCLUDES += -I$(OSG_HOME)/include
+
+    EXELIB := -Wl,-rpath,$(OSG_HOME)/lib -L$(OSG_HOME)/lib $(EXELIB)
+
+endif
+
+  USERCFLAGS += -pthread -fPIC
+
+endif 
