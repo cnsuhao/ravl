@@ -16,6 +16,8 @@ MAINS =
 
 PLIB = RavlCore
 
+SUMMARY_LIB=Ravl
+
 LIBDEPS = RavlQueue.def
 
 HEADERS = PriQueue.hh PriQueueL.hh HeapNode.hh BlkQueue.hh FixedQueue.hh

@@ -49,6 +49,8 @@ SOURCES= DesignClassifierSupervised.cc \
 
 PLIB = RavlPatternRec
 
+SUMMARY_LIB=Ravl
+
 TESTEXES=testClassifier.cc testClassifierXMLFactory.cc testClassifierOneAgainstAll.cc
 # exNeuralNetwork.cc
 

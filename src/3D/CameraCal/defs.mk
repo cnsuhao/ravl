@@ -10,5 +10,6 @@ PACKAGE=Ravl/3D
 HEADERS=PinholeCamera.hh PinholeCamera0.hh PinholeCamera1.hh PinholeCamera2.hh PinholeCamera3.hh PinholeCameraArray.hh
 SOURCES=PinholeCamera0.cc PinholeCamera1.cc PinholeCamera2.cc PinholeCamera3.cc PinholeCameraArray.cc
 PLIB=RavlCameraCal
+SUMMARY_LIB=Ravl
 USESLIBS= RavlCore RavlImage RavlMath
 EHT=Ravl.API.3D.Camera_Calibration.html

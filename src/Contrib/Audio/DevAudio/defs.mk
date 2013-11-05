@@ -20,6 +20,8 @@ MUSTLINK = RavlDevAudio.cc
 
 PLIB = RavlDevAudio
 
+SUMMARY_LIB=Ravl
+
 USESLIBS=RavlIO RavlAudioUtil RavlOSIO RavlAudioIO
 
 EHT = Audio_IO.html

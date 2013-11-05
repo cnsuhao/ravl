@@ -20,6 +20,8 @@ SOURCES=Classifier.cc DesignClassifierUnsupervised.cc ClassifierNearestNeighbour
 
 PLIB=RavlPatternRec
 
+SUMMARY_LIB=Ravl
+
 LIBDEPS=RavlPatternRecCluster.def
 
 USESLIBS=RavlPatternRec

@@ -28,6 +28,8 @@ MAINS = exOptimise.cc exOptimiseParticleSwarm.cc
 
 PLIB = 	Optimisation
 
+SUMMARY_LIB=Ravl
+
 USESLIBS = RavlCore RavlDataSet RavlPlot
 
 PROGLIBS = RavlPatternRec RavlGnuPlot.opt

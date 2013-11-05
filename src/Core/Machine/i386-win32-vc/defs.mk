@@ -14,6 +14,4 @@ SUPPORT_ONLY=VCPP
 
 HEADERS=Atomic.hh
 
-PLIB=RavlCore
-
 USESLIBS=

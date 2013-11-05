@@ -9,6 +9,8 @@ SOURCES = gaml.c pctb.c pctbn.c pctg.c pctgn.c pctn.c qbeta.c qbnc.c qgama.c qgn
 
 PLIB = ccmath
 
+SUMMARY_LIB=Ravl
+
 LIBDEPS=ccmath_statf.def
 
 USESLIBS=ccmath

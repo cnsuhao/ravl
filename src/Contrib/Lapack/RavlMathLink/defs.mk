@@ -16,6 +16,8 @@ MUSTLINK = linkLAHooksLAPACK.cc
 
 PLIB=RavlLapack
 
+SUMMARY_LIB=Ravl
+
 USESLIBS = RavlMath RavlLapackWraps
 
 PROGLIBS=RavlOS

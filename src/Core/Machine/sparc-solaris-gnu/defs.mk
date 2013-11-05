@@ -16,6 +16,4 @@ SUPPORT_ONLY=sol2
 
 HEADERS=Atomic.hh
 
-PLIB=RavlCore
-
 USESLIBS=

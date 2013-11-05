@@ -15,6 +15,8 @@ HEADERS=FPoint.hh FLinePP.hh Point4d.hh FAffine.hh
 
 PLIB=RavlMath
 
+SUMMARY_LIB=Ravl
+
 EXAMPLES = exFAffine.cc
 
 LIBDEPS=RavlGeom.def

@@ -45,6 +45,8 @@ MUSTLINK= linkCoreIO.cc
 
 PLIB=RavlIO
 
+SUMMARY_LIB=Ravl
+
 USESLIBS=RavlCore
 
 TESTEXES= testDataProc.cc

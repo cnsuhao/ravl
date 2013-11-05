@@ -32,6 +32,8 @@ HEADERS =  FaceInfo.hh Enrol.hh EnrolSession.hh Expert.hh Score.hh \
 
 PLIB    = RavlFace
 
+SUMMARY_LIB = Ravl
+
 LIBDEPS= 
 
 USESLIBS=RavlMath RavlImageProc RavlCore RavlIO RavlImage RavlOS \

@@ -16,6 +16,8 @@ SOURCES=Date.cc DateIO.cc DeadLineTimer.cc DateRange.cc
 
 PLIB=RavlOS
 
+SUMMARY_LIB=Ravl
+
 USESLIBS=RavlCore 
 
 TESTEXES= testDate.cc testDeadLineTimer.cc

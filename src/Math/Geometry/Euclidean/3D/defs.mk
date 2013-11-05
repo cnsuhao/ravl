@@ -19,6 +19,8 @@ SOURCES= LinePP3d.cc  LinePV3d.cc  PlaneABCD3d.cc  PlanePVV3d.cc \
 
 PLIB=RavlMath
 
+SUMMARY_LIB=Ravl
+
 LIBDEPS=RavlMath3D.def
 
 USESLIBS=RavlMath

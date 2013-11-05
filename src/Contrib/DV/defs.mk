@@ -22,6 +22,8 @@ SOURCES=ImgIODv.cc DvDecode.cc DvIFormat.cc DvFrameConvert.cc
 
 PLIB=RavlDV
 
+SUMMARY_LIB=Ravl
+
 AUXDIR=lib$(PROJECT_DIR)/libdep
 
 AUXFILES= LibDV.def

@@ -15,6 +15,8 @@ SOURCES=Compress.cc
 
 PLIB=RavlZLib
 
+SUMMARY_LIB=Ravl
+
 USESLIBS=RavlCore zlib
 
 TESTEXES=testCompress.cc

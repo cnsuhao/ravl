@@ -19,6 +19,8 @@ SOURCES= PixelMap.cc PixelMapSearch.cc PCPixel.cc PCPixelList.cc \
 
 PLIB=RavlImageProc
 
+SUMMARY_LIB=Ravl
+
 LIBDEPS=RavlImageProcHT.def
 
 USESLIBS=RavlImageProc 

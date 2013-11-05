@@ -15,6 +15,8 @@ LIBDEPS = RavlImageGabor.def
 
 PLIB = RavlImageProc
 
+SUMMARY_LIB=Ravl
+
 USESLIBS=  RavlImageProc
 
 PROGLIBS = RavlDPDisplay.opt RavlExtImgIO.opt

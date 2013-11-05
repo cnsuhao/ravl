@@ -17,6 +17,8 @@ SOURCES=UnixStreamIO.cc WinStreamIO.cc
 
 PLIB=RavlOS
 
+SUMMARY_LIB=Ravl
+
 EHT= Ravl.API.OS.Hardware.html
 
 USESLIBS=RavlCore RavlIO

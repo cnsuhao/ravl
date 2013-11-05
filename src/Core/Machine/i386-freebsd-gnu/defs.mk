@@ -14,6 +14,4 @@ SUPPORT_ONLY=freebsd_x86
 
 HEADERS=Atomic.hh mmx.hh
 
-PLIB=RavlCore
-
 USESLIBS=

@@ -14,6 +14,4 @@ SUPPORT_ONLY=macosx32 macosx64
 
 HEADERS=Atomic.hh mmx.hh
 
-PLIB=RavlCore
-
 USESLIBS=

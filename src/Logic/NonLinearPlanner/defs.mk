@@ -21,6 +21,8 @@ TESTEXES=testNonLinearPlanner.cc
 
 PLIB=RavlLogicNLP
 
+SUMMARY_LIB=Ravl
+
 USESLIBS=RavlLogic
 
 EXAMPLES= exNonlinearPlanner.cc

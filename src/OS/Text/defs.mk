@@ -30,6 +30,8 @@ TESTEXES = testTextFile.cc testTC.cc
 
 PLIB=RavlOS
 
+SUMMARY_LIB=Ravl
+
 LIBDEPS=RavlOSText.def
 
 USESLIBS=RavlOS RavlCore

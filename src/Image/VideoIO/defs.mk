@@ -28,6 +28,8 @@ MUSTLINK = linkRavlVidIO.cc
 
 PLIB = RavlVideoIO
 
+SUMMARY_LIB=Ravl
+
 EXAMPLES = exImgSeq.cc
 
 USESLIBS = RavlImageIO RavlOSIO

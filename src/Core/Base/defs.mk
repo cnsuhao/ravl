@@ -40,6 +40,8 @@ SOURCES=Assert.cc Exception.cc EntryPnt.cc Index.cc String.cc \
 
 PLIB=RavlCore
 
+SUMMARY_LIB=Ravl
+
 MUSTLINK=atexit.cc
 
 USESLIBS=None

@@ -22,6 +22,8 @@ MUSTLINK= URLIO.cc
 
 PLIB= RavlURLIO
 
+SUMMARY_LIB=Ravl
+
 USESLIBS=RavlCore RavlIO RavlOS RavlThreads libcurl
 
 AUXFILES= libcurl.def

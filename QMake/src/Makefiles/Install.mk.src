@@ -89,7 +89,7 @@ install-strip:
 	$(MAKE) STRIP_SWITCH="-s" install
 
 # Install development libraries and headers
-insDev: insLibs insHdrs
+insDev: insLibs insDefs insHdrs
 #JFi: To Do - insDevDoc
 
 
@@ -97,7 +97,7 @@ insDev: insLibs insHdrs
 uninstall: uinsConfig uinsMains uinsScripts uinsData uinsAux
 
 # Uninstall development libraries and headers
-uinsDev: uinsLibs uinsHdrs
+uinsDev: uinsLibs uinsDefs uinsHdrs
 
 
 
@@ -284,6 +284,44 @@ uinsData:
             done ;\
          fi
 
+insDefs:
+	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(PLIB)" != X ] && [ X$(LIBDEPS) = X ] ;\
+         then \
+            if [ X$(QMAKE_INFO) != X ] ;\
+            then \
+               echo $(INSTALL) $(INSTALLHOME)/lib/libdep/$(PLIB).def $(ABS_DESTDIR)$(datadir)/QMake/Projects/$(PROJECT_DIR)/libdep/$(PLIB).def ; \
+            fi ;\
+            $(INSTALL) $(INSTALLHOME)/lib/libdep/$(PLIB).def $(ABS_DESTDIR)$(datadir)/QMake/Projects/$(PROJECT_DIR)/libdep/$(PLIB).def ; \
+         fi
+#        Install .def file for the current PLIB (do not bother if we are in
+#        a second directory that feeds into a particular library - i.e. if
+#        LIBDEPS is set). Ideally we would do this as part of insLibs, but 
+#        we cannot owing to limitations from Ravl not setting PROJECT_NAME
+#        which we get around by calling insDefs with a PROJECT_DIR=Ravl if
+#        we are installing Ravl.
+
+uinsDefs:
+	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(PLIB)" != X ] && [ X$(LIBDEPS) = X ] ;\
+         then \
+            if [ -f $(ABS_DESTDIR)$(datadir)/QMake/Projects/$(PROJECT_DIR)/libdep/$(PLIB).def ] ; \
+            then \
+               if [ X$(QMAKE_INFO) != X ] ;\
+               then \
+                  echo $(RM) -f $(ABS_DESTDIR)$(datadir)/QMake/Projects/$(PROJECT_DIR)/libdep/$(PLIB).def  ;\
+               fi ;\
+               $(RM) -f $(ABS_DESTDIR)$(datadir)/QMake/Projects/$(PROJECT_DIR)/libdep/$(PLIB).def  ;\
+            fi ;\
+         fi
+#        Un-install the def files for the current PLIB. Again we check LIBDEPS
+#        to minimise the deletion attempts for libraries constructed from
+#        multiple directories. Unlike the install, you would not want to
+#        automatically delete the .def files when you remove the library as you
+#        may still have an alternative version of the library installed (be that
+#        the version with a different VAR setting or shared opposed to static).
+#        The same Ravl limitations as for the install also apply to unistall,
+#        plus, you do not want to uninstall the .def files for the Ravl "multi"
+#        libs if you want to use existing code with the Ravl single library.
+
 insEgs: 
 	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(EXAMPLES)" != X ] ;\
          then \
@@ -434,7 +472,7 @@ uinsHdrs:
          fi
 
 insLibs: 
-	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(PLIB)" != X ] ;\
+	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(PLIB)" != X ] && [ X$(LIBDEPS) = X ] ;\
          then \
             if [ ! -d $(ABS_DESTDIR)$(DEBUG_DEST)$(libdir) ] ;\
             then \
@@ -528,7 +566,7 @@ insLibs:
 #        $(DEBUG_DEST) is set to $(libdir)/debug whenever VAR=debug.
 
 uinsLibs:
-	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(PLIB)" != X ] ;\
+	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(PLIB)" != X ] && [ X$(LIBDEPS) = X ] ;\
          then \
             for f in $(PLIB) ;\
             do \

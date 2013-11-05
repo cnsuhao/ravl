@@ -15,6 +15,8 @@ SOURCES=IksemelConnection.cc
 
 PLIB=RavlXMPPIksemel
 
+SUMMARY_LIB=Ravl
+
 MAINS= testIksemel.cc
 
 USESLIBS=RavlOS iksemel RavlXMPP

@@ -22,6 +22,8 @@ SOURCES=LiteralIndexBase.cc LiteralIndexElement.cc LiteralIndexLeaf.cc \
 
 PLIB=RavlLogic
 
+SUMMARY_LIB=Ravl
+
 LIBDEPS=RavlLogicIndex.def
 
 USESLIBS=RavlLogic

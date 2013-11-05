@@ -21,4 +21,6 @@ SOURCES = floatfann.c
 
 PLIB = fann
 
+SUMMARY_LIB=Ravl
+
 USESLIBS=RavlCore 

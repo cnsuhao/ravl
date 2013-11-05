@@ -18,6 +18,8 @@ LOCALHEADERS = LMSRegressionEngine.hh
 
 PLIB = RavlImageProc
 
+SUMMARY_LIB=Ravl
+
 LIBDEPS=RavlImageLMSMotion.def
 
 USESLIBS = RavlCore RavlIO RavlImage RavlImageProc RavlMath

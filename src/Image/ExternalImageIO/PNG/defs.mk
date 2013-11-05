@@ -16,6 +16,8 @@ DONOT_SUPPORT=cygwin arm
 
 PLIB = RavlExtImgIO
 
+SUMMARY_LIB=Ravl
+
 LIBDEPS = RavlPNG.def
 
 HEADERS = ImgIOPNG.hh ImgIOPNGB.hh PNGFormat.hh

@@ -16,6 +16,8 @@ DONOT_SUPPORT=cygwin arm
 
 PLIB = RavlExtImgIO
 
+SUMMARY_LIB=Ravl
+
 LIBDEPS= RavlJPEG.def
 
 HEADERS = ImgIOJPeg.hh ImgIOJPegB.hh JPEGFormat.hh CompressedImageJPEG.hh

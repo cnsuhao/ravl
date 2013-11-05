@@ -17,6 +17,8 @@ MUSTLINK= LinkGeneticOptmiseClassifierDesign.cc
 
 PLIB = RavlGeneticPatternRec
 
+SUMMARY_LIB=Ravl
+
 USESLIBS=RavlPatternRec  RavlGeneticOptimisation RavlPatternRecClassifier 
 
 MAINS= doGeneticPatternRec.cc

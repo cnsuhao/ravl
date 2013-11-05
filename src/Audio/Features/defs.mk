@@ -20,6 +20,8 @@ SOURCES=MelSpectrum.cc MelCepstrum.cc PreEmphasis.cc FeatureMFCC.cc VectorDelta0
 
 PLIB=RavlAudioFeatures
 
+SUMMARY_LIB=Ravl
+
 USESLIBS=RavlAudioUtil RavlMath RavlOS RavlAudioIO
 
 TESTEXES=testAudioFeatures.cc

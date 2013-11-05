@@ -16,6 +16,8 @@ SOURCES= OSProcess.cc ChildOSProcess.cc ChildOSProcessWait.cc \
 
 PLIB=RavlOS
 
+SUMMARY_LIB=Ravl
+
 USESLIBS=RavlOS RavlCore
 
 LIBDEPS=RavlOSExec.def

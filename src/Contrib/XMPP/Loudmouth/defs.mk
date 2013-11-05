@@ -17,6 +17,8 @@ MAINS= exLoudmouth.cc
 
 PLIB=RavlXMPPLoudmouth
 
+SUMMARY_LIB=Ravl
+
 USESLIBS=RavlXMPP RavlCore Loudmouth RavlOS RavlThreads RavlXMLFactory
 
 PROGLIBS=

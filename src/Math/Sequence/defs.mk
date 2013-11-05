@@ -24,6 +24,8 @@ EXAMPLES = exPrimiteBinaryPolynomial.cc testSquareIterFill.cc exThinPlateSpline1
 
 PLIB=RavlMath
 
+SUMMARY_LIB=Ravl
+
 LIBDEPS=RavlMathSequence.def
 
 USESLIBS=RavlMath

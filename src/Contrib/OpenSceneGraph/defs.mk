@@ -28,6 +28,8 @@ SOURCES=Drawable.cc Sphere.cc Image.cc ImageByteRGBA.cc ImageByteRGB.cc Text.cc 
 
 PLIB=RavlGUIOpenSceneGraph
 
+SUMMARY_LIB=Ravl
+
 MAINS=exOpenSceneGraphWidgetXML.cc
 
 MUSTLINK=MustLinkGtkGlExtInit.cc

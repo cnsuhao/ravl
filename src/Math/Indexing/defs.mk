@@ -20,6 +20,8 @@ MAINS = testVectorIndex.cc
 
 PLIB = RavlMath
 
+SUMMARY_LIB=Ravl
+
 LIBDEPS=RavlMathVectorIndex.def
 
 USESLIBS=  RavlCore RavlMath

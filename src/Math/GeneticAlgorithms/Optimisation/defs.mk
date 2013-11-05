@@ -34,6 +34,8 @@ MUSTLINK=LinkGeneticOpt.cc
 
 PLIB=RavlGeneticOptimisation
 
+SUMMARY_LIB=Ravl
+
 USESLIBS=RavlOS RavlIO RavlXMLFactory RavlService RavlThreads
 
 PROGLIBS= RavlGeneticProgram 

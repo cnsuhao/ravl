@@ -19,6 +19,8 @@ SOURCES=RealHistogram1d.cc RealHistogram2d.cc RealHistogram3d.cc \
 
 PLIB=RavlMath
 
+SUMMARY_LIB=Ravl
+
 LIBDEPS=RavlMathHistogram.def
 
 USESLIBS=RavlMath

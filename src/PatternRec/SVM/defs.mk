@@ -50,6 +50,8 @@ HEADERS  = DesignSvm.hh \
 
 PLIB     = RavlSVM
 
+SUMMARY_LIB=Ravl
+
 USESLIBS = RavlCore \
            RavlPatternRec 
 

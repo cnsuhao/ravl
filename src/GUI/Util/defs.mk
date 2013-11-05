@@ -16,6 +16,8 @@ SOURCES=AttributeEditor.cc AttributeEditorWindow.cc ThumbNailTimeLine.cc EventTi
 
 PLIB=RavlGUIUtil
 
+SUMMARY_LIB=Ravl
+
 USESLIBS=RavlGUI RavlCore RavlIO RavlGUI2D GTK
 
 EXAMPLES= exAttributeEditor.cc

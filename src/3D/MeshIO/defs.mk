@@ -21,6 +21,8 @@ MUSTLINK= RavlMeshIO.cc
 
 PLIB=Ravl3DIO
 
+SUMMARY_LIB=Ravl
+
 USESLIBS=Ravl3D RavlIO RavlOS
 
 EHT= Ravl.API.3D.IO.html

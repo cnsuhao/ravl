@@ -45,6 +45,8 @@ BISON_DO_NOT_GENERATE = 1
 
 PLIB = RavlCxxDoc
 
+SUMMARY_LIB=Ravl
+
 MAINS = CxxDoc.cc 
 
 EHT= Ravl.API.Source_Tools.CxxDoc.html Documentation.html \

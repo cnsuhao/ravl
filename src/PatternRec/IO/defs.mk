@@ -21,4 +21,6 @@ MUSTLINK= RavlPatternRecIO.cc
 
 PLIB= RavlPatternRecIO
 
+SUMMARY_LIB=Ravl
+
 USESLIBS=RavlCore RavlIO RavlPatternRec

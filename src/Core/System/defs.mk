@@ -27,6 +27,8 @@ SOURCES=StringList.cc Option.cc TypeName.cc BufStream.cc \
 
 PLIB=RavlCore
 
+SUMMARY_LIB=Ravl
+
 LIBDEPS=RavlSys.def
 
 USESLIBS=RavlCore

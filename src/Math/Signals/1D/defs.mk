@@ -17,6 +17,8 @@ SOURCES= FFT1d.cc PowerSpectrum1d.cc Correlation1d.cc RealCepstral.cc \
 
 PLIB = RavlMath
 
+SUMMARY_LIB=Ravl
+
 LIBDEPS=RavlSignal1.def
 
 MUSTLINK=LinkRavlSignal1.cc

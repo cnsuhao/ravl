@@ -13,4 +13,6 @@ HEADERS = ShotBoundHistInt.hh
 
 PLIB = RavlVideo
 
+SUMMARY_LIB=Ravl
+
 USESLIBS=  RavlCore RavlImage

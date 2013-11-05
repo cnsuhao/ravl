@@ -41,6 +41,8 @@ EHT = Ravl.API.Source_Tools.Code_Manager.html
 
 PLIB = RavlSourceTools
 
+SUMMARY_LIB=Ravl
+
 USESLIBS= RavlCore RavlOS
 #TextProc MstdIO system Msys MSArr1 Hash1d MstdList MRefC Mlist Mtuple
 

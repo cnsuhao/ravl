@@ -29,6 +29,8 @@ MUSTLINK = RavlSysNetworkML.cc
 
 PLIB = RavlNet
 
+SUMMARY_LIB=Ravl
+
 EHT=Ravl.API.OS.Network.html Ravl.API.OS.Network.NetPort.html
 
 EXAMPLES = exSocket.cc exEndPoint.cc exNetPort.cc

@@ -17,4 +17,6 @@ TESTEXES = test_kalman.cc
 
 PLIB=RavlKalmanFilter
 
+SUMMARY_LIB=Ravl
+
 USESLIBS=RavlCore  RavlPatternRec

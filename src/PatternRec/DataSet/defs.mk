@@ -35,6 +35,8 @@ MAINS = doDataSet.cc exPlotTestFunctions.cc
 
 PLIB = RavlDataSet
 
+SUMMARY_LIB=Ravl
+
 EXAMPLES = exSample.cc exSampleStream.cc 
 
 TESTEXES=testDataSet.cc testDataSetXMLFactory.cc

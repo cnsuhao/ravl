@@ -17,6 +17,8 @@ SOURCES=DPDisplayView3d.cc DPWindow3d.cc DPWindow3dOPort.cc DPWindow3dFormat.cc 
 
 PLIB=RavlDPDisplay3d
 
+SUMMARY_LIB=Ravl
+
 MUSTLINK= linkRavlDPDisplay3d.cc
 
 USESLIBS=RavlIO RavlGUI RavlImageIO RavlGUI3D Ravl3DIO Ravl3D RavlImage

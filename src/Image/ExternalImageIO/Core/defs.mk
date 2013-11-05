@@ -14,6 +14,8 @@ DONOT_SUPPORT=cygwin arm
 
 PLIB = RavlExtImgIO
 
+SUMMARY_LIB=Ravl
+
 HEADERS = ExtImgIO.hh 
 
 MUSTLINK =  ExtImgIO.cc

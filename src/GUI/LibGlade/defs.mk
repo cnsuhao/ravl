@@ -16,6 +16,8 @@ SOURCES= GladeWidget.cc GladeXML.cc GladeWindow.cc
 
 PLIB= RavlLibGlade
 
+SUMMARY_LIB=Ravl
+
 USESLIBS= RavlGUI RavlXMLFactory libglade
 
 AUXFILES= exlibgladecustommain.glade  exlibgladecustomwidget.glade  exlibglade.glade

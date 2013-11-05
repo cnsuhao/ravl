@@ -18,6 +18,8 @@ SOURCES = DLink.cc DList.cc
 
 PLIB=RavlCore
 
+SUMMARY_LIB=Ravl
+
 LIBDEPS=RavlList.def
 
 USESLIBS = RavlCore

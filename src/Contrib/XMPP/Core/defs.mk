@@ -15,4 +15,6 @@ SOURCES=XMPPConnection.cc
 
 PLIB=RavlXMPP
 
+SUMMARY_LIB=Ravl
+
 USESLIBS=RavlOS RavlThreads RavlRLog

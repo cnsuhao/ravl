@@ -15,6 +15,12 @@ HEADERS=BinaryTree.hh AVLTree.hh BinaryTreeUpIter.hh BinaryTreeDownIter.hh \
 
 PLIB=RavlCore
 
+LIBDEPS=RavlTree.def
+
+USESLIBS=RavlCore
+
+SUMMARY_LIB=Ravl
+
 EXAMPLES=exAVLTree.cc exBinaryTree.cc
 
 TESTEXES=testBinaryTree.cc testHashTree.cc

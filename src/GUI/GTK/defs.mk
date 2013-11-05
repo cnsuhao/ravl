@@ -65,6 +65,8 @@ EXAMPLES = exButton.cc exMenu.cc exCList.cc exList.cc \
 
 PLIB = RavlGUI
 
+SUMMARY_LIB=Ravl
+
 MUSTLINK=LinkRavlGUI.cc
 
 REQUIRES=libGTK2

@@ -47,6 +47,8 @@ SOURCES = DObject3D.cc  DLight3D.cc \
 
 PLIB = RavlGUI3D
 
+SUMMARY_LIB=Ravl
+
 EXAMPLES = exCanvas3D.cc exView3D.cc exDTexTriMesh3d.cc
 
 USESLIBS = RavlCore RavlGeom RavlGUI OpenGL Ravl3D x11 GTK RavlImage GLUT

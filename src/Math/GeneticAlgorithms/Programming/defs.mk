@@ -29,6 +29,8 @@ MUSTLINK=LinkGeneticProgram.cc
 
 PLIB=RavlGeneticProgram
 
+SUMMARY_LIB=Ravl
+
 USESLIBS=RavlOS RavlGeneticOptimisation
 
 #TESTEXES=testGeneticProgram.cc

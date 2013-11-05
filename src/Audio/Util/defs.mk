@@ -16,6 +16,8 @@ SOURCES=AudioIO.cc WindowSignal.cc  Segment.cc Transcription.cc \
 
 PLIB=RavlAudioUtil
 
+SUMMARY_LIB=Ravl
+
 MUSTLINK= linkRavlAudioUtil.cc
 
 USESLIBS=RavlIO RavlOSIO RavlXMLFactory

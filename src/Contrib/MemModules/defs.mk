@@ -6,6 +6,8 @@ SOURCES = MemModule.cc MemModules.cc MemItem.cc \
           MemUnit.cc MemIter.cc 
 
 PLIB = RavlMemModules
+
+SUMMARY_LIB=Ravl
  
 USESLIBS=  RavlCore RavlImage RavlOS RavlThreads RavlImageIO
 

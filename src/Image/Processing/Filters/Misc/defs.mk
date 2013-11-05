@@ -25,6 +25,8 @@ LIBDEPS=RavlImageMisc.def
 
 PLIB=RavlImageProc
 
+SUMMARY_LIB=Ravl
+
 USESLIBS=RavlImageProc
 
 PROGLIBS=RavlIO RavlImageIO RavlExtImgIO.opt RavlOSIO RavlOptimise  RavlThreads RavlDPDisplay.opt DynLink

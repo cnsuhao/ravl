@@ -35,6 +35,8 @@ EHT= Ravl.API.Math.Linear_Algebra.Smart_Matrix.html Decomposition.html
 
 PLIB=RavlMath
 
+SUMMARY_LIB=Ravl
+
 USESLIBS=RavlCore ccmath RavlI386SSE.opt RavlIO RavlOSIO RavlXMLFactory
 
 PROGLIBS=RavlOS

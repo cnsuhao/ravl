@@ -17,8 +17,8 @@ export TARGET
 VPATH = $(QCWD)
 
 ifdef USERBUILD
- ifneq ($(USESLIBS),None)
-  USESLIBS += Auto
+ ifndef USESLIBS
+  USESLIBS = Auto
  endif
  USE_LIBPATHSWITCH=Y
 endif
@@ -104,7 +104,7 @@ ifeq ($(SUPPORT_OK),yes)
   ifneq ($(USESLIBS),)
    ifneq ($(USESLIBS),None)
     ifneq ($(filter Auto,$(USESLIBS)),)
-     AUTOUSELIBS := Ravl.def
+     AUTOUSELIBS := $(shell $(QLIBS) -use -d -p $(ROOTDIR))
      EXTRA_USESLIBS = $(AUTOUSELIBS) $(filter-out Auto,$(USESLIBS))
      ifdef LIBDEPS
       ifdef PLIB
@@ -171,7 +171,7 @@ $(OPTIONAL_PROGLIBS) : $(INST_LIB)/.dir
 
   ifneq ($(filter Auto,$(USESLIBS)),)
    ifneq ($(strip $(MAINS) $(TESTEXES)),)
-    AUTOPROGLIBS := Ravl.def
+    AUTOPROGLIBS := $(shell $(QLIBS) -use -d -p $(ROOTDIR))
     ifdef LIBDEPS
      AUTOPROGLIBS := $(filter-out $(LIBDEPS),$(AUTOPROGLIBS))
     endif
@@ -1122,6 +1122,12 @@ endif
 # an extra ifeq to be added to the file, so the lines inside that ifeq then need
 # to be indented by an extra couple of characters)
 
+ifdef SUMMARY_LIB
+ SUMMARY_INDENT:='  '
+endif
+# As per REQUIRES_INDENT, this indents the content in a .def but if SUMMARY_LIB
+# is set.
+
 ifdef LOCAL_DEFBASE
  ifdef USESLIBS
   ifeq ($(filter Auto,$(USESLIBS)),)
@@ -1145,26 +1151,29 @@ ifdef LOCAL_DEFBASE
 	$(SHOWIT)echo '  ifeq ($$(strip $$(filter-out $$(RESOURCES),$(REQUIRES))),)' >> $(INST_LIBDEF)/$(@F) ; \
 	echo >> $(INST_LIBDEF)/$(@F)
   endif	
+  ifdef SUMMARY_LIB
+	$(SHOWIT)echo '$(REQUIRES_INDENT)  ifneq ($$(USE_SINGLE_$(SUMMARY_LIB)),1) ' >> $(INST_LIBDEF)/$(@F) ;
+  endif
   ifdef USESLIBS
    ifneq ($(USESLIBS),)
     ifneq ($(USESLIBS),None)
      ifeq ($(filter Auto,$(USESLIBS)),)
       ifneq ($(strip $(TARG_USESLIBS_R)),)
-	$(SHOWIT)echo '$(REQUIRES_INDENT)  include $(TARG_USESLIBS_R)' >> $(INST_LIBDEF)/$(@F) ; \
+	$(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  include $(TARG_USESLIBS_R)' >> $(INST_LIBDEF)/$(@F) ; \
 	echo >> $(INST_LIBDEF)/$(@F)
       endif
       ifneq ($(strip $(TARG_USESLIBS_O)),)
-	$(SHOWIT)echo '$(REQUIRES_INDENT)  -include $(TARG_USESLIBS_O)' >> $(INST_LIBDEF)/$(@F) ; \
+	$(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  -include $(TARG_USESLIBS_O)' >> $(INST_LIBDEF)/$(@F) ; \
 	echo >> $(INST_LIBDEF)/$(@F)
       endif
      else
       ifneq ($(strip $(AUTOUSELIBS)),)
        ifneq ($(strip $(EXTRA_USESLIBS_R)),)
-	$(SHOWIT)echo '$(REQUIRES_INDENT)  include $(EXTRA_USESLIBS_R)' >> $(INST_LIBDEF)/$(@F) ; \
+	$(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  include $(EXTRA_USESLIBS_R)' >> $(INST_LIBDEF)/$(@F) ; \
 	echo >> $(INST_LIBDEF)/$(@F)
        endif
        ifneq ($(strip $(EXTRA_USESLIBS_O)),)
-	$(SHOWIT)echo '$(REQUIRES_INDENT)  -include $(EXTRA_USESLIBS_O)' >> $(INST_LIBDEF)/$(@F) ; \
+	$(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  -include $(EXTRA_USESLIBS_O)' >> $(INST_LIBDEF)/$(@F) ; \
 	echo >> $(INST_LIBDEF)/$(@F)
        endif
       endif
@@ -1172,32 +1181,39 @@ ifdef LOCAL_DEFBASE
     endif
    endif
   endif
-	$(SHOWIT)echo '$(REQUIRES_INDENT)  PLIBDEPENDS += $(PLIB)' >> $(INST_LIBDEF)/$(@F) ; \
+	$(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  PLIBDEPENDS += $(PLIB)' >> $(INST_LIBDEF)/$(@F) ; \
 	echo >> $(INST_LIBDEF)/$(@F)
   ifdef PLIB
    ifndef LIBDEPS
-	$(SHOWIT)echo '$(REQUIRES_INDENT)  EXELIB := -l$(PLIB) $$(EXELIB)' >> $(INST_LIBDEF)/$(@F) ; \
+	$(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  EXELIB := -l$(PLIB) $$(EXELIB)' >> $(INST_LIBDEF)/$(@F) ; \
 	echo >> $(INST_LIBDEF)/$(@F)
    endif
   endif
   ifdef MUSTLINK
-	$(SHOWIT)echo '$(REQUIRES_INDENT)  EXELIB := $(MLOBJPATH) $$(EXELIB)' >> $(INST_LIBDEF)/$(@F) ; \
+	$(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  EXELIB := $(MLOBJPATH) $$(EXELIB)' >> $(INST_LIBDEF)/$(@F) ; \
 	echo >> $(INST_LIBDEF)/$(@F)
   endif
   ifdef USES_PKGCONFIG_EXELIB
-	$(SHOWIT)echo 'EXELIB := $(USES_PKGCONFIG_EXELIB)  $$(EXELIB)' >> $(INST_LIBDEF)/$(@F) ;
-	$(SHOWIT)echo 'INCLUDES += $(USES_PKGCONFIG_INCLUDES) ' >> $(INST_LIBDEF)/$(@F) ;
+	$(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  EXELIB := $(USES_PKGCONFIG_EXELIB)  $$(EXELIB)' >> $(INST_LIBDEF)/$(@F) ;
+	$(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  INCLUDES += $(USES_PKGCONFIG_INCLUDES) ' >> $(INST_LIBDEF)/$(@F) ;
   endif	
   ifdef EXTPACKAGE
-        $(SHOWIT)echo '$(REQUIRES_INDENT)  INCLUDES := -I$$(INSTALLHOME)\include\$(PACKAGE) $$(INCLUDES) ' ; \
+        $(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  INCLUDES := -I$$(INSTALLHOME)\include\$(PACKAGE) $$(INCLUDES) ' ; \
 	echo >> $(INST_LIBDEF)/$(@F) ; \
-        echo '$(REQUIRES_INDENT)  ifneq ($(BASE_VAR),none)' ; \
+        echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  ifneq ($(BASE_VAR),none)' ; \
 	echo >> $(INST_LIBDEF)/$(@F) ; \
-        echo '$(REQUIRES_INDENT)    INCLUDES := -I$$(BASE_INC)\$(PACKAGE) $$(INCLUDES)' ; \
+        echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)    INCLUDES := -I$$(BASE_INC)\$(PACKAGE) $$(INCLUDES)' ; \
 	echo >> $(INST_LIBDEF)/$(@F) ; \
-        echo '$(REQUIRES_INDENT)  endif' ; \
+        echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  endif' ; \
 	echo >> $(INST_LIBDEF)/$(@F)
   endif
+  ifdef SUMMARY_LIB
+	$(SHOWIT)echo '$(REQUIRES_INDENT)  else' >> $(INST_LIBDEF)/$(@F) ; \
+	echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  include $(SUMMARY_LIB).def' >> $(INST_LIBDEF)/$(@F) ; \
+	echo >> $(INST_LIBDEF)/$(@F) ; \
+	echo '$(REQUIRES_INDENT)  endif' >> $(INST_LIBDEF)/$(@F) ; \
+	echo >> $(INST_LIBDEF)/$(@F)
+  endif	
   ifdef REQUIRES	
 	$(SHOWIT)echo '  endif' >> $(INST_LIBDEF)/$(@F) ; \
 	echo >> $(INST_LIBDEF)/$(@F)

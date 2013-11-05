@@ -17,6 +17,8 @@ MUSTLINK=LinkRavlService.cc
 
 PLIB= RavlService
 
+SUMMARY_LIB=Ravl
+
 USESLIBS=RavlXMLFactory RavlCore RavlIO RavlThreads RavlOS
 
 PROGLIBS=

@@ -26,6 +26,8 @@ SOURCES = ViewPage.cc ControlWin.cc
 
 PLIB = MarkupTool
 
+SUMMARY_LIB=Ravl
+
 USESLIBS = RavlGUI RavlFace RavlGUI2D
 
 PROGLIBS = RavlExtImgIO RavlImgIOJasper.opt

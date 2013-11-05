@@ -26,6 +26,8 @@ SOURCES= LineABC2d.cc Curve2d.cc Curve2dLine.cc Curve2dLineFit.cc \
 
 PLIB=RavlMath
 
+SUMMARY_LIB=Ravl
+
 LIBDEPS=RavlMath2D.def
 
 USESLIBS=RavlMath

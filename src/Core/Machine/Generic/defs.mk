@@ -16,4 +16,3 @@ DONOT_SUPPORT=alpha freebsd_x86 linux linux64 macosx32 macosx64 sgi sol2 sol2_7 
 
 HEADERS=Atomic.hh
 
-PLIB=RavlCore

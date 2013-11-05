@@ -20,6 +20,8 @@ TESTEXES=testMeanCovar.cc
 
 PLIB=RavlMath
 
+SUMMARY_LIB=Ravl
+
 LIBDEPS=RavlMathMeanCov.def
 
 USESLIBS=RavlMath

@@ -16,6 +16,8 @@ SOURCES= Hash.cc
 
 PLIB=RavlCore
 
+SUMMARY_LIB=Ravl
+
 LIBDEPS=RavlHash.def
 
 USESLIBS=RavlCore

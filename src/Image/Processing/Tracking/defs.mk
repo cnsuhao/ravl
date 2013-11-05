@@ -19,6 +19,8 @@ SOURCES=PointTrack.cc PointTrackModel.cc PointTracker.cc MosaicBuilder.cc \
 
 PLIB=RavlImageProc
 
+SUMMARY_LIB=Ravl
+
 LIBDEPS=RavlImageProcTracker.def
 
 EHT= Ravl.API.Images.Tracking.html Ravl.API.Images.Mosaic.html 

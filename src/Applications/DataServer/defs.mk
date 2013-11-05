@@ -19,6 +19,8 @@ SOURCES=DataServer.cc DataServerControlInterface.cc \
 
 PLIB=RavlDataServer
 
+SUMMARY_LIB=Ravl
+
 MAINS= dsd.cc
 
 USESLIBS= RavlNet RavlOSIO 

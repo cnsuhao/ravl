@@ -18,6 +18,8 @@ SOURCES = V4L2Format.cc ImgIOV4L2.cc
 
 PLIB = RavlImgIOV4L2
 
+SUMMARY_LIB=Ravl
+
 MUSTLINK = MustLinkV4L2.cc
 
 USESLIBS = RavlImage RavlIO RavlThreads

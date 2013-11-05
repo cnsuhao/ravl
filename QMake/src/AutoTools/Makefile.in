@@ -135,6 +135,7 @@ SED_SUBSTITUTION=$(SED) \
             -e 's![@]MAKE[@]!$(MAKE)!g' \
             -e 's![@]PERL[@]!$(PERL)!g' \
 	    -e 's![@]QMAKE_CONFIGFILES[@]!$(sysconfdir)/QMake!g' \
+	    -e 's![@]QMAKE_INCLUDES[@]!$(includedir)!g' \
             -e 's![@]QMAKE_MAKEFILES[@]!$(datadir)/QMake/Makefiles!g' \
 	    -e 's![@]QMAKE_PROJECTS[@]!$(datadir)/QMake/Projects!g' \
 	    -e 's![@]QMAKE_SUPPORT[@]!$(datadir)/QMake/Support!g' \

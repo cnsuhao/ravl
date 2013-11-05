@@ -16,7 +16,5 @@ SUPPORT_ONLY=sol2
 
 HEADERS=Atomic.hh
 
-PLIB=RavlCore
-
 USESLIBS=
 #CCPPFLAGS=-Wa,-xarch=v8plus -mcpu=v9 

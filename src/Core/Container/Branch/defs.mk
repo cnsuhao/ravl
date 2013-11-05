@@ -18,6 +18,10 @@ SOURCES=BGraphBase.cc BGraphBaseIter.cc BGraphLinearIter.cc
 
 PLIB=RavlCore
 
+LIBDEPS=RavlBranch.def
+
+SUMMARY_LIB=Ravl
+
 TESTEXES= testBGraph.cc testBranch.cc
 
 EHT= Ravl.API.Core.Branch.html

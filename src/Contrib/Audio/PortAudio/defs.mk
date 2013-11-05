@@ -20,6 +20,8 @@ EXAMPLES= exPortAudio.cc
 
 PLIB=RavlPortAudio
 
+SUMMARY_LIB=Ravl
+
 MUSTLINK=RavlPortAudio.cc
 
 USESLIBS=RavlIO RavlAudioUtil RavlAudioIO portAudio RavlThreads

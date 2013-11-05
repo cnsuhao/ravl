@@ -18,6 +18,8 @@ SOURCES= ChartDetector.cc ChartDetectorRegion.cc ChartLocalise.cc \
 
 PLIB=RavlChartDetector
 
+SUMMARY_LIB=Ravl
+
 USESLIBS=RavlImage RavlImageProc RavlImageIO  Optimisation
 
 PROGLIBS=RavlDPDisplay.opt RavlExtImgIO.opt RavlOS RavlPatternRec

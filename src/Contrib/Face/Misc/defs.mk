@@ -20,6 +20,8 @@ TESTEXES=
 
 PLIB = RavlTwoWayMap
 
+SUMMARY_LIB=Ravl
+
 USESLIBS= RavlOS RavlCore RavlIO 
 
 PROGLIBS=RavlDPDisplay RavlExtImgIO

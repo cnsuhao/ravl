@@ -17,6 +17,8 @@ SOURCES=RLog.cc StdioDateNode.cc
 
 PLIB=RavlRLog
 
+SUMMARY_LIB=Ravl
+
 USESLIBS=RavlCore RavlOS RLog
 
 CCPPFLAGS += -DRLOG_COMPONENT=Ravl

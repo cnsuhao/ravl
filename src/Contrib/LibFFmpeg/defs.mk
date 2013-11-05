@@ -21,6 +21,8 @@ SOURCES = ImgIOFFmpeg.cc LibFFmpegFormat.cc FFmpegPacket.cc FFmpegPacketStream.c
 
 PLIB = RavlLibFFmpeg
 
+SUMMARY_LIB=Ravl
+
 MUSTLINK = MustLinkLibFFmpeg.cc
 
 EXTERNALLIBS=LibFFmpeg.def

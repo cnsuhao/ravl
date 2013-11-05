@@ -21,6 +21,8 @@ MUSTLINK = ImagePointFeatureIO.cc
 
 PLIB = RavlImageProc
 
+SUMMARY_LIB=Ravl
+
 USESLIBS = RavlImage RavlThreads RavlMath RavlIO RavlOS RavlOSIO RavlOptimise RavlCore 
 # RavlOS is needed for DeadLineTimerC in PPHT code.
 

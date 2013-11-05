@@ -18,6 +18,8 @@ SOURCES= XMLFactoryVideoIO.cc
 
 PLIB=RavlImageXMLFactory
 
+SUMMARY_LIB=Ravl
+
 USESLIBS=RavlIO RavlXMLFactory RavlImage RavlOSIO RavlImageIO DynLink
 
 MUSTLINK=linkRavlImageXMLFactory.cc

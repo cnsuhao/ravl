@@ -24,6 +24,8 @@ MAINS= VPlay.cc VCopy.cc
 
 PLIB= RavlVPlay
 
+SUMMARY_LIB=Ravl
+
 USESLIBS = RavlCore RavlOS RavlImage RavlOSIO RavlGUI RavlDPMT RavlGUI2D RavlGUIUtil
 
 PROGLIBS =  RavlImgIOV4L.opt RavlExtImgIO.opt RavlDPDisplay \

@@ -13,6 +13,8 @@ NESTED= DocLevenbergMarquardt.r
 
 PLIB = RavlOptimise
 
+SUMMARY_LIB=Ravl
+
 SOURCES = ObsVector.cc ObsVectorBiGaussian.cc ObsVectorPoint2dPair.cc \
  StateVector.cc StateVectorLine2d.cc StateVectorQuadratic.cc \
  StateVectorHomog2d.cc StateVectorRot3d.cc Observation.cc \

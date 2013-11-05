@@ -21,6 +21,8 @@ SOURCES = ev_c.cc blas2.cc  blas2_c.cc lapack.cc
 
 PLIB = RavlLapackWraps
 
+SUMMARY_LIB=Ravl
+
 USESLIBS = LibLapack
 
 PROGLIBS = RavlCore  RavlOS RavlIO RavlMath

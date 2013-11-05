@@ -16,6 +16,8 @@ DONOT_SUPPORT=cygwin arm
 
 PLIB = RavlExtImgIO
 
+SUMMARY_LIB=Ravl
+
 LIBDEPS = RavlTIFF.def
 
 HEADERS = ImgIOTiff.hh ImgIOTiffB.hh TiffFormat.hh

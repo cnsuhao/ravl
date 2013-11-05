@@ -22,6 +22,8 @@ MUSTLINK=JasperImgIO.cc
 
 PLIB=RavlImgIOJasper
 
+SUMMARY_LIB=Ravl
+
 USESLIBS=RavlImage LibJasper RavlIO
 
 PROGLIBS=RavlDPDisplay.opt

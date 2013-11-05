@@ -25,6 +25,8 @@ MUSTLINK=linkFaceExperiment.cc
 
 PLIB = RavlFace
 
+SUMMARY_LIB=Ravl
+
 LIBDEPS= 
 
 USESLIBS= RavlMath RavlImageProc RavlCore RavlIO RavlImage RavlOS \

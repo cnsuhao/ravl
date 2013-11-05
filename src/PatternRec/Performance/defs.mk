@@ -17,6 +17,8 @@ SOURCES= Error.cc OptimiseClassifierDesign.cc ErrorBinaryClassifier.cc
 
 PLIB = RavlPatternRec
 
+SUMMARY_LIB=Ravl
+
 LIBDEPS = RavlPatternRecPerformance.def
 
 TESTEXES=

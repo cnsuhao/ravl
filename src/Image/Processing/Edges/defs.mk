@@ -26,6 +26,8 @@ MUSTLINK=RavlEdgeIO.cc
 
 PLIB=RavlImageProc
 
+SUMMARY_LIB=Ravl
+
 LIBDEPS=RavlImageEdges.def
 
 USESLIBS=RavlImageProc 

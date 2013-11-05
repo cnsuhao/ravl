@@ -23,6 +23,8 @@ MUSTLINK=LinkRavlZeroMQ.cc
 
 PLIB= RavlZmq
 
+SUMMARY_LIB=Ravl
+
 USESLIBS=RavlCore RavlXMLFactory Zmq RavlService
 
 EXTERNALLIBS = Zmq.def

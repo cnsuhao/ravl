@@ -26,6 +26,8 @@ TESTEXES=
 
 PLIB=RavlAutoPort2
 
+SUMMARY_LIB=Ravl
+
 PROGLIBS= 
 
 USESLIBS = RavlOS RavlSourceTools RavlCore RavlIO RavlMath 
