@@ -10,7 +10,7 @@
 //! file="Ravl/Image/VideoIO/syuvFormat.cc"
 
 #include "Ravl/Image/syuvFormat.hh"
-#include "Ravl/Image/ImgIOyuv.hh"
+#include "Ravl/Image/ImgIOYUV.hh"
 #include "Ravl/TypeName.hh"
 #include <ctype.h>
 
@@ -25,7 +25,7 @@ namespace RavlImageN {
 
   void InitSYUVFormat()
   {}
-  
+
 
   // YUV ////////////////////////////////////////////////////////////////
   
@@ -81,7 +81,7 @@ namespace RavlImageN {
     if(!in.good())
       return DPIPortBaseC();
     if(obj_type == typeid(ImageC<ByteYUVValueC>))
-      return DPIImageYUVC(in,vSize);
+      return DPIImageYUVC(in);
     return DPIPortBaseC();
   }
   
@@ -92,7 +92,7 @@ namespace RavlImageN {
     if(!out.good())
       return DPOPortBaseC();
     if(obj_type == typeid(ImageC<ByteYUVValueC>))
-      return DPOImageYUVC(out,vSize);
+      return DPOImageYUVC(out);
     return DPOPortBaseC();
   }
   
@@ -105,7 +105,7 @@ namespace RavlImageN {
       IStreamC strm(filename);
       if(!strm)
 	return DPIPortBaseC();
-      return DPIImageYUVC(strm,vSize);
+      return DPIImageYUVC(strm);
     }
     return DPIPortBaseC();
   }
@@ -118,7 +118,7 @@ namespace RavlImageN {
       OStreamC strm(filename);
       if(!strm)
 	return DPOPortBaseC();
-      return DPOImageYUVC(strm,vSize);
+      return DPOImageYUVC(strm);
     }
     return DPOPortBaseC();
   }
