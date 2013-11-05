@@ -1130,8 +1130,8 @@ ifdef LOCAL_DEFBASE
    ifndef AUTOUSELIBS
     AUTOUSELIBS := $(shell $(QLIBS) -use -d -p $(ROOTDIR))
    endif
-    $(INST_LIBDEF)/$(LOCAL_DEFBASE).def: defs.mk $(INST_LIBDEF)/.dir $(HEADERS) $(SOURCES) $(MAINS)
-   endif
+   $(INST_LIBDEF)/$(LOCAL_DEFBASE).def: defs.mk $(INST_LIBDEF)/.dir $(HEADERS) $(SOURCES) $(MAINS)
+  endif
 	$(SHOWIT)echo "--- Creating $(@F)" ; \
 	if [ -f $(INST_LIBDEF)/$(@F) ] ; then \
 	  $(CHMOD) +w $(INST_LIBDEF)/$(@F) ; \
@@ -1141,7 +1141,7 @@ ifdef LOCAL_DEFBASE
 	echo >> $(INST_LIBDEF)/$(@F) ; \
 	echo '  $(LOCAL_DEFBASE)_AUTO_DEF=1' >> $(INST_LIBDEF)/$(@F) ; \
 	echo >> $(INST_LIBDEF)/$(@F)
- ifdef REQUIRES	
+  ifdef REQUIRES	
 	$(SHOWIT)echo '  ifeq ($$(strip $$(filter-out $$(RESOURCES),$(REQUIRES))),)' >> $(INST_LIBDEF)/$(@F) ; \
 	echo >> $(INST_LIBDEF)/$(@F)
   endif	
