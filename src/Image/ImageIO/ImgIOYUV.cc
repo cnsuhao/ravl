@@ -51,9 +51,16 @@ namespace RavlImageN {
   
   DPIImageYUVBodyC::DPIImageYUVBodyC(const IStreamC &in)
     : inf(in),
-      done(false),
-      size(YUVSize(in.Name()))
-  {}
+      done(false)
+  {
+    try {
+      size = YUVSize(in.Name());
+    }
+    catch(ExceptionInvalidStreamC(ex)) {
+      size = Index2dC(0,0);
+
+    }
+  }
 
   //: Is valid data ?
   
