@@ -42,6 +42,7 @@ AC_DEFUN([QM_DEFINE_ALL_EXTLIBS],
           QM_DEFINE_EXTLIB_PC([FFMPEGCONT],       [libavformat])
           QM_DEFINE_EXTLIB_PC([FFMPEGSWS],        [libswscale])
           QM_DEFINE_EXTLIB_PC([FFMPEGUTIL],       [libavutil])
+          QM_DEFINE_EXTLIB_PC([FreeType2],        [freetype2])
           QM_DEFINE_EXTLIB_PC([iksemel],          [iksemel])
           QM_DEFINE_EXTLIB_PC([libglade2],        [libglade-2.0])
           QM_DEFINE_EXTLIB_PC([LibGnome],         [libgnome-2.0])
@@ -51,6 +52,13 @@ AC_DEFUN([QM_DEFINE_ALL_EXTLIBS],
           QM_DEFINE_EXTLIB_PC([OpenCV],           [opencv])
           QM_DEFINE_EXTLIB_PC([libPNG],           [libpng])
           QM_DEFINE_EXTLIB_PC([PortAudio],        [portaudio-2.0])
+          QM_DEFINE_EXTLIB_PC([PulseAudio],       [libpulse])
+          QM_DEFINE_EXTLIB_PC([PulseAudioSimple], [libpulse-simple])
+          QM_DEFINE_EXTLIB_PC([Qt3],              [qt-mt])
+          QM_DEFINE_EXTLIB_PC([QtCore],           [QtCore])
+          QM_DEFINE_EXTLIB_PC([QtGui],            [QtGui])
+          QM_DEFINE_EXTLIB_PC([QtNetwork],        [QtNetwork])
+          QM_DEFINE_EXTLIB_PC([QtSql],            [QtSql])
           QM_DEFINE_EXTLIB_PC([libGL],            [gl])
           QM_DEFINE_EXTLIB_PC([libGLU],           [glu])
           QM_DEFINE_EXTLIB_PC([OpenSceneGraph],   [openscenegraph])
@@ -58,6 +66,7 @@ AC_DEFUN([QM_DEFINE_ALL_EXTLIBS],
           QM_DEFINE_EXTLIB_PC([RLog],             [librlog])
           QM_DEFINE_EXTLIB_PC([devVideo4Linux2],  [libv4l2])
           QM_DEFINE_EXTLIB_PC([ZeroMQ],           [libzmq])
+
           dnl 
           dnl Now define those libraries needing manual compilation checks:
           dnl
@@ -213,6 +222,51 @@ AC_DEFUN([QM_DEFINE_ALL_EXTLIBS],
           dnl                 .h
           dnl                 Lang
           dnl 
+          QM_DEFINE_EXTLIB_CC([Math],
+                              [double d;
+                               d=cos(d);
+                              ],
+                              [],
+                              [-lm],
+                              [math.h],
+                              [C]
+                             )
+dnl#ToDo#          QM_DEFINE_EXTLIB_CC([NetCDF],
+dnl#ToDo#                              [                 ],
+dnl#ToDo#                              [                 ],
+dnl#ToDo#                              [                 ],
+dnl#ToDo#                              [],
+dnl#ToDo#                              [C]
+dnl#ToDo#                             )
+dnl#ToDo#          QM_DEFINE_EXTLIB_CC([NetServ],
+dnl#ToDo#                              [struct hostent *ret;
+dnl#ToDo#                               char *name;
+dnl#ToDo#                               ret=gethostbyname (name);
+dnl#ToDo#                              ],
+dnl#ToDo#                              [],
+dnl#ToDo#                              [|-lnsl|-lsocket|-lsocket -lnsl|-lresolv],
+dnl#ToDo#                              [netdb.h],
+dnl#ToDo#                              [C]
+dnl#ToDo#                             )
+dnl#ToDo# # NetServ Needs expanding to for different implementations of the
+dnl#ToDo# # function. Naming of the resource may also be best changed to
+dnl#ToDo#  something such as GHBN or GetHostByName as that better reflects
+dnl#ToDo#  what it is
+dnl#ToDo#          QM_DEFINE_EXTLIB_CC([OpenMPI],
+dnl#ToDo#                              [                 ],
+dnl#ToDo#                              [                 ],
+dnl#ToDo#                              [                 ],
+dnl#ToDo#                              [],
+dnl#ToDo#                              [C]
+dnl#ToDo#                             )
+dnl
+dnl                           Name,
+dnl                           Test Code,
+dnl                           Deps,
+dnl                           -l,
+dnl                           .h
+dnl                           Lang
+dnl 
           QM_DEFINE_EXTLIB_CC([posixThreads],
                               [pthread_self ();],
                               [],
@@ -220,6 +274,21 @@ AC_DEFUN([QM_DEFINE_ALL_EXTLIBS],
                               [pthread.h],
                               [C]
                              )
+dnl#ToDo#          QM_DEFINE_EXTLIB_CC([QGLViewer],
+dnl#ToDo#                              [                 ],
+dnl#ToDo#                              [Qt3],
+dnl#ToDo#                              [-lqglviewer],
+dnl#ToDo#                              [],
+dnl#ToDo#                              [C]
+dnl#ToDo#                             )
+dnl
+dnl                           Name,
+dnl                           Test Code,
+dnl                           Deps,
+dnl                           -l,
+dnl                           .h
+dnl                           Lang
+dnl 
           QM_DEFINE_EXTLIB_CC([Socket],
                               [int ret, domain, type, protocol;
                                ret=socket (domain, type, protocol);
@@ -229,11 +298,223 @@ AC_DEFUN([QM_DEFINE_ALL_EXTLIBS],
                               [sys/socket.h],
                               [C]
                              )
+          QM_DEFINE_EXTLIB_CC([tetgen],
+                              [char * switches;
+                               tetgenio * in;
+                               tetgenio * out;
+                               tetgenio * bgmesh; 
+                               tetrahedralize (switches, in, out, bgmesh);
+                              ],
+                              [],
+                              [-ltet],
+                              [tetgen.h],
+                              [C++]
+                             )
           QM_DEFINE_EXTLIB_CC([LibTIFF],
                               [TIFFGetVersion ();],
                               [Zlib],
                               [-ltiff],
                               [],
+                              [C]
+                             )
+          QM_DEFINE_EXTLIB_CC([UMFPack],
+                              [umfpack_di_triplet_to_col ();],
+                              [blas posixThreads],
+                              [-lumfpack -lcolamd -lcxsparse -lamd],
+                              [],
+                              [C]
+                             )
+          dnl# Of the libraries declared here: colamd; cxsparse and amd are
+          dnl# really all seperate artihmetic pacakges and could be implemented
+          dnl# as QMake resources in their own right.
+          dnl#
+          dnl# N.B. UMFPack may not always have been built to require all the
+          dnl# stated external packages (for example, a poorer-performing
+          dnl# version of the library can be built without the need for the
+          dnl# blas library). In these circumstances, a false negative may
+          dnl# result from testing for package availability.
+          dnl
+          dnl                 Name,
+          dnl                 Fn,
+          dnl                 Deps,
+          dnl                 -l,
+          dnl                 .h,
+          dnl                 Lang
+          dnl 
+dnl#ToDo#          QM_DEFINE_EXTLIB_CC([UxUtil],
+dnl#ToDo#                              [                 ],
+dnl#ToDo#                              [],
+dnl#ToDo#                              [-lutil],
+dnl#ToDo#                              [],
+dnl#ToDo#                              [C]
+dnl#ToDo#                             )
+dnl
+dnl                           Name,
+dnl                           Test Code,
+dnl                           Deps,
+dnl                           -l,
+dnl                           .h
+dnl                           Lang
+dnl 
+
+          QM_DEFINE_EXTLIB_CC([vlfeat],
+                              [VlSiftFilt *Dummy;
+                               vl_sift_detect (Dummy);
+                              ],
+                              [Math],
+                              [-lvl],
+                              [sift.h],
+                              [C]
+                             )
+dnl#ToDo#          QM_DEFINE_EXTLIB_CC([vtkCharts],
+dnl#ToDo#                              [],
+dnl#ToDo#                              [vtkViews libGL FreeType2],
+dnl#ToDo#                              [-lvtkCharts -lvtkftgl],
+dnl#ToDo#                              [],
+dnl#ToDo#                              [C++]
+dnl#ToDo#                             )
+dnl
+dnl                           Name,
+dnl                           Test Code,
+dnl                           Deps,
+dnl                           -l,
+dnl                           .h
+dnl                           Lang
+dnl 
+
+          QM_DEFINE_EXTLIB_CC([vtkCommon],
+                              [vtkPoints *vertices = vtkPoints::New();],
+                              [Math DynLink],
+                              [-lvtkCommon -lvtksys],
+                              [vtkPoints.h],
+                              [C++]
+                             )
+          QM_DEFINE_EXTLIB_CC([vtkFiltering],
+                              [vtkCellArray *faces = vtkCellArray::New();],
+                              [vtkCommon],
+                              [-lvtkFiltering],
+                              [vtkCellArray.h],
+                              [C++]
+                             )
+dnl#ToDo#          QM_DEFINE_EXTLIB_CC([vtkGenericFiltering],
+dnl#ToDo#                              [],
+dnl#ToDo#                              [vtkGraphics],
+dnl#ToDo#                              [-lvtkGenericFiltering],
+dnl#ToDo#                              [],
+dnl#ToDo#                              [C++]
+dnl#ToDo#                             )
+dnl#ToDo#          QM_DEFINE_EXTLIB_CC([vtkGeovis],
+dnl#ToDo#                              [],
+dnl#ToDo#                              [vtkViews],
+dnl#ToDo#                              [-lvtkGeovis -lvtkproj4],
+dnl#ToDo#                              [],
+dnl#ToDo#                              [C++]
+dnl#ToDo#                             )
+dnl
+dnl                           Name,
+dnl                           Test Code,
+dnl                           Deps,
+dnl                           -l,
+dnl                           .h
+dnl                           Lang
+dnl 
+
+          QM_DEFINE_EXTLIB_CC([vtkGraphics],
+                              [vtkDecimatePro *decimatePro = vtkDecimatePro::New();],
+                              [vtkFiltering],
+                              [-lvtkGraphics -lvtkverdict],
+                              [vtkDecimatePro.h],
+                              [C++]
+                             )
+dnl#ToDo#          QM_DEFINE_EXTLIB_CC([vtkHybrid],
+dnl#ToDo#                              [],
+dnl#ToDo#                              [vtkParallel NetCDF libGL FreeType2],
+dnl#ToDo#                              [-lvtkHybrid -lvtkexoIIc -lvtkftgl],
+dnl#ToDo#                              [],
+dnl#ToDo#                              [C++]
+dnl#ToDo#                             )
+dnl#ToDo#          QM_DEFINE_EXTLIB_CC([vtkIO],
+dnl#ToDo#                              [],
+dnl#ToDo#                              [vtkFiltering DynLink Math Zlib],
+dnl#ToDo#                              [-lvtkIO -lvtkDICOMParser -lvtkmetaio],
+dnl#ToDo#                              [],
+dnl#ToDo#                              [C++]
+dnl#ToDo#                             )
+dnl#ToDo#          QM_DEFINE_EXTLIB_CC([vtkImaging],
+dnl#ToDo#                              [],
+dnl#ToDo#                              [vtkFiltering],
+dnl#ToDo#                              [-lvtkImaging],
+dnl#ToDo#                              [],
+dnl#ToDo#                              [C++]
+dnl#ToDo#                             )
+dnl#ToDo#          QM_DEFINE_EXTLIB_CC([vtkInfovis],
+dnl#ToDo#                              [],
+dnl#ToDo#                              [vtkWidgets],
+dnl#ToDo#                              [-lvtkInfovis -lvtkalglib],
+dnl#ToDo#                              [],
+dnl#ToDo#                              [C++]
+dnl#ToDo#                             )
+dnl#ToDo#          QM_DEFINE_EXTLIB_CC([vtkParallel],
+dnl#ToDo#                              [],
+dnl#ToDo#                              [vtkRendering NetCDF OpenMPI NetServ UxUtil],
+dnl#ToDo#                              [-lvtkParallel -lVPIC -lCosmo -lvtkexoIIc],
+dnl#ToDo#                              [],
+dnl#ToDo#                              [C++]
+dnl#ToDo#                             )
+dnl#ToDo#          QM_DEFINE_EXTLIB_CC([vtkQVTK],
+dnl#ToDo#                              [],
+dnl#ToDo#                              [vtkViews QtGui QtNetwork QtSql QtCore],
+dnl#ToDo#                              [-lvtkQVTK -lvtkQtChart],
+dnl#ToDo#                              [],
+dnl#ToDo#                              [C++]
+dnl#ToDo#                             )
+dnl#ToDo#          QM_DEFINE_EXTLIB_CC([vtkRendering],
+dnl#ToDo#                              [],
+dnl#ToDo#                              [vtkIO vtkGraphics vtkImaging libGL FreeType2],
+dnl#ToDo#                              [-lvtkRendering -lvtkftgl],
+dnl#ToDo#                              [],
+dnl#ToDo#                              [C++]
+dnl#ToDo#                             )
+dnl#ToDo#          QM_DEFINE_EXTLIB_CC([vtkViews],
+dnl#ToDo#                              [],
+dnl#ToDo#                              [vtkInfovis],
+dnl#ToDo#                              [-lvtkViews],
+dnl#ToDo#                              [],
+dnl#ToDo#                              [C++]
+dnl#ToDo#                             )
+dnl#ToDo#          QM_DEFINE_EXTLIB_CC([vtkVolumeRendering],
+dnl#ToDo#                              [],
+dnl#ToDo#                              [vtkRendering],
+dnl#ToDo#                              [-lvtkVolumeRendering],
+dnl#ToDo#                              [],
+dnl#ToDo#                              [C++]
+dnl#ToDo#                             )
+dnl#ToDo#          QM_DEFINE_EXTLIB_CC([vtkWidgets],
+dnl#ToDo#                              [],
+dnl#ToDo#                              [vtkHybrid vtkVolumeRendering],
+dnl#ToDo#                              [-lvtkWidgets],
+dnl#ToDo#                              [],
+dnl#ToDo#                              [C++]
+dnl#ToDo#                             )
+dnl
+dnl                           Name,
+dnl                           Test Code,
+dnl                           Deps,
+dnl                           -l,
+dnl                           .h
+dnl                           Lang
+dnl 
+
+          QM_DEFINE_EXTLIB_CC([Yajl],
+                              [yajl_status ret;
+                               yajl_handle h;
+                               const unsigned char * txt;
+                               unsigned int l;
+                               ret=yajl_parse(h, txt, l);
+                              ],
+                              [],
+                              [-lyajl],
+                              [yajl/yajl_parse.h],
                               [C]
                              )
           QM_DEFINE_EXTLIB_CC([Zlib],
@@ -261,15 +542,6 @@ AC_DEFUN([QM_DEFINE_ALL_EXTLIBS],
           dnl#   method to use. When adding support for these, remember to
           dnl#   update the .def file to remove the $(error call.
           dnl#
-          dnl#
-          dnl# Priorities
-          dnl#                Name,          Fn,                 Deps,   -l,           .h
-          dnl#
-          dnl#  ..._EXTLIB_CC([NetDB],       [gethostbyname_r],  [],     [-lnsr],      [netdb.h])
-          dnl#
-          dnl#
-          dnl#
-          dnl# Less so
           dnl#                Name,          Fn,                 Deps,   -l,           .h
           dnl#
           dnl#  ..._EXTLIB_CC([dvdread],     [TBA],              [],     [-ldvdread],  [])
@@ -321,7 +593,7 @@ AC_DEFUN([QM_DEFINE_ALL_EXTLIBS],
           dnl#
           dnl# Dropped
           dnl#
-          dnl#    CPPUnit DMedia FFTW glib {GNU}ReadLine JavaScript libmpeg Math
+          dnl#    CPPUnit DMedia FFTW glib {GNU}ReadLine JavaScript libmpeg
           dnl#    Meteor1 Perl5 php libptp2 QtTestRunner SQLite3 Sys system
           dnl#    Video4Linux Xaw Xerces Xt x11
           dnl#

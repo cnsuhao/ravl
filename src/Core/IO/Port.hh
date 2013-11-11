@@ -473,7 +473,7 @@ namespace RavlN {
   // Note that, after its creation, the port must be connected to a 
   // source, e.g. by using <a href=
   // "RavlN.OpenISequenceObDPIPortCLtDataTGt_Amp_const_StringC_Amp_const_StringC_Amp_boolCb.html">
-  // OpenOSequence</a>, before applying most of the methods.
+  // OpenISequence</a>, before applying most of the methods.
   
   template<class DataT>
   class DPIPortC 

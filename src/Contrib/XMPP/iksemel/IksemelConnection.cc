@@ -72,7 +72,9 @@ namespace RavlN {
       m_ikId(0),
       m_ikFilter(0),
       m_features(0),
-      m_shutdown(false)
+      m_connectionOk(false),
+      m_shutdown(false),
+      m_verbose(true)
     { }
 
     //! Constructor
@@ -86,7 +88,9 @@ namespace RavlN {
       m_ikId(0),
       m_ikFilter(0),
       m_features(0),
-      m_shutdown(false)
+      m_connectionOk(false),
+      m_shutdown(false),
+      m_verbose(true)
     { Init(); }
 
     //! Factory constructor
@@ -97,7 +101,9 @@ namespace RavlN {
       m_ikId(0),
       m_ikFilter(0),
       m_features(0),
-      m_shutdown(false)
+      m_connectionOk(false),
+      m_shutdown(false),
+      m_verbose(true)
     { Init(); }
 
     //! Destructor
@@ -129,6 +135,7 @@ namespace RavlN {
 
     bool IksemelConnectionC::Open(const std::string &id, const std::string &password)
     {
+      m_connectionOk = false;
       if (!iks_has_tls()) {
         puts("Cannot make encrypted connections.");
         puts("iksemel library is not compiled with GnuTLS support.");
@@ -189,7 +196,7 @@ namespace RavlN {
          rError("hostname lookup failed");
          return false;
         case IKS_NET_NOCONN:
-         rError("connection failed");
+          rError("connection failed");
          return false;
         default:
          rError("io error");
@@ -214,6 +221,12 @@ namespace RavlN {
       return true;
     }
 
+    //! Test if we have a connection.
+    bool IksemelConnectionC::IsConnected() const
+    {
+      return !m_shutdown && m_connectionOk;
+    }
+
     //: Called when owner handles drop to zero.
 
     void IksemelConnectionC::ZeroOwners()
@@ -227,6 +240,9 @@ namespace RavlN {
     void IksemelConnectionC::RunConnection()
     {
       rDebug("Connection thread started");
+
+      m_connectionOk = true;
+
       while (!m_shutdown) {
         int fd = iks_fd (m_ikParse);
         
@@ -274,6 +290,7 @@ namespace RavlN {
         }
       }
 
+      m_connectionOk = false;
     }
 
     //! Handle incoming messages
@@ -412,7 +429,11 @@ namespace RavlN {
       const char *from = iks_find_attrib (pak->x,"from");
       const char *text = iks_find_cdata (pak->x, "body");
       if(text == 0 || from == 0) {
-        rWarning("No message found");
+        if(m_verbose) {
+          char * msg = iks_string(0,pak->x);
+          rWarning("No message found in:  %s",msg);
+          iks_free(msg);
+        }
         return IKS_FILTER_EAT;
       }
       rDebug("On message called. From:'%s' Text:'%s' ",from,text);

@@ -191,7 +191,7 @@ namespace RavlN {
     //: Cork stream.
     // True indicates that there is going to
     // be several write operations immediately following each
-    // other and stops the transmition of fragmented packets.
+    // other and stops the transmission of fragmented packets.
     // If your not expecting to do any more writes immediately
     // you must call 'Cork(false)' immediately. <br>
     // False indicates that all the pending data has been written
@@ -251,6 +251,10 @@ namespace RavlN {
     //: Should write's fail on timeout ?
     // If false, the socket will be checked its
     // open and valid, if it is the write will be retried.
+
+    void SetFillBufferOnRead(bool value)
+    { Body().SetFillBufferOnRead(value); }
+    //: Set fill buffer on read flag.
 
     bool WaitForRead()
     { return Body().WaitForRead(); }

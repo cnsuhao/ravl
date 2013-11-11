@@ -303,6 +303,28 @@ namespace RavlN {
     //: Generate a hash value for the range.
     //: For template compatibility
 
+    RealRangeC &operator[](UIntT ind) {
+#if RAVL_CHECK
+      if(ind < 0 || ind > 1)
+        IssueError(__FILE__,__LINE__,"Index %u out of range, 0 - 1",ind);
+#endif
+      if(ind <= 0)
+        return rows;
+      return cols;
+    }
+    //: Access item.
+
+    const RealRangeC &operator[](UIntT ind) const {
+#if RAVL_CHECK
+      if(ind < 0 || ind > 1)
+        IssueError(__FILE__,__LINE__,"Index %u out of range, 0 - 1",ind);
+#endif
+      if(ind <= 0)
+        return rows;
+      return cols;
+    }
+    //: Access item.
+
   protected:
     inline const RealRange2dC & Range() const
     { return(*this); }

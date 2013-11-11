@@ -43,7 +43,7 @@ bool InitGL()
 {
   glEnable(GL_CULL_FACE);
   glCullFace(GL_BACK);
-  glEnable(GL_DEPTH_TEST);
+  //glEnable(GL_DEPTH_TEST);
 
   glEnable(GL_COLOR_MATERIAL);
 
@@ -77,7 +77,7 @@ int main(int nargs,char *args[])
   OptionC opts(nargs,args); // Make sure help option is detected.
   bool doMotion = opts.Boolean("m",false,"Detect motion events.");
   bool useDisplayList = opts.Boolean("dl",false,"Use display lists. ");
-  RealT increment     = opts.Real("i",5,"control the size of the step in the loop") ;
+  RealT increment     = opts.Real("i",1,"control the size of the step in the loop") ;
  
   opts.Check();
 
@@ -113,7 +113,7 @@ int main(int nargs,char *args[])
    
     area.Transform (i * increment, rotation, object); // Object to draw.
     area.SwapBuffers();
-    Sleep(0.01);
+    Sleep(0.05);
   }
   std::cerr << "Execute done, waiting... \n";
   Manager.Wait();

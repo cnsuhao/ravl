@@ -14,4 +14,3 @@ SUPPORT_ONLY=linux
 
 HEADERS=Atomic.hh mmx.hh
 
-USESLIBS=

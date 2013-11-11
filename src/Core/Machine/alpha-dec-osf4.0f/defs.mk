@@ -14,4 +14,3 @@ SUPPORT_ONLY=alpha
 
 HEADERS=Atomic.hh 
 
-USESLIBS=

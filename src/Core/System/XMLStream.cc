@@ -262,14 +262,14 @@ namespace RavlN {
 	    {
 	    case '?':
 	      if(!isPI) { // Are we in a processing instruction ?
-		std::cerr << "ERROR: Unexpected character '"  << c << "' in XML tag. Filename:" << Name() << " \n";
+		std::cerr << "ERROR: Unexpected character '"  << c << "' in XML tag after id '" << id << "'. Filename:" << Name() << " \n";
 		throw ExceptionInvalidStreamC("Unexpected end of XML tag. ");
 	      }
 	      /* no break */
 	    case '/':
 	      c = GetChar();
 	      if(c != '>') {
-		std::cerr << "ERROR: Unexpected character '"  << c << "' in XML tag. Filename:" << Name() << "\n";
+		std::cerr << "ERROR: Unexpected character '"  << c << "' in XML tag after id '" << id << "' Filename:" << Name() << "\n";
 		throw ExceptionInvalidStreamC("Unexpected end of XML tag. ");
 	      }
 	      emptyTag = true;

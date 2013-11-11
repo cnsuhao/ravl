@@ -12,7 +12,16 @@
 #include "Ravl/OS/SysLog.hh"
 #include "Ravl/Exception.hh"
 #include "Ravl/XMLFactoryRegister.hh"
-
+#if RAVL_OS_LINUX || RAVL_OS_LINUX64 || RAVL_OS_MACOSX
+#include <unistd.h>
+#endif
+#include <string.h>
+#if RAVL_OS_MACOSX
+// FIXME: There is probably a define I can use to get this from the header, but I haven't worked out which one yet...
+extern "C" {
+  int  gethostname(char *, size_t);
+}
+#endif
 namespace RavlN {
   namespace ZmqN {
 
@@ -76,14 +85,16 @@ namespace RavlN {
     //! Default constructor - creates invalid handle
     SocketC::SocketC()
      : m_socket(0),
-       m_verbose(false)
+       m_verbose(false),
+       m_socketType(ZST_PAIR)
     {};
 
     //! Construct a new socket.
     SocketC::SocketC(ContextC &context,SocketTypeT socketType,const StringC &codec)
      : m_socket(0),
        m_defaultCodec(codec),
-       m_verbose(false)
+       m_verbose(false),
+       m_socketType(socketType)
     {
       m_socket = zmq_socket(context.RawContext(),(int) socketType);
       if(m_socket == 0) {
@@ -105,8 +116,8 @@ namespace RavlN {
         RavlError("No context for socket at %s ",context.Path().c_str());
         throw ExceptionOperationFailedC("No context. ");
       }
-      SocketTypeT sockType = SocketType(context.AttributeString("socketType",""));
-      m_socket = zmq_socket(ctxt->RawContext(),(int) sockType);
+      m_socketType = SocketType(context.AttributeString("socketType",""));
+      m_socket = zmq_socket(ctxt->RawContext(),(int) m_socketType);
       if(m_socket == 0) {
         RavlError("Failed to create socket '%s' in %s ",zmq_strerror (zmq_errno ()),context.Path().c_str());
         throw ExceptionOperationFailedC("Failed to create socket. ");
@@ -119,7 +130,7 @@ namespace RavlN {
       }
 
 
-      // Connnect if required.
+      // Connect if required.
       StringC defaultConnect = context.AttributeString("connect","");
       if(!defaultConnect.IsEmpty()) {
         Connect(defaultConnect);
@@ -229,6 +240,44 @@ namespace RavlN {
       return m_boundAddress;
     }
 
+    //! Access address that can be used to connect to the last bound address.
+    RavlN::StringC SocketC::ConnectBoundAddress() const
+    {
+      StringC boundAddress = BoundAddress();
+      char hostnameBuffer[257];
+      StringC theHost;
+      if(gethostname(hostnameBuffer,255) != 0) {
+        RavlError("Failed to get hostname, using 'localhost' ");
+        strcpy(hostnameBuffer,"localhost");
+        theHost = StringC(hostnameBuffer);
+      } else {
+        StringC ahost(hostnameBuffer);
+        if(ahost.contains('.'))
+          theHost = ahost.before('.');
+        else
+          theHost = ahost;
+      }
+
+      // FIXME:- Should check for real local interface names ?
+      static const char *g_substNames[] = {
+          "*",
+          "eth0",
+          "eth1",
+          "eth2",
+          "eth3",
+          "eth4",
+          "eth5",
+          0
+      };
+      for(unsigned i = 0;g_substNames[i] != 0;i++) {
+        if(boundAddress.contains(g_substNames[i]) == 1) {
+          boundAddress.gsub(g_substNames[i],theHost);
+          break;
+        }
+      }
+      return boundAddress;
+    }
+
 
     //! Bind to an address
     void SocketC::Bind(const std::string &addr)
@@ -281,7 +330,10 @@ namespace RavlN {
       RavlAssert(m_socket != 0);
       int ret;
       if((ret = zmq_connect(m_socket, addr.c_str())) != 0) {
-        RavlError("Failed to connect to %s : %s ",addr.c_str(),zmq_strerror (zmq_errno ()));
+        RavlError("Failed to connect to %s (Type:%s): %s ",
+            addr.c_str(),
+            RavlN::StringOf(m_socketType).c_str(),
+            zmq_strerror (zmq_errno ()));
         throw ExceptionOperationFailedC("connect failed. ");
       }
     }
@@ -370,8 +422,8 @@ namespace RavlN {
       ArrayToMessage(zmsg,msg);
       int ret;
       int flags = 0;
-#if ZMQ_VERSION_MAJOR > 2
-      if((ret = zmq_sendmsg (m_socket, &zmsg, flags)) != 0)
+#if ZMQ_VERSION_MAJOR >= 3
+      if((ret = zmq_sendmsg (m_socket, &zmsg, flags)) < 0)
 #else
       if((ret = zmq_send (m_socket, &zmsg, flags)) != 0)
 #endif
@@ -401,7 +453,7 @@ namespace RavlN {
       MsgBufferC msgBuffer(0);
 
 #if ZMQ_VERSION_MAJOR >= 3
-      if((ret = zmq_recvmsg (m_socket, msgBuffer.Msg(), flags)) != 0)
+      if((ret = zmq_recvmsg (m_socket, msgBuffer.Msg(), flags)) < 0)
 #else
       if((ret = zmq_recv (m_socket, msgBuffer.Msg(), flags)) != 0)
 #endif
@@ -423,7 +475,7 @@ namespace RavlN {
         zmq_msg_init(&zmsg);
         RavlWarning("Discarding message part.");
 #if ZMQ_VERSION_MAJOR >= 3
-        if((ret = zmq_recvmsg (m_socket, msgBuffer.Msg(), flags)) != 0)
+        if((ret = zmq_recvmsg (m_socket, msgBuffer.Msg(), flags)) < 0)
 #else
         if((ret = zmq_recv (m_socket, msgBuffer.Msg(), flags)) != 0)
 #endif
@@ -445,9 +497,18 @@ namespace RavlN {
       }
       if(m_verbose) {
         StringC tmp(msg.ReferenceElm(),msg.Size(),msg.Size());
-        RavlDebug("Recieved %s:'%s'",m_name.c_str(),tmp.c_str());
+        RavlDebug("Received %s:'%s'",m_name.c_str(),tmp.c_str());
       }
       return true;
+    }
+
+    //! Send a message
+    bool SocketC::Send(const MessageC::RefT &msg,BlockT block)
+    {
+      RavlAssert(msg.IsValid());
+      if(!msg.IsValid())
+        return true;
+      return Send(*msg,block);
     }
 
     //! Send a message
@@ -473,7 +534,7 @@ namespace RavlN {
           flags |= ZMQ_SNDMORE;
         }
 #if ZMQ_VERSION_MAJOR > 2
-        if((ret = zmq_sendmsg (m_socket, &zmsg, flags)) != 0)
+        if((ret = zmq_sendmsg (m_socket, &zmsg, flags)) < 0)
 #else
         if((ret = zmq_send (m_socket, &zmsg, flags)) != 0)
 #endif
@@ -511,7 +572,7 @@ namespace RavlN {
         int flags = 0;
 
 #if ZMQ_VERSION_MAJOR >= 3
-        if((ret = zmq_recvmsg (m_socket, msgBuffer.Msg(), flags)) != 0)
+        if((ret = zmq_recvmsg (m_socket, msgBuffer.Msg(), flags)) < 0)
 #else
         if((ret = zmq_recv (m_socket, msgBuffer.Msg(), flags)) != 0)
 #endif

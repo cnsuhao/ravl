@@ -10,7 +10,6 @@
 //! docentry="Ravl.API.Math.Averages"
 //! userlevel=Normal
 //! author="Charles Galambos"
-//! rcsid="$Id$"
 //! lib=RavlCore
 //! file="Ravl/Core/Base/Average.hh"
 
@@ -20,19 +19,19 @@ namespace RavlN {
   
   template<class DataT>
   inline DataT Average(const DataT &a,const DataT &b)
-  { return (a+b)/2; }
+  { return (a+b)/2.0; }
   //: Take average of 2 numbers.
   // This is useful to deal with types limited value ranges. as it can be overridden.
   
   template<class DataT>
   inline DataT Average(const DataT &a,const DataT &b,const DataT &c)
-  { return (a+b+c)/3; }
+  { return (a+b+c)/3.0; }
   //: Take average of 3 numbers.
   // This is useful to deal with types limited value ranges. as it can be overridden.
   
   template<class DataT>
   inline DataT Average(const DataT &a,const DataT &b,const DataT &c,const DataT &d)
-  { return (a+b+c+d)/4; }
+  { return (a+b+c+d)/4.0; }
   //: Take average of 4 numbers.
   // This is useful to deal with types limited value ranges. as it can be overridden.
   

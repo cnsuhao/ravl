@@ -37,10 +37,14 @@ namespace RavlN { namespace XMPPN {
     ~IksemelConnectionC();
 
     //! Open connection
-    bool Open(const std::string &id,const std::string &password);
+    virtual bool Open(const std::string &id,const std::string &password);
+
+    //! Test if we have a connection.
+    virtual bool IsConnected() const;
 
     //! Send a text message to someone.
     virtual bool SendText(const char *to,const char *message);
+
 
     //! Handle to class.
     typedef RavlN::SmartOwnerPtrC<IksemelConnectionC> RefT;
@@ -93,7 +97,9 @@ namespace RavlN { namespace XMPPN {
     iksid *m_ikId;
     iksfilter *m_ikFilter;
     int m_features;
+    bool m_connectionOk;
     volatile bool m_shutdown;
+    bool m_verbose;
   };
 
 

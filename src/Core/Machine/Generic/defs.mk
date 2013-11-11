@@ -15,4 +15,3 @@ PACKAGE=Ravl
 DONOT_SUPPORT=alpha freebsd_x86 linux linux64 macosx32 macosx64 sgi sol2 sol2_7 sol2_9 VCPP
 
 HEADERS=Atomic.hh
-

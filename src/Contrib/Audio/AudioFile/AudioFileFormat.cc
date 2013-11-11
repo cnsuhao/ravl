@@ -64,31 +64,41 @@ namespace RavlAudioN {
     ONDEBUG(cerr << "Open of file '" << filename << "' ok. Probe passed. Channels=" << channels << " Format=" <<sampfmt << " Width=" << sampwidth << " \n");
     afCloseFile(setup);
 
-
-
-    // 16 bit samples     
-    if (sampwidth == 16) {
-      ONDEBUG(cerr << "16 bit samples " ) ; 
-      if(channels == 1) {
-        return typeid(SampleElemC<1,Int16T>);
+    if(sampfmt == AF_SAMPFMT_TWOSCOMP) {
+      // 16 bit samples
+      if (sampwidth == 16) {
+        ONDEBUG(cerr << "16 bit samples " ) ;
+        if(channels == 1) {
+          return typeid(SampleElemC<1,Int16T>);
+        }
+        if(channels == 2) {
+          return typeid(SampleElemC<2,Int16T>);
+        }
+        if(channels == 8) {
+          return typeid(SampleElemC<8,Int16T>);
+        }
       }
-      if(channels == 2) {
-        return typeid(SampleElemC<2,Int16T>);
+      // 8 bit samples
+      if (sampwidth == 8) {
+        ONDEBUG(cerr << "8 bit samples " ) ;
+        if(channels == 1)
+          return typeid(SampleElemC<1,UByteT> );
+        if(channels == 2)
+          return typeid(SampleElemC<2,UByteT> );
       }
-      if(channels == 8) {
-        return typeid(SampleElemC<8,Int16T>);
-      }
-    }
-    // 8 bit samples 
-    if (sampwidth == 8) {
-      ONDEBUG(cerr << "8 bit samples " ) ; 
+    } else if(sampfmt == AF_SAMPFMT_FLOAT) {
       if(channels == 1)
-        return typeid(SampleElemC<1,UByteT> );
+        return typeid(SampleElemC<1,float> );
       if(channels == 2) 
-        return typeid(SampleElemC<2,UByteT> );
+        return typeid(SampleElemC<2,float> );
+    } else if(sampfmt == AF_SAMPFMT_DOUBLE) {
+      if(channels == 1)
+        return typeid(SampleElemC<1,double> );
+      if(channels == 2)
+        return typeid(SampleElemC<2,double> );
     }
     
-    cerr << "Unexpected number of audio channels in '" << filename << "' Channels=" << channels << "\n";
+    std::cerr << "Unexpected number of audio channels in '" << filename << "' Channels=" << channels << " format= " << sampfmt << "\n";
     return typeid(void);
   }
 
@@ -104,11 +114,25 @@ namespace RavlAudioN {
         return typeid(void);
     }
 
-      // mono formats
-    if ( (obj_type == typeid ( SampleElemC<1,Int16T> )) || (obj_type == typeid(SampleElemC<1,RealT>)) ||
-         (obj_type == typeid ( SampleElemC<1,UByteT>)) || (obj_type == typeid(SampleElemC<1,IntT>) ) )
+    if(obj_type == typeid(SampleElemC<1,RealT>) || obj_type == typeid(SampleElemC<1,float>) || obj_type == typeid(float) || obj_type == typeid(double))
+      return typeid ( SampleElemC<1,float> );
+
+    if(obj_type == typeid(SampleElemC<2,RealT>) || obj_type == typeid(SampleElemC<2,float>))
+      return typeid ( SampleElemC<2,float> );
+
+    // mono formats
+    if( (obj_type == typeid ( SampleElemC<1,Int16T> )) || (obj_type == typeid(SampleElemC<1,IntT>) ) || obj_type == typeid(Int16T))
       return typeid ( SampleElemC<1,Int16T> ) ; // default for mono formats
-      
+
+    if( (obj_type == typeid ( SampleElemC<2,Int16T> )) || (obj_type == typeid(SampleElemC<2,IntT>) ) )
+      return typeid ( SampleElemC<2,Int16T> ) ;
+
+    if(obj_type == typeid ( SampleElemC<1,UByteT>))
+      return typeid ( SampleElemC<1,UByteT> ) ;
+
+    if(obj_type == typeid ( SampleElemC<2,UByteT>))
+      return typeid ( SampleElemC<2,UByteT> ) ;
+
     return typeid ( SampleElemC<2,Int16T> ) ; // stereo is the default for all others
   }
   
@@ -168,17 +192,25 @@ namespace RavlAudioN {
   
   DPOPortBaseC FileFormatAudioFileBodyC::CreateOutput(const StringC &filename,const type_info &obj_type) const
   { 
-    ONDEBUG(cerr << "FileFormatAudioFileBodyC::CreateOutput(const StringC &,const type_info &), Called. \n");
-    //if(obj_type == typeid(Int16T))
-    //return DPOAudioC<Int16T,AudioFileBaseC>(filename,0);
+    ONDEBUG(RavlDebug("FileFormatAudioFileBodyC::CreateOutput(const StringC &,const type_info &), Called. for %s  ",TypeName(obj_type)));
     if(obj_type == typeid(SampleElemC<2,Int16T>))
       return DPOAudioC<SampleElemC<2,Int16T>,AudioFileBaseC>(filename,0);
+
     if(obj_type == typeid(SampleElemC<1,Int16T>))
       return DPOAudioC<SampleElemC<1,Int16T>, AudioFileBaseC> (filename,0) ;
+
     if(obj_type == typeid(SampleElemC<2,float>))
       return DPOAudioC<SampleElemC<2,float>,AudioFileBaseC>(filename,0);
+
     if(obj_type == typeid(SampleElemC<1,float>))
       return DPOAudioC<SampleElemC<1,float>, AudioFileBaseC> (filename,0) ;
+
+    if(obj_type == typeid(SampleElemC<2,UByteT>))
+      return DPOAudioC<SampleElemC<2,UByteT>,AudioFileBaseC>(filename,0);
+
+    if(obj_type == typeid(SampleElemC<1,UByteT>))
+      return DPOAudioC<SampleElemC<1,UByteT>, AudioFileBaseC> (filename,0) ;
+
    // if(obj_type == typeid(SByteT))
      // return DPOAudioC<SByteT,AudioFileBaseC>(filename,0);
     return DPOPortBaseC();

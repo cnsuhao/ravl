@@ -5,7 +5,6 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 //////////////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! lib=RavlOSIO
 //! file="Ravl/OS/IO/SequenceIO.cc"
 //! author="Charles Galambos"
@@ -19,6 +18,7 @@
 #include "Ravl/DP/FileFormatDesc.hh"
 #include "Ravl/DP/SPortAttach.hh"
 #include "Ravl/DP/FileFormatRegistry.hh"
+#include "Ravl/SysLog.hh"
 
 #define DPDEBUG 0
 #if DPDEBUG
@@ -41,7 +41,10 @@ namespace RavlN {
     if(urlMapper != 0)
       ifilename = urlMapper(fn);
     else ifilename = fn;
-    
+    if(ifilename.IsEmpty()) {
+      RavlError("Can't open an empty filename. ");
+      return false;
+    }
     DPIFileSequenceC fileSeq;
     sc.Invalidate();
     IStreamC inStream;
@@ -82,7 +85,7 @@ namespace RavlN {
       if(!SystemFileFormatRegistry().FindInputFormat(fmtInfo,fileSeq.Filename(),inStream,fileformat,obj_type,verbose))
 	return false; // Failed to find format.
     }
-    ONDEBUG(cerr << "OpenISequenceBase(), Building output stream.... \n");
+    ONDEBUG(cerr << "OpenISequenceBase(), Building input stream.... \n");
     
     DPIPortBaseC ipipe(fileSeq.Setup(fmtInfo));
     // Try a file sequence.

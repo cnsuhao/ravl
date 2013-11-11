@@ -1,7 +1,7 @@
 # This file is part of OmniSoft, Pattern recognition software 
 # Copyright (C) 2002, Omniperception Ltd.
 # file-header-ends-here
-#! file="Contrib/Face/Xml/defs.mk"
+#! file="Contrib/Face/Experiment/defs.mk"
 
 LICENSE=Copyright
 
@@ -15,7 +15,7 @@ DESCRIPTION=Specification of face data sets using XML
 
 PACKAGE = Ravl/Face
 
-MAINS=
+MAINS= doClassifierRoc.cc
 
 SOURCES = Roc.cc
 
@@ -27,12 +27,11 @@ PLIB = RavlFace
 
 SUMMARY_LIB=Ravl
 
-LIBDEPS= 
+LIBDEPS=RavlFaceRoc.def
 
-USESLIBS= RavlMath RavlImageProc RavlCore RavlIO RavlImage RavlOS \
- RavlXMLFactory RavlRLog RavlGnuPlot RavlPatternRec
+USESLIBS= RavlFace
 
-PROGLIBS = RavlExtImgIO.opt RavlPatternRec RavlPatternRecIO
+PROGLIBS = RavlExtImgIO.opt RavlPatternRecIO RavlPatternRec
 
 SCRIPTS=
 

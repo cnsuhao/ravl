@@ -140,6 +140,10 @@ namespace RavlN {
     { return Body().Apply1(data); }
     //: Apply function to 'data'
     
+    float Apply1(const TVectorC<float> &data) const
+    { return Body().Apply1(data); }
+    //: Apply to a vector of floats.
+
   };
   
   inline std::istream &operator>>(std::istream &strm,Function1C &obj) {

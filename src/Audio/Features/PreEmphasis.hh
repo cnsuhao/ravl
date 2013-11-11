@@ -61,10 +61,11 @@ namespace RavlAudioN {
     virtual IntT GetArray(SArray1dC<OutT> &data) {
       SArray1dC<InT> din(data.Size());
       IntT elems = this->input.GetArray(din);
+      //RavlAssert(din.Size() == elems);
       FilterT val;
-      for(SArray1dIter2C<InT,OutT> it(din,data);it;it++) {
-        val = static_cast<FilterT>(it.Data1());
-        it.Data2() = static_cast<OutT>(val - last * alpha);
+      for(int i = 0;i < elems;i++) {
+        val = static_cast<FilterT>(din[i]);
+        data[i] = static_cast<OutT>(val - last * alpha);
         last = val;
       }
       return elems;

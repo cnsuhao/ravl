@@ -14,4 +14,3 @@ SUPPORT_ONLY=linux64
 
 HEADERS=Atomic.hh 
 
-USESLIBS=

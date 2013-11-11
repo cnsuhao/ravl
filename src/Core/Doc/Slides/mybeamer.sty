@@ -1,0 +1,36 @@
+\usepackage{fancyvrb}
+
+\definecolor{titlecolor}{rgb}{0.5,0,0.3}%
+\definecolor{titlebg}   {rgb}{0.9,0.8,1.0}%
+\definecolor{pale}      {rgb}{0.95,0.9,1.0}%
+\definecolor{titlebox}  {rgb}{0.85,0.75,1.0}%
+\definecolor{royalblue} {rgb}{0,0,0.5}%
+\definecolor{lineblue}  {rgb}{0.6,0.5,1.0}%
+\definecolor{white}     {rgb}{1.0,1.0,1.0}%
+\definecolor{grey}      {rgb}{0.5,0.5,0.5}%
+
+\setbeamercolor{code}{fg=red!40!black}
+\setbeamercolor{frametitle}{bg=blue!12!white}
+
+\definecolor{linkcolor} {rgb}{0.92,0.87,1.0}%
+\newcommand{\Href}[2]{\colorbox{linkcolor}{\href{#1}{#2}}}
+
+
+\definecolor{xterm} {rgb}{0.5,0.0,0.0}%
+\DefineVerbatimEnvironment%
+  {VerbatimXterm}%
+  {Verbatim}%
+  {fontsize=\footnotesize,formatcom=\color{xterm}}
+
+
+
+\definecolor{code}      {rgb}{0.4,0.0,0.2}%
+\definecolor{codebox}   {rgb}{0.95,0.8,0.9}%
+\DefineVerbatimEnvironment%
+  {Code}%
+  {Verbatim}%
+  {fontsize=\scriptsize,formatcom=\color{code},gobble=2,frame=single,rulecolor=\color{codebox}}
+
+% To get round angle bracket problem:
+\newcommand{\CodeColour}[3]{\color<#1>{#2}{#3}}
+\def\Codebit#1{{\tt\color{code}#1}}%

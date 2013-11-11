@@ -24,7 +24,7 @@ namespace RavlN {
   
   //! userlevel=Normal
   //: Class for handling 64 bit file IO.
-  // Unfortunatly C++ streams don't reliably support 64 bit file IO. This class encapsulates
+  // Unfortunately C++ streams don't reliably support 64 bit file IO. This class encapsulates
   // the IO calls needed to work with large files.
   
   class FileStreamC {
@@ -48,16 +48,16 @@ namespace RavlN {
     
     IntT Write(const void *data,IntT length);
     //: Write data to file descriptor.
-    // Returns the number of charactors written, or -1 on error.
+    // Returns the number of characters written, or -1 on error.
     
     IntT Read(void *data,IntT length);
     //: Read data from file descriptor.
-    // Returns the number of charactors read, or -1 on error.
+    // Returns the number of characters read, or -1 on error.
     
     IntT WriteAll(const void *data,IntT length);
     //: Write all data to file descriptor.
     // This routine works as Write(), but will handle temporary errors.
-    // Returns the number of charactors read, or -1 on error.
+    // Returns the number of characters read, or -1 on error.
     
     IntT ReadAll(void *data,IntT length);
     //: Read all data from file descriptor.
@@ -92,6 +92,8 @@ namespace RavlN {
     
   private:
     FileStreamC(const FileStreamC &)
+      : fd(0),
+        error(0)
     {}
     //: Hide copy constructor.
   };

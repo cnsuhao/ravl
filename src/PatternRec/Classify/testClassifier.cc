@@ -44,16 +44,18 @@ int testDesignClassifierBayesNormalQuadratic();
 int main() {
   SysLogOpen("testClassifier",false,true,true);
   RAVL_RUN_TEST(GenerateDataSet());
+#if 0
   RAVL_RUN_TEST(testKNearestNeighbour());
   RAVL_RUN_TEST(testAverageNearestNeighbour());
   RAVL_RUN_TEST(testDesignKMeans());
   RAVL_RUN_TEST(testDesignClassifierGaussianMixture());
-  RAVL_RUN_TEST(testDesignClassifierLogisticRegression());
   RAVL_RUN_TEST(testDesignClassifierLogisticRegressionQuadratic());
   RAVL_RUN_TEST(testDesignClassifierWeakLinear());
   RAVL_RUN_TEST(testDesignClassifierBayesNormalLinear());
   RAVL_RUN_TEST(testDesignClassifierBayesNormalQuadratic());
   RAVL_RUN_TEST(testDesignClassifierNeuralNetwork2());
+#endif
+  RAVL_RUN_TEST(testDesignClassifierLogisticRegression());
   RavlInfo("Test passed ok. ");
   return 0;
 }

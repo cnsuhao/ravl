@@ -1,0 +1,13 @@
+# Copyright (C) 2013, Charles Galambos.
+# file-header-ends-here
+
+ifndef PulseAudio_DEF
+
+  PulseAudio_DEF = 1
+
+  EXELIB := $(PulseAudio_LIBS) $(EXELIB)
+
+  INCLUDES += $(PulseAudio_CFLAGS)
+
+endif
+

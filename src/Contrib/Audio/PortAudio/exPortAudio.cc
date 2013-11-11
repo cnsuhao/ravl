@@ -16,6 +16,7 @@
 #include "Ravl/DP/AttributeType.hh"
 #include "Ravl/SysLog.hh"
 #include "Ravl/OS/Date.hh"
+#include "Ravl/DP/PrintIOInfo.hh"
 
 using namespace RavlN;
 using namespace RavlAudioN ; 
@@ -28,24 +29,32 @@ int main(int nargs,char **argv) {
   
   // get some options
   OptionC opt(nargs,argv);
+  bool verbose = opt.Boolean("v",false,"Verbose ");
   StringC idev = opt.String("i","test.wav","Input  device.");
   StringC odev = opt.String("o","@PORTAUDIO","Output device.");
+  bool listFormats = opt.Boolean("lf",false,"List formats ");
+  double sampleRate = opt.Real("sr",0,"Sample rate to use.");
   opt.Check();
+
+  if(listFormats) {
+    PrintIOFormats();
+    return 0;
+  }
 
 
   RavlN::SysLogOpen("exPortAudio",false,true,true,-1,true);
 
   // open the input port 
-  DPIPortC<SampleElemC<2,float> > in;
-  if(!OpenISequence(in,idev)) {
+  DPIPortC<Int16T> in;
+  if(!OpenISequence(in,idev,"",verbose)) {
     RavlError("Failed to open input : %s ",idev.c_str());
     return 1;
   }
   
   
   // now lets setup an output port 
-  DPOPortC<SampleElemC<2,float> > out;
-  if(!OpenOSequence(out,odev)) {
+  DPOPortC<Int16T > out;
+  if(!OpenOSequence(out,odev,"",verbose)) {
     RavlError("Failed to open output : %s ",odev.c_str());
     return 1;
   }
@@ -55,20 +64,37 @@ int main(int nargs,char **argv) {
   DListC<AttributeTypeC> attrList ; 
   in.GetAttrTypes(attrList) ; 
   //cout << "\nAvailable Attributes are :\n" << attrList ;
-  
+#if 1
   // lets get some attributes 
-  RealT sampleRate ; 
-  IntT  sampleBits ; 
-  in.GetAttr("samplerate", sampleRate) ; 
+  IntT  sampleBits ;
+  if(sampleRate != 0) {
+    if(!in.SetAttr("samplerate", sampleRate)) {
+      RavlWarning("Failed to set sample rate.");
+    }
+
+  } else {
+    in.GetAttr("samplerate", sampleRate) ;
+  }
   in.GetAttr("samplebits", sampleBits) ; 
     
   // now lets read data from file and play to device
   RavlInfo("Using a sample rate of %f ",sampleRate);
-  out.SetAttr("samplerate",sampleRate) ; 
+  if(!out.SetAttr("samplerate",sampleRate)) {
+    RavlError("Failed to set output sample rate.");
+  }
+#endif
+
+#if 0
   RavlN::SArray1dC<SampleElemC<2,float> > samples(16);
   while (in.GetArray(samples)) {
     out.PutArray(samples) ; // play sample
   }
+#else
+  RavlN::SArray1dC<Int16T > samples(32);
+  while (in.GetArray(samples)) {
+    out.PutArray(samples) ; // play sample
+  }
+#endif
   RavlN::Sleep(1);
   return 0;
 }

@@ -16,4 +16,3 @@ SUPPORT_ONLY = sol2_7
 
 HEADERS=Atomic.hh 
 
-USESLIBS=

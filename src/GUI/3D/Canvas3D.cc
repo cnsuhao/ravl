@@ -5,7 +5,6 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 /////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! lib=RavlGUI3D
 //! file="Ravl/GUI/3D/Canvas3D.cc"
 
@@ -290,7 +289,7 @@ namespace RavlGUIN
     return true;
   }
 
-  //: Put render instructon into pipe.
+  //: Put render instruction into pipe.
   bool Canvas3DBodyC::Put(const DObject3DC &obj) {
     Manager.Queue(Trigger(Canvas3DC(*this), &Canvas3DC::GUIProcessReq, obj));
     return true;

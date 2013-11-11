@@ -9,7 +9,6 @@
 //! author="Charles Galambos"
 //! docentry="Ravl.API.Images.Filtering"
 //! lib=RavlImageProc
-//! rcsid="$Id$"
 //! userlevel=Normal 
 //! file="Ravl/Image/Processing/Filters/Misc/ImageExtend.hh"
 
@@ -26,7 +25,7 @@ namespace RavlImageN {
     ImageRectangleC rect = image.Frame().Expand(n);
     if(!result.Frame().Contains(rect)) // Is result rectangle big enough.
       result = ImageC<DataT>(rect);
-    // Copy center of image
+    // Copy centre of image
     ImageC<DataT> orgImage(result,image.Frame());
     for(BufferAccess2dIter2C<DataT,DataT> it(orgImage,orgImage.Range2(),image,image.Range2());it;it++)
       it.Data1() = it.Data2();
@@ -43,7 +42,7 @@ namespace RavlImageN {
     ImageRectangleC rect = image.Frame().Expand(n);
     if(!result.Frame().Contains(rect)) // Is result rectangle big enough.
       result = ImageC<DataT>(rect);
-    // Copy center of image
+    // Copy centre of image
     ImageC<DataT> orgImage(result,image.Frame());
     for(BufferAccess2dIter2C<DataT,DataT> it(orgImage,orgImage.Range2(),image,image.Range2());it;it++)
       it.Data1() = it.Data2();
@@ -83,7 +82,7 @@ namespace RavlImageN {
     ImageRectangleC rect = image.Frame().Expand(n);
     if(!result.Frame().Contains(rect)) // Is result rectangle big enough.
       result = ImageC<DataT>(rect);
-    // Copy center of image
+    // Copy centre of image
     ImageC<DataT> orgImage(result,image.Frame());
     for(BufferAccess2dIter2C<DataT,DataT> it(orgImage,orgImage.Range2(),image,image.Range2());it;it++)
       it.Data1() = it.Data2();

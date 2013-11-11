@@ -16,4 +16,3 @@ SUPPORT_ONLY=sol2
 
 HEADERS=Atomic.hh
 
-USESLIBS=

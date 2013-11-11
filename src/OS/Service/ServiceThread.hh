@@ -11,6 +11,7 @@
 #define RAVL_SERVICETHREAD_HEADER 1
 
 #include "Ravl/Service.hh"
+#include "Ravl/Threads/Mutex.hh"
 #include <vector>
 
 namespace RavlN {
@@ -28,7 +29,7 @@ namespace RavlN {
     //! XMLFactory Constructor
     ServiceThreadC(const XMLFactoryContextC &factory);
 
-    //! Write to an ostream
+    //! Write to an std::ostream
     bool Save(std::ostream &strm) const;
 
     //! Write to a binary stream
@@ -37,6 +38,9 @@ namespace RavlN {
 
     //! Start service.
     virtual bool Start();
+
+    //! Start service with owner ptr.
+    bool StartOwner();
 
     //! Shutdown service
     virtual bool Shutdown();
@@ -51,9 +55,9 @@ namespace RavlN {
     typedef RavlN::SmartCallbackPtrC<ServiceThreadC> CBRefT;
 
   protected:
-
-    //! Set to true to exit.
+    MutexC m_accessStarted;
     bool m_started;
+    //! Set to true to exit.
     bool m_terminate;
 
     //! Called when owner handles drop to zero.

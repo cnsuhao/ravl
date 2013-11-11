@@ -45,6 +45,18 @@ namespace RavlN {
 
   }
 
+  //! Create a temporary file.
+  StringC GnuPlot2dC::SetupTmpFile()
+  {
+    if(m_tmpFile.IsEmpty()) {
+      FilenameC tmpFile = "/tmp/data";
+      m_tmpFile = tmpFile.MkTemp(6, -1);
+    } else {
+      m_tmpFile.Remove();
+    }
+    return m_tmpFile;
+  }
+
   /*
    * Plot all on a single graph
    */
@@ -94,8 +106,7 @@ namespace RavlN {
      * Not a big fan of this but can not pipe data to GnuPlot
      * for more complicated plots...
      */
-    FilenameC tmpFile = "/tmp/data";
-    tmpFile = tmpFile.MkTemp(6, -1);
+    StringC tmpFile = SetupTmpFile();
     OStreamC os(tmpFile);
     StringC cmd = "plot ";
     UIntT i = 0;
@@ -185,8 +196,7 @@ namespace RavlN {
       SetYRange(yrange);
     //: Plot a function
 
-    FilenameC tmpFile = "/tmp/data";
-    tmpFile = tmpFile.MkTemp(6, -1);
+    StringC tmpFile = SetupTmpFile();
     OStreamC os(tmpFile);
     StringC cmd;
 
@@ -239,8 +249,8 @@ namespace RavlN {
     RealT min2 = first[feature2];
     RealT max2 = first[feature2];
     SumsNd2C sums(first.Size()); // may as well get mean at same time
-    FilenameC tmpFileData = "/tmp/data";
-    tmpFileData = tmpFileData.MkTemp(6, -1);
+
+    StringC tmpFileData = SetupTmpFile();
     OStreamC osData(tmpFileData);
     for (DataSet2IterC<SampleVectorC, SampleLabelC> it(dataSet); it; it++) {
       sums += it.Data1();
@@ -252,8 +262,7 @@ namespace RavlN {
     }
     osData.Close();
 
-    FilenameC tmpFile = "/tmp/data";
-    tmpFile = tmpFile.MkTemp(6, -1);
+    StringC tmpFile = SetupTmpFile() +"B";
     OStreamC os(tmpFile);
 
     RealT step1 = (max1 - min1) / 500.0;
@@ -297,8 +306,7 @@ namespace RavlN {
       return false;
     }
 
-    FilenameC tmpFile = "/tmp/data";
-    tmpFile = tmpFile.MkTemp(6, -1);
+    StringC tmpFile = SetupTmpFile();
     OStreamC os(tmpFile);
 
     for (RealT d2 = min[1]; d2 < max[1]; d2 += (max[1] - min[1]) / 50.0) {

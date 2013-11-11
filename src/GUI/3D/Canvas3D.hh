@@ -60,7 +60,7 @@ namespace RavlGUIN {
     //: Create a 3D canvas
 
     bool GUIInitGL();
-    //: Initalise GL info
+    //: Initialise GL info
     // Returns false if GL is not available.
 
     virtual bool Create()
@@ -72,7 +72,7 @@ namespace RavlGUIN {
 
     bool GUIBeginGL();
     //: Call before using any GL commands.
-    // This is needed to select currect gl context for the canvas 3d widget
+    // This is needed to select correct gl context for the canvas 3d widget
     // Should only be called by GUI thread.
 
     bool GUIEndGL();
@@ -84,13 +84,13 @@ namespace RavlGUIN {
 
     bool GUIClearBuffers();
     //: clears the buffers
-    // depth buffer and color buffer is cleared
+    // depth buffer and colour buffer is cleared
 
     bool GUIProcessReq(DObject3DC &obj);
     //: Process OpenGL requests. (renders obj on the 3d canvas)
 
     bool Put(const DObject3DC &r);
-    //: Put render instructon into pipe.
+    //: Put render instruction into pipe.
 
     bool SetTextureMode(bool& bTexture)
     { m_bTexture = bTexture; return true; }

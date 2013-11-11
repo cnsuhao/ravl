@@ -108,11 +108,17 @@ namespace RavlN {
       const std::vector<SArray1dC<char> > &Parts() const
       { return m_parts; }
 
+      //! Write out message in human readable form.
+      void Dump(std::ostream &strm) const;
+
       //! Handle to message.
       typedef SmartPtrC<MessageC> RefT;
     protected:
       std::vector<SArray1dC<char> > m_parts;
     };
+
+    //! Dump human readable version of message
+    std::ostream &operator<<(std::ostream &strm,const MessageC &msg);
   }
 }
 

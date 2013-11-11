@@ -199,7 +199,14 @@ namespace RavlAudioN {
   { return(Int16T) (((IntT) samp.channel[0] + (IntT) samp.channel[1]) / 2); }
 
   static Int16T Sample1Int16ToInt16(const SampleElemC < 1, Int16T> &samp)
-  { return(Int16T) samp.channel[0]; }
+  { return samp.channel[0]; }
+
+  static SampleElemC < 1, Int16T> Int16ToSample1Int16(const Int16T &samp)
+  {
+    SampleElemC < 1, Int16T> ret;
+    ret.channel[0] = samp;
+    return ret;
+  }
 
   static float SampleFloatToFloat(const SampleElemC < 1, float> &samp)
   { return samp.channel[0]; }
@@ -221,6 +228,8 @@ namespace RavlAudioN {
   DP_REGISTER_CONVERSION_NAMED(Sample2UByteToReal, 1, "SampleElemC<2,RealT> Sample1UByteToReal (const SampleElemC<2,UByteT> & sample ) ");
   DP_REGISTER_CONVERSION_NAMED(Sample1RealToUByte, 2, "SampleElemC<1,UByteT> Sample1RealToUByte (const SampleElemC<1,RealT> & sample ) ");
   DP_REGISTER_CONVERSION_NAMED(Sample2RealToUByte, 2, "SampleElemC<2,UByteT> Sample1RealToUByte (const SampleElemC<2,RealT> & sample ) ");
+
+  DP_REGISTER_CONVERSION(Int16ToSample1Int16, 1);
 
   DP_REGISTER_CONVERSION(SampleFloatToFloat,1);
   DP_REGISTER_CONVERSION(FloatToSampleFloat,1);

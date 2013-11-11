@@ -51,7 +51,7 @@ namespace RavlImageN {
     //!param: img - Image to filter
     //!param: scaleFactor - the scale factor to apply between levels (2.0 == double size)
     //!param: nScales - Number of scales to generate. -1 = Generate a complete pyramid.
-    //!param: subSample - If true sub-sample the picels as well as filtering.
+    //!param: subSample - If true sub-sample the pixels as well as filtering.
     
     void ComputeImages(const ImageC<PixelT> &img,IntT nScales,bool subSample,bool recursive = false);
     //: Compute images over given scales.
@@ -65,7 +65,7 @@ namespace RavlImageN {
     //!param: img - Image to filter
     //!param: scaleFactor - the scale factor to apply between levels (2.0 == double size)
     //!param: nScales - Number of scales to generate. -1 = Generate a complete pyramid.
-    //!param: subSample - If true sub-sample the picels as well as filtering.
+    //!param: subSample - If true sub-sample the pixels as well as filtering.
     
     ImageC<PixelT> ScaleImage(const ImageC<PixelT> &img,IntT scale,bool subSample,IntT imgScale = 1);
     //: Compute a scaled image and add it to the pyramid.
@@ -88,12 +88,12 @@ namespace RavlImageN {
     //!param: img - Image found
     //!param: actualScale - Scale of image
     //!param: notSmaller - If true use the image with scale equal or larger size to that requested if one is available.
-    //!return: Set to true if image found, only fails if class is not initalised.
+    //!return: Set to true if image found, only fails if class is not initialised.
     
     CollectionC<Tuple3C<RealT,RealT,ImageC<PixelT> > > &Images()
     { return images; }
     //: Access available images.
-    // The objects in the returned collection are tuples consiting of:<ul>
+    // The objects in the returned collection are tuples consisting of:<ul>
     // <li> the filter scale - i.e. the amount of filtering applied, <i>relative to the original image</i>,</li>
     // <li> the pixel scale relative to the original image,</li>
     // <li> the image itself
@@ -101,7 +101,7 @@ namespace RavlImageN {
     const CollectionC<Tuple3C<RealT,RealT,ImageC<PixelT> > > &Images() const
     { return images; }
     //: Access available images.
-    // The objects in the returned collection are tuples consiting of:<ul>
+    // The objects in the returned collection are tuples consisting of:<ul>
     // <li> the filter scale - i.e. the amount of filtering applied, <i>relative to the original image</i>,</li>
     // <li> the pixel scale relative to the original image,</li>
     // <li> the image itself

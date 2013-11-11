@@ -1,0 +1,10 @@
+# This file is part of RAVL, Recognition And Vision Library 
+# Copyright (C) 2013, University of Surrey
+# This code may be redistributed under the terms of the GNU Lesser
+# General Public License (LGPL). See the lgpl.licence file for details or
+# see http://www.gnu.org/copyleft/lesser.html
+# file-header-ends-here
+
+$(error The osg.def file is depreciated in favour of the OpenScenGraph.def file. \
+Please update your defs.mk file to use OpenSceneGraph rather than osg your USESLIBS, PROGLIBS or REQUIRES settings.)
+

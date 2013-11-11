@@ -9,7 +9,6 @@
 //! userlevel=Normal
 //! author="Charles Galambos"
 //! docentry="Ravl.API.Images.Filtering"
-//! rcsid="$Id$"
 //! lib=RavlImageProc
 //! file="Ravl/Image/Processing/Filters/Misc/HomomorphicFilter.hh"
 

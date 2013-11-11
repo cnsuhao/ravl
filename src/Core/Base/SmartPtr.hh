@@ -68,7 +68,11 @@ namespace RavlN {
     bool operator==(const DataT *other) const
     { return this->body == other; }
     //: Equality test with a direct ptr.
-    
+
+    bool operator==(const DataT &other) const
+    { return this->body == &other; }
+    //: Equality test with a reference to an object.
+
     operator DataT *()
     { return this->body; }
     //: Access body.

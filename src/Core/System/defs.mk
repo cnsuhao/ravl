@@ -4,7 +4,6 @@
 # General Public License (LGPL). See the lgpl.licence file for details or
 # see http://www.gnu.org/copyleft/lesser.html
 # file-header-ends-here
-#! rcsid="$Id$"
 #! file="Ravl/Core/System/defs.mk"
 
 PACKAGE=Ravl
@@ -16,14 +15,14 @@ HEADERS=StringList.hh Option.hh TypeName.hh BufStream.hh \
  VirtualConstructor.hh FunctionRegister.hh IndexNd.hh Cache.hh \
  DListExtra.hh VariableLengthCode.hh IndexRange2dSet.hh Base64.hh \
  PointerManager.hh RealRange2dSet.hh TimeCode.hh Duration.hh STL.hh RCWrapIO.hh MD5.hh \
- RealRange1dSet.hh ParseCSV.hh StringArray.hh AString.hh
+ RealRange1dSet.hh ParseCSV.hh StringArray.hh AString.hh IndexRangeSet.hh
 
 SOURCES=StringList.cc Option.cc TypeName.cc BufStream.cc \
  SubStringList.cc XMLStream.cc XMLTree.cc StreamParse.cc \
  VirtualConstructor.cc FunctionRegister.cc IndexNd.cc \
  VariableLengthCode.cc IndexRange2dSet.cc Base64.cc \
  PointerManager.cc RealRange2dSet.cc TimeCode.cc STL.cc MD5.cc \
- RealRange1dSet.cc ParseCSV.cc StringArray.cc AString.cc
+ RealRange1dSet.cc ParseCSV.cc StringArray.cc AString.cc IndexRangeSet.cc
 
 PLIB=RavlCore
 

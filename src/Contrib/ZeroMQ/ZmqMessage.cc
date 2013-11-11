@@ -113,4 +113,35 @@ namespace RavlN {
       m_parts.pop_back();
     }
 
+    //! Write out message in human readable form.
+    void MessageC::Dump(std::ostream &strm) const
+    {
+      strm << "Got " << Parts().size() << " part message:\n";
+      for(unsigned i = 0;i < Parts().size();i++) {
+        StringC src;
+        unsigned size = Parts()[i].Size();
+        if(size > 0) {
+          if(Parts()[i][0] != 0) {
+            src = StringC(Parts()[i].Size(),&Parts()[i][0]);
+          } else {
+            src += "[";
+            const RavlN::SArray1dC<char> &p = Parts()[i];
+            for(unsigned j = 0;j < p.Size();j++)
+              src += StringC((unsigned) p[j]) + StringC(' ');
+            src += "]";
+          }
+        }
+        strm << " Part:" << i << " '" << src.c_str() << "' (" << (unsigned) size << ")";
+      }
+
+    }
+
+    //! Dump human readable version of message
+    std::ostream &operator<<(std::ostream &strm,const MessageC &msg)
+    {
+      msg.Dump(strm);
+      return strm;
+    }
+
+
 }}
