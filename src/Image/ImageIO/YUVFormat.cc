@@ -13,6 +13,7 @@
 #include "Ravl/Image/YUVFormat.hh"
 #include "Ravl/Image/ImgIOYUV.hh"
 #include "Ravl/TypeName.hh"
+#include "Ravl/OS/Filename.hh"
 #include <ctype.h>
 
 #define DPDEBUG 0
@@ -40,7 +41,13 @@ namespace RavlImageN {
   FileFormatYUVBodyC::ProbeLoad(IStreamC &in,const std::type_info &obj_type) const {
     if(!in.good())
       return typeid(void);
-    return typeid(ImageC<ByteYUVValueC>);
+    FilenameC inFile(in.Name());
+    if (inFile.Exists() && 
+        (Extension(inFile) == "yuv") && 
+        DPIImageYUVC::ImgParams().IsElm(inFile.FileSize())
+        )
+      return typeid(ImageC<ByteYUVValueC>);
+    return typeid(void);
   }
 
   const std::type_info &
@@ -82,4 +89,7 @@ namespace RavlImageN {
   
   
   FileFormatYUVC RegisterFileFormatYUV;
+
+  static TypeNameC type2(typeid(ImageC<ByteYUVValueC>),"ImageC<ByteYUVValueC>");
+
 }

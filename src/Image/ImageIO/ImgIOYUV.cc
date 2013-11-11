@@ -24,35 +24,18 @@
 
 namespace RavlImageN {
       
-  // Get the yuv image size from the file size if available.
-  static Index2dC YUVSize(const FilenameC& File) {
-    Index2dC vSize;
-    if (File.Exists()) {
-      switch (File.FileSize()) {
-      case 829440:   vSize = Index2dC( 576, 720); break;
-      case 4147200:  vSize = Index2dC(1080,1920); break;
-      default: throw ExceptionInvalidStreamC(StringC("Unknown yuv file size: ") + (UIntT) File.FileSize() + " bytes");
-      }
-    }
-    return vSize;
-  }
-
-  ////////////////////////
-
   //: Constructor from filename.
   
   DPIImageYUVBodyC::DPIImageYUVBodyC(const StringC & fn)
     : inf(fn,true),
-      done(false),
-      size(YUVSize(fn))
+      done(false)
   {}
 
   //: Constructor from stream.
   
   DPIImageYUVBodyC::DPIImageYUVBodyC(const IStreamC &in)
     : inf(in),
-      done(false),
-      size(YUVSize(in.Name()))
+      done(false)
   {}
 
   //: Is valid data ?
@@ -85,6 +68,12 @@ namespace RavlImageN {
   ImageC<ByteYUVValueC> DPIImageYUVBodyC::Get() {
     if(done)
       throw DataNotReadyC("DPIImageYUVBodyC: Image already read. ");
+
+    // Get the yuv image size from the file size if available.
+    FilenameC iFile(inf.Name());
+    if (!(iFile.Exists() && DPIImageYUVC::ImgParams().IsElm(iFile.FileSize()) ))
+      throw ExceptionInvalidStreamC(StringC("Unknown yuv file size: ") + (UIntT) iFile.FileSize() + " bytes");
+    Index2dC size(DPIImageYUVC::ImgParams()[iFile.FileSize()]);  // image size
 
     ImageC<ByteYUVValueC> img(size[0],size[1]);
     char buff[4];
@@ -156,7 +145,14 @@ namespace RavlImageN {
   DPIImageYUVC::DPIImageYUVC(const IStreamC &strm)
     : DPEntityC(*new DPIImageYUVBodyC(strm))
   {}
-  
+
+  HashC<StreamSizeT,Index2dC> DPIImageYUVC::ImgParams() {
+    HashC<StreamSizeT,Index2dC> params(2);
+    params.Insert(829440, Index2dC( 576, 720));
+    params.Insert(4147200,Index2dC(1080,1920));
+    return params;
+  }
+
   DPOImageYUVC::DPOImageYUVC(const StringC & fn)
     : DPEntityC(*new DPOImageYUVBodyC(fn))
   {}

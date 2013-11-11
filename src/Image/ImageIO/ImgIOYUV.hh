@@ -19,8 +19,11 @@
 #include "Ravl/DP/Port.hh"
 #include "Ravl/Image/Image.hh"
 #include "Ravl/Image/ByteYUVValue.hh"
+#include "Ravl/Index2d.hh"
+#include "Ravl/Hash.hh"
 #include "Ravl/DP/FileFormat.hh"
 #include "Ravl/Stream.hh"
+#include "Ravl/Hash.hh"
 
 namespace RavlImageN {
 
@@ -54,7 +57,6 @@ namespace RavlImageN {
   protected:
     IStreamC inf; // Infile.
     bool done;
-    Index2dC size;  // image size
   };
   
   //: Body for saving a ByteYUV image.
@@ -99,6 +101,9 @@ namespace RavlImageN {
     
     DPIImageYUVC(const IStreamC &strm);
     //: Constructor from stream 
+
+    static HashC<StreamSizeT,Index2dC> ImgParams();
+    //: Returns allowable image parameters for YUV format files
   };
   
   //: Save a YUV image in YUV 422 format.
