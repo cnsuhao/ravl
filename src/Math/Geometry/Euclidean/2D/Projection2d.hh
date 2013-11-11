@@ -103,12 +103,10 @@ namespace RavlN {
     LinePP2dC Project(const LinePP2dC &line) const
     { return LinePP2dC(this->Project(line[0]),this->Project(line[1])); }
     //: Project a line through the transform.
-    // Current implementation is slow, as it inverts the projection each time the method is called.
     
     LinePP2dC operator*(const LinePP2dC &line) const
     { return LinePP2dC(this->Project(line[0]),this->Project(line[1])); }
     //: Project a line through the transform.
-    // Current implementation is slow, as it inverts the projection each time the method is called.
 
     Projection2dC operator*(const Projection2dC &oth) const {
       Matrix3dC diag(Matrix3dC::I());
