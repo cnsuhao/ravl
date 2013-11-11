@@ -23,6 +23,7 @@
 #include "Ravl/CompilerHints.hh"
 
 #include <math.h>
+#include <cmath>
 
 #if RAVL_HAVE_HYPOT
 // CHeck is not being treated as a CUDA header.
