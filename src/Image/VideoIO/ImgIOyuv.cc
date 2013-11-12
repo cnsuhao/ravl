@@ -57,7 +57,7 @@ namespace RavlImageN {
   //: Seek to location in stream.
   // Returns false, if seek failed. (Maybe because its
   // not implemented.)
-  // if an error occurered (Seek returned False) then stream
+  // if an error occurred (Seek returned False) then stream
   // position will not be changed.
   
   bool DPIImageYUVBodyC::Seek(UIntT off) {
@@ -73,7 +73,7 @@ namespace RavlImageN {
   bool DPIImageYUVBodyC::DSeek(IntT off) {
     if(off < 0) {
       if((-off) > (IntT) frameNo)
-	return false; // Seek off begining of data.
+	return false; // Seek off beginning of data.
     }
     UIntT nfrmno = frameNo + off;
     strm.Seek(CalcOffset(nfrmno));
@@ -150,7 +150,7 @@ namespace RavlImageN {
   //: Seek to location in stream.
   // Returns false, if seek failed. (Maybe because its
   // not implemented.)
-  // if an error occurered (Seek returned False) then stream
+  // if an error occurred (Seek returned False) then stream
   // position will not be changed.
   
   bool DPOImageYUVBodyC::Seek(UIntT off) {
@@ -170,7 +170,7 @@ namespace RavlImageN {
   bool DPOImageYUVBodyC::DSeek(IntT off) {
     if(off < 0) {
       if((-off) > ((IntT) frameNo))
-	return false; // Seek off begining of data.
+	return false; // Seek off beginning of data.
     }
     UIntT nfrmno = frameNo + off;
     strm.Seek(CalcOffset(nfrmno));
