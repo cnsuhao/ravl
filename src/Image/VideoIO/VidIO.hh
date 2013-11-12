@@ -19,7 +19,6 @@ namespace RavlImageN {
   extern void InitVidIO(); // This calls all the RavlVideoIO initialisation functions.
   
   extern void InitCifFormat(); // Cif file formats
-  extern void InitYUVFormat(); // Abekas yuv formats.
   extern void InitRGBFormat(); // raw rgb formats.
   extern void InitRawIOFormat(); // raw image formats.
   extern void InitSYUVFormat(); // Abekas Sequence in a single file

@@ -22,7 +22,6 @@
 #include "Ravl/PatternRec/FuncSubset.hh"
 #include "Ravl/PatternRec/ErrorBinaryClassifier.hh"
 #include "Ravl/SArray1dIter2.hh"
-#include "Ravl/Plot/GnuPlot2d.hh"
 
 using namespace RavlN;
 

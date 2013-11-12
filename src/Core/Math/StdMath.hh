@@ -101,7 +101,7 @@ namespace RavlN {
     
   inline bool IsInf(RealT i) {
 #if RAVL_HAVE_ISINF
-    return isinf(i);
+    return std::isinf(i);
 #elif RAVL_HAVE_FINITE
     return !finite(i);
 #elif RAVL_HAVE__FINITE
@@ -110,11 +110,11 @@ namespace RavlN {
 #error "No IsInf() implementation found. "
 #endif
   }
-  //: Is infinit ?
+  //: Is infinite ?
   
   inline bool IsInf(float i) {
 #if RAVL_HAVE_ISINF
-    return isinf(i);
+    return std::isinf(i);
 #elif RAVL_HAVE_FINITE
     return !finite(i);
 #elif RAVL_HAVE__FINITE
@@ -123,7 +123,7 @@ namespace RavlN {
 #error "No IsInf() implementation found. "
 #endif
   }
-  //: Is infinit ?
+  //: Is infinite ?
   
   inline bool IsPInf(RealT i)
   { return ((bool) (i > 0)) && IsInf(i); }
@@ -135,7 +135,7 @@ namespace RavlN {
   
   inline bool IsNan(RealT i) {
 #if RAVL_HAVE_ISNAN
-    return isnan(i);
+    return std::isnan(i);
 #elif RAVL_HAVE__ISNAN
     return (_isnan(i)!=0);
 #elif RAVL_HAVE_ISNAND
@@ -148,7 +148,7 @@ namespace RavlN {
   
   inline bool IsNan(float i) {
 #if RAVL_HAVE_ISNAN
-    return isnan(i);
+    return std::isnan(i);
 #elif RAVL_HAVE__ISNAN
     return (_isnan(i)!=0);
 #elif RAVL_HAVE_ISNAND

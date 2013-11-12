@@ -14,15 +14,12 @@
 namespace RavlImageN {
   
   void InitVidIO() {
-    //InitDPImageIO();
     InitRawIOFormat();
     InitCifFormat();
-    InitYUVFormat();
     InitRGBFormat();
     InitSYUVFormat();
     InitJSFormat();
     InitAviFormat();
-    // InitImgIOComposites(); 
   }
 }
 

@@ -1,19 +1,20 @@
+# This file is part of RAVL, Recognition And Vision Library 
+# Copyright (C) 2013, University of Surrey
+# This code may be redistributed under the terms of the GNU Lesser
+# General Public License (LGPL). See the lgpl.licence file for details or
+# see http://www.gnu.org/copyleft/lesser.html
+# file-header-ends-here
+
 ifndef OSG_DEF
 
-  OSG_DEF = 1
+  $(warning )
+  $(warning The osg.def file is being depreciated in favour of the)
+  $(warning more obviously named OpenScenGraph.def. Please update)
+  $(warning your defs.mk file to use the new name rather than osg)
+  $(warning in your USESLIBS, PROGLIBS or REQUIRES settings.)
+  $(warning )
 
-  EXELIB := -lOpenThreads -losg -losgAnimation -losgDB -losgFX -losgGA \
-   -losgManipulator -losgParticle -losgShadow -losgSim -losgTerrain -losgText \
-   -losgUtil -losgViewer -losgVolume -losgWidget
 
-ifdef OSG_HOME
-
-    INCLUDES += -I$(OSG_HOME)/include
-
-    EXELIB := -Wl,-rpath,$(OSG_HOME)/lib -L$(OSG_HOME)/lib $(EXELIB)
-
-endif
-
-  USERCFLAGS += -pthread -fPIC
+  include OpenSceneGraph.def
 
 endif 

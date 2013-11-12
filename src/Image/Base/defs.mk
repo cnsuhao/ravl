@@ -25,7 +25,7 @@ HEADERS=ImageRectangle.hh Image.hh \
  Font.hh PSFFont.h \
  DrawSymbol.hh DrawFrame.hh DrawCross.hh DrawMask.hh \
  DrawLine.hh DrawCircle.hh DrawPolygon.hh  DrawEllipse.hh\
- Deinterlace.hh BilinearInterpolation.hh \
+ BilinearInterpolation.hh \
  YCbCrBT601Value.hh ByteYCbCrBT601Value.hh UInt16YCbCrBT601Value.hh \
  YCbCr422BT601Value.hh ByteYCbCr422BT601Value.hh UInt16YCbCr422BT601Value.hh \
  YCbCrBT709Value.hh ByteYCbCrBT709Value.hh UInt16YCbCrBT709Value.hh \

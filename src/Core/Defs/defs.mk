@@ -13,7 +13,7 @@ EXTERNALLIBS= DMedia.def GTK.def LibPNG.def Xaw.def posixThreads.def zlib.def \
  libHints AudioFile.def libDepends formatInfo libptp2.def libglade.def \
  CPPUnit.def QtTestRunner.def Xerces.def Perl5.def RLog.def SQLite3.def \
  CUDA.def ReadLine.def GLUT.def php.def ObjC.def RT.def Yajl.def osg.def \
- QGLViewer.def Qt3.def tetgen.def UMFPack.def vlfeat.def \
+ OpenSceneGraph.def QGLViewer.def Qt3.def tetgen.def UMFPack.def vlfeat.def \
  vtk.def vtkCharts.def vtkCommon.def vtkFiltering.def vtkGenericFiltering.def \
  vtkGeovis.def vtkGraphics.def vtkHybrid.def vtkImaging.def vtkInfovis.def \
  vtkIO.def vtkParallel.def vtkQVTK.def vtkRendering.def vtkViews.def \
