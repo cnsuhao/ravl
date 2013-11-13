@@ -479,9 +479,9 @@ $(PROJECT_OUT)/lib/libdep/Ravl.def:
 	$(SHOWIT)echo \# see http://www.gnu.org/copyleft/lesser.html >> $@
 	$(SHOWIT)echo \# file-header-ends-here >> $@
 	$(SHOWIT)echo >> $@
-	$(SHOWIT)echo ifndef RAVL_DEF >> $@
+	$(SHOWIT)echo ifndef Ravl_AUTO_DEF >> $@
 	$(SHOWIT)echo >> $@
-	$(SHOWIT)echo "  RAVL_DEF=1" >> $@
+	$(SHOWIT)echo "  Ravl_AUTO_DEF=1" >> $@
 	$(SHOWIT)echo >> $@
 	$(SHOWIT)echo "  ifndef RAVL_LIBS" >> $@
 	$(SHOWIT)echo "    RAVL_LIBS=-L$(libdir) -lRavl $(ALL_EXTERNAL_LIBS)" >> $@

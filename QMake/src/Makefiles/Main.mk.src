@@ -1208,7 +1208,9 @@ ifdef LOCAL_DEFBASE
   endif
   ifdef SUMMARY_LIB
 	$(SHOWIT)echo '$(REQUIRES_INDENT)  else' >> $(INST_LIBDEF)/$(@F) ; \
-	echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  include $(SUMMARY_LIB).def' >> $(INST_LIBDEF)/$(@F) ; \
+	echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  ifndef $(SUMMARY_LIB)_AUTO_DEF' >> $(INST_LIBDEF)/$(@F) ; \
+	echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)    include $(SUMMARY_LIB).def' >> $(INST_LIBDEF)/$(@F) ; \
+	echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  endif' >> $(INST_LIBDEF)/$(@F) ; \
 	echo >> $(INST_LIBDEF)/$(@F) ; \
 	echo '$(REQUIRES_INDENT)  endif' >> $(INST_LIBDEF)/$(@F) ; \
 	echo >> $(INST_LIBDEF)/$(@F)
