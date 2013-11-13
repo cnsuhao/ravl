@@ -287,6 +287,19 @@ uinsData:
 insDefs:
 	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(PLIB)" != X ] && [ X$(LIBDEPS) = X ] ;\
          then \
+            if [ ! -d $(ABS_DESTDIR)$(datadir)/QMake/Projects/$(PROJECT_DIR)/libdep ] ;\
+            then \
+               if [ X$(QMAKE_INFO) != X ] ;\
+               then \
+                  echo $(MKDIR_P) $(ABS_DESTDIR)$(datadir)/QMake/Projects/$(PROJECT_DIR)/libdep ;\
+               fi ;\
+               $(MKDIR_P) $(ABS_DESTDIR)$(datadir)/QMake/Projects/$(PROJECT_DIR)/libdep ;\
+               RET=$$? ;\
+               if [ $$RET -ne 0 ] ;\
+               then \
+                  exit $$RET ;\
+               fi ;\
+            fi ;\
             if [ X$(QMAKE_INFO) != X ] ;\
             then \
                echo $(INSTALL) $(INSTALLHOME)/lib/libdep/$(PLIB).def $(ABS_DESTDIR)$(datadir)/QMake/Projects/$(PROJECT_DIR)/libdep/$(PLIB).def ; \
