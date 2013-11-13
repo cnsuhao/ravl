@@ -127,5 +127,7 @@ PKG_MAKEFLAGS=$(MAKE_SPECIFIC_MAKEFLAGS)
 
 
 # Default to using Ravl single library
-USE_SINGLE_Ravl=1
+ifndef USE_SINGLE_Ravl
+  USE_SINGLE_Ravl=1
+endif
 
