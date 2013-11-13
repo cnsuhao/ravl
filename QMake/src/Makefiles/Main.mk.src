@@ -1151,7 +1151,8 @@ ifdef LOCAL_DEFBASE
 	echo >> $(INST_LIBDEF)/$(@F)
   endif	
   ifdef SUMMARY_LIB
-	$(SHOWIT)echo '$(REQUIRES_INDENT)  ifneq ($$(USE_SINGLE_$(SUMMARY_LIB)),1) ' >> $(INST_LIBDEF)/$(@F) ;
+	$(SHOWIT)echo '$(REQUIRES_INDENT)  ifneq ($$(USE_SINGLE_$(SUMMARY_LIB)),1) ' >> $(INST_LIBDEF)/$(@F) ; \
+	echo >> $(INST_LIBDEF)/$(@F)
   endif
   ifdef USESLIBS
    ifneq ($(USESLIBS),)
@@ -1188,10 +1189,6 @@ ifdef LOCAL_DEFBASE
 	echo >> $(INST_LIBDEF)/$(@F)
    endif
   endif
-  ifdef MUSTLINK
-	$(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  EXELIB := $(MLOBJPATH) $$(EXELIB)' >> $(INST_LIBDEF)/$(@F) ; \
-	echo >> $(INST_LIBDEF)/$(@F)
-  endif
   ifdef USES_PKGCONFIG_EXELIB
 	$(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  EXELIB := $(USES_PKGCONFIG_EXELIB)  $$(EXELIB)' >> $(INST_LIBDEF)/$(@F) ;
 	$(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  INCLUDES += $(USES_PKGCONFIG_INCLUDES) ' >> $(INST_LIBDEF)/$(@F) ;
@@ -1208,6 +1205,7 @@ ifdef LOCAL_DEFBASE
   endif
   ifdef SUMMARY_LIB
 	$(SHOWIT)echo '$(REQUIRES_INDENT)  else' >> $(INST_LIBDEF)/$(@F) ; \
+	echo >> $(INST_LIBDEF)/$(@F) ; \
 	echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  ifndef $(SUMMARY_LIB)_AUTO_DEF' >> $(INST_LIBDEF)/$(@F) ; \
 	echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)    include $(SUMMARY_LIB).def' >> $(INST_LIBDEF)/$(@F) ; \
 	echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  endif' >> $(INST_LIBDEF)/$(@F) ; \
@@ -1215,6 +1213,12 @@ ifdef LOCAL_DEFBASE
 	echo '$(REQUIRES_INDENT)  endif' >> $(INST_LIBDEF)/$(@F) ; \
 	echo >> $(INST_LIBDEF)/$(@F)
   endif	
+  ifdef MUSTLINK
+	$(SHOWIT)echo '$(REQUIRES_INDENT)  ifndef $$(SHAREDBUILD)' >> $(INST_LIBDEF)/$(@F) ; \
+	echo '$(REQUIRES_INDENT)    EXELIB := $(MLOBJPATH) $$(EXELIB)' >> $(INST_LIBDEF)/$(@F) ; \
+	echo '$(REQUIRES_INDENT)  endif' >> $(INST_LIBDEF)/$(@F) ; \
+	echo >> $(INST_LIBDEF)/$(@F)
+  endif
   ifdef REQUIRES	
 	$(SHOWIT)echo '  endif' >> $(INST_LIBDEF)/$(@F) ; \
 	echo >> $(INST_LIBDEF)/$(@F)
