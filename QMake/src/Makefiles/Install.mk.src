@@ -916,6 +916,6 @@ $(PROJECT_OUT)/Config.Project:
 
 
 $(PROJECT_OUT)/Targets.Project:
-        @if [ X$(QMAKE_INFO) != X ]; then echo No Targets.Project - Using default settings; fi
+	@if [ X$(QMAKE_INFO) != X ]; then echo No Targets.Project - Using default settings; fi
 
 
