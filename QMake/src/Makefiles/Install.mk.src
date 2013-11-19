@@ -285,55 +285,105 @@ uinsData:
          fi
 
 insDefs:
-	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(PLIB)" != X ] && [ X$(LIBDEPS) = X ] ;\
+	@if [ $(OK_TO_INSTALL) = Yes ] ;\
          then \
-            if [ ! -d $(ABS_DESTDIR)$(datadir)/QMake/Projects/$(PROJECT_DIR)/libdep ] ;\
+            if [ "X$(PLIB)" != X ] && [ X$(LIBDEPS) = X ] ;\
             then \
+               if [ ! -d $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)/libdep ] ;\
+               then \
+                  if [ X$(QMAKE_INFO) != X ] ;\
+                  then \
+                     echo $(MKDIR_P) $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)/libdep ;\
+                  fi ;\
+                  $(MKDIR_P) $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)/libdep ;\
+                  RET=$$? ;\
+                  if [ $$RET -ne 0 ] ;\
+                  then \
+                     exit $$RET ;\
+                  fi ;\
+               fi ;\
                if [ X$(QMAKE_INFO) != X ] ;\
                then \
-                  echo $(MKDIR_P) $(ABS_DESTDIR)$(datadir)/QMake/Projects/$(PROJECT_DIR)/libdep ;\
+                  echo '$(SED) -e '\''s\![@]PROJECT_LIBDIR[@]\!$(libdir)\!g'\' ;\
+                  echo '         -e '\''s\![@]PROJECT_INCDIR[@]\!$(includedir)\!g'\' ;\
+                  echo '         $(INSTALLHOME)/lib/libdep/4install/$(PLIB).def.in > $(INSTALLHOME)/lib/libdep/4install/$(PLIB).def' ;\
                fi ;\
-               $(MKDIR_P) $(ABS_DESTDIR)$(datadir)/QMake/Projects/$(PROJECT_DIR)/libdep ;\
-               RET=$$? ;\
-               if [ $$RET -ne 0 ] ;\
+               $(SED) -e 's![@]PROJECT_LIBDIR[@]!$(libdir)!g' \
+                      -e 's![@]PROJECT_INCDIR[@]!$(includedir)!g' \
+                      $(INSTALLHOME)/lib/libdep/4install/$(PLIB).def.in > $(INSTALLHOME)/lib/libdep/4install/$(PLIB).def ;\
+               if [ X$(QMAKE_INFO) != X ] ;\
                then \
-                  exit $$RET ;\
+                  echo $(INSTALL) $(INSTALLHOME)/lib/libdep/4install/$(PLIB).def $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)/libdep/$(PLIB).def ;\
                fi ;\
+               $(INSTALL) $(INSTALLHOME)/lib/libdep/4install/$(PLIB).def $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)/libdep/$(PLIB).def ;\
             fi ;\
-            if [ X$(QMAKE_INFO) != X ] ;\
+            if [ "X$(EXTERNALLIBS)" != X ] ;\
             then \
-               echo $(INSTALL) $(INSTALLHOME)/lib/libdep/$(PLIB).def $(ABS_DESTDIR)$(datadir)/QMake/Projects/$(PROJECT_DIR)/libdep/$(PLIB).def ; \
+               for dotdef in $(EXTERNALLIBS) ;\
+               do \
+                  if [ X$(QMAKE_INFO) != X ] ;\
+                  then \
+                     echo $(INSTALL) $(INSTALLHOME)/lib/libdep/$$dotdef $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)/libdep/$$dotdef ;\
+                  fi ;\
+                  $(INSTALL) $(INSTALLHOME)/lib/libdep/$$dotdef $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)/libdep/$$dotdef ;\
+               done ;\
             fi ;\
-            $(INSTALL) $(INSTALLHOME)/lib/libdep/$(PLIB).def $(ABS_DESTDIR)$(datadir)/QMake/Projects/$(PROJECT_DIR)/libdep/$(PLIB).def ; \
          fi
-#        Install .def file for the current PLIB (do not bother if we are in
-#        a second directory that feeds into a particular library - i.e. if
-#        LIBDEPS is set). Ideally we would do this as part of insLibs, but 
-#        we cannot owing to limitations from Ravl not setting PROJECT_NAME
-#        which we get around by calling insDefs with a PROJECT_DIR=Ravl if
-#        we are installing Ravl.
+#        First install the .def file for the current PLIB (do not bother
+#        if we are in a second directory that feeds into a particular
+#        library - i.e. if LIBDEPS is set). Ideally we would do this as
+#        part of insLibs, but we cannot owing to limitations from Ravl not
+#        setting PROJECT_NAME which we get around by calling insDefs with
+#        a PROJECT_DIR=Ravl if we are installing Ravl.
+#        Second, we install the .def files for any EXTERNALLIBS defined in
+#        the current directory.
+#        The project .def files come from the 4install sub-directory as
+#        the installation version differ from the version used to build
+#        the project. This is not necessary for the EXTERNALLIBS as their
+#        .def files are identical between build and installation.
 
 uinsDefs:
-	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(PLIB)" != X ] && [ X$(LIBDEPS) = X ] ;\
+	@if [ $(OK_TO_INSTALL) = Yes ] ;\
          then \
-            if [ -f $(ABS_DESTDIR)$(datadir)/QMake/Projects/$(PROJECT_DIR)/libdep/$(PLIB).def ] ; \
+            if [ "X$(PLIB)" != X ] && [ X$(LIBDEPS) = X ] ;\
             then \
-               if [ X$(QMAKE_INFO) != X ] ;\
+               if [ -f $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)/libdep/$(PLIB).def ] ; \
                then \
-                  echo $(RM) -f $(ABS_DESTDIR)$(datadir)/QMake/Projects/$(PROJECT_DIR)/libdep/$(PLIB).def  ;\
+                  if [ X$(QMAKE_INFO) != X ] ;\
+                  then \
+                     echo $(RM) -f $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)/libdep/$(PLIB).def  ;\
+                  fi ;\
+                  $(RM) -f $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)/libdep/$(PLIB).def  ;\
                fi ;\
-               $(RM) -f $(ABS_DESTDIR)$(datadir)/QMake/Projects/$(PROJECT_DIR)/libdep/$(PLIB).def  ;\
+            fi ;\
+            if [ "X$(EXTERNALLIBS)" != X ] ;\
+            then \
+               for dotdef in $(EXTERNALLIBS) ;\
+               do \
+                  if [ -f $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)/libdep/$$dotdef ] ; \
+                  then \
+                     if [ X$(QMAKE_INFO) != X ] ;\
+                     then \
+                        echo $(RM) -f $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)/libdep/$$dotdef  ;\
+                     fi ;\
+                     $(RM) -f $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)/libdep/$$dotdef  ;\
+                  fi ;\
+               done ;\
             fi ;\
          fi
-#        Un-install the def files for the current PLIB. Again we check LIBDEPS
-#        to minimise the deletion attempts for libraries constructed from
-#        multiple directories. Unlike the install, you would not want to
-#        automatically delete the .def files when you remove the library as you
-#        may still have an alternative version of the library installed (be that
-#        the version with a different VAR setting or shared opposed to static).
-#        The same Ravl limitations as for the install also apply to unistall,
-#        plus, you do not want to uninstall the .def files for the Ravl "multi"
-#        libs if you want to use existing code with the Ravl single library.
+#        Un-install the .def files for the current PLIB and then the .def files
+#        associated with any declared EXTERNALLIBS. To minimise the deletion
+#        attempts for libraries constructed from multiple directories, we check
+#        LIBDEPS when considering the PLIB .def file. Unlike the install, we
+#        would not want to automatically delete the .def for the PLIB when
+#        uninstalling the library as we may still have an alternative version of
+#        the library installed (be that the version with a different VAR setting
+#        or shared opposed to static). Similar logic applies to the .def for any
+#        EXTERNALLIBS; you do not want to automatically remove those when
+#        uninstalling the PLIB. The same Ravl limitations as for the install
+#        also apply to unistall, plus, you do not want to uninstall the .def
+#        files for the Ravl "multi" libs if you want to use existing code with
+#        the Ravl single library.
 
 insEgs: 
 	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(EXAMPLES)" != X ] ;\
@@ -689,6 +739,58 @@ uinsMains:
             done ;\
          fi
 
+insMustLinks:
+	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(PLIB)" != X ] && [ X$(LIBDEPS) = X ] && [ "X$(MUSTLINK)" != X ] ;\
+         then \
+            if [ ! -d $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)$(RAVL_BODGE)/MustLink ] ;\
+            then \
+               if [ X$(QMAKE_INFO) != X ] ;\
+               then \
+                  echo $(MKDIR_P) $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)$(RAVL_BODGE)/MustLink ;\
+               fi ;\
+               $(MKDIR_P) $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)$(RAVL_BODGE)/MustLink ;\
+               RET=$$? ;\
+               if [ $$RET -ne 0 ] ;\
+               then \
+                  exit $$RET ;\
+               fi ;\
+            fi ;\
+            if [ X$(QMAKE_INFO) != X ] ;\
+            then \
+               echo $(INSTALL) $(INST_FORCEOBJS)/$(basename $(MUSTLINK))$(OBJEXT) $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)$(RAVL_BODGE)/MustLink/$(basename $(MUSTLINK))$(OBJEXT) ; \
+            fi ;\
+            $(INSTALL) $(INST_FORCEOBJS)/$(basename $(MUSTLINK))$(OBJEXT) $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)$(RAVL_BODGE)/MustLink/$(basename $(MUSTLINK))$(OBJEXT) ; \
+         fi
+#        MUSTLINK file for the current PLIB (do not bother if we are in
+#        a second directory that feeds into a particular library - i.e. if
+#        LIBDEPS is set). Ravl poses a problem as PROJECT_DIR is not set
+#        while building, but is needed on install (and is still not set
+#        automatically). RAVL_BODGE is used to compensate for this. This
+#        rule must be called with RAVL_BODGE set to Ravl. Doing that will
+#        effectivly suppliment the null PROJECT_DIR with the Ravl that
+#        install requires.
+
+uinsMustLinks:
+	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(PLIB)" != X ] && [ X$(LIBDEPS) = X ] && [ "X$(MUSTLINK)" != X ] ;\
+         then \
+            if [ -f $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)$(RAVL_BODGE)/MustLink/$(basename $(MUSTLINK))$(OBJEXT) ] ; \
+            then \
+               if [ X$(QMAKE_INFO) != X ] ;\
+               then \
+                  echo $(RM) -f $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)$(RAVL_BODGE)/MustLink/$(basename $(MUSTLINK)$(OBJEXT))  ;\
+               fi ;\
+               $(RM) -f $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)$(RAVL_BODGE)/MustLink/$(basename $(MUSTLINK))$(OBJEXT) ;\
+            fi ;\
+         fi
+#        Un-install the MUSTLINK file for the current PLIB. Again we check LIBDEPS
+#        to minimise the deletion attempts for libraries constructed from
+#        multiple directories. You would not want to automatically delete the 
+#        MUSTLINK files when you remove the library as you may still have an
+#        alternative version of the library installed (be that the version with a
+#        different VAR setting or shared opposed to static).  The same Ravl
+#        limitations (needing RAVL_BODGE to be manually set on the call to this
+#        rule) as for the install also apply to unistall.
+
 insScripts: 
 	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(SCRIPTS)" != X ] ;\
          then \
@@ -852,10 +954,11 @@ recurse:
             done ;\
          fi
 
-.PHONY: default info install install-strip insAUX insConfig insData insDev \
- insEgs insEgData insHdrs insLibs insMains insScripts insTests insTestData \
- recurse uinsAUX uinsConfig uinsData uinsDev uinsEgs uinsEgData uinsHdrs \
- uinsLibs uinsMains uinsScripts uninstall uinsTests uinsTestData 
+.PHONY: default info install install-strip insAUX insConfig insData insDefs \
+ insDev insEgs insEgData insHdrs insMustLinks insLibs insMains insScripts \
+ insTests insTestData recurse uinsAUX uinsConfig uinsData uuinsDefs uinsDev \
+ insEgs uinsEgData uinsHdrs uinsLibs uinsMustLinks uinsMains uinsScripts \
+ uninstall uinsTests uinsTestData 
 
 
 

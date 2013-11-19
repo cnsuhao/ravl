@@ -31127,6 +31127,18 @@ echo > ./Config.QMake.in
 echo \# QMake configuration file - regenerate using configure >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 
+
+echo \# Installation target directory tree for QMake Project files >> ./Config.QMake.in
+echo QMAKE_PROJECT_DEST=@datadir@/QMake/Projects >> ./Config.QMake.in
+echo \# Needed to allow a project build before QMake has been installed. >> ./Config.QMake.in
+echo \# Normally, we would read/install the project files using the >> ./Config.QMake.in
+echo \# QMAKE_PROJECTS variable. However, the value of this varies >> ./Config.QMake.in
+echo \# between an installed copy of QMake and an interim version used >> ./Config.QMake.in
+echo \# when building both the project and QMake in one step. To combat >> ./Config.QMake.in
+echo \# this, we set QMAKE_PROJECT_DEST to the final, concrete, location. >> ./Config.QMake.in
+echo >> ./Config.QMake.in
+
+
 # Define location of compilers and helper programs for build system
 echo >> ./Config.QMake.in
 echo \# List of programs required for the build process >> ./Config.QMake.in

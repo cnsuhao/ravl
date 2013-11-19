@@ -1129,103 +1129,194 @@ endif
 
 ifdef LOCAL_DEFBASE
  ifdef USESLIBS
+
+  # Create .def files for the current PLIB.
+  # We have two files, the local one used while building the project and one
+  # for installation that is used by other projects when they link to this one
+  # after it has been installed. The two files have three areas of commonality
+  # seperated by two seperate lines that vary between the installed or local
+  # version of the .def file. We build three files (with .top, .mid and .tail
+  # suffixes) for the common parts and assemble the two .def from these and
+  # the particular lines specifying the library and MUSTLINK object.
+  # In addition, the .def file for installation will need to be modified on
+  # install (to allow specification of where the project libraries are being
+  # installed). To achieve this, we create a .def.in file here and process it
+  # to the final .def only on install.
+  # The local .def file introduces a dependency on the installation .def.in
+  # file to ensure the latter is built.
+  # The following is the recepie for the local .def file used while building
+  # the current project.
+  $(INST_LIBDEF)/$(LOCAL_DEFBASE).def: $(INST_LIBDEF)/.dir \
+                                       $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/$(LOCAL_DEFBASE).def.top \
+                                       $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/$(LOCAL_DEFBASE).def.mid \
+                                       $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/$(LOCAL_DEFBASE).def.tail \
+                                       $(INST_LIBDEF)/4install/$(LOCAL_DEFBASE).def.in
+	$(SHOWIT)echo "--- Creating working $(@F)" ; \
+	if [ -f $@ ] ; then \
+	  $(CHMOD) +w $@ ; \
+	fi ; \
+	cp $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/$(LOCAL_DEFBASE).def.top $@
+  ifdef PLIB
+   ifndef LIBDEPS
+	$(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  EXELIB := -l$(PLIB) $$(EXELIB)' >> $@
+   endif
+  endif
+	$(SHOWIT)cat $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/$(LOCAL_DEFBASE).def.mid >> $@
+  ifdef MUSTLINK
+	$(SHOWIT)echo '$(REQUIRES_INDENT)  ifndef $$(SHAREDBUILD)' >> $@ ; \
+	echo '$(REQUIRES_INDENT)    EXELIB := $(MLOBJPATH) $$(EXELIB)' >> $@ ; \
+	echo '$(REQUIRES_INDENT)  endif' >> $@
+  endif
+	$(SHOWIT)cat $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/$(LOCAL_DEFBASE).def.tail >> $@
+
+
+  # Recepie for the .def.in file that will ultimately create the .def file to
+  # be installed.
+  $(INST_LIBDEF)/4install/$(LOCAL_DEFBASE).def.in: $(INST_LIBDEF)/4install/.dir \
+                                                $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/$(LOCAL_DEFBASE).def.top \
+                                                $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/$(LOCAL_DEFBASE).def.mid \
+                                                $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/$(LOCAL_DEFBASE).def.tail
+	$(SHOWIT)echo "--- Creating $(@F)" ; \
+	if [ -f $@ ] ; then \
+	  $(CHMOD) +w $@ ; \
+	fi ; \
+	cp $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/$(LOCAL_DEFBASE).def.top $@
+  ifdef PLIB
+   ifndef LIBDEPS
+	$(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  EXELIB := -L@PROJECT_LIBDIR@ -l$(PLIB) $$(EXELIB)' >> $@
+	$(SHOWIT)echo  >> $@
+	$(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  INCLUDES += -I@PROJECT_INCDIR@' >> $@
+   endif
+  endif
+	$(SHOWIT)cat $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/$(LOCAL_DEFBASE).def.mid >> $@
+  ifdef MUSTLINK
+	$(SHOWIT)echo '$(REQUIRES_INDENT)  ifndef $$(SHAREDBUILD)' >> $@ ; \
+	echo '$(REQUIRES_INDENT)    EXELIB := $$(QMAKE_PROJECTS)/$(PROJECT_DIR)$(RAVL_BODGE)/MustLink/$(basename $(MUSTLINK))$(OBJEXT) $$(EXELIB)' >> $@ ; \
+	echo '$(REQUIRES_INDENT)  endif' >> $@
+  endif
+	$(SHOWIT)cat $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/$(LOCAL_DEFBASE).def.tail >> $@
+
+
+
+  # Recepie for the common beginning of the two .def files
   ifeq ($(filter Auto,$(USESLIBS)),)
-   $(INST_LIBDEF)/$(LOCAL_DEFBASE).def: defs.mk $(INST_LIBDEF)/.dir
+   $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/$(LOCAL_DEFBASE).def.top: $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/.dir defs.mk 
   else
    ifndef AUTOUSELIBS
     AUTOUSELIBS := $(shell $(QLIBS) -use -d -p $(ROOTDIR))
    endif
-   $(INST_LIBDEF)/$(LOCAL_DEFBASE).def: defs.mk $(INST_LIBDEF)/.dir $(HEADERS) $(SOURCES) $(MAINS)
+   $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/$(LOCAL_DEFBASE).def.top: $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/.dir defs.mk $(HEADERS) $(SOURCES) $(MAINS)
   endif
 	$(SHOWIT)echo "--- Creating $(@F)" ; \
-	if [ -f $(INST_LIBDEF)/$(@F) ] ; then \
-	  $(CHMOD) +w $(INST_LIBDEF)/$(@F) ; \
+	if [ -f $@ ] ; then \
+	  $(CHMOD) +w $@ ; \
 	fi ; \
-	echo > $(INST_LIBDEF)/$(@F) ; \
-	echo 'ifndef $(LOCAL_DEFBASE)_AUTO_DEF' >> $(INST_LIBDEF)/$(@F) ; \
-	echo >> $(INST_LIBDEF)/$(@F) ; \
-	echo '  $(LOCAL_DEFBASE)_AUTO_DEF=1' >> $(INST_LIBDEF)/$(@F) ; \
-	echo >> $(INST_LIBDEF)/$(@F)
+	echo > $@ ; \
+	echo 'ifndef $(LOCAL_DEFBASE)_AUTO_DEF' >> $@ ; \
+	echo >> $@ ; \
+	echo '  $(LOCAL_DEFBASE)_AUTO_DEF=1' >> $@ ; \
+	echo >> $@
   ifdef REQUIRES	
-	$(SHOWIT)echo '  ifeq ($$(strip $$(filter-out $$(RESOURCES),$(REQUIRES))),)' >> $(INST_LIBDEF)/$(@F) ; \
-	echo >> $(INST_LIBDEF)/$(@F)
+	$(SHOWIT)echo '  ifeq ($$(strip $$(filter-out $$(RESOURCES),$(REQUIRES))),)' >> $@ ; \
+	echo >> $@
   endif	
   ifdef SUMMARY_LIB
-	$(SHOWIT)echo '$(REQUIRES_INDENT)  ifneq ($$(USE_SINGLE_$(SUMMARY_LIB)),1) ' >> $(INST_LIBDEF)/$(@F) ; \
-	echo >> $(INST_LIBDEF)/$(@F)
+	$(SHOWIT)echo '$(REQUIRES_INDENT)  ifneq ($$(USE_SINGLE_$(SUMMARY_LIB)),1) ' >> $@ ; \
+	echo >> $@
   endif
   ifdef USESLIBS
    ifneq ($(USESLIBS),)
     ifneq ($(USESLIBS),None)
      ifeq ($(filter Auto,$(USESLIBS)),)
       ifneq ($(strip $(TARG_USESLIBS_R)),)
-	$(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  include $(TARG_USESLIBS_R)' >> $(INST_LIBDEF)/$(@F) ; \
-	echo >> $(INST_LIBDEF)/$(@F)
+	$(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  include $(TARG_USESLIBS_R)' >> $@ ; \
+	echo >> $@
       endif
       ifneq ($(strip $(TARG_USESLIBS_O)),)
-	$(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  -include $(TARG_USESLIBS_O)' >> $(INST_LIBDEF)/$(@F) ; \
-	echo >> $(INST_LIBDEF)/$(@F)
+	$(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  -include $(TARG_USESLIBS_O)' >> $@ ; \
+	echo >> $@
       endif
      else
       ifneq ($(strip $(AUTOUSELIBS)),)
        ifneq ($(strip $(EXTRA_USESLIBS_R)),)
-	$(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  include $(EXTRA_USESLIBS_R)' >> $(INST_LIBDEF)/$(@F) ; \
-	echo >> $(INST_LIBDEF)/$(@F)
+	$(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  include $(EXTRA_USESLIBS_R)' >> $@ ; \
+	echo >> $@
        endif
        ifneq ($(strip $(EXTRA_USESLIBS_O)),)
-	$(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  -include $(EXTRA_USESLIBS_O)' >> $(INST_LIBDEF)/$(@F) ; \
-	echo >> $(INST_LIBDEF)/$(@F)
+	$(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  -include $(EXTRA_USESLIBS_O)' >> $@ ; \
+	echo >> $@
        endif
       endif
      endif
     endif
    endif
   endif
-	$(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  PLIBDEPENDS += $(PLIB)' >> $(INST_LIBDEF)/$(@F) ; \
-	echo >> $(INST_LIBDEF)/$(@F)
-  ifdef PLIB
-   ifndef LIBDEPS
-	$(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  EXELIB := -l$(PLIB) $$(EXELIB)' >> $(INST_LIBDEF)/$(@F) ; \
-	echo >> $(INST_LIBDEF)/$(@F)
+	$(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  PLIBDEPENDS += $(PLIB)' >> $@ ; \
+	echo >> $@
+
+
+  # Recepie for the common mid-part of the two .def files.
+  ifeq ($(filter Auto,$(USESLIBS)),)
+   $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/$(LOCAL_DEFBASE).def.mid: $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/.dir defs.mk 
+  else
+   ifndef AUTOUSELIBS
+    AUTOUSELIBS := $(shell $(QLIBS) -use -d -p $(ROOTDIR))
    endif
+   $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/$(LOCAL_DEFBASE).def.mid: $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/.dir defs.mk $(HEADERS) $(SOURCES) $(MAINS)
   endif
+	$(SHOWIT)echo "--- Creating $(@F)" ; \
+	if [ -f $@ ] ; then \
+	  $(CHMOD) +w $@ ; \
+	fi ; \
+	echo > $@
   ifdef USES_PKGCONFIG_EXELIB
-	$(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  EXELIB := $(USES_PKGCONFIG_EXELIB)  $$(EXELIB)' >> $(INST_LIBDEF)/$(@F) ;
-	$(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  INCLUDES += $(USES_PKGCONFIG_INCLUDES) ' >> $(INST_LIBDEF)/$(@F) ;
+	$(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  EXELIB := $(USES_PKGCONFIG_EXELIB)  $$(EXELIB)' >> $@ ; \
+	echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  INCLUDES += $(USES_PKGCONFIG_INCLUDES) ' >> $@
   endif	
   ifdef EXTPACKAGE
-        $(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  INCLUDES := -I$$(INSTALLHOME)\include\$(PACKAGE) $$(INCLUDES) ' ; \
-	echo >> $(INST_LIBDEF)/$(@F) ; \
-        echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  ifneq ($(BASE_VAR),none)' ; \
-	echo >> $(INST_LIBDEF)/$(@F) ; \
-        echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)    INCLUDES := -I$$(BASE_INC)\$(PACKAGE) $$(INCLUDES)' ; \
-	echo >> $(INST_LIBDEF)/$(@F) ; \
-        echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  endif' ; \
-	echo >> $(INST_LIBDEF)/$(@F)
+        $(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  INCLUDES := -I$$(INSTALLHOME)\include\$(PACKAGE) $$(INCLUDES) ' >> $@ ; \
+	echo >> $@ ; \
+        echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  ifneq ($(BASE_VAR),none)' >> $@ ; \
+	echo >> $@ ; \
+        echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)    INCLUDES := -I$$(BASE_INC)\$(PACKAGE) $$(INCLUDES)' >> $@ ; \
+	echo >> $@ ; \
+        echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  endif' >> $@ ; \
+	echo >> $@
   endif
   ifdef SUMMARY_LIB
-	$(SHOWIT)echo '$(REQUIRES_INDENT)  else' >> $(INST_LIBDEF)/$(@F) ; \
-	echo >> $(INST_LIBDEF)/$(@F) ; \
-	echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  ifndef $(SUMMARY_LIB)_AUTO_DEF' >> $(INST_LIBDEF)/$(@F) ; \
-	echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)    include $(SUMMARY_LIB).def' >> $(INST_LIBDEF)/$(@F) ; \
-	echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  endif' >> $(INST_LIBDEF)/$(@F) ; \
-	echo >> $(INST_LIBDEF)/$(@F) ; \
-	echo '$(REQUIRES_INDENT)  endif' >> $(INST_LIBDEF)/$(@F) ; \
-	echo >> $(INST_LIBDEF)/$(@F)
+	$(SHOWIT)echo '$(REQUIRES_INDENT)  else' >> $@ ; \
+	echo >> $@ ; \
+	echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  ifndef $(SUMMARY_LIB)_AUTO_DEF' >> $@ ; \
+	echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)    include $(SUMMARY_LIB).def' >> $@ ; \
+	echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  endif' >> $@ ; \
+	echo >> $@ ; \
+	echo '$(REQUIRES_INDENT)  endif' >> $@ ; \
+	echo >> $@
   endif	
-  ifdef MUSTLINK
-	$(SHOWIT)echo '$(REQUIRES_INDENT)  ifndef $$(SHAREDBUILD)' >> $(INST_LIBDEF)/$(@F) ; \
-	echo '$(REQUIRES_INDENT)    EXELIB := $(MLOBJPATH) $$(EXELIB)' >> $(INST_LIBDEF)/$(@F) ; \
-	echo '$(REQUIRES_INDENT)  endif' >> $(INST_LIBDEF)/$(@F) ; \
-	echo >> $(INST_LIBDEF)/$(@F)
+
+
+  # Recepie for the common ending of the two .def files.
+  ifeq ($(filter Auto,$(USESLIBS)),)
+   $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/$(LOCAL_DEFBASE).def.tail: $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/.dir defs.mk 
+  else
+   ifndef AUTOUSELIBS
+    AUTOUSELIBS := $(shell $(QLIBS) -use -d -p $(ROOTDIR))
+   endif
+   $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/$(LOCAL_DEFBASE).def.tail: $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/.dir defs.mk $(HEADERS) $(SOURCES) $(MAINS)
   endif
+	$(SHOWIT)echo "--- Creating $(@F)" ; \
+	if [ -f $@ ] ; then \
+	  $(CHMOD) +w $@ ; \
+	fi ; \
+	echo > $@
   ifdef REQUIRES	
-	$(SHOWIT)echo '  endif' >> $(INST_LIBDEF)/$(@F) ; \
-	echo >> $(INST_LIBDEF)/$(@F)
+	$(SHOWIT)echo '  endif' >> $@ ; \
+	echo >> $@
   endif	
-	$(SHOWIT)echo 'endif' >> $(INST_LIBDEF)/$(@F) ; \
-	echo >> $(INST_LIBDEF)/$(@F)
-	$(SHOWIT)$(CHMOD) 444 $(INST_LIBDEF)/$(@F)
+	$(SHOWIT)echo 'endif' >> $@ ; \
+	echo >> $@
+	$(SHOWIT)$(CHMOD) 444 $@
+	
  endif
 endif
 
