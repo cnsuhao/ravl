@@ -171,7 +171,7 @@ $(OPTIONAL_PROGLIBS) : $(INST_LIB)/.dir
 
   ifneq ($(filter Auto,$(USESLIBS)),)
    ifneq ($(strip $(MAINS) $(TESTEXES)),)
-    AUTOPROGLIBS := $(shell $(QLIBS) -use -d -p $(ROOTDIR))
+    AUTOPROGLIBS := $(shell $(QLIBS) -prog -d -p $(ROOTDIR))
     ifdef LIBDEPS
      AUTOPROGLIBS := $(filter-out $(LIBDEPS),$(AUTOPROGLIBS))
     endif
