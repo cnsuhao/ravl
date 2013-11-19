@@ -9,7 +9,7 @@ PACKAGE=Ravl/OpenSceneGraph
 
 LICENSE=LGPL
 
-REQUIRES=OpenSceneGraph libGL GTKGLExt
+REQUIRES=OpenSceneGraph OpenSceneGraphGTK libGL GTKGLExt
 # NOTE: Do NOT comment out the GTKGLExt, if its not enabled though it may 
 # compile this library will not work.
 
