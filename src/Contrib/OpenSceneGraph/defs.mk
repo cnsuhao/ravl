@@ -31,7 +31,7 @@ MAINS=exOpenSceneGraphWidgetXML.cc
 
 MUSTLINK=MustLinkGtkGlExtInit.cc
 
-USESLIBS=RavlCore RavlGeom RavlImage RavlGUI Ravl3D OpenGL GTK \
+USESLIBS=RavlCore RavlMath RavlImage RavlGUI Ravl3D OpenGL GTK \
  OpenSceneGraphGtk RavlXMLFactory RavlRLog
 
 PROGLIBS=RavlOS RavlImageIO RavlExtImgIO RavlRLog
