@@ -163,7 +163,7 @@ echo >> ./Config.QMake.in
 
 
 echo \# Installation target directory tree for QMake Project files >> ./Config.QMake.in
-echo QMAKE_PROJECT_DEST=@datadir@/QMake/Projects >> ./Config.QMake.in
+echo QMAKE_PROJECT_DEST=@QMAKE_PROJECT_DEST@/QMake/Projects >> ./Config.QMake.in
 echo \# Needed to allow a project build before QMake has been installed. >> ./Config.QMake.in
 echo \# Normally, we would read/install the project files using the >> ./Config.QMake.in
 echo \# QMAKE_PROJECTS variable. However, the value of this varies >> ./Config.QMake.in
@@ -171,6 +171,25 @@ echo \# between an installed copy of QMake and an interim version used >> ./Conf
 echo \# when building both the project and QMake in one step. To combat >> ./Config.QMake.in
 echo \# this, we set QMAKE_PROJECT_DEST to the final, concrete, location. >> ./Config.QMake.in
 echo >> ./Config.QMake.in
+# Now set up QMAKE_PROJECT_DEST..
+dnl#
+dnl# First declate it as an output variable
+AC_SUBST(QMAKE_PROJECT_DEST)
+#
+# Set it to the contents of datadir
+QMAKE_PROJECT_DEST=$datadir
+#
+# Now make sure it is fully expanded (datadir will often be set to a value
+# referencing $prefix; we need to make sure we know the fully expanded value)
+eval Expansion="$QMAKE_PROJECT_DEST"
+while ( test $Expansion != "$QMAKE_PROJECT_DEST")
+do
+   QMAKE_PROJECT_DEST="$Expansion"
+   eval Expansion="$QMAKE_PROJECT_DEST"
+done
+#
+# QMAKE_PROJECT_DEST should now be the fully expanded location of datadir
+
 
 
 # Define location of compilers and helper programs for build system
