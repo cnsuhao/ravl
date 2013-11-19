@@ -108,7 +108,7 @@ namespace RavlImageN {
     OStreamC fout;
   };
 
-  //: Load a PPM image.
+  //: Body class for loading a PNG image.
   
   template<class PixelT>
   class DPIImagePNGBodyC : 

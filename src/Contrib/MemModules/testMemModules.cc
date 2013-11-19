@@ -177,7 +177,6 @@ int testsrv(int argc, char* argv[]) {
   OptionC opt(argc, argv, true);
   //storage related options
   FilenameC   memInDir(opt.String ("mi",  "", "Directory for memory loading"));
-  //FilenameC  memOutDir(opt.String ("mo",  StringC(getenv("PROJECT_OUT")) + "/share/data/tmp/memmodules", "Directory for storing memory"));
   FilenameC  memOutDir(opt.String ("mo",  Resource("data/tmp","memmodules"), "Directory for storing memory"));
   int       startField(opt.Int    ("I",   -1, "Start field to load from memory storage (default: beginning of memory)"));
   int   numberOfFields(opt.Int    ("N",   -1, "Number of fields to load from memory storage (default: until end of memory)"));

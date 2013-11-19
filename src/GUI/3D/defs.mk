@@ -51,7 +51,7 @@ SUMMARY_LIB=Ravl
 
 EXAMPLES = exCanvas3D.cc exView3D.cc exDTexTriMesh3d.cc
 
-USESLIBS = RavlCore RavlGeom RavlGUI OpenGL Ravl3D x11 GTK RavlImage
+USESLIBS = RavlCore RavlMath RavlGUI OpenGL Ravl3D x11 GTK RavlImage
 
 ifeq ($(strip $(filter-out $(RESOURCES),GTKGLExt)),)
 EXTERNALLIBS= GtkGLExt.def

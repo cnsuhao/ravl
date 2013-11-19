@@ -4,8 +4,8 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-#ifndef RAVLDPIMAGEIOPPM_HEADER
-#define RAVLDPIMAGEIOPPM_HEADER
+#ifndef RAVLDPIMAGEIOTIFFB_HEADER
+#define RAVLDPIMAGEIOTIFFB_HEADER
 ///////////////////////////////////////////////////
 //! userlevel=Develop
 //! file="Ravl/Image/ExternalImageIO/Tiff/ImgIOTiffB.hh"
