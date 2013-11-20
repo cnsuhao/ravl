@@ -30180,8 +30180,7 @@ fi
 
           # CUDA is a special case as it requires not only the appropriate
           # libraries but also the NVidia compiler driver (nvcc) and that the
-          # C++ compiler be the GNU version. We already know if we have the
-          # libraries so, test the compilers here...
+          # C++ compiler be the GNU version.  We test the compilers here...
           if ( test x$NVCC = x || test ! -x $NVCC || test x$GXX != xyes )
           then
              case $use_CUDA in
