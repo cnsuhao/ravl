@@ -9,7 +9,7 @@ PACKAGE=Ravl/OpenSceneGraph
 
 LICENSE=LGPL
 
-REQUIRES=OpenSceneGraph libGL GTKGLExt
+REQUIRES=OpenSceneGraph OpenSceneGraphGTK libGL GTKGLExt
 # NOTE: Do NOT comment out the GTKGLExt, if its not enabled though it may 
 # compile this library will not work.
 
@@ -31,7 +31,7 @@ MAINS=exOpenSceneGraphWidgetXML.cc
 
 MUSTLINK=MustLinkGtkGlExtInit.cc
 
-USESLIBS=RavlCore RavlGeom RavlImage RavlGUI Ravl3D OpenGL GTK \
+USESLIBS=RavlCore RavlMath RavlImage RavlGUI Ravl3D OpenGL GTK \
  OpenSceneGraphGtk RavlXMLFactory RavlRLog
 
 PROGLIBS=RavlOS RavlImageIO RavlExtImgIO RavlRLog
