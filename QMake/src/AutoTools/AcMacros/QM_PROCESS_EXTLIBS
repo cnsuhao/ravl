@@ -13,12 +13,12 @@ dnl
 dnl Macro to check if the declared external library packages exist on the
 dnl system. This will check for libraries specified via pkg-configure
 dnl directly and for libraries requiring a compilation check by calling the
-dnl QM_COMPILE_CK_FOR_LIB macro. 
+dnl QM_COMPILE_CK_LIB macro. 
 dnl
 dnl All libraries to be checked for must have previously been declared via
 dnl either the QM_DEFINE_EXTLIB_PC (for libraries that support pkg-config);
 dnl QM_DEFINE_EXTIB_CC (libraries that will require a compilation test) or
-dnl via QM_EFINE_VIRTUAL_EXTLIB (for virtual libraries that are really just
+dnl via QM_DEFINE_VIRTUAL_EXTLIB (for virtual libraries that are really just
 dnl a super-set of other, already declared, external libraries).
 dnl
 dnl This macro also checks for consistency over the header layout employed by
