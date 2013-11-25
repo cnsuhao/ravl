@@ -462,8 +462,8 @@ endif
 
 MKDEPFLAGS=-MM
 AMKDEPFLAGS = -Wp,-MMD,$(WORKTMP)/$*.d
-MKDEPUP = echo '$$(INST_OBJS)' | $(TR) '\n' '/'  > $(INST_DEPEND)/$*.d ; cat $(WORKTMP)/$*.d  >> $(INST_DEPEND)/$*.d ; \
- $(RM) $(WORKTMP)/$*.d
+MKDEPUP = cat $(WORKTMP)/$*.d | $(SED) 's!$(INST_OBJS)!$$(INST_OBJS)!' >> $(INST_DEPEND)/$*.d ; \
+          $(RM) $(WORKTMP)/$*.d
 
 
 # Set appropriate PKG_CFLAGS/CCFLAGS/LDFLAGS/LDLIBFLAGS/NVCCFLAGS for current build
