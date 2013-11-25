@@ -687,9 +687,11 @@ $(TARG_MUSTLINK_OBJS) : $(INST_FORCEOBJS)/%$(OBJEXT) : $(INST_OBJS)/%$(OBJEXT) $
 	$(CP) $(INST_OBJS)/$*$(OBJEXT) $(INST_FORCEOBJS)/$*$(OBJEXT) ; \
 	$(CHMOD) a-w $(INST_FORCEOBJS)/$*$(OBJEXT)
 
+# Standard objects (automatically creates .d dependency file)
+
 $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %$(CXXAUXEXT) $(INST_OBJS)/.dir $(INST_DEPEND)/.dir
-	$(SHOWIT)echo "--- Compile $(VAR_DISPLAY_NAME) $<" ; \
-	if [ -f $(WORKTMP)/$*.d ] ; then \
+	@echo "--- Compile $(VAR_DISPLAY_NAME) $<"
+	$(SHOWIT)if [ -f $(WORKTMP)/$*.d ] ; then \
 	  $(RM) $(WORKTMP)/$*.d ; \
 	fi ; \
 	if $(CCACHE) $(CXX) -c $(CCPPFLAGS) $(PKG_CCFLAGS) $(CCFLAGS) $(INCLUDES) $(AMKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ; then \
@@ -699,8 +701,8 @@ $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %$(CXXAUXEXT) $(INST_OBJS)/.dir $(I
 	fi ; \
 
 $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %$(CXXEXT) $(INST_OBJS)/.dir $(INST_DEPEND)/.dir
-	$(SHOWIT)echo "--- Compile $(VAR_DISPLAY_NAME) $<" ; \
-	if [ -f $(WORKTMP)/$*.d ] ; then \
+	@echo "--- Compile $(VAR_DISPLAY_NAME) $<"
+	$(SHOWIT)if [ -f $(WORKTMP)/$*.d ] ; then \
 	  $(RM) $(WORKTMP)/$*.d ; \
 	fi ; \
 	if $(CCACHE) $(CXX) -c $(CCPPFLAGS) $(PKG_CCFLAGS) $(CCFLAGS) $(INCLUDES) $(AMKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ;  then \
@@ -710,8 +712,8 @@ $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %$(CXXEXT) $(INST_OBJS)/.dir $(INST
 	fi
 
 $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %$(CEXT) $(INST_OBJS)/.dir $(INST_DEPEND)/.dir
-	$(SHOWIT)echo "--- Compile $(VAR_DISPLAY_NAME) $< "; \
-	if [ -f $(WORKTMP)/$*.d ] ; then \
+	@echo "--- Compile $(VAR_DISPLAY_NAME) $< "
+	$(SHOWIT)if [ -f $(WORKTMP)/$*.d ] ; then \
 	  $(RM) $(WORKTMP)/$*.d ; \
 	fi ; \
 	if $(CCACHE) $(CC) -c $(CPPFLAGS) $(PKG_CFLAGS) $(CFLAGS) $(CINCLUDES)  $(AMKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ; then \
@@ -721,8 +723,8 @@ $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %$(CEXT) $(INST_OBJS)/.dir $(INST_D
 	fi
 
 $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %.mm $(INST_OBJS)/.dir $(INST_DEPEND)/.dir
-	$(SHOWIT)echo "--- Compile $(VAR_DISPLAY_NAME) $<" ; \
-	if [ -f $(WORKTMP)/$*.d ] ; then \
+	@echo "--- Compile $(VAR_DISPLAY_NAME) $<"
+	$(SHOWIT)if [ -f $(WORKTMP)/$*.d ] ; then \
 	  $(RM) $(WORKTMP)/$*.d ; \
 	fi ; \
 	if $(CCACHE) $(CXX) -c $(CCPPFLAGS) $(PKG_CCFLAGS) $(CCFLAGS) $(INCLUDES) $(AMKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ;  then \
@@ -732,8 +734,8 @@ $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %.mm $(INST_OBJS)/.dir $(INST_DEPEN
 	fi
 
 $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %.m $(INST_OBJS)/.dir $(INST_DEPEND)/.dir
-	$(SHOWIT)echo "--- Compile $(VAR_DISPLAY_NAME) $< "; \
-	if [ -f $(WORKTMP)/$*.d ] ; then \
+	@echo "--- Compile $(VAR_DISPLAY_NAME) $< "
+	$(SHOWIT)if [ -f $(WORKTMP)/$*.d ] ; then \
 	  $(RM) $(WORKTMP)/$*.d ; \
 	fi ; \
 	if $(CCACHE) $(CC) -c $(CPPFLAGS) $(PKG_CFLAGS) $(CFLAGS) $(CINCLUDES)  $(AMKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ; then \
@@ -744,12 +746,12 @@ $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %.m $(INST_OBJS)/.dir $(INST_DEPEND
 
 ifneq ($(strip $(NVCC)),)
 $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %.cu $(INST_OBJS)/.dir $(INST_DEPEND)/.dir
-	$(SHOWIT)echo "--- Compile $(VAR_DISPLAY_NAME) $< "; \
-	if [ -f $(WORKTMP)/$*.d ] ; then \
+	@echo "--- Compile $(VAR_DISPLAY_NAME) $< "
+	$(SHOWIT)if [ -f $(WORKTMP)/$*.d ] ; then \
 	  $(RM) $(WORKTMP)/$*.d ; \
-	fi ; \
-	echo "---- Object $< "; \
-	if $(NVCC) -c $(CPPFLAGS) $(PKG_NVCCFLAGS) $(NVCCFLAGS) $(CINCLUDES) -o $(INST_OBJS)/$*$(OBJEXT) $< ; then \
+	fi
+	@echo "---- Object $< "
+	$(SHOWIT)if $(NVCC) -c $(CPPFLAGS) $(PKG_NVCCFLAGS) $(NVCCFLAGS) $(CINCLUDES) -o $(INST_OBJS)/$*$(OBJEXT) $< ; then \
 	  echo "---- Depends $< "; \
 	  if $(NVCC) -M $(CPPFLAGS) $(PKG_NVCCFLAGS) $(NVCCFLAGS) $(CINCLUDES) -o $(WORKTMP)/$*.d $< ; then \
 	    $(MKDEPUP) ; \
