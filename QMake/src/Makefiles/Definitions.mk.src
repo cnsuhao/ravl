@@ -462,7 +462,7 @@ endif
 
 MKDEPFLAGS=-MM
 AMKDEPFLAGS = -Wp,-MMD,$(WORKTMP)/$*.d
-MKDEPUP = cat $(WORKTMP)/$*.d | $(SED) 's!$(INST_OBJS)!$$(INST_OBJS)!' >> $(INST_DEPEND)/$*.d ; \
+MKDEPUP = cat $(WORKTMP)/$*.d | $(SED) 's!$(INST_OBJS)!$$(INST_OBJS)!' > $(INST_DEPEND)/$*.d ; \
           $(RM) $(WORKTMP)/$*.d
 
 
