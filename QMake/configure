@@ -6172,13 +6172,18 @@ $as_echo_n "checking which ld is used by $CC... " >&6; }
                 if ( test X`$EXPR X$LD : '\(X[\\/].*\)'` = XX$LD )
                 then
                    # $LD is an absolute path
-                   # Fold all \ to /
-                   LD=`echo "$LD"| $SED 's%\\\\%/%g'`
+                   # Fold all \ to /, drop repeated /s
+                   LD=`echo "$LD"| $SED -e "s%\\\\\%/%g" -e "s%///*%/%g"`
                    # $LD may be an absolute path but might still need
                    # cannonicalisation
                    while test X`$EXPR X$LD : 'X\(.*/\.\./\.*\)'` != X
                    do
-                      LD=`echo $LD | $SED -e "s%/*[^/][^/]*/\.\./%/%g" -e "s%^/*\.\./%/%"`
+                      LD=`echo $LD | $SED -e "s%///*%/%g" -e "s%/*[^/][^/]*/\.\./%/%" -e "s%^/*\.\./%/%"`
+                      # Above sed command uses % as the seperator
+                      # The expressions, in turn,
+                      #   + strip multiple /s down to a single /
+                      #   + convert XXX/dir/../YYY  into XXX/YYY
+                      #   + drop any leading /../ or ../
                    done
                    { $as_echo "$as_me:${as_lineno-$LINENO}: result: $LD" >&5
 $as_echo "$LD" >&6; }

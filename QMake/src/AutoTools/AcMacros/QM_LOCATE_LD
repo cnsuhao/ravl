@@ -108,13 +108,19 @@ AC_DEFUN([QM_LOCATE_LD],
                 if ( test X`$EXPR X$LD : '\(X[[\\/]].*\)'` = XX$LD )
                 then
                    # $LD is an absolute path
-                   # Fold all \ to /
-                   LD=`echo "$LD"| $SED 's%\\\\%/%g'`
+                   # Fold all \ to /, drop repeated /s
+                   LD=`echo "$LD"| $SED -e "s%\\\\\%/%g" -e "s%///*%/%g"`
                    # $LD may be an absolute path but might still need 
                    # cannonicalisation
                    while test X`$EXPR X$LD : 'X\(.*/\.\./\.*\)'` != X
                    do
-                      LD=`echo $LD | $SED -e "s%/*[[^/]][[^/]]*/\.\./%/%g" -e "s%^/*\.\./%/%"`
+                      LD=`echo $LD | $SED -e "s%///*%/%g" -e "s%/*@<:@^/@:>@@<:@^/@:>@*/\.\./%/%" -e "s%^/*\.\./%/%"`
+                      # Above sed command uses % as the seperator
+dnl#                  # Actual second expression is s%/*[^/][^/]*/\.\./%/%
+                      # The expressions, in turn,
+                      #   + strip multiple /s down to a single /
+                      #   + convert XXX/dir/../YYY  into XXX/YYY
+                      #   + drop any leading /../ or ../
                    done
                    AC_MSG_RESULT([$LD])
                 else
