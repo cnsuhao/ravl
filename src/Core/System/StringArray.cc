@@ -14,21 +14,21 @@
 
 namespace RavlN {
   
-  StringArrayC StringArrayC::Split(const StringC &str, const char* delim)
+  StringArrayC StringArrayC::Split(const StringC &str, const char* delim,bool allowEmptyColumn)
   {
     // Assume the first delimiter is most likely...
     UIntT num = str.freq(delim[0])+1;
     if(num < 4) num = 4;
     StringArrayC ret(num);
-    ret.Parse(str, delim);
+    ret.Parse(str, delim,allowEmptyColumn);
     return ret;
   }
   //: Split a string into parts.
 
-  StringArrayC StringArrayC::Split(const char* str, const char* delim)
+  StringArrayC StringArrayC::Split(const char* str, const char* delim,bool allowEmptyColumn)
   {
     StringC tehStr(str);
-    return StringArrayC::Split(tehStr,delim);
+    return StringArrayC::Split(tehStr,delim,allowEmptyColumn);
   }
   //: Split a string into parts.
 
@@ -139,7 +139,7 @@ namespace RavlN {
   }
   
   //: Parses string into list
-  void StringArrayC::Parse (const StringC &text, const char* rdelim) {
+  void StringArrayC::Parse (const StringC &text, const char* rdelim,bool allowEmptyColumn) {
     if(text.length() < 1)
       return ;
     RavlAssert(rdelim != 0);
@@ -156,7 +156,8 @@ namespace RavlN {
       // Skip spaces.
       if(delim[(int) *place]) {
 	place++;
-	continue;
+	if(!allowEmptyColumn)
+	  continue;
       }
       // Found string.
       lstart = place;
