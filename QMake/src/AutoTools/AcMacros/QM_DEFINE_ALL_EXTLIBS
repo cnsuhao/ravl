@@ -66,6 +66,14 @@ AC_DEFUN([QM_DEFINE_ALL_EXTLIBS],
           QM_DEFINE_EXTLIB_PC([RLog],             [librlog])
           QM_DEFINE_EXTLIB_PC([devVideo4Linux2],  [libv4l2])
           QM_DEFINE_EXTLIB_PC([ZeroMQ],           [libzmq])
+          dnl
+          dnl If we ever move to automatically creating the .def file, the
+          dnl following .def files for the above RESOURCES do not match the
+          dnl resource name:
+          dnl    Lib1394dc, AudioFile, AVIFile, libcurl, LibDV, libglade
+          dnl    GTK, GtkGLExt, LibPNG, portAudio, OpenSceneGraphGtk,
+          dnl    Zmq.
+          dnl In addition, devVideo4Linux2 does not currently have a .def file.
 
           dnl 
           dnl Now define those libraries needing manual compilation checks:
@@ -248,7 +256,7 @@ dnl#ToDo#                              [|-lnsl|-lsocket|-lsocket -lnsl|-lresolv]
 dnl#ToDo#                              [netdb.h],
 dnl#ToDo#                              [C]
 dnl#ToDo#                             )
-dnl#ToDo# # NetServ Needs expanding to for different implementations of the
+dnl#ToDo# # NetServ Needs expanding to allow different implementations of the
 dnl#ToDo# # function. Naming of the resource may also be best changed to
 dnl#ToDo#  something such as GHBN or GetHostByName as that better reflects
 dnl#ToDo#  what it is
@@ -524,10 +532,17 @@ dnl
                               [],
                               [C]
                              )
+          dnl
+          dnl To allow generation of the RESOURCES .def files, of the above,
+          dnl the following .def files will need renaming:
+          dnl      LibJPEG, LibLapack, LibTIFF, zlib`
           
           dnl Virtual Pkgs
           QM_DEFINE_VIRTUAL_EXTLIB([libffmpeg], [FFMPEGCDEC FFMPEGCONT FFMPEGSWS FFMPEGUTIL])
           QM_DEFINE_VIRTUAL_EXTLIB([OpenGL], [libGL libGLU])
+          dnl 
+          dnl LibFFmpeg.def will need renaming before we can use automatic
+          dnl .def file creation
           
           
           dnl#JFi:Develop code to prime these by ./configure
@@ -545,11 +560,18 @@ dnl
           dnl#                Name,          Fn,                 Deps,   -l,           .h
           dnl#
           dnl#  ..._EXTLIB_CC([dvdread],     [TBA],              [],     [-ldvdread],  [])
+          dnl#                 Existing .def file is DVDRead.def       
           dnl#  ..._EXTLIB_xC([libClipStationPro], [],           [],     [-ldvsoem],   [])
+          dnl#                 Existing .def file is ClipStationPro.def       
+          dnl#                 Also need to consider libDVSDevice and libDVS 
+          dnl#                 RESOURCES that have no .def and the libdvsoem
+          dnl#                 resource that goes with the DVS_SDK.def file.
           dnl#  ..._EXTLIB_xC([LibGd],       [],                 [],     [-lgd],       [])
           dnl#  ..._EXTLIB_xC([libmcrypt],   [],                 [],     [-lmcrypt],   [])
           dnl#  ..._EXTLIB_xC([libmkl],      [],                 [posixThreads Math], [-lmkl_ia32 -lguide], [])
+          dnl#                 Existing .def file is IntelMKL.def       
           dnl#  ..._EXTLIB_xC([libmpeg2],    [],                 [],     [-lmpeg2],    [])
+          dnl#                 Existing .def file is LibMPEG2.def       
           dnl#  ..._EXTLIB_xC([LibPython],   [],                 [],     [],           [])
           dnl#     May have to use:
           dnl#       PYTHON_VERSION = $(shell python -c "import distutils.sysconfig; print distutils.sysconfig.get_config_var('VERSION')")
@@ -566,10 +588,15 @@ dnl
           dnl#                Name,          Fn,                 Deps,   -l,           .h
           dnl#
           dnl#  ..._EXTLIB_xC([libehs],      [],                 [],     [-lpme -lehs], [])
+          dnl#                 Existing .def file is EHS.def       
           dnl#  ..._EXTLIB_xC([libGuppi],    [],                 [],     [-lguppitank `gnome-config libguppi --libs`], [])
+          dnl#                 Existing .def file is Guppi.def       
           dnl#  ..._EXTLIB_xC([libmpeg],     [],                 [],     [-lmpeg],     [])
+          dnl#                 Existing .def file is LibMPEG.def       
           dnl#  ..._EXTLIB_xC([uEyeSDK],     [],                 [],     [-lueye_api], [])
+          dnl#                 Existing .def file is uEye.def       
           dnl#  ..._EXTLIB_xC([UUIdTheo],    [],                 [],     [-luuid],     [])
+          dnl#                 Existing .def file is uuidTheo.def       
           dnl#  
           dnl#
           dnl# OS Specific
@@ -581,7 +608,7 @@ dnl
           dnl#
           dnl#
           dnl#   Mac OSX Support:
-          dnl#     Currently global MacOSX REQUIRES flag. 
+          dnl#     Currently global MacOSX REQUIRES flag, no MacOSX prefix on .def name. 
           dnl#
           dnl#                Name,          Fn,                 Deps,   -l,           .h
           dnl#
