@@ -1916,14 +1916,15 @@ fi
 if ( test X$use_RLog != 'Xpresent' )
 then
    # Lack of RLog blocks RavlFace libs (libRavlFace and libMarkupTool);
-   # RavlZmqOptimisation; PortAudio_SUPPORT; and XMPP (which in turn blocks
-   # iksemel support)
+   # RavlZmqOptimisation; RavlXMPP (which in turn blocks iksemel and
+   # Loudmouth support) and RavlGUIOpenSceneGraph
    RavlFace_LIBS=""
-   PortAudio_SUPPORT=""
    RavlXMPP=""
    iksemel_SUPPORT=""
+   Loudmouth_SUPPORT=""
    RavlZmqOptimisation=""
-   trace 3 Lack of RLog blocking RavlFace PortAudio, XMPP \(indirectly blocks iksemel\) and RavlZmqOptimisation
+   OpenSceneGraphGTK_SUPPORT=""
+   trace 3 Lack of RLog blocking RavlFace, XMPP \(indirectly blocks iksemel and Loudmouth\) RavlGUIOpenSceneGraph and RavlZmqOptimisation
 fi
 
 if ( test X$use_Socket != 'Xpresent' )

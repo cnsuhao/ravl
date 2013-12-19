@@ -5,7 +5,8 @@
 # see http://www.gnu.org/copyleft/lesser.html
 # file-header-ends-here
 
-REQUIRES=Loudmouth
+REQUIRES=Loudmouth RLog
+# Requirement for RLog is from needing RavlXMPP not a direct requirement
 
 PACKAGE=Ravl/XMPP
 
