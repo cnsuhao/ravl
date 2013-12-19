@@ -14,11 +14,12 @@
 namespace RavlN {
   
   BinOStreamC &operator<<(BinOStreamC & strm,const RealHistogram1dC &hist)  {
-    strm << hist.Offset() << hist.Scale() << ((const SArray1dC<UIntC> &)hist);
+    const SArray1dC<UIntC> &tmp = hist;
+    strm << hist.Offset() << hist.Scale() << tmp;
     return strm;
   }
   
-  BinIStreamC &operator<<(BinIStreamC & strm,RealHistogram1dC &hist) {
+  BinIStreamC &operator>>(BinIStreamC & strm,RealHistogram1dC &hist) {
     RealT offset,scale;
     SArray1dC<UIntC> xhist;
     strm >> offset >> scale >> xhist;

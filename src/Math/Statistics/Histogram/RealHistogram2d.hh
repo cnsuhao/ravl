@@ -121,7 +121,7 @@ namespace RavlN {
   BinOStreamC &operator<<(BinOStreamC & s,const RealHistogram2dC &hist);
   //: Binary stream IO.
   
-  BinIStreamC &operator<<(BinIStreamC & s,RealHistogram2dC &hist);
+  BinIStreamC &operator>>(BinIStreamC & s,RealHistogram2dC &hist);
   //: Binary stream IO.
   
 }

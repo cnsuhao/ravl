@@ -20,6 +20,7 @@
 #include "Ravl/Random.hh"
 #include "Ravl/Resource.hh"
 #include "Ravl/OS/Directory.hh"
+#include "Ravl/UnitTest.hh"
 
 using namespace RavlN;
 
@@ -123,6 +124,15 @@ int testRealHistogram1d() {
   if (rhist.ArrayVote(a)) return __LINE__;
   if(rhist.TotalVotes() != 17) return __LINE__;
   if (rhist[rhist.Bin(0.6)] != 15) return __LINE__;
+
+  {
+    RealHistogram1dC reloaded;
+    if(!TestBinStreamIO(rhist,reloaded))
+      return __LINE__;
+    if(Abs(reloaded.Scale() - rhist.Scale()) > 1e-8) return __LINE__;
+    if(Abs(reloaded.Offset() - rhist.Offset()) > 1e-8) return __LINE__;
+    if(reloaded.Size() != rhist.Size()) return __LINE__;
+  }
   return 0;
 }
 
@@ -132,6 +142,12 @@ int testRealHistogram2d() {
   rhist.Vote(Point2dC(0,0));
   rhist.Vote(Point2dC(5,5));
   if(rhist.TotalVotes() != 3) return __LINE__;
+  {
+    RealHistogram2dC reloaded;
+    if(!TestBinStreamIO(rhist,reloaded))
+      return __LINE__;
+    if(reloaded.Size() != rhist.Size()) return __LINE__;
+  }
   return 0;
 }
 int testRealHistogram3d() {
@@ -140,6 +156,12 @@ int testRealHistogram3d() {
   rhist.Vote(Point3dC(0,0,0));
   rhist.Vote(Point3dC(5,5,5));
   if(rhist.TotalVotes() != 3) return __LINE__;
+  {
+    RealHistogram3dC reloaded;
+    if(!TestBinStreamIO(rhist,reloaded))
+      return __LINE__;
+    if(reloaded.Size() != rhist.Size()) return __LINE__;
+  }
   return 0;
 }
 
@@ -195,5 +217,7 @@ int testIO() {
   IStreamC in(dir + "/histTest");
   in >> y;
   if (x.Total() != y.Total())  return __LINE__;
+
+
   return 0;
 }
