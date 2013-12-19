@@ -59,6 +59,10 @@ namespace RavlN {
     //! Returns false if none found.
     bool ReadNonEmptyLine(StringC &text);
 
+    //! Test if we're at the end of the stream.
+    bool IsEndOfStream() const
+    { return !m_strm.good(); }
+
   protected:
     IStreamC m_strm;
     UIntT m_columns;

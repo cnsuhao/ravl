@@ -30,7 +30,7 @@ namespace RavlN {
     StringC text;
     if(!ReadNonEmptyLine(text))
       return false;
-    StringArrayC strArr = StringArrayC::SplitQuote(text,m_seperators);
+    StringArrayC strArr = StringArrayC::SplitQuote(text,m_seperators,true);
     if(m_columns > 0 && strArr.Size() != m_columns) {
       if(m_throwExceptionOnParseError) {
         throw ExceptionInvalidStreamC("Invalid number of columns found in record");

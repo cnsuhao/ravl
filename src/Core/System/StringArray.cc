@@ -32,7 +32,7 @@ namespace RavlN {
   }
   //: Split a string into parts.
 
-  StringArrayC StringArrayC::SplitQuote(const StringC &text, const char* rdelim )
+  StringArrayC StringArrayC::SplitQuote(const StringC &text, const char* rdelim,bool allowEmptyColumn)
   {
     StringArrayC ret;
     if(text.length() < 1)
@@ -52,7 +52,8 @@ namespace RavlN {
       // Skip spaces.
       if(delim[(int) *place]) {
         place++;
-        continue;
+        if(!allowEmptyColumn)
+          continue;
       }
       // Found string.
       StringC work;
