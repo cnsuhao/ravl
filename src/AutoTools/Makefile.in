@@ -62,6 +62,13 @@ else
  endif
 endif
 
+# Additional files to manually copy into a distribution
+#
+# These need manual specification as they do not always appear in the
+# SOURCES/HEADERS definitions as they are included dependant on RESOURCES
+#
+DIST_ADDITIONS=src/GUI/3D/gdkgl.c src/GUI/3D/gtkglarea.c src/GUI/3D/gdkgl.h src/GUI/3D/gtkglarea.h
+
 # Builds
 
 default: qmake fullsrc Ravl.defs singleoptshared optsharedbin singleoptsharedbin pkgconf
@@ -75,7 +82,7 @@ debugshared: qmake
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=debug SHAREDBUILD=1 NOEXEBUILD=1 libbuild
 
 dist:
-	$(MAKE) -C @abs_srcdir@ -f $(WORKING_QMAKE)/Makefiles/Dist.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project dist
+	$(MAKE) -C @abs_srcdir@ -f $(WORKING_QMAKE)/Makefiles/Dist.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project DIST_ADDITIONS="$(DIST_ADDITIONS)" dist 
 
 doc: qmake
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/.. -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) PROJECT_NAME=Ravl PROJECT_DESC="RAVL, Recognition And Vision Library" LLP="LD_LIBRARY_PATH=$(PROJECT_OUT)/lib/$(ARC)/opt/shared/single:$$LD_LIBRARY_PATH" fulldoc

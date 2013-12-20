@@ -27,7 +27,7 @@ $(PROJECT_OUT)/$(PROJECT_DISTDIR).tgz: $(PROJECT_OUT)/$(PROJECT_DISTDIR)
 	$(SHOWIT)cd $(PROJECT_OUT)/$(PROJECT_DISTDIR) ; \
 	         tar -cvf - . | gzip -9 -c >$(PROJECT_OUT)/$(PROJECT_DISTDIR).tgz 
 
-$(PROJECT_OUT)/$(PROJECT_DISTDIR): remake_distdir populate_distdir
+$(PROJECT_OUT)/$(PROJECT_DISTDIR): remake_distdir populate_distdir add_additions
 	@
 
 remake_distdir:
@@ -64,5 +64,27 @@ ifneq ($(strip $(SUBDIRS)),)
 	         done
 endif
 
-.PHONY:remake_distdir populate_distdir
+add_additions:
+	@if [ X"$(DIST_ADDITIONS)" != X ] ; \
+        then \
+	    for ADDITION in $(DIST_ADDITIONS) ; \
+	    do \
+	        DESTDIR=`dirname $(PROJECT_OUT)/$(PROJECT_DISTDIR)/$(DPATH)/$$ADDITION` ; \
+	        if [ ! -d $$DESTDIR ] ; \
+	        then \
+	            if [ X$(QMAKE_INFO) != X ] ; \
+	            then \
+	                echo $(MKDIR_P) $$DESTDIR ; \
+	            fi ; \
+	            $(MKDIR_P) $$DESTDIR ; \
+	        fi ; \
+	        if [ X$(QMAKE_INFO) != X ] ; \
+	        then \
+	            echo cp $$ADDITION $(PROJECT_OUT)/$(PROJECT_DISTDIR)/$(DPATH)/$$ADDITION ; \
+	        fi ; \
+	        cp $$ADDITION $(PROJECT_OUT)/$(PROJECT_DISTDIR)/$(DPATH)/$$ADDITION ; \
+	    done ; \
+	fi
+
+.PHONY:remake_distdir populate_distdir add_additions
 
