@@ -30,7 +30,7 @@ namespace RavlImageN {
   
   // Note: this class's relationship with 8 bit values is special, when 
   // converting to 16 bit values the most significant bits are used. 
-  // (Or equvialently the values are divided by 256).
+  // (Or equivalently the values are divided by 256).
   
   
   class UInt16YCbCrBT601ValueC
