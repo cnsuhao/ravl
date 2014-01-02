@@ -6,7 +6,7 @@
 # file-header-ends-here
 #! file="Ravl/Contrib/Audio/PulseAudio/defs.mk"
 
-REQUIRES = PulseAudio
+REQUIRES = PulseAudioSimple
 
 #DONOT_SUPPORT=VCPP
 
@@ -26,5 +26,5 @@ USESLIBS=RavlIO RavlAudioUtil RavlAudioIO PulseAudio RavlThreads
 
 PROGLIBS= RavlAudioFile.opt
 
-EXTERNALLIBS=PulseAudio.def
+EXTERNALLIBS=PulseAudioSimple.def
 
