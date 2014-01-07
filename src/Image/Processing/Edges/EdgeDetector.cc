@@ -12,6 +12,8 @@
 #include "Ravl/Image/EdgeDetector.hh"
 #include "Ravl/Image/EdgeSobel.hh"
 #include "Ravl/Image/ImageConv.hh"
+#include "Ravl/CDLIter.hh"
+#include "Ravl/SArray1dIter.hh"
 
 namespace RavlImageN {
 
@@ -160,6 +162,22 @@ namespace RavlImageN {
 	str.InsLast(EdgelC(*it,edgeDr[*it],edgeDc[*it],edgeMag[*it]));
       }
       edgeLists.InsLast(str);
+    }
+    return true;
+  }
+
+
+  //: Apply the edge detector to 'img', generate a boolean image of edges.
+
+  bool EdgeDetectorBodyC::Apply(const ImageC<ByteT> &img, ImageC<bool> &edgeImg) const {
+    DListC<SArray1dC<EdgelC> > edgeLists;
+    if(!Apply(img,edgeLists))  return false;
+    edgeImg = ImageC<bool>(img.Frame());
+    edgeImg.Fill(false);
+    for (ConstDLIterC<SArray1dC<EdgelC> > il(edgeLists); il; ++il) {
+      for (SArray1dIterC<EdgelC> ia(*il); ia; ++ia) {
+        edgeImg[ia->At()] = true;
+      }
     }
     return true;
   }

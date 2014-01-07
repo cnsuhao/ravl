@@ -12,6 +12,7 @@
 #include "Ravl/Point2d.hh"
 #include "Ravl/DList.hh"
 #include "Ravl/Image/ImageConv.hh"
+#include "Ravl/IO.hh"
 //! lib=RavlImageProc
 
 using namespace RavlN;
@@ -59,6 +60,15 @@ int testEdgeDet() {
   DListC<SArray1dC<EdgelC> > edges;
   det.Apply(img, edges);
   cout << "Edges 1:\n" << edges << endl;
+  ImageC<bool> edgeImg;
+  det.Apply(DoubleImageCT2ByteImageCT(img), edgeImg);
+  UIntT tot(0);
+  for (Array2dIterC<bool> i(edgeImg); i; ++i) {
+    if (*i) ++tot;
+  }
+  cout << "tot: " << tot << endl;
+  if (tot != 56) return __LINE__;
+  //Save("@X", edgeImg);
   return 0;
 }
 
