@@ -84,7 +84,10 @@ OPTCFLAGS  = -O2 -march=i686
 OPTCCFLAGS = -O2 -march=i686 
 +# The -fno-math-errno switch used on other x86 platforms is implicit on OSX as
 +# the math library does not set errno
-# -O2 -mcpu=i686 -mfpmath=sse
+# Other platforms have needed -fno-strict-aliasing -Wstrict-aliasing=2 with 
+# certain compiler versions (gcc 4.[012].x). Older compilers (pre 4.2 ?) do
+# not support mtune/march=native; with these we used to employ i686 and
+# possibly -mfpmath=sse
 
 ############################
 # 'debug' variant.
