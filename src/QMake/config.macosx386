@@ -83,12 +83,13 @@ PAR_MAKE = --jobs=$(PROCS)
 
 UNDEFSYMB = -u #
 
-OPTCFLAGS= -O2 -mtune=native -ffast-math
-
-#OPTCFLAGS  = -O2 -ffast-math -march=i686 -fno-strict-aliasing
-#OPTCFLAGS= -O3 -march=i686 -fno-strict-aliasing -fno-math-errno -fno-trapping-math -fno-signaling-nans  -D__FAST_MATH__  -Wstrict-aliasing=2
+OPTCFLAGS  = -O2 -mtune=native
+#OPTCFLAGS  = -O2 -march=i686 -fno-strict-aliasing
+#OPTCFLAGS= -O3 -march=i686 -fno-strict-aliasing -Wstrict-aliasing=2
 #OPTCFLAGS= -O3  -march=i686
 OPTCCFLAGS = $(OPTCFLAGS)
+# The -fno-math-errno switch used on other x86 platforms is implicit on OSX as
+# the math library does not set errno
 
 ############################
 # 'debug' variant.

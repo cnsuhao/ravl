@@ -91,24 +91,32 @@ COMPILER_MAJOR_VERSION=$(basename $(COMPILER_VERSION))
 
 ifeq ($(COMPILER_MAJOR_VERSION),3)
 # Use the following for gcc-3.x
- OPTCFLAGS= -O2 -march=i686 -ffast-math
+ OPTCFLAGS= -O2 -march=i686 -fno-math-errno
 else
 ifeq ($(COMPILER_VERSION),4.3) 
 # Use the following for gcc-4.3.x and later
- OPTCFLAGS= -O2 -mtune=native -ffast-math
+ OPTCFLAGS= -O2 -mtune=native -fno-math-errno
 else
 # Use the following for gcc-4.0.x, 4.1.x, 4.2.x
-# NOTE: -funsafe-math-optimizations and -ffast-math that sets it produce incorrect code with gcc-4.0 and 4.1
 # NOTE: gcc 4.x sometimes produces incorrect code (even where the aliasing rules are followed) with stict-aliasing.
- OPTCFLAGS= -O3 -march=i686 -fno-strict-aliasing -fno-math-errno -fno-trapping-math -fno-signaling-nans  -D__FAST_MATH__  -Wstrict-aliasing=2
+ OPTCFLAGS= -O3 -march=i686 -fno-strict-aliasing -fno-math-errno -Wstrict-aliasing=2
 endif
 endif
+# While using fno-math-errno breaks full standards compliance, it is used to
+# give us a consistant environment across platforms as the math library on OSX
+# never actually sets errno anyway. There is no point in setting this switch
+# globally (i.e. in {C}CFLAGS rather than OPTC{C}FLAGS) as it is not actually
+# enabled if we are not performing an optimised compile.
 
 
 endif
 
 
 OPTCCFLAGS = $(OPTCFLAGS)
+
+LOWOPT = -O -fno-math-errno
+# Again, using fno-math-errno breaks full standards compliance, but is used to
+# give us a consistant environment across platforms.
 
 ############################
 # 'debug' variant.
@@ -123,8 +131,8 @@ endif
 # 'check' variant.
 
 ifeq ($(VAR),check)
- CFLAGS += -O -DQMAKE_CHECK
- CCFLAGS += -O  -DQMAKE_CHECK
+ CFLAGS += $(LOWOPT) -DQMAKE_CHECK
+ CCFLAGS += $(LOWOPT)  -DQMAKE_CHECK
  LDFLAGS += -O
 endif
 
