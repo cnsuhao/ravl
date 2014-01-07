@@ -274,7 +274,7 @@ namespace RavlImageN {
     }
     
     ImageC<RealT> im(img);
-    // Setup images to recieve results.
+    // Set up images to receive results.
     if(dx.IsEmpty())
       dx = ImageC<RealT>(img.Rectangle());
     if(dy.IsEmpty())
