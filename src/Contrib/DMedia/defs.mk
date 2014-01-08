@@ -33,6 +33,4 @@ PROGLIBS=RavlVideoIO RavlImageIO RavlDPDisplay.opt
 
 EHT = SGI_DMedia.html
 
-AUXDIR=libdep
-
-AUXFILES=SGIVL.def
+EXTERNALLIBS=SGIVL.def

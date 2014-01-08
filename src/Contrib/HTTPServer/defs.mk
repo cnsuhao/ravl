@@ -24,7 +24,5 @@ PROGLIBS =
 
 TESTEXES = 
 
-AUXDIR = lib/RAVL/libdep
-
-AUXFILES = EHS.def
+EXTERNALLIBS = EHS.def
 

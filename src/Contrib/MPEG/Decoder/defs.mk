@@ -30,8 +30,6 @@ USESLIBS = RavlImageIO RavlImage RavlOSIO LibMPEG
 
 PROGLIBS = RavlDPDisplay.opt
 
-AUXDIR=lib/RAVL/libdep
-
-AUXFILES=LibMPEG.def
+EXTERNALLIBS=LibMPEG.def
 #USERCFLAGS = -g
 #PROGLIBS = Mopt

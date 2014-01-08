@@ -23,9 +23,7 @@ SOURCES=ImgIODv.cc DvDecode.cc DvIFormat.cc DvFrameConvert.cc
 
 PLIB=RavlDV
 
-AUXDIR=lib/RAVL/libdep
-
-AUXFILES= LibDV.def
+EXTERNALLIBS= LibDV.def
 
 USESLIBS=system RavlCore RavlImage RavlIO RavlOS RavlOSIO glib GTK LibDV  RavlVideoIO RavlAV
 

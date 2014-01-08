@@ -27,6 +27,4 @@ TESTEXES =
 
 EXAMPLES = 
 
-AUXDIR = lib/RAVL/libdep
-
-AUXFILES = NumPy.def
+EXTERNALLIBS = NumPy.def

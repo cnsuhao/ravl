@@ -27,6 +27,4 @@ USESLIBS=RavlPlot RavlGUI Guppi
 
 EXAMPLES=exGuppi.cc
 
-AUXDIR=lib/RAVL/libdep
-
-AUXFILES=Guppi.def
+EXTERNALLIBS=Guppi.def

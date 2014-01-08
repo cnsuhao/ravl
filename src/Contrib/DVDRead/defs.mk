@@ -28,6 +28,4 @@ PROGLIBS = RavlDPDisplay RavlImage
 
 MUSTLINK = InitDVDFormat.cc
 
-AUXFILES = DVDRead.def
-
-AUXDIR = lib/RAVL/libdep
+EXTERNALLIBS = DVDRead.def

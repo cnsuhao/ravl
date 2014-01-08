@@ -23,8 +23,6 @@ USESLIBS=RavlImage LibGd RavlIO
 
 PROGLIBS=RavlDPDisplay
 
-AUXDIR=lib/RAVL/libdep
-
-AUXFILES=LibGd.def
+EXTERNALLIBS=LibGd.def
 
 TESTEXES=testGd.cc

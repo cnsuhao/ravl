@@ -25,8 +25,6 @@ PLIB= RavlURLIO
 
 USESLIBS=RavlCore RavlIO RavlOS RavlThreads libcurl
 
-AUXFILES= libcurl.def
-
-AUXDIR=lib/RAVL/libdep
+EXTERNALLIBS= libcurl.def
 
 EHT=Ravl.API.Core.IO.URL_Handling.html

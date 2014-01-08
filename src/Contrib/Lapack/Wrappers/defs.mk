@@ -25,9 +25,7 @@ USESLIBS = LibLapack
 
 PROGLIBS = RavlCore  RavlOS RavlIO RavlMath
 
-AUXDIR = lib/RAVL/libdep
-
-AUXFILES = LibLapack.def
+EXTERNALLIBS = LibLapack.def
 
 TESTEXES = testLapack.cc
 

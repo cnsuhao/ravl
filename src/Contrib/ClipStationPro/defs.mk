@@ -29,8 +29,6 @@ USESLIBS=ClipStationPro RavlCore RavlImage RavlImageIO RavlThreads
 
 PROGLIBS= RavlOSIO RavlImage RavlMath
 
-AUXFILES= ClipStationPro.def
-
-AUXDIR=lib/RAVL/libdep
+EXTERNALLIBS= ClipStationPro.def
 
 EHT=Ravl.API.Images.Video.Video_IO.ClipStationPro.html

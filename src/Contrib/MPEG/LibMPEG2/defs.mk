@@ -27,6 +27,4 @@ PROGLIBS = RavlGUI RavlDPDisplay
 
 EXAMPLES = exMPEG2.cc exMPEG2Seek.cc
 
-AUXDIR = lib/RAVL/libdep
-
-AUXFILES = LibMPEG2.def
+EXTERNALLIBS = LibMPEG2.def

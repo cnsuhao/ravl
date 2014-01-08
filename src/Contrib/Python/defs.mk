@@ -25,6 +25,4 @@ TESTEXES =
 
 EXAMPLES = exPython.cc exPythonThreaded.cc exPythonMultipleInterpreters.cc exPyGTK.cc
 
-AUXDIR = lib/RAVL/libdep
-
-AUXFILES = Python.def
+EXTERNALLIBS = Python.def

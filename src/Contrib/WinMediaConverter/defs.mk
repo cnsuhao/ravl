@@ -25,6 +25,4 @@ TESTEXES =
 
 EXAMPLES = 
 
-AUXDIR = lib/RAVL/libdep
- 
-AUXFILES = LibDirectShow.def
+EXTERNALLIBS = LibDirectShow.def

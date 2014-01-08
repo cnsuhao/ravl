@@ -26,8 +26,6 @@ USESLIBS=RavlImage LibJasper RavlIO
 
 PROGLIBS=RavlDPDisplay.opt
 
-AUXDIR=lib/RAVL/libdep
-
-AUXFILES=LibJasper.def
+EXTERNALLIBS=LibJasper.def
 
 TESTEXES=testImgIOJasper.cc
