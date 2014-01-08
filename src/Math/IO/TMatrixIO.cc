@@ -11,6 +11,7 @@
 #include "Ravl/DP/Converter.hh"
 #include "Ravl/Matrix.hh"
 #include "Ravl/Vector.hh"
+#include "Ravl/Pair.hh"
 #include "Ravl/VectorMatrix.hh"
 #include "Ravl/DP/FileFormatStream.hh"
 #include "Ravl/DP/FileFormatBinStream.hh"
@@ -22,6 +23,7 @@ namespace RavlN {
   static TypeNameC type4(typeid(SArray1dC<TMatrixC<FloatT> >),"RavlN::SArray1dC<TMatrixC<FloatT>>");
   static TypeNameC type5(typeid(SArray1dC<TVectorC<FloatT> >),"RavlN::SArray1dC<TVectorC<FloatT>>");
   //static TypeNameC type6(typeid(SArray1dC<VectorTMatrixC<FloatT>>),"RavlN::SArray1dC<VectorTMatrixC<FloatT>>");
+  static TypeNameC type7(typeid(PairC<TVectorC<FloatT> >),"RavlN::PairC<TVectorC<FloatT>>");
   
   void InitTMatrixIO()
   {}
@@ -41,7 +43,9 @@ namespace RavlN {
   static FileFormatBinStreamC<SArray1dC<TMatrixC<FloatT> > > FileFormatBinStream_SArray1dC_TMatrix_Float;
   static FileFormatBinStreamC<SArray1dC<TVectorC<FloatT> > > FileFormatBinStream_SArray1dC_TVector_Float;
   //FileFormatBinStreamC<SArray1dC<VectorTMatrixC<FloatT>> > FileFormatBinStream_SArray1dC_VectorMatrix;
-  
+
+  static FileFormatBinStreamC<PairC<TVectorC<FloatT> > > FileFormatStream_Pair_TVector_Float;
+
   //-----------------------------------------------------------------------------------------
   // VectorC converters.
   
