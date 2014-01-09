@@ -141,7 +141,7 @@ namespace RavlImageN {
     return true;
   }
 
-  //: Apply the edge detector to 'img', generate an array of ordered edgels list.
+  //: Apply the edge detector to 'img', generate a list of ordered edgels lists.
   
   bool EdgeDetectorBodyC::Apply(const ImageC<ByteT> &img,DListC<DListC<EdgelC> > &edgeLists) const {
     ImageC<RealT> edgeDr;

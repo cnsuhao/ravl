@@ -7,7 +7,7 @@
 #ifndef RAVLIMAGE_EDGEDETECTOR_HEADER
 #define RAVLIMAGE_EDGEDETECTOR_HEADER 1
 //! author="Charles Galambos"
-//! userlevel=Normal
+//! userlevel=Obsolete
 //! rcsid="$Id$"
 //! lib=RavlImageProc
 //! docentry="Ravl.API.Images.Edges"
@@ -23,7 +23,7 @@
 
 namespace RavlImageN {
 
-  //! userlevel=Develop
+  //! userlevel=Obsolete
   //: Edge detector body
   // This class wraps up all the components you need to go from grey scale image
   // to a list of Edgels or pixel locations.
@@ -87,7 +87,7 @@ namespace RavlImageN {
     bool eightConnect; // Use eight connectivity ?
   };
   
-  //! userlevel=Normal
+  //! userlevel=Obsolete
   //: Edge detector.
   // This class wraps up all the components you need to go from grey scale image
   // to a list of Edgels or pixel locations.

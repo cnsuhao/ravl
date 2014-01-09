@@ -8,6 +8,7 @@
 #include "Ravl/Image/DrawPolygon.hh"
 #include "Ravl/Image/DrawLine.hh"
 #include "Ravl/Image/EdgeDetector.hh"
+#include "Ravl/Image/EdgeDetect.hh"
 #include "Ravl/Polygon2d.hh"
 #include "Ravl/Point2d.hh"
 #include "Ravl/DList.hh"
@@ -55,7 +56,8 @@ int testEdgeDet() {
   DrawLine(img, 25.0, Index2dC(15,6), Index2dC(7,14));
   DrawLine(img, 25.0, Index2dC(15,15), Index2dC(6,15));
 
-  // run Deriche edge detector
+  // run old Deriche edge detector
+  {
   EdgeDetectorC det(true, 4, 8);
   DListC<SArray1dC<EdgelC> > edges;
   det.Apply(img, edges);
@@ -69,7 +71,25 @@ int testEdgeDet() {
   cout << "tot: " << tot << endl;
   if (tot != 56) return __LINE__;
   //Save("@X", edgeImg);
+  }
+
+  // run new Deriche edge detector
+  {
+  EdgeDetectC det;
+  det.SetHysteresis(4,8);
+  det.Apply(img);
+  DListC<SArray1dC<EdgelC> > edges = det.EdgeArrayList();
+  cout << "Edges 2:\n" << edges << endl;
+  ImageC<bool> edgeImg = det.EdgeImg();
+  UIntT tot(0);
+  for (Array2dIterC<bool> i(edgeImg); i; ++i) {
+    if (*i) ++tot;
+  }
+  cout << "tot: " << tot << endl;
+  if (tot != 56) return __LINE__;
+  //Save("@X", edgeImg);
   return 0;
+  }
 }
 
 
