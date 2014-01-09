@@ -19,17 +19,22 @@
 using namespace RavlN;
 using namespace RavlImageN;
 
-int testEdgeDet();
+int testEdgeDet1();
 int testEdgeDet2();
+int testEdgeDet3();
 int testEdgeLink();
 
 int main(int nargs,char **argv) {
   int ln;
-  if((ln = testEdgeDet()) != 0) {
+  if((ln = testEdgeDet1()) != 0) {
     cerr << "test failed on line " << ln << "\n";
     return 1;
   }
   if((ln = testEdgeDet2()) != 0) {
+    cerr << "test failed on line " << ln << "\n";
+    return 1;
+  }
+  if((ln = testEdgeDet3()) != 0) {
     cerr << "test failed on line " << ln << "\n";
     return 1;
   }
@@ -41,7 +46,7 @@ int main(int nargs,char **argv) {
   return 0;
 }
 
-int testEdgeDet() {
+int testEdgeDet1() {
   // set up triangles in image
   ImageC<RealT> img(20,20);
   img.Fill(0.0);
@@ -88,8 +93,8 @@ int testEdgeDet() {
   cout << "tot: " << tot << endl;
   if (tot != 56) return __LINE__;
   //Save("@X", edgeImg);
-  return 0;
   }
+  return 0;
 }
 
 
@@ -162,6 +167,29 @@ int testEdgeDet2() {
 }
 
 
+int testEdgeDet3() {
+  // Check order of hysteresis threshold params is what it says on the tin (i.e. wrong way round).
+  ImageC<RealT> im(10,10);
+  im.Fill(0.0);
+  for (IntT i=0; i<10; ++i) {
+    im[4][i] = i;
+    im[8][i] = i*2;
+  }
+  // Should just pick up row 8
+  EdgeLinkC el = HysteresisThreshold(im,12,5);
+  DListC<DListC<Index2dC> > edges = el.LinkEdges();
+  cout << "\n\nStrongest edges: " << edges;
+  if (edges.Size() != 1) return __LINE__;
+  // Should  pick up rows 4 & 8
+  el = HysteresisThreshold(im,7,3);
+  edges = el.LinkEdges();
+  cout << "More edges: " << edges;
+  if (edges.Size() != 2) return __LINE__;
+
+  return 0;
+}
+
+
 int testEdgeLink() {
   // set up edgel image
   ImageC<RealT> img(20,20);
@@ -171,7 +199,7 @@ int testEdgeLink() {
 
   EdgeLinkC linkImg = HysteresisThreshold(img, 10.5, 12);
   cout << "LinkEdges:\n" << linkImg.LinkEdges() << endl;
-  cout << "ListEdges:\n" << linkImg.ListEdges() << endl;
+  cout << "ListEdges:\n" << linkImg.ListEdges() << endl; // <<< BROKEN
 
   return 0;
 }
