@@ -99,15 +99,27 @@ COMPILER_MAJOR_VERSION=$(basename $(COMPILER_VERSION))
 # the math library does not set errno
 #
 ifeq ($(COMPILER_MAJOR_VERSION),3)
- OPTCFLAGS  = -O2
- OPTCCFLAGS = -O2
- LOWOPT = -O
+ ifndef OPTCCFLAGS
+  OPTCFLAGS  = -O2
+ endif
+ ifndef OPTCFLAGS
+  OPTCCFLAGS = -O2
+ endif
+ ifndef LOWOPT
+  LOWOPT = -O
+ endif
 else
  # NOTE: gcc 4.x sometimes produces incorrect code (even where the aliasing
  # rules are followed) with stict-aliasing.
- OPTCFLAGS= -O2 -fno-strict-aliasing
- OPTCCFLAGS= -O2 -fno-strict-aliasing
- LOWOPT = -O -fno-strict-aliasing
+ ifndef OPTCFLAGS
+  OPTCFLAGS= -O2 -fno-strict-aliasing
+ endif
+ ifndef OPTCCFLAGS
+  OPTCCFLAGS= -O2 -fno-strict-aliasing
+ endif
+ ifndef LOWOPT
+  LOWOPT = -O -fno-strict-aliasing
+ endif
 endif
 
 ############################
