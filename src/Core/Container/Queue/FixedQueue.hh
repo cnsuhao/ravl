@@ -136,6 +136,17 @@ namespace RavlN {
     // 0 is first element in the queue (as accessed by First()), 1-second most etc..
     // Is is up the the user to ensure that no attempt is made to access beyond the last element.
     
+    const T &IndexBackward(IndexC i) const {
+      RavlAssert(i < this->Size());
+      const T *l = &head[-i.V()-1];
+      if(l < ArrayStart())
+        l += SArray1dC<T>::Size();
+      return *l;
+    }
+    // Access queue from most recent item backward.
+    // 0=Last inserted, 1=one before that, and so on.
+    // Is is up the the user to ensure that no attempt is made to access beyond the last element.
+
   protected:
     T *ArrayStart()
     { return this->DataStart(); }

@@ -117,6 +117,12 @@ int TestQueue()
     if(q[3] != 3) return __LINE__;
     if(q[4] != 4) return __LINE__;
     
+    if(q.IndexBackward(0) != 4) return __LINE__;
+    if(q.IndexBackward(1) != 3) return __LINE__;
+    if(q.IndexBackward(2) != 2) return __LINE__;
+    if(q.IndexBackward(3) != 1) return __LINE__;
+    if(q.IndexBackward(4) != 0) return __LINE__;
+
     for(int j = 0;j < 5;j++) {
       if(q.IsEmpty()) {
 	cerr << "IsEmpty test 3 failed. \n";
