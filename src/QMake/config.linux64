@@ -83,13 +83,17 @@ UNDEFSYMB = -u #
 
 ############################
 
+# Optimisation Flags
+#
+# Add -march=native to fully optimise to your machines processor. Please be
+# aware that doing this will restrict cross-machine portability of your
+# binaries. Older compilers (pre 4.2 ?) do not support -march=native; with 
+# these you will need to explicitly specify the appropriate processor type
+# for your machine.
+#
 OPTCFLAGS  = -O2 -fno-math-errno -fno-strict-aliasing
-#-fno-strict-aliasing
-# -O2 -ffast-math -mcpu=i686 -mfpmath=sse -march=native 
 
 OPTCCFLAGS = -O2  -fno-math-errno -fno-strict-aliasing
-#-fno-strict-aliasing
-# -O2 -ffast-math -mcpu=i686 -mfpmath=sse -march=native 
 
 LOWOPT = -O -fno-math-errno
 

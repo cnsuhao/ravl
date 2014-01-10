@@ -83,11 +83,20 @@ PAR_MAKE = --jobs=$(PROCS)
 
 UNDEFSYMB = -u #
 
-OPTCFLAGS  = -O2 -mtune=native
-# Other platforms have needed -fno-strict-aliasing -Wstrict-aliasing=2 with 
-# certain compiler versions (gcc 4.[012].x). Older compilers (pre 4.2 ?) do
-# not support mtune/march=native; with these, we used to employ i686
+# Optimisation Flags
+#
+# Add -march=native to fully optimise to your machines processor. Please be
+# aware that doing this will restrict cross-machine portability of your
+# binaries. Older compilers (pre 4.2 ?) do not support -march=native; with 
+# these you will need to explicitly specify the appropriate processor type
+# for your machine.
+#
+OPTCFLAGS  = -O2
+
 OPTCCFLAGS = $(OPTCFLAGS)
+# Other platforms have needed -fno-strict-aliasing -Wstrict-aliasing=2 with 
+# certain compiler versions (gcc 4.[012].x).
+#
 # The -fno-math-errno switch used on other x86 platforms is implicit on OSX as
 # the math library does not set errno
 
