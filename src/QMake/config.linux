@@ -111,51 +111,14 @@ ifeq ($(COMPILER_MAJOR_VERSION),3)
  endif
 else
  # NOTE: gcc 4.x sometimes produces incorrect code (even where the aliasing rules are followed) with stict-aliasing.
- ifeq ($(COMPILER_VERSION),4.0) 
-  ifndef OPTCFLAGS
-   OPTCFLAGS= -O3 -fno-strict-aliasing -fno-math-errno
-  endif
-  ifndef OPTCCFLAGS
-   OPTCCFLAGS= -O3 -fno-strict-aliasing -fno-math-errno
-  endif
-  ifndef LOWOPT
-   LOWOPT = -O -fno-strict-aliasing -fno-math-errno
-  endif
- else
-  ifeq ($(COMPILER_VERSION),4.1) 
-   ifndef OPTCFLAGS
-    OPTCFLAGS= -O3 -fno-strict-aliasing -fno-math-errno
-   endif
-   ifndef OPTCCFLAGS
-    OPTCCFLAGS= -O3 -fno-strict-aliasing -fno-math-errno
-   endif
-   ifndef LOWOPT
-    LOWOPT = -O -fno-strict-aliasing -fno-math-errno
-   endif
-  else
-   ifeq ($(COMPILER_VERSION),4.2) 
-    ifndef OPTCFLAGS
-     OPTCFLAGS= -O3 -fno-strict-aliasing -fno-math-errno
-    endif
-    ifndef OPTCCFLAGS
-     OPTCCFLAGS= -O3 -fno-strict-aliasing -fno-math-errno
-    endif
-    ifndef LOWOPT
-     LOWOPT = -O -fno-strict-aliasing -fno-math-errno
-    endif
-   else
-    # Use the following for gcc-4.3.x and later
-    ifndef OPTCFLAGS
-     OPTCFLAGS= -O2 -fno-strict-aliasing -fno-math-errno
-    endif
-    ifndef OPTCCFLAGS
-     OPTCCFLAGS= -O2 -fno-strict-aliasing -fno-math-errno
-    endif
-    ifndef LOWOPT
-     LOWOPT = -O -fno-strict-aliasing -fno-math-errno
-    endif
-   endif
-  endif
+ ifndef OPTCFLAGS
+  OPTCFLAGS= -O2 -fno-strict-aliasing -fno-math-errno
+ endif
+ ifndef OPTCCFLAGS
+  OPTCCFLAGS= -O2 -fno-strict-aliasing -fno-math-errno
+ endif
+ ifndef LOWOPT
+  LOWOPT = -O -fno-strict-aliasing -fno-math-errno
  endif
 endif
 # While using fno-math-errno breaks full standards compliance, it is used to
