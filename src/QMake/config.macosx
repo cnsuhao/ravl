@@ -80,6 +80,13 @@ PAR_MAKE = --jobs=$(PROCS)
 
 UNDEFSYMB = -u #
 
+
+COMPILER_VERSION:=$(strip $(shell $(CC) -dumpversion))#
+COMPILER_MAJOR_VERSION=$(basename $(COMPILER_VERSION))
+
+
+############################
+
 # Optimisation Flags
 #
 # Add -march=native to fully optimise to your machines processor. Please be
@@ -88,13 +95,20 @@ UNDEFSYMB = -u #
 # these you will need to explicitly specify the appropriate processor type
 # for your machine.
 #
-OPTCFLAGS  = -O2
-OPTCCFLAGS = -O2
 # The -fno-math-errno switch used on other x86 platforms is implicit on OSX as
 # the math library does not set errno
 #
-# Other platforms have needed -fno-strict-aliasing -Wstrict-aliasing=2 with 
-# certain compiler versions (gcc 4.[012].x). 
+ifeq ($(COMPILER_MAJOR_VERSION),3)
+ OPTCFLAGS  = -O2
+ OPTCCFLAGS = -O2
+ LOWOPT = -O
+else
+ # NOTE: gcc 4.x sometimes produces incorrect code (even where the aliasing
+ # rules are followed) with stict-aliasing.
+ OPTCFLAGS= -O2 -fno-strict-aliasing
+ OPTCCFLAGS= -O2 -fno-strict-aliasing
+ LOWOPT = -O -fno-strict-aliasing
+endif
 
 ############################
 # 'debug' variant.
@@ -109,8 +123,8 @@ endif
 # 'check' variant.
 
 ifeq ($(VAR),check)
- CFLAGS += -O -DQMAKE_CHECK
- CCFLAGS += -O  -DQMAKE_CHECK
+ CFLAGS += $(LOWOPT) -DQMAKE_CHECK
+ CCFLAGS += $(LOWOPT)  -DQMAKE_CHECK
  LDFLAGS += -O 
 endif
 

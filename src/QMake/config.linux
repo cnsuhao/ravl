@@ -103,19 +103,24 @@ COMPILER_MAJOR_VERSION=$(basename $(COMPILER_VERSION))
 ifeq ($(COMPILER_MAJOR_VERSION),3)
  # Use the following for gcc-3.x
  OPTCFLAGS= -O2 -fno-math-errno
+ LOWOPT = -O -fno-math-errno
 else
  # NOTE: gcc 4.x sometimes produces incorrect code (even where the aliasing rules are followed) with stict-aliasing.
  ifeq ($(COMPILER_VERSION),4.0) 
-  OPTCFLAGS= -O3 -fno-strict-aliasing -fno-math-errno -Wstrict-aliasing=2
+  OPTCFLAGS= -O3 -fno-strict-aliasing -fno-math-errno
+  LOWOPT = -O -fno-strict-aliasing -fno-math-errno
  else
   ifeq ($(COMPILER_VERSION),4.1) 
-   OPTCFLAGS= -O3 -fno-strict-aliasing -fno-math-errno -Wstrict-aliasing=2
+   OPTCFLAGS= -O3 -fno-strict-aliasing -fno-math-errno
+   LOWOPT = -O -fno-strict-aliasing -fno-math-errno
   else
    ifeq ($(COMPILER_VERSION),4.2) 
-    OPTCFLAGS= -O3 -fno-strict-aliasing -fno-math-errno -Wstrict-aliasing=2
+    OPTCFLAGS= -O3 -fno-strict-aliasing -fno-math-errno
+    LOWOPT = -O -fno-strict-aliasing -fno-math-errno
    else
     # Use the following for gcc-4.3.x and later
-    OPTCFLAGS= -O2 -fno-math-errno
+    OPTCFLAGS= -O2 -fno-strict-aliasing -fno-math-errno
+    LOWOPT = -O -fno-strict-aliasing -fno-math-errno
    endif
   endif
  endif
@@ -131,10 +136,6 @@ endif
 
 
 OPTCCFLAGS = $(OPTCFLAGS)
-
-LOWOPT = -O -fno-math-errno
-# Again, using fno-math-errno breaks full standards compliance, but is used to
-# give us a consistant environment across platforms.
 
 ############################
 # 'debug' variant.

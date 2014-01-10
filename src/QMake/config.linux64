@@ -81,6 +81,10 @@ PAR_MAKE = --jobs=$(PROCS)
 UNDEFSYMB = -u #
 
 
+COMPILER_VERSION:=$(strip $(shell $(CC) -dumpversion))#
+COMPILER_MAJOR_VERSION=$(basename $(COMPILER_VERSION))
+
+
 ############################
 
 # Optimisation Flags
@@ -91,11 +95,21 @@ UNDEFSYMB = -u #
 # these you will need to explicitly specify the appropriate processor type
 # for your machine.
 #
-OPTCFLAGS  = -O2 -fno-math-errno -fno-strict-aliasing
+ifeq ($(COMPILER_MAJOR_VERSION),3)
+ # Use the following for gcc-3.x
+ OPTCFLAGS= -O2 -fno-math-errno
 
-OPTCCFLAGS = -O2  -fno-math-errno -fno-strict-aliasing
+ OPTCCFLAGS = -O2 -fno-math-errno
 
-LOWOPT = -O -fno-math-errno
+ LOWOPT = -O -fno-math-errno
+else
+ # NOTE: gcc 4.x sometimes produces incorrect code (even where the aliasing rules are followed) with stict-aliasing.
+ OPTCFLAGS  = -O2 -fno-math-errno -fno-strict-aliasing
+
+ OPTCCFLAGS = -O2 -fno-math-errno -fno-strict-aliasing
+
+ LOWOPT = -O -fno-math-errno -fno-strict-aliasing
+endif
 
 # While using fno-math-errno breaks full standards compliance, it is used to
 # give us a consistant environment across platforms as the math library on OSX
