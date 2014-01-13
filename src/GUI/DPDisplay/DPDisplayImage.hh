@@ -307,6 +307,63 @@ namespace RavlGUIN {
   };
 
   
+  //:---------------------------------------------------------------------------------------
+  
+  //! userlevel=Develop
+  //: DPDisplayObj to handle images.
+  
+  class DPDisplayImageBoolBodyC
+    : public DPDisplayObjBodyC
+  {
+  public:
+    DPDisplayImageBoolBodyC(const ImageC<bool> &img);
+    //: Constructor
+    
+    virtual ~DPDisplayImageBoolBodyC() { }
+    //: Need virtual destructor for class with virtual methods
+
+    virtual bool Draw(FrameMarkupC &markup);
+    //: Draw object to canvas.
+    
+    virtual IndexRange2dC Frame() const;
+    //: Find bounding box for object.
+    
+    virtual bool Query(const Vector2dC &pnt,StringC &text);
+    //: Query a point in the display.
+    // Return true if point is within object.
+    
+    virtual bool Save(const StringC &str) const;
+    //: Save to a file.
+
+  protected:
+    ImageC<bool> img;
+  };
+  
+  //! userlevel=Normal
+  //: DPDisplayObj to handle images.
+  
+  class DPDisplayImageBoolC
+    : public DPDisplayObjC
+  {
+  public:
+    DPDisplayImageBoolC(const ImageC<bool> &img)
+      : DPDisplayObjC(*new DPDisplayImageBoolBodyC(img))
+    {}
+    //: Construct from an image.
+    
+    DPDisplayImageBoolC()
+    {}
+    //: Default constructor.
+    // creates an invalid handle.
+
+    DPDisplayImageBoolC(DPDisplayObjC &base)
+      : DPDisplayObjC(dynamic_cast<const DPDisplayImageBoolBodyC *>(BodyPtr(base)))
+    {}
+    //: Base class constructor.
+    // If types do not match an invalid handle is created.
+  };
+
+  
 }
 
 
