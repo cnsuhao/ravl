@@ -1022,3 +1022,8 @@ $(PROJECT_OUT)/Targets.Project:
 	@if [ X$(QMAKE_INFO) != X ]; then echo No Targets.Project - Using default settings; fi
 
 
+.DEFAULT:
+	@echo Unknown installation target: $@
+	@echo
+	@echo QMake aborted owing to unknown target.
+	@exit 22

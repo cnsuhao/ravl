@@ -576,11 +576,22 @@ help:
 	@$(PAGER) $(QMAKE_SUPPORT)/Help.txt
 
 .DEFAULT:
-	@echo
-	@echo Unknown target: $@
-	@echo
-	@$(PAGER) $(QMAKE_SUPPORT)/Help.txt
-	@echo QMake aborted owing to unknown target: $@
+	@if [ -z "$(filter ins%, $@)" ] ; \
+         then \
+            echo Unknown target: $@ ; \
+            echo ; \
+            $(PAGER) $(QMAKE_SUPPORT)/Help.txt ; \
+            echo QMake aborted owing to unknown target: $@ ; \
+         else \
+            if [ "$@" != insinfo ] ; \
+            then \
+              if [ X$(QMAKE_INFO) != X ]; then echo make -f $(QMAKE_MAKEFILES)/Install.mk $@ recurse; fi; \
+              make -f $(QMAKE_MAKEFILES)/Install.mk $@ recurse; \
+            else \
+              if [ X$(QMAKE_INFO) != X ]; then echo make -f $(QMAKE_MAKEFILES)/Install.mk info; fi; \
+              make -f $(QMAKE_MAKEFILES)/Install.mk info; \
+            fi; \
+         fi
 
 $(PROJECT_OUT)/Config.Project:
 	@if [ X$(QMAKE_INFO) != X ]; then echo No Config.Project - Using default settings; fi
