@@ -61,7 +61,12 @@ namespace RavlN {
     
     static DateC TimeZoneOffset();
     //: Get the local timezone offset.  (Note around daylight saving this may change.)
-    
+
+    static DateC FromString(const StringC &dataString, bool isLocalTimeZone = false);
+    //: Generate date from a string.
+    //!param: dataString - ODBC style date e.g. '2012-11-22 00:00:00'
+    //!param: isLocalTimeZone - When true assumes parameters are in the local timezone.  It will convert to UTC.
+
     static DateC FromODBCString(const StringC &dataString, bool isLocalTimeZone = false);
     //: Generate date from odbc string.
     //!param: dataString - ODBC style date e.g. '2012-11-22 00:00:00'
@@ -207,6 +212,13 @@ namespace RavlN {
     // Returns true if conversion successful, false
     // if string is not recognised.
     //!param: odbcStr - ODBC style date e.g. '2012-11-22 00:00:00'
+    //!param: isLocalTimeZone - When true assumes parameters are in the local timezone.  It will convert to UTC.
+
+    bool Set(const StringC &str, bool isLocalTimeZone = false);
+    //: Set date to time string, year/month/day hour:min:sec
+    // Returns true if conversion successful, false
+    // if string is not recognised.
+    //!param: str '2012-11-22 00:00:00' or '2012/11/22 00:00:00'
     //!param: isLocalTimeZone - When true assumes parameters are in the local timezone.  It will convert to UTC.
 
     StringC CTime(bool convertUTCToLocal = false) const;

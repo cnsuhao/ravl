@@ -430,8 +430,72 @@ namespace RavlN {
     return ret;
   }
   
+  //: Generate date from a string.
+  //!param: dataString - ODBC style date e.g. '2012-11-22 00:00:00'
+  //!param: isLocalTimeZone - When true assumes parameters are in the local timezone.  It will convert to UTC.
+  DateC DateC::FromString(const StringC &dateString, bool isLocalTimeZone)
+  {
+    DateC ret;
+    ret.Set(dateString, isLocalTimeZone);
+    return ret;
+  }
+
+  //: Set date to time string, year/month/day hour:min:sec
+  // Returns true if conversion successful, false
+  // if string is not recognised.
+  //!param: odbcStr - ODBC style date e.g. '2012-11-22 00:00:00'
+  //!param: isLocalTimeZone - When true assumes parameters are in the local timezone.  It will convert to UTC.
+  bool DateC::Set(const StringC &odbcStr, bool isLocalTimeZone)
+  {
+    // Empty field ?
+    if(odbcStr.Size() < 19)
+      return false;
+
+    IntT seconds, minute, hour, day, month, year;
+    StringC tmp = odbcStr.Copy();
+    char *str = &tmp[0];
+    char *ptr = str;
+
+    // Check the stream is formated correctly.
+    if((str[4] != '-' && str[4] != '/') || (str[7] != '-' && str[7] != '/') || str[10] != ' ' || str[13] != ':' || str[16] != ':')
+      return false;
+
+    // Get seconds
+    ptr = str + 17;
+    double intPart;
+    double secondsFloat = atof(ptr);
+    long usecPart = Round(modf(secondsFloat,&intPart) * 1000000.0);
+    seconds = Round(intPart);
+
+    // Get minute
+    str[16] = 0;
+    ptr = str + 14;
+    minute = atoi(ptr);
+    // Get hour
+    str[13] = 0;
+    ptr = str + 11;
+    hour = atoi(ptr);
+    // Get day
+    str[10] = 0;
+    ptr = str + 8;
+    day = atoi(ptr);
+    // Get month
+    str[7] = 0;
+    ptr = str + 5;
+    month = atoi(ptr);
+    // Get year
+    str[4] = 0;
+    ptr = str;
+    year = atoi(ptr);
+
+    // Create date structure
+    *this = DateC(year, month, day, hour, minute, seconds, usecPart, isLocalTimeZone);
+
+    return true;
+  }
+
   //: Set date to odbc specified time string.
-  // Returns true if conversion succesfull, false
+  // Returns true if conversion successful, false
   // if string is not recognised.
   
   bool DateC::SetODBC(const StringC &odbcStr, bool isLocalTimeZone) {
@@ -447,7 +511,7 @@ namespace RavlN {
     char *ptr = str;
     
     // Check the stream is formated correctly.
-    if(str[4] != '-' || str[7] != '-' || str[10] != ' ' || str[13] != ':' || str[16] != ':')
+    if(str[4] != '-' || str[7] != '-'  || str[10] != ' ' || str[13] != ':' || str[16] != ':')
       return false;
     
     // Get seconds
