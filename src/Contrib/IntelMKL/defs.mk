@@ -25,9 +25,7 @@ USESLIBS=IntelMKL RavlMath
 
 PROGLIBS=RavlOS
 
-AUXFILES=IntelMKL.def
-
-AUXDIR=lib$(PROJECT_DIR)/libdep
+EXTERNALLIBS=IntelMKL.def
 
 MUSTLINK=linkIntelMKL.cc
 

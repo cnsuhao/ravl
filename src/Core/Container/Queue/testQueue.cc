@@ -13,11 +13,24 @@
 
 #include "Ravl/BlkQueue.hh"
 #include "Ravl/Stream.hh"
+#include "Ravl/UnitTest.hh"
 #include <stdlib.h>
 
 using namespace RavlN;
 
+int testQueue();
+
 int main() {
+
+  RAVL_RUN_TEST(testQueue());
+
+  std::cerr << "Queue test passed ok. \n";
+
+  return 0;
+}
+
+int testQueue()
+{
   BlkQueueC<int> q;
   int count = 0;
   int lget = -1;
@@ -25,23 +38,23 @@ int main() {
     switch(rand() % 2)
       {
       case 0:
-	q.InsLast(count++);
-	break;
+        q.InsLast(count++);
+        break;
       case 1:
-	if(q.IsEmpty())
-	  continue;
-	{
-	  int lval = q.GetFirst();
-	  if(lval != (lget+1)) {
-	    std::cerr << "Queue test failed. \n";
-	    return 1; 
-	  }
-	  lget = lval;
-	}
-	break;
+        if(q.IsEmpty())
+          continue;
+        {
+          int lval = q.GetFirst();
+          if(lval != (lget+1)) {
+            std::cerr << "Queue test failed. \n";
+            return __LINE__;
+          }
+          lget = lval;
+        }
+        break;
       }
   }
-  std::cerr << "Queue test passed ok. \n";
+
   return 0;
 }
 

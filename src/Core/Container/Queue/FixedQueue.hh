@@ -34,6 +34,9 @@ namespace RavlN {
     : protected SArray1dC<T> 
   {
   public:
+    inline FixedQueueC();
+    //: Construct an empty queue, queue must be resized before use.
+
     explicit inline FixedQueueC(SizeT Size);
     //: Constructor.
     
@@ -98,7 +101,10 @@ namespace RavlN {
     //: No of items in the ring.
 
     inline SizeT MaxSize() const
-    { return SArray1dC<T>::Size()-1; }
+    {
+      if(SArray1dC<T>::Size() == 0) return 0;
+      return SArray1dC<T>::Size()-1;
+    }
     //: Get maximum size of queue.
     
     inline bool IsInRing(UIntT P) const;
@@ -130,13 +136,24 @@ namespace RavlN {
     // 0 is first element in the queue (as accessed by First()), 1-second most etc..
     // Is is up the the user to ensure that no attempt is made to access beyond the last element.
     
+    const T &IndexBackward(IndexC i) const {
+      RavlAssert(i < this->Size());
+      const T *l = &head[-i.V()-1];
+      if(l < ArrayStart())
+        l += SArray1dC<T>::Size();
+      return *l;
+    }
+    // Access queue from most recent item backward.
+    // 0=Last inserted, 1=one before that, and so on.
+    // Is is up the the user to ensure that no attempt is made to access beyond the last element.
+
   protected:
     T *ArrayStart()
-    { return &SArray1dC<T>::operator[](0); }
+    { return this->DataStart(); }
     //: Get the start of the array.
     
     const T *ArrayStart() const
-    { return &SArray1dC<T>::operator[](0); }
+    { return this->DataStart(); }
     //: Get the start of the array.
 
     T *head; // Next free location.
@@ -350,7 +367,16 @@ namespace RavlN {
   };
   
   //-----------------------------------------------------
-  
+
+  //: Construct an empty queue, queue must be resized before use.
+  template<class T>
+  inline FixedQueueC<T>::FixedQueueC()
+  {
+    head = 0;
+    tail = 0;
+    eoa = 0;
+  }
+
   template<class T>
   inline
   FixedQueueC<T>::FixedQueueC(SizeT size)

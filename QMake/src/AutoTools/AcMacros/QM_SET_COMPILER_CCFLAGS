@@ -92,34 +92,41 @@ AC_DEFUN([QM_SET_COMPILER_CCFLAGS],
              NVCC_GPROF_NVCCFLAGS=$COMPILER_GPROF_CCFLAGS
 
              COMPILER_NON_OPT_CCFLAGS=" -O "
+             # We really treat non-optimised builds as a low optimised version.
+             # We therefore need to consider the compiler version as for the
+             # full optimised flags (see below).
              NVCC_NON_OPT_NVCCFLAGS=$COMPILER_NON_OPT_CCFLAGS
 
-             # Optimisation flags depend on version of GCC in use
+             COMPILER_OPT_CCFLAGS=" -O2 -fno-math-errno "
+             # While using fno-math-errno breaks full standards compliance, it
+             # is used to give us a consistant environment across platforms as
+             # the math library on OSX never actually sets errno anyway. There
+             # is no point in setting this switch globally (i.e. in {C}CFLAGS
+             # rather than _OPT_C{C}FLAGS) as it is not actually used by g++
+             # if we are not performing an optimised compile.
+             NVCC_OPT_NVCCFLAGS=" -O2 -Xcompiler -fno-math-errno "
+             # The CUDA compiler driver does not understand the -fno-math-errno
+             # switch. This means we need to prefix it with the -Xcompiler 
+             # switch that causes nvcc to ignore the following flag but still
+             # pass it on to any subsequent GNU compilation.
+
+             # strict-aliasing enabled by optimised builds has been known to
+             # sometimes cause g++ 4.x to produce incorrect code (even where
+             # the aliasing rules are followed). So we turn it off...
              dnl Using @S|@ glyph to prevent expansion of $1/2/3 as macro arg
              CXX_VERSION=`$CXX --v 2>&1 | $GREP 'gcc version' | $AWK '{ print @S|@3 }'`
              CXX_MAJOR=`echo $CXX_VERSION | $AWK -F. '{ print @S|@1 }'`
-             CXX_MINOR=`echo $CXX_VERSION | $AWK -F. '{ print @S|@2 }'`
-             CXX_PATCH=`echo $CXX_VERSION | $AWK -F. '{ print @S|@3 }'`
-             if ( test X$CXX_MAJOR = X4 && test $(($CXX_MINOR)) -lt 3 )
+             if ( test X$CXX_MAJOR = X4 )
              then
-                # -funsafe-math-optimisation (implied by -ffast-math) was indeed, unsafe
-                # on versions 4.0/1/2 of GCC, so just implement the parts of -ffast-math
-                # that work with the Ravl source and employ -O3 as compensation
-                COMPILER_OPT_CCFLAGS=" -O3 -fno-math-errno -fno-trapping-math -fno-signaling-nans -D__FAST_MATH__ -Wstrict-aliasing=2 -fno-strict-aliasing "
-             else
-                COMPILER_OPT_CCFLAGS=" -O2 -ffast-math -fno-strict-aliasing "
+                COMPILER_NON_OPT_CCFLAGS=" "$COMPILER_NON_OPT_CCFLAGS" -fno-strict-aliasing "
+                NVCC_NON_OPT_NVCCFLAGS=" "$NVCC_NON_OPT_NVCCFLAGS" -Xcompiler -fno-strict-aliasing "
+                # CUDA compiler driver does not recognise the -fno-strict-aliasing
+                # switch so we have to use the -Xcompiler switch to tell the
+                # driver to ignore the following option.
+                COMPILER_OPT_CCFLAGS=" "$COMPILER_OPT_CCFLAGS" -fno-strict-aliasing "
+                NVCC_OPT_NVCCFLAGS=" "$NVCC_OPT_NVCCFLAGS" -Xcompiler -fno-strict-aliasing "
+                # Again we need to get the compiler driver to ignore the switch.
              fi
-             COMPILER_OPT_CCFLAGS=$COMPILER_OPT_CCFLAGS" -march=native -mtune=native "
-
-             NVCC_OPT_NVCCFLAGS=" -O2  -Xcompiler -march=native -Xcompiler -mtune=native "
-             # Take a cautious approach to optimisation of CUDA modules just
-             # in case any of the -ffast_math, -fno-strict-aliasing, etc.
-             # optimisations cause a problem with the generated code. We want
-             # to maintain the processor targetting switches (-march=native
-             # -mtune=native) but these are not recognised by the CUDA compiler
-             # driver. This means we need to prefix them with the -Xcompiler 
-             # switch that causes nvcc to ignore the following flag but still
-             # pass it on to any subsequent GNU compilation.
 
              COMPILER_PROF_CCFLAGS=" -p "
              NVCC_PROF_NVCCFLAGS=$COMPILER_PROF_CCFLAGS

@@ -26,6 +26,4 @@ TESTEXES =
 
 EXAMPLES = 
 
-AUXDIR = lib$(PROJECT_DIR)/libdep
- 
-AUXFILES = LibDirectShow.def
+EXTERNALLIBS = LibDirectShow.def

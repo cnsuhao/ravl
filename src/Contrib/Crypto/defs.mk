@@ -20,7 +20,5 @@ SOURCES=MCrypt.cc
 
 PLIB=RavlCrypto
 
-AUXDIR=lib$(PROJECT_DIR)/libdep
-
-AUXFILES=LibMCrypt.def
+EXTERNALLIBS=LibMCrypt.def
 

@@ -39,11 +39,14 @@ namespace RavlN {
     RealHistogram2dC(const Point2dC &min,const Point2dC &max,const Index2dC &steps);
     //: Create a histogram.
     
-    RealHistogram2dC(const Vector2dC &nscale,const Point2dC &noffset,const SArray2dC<UIntT> &array)
+    RealHistogram2dC(const Vector2dC &nscale,const Point2dC &noffset,const SArray2dC<UIntT> &array,bool doReset = true)
       : SArray2dC<UIntT>(array),
 	scale(nscale),
 	offset(noffset)
-    { Reset(); }
+    {
+      if(doReset)
+        Reset();
+    }
     //: Create a histogram from an offset, scale and an existing SArray2dC of binned values.
     
     Vector2dC Scale() const
@@ -121,7 +124,7 @@ namespace RavlN {
   BinOStreamC &operator<<(BinOStreamC & s,const RealHistogram2dC &hist);
   //: Binary stream IO.
   
-  BinIStreamC &operator<<(BinIStreamC & s,RealHistogram2dC &hist);
+  BinIStreamC &operator>>(BinIStreamC & s,RealHistogram2dC &hist);
   //: Binary stream IO.
   
 }

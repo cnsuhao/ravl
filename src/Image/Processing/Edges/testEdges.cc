@@ -8,26 +8,33 @@
 #include "Ravl/Image/DrawPolygon.hh"
 #include "Ravl/Image/DrawLine.hh"
 #include "Ravl/Image/EdgeDetector.hh"
+#include "Ravl/Image/EdgeDetect.hh"
 #include "Ravl/Polygon2d.hh"
 #include "Ravl/Point2d.hh"
 #include "Ravl/DList.hh"
 #include "Ravl/Image/ImageConv.hh"
+#include "Ravl/IO.hh"
 //! lib=RavlImageProc
 
 using namespace RavlN;
 using namespace RavlImageN;
 
-int testEdgeDet();
+int testEdgeDet1();
 int testEdgeDet2();
+int testEdgeDet3();
 int testEdgeLink();
 
 int main(int nargs,char **argv) {
   int ln;
-  if((ln = testEdgeDet()) != 0) {
+  if((ln = testEdgeDet1()) != 0) {
     cerr << "test failed on line " << ln << "\n";
     return 1;
   }
   if((ln = testEdgeDet2()) != 0) {
+    cerr << "test failed on line " << ln << "\n";
+    return 1;
+  }
+  if((ln = testEdgeDet3()) != 0) {
     cerr << "test failed on line " << ln << "\n";
     return 1;
   }
@@ -39,7 +46,7 @@ int main(int nargs,char **argv) {
   return 0;
 }
 
-int testEdgeDet() {
+int testEdgeDet1() {
   // set up triangles in image
   ImageC<RealT> img(20,20);
   img.Fill(0.0);
@@ -54,11 +61,39 @@ int testEdgeDet() {
   DrawLine(img, 25.0, Index2dC(15,6), Index2dC(7,14));
   DrawLine(img, 25.0, Index2dC(15,15), Index2dC(6,15));
 
-  // run Deriche edge detector
+  // run old Deriche edge detector
+  {
   EdgeDetectorC det(true, 4, 8);
   DListC<SArray1dC<EdgelC> > edges;
   det.Apply(img, edges);
   cout << "Edges 1:\n" << edges << endl;
+  ImageC<bool> edgeImg;
+  det.Apply(DoubleImageCT2ByteImageCT(img), edgeImg);
+  UIntT tot(0);
+  for (Array2dIterC<bool> i(edgeImg); i; ++i) {
+    if (*i) ++tot;
+  }
+  cout << "tot: " << tot << endl;
+  if (tot != 56) return __LINE__;
+  //Save("@X", edgeImg);
+  }
+
+  // run new Deriche edge detector
+  {
+  EdgeDetectC det;
+  det.SetHysteresis(4,8);
+  det.Apply(img);
+  DListC<SArray1dC<EdgelC> > edges = det.EdgeArrayList();
+  cout << "Edges 2:\n" << edges << endl;
+  ImageC<bool> edgeImg = det.EdgeImg();
+  UIntT tot(0);
+  for (Array2dIterC<bool> i(edgeImg); i; ++i) {
+    if (*i) ++tot;
+  }
+  cout << "tot: " << tot << endl;
+  if (tot != 56) return __LINE__;
+  //Save("@X", edgeImg);
+  }
   return 0;
 }
 
@@ -132,6 +167,29 @@ int testEdgeDet2() {
 }
 
 
+int testEdgeDet3() {
+  // Check order of hysteresis threshold params is what it says on the tin (i.e. wrong way round).
+  ImageC<RealT> im(10,10);
+  im.Fill(0.0);
+  for (IntT i=0; i<10; ++i) {
+    im[4][i] = i;
+    im[8][i] = i*2;
+  }
+  // Should just pick up row 8
+  EdgeLinkC el = HysteresisThreshold(im,12,5);
+  DListC<DListC<Index2dC> > edges = el.LinkEdges();
+  cout << "\n\nStrongest edges: " << edges;
+  if (edges.Size() != 1) return __LINE__;
+  // Should  pick up rows 4 & 8
+  el = HysteresisThreshold(im,7,3);
+  edges = el.LinkEdges();
+  cout << "More edges: " << edges;
+  if (edges.Size() != 2) return __LINE__;
+
+  return 0;
+}
+
+
 int testEdgeLink() {
   // set up edgel image
   ImageC<RealT> img(20,20);
@@ -141,7 +199,7 @@ int testEdgeLink() {
 
   EdgeLinkC linkImg = HysteresisThreshold(img, 10.5, 12);
   cout << "LinkEdges:\n" << linkImg.LinkEdges() << endl;
-  cout << "ListEdges:\n" << linkImg.ListEdges() << endl;
+  cout << "ListEdges:\n" << linkImg.ListEdges() << endl; // <<< BROKEN
 
   return 0;
 }

@@ -35,10 +35,12 @@ int main() {
   IndexRange2dC rng(origin,origin + Index2dC(256,256));
   ImageC<ByteRGBValueC> img(rng);
   ImageC<RealRGBValueC> rimg(rng);
+  ImageC<bool> bimg(rng);
   for(int x = 0;x < 256;x++)
     for(int y = 0;y < 256;y++) {
       img[origin[0] + x][origin[1] + y] = ByteRGBValueC(x,y,128);
       rimg[origin[0] + x][origin[1] + y] = RealRGBValueC(x,y,128);
+      bimg[origin[0] + x][origin[1] + y] = (x == 128);
     }
   
   if(!RavlN::Save("@X:hello",img,"",true)) {
@@ -47,6 +49,11 @@ int main() {
   }
 
   if(!RavlN::Save("@X:realHello",rimg,"",true)) {
+    std::cerr << "Failed to save image. \n";
+    return 1;
+  }
+
+  if(!RavlN::Save("@X:boolHello",bimg,"",true)) {
     std::cerr << "Failed to save image. \n";
     return 1;
   }

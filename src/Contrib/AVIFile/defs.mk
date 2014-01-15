@@ -26,6 +26,4 @@ PROGLIBS= RavlVideoIO
 
 EXAMPLES=testAVIFile.cc
 
-AUXDIR=lib$(PROJECT_DIR)/libdep
-
-AUXFILES=AVIFile.def
+EXTERNALLIBS=AVIFile.def

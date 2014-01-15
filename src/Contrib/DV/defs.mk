@@ -24,9 +24,7 @@ PLIB=RavlDV
 
 SUMMARY_LIB=Ravl
 
-AUXDIR=lib$(PROJECT_DIR)/libdep
-
-AUXFILES= LibDV.def
+EXTERNALLIBS= LibDV.def
 
 USESLIBS=RavlCore RavlImage RavlIO RavlOS RavlOSIO GTK LibDV  RavlVideoIO RavlAV
 

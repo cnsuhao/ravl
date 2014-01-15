@@ -28,8 +28,6 @@ USESLIBS=RavlImage LibJasper RavlIO
 
 PROGLIBS=RavlDPDisplay.opt
 
-AUXDIR=lib$(PROJECT_DIR)/libdep
-
-AUXFILES=LibJasper.def
+EXTERNALLIBS=LibJasper.def
 
 TESTEXES=testImgIOJasper.cc

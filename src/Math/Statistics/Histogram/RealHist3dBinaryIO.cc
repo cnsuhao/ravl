@@ -18,7 +18,7 @@ namespace RavlN {
     return strm;
   }
   
-  BinIStreamC &operator<<(BinIStreamC & strm,RealHistogram3dC &hist) {
+  BinIStreamC &operator>>(BinIStreamC & strm,RealHistogram3dC &hist) {
     Point3dC offset;
     Vector3dC scale;
     SArray3dC<UIntT> xhist;

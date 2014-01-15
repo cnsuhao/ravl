@@ -20,9 +20,7 @@ SOURCES= ImgIO1394dc.cc Lib1394dcFormat.cc
 
 PLIB= RavlImgIO1394dc
 
-AUXDIR=lib$(PROJECT_DIR)/libdep
-
-AUXFILES= Lib1394dc.def
+EXTERNALLIBS= Lib1394dc.def
 
 MUSTLINK=InitLib1394dc.cc
 

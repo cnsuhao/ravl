@@ -7,7 +7,7 @@
 #ifndef RAVLIMAGE_EDGEDETECTOR_HEADER
 #define RAVLIMAGE_EDGEDETECTOR_HEADER 1
 //! author="Charles Galambos"
-//! userlevel=Normal
+//! userlevel=Obsolete
 //! rcsid="$Id$"
 //! lib=RavlImageProc
 //! docentry="Ravl.API.Images.Edges"
@@ -23,7 +23,7 @@
 
 namespace RavlImageN {
 
-  //! userlevel=Develop
+  //! userlevel=Obsolete
   //: Edge detector body
   // This class wraps up all the components you need to go from grey scale image
   // to a list of Edgels or pixel locations.
@@ -70,8 +70,11 @@ namespace RavlImageN {
     bool Apply(const ImageC<ByteT> &img,DListC<DListC<EdgelC> > &edgeLists) const;
     //: Apply the edge detector to 'img', generate list of ordered edgels lists.
 
-    void SetDeriche(RealT Alpha, RealT Omega)
-    { edgeDet = EdgeDericheC(Alpha,Omega); }
+    bool Apply(const ImageC<ByteT> &img, ImageC<bool> &edgeImg) const;
+    //: Apply the edge detector to 'img', generate a boolean image of edges.
+
+    void SetDeriche(RealT Omega, RealT Alpha)
+    { edgeDet = EdgeDericheC(Omega,Alpha); }
     //: Set the Deriche filter parameters
     
   protected:
@@ -84,7 +87,7 @@ namespace RavlImageN {
     bool eightConnect; // Use eight connectivity ?
   };
   
-  //! userlevel=Normal
+  //! userlevel=Obsolete
   //: Edge detector.
   // This class wraps up all the components you need to go from grey scale image
   // to a list of Edgels or pixel locations.
@@ -164,11 +167,15 @@ namespace RavlImageN {
     { return Body().Apply(img,edgeLists); }
     //: Generates a list of edgel lists.
     
-    void SetDeriche(RealT Alpha, RealT Omega=0.001)
-    { Body().SetDeriche(Alpha,Omega); }
+    bool Apply(const ImageC<ByteT> &img, ImageC<bool> &edgeImg) const
+    { return Body().Apply(img,edgeImg); }
+    //: Apply the edge detector to 'img', generate a boolean image of edges.
+
+    void SetDeriche(RealT Omega, RealT Alpha)
+    { Body().SetDeriche(Omega,Alpha); }
     //: Set the Deriche filter parameters
     //!param: Alpha -  &alpha; controls the filter width
-    //!param: Omega -  &omega; doesn't appear to be a very useful parameter -- can be set to 0
+    //!param: Omega -  &omega; doesn't appear to be a very useful parameter -- can be set to 0.  Is 1st argument only because of bug in code.
   };
   
 }

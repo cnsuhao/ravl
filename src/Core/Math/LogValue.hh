@@ -28,7 +28,7 @@ namespace RavlN{
     LogValueC()
 	:v(-99999999)
     {}
-    //: Constructs with a probabilty near zero.
+    //: Constructs with a probability near zero.
     
     LogValueC(double prob) {
       if(prob == 0) v = -99999999;

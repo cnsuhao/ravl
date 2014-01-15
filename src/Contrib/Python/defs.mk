@@ -26,6 +26,4 @@ TESTEXES =
 
 EXAMPLES = exPython.cc exPythonThreaded.cc exPythonMultipleInterpreters.cc exPyGTK.cc
 
-AUXDIR = lib$(PROJECT_DIR)/libdep
-
-AUXFILES = Python.def
+EXTERNALLIBS = Python.def

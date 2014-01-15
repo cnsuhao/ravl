@@ -16,11 +16,11 @@ EXAMPLES=doEdgeDet.cc
 
 HEADERS=EdgeSobel.hh EdgeDeriche.hh SqrComposition.hh \
  EdgeNonMaxSuppression.hh Edgel.hh EdgeLink.hh \
- EdgeDetector.hh Gradient.hh
+ EdgeDetector.hh EdgeDetect.hh Gradient.hh
 
 SOURCES=EdgeSobel.cc EdgeDeriche.cc SqrComposition.cc \
  EdgeNonMaxSuppression.cc Edgel.cc EdgeLink.cc \
- EdgeDetector.cc EdgeIO.cc
+ EdgeDetector.cc EdgeDetect.cc EdgeIO.cc
 
 MUSTLINK=RavlEdgeIO.cc
 

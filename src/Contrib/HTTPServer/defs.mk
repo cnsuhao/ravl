@@ -24,7 +24,5 @@ PROGLIBS =
 
 TESTEXES = 
 
-AUXDIR = lib$(PROJECT_DIR)/libdep
-
-AUXFILES = EHS.def
+EXTERNALLIBS = EHS.def
 

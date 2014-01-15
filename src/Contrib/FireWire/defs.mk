@@ -24,9 +24,7 @@ PLIB=RavlFireWire
 
 USESLIBS=RavlDV LibFireWire
 
-AUXDIR=lib$(PROJECT_DIR)/libdep
-
-AUXFILES= LibFireWire.def
+EXTERNALLIBS= LibFireWire.def
 
 PROGLIBS= RavlDPDisplay.opt
 

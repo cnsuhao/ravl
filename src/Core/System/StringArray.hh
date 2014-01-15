@@ -42,13 +42,17 @@ namespace RavlN {
     {}
     //: Constructor
 
-    static StringArrayC Split(const StringC &str, const char* delim = " \n\t\0");
+    static StringArrayC Split(const StringC &str, const char* delim = " \n\t\0",bool allowEmptyColumn = false);
     //: Split a string into parts.
+    // When parsing csv files where adjacent comma's represent an empty field 'allowEmptyColumn' should be set
+    // to true.
 
-    static StringArrayC Split(const char* str, const char* delim = " \n\t\0");
+    static StringArrayC Split(const char* str, const char* delim = " \n\t\0",bool allowEmptyColumn = false);
     //: Split a string into parts.
+    // When parsing csv files where adjacent comma's represent an empty field 'allowEmptyColumn' should be set
+    // to true.
 
-    static StringArrayC SplitQuote(const StringC &str, const char* delim = " \n\t\0");
+    static StringArrayC SplitQuote(const StringC &str, const char* delim = " \n\t\0",bool allowEmptyColumn = false);
     //: Split a string into parts, respecting any double quotes found along the way.
     // Escaping quotes with '\' allows them to be treated as any other character.
 
@@ -72,8 +76,10 @@ namespace RavlN {
 
 
   private:
-    void Parse (const StringC &str, const char* delim);
+    void Parse (const StringC &str, const char* delim,bool allowEmptyColumn = false);
     //: Parses string into list
+    // When parsing csv files where adjacent comma's represent an empty field 'allowEmptyColumn' should be set
+    // to true.
 
     friend std::ostream & operator<<(std::ostream & s, const StringArrayC & list);
   };

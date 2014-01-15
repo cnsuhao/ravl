@@ -31,8 +31,6 @@ USESLIBS = RavlImageIO RavlImage RavlOSIO LibMPEG
 
 PROGLIBS = RavlDPDisplay.opt DynLink
 
-AUXDIR=lib$(PROJECT_DIR)/libdep
-
-AUXFILES=LibMPEG.def
+EXTERNALLIBS=LibMPEG.def
 #USERCFLAGS = -g
 #PROGLIBS = Mopt

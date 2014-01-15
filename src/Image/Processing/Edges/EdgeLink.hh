@@ -78,12 +78,12 @@ namespace RavlImageN {
     
     SArray1dC<EdgelC> ArrayOfEdgels(const ImageC<RealT> & inDrIm, 
 				    const ImageC<RealT> & inDcIm,  
-				    const ImageC<RealT> & inGrad);
+				    const ImageC<RealT> & inGrad) const;
     //: Generate an array of all edgels in image
     
     DListC<EdgelC> ListOfEdgels(const ImageC<RealT> & inDrIm, 
 				const ImageC<RealT> & inDcIm,  
-				const ImageC<RealT> & inGrad);
+				const ImageC<RealT> & inGrad) const;
     //: Generate a list of all edgels in image
     
   protected:

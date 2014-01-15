@@ -340,5 +340,62 @@ namespace RavlGUIN {
   DP_REGISTER_CONVERSION_NAMED(ImageByte2DPDisplayImageByte,1,"DPDisplayObjC RavlGUIN::Convert(const ImageC<ByteT> &)");
   
 
+  //------------------------------------------------------------------
+
+  //: Constructor
+  
+  DPDisplayImageBoolBodyC::DPDisplayImageBoolBodyC(const ImageC<bool> &nimg)
+    : img(nimg)
+  {
+#if 0
+    if(!img.IsContinuous()) {
+      std::cerr << "DPDisplayImageBoolBodyC::DPDisplayImageBoolBodyC(), WARNING: Image not continuous in memory, making copy. \n";
+      img = ImageC<bool>(img.Copy()); // Make image continuous.
+    }
+#endif
+  }
+  
+  //: Draw object to canvas.
+  
+  bool DPDisplayImageBoolBodyC::Draw(FrameMarkupC &markup) {
+    ImageC<ByteT> out(img.Frame());
+    for (Array2dIter2C<bool,ByteT>i(img,out); i; ++i)
+      i.Data2() = (i.Data1() ? 255 : 0);
+    markup.Markup().InsLast(MarkupImageByteC(m_id,0,out)); 
+    return true;
+  }
+  
+  //: Find bounding box for object.
+  
+  IndexRange2dC DPDisplayImageBoolBodyC::Frame() const
+  { return img.Frame(); }
+
+  //: Query a point in the display.
+  // Return true if point is within object.
+  
+  bool DPDisplayImageBoolBodyC::Query(const Vector2dC &pnt,StringC &text) {
+    ONDEBUG(std::cerr << "DPDisplayImageBoolBodyC::Query(), Point=" << pnt << "\n");
+    Index2dC pix(pnt[0],pnt[1]);
+    if(!img.Frame().Contains(pix))
+      return false;
+    text = (img[pix] ? "true" : "false");
+    return true;
+  }
+  
+  //: Save to a file.
+  
+  bool DPDisplayImageBoolBodyC::Save(const StringC &str) const {
+    return RavlN::Save(str,img);
+  }
+  
+  //------------------------------------------------------------------
+  // Register some conversions as well.
+  
+  DPDisplayObjC ImageBool2DPDisplayImageByte(const ImageC<bool> &img) 
+  { return DPDisplayImageBoolC(img.Copy()); }
+  
+  DP_REGISTER_CONVERSION_NAMED(ImageBool2DPDisplayImageByte,1,"DPDisplayObjC RavlGUIN::Convert(const ImageC<bool> &)");
+  
+
 }
   

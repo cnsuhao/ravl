@@ -70,23 +70,32 @@ AC_DEFUN([QM_SET_COMPILER_CFLAGS],
              COMPILER_ANSI_CFLAGS=" -ansi "
              COMPILER_DEBUG_CFLAGS=" -g "
              COMPILER_GPROF_CFLAGS=" -pg "
+
              COMPILER_NON_OPT_CFLAGS=" -O "
-             # Optimisation flags depend on version of GCC in use
+             # We really treat non-optimised builds as a low optimised version.
+             # We therefore need to consider the compiler version as for the
+             # full optimised flags (see below).
+
+             COMPILER_OPT_CFLAGS=" -O2 -fno-math-errno "
+             # While using fno-math-errno breaks full standards compliance, it
+             # is used to give us a consistant environment across platforms as
+             # the math library on OSX never actually sets errno anyway. There
+             # is no point in setting this switch globally (i.e. in CCFLAGS
+             # rather than _OPT_CFLAGS) as it is not actually used by gcc if
+             # we are not performing an optimised compile.
+
+             # strict-aliasing enabled by optimised builds has been known to
+             # sometimes cause gcc 4.x to produce incorrect code (even where
+             # the aliasing rules are followed). So, we turn it off...
              dnl Using @S|@ glyph to prevent expansion of $1/2/3 as macro arg
              CC_VERSION=`$CC --v 2>&1 | $GREP 'gcc version' | $AWK '{ print @S|@3 }'`
              CC_MAJOR=`echo $CC_VERSION | $AWK -F. '{ print @S|@1 }'`
-             CC_MINOR=`echo $CC_VERSION | $AWK -F. '{ print @S|@2 }'`
-             CC_PATCH=`echo $CC_VERSION | $AWK -F. '{ print @S|@3 }'`
-             if ( test X$CC_MAJOR = X4 && test $(($CC_MINOR)) -lt 3 )
+             if ( test X$CC_MAJOR = X4 )
              then
-                # -funsafe-math-optimisation (implied by -ffast-math) was indeed, unsafe
-                # on versions 4.0/1/2 of GCC, so just implement the parts of -ffast-math
-                # that work with the Ravl source and employ -O3 as compensation
-                COMPILER_OPT_CFLAGS=" -O3 -fno-math-errno -fno-trapping-math -fno-signaling-nans -D__FAST_MATH__ -Wstrict-aliasing=2 -fno-strict-aliasing "
-             else
-                COMPILER_OPT_CFLAGS=" -O2 -ffast-math -fno-strict-aliasing "
+                COMPILER_NON_OPT_CCFLAGS=" "$COMPILER_NON_OPT_CCFLAGS" -fno-strict-aliasing "
+                COMPILER_OPT_CCFLAGS=" "$COMPILER_OPT_CCFLAGS" -fno-strict-aliasing "
              fi
-             COMPILER_OPT_CFLAGS=$COMPILER_OPT_CFLAGS" -march=native -mtune=native "
+
              COMPILER_PROF_CFLAGS=" -p "
              COMPILER_SHARED_CFLAGS=" -shared -fPIC "
              COMPILER_SPECIFIC_CFLAGS=" -Wall -pipe -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE "
