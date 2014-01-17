@@ -435,7 +435,7 @@ int CheckChildProc()
   ChildOSProcessC xp2(segcmd);
 #endif
   ONDEBUG(std::cerr << "Waiting for exit... \n");
-  xp2.Wait(0.5);
+  xp2.Wait(1.5);
   if(xp2.IsRunning()) {
     std::cerr << "ERROR: Child running, during test.\n";
     return __LINE__;
