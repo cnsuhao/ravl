@@ -79,6 +79,7 @@ namespace RavlN {
     RealRangeC m_xrange;
     RealRangeC m_yrange;
     FilenameC m_tmpFile;
+    int m_plotNum;
   };
 
   Plot2dC::RefT CreatePlot2d_gnuplot(const StringC & name);

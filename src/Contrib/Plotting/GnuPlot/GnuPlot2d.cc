@@ -27,8 +27,10 @@ namespace RavlN {
   /*
    * Construct
    */
-  GnuPlot2dC::GnuPlot2dC(const StringC & title) :
-      Plot2dC(title), m_gnuPlot((StringC) "gnuplot", false, false, true)
+  GnuPlot2dC::GnuPlot2dC(const StringC & title)
+   : Plot2dC(title),
+     m_gnuPlot((StringC) "gnuplot", false, false, true),
+     m_plotNum(0)
   {
     // check it is still running
     if (!m_gnuPlot.IsRunning()) {
@@ -52,9 +54,15 @@ namespace RavlN {
       FilenameC tmpFile = "/tmp/data";
       m_tmpFile = tmpFile.MkTemp(6, -1);
     } else {
-      m_tmpFile.Remove();
+      FilenameC old(m_tmpFile + StringC(m_plotNum));
+      if(old.Exists())
+        old.Remove();
     }
-    return m_tmpFile;
+    m_plotNum++;
+    if(m_plotNum > 4)
+      m_plotNum = 0;
+    // Switch between two files to avoid truncation problems.
+    return m_tmpFile + StringC(m_plotNum);
   }
 
   /*
