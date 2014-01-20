@@ -217,7 +217,7 @@ int Validate(char *dir)
       continue;
     }
     if ( testit.IsRunning() )
-      if(!testit.Wait(60 * 2)) { // Wait up to 2 minites
+      if(!testit.Wait(60 * 3)) { // Wait up to 3 minites
 	cout << "FAILED -> Timeout,  Terminated.  \n"<< flush;
 	testit.Terminate();
 	passed = false;
