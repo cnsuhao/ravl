@@ -71,18 +71,21 @@ AC_DEFUN([QM_SET_COMPILER_CFLAGS],
              COMPILER_DEBUG_CFLAGS=" -g "
              COMPILER_GPROF_CFLAGS=" -pg "
 
-             COMPILER_NON_OPT_CFLAGS=" -O "
+             COMPILER_NON_OPT_CFLAGS=" -O -fno-math-errno "
+             #
              # We really treat non-optimised builds as a low optimised version.
              # We therefore need to consider the compiler version as for the
              # full optimised flags (see below).
-
-             COMPILER_OPT_CFLAGS=" -O2 -fno-math-errno "
+             #
              # While using fno-math-errno breaks full standards compliance, it
              # is used to give us a consistant environment across platforms as
              # the math library on OSX never actually sets errno anyway. There
-             # is no point in setting this switch globally (i.e. in CCFLAGS
+             # is no point in setting this switch globally (i.e. in CFLAGS
              # rather than _OPT_CFLAGS) as it is not actually used by gcc if
              # we are not performing an optimised compile.
+
+             COMPILER_OPT_CFLAGS=" -O2 -fno-math-errno "
+             # Again, the above caveat applies to fno-math-errno
 
              # strict-aliasing enabled by optimised builds has been known to
              # sometimes cause gcc 4.x to produce incorrect code (even where

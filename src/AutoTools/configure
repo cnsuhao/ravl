@@ -8087,18 +8087,21 @@ then
              COMPILER_DEBUG_CFLAGS=" -g "
              COMPILER_GPROF_CFLAGS=" -pg "
 
-             COMPILER_NON_OPT_CFLAGS=" -O "
+             COMPILER_NON_OPT_CFLAGS=" -O -fno-math-errno "
+             #
              # We really treat non-optimised builds as a low optimised version.
              # We therefore need to consider the compiler version as for the
              # full optimised flags (see below).
-
-             COMPILER_OPT_CFLAGS=" -O2 -fno-math-errno "
+             #
              # While using fno-math-errno breaks full standards compliance, it
              # is used to give us a consistant environment across platforms as
              # the math library on OSX never actually sets errno anyway. There
-             # is no point in setting this switch globally (i.e. in CCFLAGS
+             # is no point in setting this switch globally (i.e. in CFLAGS
              # rather than _OPT_CFLAGS) as it is not actually used by gcc if
              # we are not performing an optimised compile.
+
+             COMPILER_OPT_CFLAGS=" -O2 -fno-math-errno "
+             # Again, the above caveat applies to fno-math-errno
 
              # strict-aliasing enabled by optimised builds has been known to
              # sometimes cause gcc 4.x to produce incorrect code (even where
@@ -8232,24 +8235,34 @@ then
              COMPILER_GPROF_CCFLAGS=" -pg "
              NVCC_GPROF_NVCCFLAGS=$COMPILER_GPROF_CCFLAGS
 
-             COMPILER_NON_OPT_CCFLAGS=" -O "
+             COMPILER_NON_OPT_CCFLAGS=" -O -fno-math-errno "
+             #
              # We really treat non-optimised builds as a low optimised version.
              # We therefore need to consider the compiler version as for the
              # full optimised flags (see below).
-             NVCC_NON_OPT_NVCCFLAGS=$COMPILER_NON_OPT_CCFLAGS
-
-             COMPILER_OPT_CCFLAGS=" -O2 -fno-math-errno "
+             #
              # While using fno-math-errno breaks full standards compliance, it
              # is used to give us a consistant environment across platforms as
              # the math library on OSX never actually sets errno anyway. There
              # is no point in setting this switch globally (i.e. in {C}CFLAGS
              # rather than _OPT_C{C}FLAGS) as it is not actually used by g++
              # if we are not performing an optimised compile.
-             NVCC_OPT_NVCCFLAGS=" -O2 -Xcompiler -fno-math-errno "
+
+             NVCC_NON_OPT_NVCCFLAGS=" -O -Xcompiler -fno-math-errno "
+             #
              # The CUDA compiler driver does not understand the -fno-math-errno
              # switch. This means we need to prefix it with the -Xcompiler
              # switch that causes nvcc to ignore the following flag but still
              # pass it on to any subsequent GNU compilation.
+
+             COMPILER_OPT_CCFLAGS=" -O2 -fno-math-errno "
+             #
+             # Again, the caveat from the non-optimised flags applies to the
+             # use of fno-math-errno (see above).
+
+             NVCC_OPT_NVCCFLAGS=" -O2 -Xcompiler -fno-math-errno "
+             #
+             # Likewise, we need the -Xcompiler prefix on -fno-math-errno
 
              # strict-aliasing enabled by optimised builds has been known to
              # sometimes cause g++ 4.x to produce incorrect code (even where
