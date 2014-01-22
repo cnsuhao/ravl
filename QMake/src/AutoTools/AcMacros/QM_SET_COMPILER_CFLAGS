@@ -92,8 +92,8 @@ AC_DEFUN([QM_SET_COMPILER_CFLAGS],
              CC_MAJOR=`echo $CC_VERSION | $AWK -F. '{ print @S|@1 }'`
              if ( test X$CC_MAJOR = X4 )
              then
-                COMPILER_NON_OPT_CCFLAGS=" "$COMPILER_NON_OPT_CCFLAGS" -fno-strict-aliasing "
-                COMPILER_OPT_CCFLAGS=" "$COMPILER_OPT_CCFLAGS" -fno-strict-aliasing "
+                COMPILER_NON_OPT_CFLAGS=" "$COMPILER_NON_OPT_CFLAGS" -fno-strict-aliasing "
+                COMPILER_OPT_CFLAGS=" "$COMPILER_OPT_CFLAGS" -fno-strict-aliasing "
              fi
 
              COMPILER_PROF_CFLAGS=" -p "
