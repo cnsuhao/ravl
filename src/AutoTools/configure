@@ -31826,7 +31826,7 @@ fi
 
 
 if test "X$PERL" != X; then :
-  RESOURCES+="PERL "
+  RESOURCES="$RESOURCES PERL "
 else
   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
@@ -31884,7 +31884,7 @@ fi
 
 
 if test "X$GnuPlot" != X; then :
-   RESOURCES+="GnuPlot "
+   RESOURCES="$RESOURCES GnuPlot "
 else
   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Cannot find a working copy of GNU Plot, some graph plotting functionality of Ravl requires this utility at run-time." >&5
 $as_echo "$as_me: WARNING: Cannot find a working copy of GNU Plot, some graph plotting functionality of Ravl requires this utility at run-time." >&2;}
@@ -31936,7 +31936,7 @@ fi
 
 
 if test "X$SWIG" != X; then :
-   RESOURCES+="Swig "
+   RESOURCES="$RESOURCES Swig "
 fi
 
 TRACE_INDENT="     "
@@ -32663,7 +32663,7 @@ do
     'present' )
                    TRACE_INDENT="     "
                    trace 3 RESOURCES+=${lib}
-                   RESOURCES+="${lib} "
+                   RESOURCES="$RESOURCES $lib "
                    # Put the placeholders into Config.Project.in so we record the
                    # flags associated with the libraries that we can use
                    echo ${lib}_CFLAGS=@${lib}_CFLAGS@ >> Config.Project.in
@@ -32703,11 +32703,11 @@ do
                    eval liblist=\$${lib}_LIBS
                    TRACE_INDENT="     "
                    trace 3 ALL_EXTERNAL_LIBS += $liblist
-                   ALL_EXTERNAL_LIBS+=" "$liblist
+                   ALL_EXTERNAL_LIBS="$ALL_EXTERNAL_LIBS $liblist"
                    eval cflglist=\$${lib}_CFLAGS
                    TRACE_INDENT="     "
                    trace 3 ALL_EXTERNAL_CFLAGS += $cfglist
-                   ALL_EXTERNAL_CFLAGS+=" "$cflglist
+                   ALL_EXTERNAL_CFLAGS="$ALL_EXTERNAL_CFLAGS $cflglist"
                    ;;
    esac
 done
@@ -33095,14 +33095,14 @@ else
                  # from config.guess/sub
 
                  trace 3 Enabling SSE2 support as we are on a P4.
-                 RESOURCES+="USE_SSE2 "
+                 RESOURCES="$RESOURCES USE_SSE2 "
                  ;;
    Xx86_64* )
                  # 64 bit 'x86' architecture - includes both AMD & Intel but
                  # not Itanium
 
                  trace 3 64-bit x86 supports SSE2
-                 RESOURCES+="USE_SSE2 "
+                 RESOURCES="$RESOURCES USE_SSE2 "
 
                  trace 3 Disallowing Meteor1 on 64-bit x86 platforms
                  Meteor1_SUPPORT=""

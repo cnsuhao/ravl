@@ -107,12 +107,12 @@ fi
 # Check for programs that are regarded as RESOURCES
 
 AC_PATH_PROG([SWIG],[swig])
-AS_IF([test "X$SWIG" != X], [ RESOURCES+="Swig "])
+AS_IF([test "X$SWIG" != X], [ RESOURCES="$RESOURCES Swig"])
 AC_SUBST([SWIG])
 
 # We already know we have Perl as that is a pre-requisite of QMake that we
 # have already checked for. So, add it to RESOURCES
-RESOURCES+="PERL "
+RESOURCES="$RESOURCES PERL"
 
 
 # Process Architecture specific issues
@@ -132,14 +132,14 @@ dnl#JFi:ToDo-Improve SSE processing + add cmd-line switches for user control
                  # from config.guess/sub
 
                  trace 3 Enabling SSE2 support as we are on a P4.
-                 RESOURCES+="USE_SSE2 "
+                 RESOURCES="$RESOURCES USE_SSE2"
                  ;;
    Xx86_64* )  
                  # 64 bit 'x86' architecture - includes both AMD & Intel but
                  # not Itanium
 
                  trace 3 64-bit x86 supports SSE2
-                 RESOURCES+="USE_SSE2 "
+                 RESOURCES="$RESOURCES USE_SSE2"
                  ;;
    * )
                  # Catch all case for tracing purposes
@@ -392,7 +392,7 @@ dnl                   # m4 removing them.
                    fi
                    TRACE_INDENT="     "
                    trace 3 RESOURCES+=${lib}
-                   RESOURCES+="${lib} "
+                   RESOURCES="$RESOURCES $lib"
                    # Put the placeholders into Config.QMake.in so we record the
                    # flags associated with the libraries that we can use
                    eval virtual=\$with_${lib}_virtual

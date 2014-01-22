@@ -683,14 +683,16 @@ AC_SUBST([devVideo4Linux_SUPPORT])
 devVideo4Linux_SUPPORT=""
 echo devVideo4Linux_SUPPORT=@devVideo4Linux_SUPPORT@ >> ./ExtPkgSupp.$$
 dnl# To re-instate (on old kernels):
-dnl#     REQUIRES+=devVideo4Linux  devVideo4Linux_SUPPORT=libRavlImgIOV4L
+dnl#     REQUIRES="$REQUIRES devVideo4Linux "
+dnl#     devVideo4Linux_SUPPORT=libRavlImgIOV4L
 dnl#
 dnl# Dropped Meteor as this really is historic support.
 AC_SUBST([Meteor1_SUPPORT])
 Meteor1_SUPPORT=""
 echo Meteor1_SUPPORT=@Meteor1_SUPPORT@ >> ./ExtPkgSupp.$$
 dnl# To re-instate (for linux only)
-dnl#     REQUIRES+=Meteor1  Meteor1_SUPPORT=RavlImgIOMeteor1
+dnl#     REQUIRES="$REQUIRES Meteor1 "
+dnl#     Meteor1_SUPPORT=RavlImgIOMeteor1
 
 
 dnl# Declare <Lib>_SUPPORT substitution variables for external packages known
@@ -886,7 +888,7 @@ trace 2 Checking for necessary dependancies
 # Perl required by QMake 
 AC_PATH_PROG([PERL],[perl])
 AS_IF([test "X$PERL" != X], 
-      [RESOURCES+="PERL "],
+      [RESOURCES="$RESOURCES PERL "],
       [AC_MSG_FAILURE([Cannot find a working copy of Perl])
       ]
      )
@@ -900,7 +902,7 @@ trace 2 Checking for programs that can be used by Ravl
 
 AC_PATH_PROG([GnuPlot],[gnuplot])
 AS_IF([test "X$GnuPlot" != X], 
-      [ RESOURCES+="GnuPlot "],
+      [ RESOURCES="$RESOURCES GnuPlot "],
       [AC_MSG_WARN([Cannot find a working copy of GNU Plot, some graph plotting functionality of Ravl requires this utility at run-time.])]
      )
 AC_SUBST([GnuPlot])
@@ -909,7 +911,7 @@ trace 3 RESOURCES now set to "@<:@$RESOURCES@:>@"
 
 
 AC_PATH_PROG([SWIG],[swig])
-AS_IF([test "X$SWIG" != X], [ RESOURCES+="Swig "])
+AS_IF([test "X$SWIG" != X], [ RESOURCES="$RESOURCES Swig "])
 AC_SUBST([SWIG])
 TRACE_INDENT="     "
 trace 3 RESOURCES now set to "@<:@$RESOURCES@:>@"
@@ -1649,7 +1651,7 @@ do
     'present' )
                    TRACE_INDENT="     "
                    trace 3 RESOURCES+=${lib}
-                   RESOURCES+="${lib} "
+                   RESOURCES="$RESOURCES $lib "
                    # Put the placeholders into Config.Project.in so we record the
                    # flags associated with the libraries that we can use
                    echo ${lib}_CFLAGS=@${lib}_CFLAGS@ >> Config.Project.in
@@ -1689,11 +1691,11 @@ do
                    eval liblist=\$${lib}_LIBS
                    TRACE_INDENT="     "
                    trace 3 ALL_EXTERNAL_LIBS += $liblist
-                   ALL_EXTERNAL_LIBS+=" "$liblist
+                   ALL_EXTERNAL_LIBS="$ALL_EXTERNAL_LIBS $liblist"
                    eval cflglist=\$${lib}_CFLAGS
                    TRACE_INDENT="     "
                    trace 3 ALL_EXTERNAL_CFLAGS += $cfglist
-                   ALL_EXTERNAL_CFLAGS+=" "$cflglist
+                   ALL_EXTERNAL_CFLAGS="$ALL_EXTERNAL_CFLAGS $cflglist"
                    ;;
    esac
 done
@@ -2090,14 +2092,14 @@ else
                  # from config.guess/sub
 
                  trace 3 Enabling SSE2 support as we are on a P4.
-                 RESOURCES+="USE_SSE2 "
+                 RESOURCES="$RESOURCES USE_SSE2 "
                  ;;
    Xx86_64* )  
                  # 64 bit 'x86' architecture - includes both AMD & Intel but
                  # not Itanium
 
                  trace 3 64-bit x86 supports SSE2
-                 RESOURCES+="USE_SSE2 "
+                 RESOURCES="$RESOURCES USE_SSE2 "
                  
                  trace 3 Disallowing Meteor1 on 64-bit x86 platforms
                  Meteor1_SUPPORT=""
