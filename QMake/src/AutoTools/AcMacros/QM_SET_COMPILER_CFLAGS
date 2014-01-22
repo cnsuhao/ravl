@@ -88,7 +88,7 @@ AC_DEFUN([QM_SET_COMPILER_CFLAGS],
              # sometimes cause gcc 4.x to produce incorrect code (even where
              # the aliasing rules are followed). So, we turn it off...
              dnl Using @S|@ glyph to prevent expansion of $1/2/3 as macro arg
-             CC_VERSION=`$CC --v 2>&1 | $GREP 'gcc version' | $AWK '{ print @S|@3 }'`
+             CC_VERSION=`$CC -v 2>&1 | $GREP 'gcc version' | $AWK '{ print @S|@3 }'`
              CC_MAJOR=`echo $CC_VERSION | $AWK -F. '{ print @S|@1 }'`
              if ( test X$CC_MAJOR = X4 )
              then

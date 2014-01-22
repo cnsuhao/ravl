@@ -114,7 +114,7 @@ AC_DEFUN([QM_SET_COMPILER_CCFLAGS],
              # sometimes cause g++ 4.x to produce incorrect code (even where
              # the aliasing rules are followed). So we turn it off...
              dnl Using @S|@ glyph to prevent expansion of $1/2/3 as macro arg
-             CXX_VERSION=`$CXX --v 2>&1 | $GREP 'gcc version' | $AWK '{ print @S|@3 }'`
+             CXX_VERSION=`$CXX -v 2>&1 | $GREP 'gcc version' | $AWK '{ print @S|@3 }'`
              CXX_MAJOR=`echo $CXX_VERSION | $AWK -F. '{ print @S|@1 }'`
              if ( test X$CXX_MAJOR = X4 )
              then

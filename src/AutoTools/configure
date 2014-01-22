@@ -8103,7 +8103,7 @@ then
              # strict-aliasing enabled by optimised builds has been known to
              # sometimes cause gcc 4.x to produce incorrect code (even where
              # the aliasing rules are followed). So, we turn it off...
-                          CC_VERSION=`$CC --v 2>&1 | $GREP 'gcc version' | $AWK '{ print $3 }'`
+                          CC_VERSION=`$CC -v 2>&1 | $GREP 'gcc version' | $AWK '{ print $3 }'`
              CC_MAJOR=`echo $CC_VERSION | $AWK -F. '{ print $1 }'`
              if ( test X$CC_MAJOR = X4 )
              then
@@ -8254,7 +8254,7 @@ then
              # strict-aliasing enabled by optimised builds has been known to
              # sometimes cause g++ 4.x to produce incorrect code (even where
              # the aliasing rules are followed). So we turn it off...
-                          CXX_VERSION=`$CXX --v 2>&1 | $GREP 'gcc version' | $AWK '{ print $3 }'`
+                          CXX_VERSION=`$CXX -v 2>&1 | $GREP 'gcc version' | $AWK '{ print $3 }'`
              CXX_MAJOR=`echo $CXX_VERSION | $AWK -F. '{ print $1 }'`
              if ( test X$CXX_MAJOR = X4 )
              then
