@@ -100,10 +100,14 @@ namespace RavlN {
 
   /*
    * Plot as separate plots on same graph
+   * Keep this function here to avoid changing the class interface.
    */
   bool GnuPlot2dC::Plot(const RCHashC<StringC, CollectionC<Point2dC> > & data)
-  {
+  { return Plot2dC::Plot(data); }
 
+  //: Plot all plots on same canvas, preserve order so we keep the same markers
+  bool GnuPlot2dC::Plot(const CollectionC<Tuple2C<StringC, CollectionC<Point2dC> > > & data)
+  {
     // check it is still running
     if (!m_gnuPlot.IsRunning()) {
       RavlError("GnuPlot not running!");
@@ -118,12 +122,12 @@ namespace RavlN {
     OStreamC os(tmpFile);
     StringC cmd = "plot ";
     UIntT i = 0;
-    for (HashIterC<StringC, CollectionC<Point2dC> > hshIt(data); hshIt; hshIt++) {
-      os << "# " << hshIt.Key() << endl;
+    for (CollectionIterC<Tuple2C<StringC, CollectionC<Point2dC> > > hshIt(data); hshIt; hshIt++) {
+      os << "# " << hshIt->Data1() << endl;
       StringC localPlot;
-      localPlot.form("\'%s\' index %d title '%s',", tmpFile.data(), i, hshIt.Key().data());
+      localPlot.form("\'%s\' index %d title '%s',", tmpFile.c_str(), i, hshIt->Data1().c_str());
       cmd += localPlot;
-      for (SArray1dIterC<Point2dC> it(hshIt.Data().SArray1d()); it; it++) {
+      for (SArray1dIterC<Point2dC> it(hshIt->Data2().SArray1d()); it; it++) {
         StringC d;
         d.form("%f %f", it.Data().Row(), it.Data().Col());
         os << d << endl;

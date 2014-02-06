@@ -30,6 +30,9 @@ namespace RavlN {
     virtual bool Plot(const RCHashC<StringC, CollectionC<Point2dC> > & data);
     //: Plot all points on same graph
 
+    virtual bool Plot(const CollectionC<Tuple2C<StringC, CollectionC<Point2dC> > > & data);
+    //: Plot all plots on same canvas, preserve order so we keep the same markers
+
     virtual bool Plot(const LineABC2dC & line);
     //: Plot a line
 

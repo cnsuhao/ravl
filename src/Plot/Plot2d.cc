@@ -79,6 +79,15 @@ namespace RavlN {
    */
   bool Plot2dC::Plot(const RCHashC<StringC, CollectionC<Point2dC> > & data)
   {
+    CollectionC<Tuple2C<StringC, CollectionC<Point2dC> > > aCollection(data.Size());
+    for (HashIterC<StringC, CollectionC<Point2dC> > it(data); it; it++)
+      aCollection.Append(Tuple2C<StringC, CollectionC<Point2dC> >(it.Key(),it.Data()));
+    return Plot(aCollection);
+  }
+
+  //: Plot all plots on same canvas, preserve order so we keep the same markers
+  bool Plot2dC::Plot(const CollectionC<Tuple2C<StringC, CollectionC<Point2dC> > > & data)
+  {
     //RavlAssertMsg(0, "Abstract method called!");
     RavlError("Abstract method called");
     return false;
