@@ -21,5 +21,5 @@ PLIB = MarkupTool
 
 USESLIBS = RavlGUI RavlFace RavlGUI2D
 
-PROGLIBS = RavlExtImgIO RavlImgIOJasper.opt
+PROGLIBS = RavlExtImgIO RavlImgIOJasper.opt RLog GTK
 

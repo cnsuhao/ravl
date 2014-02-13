@@ -37,7 +37,7 @@ LIBDEPS=
 USESLIBS=RavlMath RavlImageProc RavlCore RavlIO RavlImage RavlOS \
  RavlXMLFactory RavlRLog RavlGnuPlot RavlDataSet
 
-PROGLIBS = RavlExtImgIO.opt  RavlPatternRecIO
+PROGLIBS = RavlExtImgIO.opt  RavlPatternRecIO RLog
 
 SCRIPTS=
 

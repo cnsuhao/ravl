@@ -21,7 +21,7 @@ PROGLIBS =  RavlImgIOV4L.opt RavlExtImgIO.opt RavlDPDisplay \
  RavlImageProc RavlNet RavlDVDRead.opt RavlAVIFile.opt \
  RavlImgIOJasper.opt RavlDV.opt  RavlImgIOV4L2.opt \
  RavlRawVidIO.opt RavlLibFFmpeg.opt RavlImgIO1394dc.opt \
- RavlAV RavlVPlay RavlAudioFile.opt RavlDevAudio.opt RavlAudioIO
+ RavlAV RavlVPlay RavlAudioFile.opt RavlDevAudio.opt RavlAudioIO GTK
 
 
 REQUIRES = libGTK2
