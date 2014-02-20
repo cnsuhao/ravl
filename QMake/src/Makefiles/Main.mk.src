@@ -1154,7 +1154,8 @@ ifdef LOCAL_DEFBASE
                                        $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/$(LOCAL_DEFBASE).def.top \
                                        $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/$(LOCAL_DEFBASE).def.mid \
                                        $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/$(LOCAL_DEFBASE).def.tail \
-                                       $(INST_LIBDEF)/4install/$(LOCAL_DEFBASE).def.in
+                                       $(INST_LIBDEF)/4install/$(LOCAL_DEFBASE).def.in \
+                                       $(QMAKE_MAKEFILES)/Main.mk
 	$(SHOWIT)echo "--- Creating working $(@F)" ; \
 	if [ -f $@ ] ; then \
 	  $(CHMOD) +w $@ ; \
@@ -1177,9 +1178,10 @@ ifdef LOCAL_DEFBASE
   # Recepie for the .def.in file that will ultimately create the .def file to
   # be installed.
   $(INST_LIBDEF)/4install/$(LOCAL_DEFBASE).def.in: $(INST_LIBDEF)/4install/.dir \
-                                                $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/$(LOCAL_DEFBASE).def.top \
-                                                $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/$(LOCAL_DEFBASE).def.mid \
-                                                $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/$(LOCAL_DEFBASE).def.tail
+                                                   $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/$(LOCAL_DEFBASE).def.top \
+                                                   $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/$(LOCAL_DEFBASE).def.mid \
+                                                   $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/$(LOCAL_DEFBASE).def.tail \
+                                                   $(QMAKE_MAKEFILES)/Main.mk
 	$(SHOWIT)echo "--- Creating $(@F)" ; \
 	if [ -f $@ ] ; then \
 	  $(CHMOD) +w $@ ; \
@@ -1208,12 +1210,19 @@ ifdef LOCAL_DEFBASE
 
   # Recepie for the common beginning of the two .def files
   ifeq ($(filter Auto,$(USESLIBS)),)
-   $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/$(LOCAL_DEFBASE).def.top: $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/.dir defs.mk 
+   $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/$(LOCAL_DEFBASE).def.top: $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/.dir \
+                                                                        defs.mk \
+                                                                        $(QMAKE_MAKEFILES)/Main.mk
   else
    ifndef AUTOUSELIBS
     AUTOUSELIBS := $(shell $(QLIBS) -use -d -p $(ROOTDIR))
    endif
-   $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/$(LOCAL_DEFBASE).def.top: $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/.dir defs.mk $(HEADERS) $(SOURCES) $(MAINS)
+   $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/$(LOCAL_DEFBASE).def.top: $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/.dir \
+                                                                        defs.mk \
+                                                                        $(HEADERS) \
+                                                                        $(SOURCES) \
+                                                                        $(MAINS) \
+                                                                        $(QMAKE_MAKEFILES)/Main.mk
   endif
 	$(SHOWIT)echo "--- Creating $(@F)" ; \
 	if [ -f $@ ] ; then \
@@ -1265,12 +1274,19 @@ ifdef LOCAL_DEFBASE
 
   # Recepie for the common mid-part of the two .def files.
   ifeq ($(filter Auto,$(USESLIBS)),)
-   $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/$(LOCAL_DEFBASE).def.mid: $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/.dir defs.mk 
+   $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/$(LOCAL_DEFBASE).def.mid: $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/.dir \
+                                                                        defs.mk \
+                                                                        $(QMAKE_MAKEFILES)/Main.mk
   else
    ifndef AUTOUSELIBS
     AUTOUSELIBS := $(shell $(QLIBS) -use -d -p $(ROOTDIR))
    endif
-   $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/$(LOCAL_DEFBASE).def.mid: $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/.dir defs.mk $(HEADERS) $(SOURCES) $(MAINS)
+   $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/$(LOCAL_DEFBASE).def.mid: $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/.dir \
+                                                                        defs.mk \
+                                                                        $(HEADERS) \
+                                                                        $(SOURCES) \
+                                                                        $(MAINS) \
+                                                                        $(QMAKE_MAKEFILES)/Main.mk
   endif
 	$(SHOWIT)echo "--- Creating $(@F)" ; \
 	if [ -f $@ ] ; then \
@@ -1305,12 +1321,20 @@ ifdef LOCAL_DEFBASE
 
   # Recepie for the common ending of the two .def files.
   ifeq ($(filter Auto,$(USESLIBS)),)
-   $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/$(LOCAL_DEFBASE).def.tail: $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/.dir defs.mk 
+   $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/$(LOCAL_DEFBASE).def.tail: $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/.dir \
+                                                                         defs.mk \
+                                                                         $(QMAKE_MAKEFILES)/Main.mk
+                                                                          
   else
    ifndef AUTOUSELIBS
     AUTOUSELIBS := $(shell $(QLIBS) -use -d -p $(ROOTDIR))
    endif
-   $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/$(LOCAL_DEFBASE).def.tail: $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/.dir defs.mk $(HEADERS) $(SOURCES) $(MAINS)
+   $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/$(LOCAL_DEFBASE).def.tail: $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/.dir \
+                                                                         defs.mk \
+                                                                         $(HEADERS) \
+                                                                         $(SOURCES) \
+                                                                         $(MAINS) \
+                                                                         $(QMAKE_MAKEFILES)/Main.mk
   endif
 	$(SHOWIT)echo "--- Creating $(@F)" ; \
 	if [ -f $@ ] ; then \
@@ -1334,7 +1358,7 @@ endif
 # Using the pkgconfig requires needs to be smarter as we need to ensure the contents of all .def
 # files are converted so its disabled for now
 
-$(INST_PKGCONFIG)/%.pc : defs.mk $(INST_PKGCONFIG)/.dir
+$(INST_PKGCONFIG)/%.pc : defs.mk $(INST_PKGCONFIG)/.dir $(QMAKE_MAKEFILES)/Main.mk
 	$(SHOWIT)echo "--- Creating $(INST_PKGCONFIG)/$(@F) "; 
 	$(SHOWIT)echo "prefix=$(PROJECT_OUT)" >  $(INST_PKGCONFIG)/$(@F);
 	$(SHOWIT)echo "Name: $(PLIB)" >  $(INST_PKGCONFIG)/$(@F);
