@@ -1,5 +1,5 @@
 # This file is part of QMake, Quick Make System
-# Copyright (C) 2001-13, University of Surrey
+# Copyright (C) 2001-14, University of Surrey
 # This code may be redistributed under the terms of the GNU General
 # Public License (GPL). See the gpl.licence file for details or
 # see http://www.gnu.org/copyleft/gpl.html
@@ -936,8 +936,8 @@ else
  # variable (and the subsequent need of the filter-out) is needed to ensure the
  # file is created when it does not exist.
 
- # Recepie to create PLIB library. Dependant on LIB_STAMP, this will
- # either create libXXX.so; libXXX.so.A or libXXX.so.A.B.C. Recepies
+ # Recipe to create PLIB library. Dependant on LIB_STAMP, this will
+ # either create libXXX.so; libXXX.so.A or libXXX.so.A.B.C. Recipes
  # immediately above this one create any necessary symbolic links to the
  # actual file created. If LIB_STAMP is unused, this target falls back to
  # being libXXX.so (or .whatever shared library suffix is in use).
@@ -955,9 +955,9 @@ $(INST_OBJS)/$(LOCAL_DEFBASE).list: defs.mk $(INST_OBJS)/.dir
  DEPENDENCY_INVENTORY=$(wildcard $(patsubst %,$(LOCALTMP)/$(ARC)/%/$(VAR)/shared/objs/*.list,$(sort $(PLIBDEPENDS))))
  # List of objects associated with the dependent libraries for the single lib.
 
- # Single lib recepie, again this is dependant on LIB_STAMP as to what the
+ # Single lib recipe, again this is dependant on LIB_STAMP as to what the
  # target actually is (libXXX.so; libXXX.so.A or libXXX.so.A.B.C). Previous
- # recepies will create any necessary symbolic links to this file.
+ # recipes will create any necessary symbolic links to this file.
  # SET_SINGLESO_SONAME will set the SONAME (to libXXX.so.A) if we are appending
  # a revision number to the library name (otherwise it will do nothing)
  $(INST_LIB)/single/$(SINGLESO)$(LIB_STAMP_EXT) : $(INST_LIB)/lib$(PLIB)$(LIBEXT) $(patsubst %,$(INST_LIB)/lib%$(LIBEXT),$(PLIBDEPENDS)) $(DEPENDENCY_INVENTORY)
@@ -1148,7 +1148,7 @@ ifdef LOCAL_DEFBASE
   # to the final .def only on install.
   # The local .def file introduces a dependency on the installation .def.in
   # file to ensure the latter is built.
-  # The following is the recepie for the local .def file used while building
+  # The following is the recipe for the local .def file used while building
   # the current project.
   $(INST_LIBDEF)/$(LOCAL_DEFBASE).def: $(INST_LIBDEF)/.dir \
                                        $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/$(LOCAL_DEFBASE).def.top \
@@ -1175,7 +1175,7 @@ ifdef LOCAL_DEFBASE
 	$(SHOWIT)cat $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/$(LOCAL_DEFBASE).def.tail >> $@
 
 
-  # Recepie for the .def.in file that will ultimately create the .def file to
+  # Recipe for the .def.in file that will ultimately create the .def file to
   # be installed.
   $(INST_LIBDEF)/4install/$(LOCAL_DEFBASE).def.in: $(INST_LIBDEF)/4install/.dir \
                                                    $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/$(LOCAL_DEFBASE).def.top \
@@ -1208,7 +1208,7 @@ ifdef LOCAL_DEFBASE
 
 
 
-  # Recepie for the common beginning of the two .def files
+  # Recipe for the common beginning of the two .def files
   ifeq ($(filter Auto,$(USESLIBS)),)
    $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/$(LOCAL_DEFBASE).def.top: $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/.dir \
                                                                         defs.mk \
@@ -1272,7 +1272,7 @@ ifdef LOCAL_DEFBASE
 	echo >> $@
 
 
-  # Recepie for the common mid-part of the two .def files.
+  # Recipe for the common mid-part of the two .def files.
   ifeq ($(filter Auto,$(USESLIBS)),)
    $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/$(LOCAL_DEFBASE).def.mid: $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/.dir \
                                                                         defs.mk \
@@ -1319,7 +1319,7 @@ ifdef LOCAL_DEFBASE
   endif	
 
 
-  # Recepie for the common ending of the two .def files.
+  # Recipe for the common ending of the two .def files.
   ifeq ($(filter Auto,$(USESLIBS)),)
    $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/$(LOCAL_DEFBASE).def.tail: $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/.dir \
                                                                          defs.mk \
