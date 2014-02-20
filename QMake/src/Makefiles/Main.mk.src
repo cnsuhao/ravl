@@ -426,18 +426,20 @@ ifdef FULLCHECKING
 .PHONY : all build_aux build_exe buildjavalibs build_libs build_pureexe \
  build_subdirs build_test cheadbuild fullbuild info libbuild libinfo \
  postbuildstep postbuildstepexe prebuildstep purifybuild src_all srcfiles \
- testbuild
+ testbuild exebuild
 
 # Difference is chead{build}  {} FULLCHECKING only
 else
 .PHONY : all build_aux build_exe buildjavalibs build_libs build_pureexe \
  build_subdirs build_test chead fullbuild info libbuild libinfo \
  postbuildstep postbuildstepexe prebuildstep purifybuild src_all srcfiles \
- testbuild
+ testbuild exebuild
 endif
 
 all: prebuildstep srcfiles build_aux
 	@echo "Internal error: No valid build target "
+
+exebuild: prebuildstep build_subdirs build_exe $(TARG_HDRCERTS) postbuildstepexe
 
 fullbuild: prebuildstep build_subdirs build_libs build_exe build_aux  $(TARG_HDRCERTS) postbuildstepexe
 

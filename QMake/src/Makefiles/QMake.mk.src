@@ -66,7 +66,7 @@ endif
  fullclean fulldebug fulldoc fullhdr fullinfo fullopt fullgprof fullshared \
  fullsrc gprof gprofne help info libbuild lib_info mkdef ne novar \
  opt optclean optshared optne optsharedne os osne \
- pack prof purify redoc retest rpmbuild shared sharedne src test unpack 
+ pack prof purify redoc retest rpmbuild shared sharedne src test unpack exebuild
 
 ##################################
 # Do makes.
@@ -307,6 +307,9 @@ buildall:
 FULLBUILDSRC := FULLCHECKING=1
 
 FULLBUILDFLAGS = NOCHECKOUT=1  $(FULLBUILDSRC)
+
+exebuild: 
+	$(SMAKEMD) $(PAR_MAKE) exebuild  $(FULLBUILDFLAGS) TARGET=exebuild
 
 # Check out latest version.
 
