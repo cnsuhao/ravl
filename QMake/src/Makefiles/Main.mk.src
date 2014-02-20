@@ -1119,14 +1119,14 @@ EXTRA_USESLIBS_R = $(filter-out %.opt,$(EXTRA_USESLIBS))
 EXTRA_USESLIBS_O = $(patsubst %.opt,%.def,$(filter %.opt,$(EXTRA_USESLIBS)))
 
 ifdef REQUIRES	
- REQUIRES_INDENT:='  '
+ REQUIRES_INDENT:=$(SPACE)$(SPACE)
 endif
 # Used for indenting the content in a .def file if REQUIRES is set (which causes 
 # an extra ifeq to be added to the file, so the lines inside that ifeq then need
 # to be indented by an extra couple of characters)
 
 ifdef SUMMARY_LIB
- SUMMARY_INDENT:='  '
+ SUMMARY_INDENT:=$(SPACE)$(SPACE)
 endif
 # As per REQUIRES_INDENT, this indents the content in a .def but if SUMMARY_LIB
 # is set.

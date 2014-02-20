@@ -141,6 +141,7 @@ else
   SHOWIT = @
 endif
 
+SPACE=$(EMPTY) $(EMPTY)
 
 PROJECT_NAME:=$(strip $(PROJECT_NAME))#
 
