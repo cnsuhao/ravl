@@ -1239,36 +1239,36 @@ ifdef LOCAL_DEFBASE
 	$(SHOWIT)echo '  ifeq ($$(strip $$(filter-out $$(RESOURCES),$(REQUIRES))),)' >> $@ ; \
 	echo >> $@
   endif	
-  ifdef SUMMARY_LIB
-	$(SHOWIT)echo '$(REQUIRES_INDENT)  ifneq ($$(USE_SINGLE_$(SUMMARY_LIB)),1) ' >> $@ ; \
-	echo >> $@
-  endif
   ifdef USESLIBS
    ifneq ($(USESLIBS),)
     ifneq ($(USESLIBS),None)
      ifeq ($(filter Auto,$(USESLIBS)),)
       ifneq ($(strip $(TARG_USESLIBS_R)),)
-	$(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  include $(TARG_USESLIBS_R)' >> $@ ; \
+	$(SHOWIT)echo '$(REQUIRES_INDENT)  include $(TARG_USESLIBS_R)' >> $@ ; \
 	echo >> $@
       endif
       ifneq ($(strip $(TARG_USESLIBS_O)),)
-	$(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  -include $(TARG_USESLIBS_O)' >> $@ ; \
+	$(SHOWIT)echo '$(REQUIRES_INDENT)  -include $(TARG_USESLIBS_O)' >> $@ ; \
 	echo >> $@
       endif
      else
       ifneq ($(strip $(AUTOUSELIBS)),)
        ifneq ($(strip $(EXTRA_USESLIBS_R)),)
-	$(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  include $(EXTRA_USESLIBS_R)' >> $@ ; \
+	$(SHOWIT)echo '$(REQUIRES_INDENT)  include $(EXTRA_USESLIBS_R)' >> $@ ; \
 	echo >> $@
        endif
        ifneq ($(strip $(EXTRA_USESLIBS_O)),)
-	$(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  -include $(EXTRA_USESLIBS_O)' >> $@ ; \
+	$(SHOWIT)echo '$(REQUIRES_INDENT)  -include $(EXTRA_USESLIBS_O)' >> $@ ; \
 	echo >> $@
        endif
       endif
      endif
     endif
    endif
+  endif
+  ifdef SUMMARY_LIB
+	$(SHOWIT)echo '$(REQUIRES_INDENT)  ifneq ($$(USE_SINGLE_$(SUMMARY_LIB)),1) ' >> $@ ; \
+	echo >> $@
   endif
 	$(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  PLIBDEPENDS += $(PLIB)' >> $@ ; \
 	echo >> $@
