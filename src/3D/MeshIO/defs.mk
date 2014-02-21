@@ -28,3 +28,5 @@ EHT= Ravl.API.3D.IO.html
 
 AUXDIR = share/RAVL/data
 AUXFILES = cube.tri
+
+TESTEXES = testTriFileIO.cc
