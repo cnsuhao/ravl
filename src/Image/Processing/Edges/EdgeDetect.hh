@@ -91,13 +91,16 @@ namespace RavlImageN {
     ImageC<Vector2dC> Grad() const;
     //: Returns image of gradient vectors
 
-    ImageC<RealT> GradHorz() const;
+    ImageC<RealT> GradHorz() const
+    { return edgeDc; }
     //: Returns image of horizontal gradient
 
-    ImageC<RealT> GradVert() const;
+    ImageC<RealT> GradVert() const
+    { return edgeDr; }
     //: Returns image of vertical gradient
 
-    ImageC<RealT> GradMag() const;
+    ImageC<RealT> GradMag() const
+    { return edgeMag; }
     //: Returns image of gradient magnitude
 
   };

@@ -13,7 +13,7 @@ MAINS=mosaic.cc xmosaic.cc
 
 PROGLIBS=RavlImageProc RavlVideoIO RavlGUI2D RavlImgIOV4L.opt \
   RavlDPDisplay.opt RavlDV.opt RavlExtImgIO.opt RavlImageIO \
-  RavlMPEG2.opt CSPDriver.opt RavlURLIO.opt RavlLibFFmpeg.opt
+  RavlMPEG2.opt CSPDriver.opt RavlURLIO.opt RavlLibFFmpeg.opt GTK
 
 #EXTERNALLIBS= GTK.def
 

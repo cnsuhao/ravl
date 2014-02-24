@@ -27,8 +27,10 @@ namespace RavlN {
   /*
    * Construct
    */
-  GnuPlot2dC::GnuPlot2dC(const StringC & title) :
-      Plot2dC(title), m_gnuPlot((StringC) "gnuplot", false, false, true)
+  GnuPlot2dC::GnuPlot2dC(const StringC & title)
+   : Plot2dC(title),
+     m_gnuPlot((StringC) "gnuplot", false, false, true),
+     m_plotNum(0)
   {
     // check it is still running
     if (!m_gnuPlot.IsRunning()) {
@@ -52,9 +54,15 @@ namespace RavlN {
       FilenameC tmpFile = "/tmp/data";
       m_tmpFile = tmpFile.MkTemp(6, -1);
     } else {
-      m_tmpFile.Remove();
+      FilenameC old(m_tmpFile + StringC(m_plotNum));
+      if(old.Exists())
+        old.Remove();
     }
-    return m_tmpFile;
+    m_plotNum++;
+    if(m_plotNum > 4)
+      m_plotNum = 0;
+    // Switch between two files to avoid truncation problems.
+    return m_tmpFile + StringC(m_plotNum);
   }
 
   /*
@@ -92,10 +100,14 @@ namespace RavlN {
 
   /*
    * Plot as separate plots on same graph
+   * Keep this function here to avoid changing the class interface.
    */
   bool GnuPlot2dC::Plot(const RCHashC<StringC, CollectionC<Point2dC> > & data)
-  {
+  { return Plot2dC::Plot(data); }
 
+  //: Plot all plots on same canvas, preserve order so we keep the same markers
+  bool GnuPlot2dC::Plot(const CollectionC<Tuple2C<StringC, CollectionC<Point2dC> > > & data)
+  {
     // check it is still running
     if (!m_gnuPlot.IsRunning()) {
       RavlError("GnuPlot not running!");
@@ -110,12 +122,12 @@ namespace RavlN {
     OStreamC os(tmpFile);
     StringC cmd = "plot ";
     UIntT i = 0;
-    for (HashIterC<StringC, CollectionC<Point2dC> > hshIt(data); hshIt; hshIt++) {
-      os << "# " << hshIt.Key() << endl;
+    for (CollectionIterC<Tuple2C<StringC, CollectionC<Point2dC> > > hshIt(data); hshIt; hshIt++) {
+      os << "# " << hshIt->Data1() << endl;
       StringC localPlot;
-      localPlot.form("\'%s\' index %d title '%s',", tmpFile.data(), i, hshIt.Key().data());
+      localPlot.form("\'%s\' index %d title '%s',", tmpFile.c_str(), i, hshIt->Data1().c_str());
       cmd += localPlot;
-      for (SArray1dIterC<Point2dC> it(hshIt.Data().SArray1d()); it; it++) {
+      for (SArray1dIterC<Point2dC> it(hshIt->Data2().SArray1d()); it; it++) {
         StringC d;
         d.form("%f %f", it.Data().Row(), it.Data().Col());
         os << d << endl;

@@ -24,7 +24,7 @@ EXTERNALLIBS = OpenCV.def
 
 USESLIBS = RavlImage OpenCV 
 
-PROGLIBS = RavlImageIO RavlDPDisplay 
+PROGLIBS = RavlImageIO RavlDPDisplay OpenCV
 
 TESTEXES = testOpenCV.cc
 

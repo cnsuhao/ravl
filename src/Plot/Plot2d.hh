@@ -21,6 +21,7 @@
 #include "Ravl/PatternRec/Function.hh"
 #include "Ravl/PatternRec/Classifier.hh"
 #include "Ravl/LineABC2d.hh"
+#include "Ravl/Tuple2.hh"
 
 namespace RavlN {
   
@@ -51,6 +52,9 @@ namespace RavlN {
 
     virtual bool Plot(const RCHashC<StringC, CollectionC<Point2dC> > & data);
     //: Plot all plots on same canvas
+
+    virtual bool Plot(const CollectionC<Tuple2C<StringC, CollectionC<Point2dC> > > & data);
+    //: Plot all plots on same canvas, preserve order so we keep the same markers
 
     bool Plot(const RCHashC<StringC, CollectionC<Point2dC> > & data,
         RavlImageN::ImageC<RavlImageN::ByteRGBValueC> & image,
