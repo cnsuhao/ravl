@@ -329,11 +329,7 @@ ifeq ($(SUPPORT_OK),yes)
    ifdef PLIB
     TARG_DEFS=$(INST_LIBDEF)/$(LOCAL_DEFBASE).def
     ifdef MAKEPKGCONFIG
-     ifdef SHAREDBUILD
-    TARG_PKGCONFIG=$(INST_PKGCONFIG)/$(PLIB).pc
-     else
-    TARG_PKGCONFIG=$(INST_PKGCONFIG)/$(PLIB).pc
-     endif
+     TARG_PKGCONFIG=$(INST_PKGCONFIG)/$(PLIB).pc
     endif
    endif
   endif
