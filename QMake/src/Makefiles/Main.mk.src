@@ -1204,7 +1204,9 @@ ifdef LOCAL_DEFBASE
   endif
 	$(SHOWIT)cat $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/$(LOCAL_DEFBASE).def.tail >> $@
 
-
+  ifdef SUMMARY_LIB
+   MORE_SUMMARY_LIBS=$(strip $(filter-out $(firstword $(SUMMARY_LIB)),$(SUMMARY_LIB)))
+  endif
 
   # Recipe for the common beginning of the two .def files
   ifeq ($(filter Auto,$(USESLIBS)),)
@@ -1263,7 +1265,21 @@ ifdef LOCAL_DEFBASE
    endif
   endif
   ifdef SUMMARY_LIB
-	$(SHOWIT)echo '$(REQUIRES_INDENT)  ifneq ($$(USE_SINGLE_$(SUMMARY_LIB)),1) ' >> $@ ; \
+	$(SHOWIT)echo '$(REQUIRES_INDENT)  ifeq ($$(USE_SINGLE_$(firstword $(SUMMARY_LIB))),1) ' >> $@ ; \
+	echo >> $@ ; \
+	echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  ifndef $(firstword $(SUMMARY_LIB))_AUTO_DEF' >> $@ ; \
+	echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)    include $(firstword $(SUMMARY_LIB)).def' >> $@ ; \
+	echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  endif' >> $@
+   ifneq (,$(strip $MORE_SUMMARY_LIBS))
+	$(SHOWIT)$(foreach lib,$(MORE_SUMMARY_LIBS),echo >> $@ ; \
+                                                    echo '$(REQUIRES_INDENT)  else ifeq ($$(USE_SINGLE_$(lib)),1) ' >> $@ ; \
+                                                    echo >> $@ ; \
+                                                    echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  ifndef $(lib)_AUTO_DEF' >> $@ ; \
+                                                    echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)    include $(lib).def' >> $@ ; \
+                                                    echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  endif' >> $@ ;)
+   endif
+	$(SHOWIT)echo >> $@ ; \
+	echo '$(REQUIRES_INDENT)  else' >> $@ ; \
 	echo >> $@
   endif
 	$(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  PLIBDEPENDS += $(PLIB)' >> $@ ; \
@@ -1306,13 +1322,7 @@ ifdef LOCAL_DEFBASE
 	echo >> $@
   endif
   ifdef SUMMARY_LIB
-	$(SHOWIT)echo '$(REQUIRES_INDENT)  else' >> $@ ; \
-	echo >> $@ ; \
-	echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  ifndef $(SUMMARY_LIB)_AUTO_DEF' >> $@ ; \
-	echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)    include $(SUMMARY_LIB).def' >> $@ ; \
-	echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  endif' >> $@ ; \
-	echo >> $@ ; \
-	echo '$(REQUIRES_INDENT)  endif' >> $@ ; \
+	$(SHOWIT)echo '$(REQUIRES_INDENT)  endif' >> $@ ; \
 	echo >> $@
   endif	
 
