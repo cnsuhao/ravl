@@ -1,6 +1,3 @@
-SOURCES=Dummy.cc
-
-PLIB=RavlLibManager
 
 LIBS=$(ALL_EXTERNAL_LIBS)
 

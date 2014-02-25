@@ -335,18 +335,34 @@ ifeq ($(SUPPORT_OK),yes)
   endif
  endif
 
- ifneq (,$(PLIB))
-  ifdef SHAREDBUILD
-   ifneq (,$(SINGLESO))
-    TARG_LIBS=$(strip $(patsubst %,$(INST_LIB)/single/%$(LIBEXT),$(SINGLESO)))#
+ # Calculate what libraries we will need to build.
+ ifdef SHAREDBUILD
+  # Shared build; do we have anything to put into a SINGLESO?
+  ifneq (,$(USESLIBS))
+   # Yes. Do we have anything to put into a PLIB?
+   ifneq (,$(SOURCES))
+    # Again yes, if PLIB and/or SINGLESO are defined we need to build them both.
+    # The patsubst takes care of the situation when SINGLESO and/or PLIB are not
+    # defined.
+    TARG_LIBS=$(strip $(patsubst %,$(INST_LIB)/lib%$(LIBEXT),$(PLIB)) $(patsubst %,$(INST_LIB)/single/%$(LIBEXT),$(SINGLESO)))#
    else
-    TARG_LIBS=$(strip $(patsubst %,$(INST_LIB)/lib%$(LIBEXT),$(PLIB)))#
+    # We have nothing to go into a PLIB so just consider SINGLESO (again, the
+    # patsubst takes care of the situation if we do not have SINGLESO set).
+    TARG_LIBS=$(strip $(patsubst %,$(INST_LIB)/single/%$(LIBEXT),$(SINGLESO)))#
    endif
   else
-   TARG_LIBS=$(strip $(patsubst %,$(INST_LIB)/lib%$(LIBEXT),$(PLIB)))#
+   # We have nothing to go into any SINGLESO, how about PLIB?
+   ifneq (,$(SOURCES))
+    # If PLIB is set then we need to build it..
+    TARG_LIBS=$(strip $(patsubst %,$(INST_LIB)/lib%$(LIBEXT),$(PLIB)))#
+   endif
   endif
  else
-  TARG_LIBS=
+  # Static build, we never have a SINGLESO. Is it worth building PLIB?
+  ifneq (,$(SOURCES))
+   # Will need to build any PLIB as we have SOURCES to add to it.
+   TARG_LIBS=$(strip $(patsubst %,$(INST_LIB)/lib%$(LIBEXT),$(PLIB)))#
+  endif
  endif
 
 else # SUPPORT_OK != yes
@@ -815,17 +831,9 @@ endif
 .SECONDARY : $(INST_LIB)/dummymain$(OBJEXT)
 
 ifneq ($(strip $(TARG_JAVA)),)
-build_libs: $(TARG_LIBS) buildjavalibs prebuildstep
+ build_libs: $(TARG_LIBS) buildjavalibs prebuildstep
 else
- ifneq ($(strip $(PLIB)),)
-  ifneq ($(strip $(SOURCES)),)
-build_libs: $(TARG_LIBS) prebuildstep
-  else
-build_libs: prebuildstep
-  endif
- else
-build_libs: prebuildstep
- endif
+ build_libs: $(TARG_LIBS) prebuildstep
 endif
 
 #$(TARG_JAVA)
@@ -922,41 +930,44 @@ else
   endif # LIB_STAMP != NO
  endif # ifdef LIB_STAMP
 
- LIBRARY_INVENTORY=$(INST_OBJS)/$(LOCAL_DEFBASE).list $(filter-out $(INST_OBJS)/$(LOCAL_DEFBASE).list,$(wildcard $(INST_OBJS)/*.list))
- # If the library is built from a single directory, it will be made up of all
- # the files listed in the $(PLIB).list file. If the source resides in multiple
- # directories, the $(PLIB).list file will be supplemented by a number (one for
- # each extra directory) of X.list files. These extra .list files are named
- # after the LIBDEPS setting for the extra source directories.
- # The explicit use of $(INST_OBJS)/$(LOCAL_DEFBASE).list when setting this
- # variable (and the subsequent need of the filter-out) is needed to ensure the
- # file is created when it does not exist.
+ ifneq (,$(PLIB))
+  LIBRARY_INVENTORY=$(INST_OBJS)/$(LOCAL_DEFBASE).list $(filter-out $(INST_OBJS)/$(LOCAL_DEFBASE).list,$(wildcard $(INST_OBJS)/*.list))
+  # If the library is built from a single directory, it will be made up of all
+  # the files listed in the $(PLIB).list file. If the source resides in multiple
+  # directories, the $(PLIB).list file will be supplemented by a number (one for
+  # each extra directory) of X.list files. These extra .list files are named
+  # after the LIBDEPS setting for the extra source directories.
+  # The explicit use of $(INST_OBJS)/$(LOCAL_DEFBASE).list when setting this
+  # variable (and the subsequent need of the filter-out) is needed to ensure the
+  # file is created when it does not exist.
 
- # Recipe to create PLIB library. Dependant on LIB_STAMP, this will
- # either create libXXX.so; libXXX.so.A or libXXX.so.A.B.C. Recipes
- # immediately above this one create any necessary symbolic links to the
- # actual file created. If LIB_STAMP is unused, this target falls back to
- # being libXXX.so (or .whatever shared library suffix is in use).
- # SET_PLIB_SONAME will set the SONAME (to libXXX.so.A) if we are appending
- # a revision number to the library name (otherwise it will do nothing)
- $(INST_LIB)/lib$(PLIB)$(LIB_STAMP_EXT) : $(TARG_OBJS) $(TARG_MUSTLINK_OBJS) $(INST_LIB)/dummymain$(OBJEXT) $(INST_LIB)/.dir $(LIBRARY_INVENTORY)
+  # Recipe to create PLIB library. Dependant on LIB_STAMP, this will
+  # either create libXXX.so; libXXX.so.A or libXXX.so.A.B.C. Recipes
+  # immediately above this one create any necessary symbolic links to the
+  # actual file created. If LIB_STAMP is unused, this target falls back to
+  # being libXXX.so (or .whatever shared library suffix is in use).
+  # SET_PLIB_SONAME will set the SONAME (to libXXX.so.A) if we are appending
+  # a revision number to the library name (otherwise it will do nothing)
+  $(INST_LIB)/lib$(PLIB)$(LIB_STAMP_EXT) : $(TARG_OBJS) $(TARG_MUSTLINK_OBJS) $(INST_LIB)/dummymain$(OBJEXT) $(INST_LIB)/.dir $(LIBRARY_INVENTORY)
 	@echo "--- Building " $(@F)
 	$(SHOWIT)$(CXX) $(PKG_LDLIBFLAGS) $(LDLIBFLAGS) $(patsubst %,@%,$(LIBRARY_INVENTORY)) $(filter-out -l$(PLIB),$(LIBSONLY)) $(SET_PLIB_SONAME) -o $(INST_LIB)/$(@F)
 	@$(UNTOUCH) $(INST_LIB)/$(@F) $(TARG_OBJS) $(TARG_MUSTLINK_OBJS)
+ endif
 
 $(INST_OBJS)/$(LOCAL_DEFBASE).list: defs.mk $(INST_OBJS)/.dir
 	@echo "---- Updating object list"
 	@echo $(TARG_OBJS)  > $(INST_OBJS)/$(LOCAL_DEFBASE).list
 
- DEPENDENCY_INVENTORY=$(wildcard $(patsubst %,$(LOCALTMP)/$(ARC)/%/$(VAR)/shared/objs/*.list,$(sort $(PLIBDEPENDS))))
- # List of objects associated with the dependent libraries for the single lib.
+ ifneq (,$(SINGLESO))
+  DEPENDENCY_INVENTORY=$(wildcard $(patsubst %,$(LOCALTMP)/$(ARC)/%/$(VAR)/shared/objs/*.list,$(sort $(PLIBDEPENDS))))
+  # List of objects associated with the dependent libraries for the single lib.
 
- # Single lib recipe, again this is dependant on LIB_STAMP as to what the
- # target actually is (libXXX.so; libXXX.so.A or libXXX.so.A.B.C). Previous
- # recipes will create any necessary symbolic links to this file.
- # SET_SINGLESO_SONAME will set the SONAME (to libXXX.so.A) if we are appending
- # a revision number to the library name (otherwise it will do nothing)
- $(INST_LIB)/single/$(SINGLESO)$(LIB_STAMP_EXT) : $(INST_LIB)/lib$(PLIB)$(LIBEXT) $(patsubst %,$(INST_LIB)/lib%$(LIBEXT),$(PLIBDEPENDS)) $(DEPENDENCY_INVENTORY)
+  # Single lib recipe, again this is dependant on LIB_STAMP as to what the
+  # target actually is (libXXX.so; libXXX.so.A or libXXX.so.A.B.C). Previous
+  # recipes will create any necessary symbolic links to this file.
+  # SET_SINGLESO_SONAME will set the SONAME (to libXXX.so.A) if we are appending
+  # a revision number to the library name (otherwise it will do nothing)
+  $(INST_LIB)/single/$(SINGLESO)$(LIB_STAMP_EXT) : $(patsubst %,$(INST_LIB)/lib%$(LIBEXT),$(PLIB) $(PLIBDEPENDS)) $(DEPENDENCY_INVENTORY)
 	@if [ ! -d $(INST_LIB)/single ] ; \
          then \
             if [ X$(QMAKE_INFO) != X ] ; \
@@ -967,9 +978,10 @@ $(INST_OBJS)/$(LOCAL_DEFBASE).list: defs.mk $(INST_OBJS)/.dir
          fi
 	@echo "--- Building " $(@F)
 	$(SHOWIT)$(CXX) $(PKG_LDLIBFLAGS) $(LDLIBFLAGS) $(patsubst %,@%,$(LIBRARY_INVENTORY) $(DEPENDENCY_INVENTORY)) $(filter-out $(patsubst %,-l%,$(PLIB) $(PLIBDEPENDS)),$(LIBSONLY)) $(SET_SINGLESO_SONAME) -o $(INST_LIB)/single/$(@F)
-	@$(UNTOUCH) $(INST_LIB)/$(@F) $(INST_LIB)/lib$(PLIB)$(LIBEXT)
+ endif
 
 endif
+#  of ifndef SHAREDBUILD else block
 
 $(INST_LIB)/lib$(PLIB)$(LIBEXT)(%$(OBJEXT)) : $(INST_OBJS)/%$(OBJEXT)
 	@true
