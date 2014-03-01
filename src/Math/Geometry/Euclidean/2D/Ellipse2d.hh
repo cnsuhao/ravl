@@ -36,7 +36,7 @@ namespace RavlN {
     //!param: conicParams - Conic parameters a to f, where a * Sqr(row) + b * row * col + c * Sqr(col) + d * row + e * col + f = 0
     
     Ellipse2dC(const Affine2dC &np)
-      : p(p)
+      : p(np)
     {}
     //: Construct from affine transform from unit circle centered on the origin
     //!param: np - Transform from unit circle centered on the origin
