@@ -1326,7 +1326,7 @@ ifdef LOCAL_DEFBASE
   ifdef EXTPACKAGE
         $(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  INCLUDES := -I$$(INSTALLHOME)\include\$(PACKAGE) $$(INCLUDES) ' >> $@ ; \
 	echo >> $@ ; \
-        echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  ifneq ($(BASE_VAR),none)' >> $@ ; \
+        echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  ifneq ($$(BASE_VAR),none)' >> $@ ; \
 	echo >> $@ ; \
         echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)    INCLUDES := -I$$(BASE_INC)\$(PACKAGE) $$(INCLUDES)' >> $@ ; \
 	echo >> $@ ; \
