@@ -20,6 +20,8 @@ EXAMPLES= exPulseAudio.cc
 
 PLIB=RavlPulseAudio
 
+SUMMARY_LIB = Ravl
+
 MUSTLINK=RavlPulseAudio.cc
 
 USESLIBS=RavlIO RavlAudioUtil RavlAudioIO PulseAudioSimple RavlThreads
