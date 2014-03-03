@@ -1176,9 +1176,7 @@ ifdef LOCAL_DEFBASE
   endif
 	$(SHOWIT)cat $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/$(LOCAL_DEFBASE).def.mid >> $@
   ifdef MUSTLINK
-	$(SHOWIT)echo '$(REQUIRES_INDENT)  ifndef $$(SHAREDBUILD)' >> $@ ; \
-	echo '$(REQUIRES_INDENT)    EXELIB := $(MLOBJPATH) $$(EXELIB)' >> $@ ; \
-	echo '$(REQUIRES_INDENT)  endif' >> $@
+	$(SHOWIT)echo '$(REQUIRES_INDENT)  EXELIB := $(MLOBJPATH) $$(EXELIB)' >> $@
   endif
 	$(SHOWIT)cat $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/$(LOCAL_DEFBASE).def.tail >> $@
 
@@ -1210,9 +1208,7 @@ ifdef LOCAL_DEFBASE
   endif
 	$(SHOWIT)cat $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/$(LOCAL_DEFBASE).def.mid >> $@
   ifdef MUSTLINK
-	$(SHOWIT)echo '$(REQUIRES_INDENT)  ifndef $$(SHAREDBUILD)' >> $@ ; \
-	echo '$(REQUIRES_INDENT)    EXELIB := $$(QMAKE_PROJECTS)/$(PROJECT_DIR)$(RAVL_BODGE)/MustLink/$(basename $(MUSTLINK))$(OBJEXT) $$(EXELIB)' >> $@ ; \
-	echo '$(REQUIRES_INDENT)  endif' >> $@
+	$(SHOWIT)echo '$(REQUIRES_INDENT)  EXELIB := $$(QMAKE_PROJECTS)/$(PROJECT_DIR)$(RAVL_BODGE)/MustLink/$(basename $(MUSTLINK))$(OBJEXT) $$(EXELIB)' >> $@
   endif
 	$(SHOWIT)cat $(LOCALTMP)/$(ARC)/$(LOCAL_DEFBASE)/libdep/$(LOCAL_DEFBASE).def.tail >> $@
 
