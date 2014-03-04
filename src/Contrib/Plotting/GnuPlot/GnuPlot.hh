@@ -156,6 +156,12 @@ namespace RavlGUIN {
     //: input stream operator
 
   protected:
+    //! Set the terminal to a window.
+    void SetTerminalWindow();
+
+    //! Set teriminal to a png
+    void SetTerminalImage(int rows,int cols);
+
     //: Class members
     RCHashC<StringC, StringC> list;
     //: Holding gnuplots commands
@@ -169,6 +175,7 @@ namespace RavlGUIN {
     Vector2dC yrange;
     //: Store the yrange
 
+    StringC m_windowType;
   };
 
   // Plot a RAVL function

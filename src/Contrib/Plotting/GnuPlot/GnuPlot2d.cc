@@ -43,7 +43,7 @@ namespace RavlN {
       Command("set title \"" + title + "\"");
     }
 
-    Command("set terminal wxt persist raise");
+    CommandTerminalWindow();
 
   }
 
@@ -400,7 +400,7 @@ namespace RavlN {
   bool GnuPlot2dC::SetOutput(const StringC & output, const IndexRange2dC & rec)
   {
     if (output == "x11" || output == "") {
-      Command("set terminal wxt persist raise");
+      CommandTerminalWindow();
     } else {
       FilenameC fn(output);
       StringC cmd;
@@ -434,6 +434,16 @@ namespace RavlN {
   void GnuPlot2dC::Flush()
   {
     m_gnuPlot.StdIn().os().flush();
+  }
+
+  //! Set the terminal to a window.
+  void GnuPlot2dC::CommandTerminalWindow()
+  {
+#if RAVL_OS_MACOSX
+    Command("set terminal x11 persist noraise"); // raise xwt
+#else
+    Command("set terminal wxt persist noraise");
+#endif
   }
 
 
