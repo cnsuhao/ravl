@@ -17,9 +17,10 @@ PLIB=RavlPythonSwig2
 
 SINGLESO=_RavlSwigPython2
 
-USESLIBS=RavlDPDisplay.opt RavlCore RavlMath RavlImage RavlImageIO \
- RavlExtImgIO Python RavlNet RavlOSIO RavlDataSet RavlPatternRec \
- RavlPatternRecIO RavlGnuPlot RavlSVM RavlNumPy
+USESLIBS=RavlDPDisplay.opt RavlGUI2D.opt RavlGUI.opt RavlPatternRecIO RavlSVM \
+RavlGnuPlot RavlPatternRec RavlDataSet fann MathIO RavlMath ccmath \
+RavlExtImageIO RavlImageIO RavlImage RavlNumPy NumPy Python RavlNet \
+RavlService RavlXMLFactory RavlThreads RavlOSIO RavlOS RavlIO RavlCore
 
 PROGLIBS=RavlMath
 

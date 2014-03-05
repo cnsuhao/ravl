@@ -959,15 +959,28 @@ $(INST_OBJS)/$(LOCAL_DEFBASE).list: defs.mk $(INST_OBJS)/.dir
 	@echo $(TARG_OBJS)  > $(INST_OBJS)/$(LOCAL_DEFBASE).list
 
  ifneq (,$(SINGLESO))
-  SINGLE_MANIFEST=$(wildcard $(patsubst %,$(LOCALTMP)/$(ARC)/%/$(VAR)/shared/objs/*.list,$(sort $(PLIBDEPENDS))))
+  SINGLE_MANIFEST= $(PLIB) $(filter $(patsubst %.opt,%,$(USESLIBS)),$(PLIBDEPENDS))
+  # The libraries that go into the single library will be any PLIB plus those
+  # specified by USESLIBS minus any that are not part of the current product.
+  # USESLIBS holds the list of libraries requested by the user (which may
+  # include external libraries that the single library should be linked
+  # against, rather than include).
+  # PLIBDEPENDS holds all the libraries from the current product that are
+  # required to satisfy all internal dependencies.
+  # Hence, filtering PLIBDEPENDS by USESLIBS give us the correct list.
+
+  SINGLE_INVENTORY=$(wildcard $(patsubst %,$(LOCALTMP)/$(ARC)/%/$(VAR)/shared/objs/*.list,$(SINGLE_MANIFEST)))
   # Set of object lists for each of the libraries that make up the single lib.
 
   # Single lib recipe, again this is dependant on LIB_STAMP as to what the
   # target actually is (libXXX.so; libXXX.so.A or libXXX.so.A.B.C). Previous
   # recipes will create any necessary symbolic links to this file.
   # SET_SINGLESO_SONAME will set the SONAME (to libXXX.so.A) if we are appending
-  # a revision number to the library name (otherwise it will do nothing)
-  $(INST_LIB)/single/$(SINGLESO)$(LIB_STAMP_EXT) : $(patsubst %,$(INST_LIB)/lib%$(LIBEXT),$(PLIB) $(PLIBDEPENDS)) $(SINGLE_MANIFEST)
+  # a revision number to the library name (otherwise it will do nothing).
+  # Dependency is on the libraries for each requested product library (as held
+  # in SINGLE_MANIFEST) and the object lists from each of those libraries (held
+  # in SINGLE_INVENTORY).
+  $(INST_LIB)/single/$(SINGLESO)$(LIB_STAMP_EXT) : $(patsubst %,$(INST_LIB)/lib%$(LIBEXT),$(SINGLE_MANIFEST)) $(SINGLE_INVENTORY)
 	@if [ ! -d $(INST_LIB)/single ] ; \
          then \
             if [ X$(QMAKE_INFO) != X ] ; \
@@ -977,7 +990,7 @@ $(INST_OBJS)/$(LOCAL_DEFBASE).list: defs.mk $(INST_OBJS)/.dir
             $(MKDIR_P) $(INST_LIB)/single ; \
          fi
 	@echo "--- Building " $(@F)
-	$(SHOWIT)$(CXX) $(PKG_LDLIBFLAGS) $(LDLIBFLAGS) $(patsubst %,@%,$(LIBRARY_INVENTORY) $(SINGLE_MANIFEST)) $(filter-out $(patsubst %,-l%,$(PLIB) $(PLIBDEPENDS)),$(LIBSONLY)) $(SET_SINGLESO_SONAME) -o $(INST_LIB)/single/$(@F)
+	$(SHOWIT)$(CXX) $(PKG_LDLIBFLAGS) $(LDLIBFLAGS) $(patsubst %,@%,$(SINGLE_INVENTORY)) $(filter-out $(patsubst %,-l%,$(SINGLE_MANIFEST)),$(LIBSONLY)) $(SET_SINGLESO_SONAME) -o $(INST_LIB)/single/$(@F)
  endif
 
 endif

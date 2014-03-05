@@ -17,7 +17,9 @@ PLIB=RavlPythonSwig
 
 SINGLESO=_RavlPython
 
-USESLIBS=RavlDPDisplay.opt RavlCore RavlMath RavlImage RavlImageIO Python RavlNet RavlOSIO
+USESLIBS=RavlDPDisplay.opt RavlGUI2D.opt RavlGUI.opt RavlMath ccmath \
+RavlImageIO RavlImage Python RavlNet RavlService RavlXMLFactory RavlThreads \
+RavlOSIO RavlOS RavlIO RavlCore
 
 PROGLIBS=DynLink
 
