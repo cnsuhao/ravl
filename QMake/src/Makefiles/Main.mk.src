@@ -1376,21 +1376,9 @@ ifdef LOCAL_DEFBASE
 
 
   # Recipe for the common ending of the two .def files.
-  ifeq ($(filter Auto,$(USESLIBS)),)
-   $(LOCALTMP)/libdep/$(LOCAL_DEFBASE).def.tail: $(LOCALTMP)/libdep/.dir \
-                                                 defs.mk \
-                                                 $(QMAKE_MAKEFILES)/Main.mk
-  else
-   ifndef AUTOUSELIBS
-    AUTOUSELIBS := $(shell $(QLIBS) -use -d -p $(ROOTDIR))
-   endif
-   $(LOCALTMP)/libdep/$(LOCAL_DEFBASE).def.tail: $(LOCALTMP)/libdep/.dir \
-                                                 defs.mk \
-                                                 $(HEADERS) \
-                                                 $(SOURCES) \
-                                                 $(MAINS) \
-                                                 $(QMAKE_MAKEFILES)/Main.mk
-  endif
+  $(LOCALTMP)/libdep/$(LOCAL_DEFBASE).def.tail: $(LOCALTMP)/libdep/.dir \
+                                                defs.mk \
+                                                $(QMAKE_MAKEFILES)/Main.mk
 	@echo "--- Creating $(@F)"
 	$(SHOWIT)if [ -f $@ ] ; then \
 	  $(CHMOD) +w $@ ; \
