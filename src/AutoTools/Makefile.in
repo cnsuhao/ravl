@@ -1,6 +1,6 @@
 # @configure_input@
 # This file is part of RAVL, Recognition And Vision Library
-# Copyright (C) 2011-13, University of Surrey
+# Copyright (C) 2011-14, University of Surrey
 # This code may be redistributed under the terms of the GNU General
 # Public License (GPL). See the gpl.licence file for details or
 # see http://www.gnu.org/copyleft/gpl.html
@@ -148,6 +148,9 @@ installRavl.def: $(ABS_DESTDIR)$(datadir)/QMake/Projects/Ravl/libdep/Ravl.def
 
 $(ABS_DESTDIR)$(datadir)/QMake/Projects/Ravl/libdep/Ravl.def: $(PROJECT_OUT)/lib/libdep/4install/Ravl.def $(ABS_DESTDIR)$(datadir)/QMake/Projects/Ravl/libdep
 	$(INSTALL) $(PROJECT_OUT)/lib/libdep/4install/Ravl.def $(ABS_DESTDIR)$(datadir)/QMake/Projects/Ravl/libdep/Ravl.def
+
+$(ABS_DESTDIR)$(datadir)/QMake/Projects/Ravl/libdep:
+	$(SHOWIT)$(MKDIR_P) $(ABS_DESTDIR)$(datadir)/QMake/Projects/Ravl/libdep
  
 $(PROJECT_OUT)/lib/libdep/4install/Ravl.def: $(PROJECT_OUT)/lib/libdep/4install/Ravl.def.in
 	$(SHOWIT)$(SED) -e 's![@]PROJECT_LIBDIR[@]!$(libdir)!g' \
@@ -252,8 +255,6 @@ $(ABS_DESTDIR)$(libdir)/pkgconfig:
 $(ABS_DESTDIR)$(libdir)/pkgconfig/Ravl.pc:
 	$(INSTALL_DATA) $(PROJECT_OUT)/lib/pkgconfig/Ravl.pc $(ABS_DESTDIR)$(libdir)/pkgconfig/Ravl.pc
 
-$(ABS_DESTDIR)$(datadir)/QMake/Projects/Ravl/libdep:
-	$(SHOWIT)$(MKDIR_P) $(ABS_DESTDIR)$(datadir)/QMake/Projects/Ravl/libdep
 
 installsingledebuglib:
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=debug singleSetRootInstalled
