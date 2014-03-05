@@ -1201,8 +1201,8 @@ ifdef LOCAL_DEFBASE
                                        $(LOCALTMP)/libdep/$(LOCAL_DEFBASE).def.tail \
                                        $(INST_LIBDEF)/4install/$(LOCAL_DEFBASE).def.in \
                                        $(QMAKE_MAKEFILES)/Main.mk
-	$(SHOWIT)echo "--- Creating working $(@F)" ; \
-	if [ -f $@ ] ; then \
+	@echo "--- Creating working $(@F)"
+	$(SHOWIT)if [ -f $@ ] ; then \
 	  $(CHMOD) +w $@ ; \
 	fi ; \
 	cp $(LOCALTMP)/libdep/$(LOCAL_DEFBASE).def.top $@
@@ -1225,8 +1225,8 @@ ifdef LOCAL_DEFBASE
                                                    $(LOCALTMP)/libdep/$(LOCAL_DEFBASE).def.mid \
                                                    $(LOCALTMP)/libdep/$(LOCAL_DEFBASE).def.tail \
                                                    $(QMAKE_MAKEFILES)/Main.mk
-	$(SHOWIT)echo "--- Creating $(@F)" ; \
-	if [ -f $@ ] ; then \
+	@echo "--- Creating $(@F)"
+	$(SHOWIT)if [ -f $@ ] ; then \
 	  $(CHMOD) +w $@ ; \
 	fi ; \
 	cp $(LOCALTMP)/libdep/$(LOCAL_DEFBASE).def.top $@
@@ -1271,8 +1271,8 @@ ifdef LOCAL_DEFBASE
                                                 $(QMAKE_MAKEFILES)/Main.mk \
                                                 $(LOCALTMP)/Copyright20$(COPYRIGHT_YEAR)
   endif
-	$(SHOWIT)echo "--- Creating $(@F)" ; \
-	if [ -f $@ ] ; then \
+	@echo "--- Creating $(@F)"
+	$(SHOWIT)if [ -f $@ ] ; then \
 	  $(CHMOD) +w $@ ; \
 	fi ; \
 	cat $(LOCALTMP)/Copyright20$(COPYRIGHT_YEAR) > $@ ; \
@@ -1350,8 +1350,8 @@ ifdef LOCAL_DEFBASE
                                                 $(MAINS) \
                                                 $(QMAKE_MAKEFILES)/Main.mk
   endif
-	$(SHOWIT)echo "--- Creating $(@F)" ; \
-	if [ -f $@ ] ; then \
+	@echo "--- Creating $(@F)"
+	$(SHOWIT)if [ -f $@ ] ; then \
 	  $(CHMOD) +w $@ ; \
 	fi ; \
 	echo > $@
@@ -1391,8 +1391,8 @@ ifdef LOCAL_DEFBASE
                                                  $(MAINS) \
                                                  $(QMAKE_MAKEFILES)/Main.mk
   endif
-	$(SHOWIT)echo "--- Creating $(@F)" ; \
-	if [ -f $@ ] ; then \
+	@echo "--- Creating $(@F)"
+	$(SHOWIT)if [ -f $@ ] ; then \
 	  $(CHMOD) +w $@ ; \
 	fi ; \
 	echo > $@
