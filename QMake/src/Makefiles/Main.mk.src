@@ -1139,6 +1139,28 @@ TARG_USESLIBS_O = $(patsubst %.opt,%.def,$(filter %.opt,$(filter-out Auto,$(USES
 EXTRA_USESLIBS_R = $(filter-out %.opt,$(EXTRA_USESLIBS))
 EXTRA_USESLIBS_O = $(patsubst %.opt,%.def,$(filter %.opt,$(EXTRA_USESLIBS)))
 
+
+## Copyright stamping
+
+COPYRIGHT_YEAR := $(shell date +%y)
+
+# Recipe for the default copyright statement.
+$(LOCALTMP)/Copyright20$(COPYRIGHT_YEAR): $(LOCALTMP)/.dir \
+                                          $(QMAKE_MAKEFILES)/Main.mk
+	@echo "--- Creating $(@F)"
+	$(SHOWIT)if [ -f $@ ] ; then \
+	  $(CHMOD) +w $@ ; \
+	fi ; \
+	echo \# This file is part of QMake, Quick Make System > $@ ; \
+	echo \# Copyright \(C\) 2001-$(COPYRIGHT_YEAR)  University of Surrey. >> $@ ; \
+	echo \# This code may be redistributed under the terms of the GNU Lesser >> $@ ; \
+	echo \# General Public License \(LGPL\). See the lgpl.licence file for details or >> $@ ; \
+	echo \# see http://www.gnu.org/copyleft/lesser.html >> $@ ; \
+	echo \# file-header-ends-here >> $@ ; \
+	echo >> $@ \ ;
+	$(CHMOD) 444 $@
+
+
 ifdef REQUIRES	
  REQUIRES_INDENT:=$(SPACE)$(SPACE)
 endif
@@ -1161,14 +1183,16 @@ ifdef LOCAL_DEFBASE
   # after it has been installed. The two files have three areas of commonality
   # seperated by two seperate lines that vary between the installed or local
   # version of the .def file. We build three files (with .top, .mid and .tail
-  # suffixes) for the common parts and assemble the two .def from these and
-  # the particular lines specifying the library and MUSTLINK object.
-  # In addition, the .def file for installation will need to be modified on
+  # suffixes) for the common parts and assemble the two .def files from these
+  # two files and the particular lines specifying the library and any MUSTLINK
+  # object. In addition, the .def file for installation must be modified on
   # install (to allow specification of where the project libraries are being
   # installed). To achieve this, we create a .def.in file here and process it
   # to the final .def only on install.
+  #
   # The local .def file introduces a dependency on the installation .def.in
   # file to ensure the latter is built.
+  #
   # The following is the recipe for the local .def file used while building
   # the current project.
   $(INST_LIBDEF)/$(LOCAL_DEFBASE).def: $(INST_LIBDEF)/.dir \
@@ -1233,7 +1257,8 @@ ifdef LOCAL_DEFBASE
   ifeq ($(filter Auto,$(USESLIBS)),)
    $(LOCALTMP)/libdep/$(LOCAL_DEFBASE).def.top: $(LOCALTMP)/libdep/.dir \
                                                 defs.mk \
-                                                $(QMAKE_MAKEFILES)/Main.mk
+                                                $(QMAKE_MAKEFILES)/Main.mk \
+                                                $(LOCALTMP)/Copyright20$(COPYRIGHT_YEAR)
   else
    ifndef AUTOUSELIBS
     AUTOUSELIBS := $(shell $(QLIBS) -use -d -p $(ROOTDIR))
@@ -1243,13 +1268,15 @@ ifdef LOCAL_DEFBASE
                                                 $(HEADERS) \
                                                 $(SOURCES) \
                                                 $(MAINS) \
-                                                $(QMAKE_MAKEFILES)/Main.mk
+                                                $(QMAKE_MAKEFILES)/Main.mk \
+                                                $(LOCALTMP)/Copyright20$(COPYRIGHT_YEAR)
   endif
 	$(SHOWIT)echo "--- Creating $(@F)" ; \
 	if [ -f $@ ] ; then \
 	  $(CHMOD) +w $@ ; \
 	fi ; \
-	echo > $@ ; \
+	cat $(LOCALTMP)/Copyright20$(COPYRIGHT_YEAR) > $@ ; \
+	echo >> $@ ; \
 	echo 'ifndef $(LOCAL_DEFBASE)_AUTO_DEF' >> $@ ; \
 	echo >> $@ ; \
 	echo '  $(LOCAL_DEFBASE)_AUTO_DEF=1' >> $@ ; \
