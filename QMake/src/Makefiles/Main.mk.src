@@ -275,7 +275,6 @@ ifeq ($(SUPPORT_OK),yes)
   TARG_HDRCERTS=
  endif
 #$(INST_DEPEND)/%.java.d
- TARG_DEFS=$(patsubst %,$(INST_LIBDEF)/%,$(LIBDEPS)) 
  TARG_EXE := $(patsubst %$(CEXT),$(INST_BIN)/%$(EXEEXT), $(patsubst %$(CXXEXT),$(INST_BIN)/%$(EXEEXT),$(patsubst %.mm,$(INST_BIN)/%$(EXEEXT),$(filter-out %.java,$(MAINS)))))
  TARG_PUREEXE := $(patsubst %$(CEXT),$(INST_BIN)/pure_%$(EXEEXT), $(patsubst %$(CXXEXT),$(INST_BIN)/pure_%$(EXEEXT),$(patsubst %.mm,$(INST_BIN)/pure_%$(EXEEXT),$(filter-out %.java,$(MAINS)))))
  TARG_EXEOBJS=$(patsubst %$(CEXT),$(INST_OBJS)/%$(OBJEXT),$(patsubst %$(CXXEXT),$(INST_OBJS)/%$(OBJEXT),$(filter-out %.java,$(MAINS))))
@@ -326,11 +325,22 @@ ifeq ($(SUPPORT_OK),yes)
 
  ifdef USESLIBS
   ifndef LIBDEPS
-   ifdef PLIB
-    TARG_DEFS=$(INST_LIBDEF)/$(LOCAL_DEFBASE).def
-    ifdef MAKEPKGCONFIG
-     TARG_PKGCONFIG=$(INST_PKGCONFIG)/$(PLIB).pc
-    endif
+   TARG_DEFS=$(strip $(patsubst $(SINGLESO),,$(patsubst lib%,$(INST_LIBDEF)/%.def, $(SINGLESO))) $(patsubst %,$(INST_LIBDEF)/%.def, $(LOCAL_DEFBASE)))
+   # TARG_DEFS set to .def files for any PLIB and/or any SINGLESO. We do not 
+   # check SHAREDBUILD as the files are created during the 'source build' phase
+   # so that variable will never be set at the appropriate point. The first 
+   # patsubst ensures we only ever produce a .def file for a SINGLESO that
+   # starts libXXXX. Any other pattern for SINGLESO is not regarded as a fully
+   # QMake integrated library and we do not create a .def (e.g. _RavlPython is
+   # only used to provide Ravl functionality within Python hence does not need
+   # a .def file).
+   # The TARG_DEFS variable lists the local copies of the .def files (used when
+   # building the project). A subsequent dependancy between each of these files
+   # and the proforma used to build the version of the .def file for final
+   # installation results in the proforma files being built.
+   ifdef MAKEPKGCONFIG
+    TARG_PKGCONFIG=$(strip $(patsubst %,$(INST_PKGCONFIG)/%.pc, $(PLIB)))
+    # If requested (MAKEPKGCONFIG set) produce a .pc file for PLIB
    endif
   endif
  endif
@@ -1174,192 +1184,205 @@ endif
 # As per REQUIRES_INDENT, this indents the content in a .def but if SUMMARY_LIB
 # is set.
 
-ifdef LOCAL_DEFBASE
- ifdef USESLIBS
-
-  # Create .def files for the current PLIB.
-  # We have two files, the local one used while building the project and one
-  # for installation that is used by other projects when they link to this one
-  # after it has been installed. The two files have three areas of commonality
-  # seperated by two seperate lines that vary between the installed or local
-  # version of the .def file. We build three files (with .top, .mid and .tail
-  # suffixes) for the common parts and assemble the two .def files from these
-  # two files and the particular lines specifying the library and any MUSTLINK
-  # object. In addition, the .def file for installation must be modified on
-  # install (to allow specification of where the project libraries are being
-  # installed). To achieve this, we create a .def.in file here and process it
-  # to the final .def only on install.
-  #
-  # The local .def file introduces a dependency on the installation .def.in
-  # file to ensure the latter is built.
-  #
-  # The following is the recipe for the local .def file used while building
-  # the current project.
-  $(INST_LIBDEF)/$(LOCAL_DEFBASE).def: $(INST_LIBDEF)/.dir \
-                                       $(LOCALTMP)/libdep/$(LOCAL_DEFBASE).def.top \
-                                       $(LOCALTMP)/libdep/$(LOCAL_DEFBASE).def.mid \
-                                       $(LOCALTMP)/libdep/$(LOCAL_DEFBASE).def.tail \
-                                       $(INST_LIBDEF)/4install/$(LOCAL_DEFBASE).def.in \
-                                       $(QMAKE_MAKEFILES)/Main.mk
+ifdef TARG_DEFS
+ # Create .def files for the current PLIB and/or SINGLESO. For each library,
+ # we have two files: the local one used while building the project and one
+ # for installation that is used by other projects when they link to this one
+ # after it has been installed. The two files have three areas of commonality
+ # seperated by two seperate sections that vary between the installed or local
+ # version of the .def file. We build three files (with .top, .mid and .tail
+ # suffixes) for the common parts and assemble the two .def files from these
+ # two files and the particular lines specifying the library and any MUSTLINK
+ # object. In addition, the .def file for installation must be modified on
+ # install (to allow specification of where the project libraries are being
+ # installed). To achieve this, we create a .def.in file here and process it
+ # to the final .def only on install.
+ #
+ # The local .def file introduces a dependency on the installation .def.in
+ # file to ensure the latter is built.
+ #
+ # The following is the recipe for the local .def file used while building
+ # the current project.
+ $(TARG_DEFS) : $(INST_LIBDEF)/%.def: $(INST_LIBDEF)/.dir \
+                                      $(LOCALTMP)/libdep/.dir \
+                                      $(LOCALTMP)/libdep/%.def.top \
+                                      $(LOCALTMP)/libdep/%.def.mid \
+                                      $(LOCALTMP)/libdep/%.def.tail \
+                                      $(INST_LIBDEF)/4install/%.def.in \
+                                      $(QMAKE_MAKEFILES)/Main.mk
 	@echo "--- Creating working $(@F)"
 	$(SHOWIT)if [ -f $@ ] ; then \
 	  $(CHMOD) +w $@ ; \
 	fi ; \
-	cp $(LOCALTMP)/libdep/$(LOCAL_DEFBASE).def.top $@
-  ifdef PLIB
-   ifndef LIBDEPS
-	$(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  EXELIB := -l$(PLIB) $$(EXELIB)' >> $@
-   endif
-  endif
-	$(SHOWIT)cat $(LOCALTMP)/libdep/$(LOCAL_DEFBASE).def.mid >> $@
-  ifdef MUSTLINK
+	cat $(LOCALTMP)/libdep/$(*F).def.top > $@
+ ifdef SINGLESO
+	$(SHOWIT)if [ x$(*F) = x$(SINGLESO_NOPREFIX) ] ; then \
+	  echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  EXELIB := -L$(ROOTDIR)/lib$(PROJECT_DIR)/$(ARC)/$$(VAR)$(SHARED_LIB_POSTFIX)/single -l$(*F) $$(EXELIB)' >> $@ ; \
+        else \
+	  echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  EXELIB := -l$(*F) $$(EXELIB)' >> $@ ; \
+	fi
+ else
+	$(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  EXELIB := -l$(*F) $$(EXELIB)' >> $@
+ endif
+	$(SHOWIT)echo >> $@ ; \
+	cat $(LOCALTMP)/libdep/$(*F).def.mid >> $@
+ ifdef MUSTLINK
 	$(SHOWIT)echo '$(REQUIRES_INDENT)  EXELIB := $(MLOBJPATH) $$(EXELIB)' >> $@
-  endif
-	$(SHOWIT)cat $(LOCALTMP)/libdep/$(LOCAL_DEFBASE).def.tail >> $@
+ endif
+	$(SHOWIT)cat $(LOCALTMP)/libdep/$(*F).def.tail >> $@ ; \
+	$(CHMOD) 444 $@
 
-
-  # Recipe for the .def.in file that will ultimately create the .def file to
-  # be installed.
-  $(INST_LIBDEF)/4install/$(LOCAL_DEFBASE).def.in: $(INST_LIBDEF)/4install/.dir \
-                                                   $(LOCALTMP)/libdep/$(LOCAL_DEFBASE).def.top \
-                                                   $(LOCALTMP)/libdep/$(LOCAL_DEFBASE).def.mid \
-                                                   $(LOCALTMP)/libdep/$(LOCAL_DEFBASE).def.tail \
-                                                   $(QMAKE_MAKEFILES)/Main.mk
+ # The following is the recipe for the .def.in file used to create the install
+ # .def file.
+ $(patsubst $(INST_LIBDEF)/%.def,$(INST_LIBDEF)/4install/%.def.in, $(TARG_DEFS)) : $(INST_LIBDEF)/4install/%.def.in: $(INST_LIBDEF)/4install/.dir \
+                                                                                                                     $(LOCALTMP)/libdep/.dir \
+                                                                                                                     $(LOCALTMP)/libdep/%.def.top \
+                                                                                                                     $(LOCALTMP)/libdep/%.def.mid \
+                                                                                                                     $(LOCALTMP)/libdep/%.def.tail \
+                                                                                                                     $(QMAKE_MAKEFILES)/Main.mk
 	@echo "--- Creating $(@F)"
 	$(SHOWIT)if [ -f $@ ] ; then \
 	  $(CHMOD) +w $@ ; \
 	fi ; \
-	cp $(LOCALTMP)/libdep/$(LOCAL_DEFBASE).def.top $@
-  ifdef PLIB
-   ifndef LIBDEPS
-        ifeq ($(USE_LIBPATHSWITCH),Y)
-	 $(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  EXELIB := $$(LINKER_LIBPATHSWITCH)=@PROJECT_LIBDIR@ -L@PROJECT_LIBDIR@ -l$(PLIB) $$(filter-out $$(LINKER_LIBPATHSWITCH)=@PROJECT_LIBDIR@, $$(filter-out -L@PROJECT_LIBDIR@, $$(EXELIB)))' >> $@
-        else
-	 $(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  EXELIB := -L@PROJECT_LIBDIR@ -l$(PLIB) $$(filter-out -L@PROJECT_LIBDIR@, $$(EXELIB))' >> $@
-        endif
-	$(SHOWIT)echo  >> $@
-	$(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  ifeq (,$$(strip $$(filter -I@PROJECT_INCDIR@, $$(INCLUDES))))' >> $@
-	$(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)    INCLUDES += -I@PROJECT_INCDIR@' >> $@
-	$(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  endif' >> $@
-   endif
-  endif
-	$(SHOWIT)cat $(LOCALTMP)/libdep/$(LOCAL_DEFBASE).def.mid >> $@
-  ifdef MUSTLINK
+	cat $(LOCALTMP)/libdep/$(*F).def.top > $@
+ ifeq ($(USE_LIBPATHSWITCH),Y)
+	$(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  EXELIB := $$(LINKER_LIBPATHSWITCH)=@PROJECT_LIBDIR@ -L@PROJECT_LIBDIR@ -l$(*F) $$(filter-out $$(LINKER_LIBPATHSWITCH)=@PROJECT_LIBDIR@, $$(filter-out -L@PROJECT_LIBDIR@, $$(EXELIB)))' >> $@
+ else
+	$(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  EXELIB := -L@PROJECT_LIBDIR@ -l$(*F) $$(filter-out -L@PROJECT_LIBDIR@, $$(EXELIB))' >> $@
+ endif
+	$(SHOWIT)echo  >> $@ ; \
+	echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  ifeq (,$$(strip $$(filter -I@PROJECT_INCDIR@, $$(INCLUDES))))' >> $@ ; \
+	echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)    INCLUDES += -I@PROJECT_INCDIR@' >> $@ ; \
+	echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  endif' >> $@ ; \
+	cat $(LOCALTMP)/libdep/$(*F).def.mid >> $@ 
+ ifdef MUSTLINK
 	$(SHOWIT)echo '$(REQUIRES_INDENT)  EXELIB := $$(QMAKE_PROJECTS)/$(PROJECT_DIR)$(RAVL_BODGE)/MustLink/$(basename $(MUSTLINK))$(OBJEXT) $$(EXELIB)' >> $@
-  endif
-	$(SHOWIT)cat $(LOCALTMP)/libdep/$(LOCAL_DEFBASE).def.tail >> $@
+ endif
+	$(SHOWIT)cat $(LOCALTMP)/libdep/$(*F).def.tail >> $@ ; \
+	$(CHMOD) 444 $@
 
-  ifdef SUMMARY_LIB
-   MORE_SUMMARY_LIBS=$(strip $(filter-out $(firstword $(SUMMARY_LIB)),$(SUMMARY_LIB)))
-  endif
 
-  # Recipe for the common beginning of the two .def files
-  ifeq ($(filter Auto,$(USESLIBS)),)
-   $(LOCALTMP)/libdep/$(LOCAL_DEFBASE).def.top: $(LOCALTMP)/libdep/.dir \
-                                                defs.mk \
-                                                $(QMAKE_MAKEFILES)/Main.mk \
-                                                $(LOCALTMP)/Copyright20$(COPYRIGHT_YEAR)
-  else
-   ifndef AUTOUSELIBS
-    AUTOUSELIBS := $(shell $(QLIBS) -use -d -p $(ROOTDIR))
-   endif
-   $(LOCALTMP)/libdep/$(LOCAL_DEFBASE).def.top: $(LOCALTMP)/libdep/.dir \
-                                                defs.mk \
-                                                $(HEADERS) \
-                                                $(SOURCES) \
-                                                $(MAINS) \
-                                                $(QMAKE_MAKEFILES)/Main.mk \
-                                                $(LOCALTMP)/Copyright20$(COPYRIGHT_YEAR)
+
+ ifdef SUMMARY_LIB
+  MORE_SUMMARY_LIBS=$(strip $(filter-out $(firstword $(SUMMARY_LIB)),$(SUMMARY_LIB)))
+ endif
+
+
+
+ # Recipe for the common beginning of the two .def files
+ ifeq ($(filter Auto,$(USESLIBS)),)
+  $(LOCALTMP)/libdep/%.def.top: $(LOCALTMP)/libdep/.dir \
+                                defs.mk \
+                                $(QMAKE_MAKEFILES)/Main.mk \
+                                $(LOCALTMP)/Copyright20$(COPYRIGHT_YEAR)
+ else
+  ifndef AUTOUSELIBS
+   AUTOUSELIBS := $(shell $(QLIBS) -use -d -p $(ROOTDIR))
   endif
+  $(LOCALTMP)/libdep/%.def.top: $(LOCALTMP)/libdep/.dir \
+                                defs.mk \
+                                $(HEADERS) \
+                                $(SOURCES) \
+                                $(MAINS) \
+                                $(QMAKE_MAKEFILES)/Main.mk \
+                                $(LOCALTMP)/Copyright20$(COPYRIGHT_YEAR)
+ endif
 	@echo "--- Creating $(@F)"
 	$(SHOWIT)if [ -f $@ ] ; then \
 	  $(CHMOD) +w $@ ; \
 	fi ; \
 	cat $(LOCALTMP)/Copyright20$(COPYRIGHT_YEAR) > $@ ; \
 	echo >> $@ ; \
-	echo 'ifndef $(LOCAL_DEFBASE)_AUTO_DEF' >> $@ ; \
+	echo 'ifndef $(*F)_AUTO_DEF' >> $@ ; \
 	echo >> $@ ; \
-	echo '  $(LOCAL_DEFBASE)_AUTO_DEF=1' >> $@ ; \
+	echo '  $(*F)_AUTO_DEF=1' >> $@ ; \
 	echo >> $@
-  ifdef REQUIRES	
+ ifdef SINGLESO
+	$(SHOWIT)if [ $(*F) = $(patsubst lib%,%,$(SINGLESO)) ] ; then \
+	  echo '  USE_SINGLE_$(*F)=1' >> $@ ; \
+          echo >> $@ ; \
+	fi
+ endif
+ ifdef REQUIRES	
 	$(SHOWIT)echo '  ifeq ($$(strip $$(filter-out $$(RESOURCES),$(REQUIRES))),)' >> $@ ; \
 	echo >> $@
-  endif	
-  ifdef USESLIBS
-   ifneq ($(USESLIBS),)
-    ifneq ($(USESLIBS),None)
-     ifeq ($(filter Auto,$(USESLIBS)),)
-      ifneq ($(strip $(TARG_USESLIBS_R)),)
+ endif	
+ ifdef USESLIBS
+  ifneq ($(USESLIBS),)
+   ifneq ($(USESLIBS),None)
+    ifeq ($(filter Auto,$(USESLIBS)),)
+     ifneq ($(strip $(TARG_USESLIBS_R)),)
 	$(SHOWIT)echo '$(REQUIRES_INDENT)  include $(TARG_USESLIBS_R)' >> $@ ; \
 	echo >> $@
-      endif
-      ifneq ($(strip $(TARG_USESLIBS_O)),)
+     endif
+     ifneq ($(strip $(TARG_USESLIBS_O)),)
 	$(SHOWIT)echo '$(REQUIRES_INDENT)  -include $(TARG_USESLIBS_O)' >> $@ ; \
 	echo >> $@
-      endif
-     else
-      ifneq ($(strip $(AUTOUSELIBS)),)
-       ifneq ($(strip $(EXTRA_USESLIBS_R)),)
+     endif
+    else
+     ifneq ($(strip $(AUTOUSELIBS)),)
+      ifneq ($(strip $(EXTRA_USESLIBS_R)),)
 	$(SHOWIT)echo '$(REQUIRES_INDENT)  include $(EXTRA_USESLIBS_R)' >> $@ ; \
 	echo >> $@
-       endif
-       ifneq ($(strip $(EXTRA_USESLIBS_O)),)
+      endif
+      ifneq ($(strip $(EXTRA_USESLIBS_O)),)
 	$(SHOWIT)echo '$(REQUIRES_INDENT)  -include $(EXTRA_USESLIBS_O)' >> $@ ; \
 	echo >> $@
-       endif
       endif
      endif
     endif
    endif
   endif
-  ifdef SUMMARY_LIB
+ endif
+ ifdef SUMMARY_LIB
 	$(SHOWIT)echo '$(REQUIRES_INDENT)  ifeq ($$(USE_SINGLE_$(firstword $(SUMMARY_LIB))),1) ' >> $@ ; \
 	echo >> $@ ; \
 	echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  ifndef $(firstword $(SUMMARY_LIB))_AUTO_DEF' >> $@ ; \
 	echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)    include $(firstword $(SUMMARY_LIB)).def' >> $@ ; \
 	echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  endif' >> $@
-   ifneq (,$(strip $MORE_SUMMARY_LIBS))
+  ifneq (,$(strip $MORE_SUMMARY_LIBS))
 	$(SHOWIT)$(foreach lib,$(MORE_SUMMARY_LIBS),echo >> $@ ; \
                                                     echo '$(REQUIRES_INDENT)  else ifeq ($$(USE_SINGLE_$(lib)),1) ' >> $@ ; \
                                                     echo >> $@ ; \
                                                     echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  ifndef $(lib)_AUTO_DEF' >> $@ ; \
                                                     echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)    include $(lib).def' >> $@ ; \
                                                     echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  endif' >> $@ ;)
-   endif
+  endif
 	$(SHOWIT)echo >> $@ ; \
 	echo '$(REQUIRES_INDENT)  else' >> $@ ; \
 	echo >> $@
-  endif
+ endif
 	$(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  PLIBDEPENDS += $(PLIB)' >> $@ ; \
-	echo >> $@
+	echo >> $@ ; \
+	$(CHMOD) 444 $@
 
 
-  # Recipe for the common mid-part of the two .def files.
-  ifeq ($(filter Auto,$(USESLIBS)),)
-   $(LOCALTMP)/libdep/$(LOCAL_DEFBASE).def.mid: $(LOCALTMP)/libdep/.dir \
-                                                defs.mk \
-                                                $(QMAKE_MAKEFILES)/Main.mk
-  else
-   ifndef AUTOUSELIBS
-    AUTOUSELIBS := $(shell $(QLIBS) -use -d -p $(ROOTDIR))
-   endif
-   $(LOCALTMP)/libdep/$(LOCAL_DEFBASE).def.mid: $(LOCALTMP)/libdep/.dir \
-                                                defs.mk \
-                                                $(HEADERS) \
-                                                $(SOURCES) \
-                                                $(MAINS) \
-                                                $(QMAKE_MAKEFILES)/Main.mk
+ # Recipe for the common mid-part of the two .def files.
+ ifeq ($(filter Auto,$(USESLIBS)),)
+  $(LOCALTMP)/libdep/%.def.mid: $(LOCALTMP)/libdep/.dir \
+                                defs.mk \
+                                $(QMAKE_MAKEFILES)/Main.mk
+ else
+  ifndef AUTOUSELIBS
+   AUTOUSELIBS := $(shell $(QLIBS) -use -d -p $(ROOTDIR))
   endif
+  $(LOCALTMP)/libdep/%.def.mid: $(LOCALTMP)/libdep/.dir \
+                                defs.mk \
+                                $(HEADERS) \
+                                $(SOURCES) \
+                                $(MAINS) \
+                                $(QMAKE_MAKEFILES)/Main.mk
+ endif
 	@echo "--- Creating $(@F)"
 	$(SHOWIT)if [ -f $@ ] ; then \
 	  $(CHMOD) +w $@ ; \
 	fi ; \
 	echo > $@
-  ifdef USES_PKGCONFIG_EXELIB
+ ifdef USES_PKGCONFIG_EXELIB
 	$(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  EXELIB := $(USES_PKGCONFIG_EXELIB)  $$(EXELIB)' >> $@ ; \
 	echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  INCLUDES += $(USES_PKGCONFIG_INCLUDES) ' >> $@
-  endif	
-  ifdef EXTPACKAGE
+ endif	
+ ifdef EXTPACKAGE
         $(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  INCLUDES := -I$$(INSTALLHOME)\include\$(PACKAGE) $$(INCLUDES) ' >> $@ ; \
 	echo >> $@ ; \
         echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  ifneq ($$(BASE_VAR),none)' >> $@ ; \
@@ -1368,32 +1391,32 @@ ifdef LOCAL_DEFBASE
 	echo >> $@ ; \
         echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  endif' >> $@ ; \
 	echo >> $@
-  endif
-  ifdef SUMMARY_LIB
+ endif
+ ifdef SUMMARY_LIB
 	$(SHOWIT)echo '$(REQUIRES_INDENT)  endif' >> $@ ; \
 	echo >> $@
-  endif	
+ endif	
+	$(SHOWIT)$(CHMOD) 444 $@
 
 
-  # Recipe for the common ending of the two .def files.
-  $(LOCALTMP)/libdep/$(LOCAL_DEFBASE).def.tail: $(LOCALTMP)/libdep/.dir \
-                                                defs.mk \
-                                                $(QMAKE_MAKEFILES)/Main.mk
+ # Recipe for the common ending of the two .def files.
+ $(LOCALTMP)/libdep/%.def.tail: $(LOCALTMP)/libdep/.dir \
+                                $(QMAKE_MAKEFILES)/Main.mk
 	@echo "--- Creating $(@F)"
 	$(SHOWIT)if [ -f $@ ] ; then \
 	  $(CHMOD) +w $@ ; \
 	fi ; \
 	echo > $@
-  ifdef REQUIRES	
+ ifdef REQUIRES	
 	$(SHOWIT)echo '  endif' >> $@ ; \
 	echo >> $@
-  endif	
+ endif	
 	$(SHOWIT)echo 'endif' >> $@ ; \
-	echo >> $@
-	$(SHOWIT)$(CHMOD) 444 $@
+	echo >> $@ ; \
+	$(CHMOD) 444 $@
 	
- endif
 endif
+# of ifdef TARG_DEFS
 
 ###########################
 # Generate pkgconfig file

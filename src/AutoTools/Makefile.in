@@ -71,7 +71,7 @@ DIST_ADDITIONS=src/GUI/3D/gdkgl.c src/GUI/3D/gtkglarea.c src/GUI/3D/gdkgl.h src/
 
 # Builds
 
-default: qmake fullsrc Ravl.defs singleoptshared optsharedbin singleoptsharedbin pkgconf
+default: qmake fullsrc singleoptshared optsharedbin singleoptsharedbin pkgconf
 
 check: testsingleoptshared 
 
@@ -479,72 +479,6 @@ LocalQMake:
 #       RAVL (re-write it) and move then into QMake.
 
 
-Ravl.defs: $(PROJECT_OUT)/lib/libdep/4install $(PROJECT_OUT)/lib/libdep/Ravl.def  $(PROJECT_OUT)/lib/libdep/4install/Ravl.def.in 
-# Create Ravl.def files for the single library.
-# We have two files, the local one available when building the project and one
-# for installation that is used by other projects when they link to this one
-# after it has been installed. The two files have three areas of commonality
-# seperated by two seperate lines that vary between the installed or local
-# version of the .def file. 
-# We have three variables that define the common sections of the two files
-# and use the expansion of these along with the custom lines when creating
-# each of the individual files.
-# In addition, the .def file for installation will need to be modified on
-# install (to allow specification of where the project libraries are being
-# installed). To achieve this, we create a .def.in file here and process it
-# to the final .def only on install (see above).
-
-MK_Ravl.def.top=$(SHOWIT)echo \\\# This file is part of RAVL, Recognition And Vision Library > $@ ; \
-                         echo \\\# Copyright \(C\) 2001-13,  University of Surrey. >> $@ ; \
-                         echo \\\# This code may be redistributed under the terms of the GNU Lesser >> $@ ; \
-                         echo \\\# General Public License \(LGPL\). See the lgpl.licence file for details or >> $@ ; \
-                         echo \\\# see http://www.gnu.org/copyleft/lesser.html >> $@ ; \
-                         echo \\\# file-header-ends-here >> $@ ; \
-                         echo >> $@ ; \
-                         echo ifndef Ravl_AUTO_DEF >> $@ ; \
-                         echo >> $@ ; \
-                         echo "  Ravl_AUTO_DEF=1" >> $@ ; \
-                         echo >> $@ ; \
-                         echo "  ifndef RAVL_LIBS" >> $@
-
-MK_Ravl.def.mid=$(SHOWIT)echo "  endif" >> $@ ; \
-                         echo >> $@ ; \
-                         echo "  EXELIB := \$$(RAVL_LIBS) \$$(EXELIB)" >> $@ ; \
-                         echo >> $@ ; \
-                         echo "  ifndef RAVL_CFLAGS" >> $@
-
-MK_Ravl.def.bot=$(SHOWIT)echo "  endif" >> $@ ; \
-                         echo >> $@ ; \
-                         echo "  INCLUDES += \$$(RAVL_CFLAGS)" >> $@ ; \
-                         echo >> $@ ; \
-                         echo endif >> $@ ; \
-                         echo >> $@
-
-$(PROJECT_OUT)/lib/libdep:
-	$(SHOWIT) $(MKDIR_P) $@
-
-$(PROJECT_OUT)/lib/libdep/Ravl.def:
-	$(MK_Ravl.def.top)
-	$(SHOWIT)echo "    RAVL_LIBS=-lRavl $(ALL_EXTERNAL_LIBS)" >> $@
-	$(MK_Ravl.def.mid)
-	$(SHOWIT)echo "    RAVL_CFLAGS=$(ALL_EXTERNAL_CFLAGS)" >> $@
-	$(MK_Ravl.def.bot)
-
-$(PROJECT_OUT)/lib/libdep/4install:
-	$(SHOWIT) $(MKDIR_P) $@
-
-$(PROJECT_OUT)/lib/libdep/4install/Ravl.def.in:
-	$(MK_Ravl.def.top)
-ifeq ($(USE_LIBPATHSWITCH),Y)
-	 $(SHOWIT)echo "    RAVL_LIBS= \$$(LINKER_LIBPATHSWITCH)=@PROJECT_LIBDIR@ -L@PROJECT_LIBDIR@ -lRavl $(ALL_EXTERNAL_LIBS)" >> $@
-else
-	 $(SHOWIT)echo "    RAVL_LIBS= -L@PROJECT_LIBDIR@ -lRavl $(ALL_EXTERNAL_LIBS)" >> $@
-endif
-	$(MK_Ravl.def.mid)
-	$(SHOWIT)echo "    RAVL_CFLAGS=-I@PROJECT_INCDIR@ $(ALL_EXTERNAL_CFLAGS)" >> $@
-	$(MK_Ravl.def.bot)
-
-
 recheck: retest
 
 retest: retestsingleoptshared 
@@ -934,7 +868,7 @@ endif
  installsingledebugsharedlib installsingleopt installsingleoptlib \
  installsingleoptshared installsingleoptsharedgeneral \
  installsingleoptsharedlib LocalQMake opt optbin optshared optsharedbin \
- pkgconf qmake QMake Ravl.defs recheck retest retestgprof retestgprofshared \
+ pkgconf qmake QMake recheck retest retestgprof retestgprofshared \
  retestopt retestoptshared retestsinglegprof retestsinglegprofshared \
  retestsingleopt retestsingleoptshared rpm SetRootInstalled SetRootStaged \
  singledebug singledebugbin singledebugshared singledebugsharedbin singlegprof \
