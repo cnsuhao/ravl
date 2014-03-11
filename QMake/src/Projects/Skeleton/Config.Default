@@ -4,7 +4,10 @@
 # Preferred settings:
 #
 #    PROJECT_NAME=MyProject
-#    PROJECT_VERSION=0.1.1
+#    PROJECT_DESCRIPTION=Description of MyProject
+#    PROJECT_URL=URL of the website for MyProject
+#    PROJECT_BUGREPORT=Email address to send feedback to
+#    PROJECT_VERSION=1.2.3
 #    PROJECT_DISTDIR=$(PROJECT_NAME)-$(PROJECT_VERSION)
 #
 #  However, use of these (PROJECT_NAME in particular) requires all header files

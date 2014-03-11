@@ -252,9 +252,19 @@ installpkgconf: $(ABS_DESTDIR)$(libdir)/pkgconfig $(ABS_DESTDIR)$(libdir)/pkgcon
 $(ABS_DESTDIR)$(libdir)/pkgconfig:
 	$(SHOWIT)$(MKDIR_P) $(ABS_DESTDIR)$(libdir)/pkgconfig
 
-$(ABS_DESTDIR)$(libdir)/pkgconfig/Ravl.pc:
-	$(INSTALL_DATA) $(PROJECT_OUT)/lib/pkgconfig/Ravl.pc $(ABS_DESTDIR)$(libdir)/pkgconfig/Ravl.pc
+$(ABS_DESTDIR)$(libdir)/pkgconfig/Ravl.pc: $(PROJECT_OUT)/lib/pkgconfig/4install/Ravl.pc
+	$(INSTALL_DATA) $(PROJECT_OUT)/lib/pkgconfig/4install/Ravl.pc $(ABS_DESTDIR)$(libdir)/pkgconfig/Ravl.pc
 
+$ $(PROJECT_OUT)/lib/pkgconfig/4install/Ravl.pc: $ $(PROJECT_OUT)/lib/pkgconfig/4install/Ravl.pc.in
+	$(SHOWIT)$(SED) -e 's![@]PROJECT_PREFIX[@]!$(prefix)!g' \
+                        -e 's![@]PROJECT_DATAROOTDIR[@]!$(datarootdir)!g' \
+                        -e 's![@]PROJECT_DATADIR[@]!$(datadir)!g' \
+                        -e 's![@]PROJECT_SYSCONFDIR[@]!$(sysconfdir)!g' \
+                        -e 's![@]PROJECT_INCDIR[@]!$(includedir)!g' \
+                        -e 's![@]PROJECT_LIBDIR[@]!$(libdir))!g' \
+                        $(PROJECT_OUT)/lib/pkgconfig/4install/Ravl.pc.in > $(PROJECT_OUT)/lib/pkgconfig/4install/Ravl.pc
+# The installed copy of Ravl.pc needs to know the actual values for $libdir
+# and $prefix, etc. Hence we only finalise the file when we perform the install. 
 
 installsingledebuglib:
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=debug singleSetRootInstalled
@@ -407,27 +417,8 @@ optshared: qmake
 optsharedbin: optshared
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) SHAREDBUILD=1 fullopt
 
-pkgconf: $(PROJECT_OUT)/lib/pkgconfig $(PROJECT_OUT)/lib/pkgconfig/Ravl.pc
-
-$(PROJECT_OUT)/lib/pkgconfig:
-	$(SHOWIT) $(MKDIR_P) $@
-
-$(PROJECT_OUT)/lib/pkgconfig/Ravl.pc:
-	$(SHOWIT)echo prefix=$(prefix) > $@
-	$(SHOWIT)echo datarootdir=$(datarootdir) >> $@
-	$(SHOWIT)echo datadir=$(datadir) >> $@
-	$(SHOWIT)echo sysconfdir=$(sysconfdir) >> $@
-	$(SHOWIT)echo libdir=$(libdir) >> $@
-	$(SHOWIT)echo >> $@
-	$(SHOWIT)echo Name: Ravl >> $@
-	$(SHOWIT)echo Version: @PACKAGE_VERSION@ >> $@
-	$(SHOWIT)echo Description: Recognition And Vision Library with modules for Computer Vision, Pattern Recognition and much more >> $@
-	$(SHOWIT)echo URL: @PACKAGE_URL@ >> $@
-	$(SHOWIT)echo >> $@
-	$(SHOWIT)echo Libs:-L\${libdir} -lRavl >> $@
-	$(SHOWIT)echo Libs.private:$(ALL_EXTERNAL_LIBS)>> $@
-	$(SHOWIT)echo Cflags:-I\${includedir}>> $@
-	$(SHOWIT)echo >> $@
+pkgconf: 
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Single -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) NOCHECKOUT=1 MAKEPKGCONFIG=1 fullsrc
 
 qmake: @NeededQMake@
 #       Will equate to "LocalQMake QMake" unless we already have an installed

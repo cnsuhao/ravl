@@ -17,7 +17,7 @@ dnl (the 4th item) is used to prime the default for --docdir hence the value
 dnl used here.
 
 # This file is part of RAVL, Recognition And Vision Library
-# Copyright (C) 2011-13, University of Surrey
+# Copyright (C) 2011-14, University of Surrey
 # This code may be redistributed under the terms of the GNU General
 # Public License (GPL). See the gpl.licence file for details or
 # see http://www.gnu.org/copyleft/gpl.html
@@ -952,6 +952,12 @@ echo > ./Config.Project.in
 
 echo \# Ravl configuration file - regenerate using configure >> ./Config.Project.in
 echo >> ./Config.Project.in
+echo \# We would like to set PROJECT_NAME=RAVL here. However, because Ravl pre-dates >> ./Config.Project.in
+echo \# the full QMake PROJECT concept, we cannot currently set PROJECT_NAME owing to >> ./Config.Project.in
+echo \# the knock on effect. >> ./Config.Project.in
+echo PROJECT_DESCRIPTION=Recognition And Vision Library with modules for Computer Vision, Pattern Recognition and much more >> ./Config.Project.in
+echo PROJECT_URL=@PACKAGE_URL@ >> ./Config.Project.in
+echo PROJECT_BUGREPORT=@PACKAGE_BUGREPORT@ >> ./Config.Project.in
 
 echo \# Declare current version of RAVL >> ./Config.Project.in
 echo PROJECT_VERSION=@PACKAGE_VERSION@ >> ./Config.Project.in

@@ -323,24 +323,29 @@ ifeq ($(SUPPORT_OK),yes)
  TARG_AUXFILES = $(patsubst %,$(INST_AUX)/%,$(AUXFILES))
  TARG_EXTERNALLIBS= $(patsubst %,$(INST_LIBDEF)/%,$(EXTERNALLIBS))
 
+ SINGLESO_NOPREFIX = $(strip $(patsubst $(SINGLESO),,$(patsubst lib%,%,$(SINGLESO))))
+ # Name of SINGLESO with the lib prefix stripped off.
+ # Certain source code does use a setting of SINGLESO without the lib prefix,
+ # however these are not regarded as a fully QMake integrated library and we do
+ # not create a .def or.pc file for them (the production of which are the main
+ # uses for this varaiable). An example of such a library is _RavlPython that
+ # is only used to provide Ravl functionality within Python hence does not need
+ # a .def or .pc file. 
+ # For settings of SINGLESO without the lib prefix, this variable will be null.
+
  ifdef USESLIBS
   ifndef LIBDEPS
-   TARG_DEFS=$(strip $(patsubst $(SINGLESO),,$(patsubst lib%,$(INST_LIBDEF)/%.def, $(SINGLESO))) $(patsubst %,$(INST_LIBDEF)/%.def, $(LOCAL_DEFBASE)))
+   TARG_DEFS=$(strip $(patsubst %,$(INST_LIBDEF)/%.def, $(LOCAL_DEFBASE) $(SINGLESO_NOPREFIX)))
    # TARG_DEFS set to .def files for any PLIB and/or any SINGLESO. We do not 
    # check SHAREDBUILD as the files are created during the 'source build' phase
-   # so that variable will never be set at the appropriate point. The first 
-   # patsubst ensures we only ever produce a .def file for a SINGLESO that
-   # starts libXXXX. Any other pattern for SINGLESO is not regarded as a fully
-   # QMake integrated library and we do not create a .def (e.g. _RavlPython is
-   # only used to provide Ravl functionality within Python hence does not need
-   # a .def file).
+   # so that variable will never be set at the appropriate point.
    # The TARG_DEFS variable lists the local copies of the .def files (used when
    # building the project). A subsequent dependancy between each of these files
    # and the proforma used to build the version of the .def file for final
    # installation results in the proforma files being built.
    ifdef MAKEPKGCONFIG
-    TARG_PKGCONFIG=$(strip $(patsubst %,$(INST_PKGCONFIG)/%.pc, $(PLIB)))
-    # If requested (MAKEPKGCONFIG set) produce a .pc file for PLIB
+    TARG_PKGCONFIG=$(strip $(patsubst %,$(INST_PKGCONFIG)/single/%.pc, $(SINGLESO_NOPREFIX)) $(patsubst %,$(INST_PKGCONFIG)/%.pc, $(LOCAL_DEFBASE)))
+    # Set similarly to TARG_DEFS but for the .pc files.
    endif
   endif
  endif
@@ -1298,7 +1303,7 @@ ifdef TARG_DEFS
 	echo '  $(*F)_AUTO_DEF=1' >> $@ ; \
 	echo >> $@
  ifdef SINGLESO
-	$(SHOWIT)if [ $(*F) = $(patsubst lib%,%,$(SINGLESO)) ] ; then \
+	$(SHOWIT)if [ x$(*F) = x$(SINGLESO_NOPREFIX) ] ; then \
 	  echo '  USE_SINGLE_$(*F)=1' >> $@ ; \
           echo >> $@ ; \
 	fi
@@ -1418,27 +1423,256 @@ ifdef TARG_DEFS
 endif
 # of ifdef TARG_DEFS
 
-###########################
-# Generate pkgconfig file
+ifdef TARG_PKGCONFIG
+ # Generate pkgconfig files; TARG_PKGCONFIG will list the local pkgconfig files
+ # (those that are used in building the product). The subsequent dependancies
+ # from these files to the .../4install/X.pc.in files will create those
+ # proformas used in building the .pc files that are actually installed. Unlike
+ # the local .pc files, the proformas do not vary their content depending on
+ # $(VAR) so we do not build multiple copies in the $VAR/lib directories.
 
-# Using the pkgconfig requires needs to be smarter as we need to ensure the contents of all .def
-# files are converted so its disabled for now
+ # The pkgconfig support for PLIBs is in an embryonic state and requires further
+ # development to be usable. The support for SINGLESO should, however, be fully
+ # ready.
 
-$(INST_PKGCONFIG)/%.pc : defs.mk $(INST_PKGCONFIG)/.dir $(QMAKE_MAKEFILES)/Main.mk
-	$(SHOWIT)echo "--- Creating $(INST_PKGCONFIG)/$(@F) "; 
-	$(SHOWIT)echo "prefix=$(PROJECT_OUT)" >  $(INST_PKGCONFIG)/$(@F);
-	$(SHOWIT)echo "Name: $(PLIB)" >  $(INST_PKGCONFIG)/$(@F);
-	$(SHOWIT)echo "Description: Generated from $(PWD)/defs.mk by RAVL QMake " >> $(INST_PKGCONFIG)/$(@F);
-ifdef PKGCONFIG_VERSION 
-	$(SHOWIT)echo "Version: $(PKGCONFIG_VERSION) " >> $(INST_PKGCONFIG)/$(@F);
-endif
-ifndef USESPKGCONFIG
-	$(SHOWIT)echo "Requires: $(USESPKGCONFIG) " >> $(INST_PKGCONFIG)/$(@F);
-endif
-	$(SHOWIT)echo "Libs: $(LIBS) " >> $(INST_PKGCONFIG)/$(@F);
-	$(SHOWIT)echo "Cflags: $(INCLUDES)" >> $(INST_PKGCONFIG)/$(@F);
+ ifdef PLIB
+  # Local .pc file for PLIB - N.B. this depends on $(VAR)
+  #
+  # These local versions (as opposed to the versions for installation) exist as
+  # different files for each combination of $(VAR) and shared/static builds. The
+  # different versions of the files all point to unique library paths.
+  # The extra dependencies introduced if USESLIBS includes Auto are to ensure
+  # that we have an up to date $(LIBS) in the file
+  ifeq ($(filter Auto,$(USESLIBS)),)
+   $(INST_PKGCONFIG)/$(PLIB).pc : defs.mk \
+                                 $(HEADERS) \
+                                 $(SOURCES) \
+                                 $(MAINS) \
+                                 $(INST_PKGCONFIG)/.dir \
+                                 $(QMAKE_MAKEFILES)/Main.mk \
+                                 $(LOCALTMP)/lib/pkgconfig/ProForma.top \
+	                         $(LOCALTMP)/lib/pkgconfig/$(PLIB).mid \
+                                 | $(ROOTDIR)/lib/pkgconfig/4install/$(PLIB).pc.in
+  else
+   $(INST_PKGCONFIG)/$(PLIB).pc : defs.mk \
+                                 $(INST_PKGCONFIG)/.dir \
+                                 $(QMAKE_MAKEFILES)/Main.mk \
+                                 $(LOCALTMP)/lib/pkgconfig/ProForma.top \
+	                         $(LOCALTMP)/lib/pkgconfig/$(PLIB).mid \
+                                 | $(ROOTDIR)/lib/pkgconfig/4install/$(PLIB).pc.in
+  endif
+	@echo "--- Creating $@ "
+	$(SHOWIT)if [ -f $@ ] ; then \
+	  $(CHMOD) +w $@ ; \
+	fi ; \
+	cat $(LOCALTMP)/lib/pkgconfig/ProForma.top > $@ ; \
+	echo "libdir=$(INSTALLHOME)/lib$(PROJECT_DIR)/$(ARC)/$(VAR)$(SHARED_LIB_POSTFIX)" >> $@ ; \
+	echo >> $@ ; \
+	cat $(LOCALTMP)/lib/pkgconfig/$(PLIB).mid >> $@ ; \
+	echo "Libs: $(LIBS) " >> $@ ; \
+	echo "Cflags: $(INCLUDES)" >> $@ ; \
+	echo  >> $@ ; \
+	$(CHMOD) 444 $@
+ endif
+ #  of ifdef PLIB
 
-###########################
+ ifdef SINGLESO
+  # Local .pc file for SINGLESO - N.B. this depends on $(VAR)
+  #
+  # The extra dependencies introduced if USESLIBS includes Auto are to ensure
+  # that we have an up to date $(LIBSONLY) in the file
+  ifeq ($(filter Auto,$(USESLIBS)),)
+   $(INST_PKGCONFIG)/single/$(SINGLESO_NOPREFIX).pc : defs.mk \
+                                                     $(HEADERS) \
+                                                     $(SOURCES) \
+                                                     $(MAINS) \
+                                                     $(INST_PKGCONFIG)/single/.dir \
+                                                     $(QMAKE_MAKEFILES)/Main.mk \
+                                                     $(LOCALTMP)/lib/pkgconfig/ProForma.top \
+	                                             $(LOCALTMP)/lib/pkgconfig/$(SINGLESO_NOPREFIX).mid \
+                                                     | $(ROOTDIR)/lib/pkgconfig/4install/$(SINGLESO_NOPREFIX).pc.in
+  else
+   $(INST_PKGCONFIG)/single/$(SINGLESO_NOPREFIX).pc : defs.mk \
+                                                     $(INST_PKGCONFIG)/single/.dir \
+                                                     $(QMAKE_MAKEFILES)/Main.mk \
+                                                     $(LOCALTMP)/lib/pkgconfig/ProForma.top \
+	                                             $(LOCALTMP)/lib/pkgconfig/$(SINGLESO_NOPREFIX).mid \
+                                                     | $(ROOTDIR)/lib/pkgconfig/4install/$(SINGLESO_NOPREFIX).pc.in
+  endif
+	@echo "--- Creating $@ "
+	$(SHOWIT)if [ -f $@ ] ; then \
+	  $(CHMOD) +w $@ ; \
+	fi ; \
+	cat $(LOCALTMP)/lib/pkgconfig/ProForma.top > $@ ; \
+	echo "libdir=$(INSTALLHOME)/lib$(PROJECT_DIR)/$(ARC)/$(VAR)$(SHARED_LIB_POSTFIX)/single" >> $@ ; \
+	echo >> $@ ; \
+	cat $(LOCALTMP)/lib/pkgconfig/$(SINGLESO_NOPREFIX).mid >> $@ ; \
+	echo "Libs: -L\$${libdir} -l$(SINGLESO_NOPREFIX) " >> $@ ; \
+	echo "Libs.private: $(filter-out $(patsubst %,-l%,$(SINGLE_MANIFEST)),$(LIBSONLY))" >> $@ ; \
+	echo "Cflags: $(INCLUDES)" >> $@ ; \
+	echo  >> $@ ; \
+	$(CHMOD) 444 $@
+ endif
+ #  of ifdef SINGLESO
+
+
+ # Recipe for the common start of the local .pc files.
+ #
+ # This section is common to all of the local .pc files for both the PLIB and
+ # SINGLESO versions. It is common to the files for each and every library i.e.
+ # there is just one file for all of the local .pc files.
+ $(LOCALTMP)/lib/pkgconfig/ProForma.top: $(LOCALTMP)/lib/pkgconfig/.dir \
+                                         defs.mk \
+                                         $(QMAKE_MAKEFILES)/Main.mk \
+                                         $(LOCALTMP)/Copyright20$(COPYRIGHT_YEAR)
+	@echo "--- Creating $(@F)"
+	$(SHOWIT)if [ -f $@ ] ; then \
+	  $(CHMOD) +w $@ ; \
+	fi ; \
+	cat $(LOCALTMP)/Copyright20$(COPYRIGHT_YEAR) > $@ ; \
+	echo "prefix=$(INSTALLHOME)" >> $@ ; \
+	echo "datarootdir=$(INSTALLHOME)/share" >> $@ ; \
+	echo "datadir=$(INSTALLHOME)/share" >> $@ ; \
+	echo "sysconfdir=$(INSTALLHOME)" >> $@ ; \
+	echo "includedir=$(INSTALLHOME)/include" >> $@ ; \
+	$(CHMOD) 444 $@
+
+
+ # Recipe for the common middle part of the .pc and .pc.in files.
+ #
+ # This recipe is common to all the .pc and .pc.in files but its output varies
+ # dependant on the library being considered. There is thus one file for each
+ # PLIB and one for each SINGLESO. The file for each library is shared between
+ # the local and install copies (the .pc and .pc.in files) and it does not vary
+ # between the shared and static builds or between the different settings for
+ # $(VAR).
+ $(LOCALTMP)/lib/pkgconfig/%.mid: $(LOCALTMP)/lib/pkgconfig/.dir \
+                                  defs.mk \
+                                  $(QMAKE_MAKEFILES)/Main.mk
+	@echo "--- Creating $(@F)"
+	$(SHOWIT)if [ -f $@ ] ; then \
+	  $(CHMOD) +w $@ ; \
+	fi ; \
+	echo > $@ ; \
+	echo "Name: $(PROJECT_NAME) $(patsubst %,% package, $(PACKAGE_NAME)) $(*F) library" >> $@
+  ifdef PACKAGE_DESCRIPTION
+	$(SHOWIT)echo "Description: $(PACKAGE_DESCRIPTION)" >> $@
+  else
+	$(SHOWIT)echo "Description: $(PROJECT_DESCRIPTION)" >> $@
+  endif
+  ifdef PACKAGE_URL
+	$(SHOWIT)echo "URL: $(PACKAGE_URL)" >> $@
+  else
+	$(SHOWIT)echo "URL: $(PROJECT_URL)" >> $@
+  endif
+  ifdef PKGCONFIG_VERSION 
+	$(SHOWIT)echo "Version: $(PKGCONFIG_VERSION)" >> $@
+  else ifdef PACKAGE_VERSION
+	$(SHOWIT)echo "Version: $(PACKAGE_VERSION)" >> $@
+  else ifdef PROJECT_VERSION
+	$(SHOWIT)echo "Version: $(PROJECT_VERSION)" >> $@
+  endif
+  ifndef USESPKGCONFIG
+	$(SHOWIT)echo "Requires: $(USESPKGCONFIG) " >> $@
+  endif
+	$(SHOWIT)echo "" >> $@ ; \
+	$(CHMOD) 444 $@
+
+
+ ifdef PLIB
+  # Proforma for install copy of .pc for PLIB
+  #
+  # Unlike the local version, the installation version only exists in one form;
+  # there is not an individual copy for each $VAR and/or shared and static
+  # builds
+  $(ROOTDIR)/lib/pkgconfig/4install/$(PLIB).pc.in : defs.mk \
+                                                    $(ROOTDIR)/lib/pkgconfig/4install/.dir \
+                                                    $(QMAKE_MAKEFILES)/Main.mk \
+	                                            $(LOCALTMP)/lib/pkgconfig/$(PLIB).mid \
+                                                    $(LOCALTMP)/lib/pkgconfig/4install/ProForma.top
+	@echo "--- Creating $@ "
+	$(SHOWIT)if [ -f $@ ] ; then \
+	  $(CHMOD) +w $@ ; \
+	fi ; \
+	cat $(LOCALTMP)/lib/pkgconfig/4install/ProForma.top > $@ ; \
+	echo >> $@ ; \
+	cat $(LOCALTMP)/lib/pkgconfig/$(PLIB).mid >> $@ ; \
+	echo "Libs:-L\$${libdir} -l$(PLIB)" >> $@ ; \
+	echo "Cflags:-I\$${includedir}" >> $@ ; \
+	echo  >> $@ ; \
+	$(CHMOD) 444 $@
+ endif
+ #  of ifdef PLIB
+
+
+ ifdef SINGLESO
+  # Proforma for install copy of .pc for SINGLESO
+  #
+  # Unlike the local files, we do not put this in its own single directory. This
+  # is due to it not really being necessary (we will not be able to install if
+  # we ever get a PLIB SINGLESO name collision.
+  # As for the install version of PLIB.pc.in, there are not seperate versions
+  # for each combination of $VAR and static/shared builds.
+  # The extra dependencies introduced if USESLIBS includes Auto are to ensure
+  # that we have an up to date $(LIBSONLY) in the file
+  ifeq ($(filter Auto,$(USESLIBS)),)
+   $(ROOTDIR)/lib/pkgconfig/4install/$(SINGLESO_NOPREFIX).pc.in : defs.mk \
+                                                                 $(HEADERS) \
+                                                                 $(SOURCES) \
+                                                                 $(MAINS) \
+                                                                 $(ROOTDIR)/lib/pkgconfig/4install/.dir \
+                                                                 $(QMAKE_MAKEFILES)/Main.mk \
+	                                                         $(LOCALTMP)/lib/pkgconfig/$(SINGLESO_NOPREFIX).mid \
+                                                                 $(LOCALTMP)/lib/pkgconfig/4install/ProForma.top
+  else
+   $(ROOTDIR)/lib/pkgconfig/4install/$(SINGLESO_NOPREFIX).pc.in : defs.mk \
+                                                                 $(ROOTDIR)/lib/pkgconfig/4install/.dir \
+                                                                 $(QMAKE_MAKEFILES)/Main.mk \
+	                                                         $(LOCALTMP)/lib/pkgconfig/$(SINGLESO_NOPREFIX).mid \
+                                                                 $(LOCALTMP)/lib/pkgconfig/4install/ProForma.top
+  endif
+	@echo "--- Creating $@ "
+	$(SHOWIT)if [ -f $@ ] ; then \
+	  $(CHMOD) +w $@ ; \
+	fi ; \
+	cat $(LOCALTMP)/lib/pkgconfig/4install/ProForma.top > $@ ; \
+	echo >> $@ ; \
+	cat $(LOCALTMP)/lib/pkgconfig/$(SINGLESO_NOPREFIX).mid >> $@ ; \
+	echo >> $@ ; \
+	echo "Libs:-L\$${libdir} -l$(SINGLESO_NOPREFIX)" >> $@ ; \
+	echo "Libs.private: $(filter-out $(patsubst %,-l%,$(SINGLE_MANIFEST)),$(LIBSONLY))" >> $@ ; \
+	echo "Cflags:-I\$${includedir}" >> $@ ; \
+	echo  >> $@ ; \
+	$(CHMOD) 444 $@
+ endif
+ #  of ifdef SINGLESO
+
+
+ # Recipe for the common start of the installation .pc.in files.
+ #
+ # This section is common to all of the installation .pc.in files for both the
+ # PLIB and SINGLESO versions. It is common to the files for each and every
+ # library i.e. there is just one file for all of the installation .pc.in files.
+ $(LOCALTMP)/lib/pkgconfig/4install/ProForma.top: $(LOCALTMP)/lib/pkgconfig/4install/.dir \
+                                                  defs.mk \
+                                                  $(QMAKE_MAKEFILES)/Main.mk \
+                                                  $(LOCALTMP)/Copyright20$(COPYRIGHT_YEAR)
+	@echo "--- Creating $(@F)"
+	$(SHOWIT)if [ -f $@ ] ; then \
+	  $(CHMOD) +w $@ ; \
+	fi ; \
+	cat $(LOCALTMP)/Copyright20$(COPYRIGHT_YEAR) > $@ ; \
+	echo >> $@ ; \
+	echo "prefix=@PROJECT_PREFIX@" >> $@ ; \
+	echo "datarootdir=@PROJECT_DATAROOTDIR@" >> $@ ; \
+	echo "datadir=@PROJECT_DATADIR@" >> $@ ; \
+	echo "sysconfdir=@PROJECT_SYSCONFDIR@" >> $@ ; \
+	echo "includedir=@PROJECT_INCDIR@" >> $@ ; \
+	echo "libdir=@PROJECT_LIBDIR@" >> $@ ; \
+	$(CHMOD) 444 $@
+
+endif 
+#  of ifdef TARG_PKGCONFIG
 
 lib_info:
 	@echo "Libs: $(LIBS)"
