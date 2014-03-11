@@ -148,7 +148,9 @@ namespace RavlImageN {
 
   HashC<StreamSizeT,Index2dC> DPIImageYUVC::ImgParams() {
     HashC<StreamSizeT,Index2dC> params(2);
+    params.Insert(699840, Index2dC( 486, 720));
     params.Insert(829440, Index2dC( 576, 720));
+    params.Insert(1843200,Index2dC( 720,1280));
     params.Insert(4147200,Index2dC(1080,1920));
     return params;
   }
