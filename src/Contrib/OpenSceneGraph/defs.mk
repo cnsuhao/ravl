@@ -36,13 +36,13 @@ MAINS=exOpenSceneGraphWidgetXML.cc
 MUSTLINK=MustLinkGtkGlExtInit.cc
 
 USESLIBS=RavlCore RavlMath RavlImage RavlGUI Ravl3D OpenGL GTK \
- OpenSceneGraphGtk RavlXMLFactory RavlRLog
+ OpenSceneGraphGtk RavlXMLFactory RavlRLog OpenSceneGraph.def
 
 PROGLIBS=RavlOS RavlImageIO RavlExtImgIO RavlRLog
 
 #EHT=Ravl.API.GUI.OpenSceneGraph.html
 
-EXTERNALLIBS=OpenSceneGraph.def OpenSceneGraphGtk.def
+EXTERNALLIBS=OpenSceneGraphGtk.def
 
 AUXFILES=exOpenSceneGraph.xml
 
