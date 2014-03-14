@@ -10,7 +10,7 @@ namespace RavlGUIN {
       plots(num), m_legendTitles(num), xrange(0, 0), yrange(0, 0)
   {
     n = num;
-    Terminal("wxt persist raise");
+    SetTerminalWindow();
     Size(1.0);
     Title("GnuPlot");
     Xlabel("x-label");
@@ -22,7 +22,7 @@ namespace RavlGUIN {
       plots(subPlotTitles.Size()), m_legendTitles(subPlotTitles), xrange(0, 0), yrange(0, 0)
   {
     n = plots.Size();
-    Terminal("wxt persist raise");
+    SetTerminalWindow();
     Size(1.0);
     Title(title);
     Xlabel(xlabel);
@@ -295,9 +295,7 @@ namespace RavlGUIN {
   {
 
     // Sort out the terminal
-    StringC term;
-    term.form("png size %d, %d", cols, rows);
-    Terminal(term);
+    SetTerminalImage(rows,cols);
 
     // Make the temporary png file
     FilenameC pngFile = "/tmp/plot.png";
@@ -317,12 +315,31 @@ namespace RavlGUIN {
     // Remove png file
     pngFile.Remove();
 
-    // Reset terminal to x11
-    Terminal("x11 persist raise");
+    SetTerminalWindow();
 
     // and return
     return image;
   }
+
+  //! Set the terminal to a window.
+  void GnuPlotC::SetTerminalWindow()
+  {
+    // Reset terminal to x11
+#if RAVL_OS_MACOSX
+    Terminal("x11 persist noraise "); // raise
+#else
+    Terminal("wxt persist noraise "); // raise
+#endif
+  }
+
+  //! Set teriminal to a png
+  void GnuPlotC::SetTerminalImage(int rows,int cols)
+  {
+    StringC term;
+    term.form("png size %d, %d", cols, rows);
+    Terminal(term);
+  }
+
 
   ImageC<ByteRGBValueC> GnuPlotC::MultiPlotImage()
   {
@@ -371,7 +388,7 @@ namespace RavlGUIN {
     pngFile.Remove();
 
     // Reset terminal to x11
-    Terminal("x11 persist raise");
+    SetTerminalWindow();
 
     return image;
   }
@@ -394,16 +411,15 @@ namespace RavlGUIN {
     return true;
   }
 
-  ostream &
-  operator<<(ostream & s, const GnuPlotC & out)
+
+  std::ostream &operator<<(std::ostream & s, const GnuPlotC & out)
   {
     // output your class members
 
     return s;
   }
 
-  istream &
-  operator>>(istream & s, GnuPlotC & in)
+  std::istream &operator>>(std::istream & s, GnuPlotC & in)
   {
     // input your class members
     return s;

@@ -377,7 +377,7 @@ namespace RavlN {
   {
     RavlAssert(rng.TRow() >= 0 && rng.LCol() >= 0);
     RavlAssert(rng.BRow() < arr.Size1() && rng.RCol() < arr.Size2());
-    BuildAccess(&(arr[rng.Origin()]) - &(arr[0][0]),arr.Stride());
+    BuildAccess(&(arr[rng.Origin()]) - data.Data().ReferenceElm(),arr.Stride());
   }
 
   template<class DataT>

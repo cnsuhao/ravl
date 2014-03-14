@@ -25,7 +25,7 @@ namespace RavlLogicN {
   public:
     LiteralIter1BodyC(const LiteralC &nlit)
       : ready(nlit.IsValid()),
-      lit(lit)
+        lit(nlit)
       {}
     //: Constructor.
     // Construct with one literal.

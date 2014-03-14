@@ -73,6 +73,10 @@ namespace RavlN {
     typedef RavlN::SmartPtrC<GnuPlot2dC> RefT;
 
   protected:
+
+    //! Set the terminal to a window.
+    void CommandTerminalWindow();
+
     void Flush();
 
     //! Create a temporary file.

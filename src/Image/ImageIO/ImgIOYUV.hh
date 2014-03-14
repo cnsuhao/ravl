@@ -55,7 +55,7 @@ namespace RavlImageN {
     //: Get image from stream.
     
   protected:
-    IStreamC inf; // Infile.
+    IStreamC inf; // In file.
     bool done;
   };
   
@@ -78,7 +78,7 @@ namespace RavlImageN {
     //: Is port ready for data ?
     
   protected:
-    OStreamC outf; // Infile.
+    OStreamC outf; // Out file.
     bool done;
   };
   
