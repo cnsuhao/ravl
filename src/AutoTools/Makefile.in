@@ -71,7 +71,7 @@ DIST_ADDITIONS=src/GUI/3D/gdkgl.c src/GUI/3D/gtkglarea.c src/GUI/3D/gdkgl.h src/
 
 # Builds
 
-default: qmake fullsrc singleoptshared optsharedbin singleoptsharedbin pkgconf
+default: qmake fullsrc singleoptsharedbin pkgconf
 
 check: testsingleoptshared 
 
@@ -359,13 +359,12 @@ installsingleoptlib:
 installsingleoptshared:installsingleoptsharedgeneral installsingleoptsharedlib
 
 installsingleoptsharedgeneral:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project AUXHOME=Ravl VAR=opt SHARED_LIB_POSTFIX=/shared/single SHAREDBUILD=1 STRIP_SWITCH=$(STRIP_SWITCH) install recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project AUXHOME=Ravl VAR=opt SUMMARIES=Ravl SHAREDBUILD=1 STRIP_SWITCH=$(STRIP_SWITCH) install recurse
 #       Use the 'install' function of QMake to install the Ravl utility
-#       binaries; config files; data files and scripts. We must set
-#       SHARED_LIB_POSTFIX (to /shared/single) in order to force QMake to use
-#       the version of the binaries compiled against the single shared Ravl
-#       library rather than the more usual (for QMake) individual shared
-#       libraries. 
+#       binaries; config files; data files and scripts. Setting SUMMARIES to
+#       Ravl forces QMake to use the version of the binaries compiled against
+#       the single shared Ravl library rather than the more usual (for QMake)
+#       individual shared libraries. 
 
 installsingleoptsharedlib:
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=opt SHAREDBUILD=1 singlesharedSetRootInstalled
@@ -493,11 +492,7 @@ retestsinglegprof:
            $(PROJECT_OUT)/bin/utils/gprof/single/bin/Validate -v $(PROJECT_OUT)/test/gprof/single
 	
 retestsinglegprofshared:
-	@cd $(PROJECT_OUT)/test/gprof/shared/single/bin; ls > ../TestExes
-	cd $(PROJECT_OUT)/test/gprof/shared/single && \
-           PATH=$(PROJECT_OUT)/test/gprof/shared/single/bin:$(PROJECT_OUT)/bin/utils/gprof/shared/single/bin:$$PATH \
-           LD_LIBRARY_PATH=$(PROJECT_OUT)/lib/$(ARC)/gprof/shared/single:$$LD_LIBRARY_PATH \
-           $(PROJECT_OUT)/bin/utils/gprof/shared/single/bin/Validate -v $(PROJECT_OUT)/test/gprof/shared/single
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=gprof SHAREDBUILD=1 SUMMARIES=Ravl TEST_TARGET=optshared retest
 	
 retestsingleopt:
 	@cd $(PROJECT_OUT)/test/opt/single/bin; ls > ../TestExes
@@ -506,11 +501,7 @@ retestsingleopt:
            $(PROJECT_OUT)/bin/utils/opt/single/bin/Validate -v $(PROJECT_OUT)/test/opt/single
 	
 retestsingleoptshared:
-	@cd $(PROJECT_OUT)/test/opt/shared/single/bin; ls > ../TestExes
-	cd $(PROJECT_OUT)/test/opt/shared/single && \
-           PATH=$(PROJECT_OUT)/test/opt/shared/single/bin:$(PROJECT_OUT)/bin/utils/opt/shared/single/bin:$$PATH \
-           LD_LIBRARY_PATH=$(PROJECT_OUT)/lib/$(ARC)/opt/shared/single:$$LD_LIBRARY_PATH \
-           $(PROJECT_OUT)/bin/utils/opt/shared/single/bin/Validate -v $(PROJECT_OUT)/test/opt/shared/single
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=opt SHAREDBUILD=1 SUMMARIES=Ravl TEST_TARGET=optshared retest
 	
 #JFi:Only start of RPM process implemented. Should automate everything or drop.
 rpm: qmake 
@@ -540,8 +531,8 @@ singledebugbin: singledebug debugbin
 singledebugshared: debugshared
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Single -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=debug SHAREDBUILD=1 LIB_STAMP=$(STAMP_SINGLE) NOEXEBUILD=1 libbuild
 
-singledebugsharedbin:singledebugshared debugsharedbin
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Projects/Ravl/Makefiles/Recursive.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=debug SINGLELIB=1 SHAREDBUILD=1 programs recurse
+singledebugsharedbin:singledebugshared
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=debug SHAREDBUILD=1 SUMMARIES=Ravl exebuild
 
 singlegprof: gprof
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Projects/Ravl/Makefiles/SingleLib.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=gprof makedirs buildstatic
@@ -552,8 +543,8 @@ singlegprofbin: singlegprof gprofbin
 singlegprofshared: gprofshared
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Single -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=gprof SHAREDBUILD=1 LIB_STAMP=$(STAMP_SINGLE) NOEXEBUILD=1 libbuild
 
-singlegprofsharedbin: singlegprofshared gprofsharedbin
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Projects/Ravl/Makefiles/Recursive.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=gprof SINGLELIB=1 SHAREDBUILD=1 programs recurse
+singlegprofsharedbin: singlegprofshared
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=gprof SHAREDBUILD=1 SUMMARIES=Ravl exebuild
 
 singleopt: opt
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Projects/Ravl/Makefiles/SingleLib.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt makedirs buildstatic
@@ -564,8 +555,8 @@ singleoptbin: singleopt optbin
 singleoptshared: optshared
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Single -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=opt SHAREDBUILD=1 LIB_STAMP=$(STAMP_SINGLE) NOEXEBUILD=1 libbuild
 
-singleoptsharedbin: singleoptshared optsharedbin
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Projects/Ravl/Makefiles/Recursive.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt SINGLELIB=1 SHAREDBUILD=1 programs recurse
+singleoptsharedbin: singleoptshared
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=opt SHAREDBUILD=1 SUMMARIES=Ravl exebuild
 
 singleSetRootInstalled: SetRootInstalled
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Projects/Ravl/Makefiles/SingleLib.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project makedirs buildstatic
@@ -606,13 +597,8 @@ testsinglegprof:
            $(PROJECT_OUT)/bin/utils/gprof/single/bin/Validate -v $(PROJECT_OUT)/test/gprof/single
 
 testsinglegprofshared:
-	@$(RM) -f $(PROJECT_OUT)/test/gprof/shared/single/bin/*
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Projects/Ravl/Makefiles/Recursive.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=gprof SINGLELIB=1 SHAREDBUILD=1 test recurse
-	@cd $(PROJECT_OUT)/test/gprof/shared/single/bin; ls > ../TestExes
-	cd $(PROJECT_OUT)/test/gprof/shared/single && \
-           PATH=$(PROJECT_OUT)/test/gprof/shared/single/bin:$(PROJECT_OUT)/bin/utils/gprof/shared/single/bin:$$PATH \
-           LD_LIBRARY_PATH=$(PROJECT_OUT)/lib/$(ARC)/gprof/shared/single:$$LD_LIBRARY_PATH \
-           $(PROJECT_OUT)/bin/utils/gprof/shared/single/bin/Validate -v $(PROJECT_OUT)/test/gprof/shared/single
+	@$(RM) -f $(PROJECT_OUT)/test/gprof/shared/single.Ravl/bin/*
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=gprof SHAREDBUILD=1 SUMMARIES=Ravl TEST_TARGET=optshared test
 
 testsingleopt:
 	@$(RM) -f $(PROJECT_OUT)/test/opt/single/bin/*
@@ -623,13 +609,8 @@ testsingleopt:
            $(PROJECT_OUT)/bin/utils/opt/single/bin/Validate -v $(PROJECT_OUT)/test/opt/single
 	
 testsingleoptshared:
-	@$(RM) -f $(PROJECT_OUT)/test/opt/shared/single/bin/*
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Projects/Ravl/Makefiles/Recursive.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt SINGLELIB=1 SHAREDBUILD=1 test recurse
-	@cd $(PROJECT_OUT)/test/opt/shared/single/bin; ls > ../TestExes
-	cd $(PROJECT_OUT)/test/opt/shared/single && \
-           PATH=$(PROJECT_OUT)/test/opt/shared/single/bin:$(PROJECT_OUT)/bin/utils/opt/shared/single/bin:$$PATH \
-           LD_LIBRARY_PATH=$(PROJECT_OUT)/lib/$(ARC)/opt/shared/single:$$LD_LIBRARY_PATH \
-           $(PROJECT_OUT)/bin/utils/opt/shared/single/bin/Validate -v $(PROJECT_OUT)/test/opt/shared/single
+	@$(RM) -f $(PROJECT_OUT)/test/opt/shared/single.Ravl/bin/*
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=opt SHAREDBUILD=1 SUMMARIES=Ravl TEST_TARGET=optshared test
 
 uninstall: uninstallQMake uninstallsingleoptshared uninstallHdrs uninstallpkgconf uninstallRavlDefs
 

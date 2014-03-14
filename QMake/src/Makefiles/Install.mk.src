@@ -403,9 +403,9 @@ insEgs:
             fi ;\
             if [ X$(QMAKE_INFO) != X ] ;\
             then \
-               echo $(INSTALL) $(STRIP_SWITCH) $(patsubst %,$(INSTALLHOME)/bin/examples/$(VAR)$(SHARED_LIB_POSTFIX)/bin/%, $(EXAMPLES)) $(ABS_DESTDIR)$(bindir) ; \
+               echo $(INSTALL) $(STRIP_SWITCH) $(patsubst %,$(INSTALLHOME)/bin/examples/$(VAR)$(SHARED_LIB_POSTFIX)$(SINGLE_POSTFIX)/bin/%, $(EXAMPLES)) $(ABS_DESTDIR)$(bindir) ; \
             fi ;\
-            $(INSTALL) $(STRIP_SWITCH) $(patsubst %,$(INSTALLHOME)/bin/examples/$(VAR)$(SHARED_LIB_POSTFIX)/bin/%, $(EXAMPLES)) $(ABS_DESTDIR)$(bindir) ; \
+            $(INSTALL) $(STRIP_SWITCH) $(patsubst %,$(INSTALLHOME)/bin/examples/$(VAR)$(SHARED_LIB_POSTFIX)$(SINGLE_POSTFIX)/bin/%, $(EXAMPLES)) $(ABS_DESTDIR)$(bindir) ; \
             RET=$$? ;\
             if [ $$RET -ne 0 ] ;\
             then \
@@ -708,9 +708,9 @@ insMains:
             fi ;\
             if [ X$(QMAKE_INFO) != X ] ;\
             then \
-               echo $(INSTALL) $(STRIP_SWITCH) $(patsubst %,$(INSTALLHOME)/bin/utils/$(VAR)$(SHARED_LIB_POSTFIX)/bin/%, $(basename $(MAINS))) $(ABS_DESTDIR)$(bindir) ; \
+               echo $(INSTALL) $(STRIP_SWITCH) $(patsubst %,$(INSTALLHOME)/bin/utils/$(VAR)$(SHARED_LIB_POSTFIX)$(SINGLE_POSTFIX)/bin/%, $(basename $(MAINS))) $(ABS_DESTDIR)$(bindir) ; \
             fi ;\
-            $(INSTALL) $(STRIP_SWITCH) $(patsubst %,$(INSTALLHOME)/bin/utils/$(VAR)$(SHARED_LIB_POSTFIX)/bin/%, $(basename $(MAINS))) $(ABS_DESTDIR)$(bindir) ; \
+            $(INSTALL) $(STRIP_SWITCH) $(patsubst %,$(INSTALLHOME)/bin/utils/$(VAR)$(SHARED_LIB_POSTFIX)$(SINGLE_POSTFIX)/bin/%, $(basename $(MAINS))) $(ABS_DESTDIR)$(bindir) ; \
             RET=$$? ;\
             if [ $$RET -ne 0 ] ;\
             then \
@@ -858,9 +858,9 @@ insTests:
             fi ;\
             if [ X$(QMAKE_INFO) != X ] ;\
             then \
-               echo $(INSTALL) $(STRIP_SWITCH)$(STRIP_SWITCH)  $(patsubst %,$(INSTALLHOME)/test/$(VAR)$(SHARED_LIB_POSTFIX)/bin/%, $(TESTEXES)) $(ABS_DESTDIR)$(bindir) ; \
+               echo $(INSTALL) $(STRIP_SWITCH)$(STRIP_SWITCH)  $(patsubst %,$(INSTALLHOME)/test/$(VAR)$(SHARED_LIB_POSTFIX)$(SINGLE_POSTFIX)/bin/%, $(TESTEXES)) $(ABS_DESTDIR)$(bindir) ; \
             fi ;\
-            $(INSTALL) $(STRIP_SWITCH) $(patsubst %,$(INSTALLHOME)/test/$(VAR)$(SHARED_LIB_POSTFIX)/bin/%, $(TESTEXES)) $(ABS_DESTDIR)$(bindir) ; \
+            $(INSTALL) $(STRIP_SWITCH) $(patsubst %,$(INSTALLHOME)/test/$(VAR)$(SHARED_LIB_POSTFIX)$(SINGLE_POSTFIX)/bin/%, $(TESTEXES)) $(ABS_DESTDIR)$(bindir) ; \
             RET=$$? ;\
             if [ $$RET -ne 0 ] ;\
             then \

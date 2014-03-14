@@ -1668,54 +1668,6 @@ do
 done
 trace 3 RESOURCES now "@<:@$RESOURCES@:>@"
 
-# Need to calculate ALL_EXTERNAL_xxxS based on the libraries that Ravl can
-# use. We need to include not just those libraries specifically configured
-# by the user, but also those already configured by any existing QMake
-# configuration. 
-#
-# First initialise ALL_EXTERNAL_xxxS ...
-ALL_EXTERNAL_LIBS=""
-ALL_EXTERNAL_CFLAGS=""
-
-# Now add all the external library packages that are present
-for lib in $KnownLibs
-do
-   eval lib_enablement=\$use_${lib}
-   case $lib_enablement in
-    'blocked' | 'missing' )
-                   TRACE_INDENT="     "
-                   trace 3 ${lib} $lib_enablement
-                   ;;
-    'no' )
-                   TRACE_INDENT="     "
-                   trace 3 ${lib} discarded
-                   ;;
-    'check' | 'yes' )
-                   trace 1 Assertion: --with-${lib} should not equal ${lib_enablement} here!
-                   ;;
-    'present' )
-                   eval liblist=\$${lib}_LIBS
-                   TRACE_INDENT="     "
-                   trace 3 ALL_EXTERNAL_LIBS += $liblist
-                   ALL_EXTERNAL_LIBS="$ALL_EXTERNAL_LIBS $liblist"
-                   eval cflglist=\$${lib}_CFLAGS
-                   TRACE_INDENT="     "
-                   trace 3 ALL_EXTERNAL_CFLAGS += $cfglist
-                   ALL_EXTERNAL_CFLAGS="$ALL_EXTERNAL_CFLAGS $cflglist"
-                   ;;
-   esac
-done
-trace 3 ALL_EXTERNAL_LIBS now "@<:@$ALL_EXTERNAL_LIBS@:>@"
-trace 3 ALL_EXTERNAL_CFLAGS now "@<:@$ALL_EXTERNAL_CFLAGS@:>@"
-
-# finish Config.Project.in external libraries section with ALL_EXTERNAL_LIBS and
-# ALL_EXTERNAL_CFLAGS def
-echo ALL_EXTERNAL_LIBS=@ALL_EXTERNAL_LIBS@ >> ./Config.Project.in
-echo >> ./Config.Project.in
-echo ALL_EXTERNAL_CFLAGS=@ALL_EXTERNAL_CFLAGS@ >> ./Config.Project.in
-echo >> ./Config.Project.in
-
-
 echo >> ./Config.Project.in
 echo >> ./Config.Project.in
 
@@ -2209,10 +2161,6 @@ then
 fi
 
 
-
-dnl Declare ALL_EXTERNAL_xxx as outputs
-AC_SUBST([ALL_EXTERNAL_LIBS])
-AC_SUBST([ALL_EXTERNAL_CFLAGS])
 
 dnl Create Makefiles and *.Project files
 AC_CONFIG_FILES([../../Config.Project:Config.Project.in])

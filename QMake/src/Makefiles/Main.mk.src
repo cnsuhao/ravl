@@ -88,7 +88,6 @@ ifeq ($(SUPPORT_OK),yes)
 
  #######################################
  # Sort out library dependancies from USESLIBS
-
  ifdef USESLIBS
   ifndef LIBDEPS
    ifdef PLIB
@@ -139,19 +138,57 @@ $(OPTIONAL_USESLIBS_D) : $(INST_LIB)/.dir
   endif
  endif
  ifdef PLIB
-  EXELIB := $(MKMUSTLINK) -l$(PLIB) $(EXELIB)
+  ifdef SHAREDBUILD
+   ifdef SUMMARY_LIB
+    # This library is contained in one or more summary libraries. If we have
+    # asked to use one of these instead of the individual library (any of the
+    # USE_SINGLE_<lib> flags are set to 1), we need not include either PLIB
+    # or MKMUSTLINK on the link line (as their contents are already provided
+    # by inclusion of the summary library).
+    ifeq ($(filter 1,$(foreach lib,$(SUMMARY_LIB),$(USE_SINGLE_$(lib)))),)
+     # Test looks through all of the USE_SINGLE_<lib> flags for the libraries
+     # that summarise this library. Any that are set to 1 cause a non-null
+     # string and cause the if to fail; hence we only arrive here if we are
+     # not using a summary library.
+     EXELIB := -l$(PLIB) $(EXELIB)
+     EXEML := $(MKMUSTLINK) $(EXEML)
+    endif
+   else
+    # No Summary library, include PLIB and MKMUSTLINK on link line
+    EXELIB := -l$(PLIB) $(EXELIB)
+    EXEML := $(MKMUSTLINK) $(EXEML)
+   endif
+  else
+   # Non-shared build implies no summary library so include PLIB and MKMUSTLINK
+   EXELIB := -l$(PLIB) $(EXELIB)
+   EXEML := $(MKMUSTLINK) $(EXEML)
+  endif
  endif
 
  ###########################
  # Sort out libraries needed for executables from PROGLIBS
 
 
- # Record the contents of EXELIB before we add prog libs in LIBLIBS
- LIBLIBS := $(EXELIB)
+ # Record the contents of EXELIB and EXEML before we add prog libs in LIBLIBS
+ LIBLIBS := $(EXEML) $(EXELIB)
 
  ifndef NOEXEBUILD   # Don't even look if we're not building exe's
 
+
   ifndef NOINCDEFS
+   ifdef PLIB
+    ifdef SHAREDBUILD
+     ifdef SUMMARY_LIB
+      NEEDED_SUMMARY=$(firstword $(foreach lib,$(SUMMARY_LIB),$(if $(filter 1,$(USE_SINGLE_$(lib))),$(lib),)))
+      # If we are building with a summary library of the current PLIB then
+      # NEEDED_SUMMARY is set to the name of that library (or the first specified
+      # library if more than one SUMMARY_LIB is being being requested)
+      ifneq (,$(NEEDED_SUMMARY))
+       include $(NEEDED_SUMMARY).def
+      endif
+     endif
+    endif
+   endif
    REQUIRED_PROGLIBS=$(patsubst %,%.def,$(filter-out %.opt,$(PROGLIBS)))
    OPTIONAL_PROGLIBS=$(patsubst %.opt,%.def,$(filter %.opt,$(PROGLIBS)))
    ifneq ($(strip $(REQUIRED_PROGLIBS)),)
@@ -190,7 +227,7 @@ $(OPTIONAL_PROGLIBS) : $(INST_LIB)/.dir
 
 endif # ifdef SUPPORT_OK=yes
 
-LINKLIBS := $(EXELIB)
+LINKLIBS := $(EXEML) $(EXELIB)
 
 ######################################
 # Sort out libraries needed for test executables. TESTLIBS
@@ -214,9 +251,9 @@ $(OPTIONAL_TESTLIBS) : $(INST_LIB)/.dir
  endif
 endif
 
-LINKTESTLIBS := $(EXELIB)
+LINKTESTLIBS := $(EXEML) $(EXELIB)
 
-# Restore EXELIB to be library libs
+# Restore EXELIB to be library libs preceeded by the mustlinks
 EXELIB := $(LIBLIBS)
  
 .PRECIOUS : %$(CXXEXT) %$(CHXXEXT) %$(CEXT) %$(CHEXT) %.tcc %.icc %.def %.tab.cc %.yy.cc %_$(ARC)_wrap.cc %.m %.mm
@@ -297,10 +334,10 @@ ifeq ($(SUPPORT_OK),yes)
                $(patsubst %.m,$(INST_DEPEND)/%.d, \
                $(patsubst %.mm,$(INST_DEPEND)/%.d, \
 	       $(patsubst %.java,$(INST_DEPEND)/%.java.d,$(MAINS) $(TESTEXES)))))) \
-               $(patsubst %$(CEXT),$(INST_DEPEND)/%.$(VAR)$(BINDEP_SHARED_INFIX).bin.d,  \
-               $(patsubst %$(CXXEXT),$(INST_DEPEND)/%.$(VAR)$(BINDEP_SHARED_INFIX).bin.d, \
-               $(patsubst %.m,$(INST_DEPEND)/%.$(VAR)$(BINDEP_SHARED_INFIX).bin.d,  \
-               $(patsubst %$.mm,$(INST_DEPEND)/%.$(VAR)$(BINDEP_SHARED_INFIX).bin.d, \
+               $(patsubst %$(CEXT),$(INST_DEPEND)/%.$(VAR)$(BINDEP_SHARED_INFIX)$(BINDEP_SINGLE_POSTFIX).bin.d,  \
+               $(patsubst %$(CXXEXT),$(INST_DEPEND)/%.$(VAR)$(BINDEP_SHARED_INFIX)$(BINDEP_SINGLE_POSTFIX).bin.d, \
+               $(patsubst %.m,$(INST_DEPEND)/%.$(VAR)$(BINDEP_SHARED_INFIX)$(BINDEP_SINGLE_POSTFIX).bin.d,  \
+               $(patsubst %$.mm,$(INST_DEPEND)/%.$(VAR)$(BINDEP_SHARED_INFIX)$(BINDEP_SINGLE_POSTFIX).bin.d, \
                $(filter-out %.java,$(MAINS)))))) $(INST_DEPEND)/.dir
  else
   TARG_DEPEND:= $(patsubst %$(CXXAUXEXT),$(INST_DEPEND)/%.d, \
@@ -469,6 +506,8 @@ all: prebuildstep srcfiles build_aux
 exebuild: prebuildstep build_subdirs build_exe $(TARG_HDRCERTS) postbuildstepexe
 
 fullbuild: prebuildstep build_subdirs build_libs build_exe build_aux  $(TARG_HDRCERTS) postbuildstepexe
+
+exebuild: prebuildstep build_subdirs build_exe $(TARG_HDRCERTS) postbuildstepexe
 
 testbuild: prebuildstep build_subdirs build_libs build_test  $(TARG_HDRCERTS) postbuildstep
 
@@ -676,11 +715,11 @@ $(TARG_EXTERNALLIBS) : $(INST_LIBDEF)/% : % $(INST_LIBDEF)/.dir
 
 # Binary depends.
 
-$(INST_DEPEND)/%.$(VAR)$(BINDEP_SHARED_INFIX).bin.d : %$(CXXEXT) $(QCWD)/defs.mk $(QMAKE_MAKEFILES)/Definitions.mk $(TARG_DEFS) $(INST_DEPEND)/.dir
+$(INST_DEPEND)/%.$(VAR)$(BINDEP_SHARED_INFIX)$(BINDEP_SINGLE_POSTFIX).bin.d : %$(CXXEXT) $(QCWD)/defs.mk $(QMAKE_MAKEFILES)/Definitions.mk $(TARG_DEFS) $(INST_DEPEND)/.dir
 	$(SHOWIT)echo "--- Binary dependency" $* ; \
 	$(BINDEP) $(PKG_LDFLAGS) $(LDFLAGS) -P'$$(INST_BIN)/$* : $$(INST_OBJS)/$*$(OBJEXT) $(OBJS_DEPEND)' -T$(INST_LIB)/lib$(PLIB)$(LIBEXT) $(BINLIBS) >$(INST_DEPEND)/$(@F)
 
-$(INST_DEPEND)/%.$(VAR)$(BINDEP_SHARED_INFIX).bin.d : %$(CEXT) $(QCWD)/defs.mk $(QMAKE_MAKEFILES)/Definitions.mk $(TARG_DEFS) $(INST_DEPEND)/.dir
+$(INST_DEPEND)/%.$(VAR)$(BINDEP_SHARED_INFIX)$(BINDEP_SINGLE_POSTFIX).bin.d : %$(CEXT) $(QCWD)/defs.mk $(QMAKE_MAKEFILES)/Definitions.mk $(TARG_DEFS) $(INST_DEPEND)/.dir
 	$(SHOWIT)echo "--- Binary dependency" $* ; \
 	$(BINDEP) $(PKG_LDFLAGS) $(LDFLAGS) -P'$$(INST_BIN)/$* : $$(INST_OBJS)/$*$(OBJEXT) $(OBJS_DEPEND)' -T$(INST_LIB)/lib$(PLIB)$(LIBEXT) $(BINLIBS) >$(INST_DEPEND)/$(@F)
 
@@ -1232,7 +1271,7 @@ ifdef TARG_DEFS
 	$(SHOWIT)echo >> $@ ; \
 	cat $(LOCALTMP)/libdep/$(*F).def.mid >> $@
  ifdef MUSTLINK
-	$(SHOWIT)echo '$(REQUIRES_INDENT)  EXELIB := $(MLOBJPATH) $$(EXELIB)' >> $@
+	$(SHOWIT)echo '$(REQUIRES_INDENT)  EXEML := $(MLOBJPATH) $$(EXEML)' >> $@
  endif
 	$(SHOWIT)cat $(LOCALTMP)/libdep/$(*F).def.tail >> $@ ; \
 	$(CHMOD) 444 $@
@@ -1261,7 +1300,7 @@ ifdef TARG_DEFS
 	echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  endif' >> $@ ; \
 	cat $(LOCALTMP)/libdep/$(*F).def.mid >> $@ 
  ifdef MUSTLINK
-	$(SHOWIT)echo '$(REQUIRES_INDENT)  EXELIB := $$(QMAKE_PROJECTS)/$(PROJECT_DIR)$(RAVL_BODGE)/MustLink/$(basename $(MUSTLINK))$(OBJEXT) $$(EXELIB)' >> $@
+	$(SHOWIT)echo '$(REQUIRES_INDENT)  EXEML := $$(QMAKE_PROJECTS)/$(PROJECT_DIR)$(RAVL_BODGE)/MustLink/$(basename $(MUSTLINK))$(OBJEXT) $$(EXEML)' >> $@
  endif
 	$(SHOWIT)cat $(LOCALTMP)/libdep/$(*F).def.tail >> $@ ; \
 	$(CHMOD) 444 $@

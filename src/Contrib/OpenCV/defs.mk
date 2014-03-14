@@ -28,6 +28,8 @@ PROGLIBS = RavlImageIO RavlDPDisplay OpenCV
 
 TESTEXES = testOpenCV.cc
 
+TESTLIBS = OpenCV
+
 EXAMPLES =  exOpenCV.cc
 
 EHT = OpenCV.html

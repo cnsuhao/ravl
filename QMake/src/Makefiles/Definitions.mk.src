@@ -162,9 +162,29 @@ endif
 ifndef SHAREDBUILD
  SHARED_LIB_POSTFIX=#
  BINDEP_SHARED_INFIX=#
+ SINGLE_POSTFIX=#
+ BINDEP_SINGLE_POSTFIX=#
+ SINGLE_LIB_TESTPATH=#
 else
  SHARED_LIB_POSTFIX=/shared#
  BINDEP_SHARED_INFIX=.shared
+ ifdef SUMMARIES
+  # Build using one or more summary libraries and use that list to name the
+  # subdirectory where we store the binaries and to name the binary depends
+  # file.
+  SINGLE_NAME=single.$(subst $(SPACE),.,$(SUMMARIES))
+  SINGLE_POSTFIX=/$(SINGLE_NAME)
+  BINDEP_SINGLE_POSTFIX=.$(SINGLE_NAME)
+  # Set USE_SINGLE_xxx for each summary library we have requested
+  $(foreach lib,$(SUMMARIES),$(eval USE_SINGLE_$(lib)=1))
+  # When testing, we will need to add the appropriate single library directory
+  # to LD_LIBRARY_PATH
+  SINGLE_LIB_TESTPATH=:$(ROOTDIR)/lib$(PROJECT_DIR)/$(ARC)/$(TEST_TARGET_VAR)$(TEST_TARGET_SHARED)/single
+ else
+  SINGLE_POSTFIX=#
+  BINDEP_SINGLE_POSTFIX=#
+  SINGLE_LIB_TESTPATH=#
+ endif
 endif
 
 ifndef PAGER
@@ -262,21 +282,24 @@ export PKG_CONFIG_PATH
 
 # Binaries
 
-INST_LIB=$(ROOTDIR)/lib$(PROJECT_DIR)/$(ARC)/$(VAR)$(SHARED_LIB_POSTFIX)
+INST_LIB=$(ROOTDIR)/lib$(PROJECT_DIR)/$(ARC)/$(VAR)$(SHARED_LIB_POSTFIX)$(SINGLE_POSTFIX)
 INST_OBJS=$(WORKTMP)/objs
 INST_FORCEOBJS = $(ROOTDIR)/lib$(PROJECT_DIR)/$(ARC)/obj
 
 # Test stuff.
-INST_TEST=$(ROOTDIR)/test/$(VAR)$(SHARED_LIB_POSTFIX)
+INST_TEST=$(ROOTDIR)/test/$(VAR)$(SHARED_LIB_POSTFIX)$(SINGLE_POSTFIX)
 INST_TESTBIN=$(INST_TEST)/bin
 INST_TESTLOG=$(INST_TEST)/log
 INST_TESTDB =$(INST_TEST)/TestExes
 
 INST_LIBDEF=$(ROOTDIR)/lib$(PROJECT_DIR)/libdep
-INST_BIN=$(ROOTDIR)/bin/utils/$(VAR)$(SHARED_LIB_POSTFIX)/bin
+INST_BIN=$(ROOTDIR)/bin/utils/$(VAR)$(SHARED_LIB_POSTFIX)$(SINGLE_POSTFIX)/bin
 INST_GENBIN=$(ROOTDIR)/bin# Machine independent scripts.
 INST_INCLUDE:=$(ROOTDIR)/include
+
 INST_DEPEND=$(INST_ADMIN)/$(ARC)/depend$(PROJECT_DIR)/$(PACKAGE)$(BASENAME)
+# Path is invarient for VAR, SHAREDBUILD and WITH_SINGLE; the name of the
+# dependency file changes.
 
 ifeq ($(PACKAGE),local)
 INST_HEADER:=$(INST_INCLUDE)$(PROJECT_DIR)
