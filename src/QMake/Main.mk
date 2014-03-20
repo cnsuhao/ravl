@@ -239,15 +239,12 @@ ifeq ($(SUPPORT_OK),yes)
     EXTRA_USESLIBS := $(REQUIRED_USESLIBS) $(OPTIONAL_USESLIBS)
     ifndef NOINCDEFS
      ifneq ($(strip $(REQUIRED_USESLIBS)),)
+      NEEDED_DEFS += $(REQUIRED_USESLIBS)
       include $(REQUIRED_USESLIBS)
      endif
      OPTIONAL_USESLIBS_D=$(patsubst %.opt,%.def,$(OPTIONAL_USESLIBS))
      ifneq ($(strip $(OPTIONAL_USESLIBS_D)),)
       -include $(OPTIONAL_USESLIBS_D)
-
-$(OPTIONAL_USESLIBS_D) : $(INST_LIB)/.dir
-	@true;
-
      endif
     endif
    endif
@@ -275,14 +272,11 @@ $(OPTIONAL_USESLIBS_D) : $(INST_LIB)/.dir
    REQUIRED_PROGLIBS=$(patsubst %,%.def,$(filter-out %.opt,$(PROGLIBS)))
    OPTIONAL_PROGLIBS=$(patsubst %.opt,%.def,$(filter %.opt,$(PROGLIBS)))
    ifneq ($(strip $(REQUIRED_PROGLIBS)),)
+    NEEDED_DEFS += $(REQUIRED_PROGLIBS)
     include $(REQUIRED_PROGLIBS)
    endif
    ifneq ($(strip $(OPTIONAL_PROGLIBS)),)
     -include $(OPTIONAL_PROGLIBS)
-
-$(OPTIONAL_PROGLIBS) : $(INST_LIB)/.dir
-	@true;
-
    endif
   endif
 
@@ -296,11 +290,12 @@ $(OPTIONAL_PROGLIBS) : $(INST_LIB)/.dir
      AUTOPROGLIBS := $(filter-out $(LIBDEPS),$(AUTOPROGLIBS))
     endif
     ifdef PLIB
-     AUTOPROGLIBS := $(PLIB).def $(AUTOPROGLIBS)
+     AUTOPROGLIBS :=  $(filter-out $(PLIB).def,$(AUTOPROGLIBS))
     endif
     ifndef NOINCDEFS
-     ifneq ($(strip $(filter-out $(PLIB).def,$(AUTOPROGLIBS))),)
-      include $(filter-out $(PLIB).def,$(AUTOPROGLIBS))
+     ifneq ($(strip $(AUTOPROGLIBS)),)
+      NEEDED_DEFS += $(AUTOPROGLIBS)
+      include $(AUTOPROGLIBS)
      endif
     endif
    endif
@@ -321,14 +316,11 @@ ifndef NOEXEBUILD  # Don't even look if we're not building exe's
    REQUIRED_TESTLIBS=$(patsubst %,%.def,$(filter-out %.opt,$(TESTLIBS)))
    OPTIONAL_TESTLIBS=$(patsubst %.opt,%.def,$(filter %.opt,$(TESTLIBS)))
    ifneq ($(strip $(REQUIRED_TESTLIBS)),)
-     include $(REQUIRED_TESTLIBS)
+    NEEDED_DEFS += $(REQUIRED_TESTLIBS)
+    include $(REQUIRED_TESTLIBS)
    endif
    ifneq ($(strip $(OPTIONAL_TESTLIBS)),)
     -include $(OPTIONAL_TESTLIBS)
-
-$(OPTIONAL_TESTLIBS) : $(INST_LIB)/.dir
-	@true;
-
    endif
   endif
  endif
@@ -1256,18 +1248,30 @@ $(INST_LIBDEF)/$(LOCAL_DEFBASE).def: defs.mk $(INST_LIBDEF)/.dir $(HEADERS) $(SO
     ifneq ($(USESLIBS),None)
      ifneq ($(filter Auto,$(USESLIBS)),Auto)
       ifneq ($(strip $(TARG_USESLIBS_R)),)
-	$(SHOWIT)echo 'include $(TARG_USESLIBS_R)' >> $(INST_LIBDEF)/$(@F) ;
+       ifneq ($(strip $(filter-out $(PLIB).def $(LIBDEPS).def,$(TARG_USESLIBS_R))),)
+	$(SHOWIT)echo 'NEEDED_DEFS += $$(filter-out $$(PLIB).def $$(LIBDEPS).def,$(TARG_USESLIBS_R))' >> $(INST_LIBDEF)/$(@F) ; \
+	echo >> $(INST_LIBDEF)/$(@F)
+       endif
+	$(SHOWIT)echo 'include $(TARG_USESLIBS_R)' >> $(INST_LIBDEF)/$(@F) ; \
+	echo >> $(INST_LIBDEF)/$(@F) ;
       endif
       ifneq ($(strip $(TARG_USESLIBS_O)),)
-	$(SHOWIT)echo '-include $(TARG_USESLIBS_O)' >> $(INST_LIBDEF)/$(@F) ;
+	$(SHOWIT)echo '-include $(TARG_USESLIBS_O)' >> $(INST_LIBDEF)/$(@F) ; \
+	echo >> $(INST_LIBDEF)/$(@F) ;
       endif
      else
       ifneq ($(strip $(AUTOUSELIBS)),)
        ifneq ($(strip $(EXTRA_USESLIBS_R)),)
-	$(SHOWIT)echo 'include $(EXTRA_USESLIBS_R)' >> $(INST_LIBDEF)/$(@F) ;
+        ifneq ($(strip $(filter-out $(PLIB).def $(LIBDEPS).def,$(EXTRA_USESLIBS_O))),)
+	$(SHOWIT)echo 'NEEDED_DEFS += $$(filter-out $$(PLIB).def $$(LIBDEPS).def,$(EXTRA_USESLIBS_R))' >> $(INST_LIBDEF)/$(@F) ; \
+	echo >> $(INST_LIBDEF)/$(@F)
+        endif
+	$(SHOWIT)echo 'include $(EXTRA_USESLIBS_R)' >> $(INST_LIBDEF)/$(@F) ; \
+	echo >> $(INST_LIBDEF)/$(@F) ;
        endif
        ifneq ($(strip $(EXTRA_USESLIBS_O)),)
-	$(SHOWIT)echo '-include $(EXTRA_USESLIBS_O)' >> $(INST_LIBDEF)/$(@F) ;
+	$(SHOWIT)echo '-include $(EXTRA_USESLIBS_O)' >> $(INST_LIBDEF)/$(@F) ; \
+	echo >> $(INST_LIBDEF)/$(@F) ;
        endif
       endif
      endif
@@ -1321,6 +1325,19 @@ endif
 	$(SHOWIT)echo "Libs: $(LIBS) " >> $(INST_PKGCONFIG)/$(@F);
 	$(SHOWIT)echo "Cflags: $(INCLUDES)" >> $(INST_PKGCONFIG)/$(@F);
 
+	
+###########################
+# Generate fatal error for missing mandatory dot-def files while silently
+# ignoring any optional ones that are missing 
+
+SPACE=$(EMPTY) $(EMPTY)
+
+%.def:
+	$(SHOWIT)case $(@F) in \
+	$(subst $(SPACE),$(SPACE)|$(SPACE),$(strip $(NEEDED_DEFS))) ) echo Missing mandatory $(@F); exit 1;; \
+	* ) \
+	esac
+
 ###########################
 
 lib_info:
@@ -1346,13 +1363,6 @@ info:
 #	@echo "Supported       :" $(SUPPORT_OK)
 #   " - " $(findstring $(ARC),$(DONOT_SUPPORT)) " - " $(findstring $(ARC),$(SUPPORT_ONLY))
 #	@echo "Directory supported:" $(SUPPORT_ONLY) " - " $(DONOT_SUPPORT)
-
-%.def:
-	@
-#       Dummy rule to prevent default rule (below) complaining if an optional
-#       .def file does not exist. Will also block the error for those .def
-#       files that should exist and do not; but this is not a problem as the
-#       subsequent use of such a file will error anyway.
 
 %:
 	@echo "ERROR: Don't know how to make " $@ ; \
