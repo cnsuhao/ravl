@@ -37,7 +37,7 @@ welcome they can be posted via the sourceforge web pages
 john.field@surrey.ac.uk
 
 
-PREFACE TO THE 1.1.4 ALPHA RELEASE
+PREFACE TO THE 1.1.5 BETA RELEASE
 ----------------------------------
 
 Version 1.1 of RAVL introduces the use of the GNU AutoTools for the
@@ -47,12 +47,12 @@ what external libraries are available on your system and use them as is
 appropriate. Please refer to the enclosed INSTALL file for details on
 installing RAVL on UNIX and UNIX-like systems.
 
-This alpha-test release of RAVL 1.1 is provided as a taster for the
+This beta-test release of RAVL 1.1 is provided as a taster for the
 forthcoming release of version of RAVL; showcasing the new installation method.
 As such, this revision of the product is ahead of the referenced on-line
 documentation in respect to the installation process and method for linking
 with the RAVL library itself. As a development version of the software, this
-alpha revision may also omit some of the most recent changes made to the RAVL
+beta revision may also omit some of the most recent changes made to the RAVL
 code.
 
 Revision 1.1 of RAVL also moves to providing all of the class libraries
@@ -95,7 +95,7 @@ for an introductory presentation) is available from:
 
 http://www.ee.surrey.ac.uk/CVSSP/Ravl
 
-As noted in the preface to this 1.1 Alpha release, the on-line documentation
+As noted in the preface to this 1.1 beta release, the on-line documentation
 reflects the live release of RAVL; version 1.0. As such, details for
 installation and the associated configure.local.xxxx file contained in the
 on-line documentation should be ignored. Please refer to the INSTALL file in
