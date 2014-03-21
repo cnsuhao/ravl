@@ -6,7 +6,7 @@ SOURCES=
 
 MAINS=doBatchProcess.cc
 
-PROGLIBS= RavlOSIO RavlPatternRec RavlAudioFeatures RavlAudioFile RavlAudioIO RavlMath
+PROGLIBS= RavlOSIO RavlPatternRec RavlAudioFeatures RavlAudioFile RavlAudioIO RavlSignal1
 
 AUXFILES= doBatchProcess.xml
 
