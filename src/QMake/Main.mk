@@ -1262,7 +1262,7 @@ $(INST_LIBDEF)/$(LOCAL_DEFBASE).def: defs.mk $(INST_LIBDEF)/.dir $(HEADERS) $(SO
      else
       ifneq ($(strip $(AUTOUSELIBS)),)
        ifneq ($(strip $(EXTRA_USESLIBS_R)),)
-        ifneq ($(strip $(filter-out $(PLIB).def $(LIBDEPS).def,$(EXTRA_USESLIBS_O))),)
+        ifneq ($(strip $(filter-out $(PLIB).def $(LIBDEPS).def,$(EXTRA_USESLIBS_R))),)
 	$(SHOWIT)echo 'NEEDED_DEFS += $$(filter-out $$(PLIB).def $$(LIBDEPS).def,$(EXTRA_USESLIBS_R))' >> $(INST_LIBDEF)/$(@F) ; \
 	echo >> $(INST_LIBDEF)/$(@F)
         endif
