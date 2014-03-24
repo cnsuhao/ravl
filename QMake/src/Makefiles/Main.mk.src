@@ -371,15 +371,15 @@ ifeq ($(SUPPORT_OK),yes)
  # For settings of SINGLESO without the lib prefix, this variable will be null.
 
  ifdef USESLIBS
+  TARG_DEFS=$(strip $(patsubst %,$(INST_LIBDEF)/%.def, $(LOCAL_DEFBASE) $(SINGLESO_NOPREFIX)))
+  # TARG_DEFS set to .def files for any PLIB and/or any SINGLESO. We do not 
+  # check SHAREDBUILD as the files are created during the 'source build' phase
+  # so that variable will never be set at the appropriate point.
+  # The TARG_DEFS variable lists the local copies of the .def files (used when
+  # building the project). A subsequent dependancy between each of these files
+  # and the proforma used to build the version of the .def file for final
+  # installation results in the proforma files being built.
   ifndef LIBDEPS
-   TARG_DEFS=$(strip $(patsubst %,$(INST_LIBDEF)/%.def, $(LOCAL_DEFBASE) $(SINGLESO_NOPREFIX)))
-   # TARG_DEFS set to .def files for any PLIB and/or any SINGLESO. We do not 
-   # check SHAREDBUILD as the files are created during the 'source build' phase
-   # so that variable will never be set at the appropriate point.
-   # The TARG_DEFS variable lists the local copies of the .def files (used when
-   # building the project). A subsequent dependancy between each of these files
-   # and the proforma used to build the version of the .def file for final
-   # installation results in the proforma files being built.
    ifdef MAKEPKGCONFIG
     TARG_PKGCONFIG=$(strip $(patsubst %,$(INST_PKGCONFIG)/single/%.pc, $(SINGLESO_NOPREFIX)) $(patsubst %,$(INST_PKGCONFIG)/%.pc, $(LOCAL_DEFBASE)))
     # Set similarly to TARG_DEFS but for the .pc files.
@@ -1259,19 +1259,31 @@ ifdef TARG_DEFS
 	  $(CHMOD) +w $@ ; \
 	fi ; \
 	cat $(LOCALTMP)/libdep/$(*F).def.top > $@
- ifdef SINGLESO
+ ifdef LIBDEPS
+  ifdef SINGLESO
 	$(SHOWIT)if [ x$(*F) = x$(SINGLESO_NOPREFIX) ] ; then \
+	  echo >> $@ ; \
+	  echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  EXELIB := -L$(ROOTDIR)/lib$(PROJECT_DIR)/$(ARC)/$$(VAR)$(SHARED_LIB_POSTFIX)/single -l$(*F) $$(EXELIB)' >> $@ ; \
+	fi
+  endif
+ else
+  ifdef SINGLESO
+	$(SHOWIT)if [ x$(*F) = x$(SINGLESO_NOPREFIX) ] ; then \
+	  echo >> $@ ; \
 	  echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  EXELIB := -L$(ROOTDIR)/lib$(PROJECT_DIR)/$(ARC)/$$(VAR)$(SHARED_LIB_POSTFIX)/single -l$(*F) $$(EXELIB)' >> $@ ; \
         else \
+	  echo >> $@ ; \
 	  echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  EXELIB := -l$(*F) $$(EXELIB)' >> $@ ; \
 	fi
- else
-	$(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  EXELIB := -l$(*F) $$(EXELIB)' >> $@
- endif
+  else
 	$(SHOWIT)echo >> $@ ; \
-	cat $(LOCALTMP)/libdep/$(*F).def.mid >> $@
+	echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  EXELIB := -l$(*F) $$(EXELIB)' >> $@
+  endif
+ endif
+	$(SHOWIT)cat $(LOCALTMP)/libdep/$(*F).def.mid >> $@
  ifdef MUSTLINK
-	$(SHOWIT)echo '$(REQUIRES_INDENT)  EXEML := $(MLOBJPATH) $$(EXEML)' >> $@
+	$(SHOWIT)echo >> $@ ; \
+	echo '$(REQUIRES_INDENT)  EXEML := $(MLOBJPATH) $$(EXEML)' >> $@
  endif
 	$(SHOWIT)cat $(LOCALTMP)/libdep/$(*F).def.tail >> $@ ; \
 	$(CHMOD) 444 $@
@@ -1289,10 +1301,28 @@ ifdef TARG_DEFS
 	  $(CHMOD) +w $@ ; \
 	fi ; \
 	cat $(LOCALTMP)/libdep/$(*F).def.top > $@
- ifeq ($(USE_LIBPATHSWITCH),Y)
-	$(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  EXELIB := $$(LINKER_LIBPATHSWITCH)=@PROJECT_LIBDIR@ -L@PROJECT_LIBDIR@ -l$(*F) $$(filter-out $$(LINKER_LIBPATHSWITCH)=@PROJECT_LIBDIR@, $$(filter-out -L@PROJECT_LIBDIR@, $$(EXELIB)))' >> $@
+ ifdef LIBDEPS
+  ifdef SINGLESO
+   ifeq ($(USE_LIBPATHSWITCH),Y)
+	$(SHOWIT)if [ x$(*F) = x$(SINGLESO_NOPREFIX) ] ; then \
+	  echo  >> $@ ; \
+	  echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  EXELIB := $$(LINKER_LIBPATHSWITCH)=@PROJECT_LIBDIR@ -L@PROJECT_LIBDIR@ -l$(*F) $$(filter-out $$(LINKER_LIBPATHSWITCH)=@PROJECT_LIBDIR@, $$(filter-out -L@PROJECT_LIBDIR@, $$(EXELIB)))' >> $@ ; \
+	fi
+   else
+	$(SHOWIT)if [ x$(*F) = x$(SINGLESO_NOPREFIX) ] ; then \
+	  echo  >> $@ ; \
+	  echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  EXELIB := -L@PROJECT_LIBDIR@ -l$(*F) $$(filter-out -L@PROJECT_LIBDIR@, $$(EXELIB))' >> $@ ; \
+	fi
+   endif
+  endif
  else
-	$(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  EXELIB := -L@PROJECT_LIBDIR@ -l$(*F) $$(filter-out -L@PROJECT_LIBDIR@, $$(EXELIB))' >> $@
+  ifeq ($(USE_LIBPATHSWITCH),Y)
+	$(SHOWIT)echo  >> $@ ; \
+	echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  EXELIB := $$(LINKER_LIBPATHSWITCH)=@PROJECT_LIBDIR@ -L@PROJECT_LIBDIR@ -l$(*F) $$(filter-out $$(LINKER_LIBPATHSWITCH)=@PROJECT_LIBDIR@, $$(filter-out -L@PROJECT_LIBDIR@, $$(EXELIB)))' >> $@
+  else
+	$(SHOWIT)echo  >> $@ ; \
+	echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  EXELIB := -L@PROJECT_LIBDIR@ -l$(*F) $$(filter-out -L@PROJECT_LIBDIR@, $$(EXELIB))' >> $@
+  endif
  endif
 	$(SHOWIT)echo  >> $@ ; \
 	echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  ifeq (,$$(strip $$(filter -I@PROJECT_INCDIR@, $$(INCLUDES))))' >> $@ ; \
@@ -1300,7 +1330,8 @@ ifdef TARG_DEFS
 	echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  endif' >> $@ ; \
 	cat $(LOCALTMP)/libdep/$(*F).def.mid >> $@ 
  ifdef MUSTLINK
-	$(SHOWIT)echo '$(REQUIRES_INDENT)  EXEML := $$(QMAKE_PROJECTS)/$(PROJECT_DIR)$(RAVL_BODGE)/MustLink/$(basename $(MUSTLINK))$(OBJEXT) $$(EXEML)' >> $@
+	$(SHOWIT)echo >> $@ ; \
+	echo '$(REQUIRES_INDENT)  EXEML := $$(QMAKE_PROJECTS)/$(PROJECT_DIR)$(RAVL_BODGE)/MustLink/$(basename $(MUSTLINK))$(OBJEXT) $$(EXEML)' >> $@
  endif
 	$(SHOWIT)cat $(LOCALTMP)/libdep/$(*F).def.tail >> $@ ; \
 	$(CHMOD) 444 $@
@@ -1397,7 +1428,6 @@ ifdef TARG_DEFS
 	echo >> $@
  endif
 	$(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  PLIBDEPENDS += $(PLIB)' >> $@ ; \
-	echo >> $@ ; \
 	$(CHMOD) 444 $@
 
 
@@ -1425,6 +1455,9 @@ ifdef TARG_DEFS
  ifdef USES_PKGCONFIG_EXELIB
 	$(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  EXELIB := $(USES_PKGCONFIG_EXELIB)  $$(EXELIB)' >> $@ ; \
 	echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  INCLUDES += $(USES_PKGCONFIG_INCLUDES) ' >> $@
+  ifneq (,$(EXTPACKAGE) $(SUMMARY_LIB))
+	$(SHOWIT)echo >> $@
+  endif
  endif	
  ifdef EXTPACKAGE
         $(SHOWIT)echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  INCLUDES := -I$$(INSTALLHOME)\include\$(PACKAGE) $$(INCLUDES) ' >> $@ ; \
@@ -1433,12 +1466,13 @@ ifdef TARG_DEFS
 	echo >> $@ ; \
         echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)    INCLUDES := -I$$(BASE_INC)\$(PACKAGE) $$(INCLUDES)' >> $@ ; \
 	echo >> $@ ; \
-        echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  endif' >> $@ ; \
-	echo >> $@
+        echo '$(REQUIRES_INDENT)$(SUMMARY_INDENT)  endif' >> $@
+  ifdef SUMMARY_LIB
+	$(SHOWIT)echo >> $@
+  endif
  endif
  ifdef SUMMARY_LIB
-	$(SHOWIT)echo '$(REQUIRES_INDENT)  endif' >> $@ ; \
-	echo >> $@
+	$(SHOWIT)echo '$(REQUIRES_INDENT)  endif' >> $@
  endif	
 	$(SHOWIT)$(CHMOD) 444 $@
 
