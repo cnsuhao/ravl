@@ -118,7 +118,7 @@ ifeq ($(SUPPORT_OK),yes)
     EXTRA_USESLIBS := $(REQUIRED_USESLIBS) $(OPTIONAL_USESLIBS)
     ifndef NOINCDEFS
      ifneq ($(strip $(REQUIRED_USESLIBS)),)
-      include $(REQUIRED_USESLIBS) Missing.jf
+      include $(REQUIRED_USESLIBS)
      endif
      OPTIONAL_USESLIBS_D=$(patsubst %.opt,%.def,$(OPTIONAL_USESLIBS))
      ifneq ($(strip $(OPTIONAL_USESLIBS_D)),)
@@ -1751,8 +1751,4 @@ info:
 
 $(PROJECT_OUT)/Config.Project:
 	@if [ X$(QMAKE_INFO) != X ]; then echo No Config.Project - Using default settings; fi
-
-
-Missing.jf:
-	@
 
