@@ -264,8 +264,8 @@ namespace RavlN {
     DirectoryC file;  
     for(DLIterC<StringC> it(list);it;it++) {
       ONDEBUG(cerr << "DirectoryC::SearchTree() Testing:" << it.Data() << "\n");
-      if(it->lastchar() != '/')
-      	file = (*this) + '/' + *it;
+      if(it->lastchar() != RavlN::filenameSeperator)
+      	file = (*this) + RavlN::filenameSeperator + *it;
       else
 	      file = (*this) + *it;
       if(file.IsDirectory()) {
@@ -299,13 +299,13 @@ namespace RavlN {
     HSetC<FilenameC> fileset;
     DListC<StringC> lst(List());
     for(DLIterC<StringC> it(lst);it.IsElm();it.Next()) {
-      FilenameC lookat((*this) + '/' + it.Data());
-      FilenameC target(othDir + '/' + it.Data());
+      FilenameC lookat((*this) + RavlN::filenameSeperator + it.Data());
+      FilenameC target(othDir + RavlN::filenameSeperator + it.Data());
       if(lookat.IsDirectory()) {
 	if(!rec) // Recursive copy ?
 	  continue; // Ignore sub-directories
 	DirectoryC sub(lookat);
-	if(!sub.Copy(othDir + '/' + it.Data(),rec,lazy,sync,verb))
+	if(!sub.Copy(othDir + RavlN::filenameSeperator + it.Data(),rec,lazy,sync,verb))
 	  ret = false;
 	continue;
       }
@@ -335,7 +335,7 @@ namespace RavlN {
     for(DLIterC<StringC> it2(tLst);it2.IsElm();it2.Next()) {
       if(fileset.IsMember(it2.Data()))
 	continue;
-      FilenameC target(othDir + '/' + it2.Data());
+      FilenameC target(othDir + RavlN::filenameSeperator + it2.Data());
       if(verb)
 	cerr <<"Deleting old file '" << target << "' \n";
       if(!target.Remove())
