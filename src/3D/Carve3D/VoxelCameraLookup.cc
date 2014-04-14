@@ -7,10 +7,9 @@
 //! lib=RavlCarve3D
 
 #include "Ravl/3D/VoxelCameraLookup.hh"
-#include "Ravl/DList.hh"
-#include "Ravl/DLIter.hh"
 #include "Ravl/SArray1dIter.hh"
 #include "Ravl/Array2dIter2.hh"
+#include "Ravl/Collection.hh"
 
 namespace Ravl3DN {
 #if RAVL_VISUALCPP_NAMESPACE_BUG
@@ -218,7 +217,7 @@ namespace Ravl3DN {
     RealT z = oVoxelStart[2] * scale;
 
     Array3dC<ByteT>& vox = voxel.Array();
-    DListC<ByteT*> oList;
+    CollectionC<ByteT*> oList(512);
 
     while (1)
     {
@@ -239,12 +238,8 @@ namespace Ravl3DN {
       z += dz;
     }
 
-    // Copy the list into the array
-    pixelLookup = SArray1dC<ByteT*>( oList.Size() );
-    DLIterC<ByteT*> itList(oList);
-    SArray1dIterC<ByteT*> itArray(pixelLookup);
-    for (;itList;itList++,itArray++)
-      *itArray = *itList;
+    // Finalise list.
+    pixelLookup = oList.Array();
   }
 
   void VoxelCameraLookupBodyC::Apply(const ImageC<ByteT>& image, ByteT mask)
