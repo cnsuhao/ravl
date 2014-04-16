@@ -7,11 +7,10 @@
 ///////////////////////////////////////////////////////////////////////
 //! userlevel=Normal
 //! author="Charles Galambos"
-//! rcsid="$Id$"
 //! lib=RavlOS
 //! file="Ravl/OS/FileSystem/Directory.cc"
 
-// This config stuff should be moved elsewhere.
+// This config stuff should be moved else where.
 
 #include "Ravl/config.h"
 #if RAVL_OS_MACOSX
@@ -59,31 +58,6 @@
 
 namespace RavlN {
 
-
-#if 0
-	wchar_t *atow(char *s, int *wscnt)
-	{
-	errno_t mbstowcs_s(
-		size_t *pConvertedChars,
-		wchar_t *wcstr,
-		size_t sizeInWords,
-		const char *mbstr,
-		size_t count 
-		);
-
-		wchar_t *ws;
-		int	wslen, wcnt;
-		wslen = strlen(s) + 1;
-        ws = (wchar_t*)malloc(sizeof(wchar_t) * wslen);
-		if ((wcnt = mbstowcs(ws, s, wslen)) == -1) {
-			//printf("mbstowcs convert error.\n");
-			free(ws);
-			return NULL;
-		}
-		return ws;
-	}
-#endif
-
   static inline bool ReturnInList(const char *nm) {
     if(nm[0] != '.')
       return true;
@@ -103,16 +77,62 @@ namespace RavlN {
     DListC<StringC> ret;
     WIN32_FIND_DATA dataFind;
     memset(&dataFind, 0, sizeof(WIN32_FIND_DATA));
-    StringC strSearch = StringC(chars()) + "/*";
 
+    StringC strSearch = StringC(chars()) + RavlN::filenameSeperator + '*';
+#if !RAVL_COMPILER_VISUALCPPNET_2005
     HANDLE hFindFile = FindFirstFile(strSearch.chars(), &dataFind);
-    BOOL bFoundNext = hFindFile != INVALID_HANDLE_VALUE ? true : false;
+    BOOL bFoundNext = hFindFile ? true : false;
     while (bFoundNext) {
       const char *name = dataFind.cFileName;
       if(name[0] != 0 && (name[0] != '.' || (name[1] != 0 && (name[1] != '.' || name[2] != 0))))
         ret.InsLast(StringC(name));
       bFoundNext = FindNextFile(hFindFile, &dataFind);
     }
+#else
+    //char wsbuff[1025];
+    size_t size = 0;
+    //mbstowcs_s(&size,wsbuff, 1024,strSearch.chars(), strSearch.length());
+
+#ifdef UNICODE
+
+    // CP_UTF8
+    int sz = MultiByteToWideChar(CP_ACP, 0, strSearch.chars(), -1, NULL, 0);
+    wchar_t* wbuf = new wchar_t[sz*sizeof(wchar_t)];
+    MultiByteToWideChar(CP_ACP, 0, strSearch.chars(), -1, wbuf, sz*sizeof(wchar_t));
+    HANDLE hFindFile = FindFirstFile(wbuf, &dataFind);
+    delete[] wbuf;
+
+    //HANDLE hFindFile = FindFirstFile((LPCWSTR)(strSearch.chars()), &dataFind);
+#else
+    HANDLE hFindFile = FindFirstFile(strSearch.chars(), &dataFind);
+#endif
+
+    BOOL bFoundNext = hFindFile ? true : false;
+    while (bFoundNext) {
+          mbstate_t state;
+          //char cbuff[1025];
+          size_t csize = 0;
+
+          char *wname, *buf = NULL;
+
+#ifdef UNICODE
+
+        // CP_UTF8
+        sz = WideCharToMultiByte(CP_ACP, 0, dataFind.cFileName, -1, NULL, 0, NULL, NULL);
+        buf = new char[sz];
+        WideCharToMultiByte(CP_ACP, 0, dataFind.cFileName, -1, buf, sz, NULL, NULL);
+        wname = buf;
+#else
+        wname = (char*)dataFind.cFileName;
+#endif
+
+          //wcsrtombs_s(&csize,cbuff,1024,(const char **) &wname,1024,&state);
+        ret.InsLast(StringC(wname));
+        if(buf != NULL) delete[] buf;
+        bFoundNext = FindNextFile(hFindFile, &dataFind);
+    }
+
+#endif
     return ret;
 #else
 #if RAVL_HAVE_UNIXDIRFUNCS
