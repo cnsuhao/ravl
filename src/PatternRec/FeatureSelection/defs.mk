@@ -25,6 +25,6 @@ LIBDEPS=RavlPatternRecFeatureSelection.def
 
 USESLIBS=RavlDataSet RavlPatternRec 
 
-PROGLIBS=RavlPatternRecIO RavlFace RavlGnuPlot.opt
+PROGLIBS=RavlPatternRecIO RavlGnuPlot.opt
 
 EHT=Ravl.API.Pattern_Recognition.Feature_Selection.html
