@@ -7,7 +7,7 @@
 
 #include "Ravl/3D/VoxelCarve.hh"
 
-//! lib=RavlCarve3D
+//! lib=Ravl3D
 
 namespace Ravl3DN
 {

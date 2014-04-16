@@ -6,7 +6,7 @@
 // file-header-ends-here
 #ifndef RAVL3D_VOXEL_CAMERA_LOOKUP_HH_
 #define RAVL3D_VOXEL_CAMERA_LOOKUP_HH_
-//! lib=RavlCarve3D
+//! lib=Ravl3D
 //! author="Joel Mitchelson"
 //! docentry="Ravl.3D.Carve3D"
 

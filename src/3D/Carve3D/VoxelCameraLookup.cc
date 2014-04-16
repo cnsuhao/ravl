@@ -4,7 +4,7 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-//! lib=RavlCarve3D
+//! lib=Ravl3D
 
 #include "Ravl/3D/VoxelCameraLookup.hh"
 #include "Ravl/SArray1dIter.hh"

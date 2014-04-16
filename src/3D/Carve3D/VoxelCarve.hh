@@ -8,7 +8,7 @@
 #define RAVL3D_VOXELCARVE_HEADER 1
 #include "Ravl/3D/VoxelCameraLookup.hh"
 //! rcsid="$Id$"
-//! lib=RavlCarve3D
+//! lib=Ravl3D
 //! author="Joel Mitchelson"
 //! docentry="Ravl.3D.Carve3D"
 
