@@ -5,7 +5,7 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 #ifndef RAVL_VOXEL_VOXELSKELETON_HEADER
-#define RAVL_VOXELL_VOXELSKELETON_HEADER 1
+#define RAVL_VOXEL_VOXELSKELETON_HEADER 1
 //! lib=RavlVoxels
 
 //
