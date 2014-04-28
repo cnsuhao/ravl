@@ -314,6 +314,7 @@ namespace RavlN {
     //! Called when owner handles drop to zero.
     void ReactorC::ZeroOwners() {
       m_terminate = true;
+      m_wakeup->Send(*m_wakeMsg);
       ServiceThreadC::ZeroOwners();
     }
 
