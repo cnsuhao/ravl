@@ -56,5 +56,27 @@ namespace RavlN {
       return m_onReadReady || m_onWriteReady;
     }
 
+
+    // -------------------------------------------------------------------
+
+    //! Default constructor
+    SocketDispatchSetC::SocketDispatchSetC()
+     : RavlN::CollectionC<SocketDispatcherC::RefT>(8)
+    {}
+
+    //! Destructors
+    SocketDispatchSetC::~SocketDispatchSetC()
+    {
+      DisconnectAll();
+    }
+
+    //! Disconnect all dispatchers.
+    void SocketDispatchSetC::DisconnectAll()
+    {
+      for(int i = 0;i < Size();i++)
+        (*this)[i]->Stop();
+      Empty();
+    }
+
   }
 }
