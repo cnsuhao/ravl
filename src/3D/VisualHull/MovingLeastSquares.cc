@@ -18,6 +18,59 @@
 
 namespace RavlN { namespace VisualHullN {
 
+  static Vector3dC PlaneNormal(const DListC<Vector3dC>& points, Vector3dC hint)
+  {
+    MatrixC M(3,3);
+    M.Fill(0.0);
+    UIntT count = 0;
+    Vector3dC cog(0,0,0);
+    DLIterC<Vector3dC> it(points);
+    for (; it; it++)
+    {
+       const Vector3dC& p = it.Data();
+       cog += p;
+       count++;
+       M[0][0] += p[0]*p[0];
+       M[0][1] += p[0]*p[1];
+       M[0][2] += p[0]*p[2];
+       M[1][0] += p[1]*p[0];
+       M[1][1] += p[1]*p[1];
+       M[1][2] += p[1]*p[2];
+       M[2][0] += p[2]*p[0];
+       M[2][1] += p[2]*p[1];
+       M[2][2] += p[2]*p[2];
+    }
+    if (count == 0)
+    {
+       return Vector3dC(0,0,0);
+    }
+    cog /= (RealT)count;
+    M /= (RealT)count;
+    // Remove the mean
+    M[0][0] -= cog[0]*cog[0];
+    M[0][1] -= cog[0]*cog[1];
+    M[0][2] -= cog[0]*cog[2];
+    M[1][0] -= cog[1]*cog[0];
+    M[1][1] -= cog[1]*cog[1];
+    M[1][2] -= cog[1]*cog[2];
+    M[2][0] -= cog[2]*cog[0];
+    M[2][1] -= cog[2]*cog[1];
+    M[2][2] -= cog[2]*cog[2];
+    // Find the axes
+    MatrixC U;
+    VectorC d = EigenVectors(M,U);
+    // Find the maximum eigenvalue
+    IntT min = (d[2]<d[1]) ? ( d[2]<d[0] ? 2 : 0 ) : ( d[1]<d[0] ? 1 : 0 );
+    // Set the normal along the principle eigenvector
+    Vector3dC n(U[0][min], U[1][min], U[2][min]);
+    // Set the orientation
+    if (hint.Dot(n) < 0.0)
+    {
+       n *= -1.0;
+    }
+    return n.Unit();
+  }
+
 
    // Extract the surface points from a voxel set
    // Returns the surface points as an array of vertices

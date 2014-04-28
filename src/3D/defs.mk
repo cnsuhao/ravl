@@ -7,6 +7,6 @@
 #! rcsid="$Id$"
 #! file="Ravl/3D/defs.mk"
 DONOT_SUPPORT= cygwin
-NESTED= Mesh.r MeshIO.r CameraCal.r Carve3D.r Voxels.r VisualHull 
+NESTED= Mesh.r MeshIO.r CameraCal.r Carve3D.r Voxels.r VisualHull.r
 
 EHT=Ravl.API.3D.html 

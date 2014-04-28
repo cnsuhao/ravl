@@ -258,7 +258,6 @@ namespace RavlN { namespace VoxelsN {
       for (; voxit; voxit++)
       {
          const Index3dC& vox = voxit.Index();
-         Index3dC vox2 = voxit.Index();
          Polygonize(vox, verts, faceIndices, currentVIndex, vlookup);
          // Check for boundaries on the voxel set
          Index3dC n1(vox.I()-1, vox.J(), vox.K());
