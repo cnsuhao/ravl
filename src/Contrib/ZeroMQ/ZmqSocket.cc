@@ -422,6 +422,8 @@ namespace RavlN {
       ArrayToMessage(zmsg,msg);
       int ret;
       int flags = 0;
+      if(block == ZSB_NOBLOCK)
+        flags = ZMQ_DONTWAIT;
 #if ZMQ_VERSION_MAJOR >= 3
       if((ret = zmq_sendmsg (m_socket, &zmsg, flags)) < 0)
 #else
