@@ -221,6 +221,12 @@ namespace RavlN {
 
   extern StrRepC  _nilStrRepC;
   
+  StringC     common_prefix(const StringC& x, const StringC& y,
+                                   int startpos = 0);
+
+  StringC     common_suffix(const StringC& x, const StringC& y,
+                                   int startpos = -1);
+
   ////////////////////////////////
   //! userlevel=Basic
   //: A text string.
@@ -635,11 +641,11 @@ namespace RavlN {
 #endif
     
     friend StringC     common_prefix(const StringC& x, const StringC& y, 
-				     int startpos = 0);
+				     int startpos);
     //: Find common prefix for x &amp; y
 
     friend StringC     common_suffix(const StringC& x, const StringC& y, 
-				     int startpos = -1);
+				     int startpos);
     //: Find common suffix for x &amp; y
 
     friend StringC     StrCreplicate(char c, int n);
