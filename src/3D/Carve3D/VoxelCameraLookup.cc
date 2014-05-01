@@ -9,6 +9,7 @@
 #include "Ravl/3D/VoxelCameraLookup.hh"
 #include "Ravl/SArray1dIter.hh"
 #include "Ravl/Array2dIter2.hh"
+#include "Ravl/Array3d.hh"
 #include "Ravl/Collection.hh"
 
 namespace Ravl3DN {
@@ -20,7 +21,7 @@ namespace Ravl3DN {
   VoxelCameraLookupBodyC::VoxelCameraLookupBodyC(const PinholeCamera0C& ncamera,
 						 UIntT image_rows,
 						 UIntT image_cols,
-						 const VoxelSetC &nvoxel) :
+						 const VoxelSetC<int> &nvoxel) :
     camera(ncamera),
     voxel(nvoxel),
     lookup(image_rows, image_cols)

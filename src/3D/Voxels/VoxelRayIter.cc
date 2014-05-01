@@ -5,7 +5,7 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 // Ravl includes
-#include "Ravl/3D/VoxelSet.hh"
+#include "Ravl/Voxels/VoxelSet.hh"
 //! lib=RavlVoxels
 
 #include "Ravl/Voxels/Ray3d.hh"

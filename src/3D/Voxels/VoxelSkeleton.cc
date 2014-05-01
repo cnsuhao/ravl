@@ -10,7 +10,7 @@
 #include "Ravl/Array3dIter2.hh"
 #include "Ravl/IndexRange3dIter.hh"
 #include "Ravl/RandomMersenneTwister.hh"
-#include "Ravl/3D/VoxelSet.hh"
+#include "Ravl/Voxels/VoxelSet.hh"
 //! lib=RavlVoxels
 
 // MVTGeom includes

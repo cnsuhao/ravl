@@ -16,6 +16,7 @@ namespace Ravl3DN
 {
   using namespace RavlN;
   using namespace RavlImageN;
+  using namespace RavlN::VoxelsN;
 
   //! userlevel = Develop
   //: Efficient multi-view voxel carving
@@ -26,7 +27,7 @@ namespace Ravl3DN
     VoxelCarveBodyC(SArray1dC<PinholeCamera0C> camera,
 		    UIntT image_rows,
 		    UIntT image_cols,
-		    VoxelSetC nvoxel)
+		    VoxelSetC<int> nvoxel)
     {
       // FIXME: have lots more lookups for multi-threads
  
@@ -61,7 +62,7 @@ namespace Ravl3DN
     const PinholeCamera0C& Camera(UIntT iview) const { return lookup[iview].Camera(); }
 
   protected:
-    VoxelSetC voxel;
+    VoxelSetC<int> voxel;
     SArray1dC< VoxelCameraLookupC > lookup;
   };
 
@@ -82,7 +83,7 @@ namespace Ravl3DN
     VoxelCarveC(SArray1dC<PinholeCamera0C> camera,
 		    UIntT image_rows,
 		    UIntT image_cols,
-		    VoxelSetC voxel)
+		    VoxelSetC<int> voxel)
       : RCHandleC<VoxelCarveBodyC>(*new VoxelCarveBodyC(camera,
 							image_rows,
 							image_cols,

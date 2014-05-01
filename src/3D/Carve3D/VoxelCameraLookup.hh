@@ -11,14 +11,16 @@
 //! docentry="Ravl.3D.Carve3D"
 
 #include "Ravl/3D/PinholeCamera0.hh"
-#include "Ravl/3D/VoxelSet.hh"
+#include "Ravl/Voxels/VoxelSet.hh"
 #include "Ravl/Image/Image.hh"
+#error This class is obsolete.  If you want its functionality, please contact Ravl developers
 
 namespace Ravl3DN
 {
   using namespace RavlN;
   using namespace RavlImageN;
-  
+  using namespace RavlN::VoxelsN;
+
   //! userlevel=Develop
   //:Lookup for fast mapping from image pixels to voxels
 
@@ -28,7 +30,7 @@ namespace Ravl3DN
     VoxelCameraLookupBodyC(const PinholeCamera0C& ncamera,
 			   UIntT image_rows,
 			   UIntT image_cols,
-			   const VoxelSetC &nvoxel);
+			   const VoxelSetC<int> &nvoxel);
     
   public:
     const PinholeCamera0C& Camera() const { return camera; }
@@ -45,7 +47,7 @@ namespace Ravl3DN
 
   protected:
     const PinholeCamera0C camera;
-    VoxelSetC voxel;
+    VoxelSetC<int> voxel;
     Array2dC< SArray1dC<ByteT*> > lookup;
   };
 
@@ -63,7 +65,7 @@ namespace Ravl3DN
     VoxelCameraLookupC(const PinholeCamera0C& camera,
 		       UIntT image_rows,
 		       UIntT image_cols,
-		       const VoxelSetC &voxel) :
+		       const VoxelSetC<int> &voxel) :
       RCHandleC<VoxelCameraLookupBodyC>(*new VoxelCameraLookupBodyC(camera,
 								    image_rows,
 								    image_cols,

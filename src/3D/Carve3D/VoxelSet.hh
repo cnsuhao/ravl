@@ -127,6 +127,7 @@ namespace Ravl3DN
   // Voxel subsets created with ContiguousPortion(...) have the same world 
   // to voxel set transformation but different ranges of indices
   class VoxelSetC : public RCHandleC<VoxelSetBodyC>
+#error This version of VoxelSetC is obsolete.  Use VoxelsN::VoxelSetC<int> from Ravl/Voxels/VoxelSet.hh instead.
   {
   public:
     VoxelSetC()
