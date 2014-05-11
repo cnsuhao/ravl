@@ -103,7 +103,7 @@ namespace RavlN {
   }
   
   //: Write data to file descriptor.
-  // Returns the number of charactors read, or -1 on error.
+  // Returns the number of characters read, or -1 on error.
   
   IntT FileStreamC::Write(const void *data,IntT length) { 
 #if RAVL_HAVE_INTFILEDESCRIPTORS     
