@@ -13,9 +13,11 @@
 //! userlevel=Develop
 
 #include "Ravl/OS/Date.hh"
+#include "Ravl/OS/DateTZ.hh"
 #include "Ravl/String.hh"
 #include "Ravl/Stream.hh"
-//#include <stdlib.h>
+#include "Ravl/UnitTest.hh"
+#include "Ravl/SysLog.hh"
 
 using namespace RavlN;
 
@@ -26,42 +28,22 @@ int CheckLocalTime();
 int CheckODBC();
 int CheckTime();
 int CheckTimeMath();
+int CheckDateTZ();
 
 
 int main() 
 {
-  int lineno;
   cerr << "Starting DateC tests... \n";
-  if((lineno = CheckTimeMath()) != 0) {
-    cerr << "CheckTime(), Failed :" << lineno << "\n";
-    return 1;
-  }
-#if 1
-  if((lineno = CheckConsistant()) != 0) {
-    cerr << "CheckConsistant(), Failed :" << lineno << "\n";
-    return 1;
-  }
-  if((lineno = CheckIO()) != 0) {
-    cerr << "CheckIO(), Failed :" << lineno << "\n";
-    return 1;
-  }
-  if((lineno = CheckSleep()) != 0) {
-    cerr << "CheckSleep(), Failed :" << lineno << "\n";
-    return 1;
-  }
-  if((lineno = CheckLocalTime()) != 0) {
-    cerr << "CheckLocalTime(), Failed :" << lineno << "\n";
-    return 1;
-  }
-  if((lineno = CheckODBC()) != 0) {
-    cerr << "CheckODBC(), Failed :" << lineno << "\n";
-    return 1;
-  }
-  if((lineno = CheckTime()) != 0) {
-    cerr << "CheckTime(), Failed :" << lineno << "\n";
-    return 1;
-  }
+#if 0
+  RAVL_RUN_TEST(CheckTimeMath());
+  RAVL_RUN_TEST(CheckConsistant());
+  RAVL_RUN_TEST(CheckIO());
+  RAVL_RUN_TEST(CheckSleep());
+  RAVL_RUN_TEST(CheckLocalTime());
+  RAVL_RUN_TEST(CheckODBC());
+  RAVL_RUN_TEST(CheckTime());
 #endif
+  RAVL_RUN_TEST(CheckDateTZ());
   cerr << "Test passed.\n";
   return 0;
 }
@@ -230,3 +212,20 @@ int CheckTimeMath() {
 
   return 0;
 }
+
+int CheckDateTZ()
+{
+  // Should do more testing...
+
+  DateTZC theDateTZ = DateTZC::Now();
+
+  StringC ds = theDateTZ.ISO8601();
+  //RavlDebug("Current time:%s ",ds.c_str());
+  //RavlDebug("Current time ODBC:%s ",theDateTZ.LocalTime().ODBC(false,true).c_str());
+  DateTZC dateRestored = DateTZC::FromISO8601String(ds);
+  //RavlDebug("Restored time:%s ",dateRestored.ISO8601().c_str());
+  RAVL_TEST_EQUALS(ds,dateRestored.ISO8601());
+
+  return 0;
+}
+
