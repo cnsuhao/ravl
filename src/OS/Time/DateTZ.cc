@@ -110,6 +110,15 @@ namespace RavlN {
   DateTZC DateTZC::Now()
   { return DateTZC(DateC::NowLocal(),DateC::TimeZoneOffset().TotalSeconds()); }
 
+  //: Time in UTC.
+
+  RavlN::DateC DateTZC::UTC() const
+  {
+    RavlN::DateC ret = m_localTime;
+    ret += m_timeZoneOffsetMinutes * 60.0;
+    return ret;
+  }
+
   //: Generate date from ISO8601 string.
   // Note this may not support all variants, if the string fails to parse and exception will be thrown.
   DateTZC DateTZC::FromISO8601String(const StringC &dataString)
@@ -249,6 +258,30 @@ namespace RavlN {
       buf.form("%04u-%02u-%02uT%02u:%02u:%02u%c%2%f:%20u",b.tm_year + 1900,b.tm_mon+1,b.tm_mday,b.tm_hour,b.tm_min,sec,signChar,tzHour,tzMin);
     }
     return buf;
+  }
+
+  const DateTZC &DateTZC::operator-=(const DateTZC &val)
+  {
+    m_localTime -= val.UTC();
+    return *this;
+  }
+
+  const DateTZC &DateTZC::operator+=(const DateTZC &val)
+  {
+    m_localTime += val.UTC();
+    return *this;
+  }
+
+  const DateTZC &DateTZC::operator-=(const DateC &val)
+  {
+    m_localTime -= val;
+    return *this;
+  }
+
+  const DateTZC &DateTZC::operator+=(const DateC &val)
+  {
+    m_localTime += val;
+    return *this;
   }
 
 

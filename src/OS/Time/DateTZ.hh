@@ -55,11 +55,26 @@ namespace RavlN {
     static DateTZC Now();
     //: Get the time now
 
+    RavlN::DateC UTC() const;
+    //: Time in UTC.
+
+    double Double() const
+    { return UTC().Double(); }
+    //: Access as number of seconds since epoc.
+
+    operator RavlN::DateC () const
+    { return UTC(); }
+    //: Convert to a plain time in UTC.
+
     StringC ISO8601() const;
     //: Format as ISO8601 string
 
     //! Access local time
     const DateC &LocalTime() const
+    { return m_localTime; }
+
+    //! Access local time
+    DateC &LocalTime()
     { return m_localTime; }
 
     //! Set local time
@@ -74,9 +89,20 @@ namespace RavlN {
     void SetTimeZoneOffsetMinutes(int min)
     { m_timeZoneOffsetMinutes = min; }
 
+    const DateTZC &operator-=(const DateTZC &val);
+    //: Subtract a time.
+
+    const DateTZC &operator+=(const DateTZC &val);
+    //: Add a time.
+
+    const DateTZC &operator-=(const DateC &val);
+    //: Subtract a time.
+
+    const DateTZC &operator+=(const DateC &val);
+    //: Add a time.
 
     size_t Hash() const
-    { return m_localTime.Hash() + m_timeZoneOffsetMinutes * 17; }
+    { return UTC().Hash(); }
     //: Generate a hash value.
 
   private:
@@ -95,6 +121,38 @@ namespace RavlN {
 
   BinIStreamC &operator >>(BinIStreamC &in,DateTZC &date);
   //: Stream operator.
+
+  inline bool operator==(const RavlN::DateTZC &time1,const RavlN::DateTZC &time2)
+  { return time1.UTC() == time2.UTC(); }
+  //: Compare times as if they were both in UTC()
+
+  inline bool operator!=(const RavlN::DateTZC &time1,const RavlN::DateTZC &time2)
+  { return time1.UTC() != time2.UTC(); }
+  //: Compare times as if they were both in UTC()
+
+  inline bool operator>(const DateTZC &oth1,const DateTZC &oth2)
+  { return oth1.UTC() > oth2.UTC(); }
+  //: Compare times as if they were both in UTC()
+
+  inline bool operator<(const DateTZC &oth1,const DateTZC &oth2)
+  { return oth1.UTC() < oth2.UTC(); }
+  //: Compare times as if they were both in UTC()
+
+  inline bool operator>=(const DateTZC &oth1,const DateTZC &oth2)
+  { return oth1.UTC() >= oth2.UTC(); }
+  //: Compare times as if they were both in UTC()
+
+  inline bool operator<=(const DateTZC &oth1,const DateTZC &oth2)
+  { return oth1.UTC() <= oth2.UTC(); }
+  //: Compare times as if they were both in UTC()
+
+  inline DateTZC operator+(const DateTZC &oth1,const DateTZC &oth2)
+  { return DateTZC(oth1.LocalTime() + oth2.UTC(),oth1.TimeZoneOffsetMinutes()); }
+  //: Compare times as if they were both in UTC()
+
+  inline DateTZC operator-(const DateTZC &oth1,const DateTZC &oth2)
+  { return DateTZC(oth1.LocalTime() - oth2.UTC(),oth1.TimeZoneOffsetMinutes()); }
+  //: Compare times as if they were both in UTC()
 
 }
 
