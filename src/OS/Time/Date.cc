@@ -413,11 +413,11 @@ namespace RavlN {
         throw ExceptionOperationFailedC("Parse error in date.");
       }
       work = work.from(1);
-    }
-    elems = sscanf(work.data(),"%2u:%2u:%2u",&hour,&min,&sec);
-    if(elems != 3) {
-      RavlDebug("Failed to parse time from: '%s' ",work.data());
-      throw ExceptionOperationFailedC("Parse error in time.");
+      elems = sscanf(work.data(),"%2u:%2u:%2u",&hour,&min,&sec);
+      if(elems != 3) {
+        RavlDebug("Failed to parse time from: '%s' ",work.data());
+        throw ExceptionOperationFailedC("Parse error in time.");
+      }
     }
     return DateC(year,month,day,hour,min,sec);
   }
