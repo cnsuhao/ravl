@@ -167,12 +167,19 @@ namespace RavlN {
     UIntT v;
   };
 
-  inline int operator-(int v1,UIntC v2) {
-    return v1 - (int) v2;
-  }
+  inline int operator-(int v1,UIntC v2)
+  { return v1 - (int) v2; }
   //: Subtraction.
   // This is included to avoid some confusing type casts which can
   // lead to odd results.
+
+  inline UIntC operator-(UIntC v1,UIntC v2)
+  { return v1.v - v2.v; }
+  //: Subtraction.
+
+  inline UIntC operator-(UIntC v1,int v2)
+  { return v1.v - v2; }
+  //: Subtraction.
 
   std::ostream &operator<<(std::ostream &out,const UIntC &x);
   std::istream &operator>>(std::istream &in,UIntC &x);
