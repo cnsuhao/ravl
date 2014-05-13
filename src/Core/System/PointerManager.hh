@@ -19,6 +19,7 @@
 #include "Ravl/RCHandleV.hh"
 #include "Ravl/SmartPtr.hh"
 #include "Ravl/TypeName.hh"
+#include <vector>
 
 namespace RavlN {
   
@@ -567,6 +568,23 @@ namespace RavlN {
     return strm;
   }
 
+  template<class DataT>
+  BinOStreamC &WriteStdVectorIOPtr(BinOStreamC &strm,const std::vector<DataT> &arr) {
+    strm << arr.size();
+    for(unsigned i = 0;i < arr.size();i++)
+      strm << ObjIO(arr[i]);
+    return strm;
+  }
+
+  template<class DataT>
+  BinIStreamC &ReadStdVectorIOPtr(BinIStreamC &strm,std::vector<DataT> &arr) {
+    SizeC size;
+    strm >> size;
+    arr.resize(size.V());
+    for(unsigned i = 0;i < size;i++)
+      strm >> ObjIO(arr[i]);
+    return strm;
+  }
   
 }
 #endif
