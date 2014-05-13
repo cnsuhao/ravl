@@ -1,13 +1,12 @@
 // This file is part of RAVL, Recognition And Vision Library 
-// Copyright (C) 2008, University of Surrey
+// Copyright (C) 2008-14, University of Surrey
 // This code may be redistributed under the terms of the GNU Lesser
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-#ifndef RAVL_BYTEYCBCR422BT601VALUE_HEADER
-#define RAVL_BYTEYCBCR422BT601VALUE_HEADER 1
+#ifndef RAVL_UINT16YCBCR422BT601VALUE_HEADER
+#define RAVL_UINT16YCBCR422BT601VALUE_HEADER 1
 /////////////////////////////////////////////////////
-//! rcsid="$Id: ByteYUV422Value.hh 5240 2005-12-06 17:16:50Z plugger $"
 //! lib=RavlImage
 //! userlevel=Normal
 //! author="Charles Galambos"
