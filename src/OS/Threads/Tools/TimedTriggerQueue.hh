@@ -158,21 +158,21 @@ namespace RavlN
     //: Schedule event for running after time 't' (in seconds).
     // Thread safe.
     // Returns an ID for the event, which can
-    // be used for cancelling it.
+    // be used for cancelling it.  The returned ID never has the value 0, so it may be used to flag not set.
     
     UIntT Schedule(const DateC &at,const TriggerC &se,float period = -1)
     { return Body().Schedule(at,se,period); }
     //: Schedule event for running.
     // Thread safe.
     // Returns an ID for the event, which can
-    // be used for cancelling it.
+    // be used for cancelling it.  The returned ID never has the value 0, so it may be used to flag not set.
     
     UIntT SchedulePeriodic(const TriggerC &se,float period)
     { return Body().SchedulePeriodic(se,period); }
     //: Schedule event for running periodically.
     // Thread safe.
     // Returns an ID for the event, which can
-    // be used for cancelling it.
+    // be used for cancelling it.  The returned ID never has the value 0, so it may be used to flag not set.
 
     bool Cancel(UIntT eventID)
     { return Body().Cancel(eventID); }
