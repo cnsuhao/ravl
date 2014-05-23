@@ -177,14 +177,14 @@ namespace RavlN {
           timeToNext = m_teminateCheckInterval;
         long timeout = -1;
         if(m_teminateCheckInterval >= 0)
-          timeout = timeToNext * 1000000.0;
+          timeout = Round(timeToNext * 1000.0);
 
         if(m_verbose) {
-          RavlDebug("Reactor '%s' polling for %u sockets.",Name().data(),(unsigned) pollArr.size());
+          RavlDebug("Reactor '%s' polling for %u sockets. (Timeout:%u, %f seconds )",Name().data(),(unsigned) pollArr.size(),timeout,timeToNext);
         }
         int ret = zmq_poll (first, pollArr.size(),timeout);
         if(m_verbose) {
-          RavlDebug("Reactor '%s' got ready for %d sockets. (Timeout:%u) ",Name().data(),ret,timeout);
+          RavlDebug("Reactor '%s' got ready for %d sockets. (Timeout:%u, %f seconds ) ",Name().data(),ret,timeout,timeToNext);
         }
         if(ret < 0) {
           int anErrno = zmq_errno ();
