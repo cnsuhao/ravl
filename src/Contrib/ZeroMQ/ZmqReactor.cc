@@ -301,6 +301,14 @@ namespace RavlN {
       return ret;
     }
 
+    //! Change period of event.
+    // Returns true if event is found and has been updated.
+    // This will take effect after the event is next run.
+    bool ReactorC::ChangePeriod(UIntT eventId, float period)
+    {
+      return m_timedQueue.ChangePeriod(eventId,period);
+    }
+
     //! Cancel pending event.
     // Will return TRUE if event in cancelled before
     // it was run.

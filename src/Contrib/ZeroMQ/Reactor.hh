@@ -82,6 +82,11 @@ namespace RavlN {
       // be used for cancelling it. The returned ID never has the value 0, so it may be used to flag not set.
       UIntT SchedulePeriodic(const TriggerC &se,float period);
 
+      //! Change period of event.
+      // Returns true if event is found and has been updated.
+      // This will take effect after the event is next run.
+      bool ChangePeriod(UIntT eventId, float period);
+
       //! Cancel pending event.
       // Will return TRUE if event in cancelled before
       // it was run.

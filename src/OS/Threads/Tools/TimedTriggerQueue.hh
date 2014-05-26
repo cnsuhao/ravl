@@ -72,6 +72,11 @@ namespace RavlN
     // Will return TRUE if event in cancelled before
     // it was run.
 
+    bool ChangePeriod(UIntT eventId, float period);
+    //: Change period of event.
+    // Returns true if event is found and has been updated.
+    // This will take effect after the event is next run.
+
     virtual bool Shutdown();
     //: Shutdown even queue.
     
@@ -192,6 +197,12 @@ namespace RavlN
     // if any new work is scheduled. Start should not be called
     // This will always return a positive time unless there are no events pending,
     // when it returns -1.
+
+    bool ChangePeriod(UIntT eventId, float period)
+    { return Body().ChangePeriod(eventId,period); }
+    //: Change period of event.
+    // Returns true if event is found and has been updated.
+    // This will take effect after the event is next run.
 
     friend class TimedTriggerQueueBodyC;
   };
