@@ -95,6 +95,7 @@ namespace RavlN {
     //! Add a read trigger
     SocketDispatcherC::RefT ReactorC::CallOnRead(const SocketC &socket,const TriggerC &trigger)
     {
+      RavlAssert(&socket != 0);
       SocketDispatcherC::RefT ret = new SocketDispatchTriggerC(socket,true,false,trigger);
       Add(*ret);
       return ret;
@@ -103,6 +104,7 @@ namespace RavlN {
     //! Add a write trigger
     SocketDispatcherC::RefT ReactorC::CallOnWrite(const SocketC &socket,const TriggerC &trigger)
     {
+      RavlAssert(&socket != 0);
       SocketDispatcherC::RefT ret = new SocketDispatchTriggerC(socket,false,true,trigger);
       Add(*ret);
       return ret;
