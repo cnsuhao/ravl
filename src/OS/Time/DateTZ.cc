@@ -123,8 +123,6 @@ namespace RavlN {
   // Note this may not support all variants, if the string fails to parse and exception will be thrown.
   DateTZC DateTZC::FromISO8601String(const StringC &dataString)
   {
-    const StringC &work = dataString;
-    int at = 0;
     UIntT year = 0;
     UIntT month = 1;
     UIntT day = 1;
@@ -134,75 +132,20 @@ namespace RavlN {
     UIntT usec = 0;
     IntT tzOffset = 0;
 
-    //2012-01-30 10:00Z
-    //2012-01-30T10:00Z
-    //2012-01-30T10:00:00Z
+    if(!DateC::DecomposeISO8601String(dataString,
+                               year,
+                               month,
+                               day,
+                               hour,
+                               min,
+                               sec,
+                               usec,
+                               tzOffset)) {
 
-    int elems = sscanf(&work[at],"%4u-%2u-%2u",&year,&month,&day);
-    if(elems != 3) {
-      RavlDebug("Failed to parse date from: '%s' ",work.data());
+      RavlDebug("Failed to parse date: '%s' ",dataString.data());
       throw ExceptionOperationFailedC("Parse error in date.");
     }
-    if(work.Size() <= 10) {
-      // No timezone, so must be local time.
-      tzOffset = DateC::TimeZoneOffset().TotalSeconds();
-      return DateTZC(year,month,day,hour,min,sec,0,tzOffset);
-    }
-    at += 10;
-    if(work[at] != ' ' && work[at] != 'T') {
-      RavlError("Invalid time %s ",work.c_str());
-      throw ExceptionOperationFailedC("Parse error in date.");
-    }
-    at++;
 
-    //RavlDebug("Scanning time:%s ",work.c_str());
-    double secf;
-    elems = sscanf(&work[at],"%2u:%2u:%lf",&hour,&min,&secf);
-    if(elems != 3) {
-      RavlDebug("Failed to parse time from: '%s' ",work.data());
-      throw ExceptionOperationFailedC("Parse error in time.");
-    }
-    sec = secf;
-    usec = RavlN::Round((secf - floor(secf)) * 1000000.0);
-    at += 8;
-    if(work[at] == '.') {
-      at++;
-      // Fractional seconds ?
-      for(;at < work.Size();at++) {
-        if(!isdigit(work[at]))
-          break;
-      }
-    }
-
-    if(work[at] == 0) {
-      // No timezone, so must be local time.
-      tzOffset = DateC::TimeZoneOffset().TotalSeconds();
-      return DateTZC(year,month,day,hour,min,sec,usec,tzOffset);
-    }
-
-    if(work[at] == 'Z') {
-      // UTZ timezone
-      return DateTZC(year,month,day,hour,min,sec,usec);
-    }
-    if(work[at] != '+' && work[at] != '-') {
-      RavlError("Invalid timezone %s ",work.c_str());
-      throw ExceptionOperationFailedC("Invalid timezone");
-    }
-    bool isNeg = work[at] == '-';
-    at++;
-
-    int tzHours = 0;
-    int tzMinutes = 0;
-    elems = sscanf(&work[at],"%2u",&tzHours);
-    if(work.Size()-at > 2) {
-      at += 2;
-      if(work[3]==':')
-        at++;
-      elems = sscanf(&work[at],"%2u",&tzMinutes);
-    }
-
-    tzOffset = tzHours * 60 + tzMinutes;
-    if(isNeg) tzOffset *= -1;
     return DateTZC(year,month,day,hour,min,sec,usec,tzOffset);
   }
 
