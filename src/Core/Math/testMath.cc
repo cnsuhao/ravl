@@ -51,6 +51,50 @@ int testSimple() {
   if(Abs(cuberoot - 2.0) > 1e-6) return __LINE__;
   cuberoot = Cbrt(-8); // Cbrt should handle negative numbers.
   if(Abs(cuberoot + 2.0) > 1e-6) return __LINE__;
+
+  // Check nan's
+  {
+    float val = RavlConstN::nanFloat;
+    if(!RavlN::IsNan(val)) return __LINE__;
+    val = 1;
+    if(RavlN::IsNan(val)) return __LINE__;
+  }
+  {
+    double val = RavlConstN::nanReal;
+    if(!RavlN::IsNan(val)) return __LINE__;
+    val = 1;
+    if(RavlN::IsNan(val)) return __LINE__;
+  }
+  {
+    float val = RavlConstN::infFloat;
+    if(!RavlN::IsInf(val)) return __LINE__;
+    if(!RavlN::IsPInf(val)) return __LINE__;
+    if(RavlN::IsNInf(val)) return __LINE__;
+    val = 1;
+    if(RavlN::IsInf(val)) return __LINE__;
+    //if(!RavlN::IsPInf(val)) return __LINE__;
+    //if(!RavlN::IsNInf(val)) return __LINE__;
+    val = -RavlConstN::infFloat;
+    //if(RavlN::IsInf(val)) return __LINE__;
+    if(RavlN::IsPInf(val)) return __LINE__;
+    if(!RavlN::IsNInf(val)) return __LINE__;
+  }
+  {
+    double val = RavlConstN::infReal;
+    if(!RavlN::IsInf(val)) return __LINE__;
+    if(!RavlN::IsPInf(val)) return __LINE__;
+    if(RavlN::IsNInf(val)) return __LINE__;
+    val = 1;
+    if(RavlN::IsInf(val)) return __LINE__;
+    //if(!RavlN::IsPInf(val)) return __LINE__;
+    //if(!RavlN::IsNInf(val)) return __LINE__;
+    val = -RavlConstN::infReal;
+    //if(RavlN::IsInf(val)) return __LINE__;
+    if(RavlN::IsPInf(val)) return __LINE__;
+    if(!RavlN::IsNInf(val)) return __LINE__;
+  }
+
+
   return 0;
 }
 

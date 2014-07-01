@@ -10,6 +10,7 @@
 #include "Ravl/SArray1d.hh"
 #include "Ravl/Array2d.hh"
 #include "Ravl/OS/Date.hh"
+#include <stdio.h>
 
 int testConvolveKernelSpeed();
 

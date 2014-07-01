@@ -371,21 +371,23 @@ namespace RavlBaseVectorN {
     
   }
   
-  static void SSEMatrixMulVectorF(const float *matrix, 
-                                  const float *vec, // Must be 'col' entries
+  static void SSEMatrixMulVectorF(const float *matrixA,
+                                  const float *vecA, // Must be 'col' entries
                                   UIntT rows,
                                   UIntT cols,         
                                   IntT stride,        // Stride of matrix, number of elements in a row
                                   float *result       // Must have 'rows' entries
                                   ) 
   {
+    const float *__restrict__ matrix = matrixA;
+    const float *__restrict__ vec = vecA;
     if(rows == 1) {
       *result = SSEDotProductF(matrix,vec,cols);
       return ;
     }
     //std::cerr << "cols=" << cols << " Rows=" << rows << " Stride=" << stride <<"\n";
     if(cols < 8) { // || !(Is16ByteAligned(matrix) && Is16ByteAligned(vec) && ((stride % 4) == 0))
-      const float *rowStart = matrix;
+      const float * __restrict__  rowStart = matrix;
       for(unsigned int i = 0;i < rows;i++,rowStart += stride) {
         register float accum = rowStart[0]*vec[0];
         for(unsigned int j = 1;j < cols;j++)
@@ -394,8 +396,8 @@ namespace RavlBaseVectorN {
       }
       return ;      
     }
-    float *resultAt = result;
-    const float *rowStart = matrix;
+    float * __restrict__ resultAt = result;
+    const float *__restrict__ rowStart = matrix;
     
     if(Is16ByteAligned(matrix) && Is16ByteAligned(vec) && ((stride % 4) == 0)) {
       // Everything is aligned
@@ -403,8 +405,8 @@ namespace RavlBaseVectorN {
       //std::cerr << " A fastCols=" << fastCols << " Rem=" << (cols % 4)  <<"\n";
       if((cols % 4) == 0) {
         for(unsigned int i = 0;i < rows;i++,rowStart += stride) {
-          register const float *rowAt = rowStart;
-          register const float *vecAt = vec;
+          register const float * __restrict__ rowAt = rowStart;
+          register const float * __restrict__ vecAt = vec;
           register __m128 accum =  _mm_mul_ps(_mm_load_ps(rowAt),_mm_load_ps(vecAt));
           for(unsigned int j = 4;j < cols;j += 4) {
             rowAt += 4;
@@ -417,8 +419,8 @@ namespace RavlBaseVectorN {
         }
       } else {
         for(unsigned int i = 0;i < rows;i++,rowStart += stride) {
-          register const float *rowAt = rowStart;
-          register const float *vecAt = vec;
+          register const float * __restrict__ rowAt = rowStart;
+          register const float * __restrict__ vecAt = vec;
           register __m128 accum =  _mm_mul_ps(_mm_load_ps(rowAt),_mm_load_ps(vecAt));
           unsigned int j;
           for(j = 4;j < fastCols;j += 4) {
@@ -444,8 +446,8 @@ namespace RavlBaseVectorN {
         //std::cerr << " B fastCols=" << fastCols << " cols=" << cols << " Rem=" << (cols % 4)  <<"\n";
         // Unaligned with no extra columns
         for(unsigned int i = 0;i < rows;i++,rowStart += stride) {
-          register const float *rowAt = rowStart;
-          register const float *vecAt = vec;
+          register const float * __restrict__  rowAt = rowStart;
+          register const float * __restrict__ vecAt = vec;
           register __m128 accum =  _mm_mul_ps(_mm_loadu_ps(rowAt),_mm_loadu_ps(vecAt));
           unsigned int j;
           for(j = 4;j < cols;j += 4) {
@@ -462,8 +464,8 @@ namespace RavlBaseVectorN {
         // Unaligned with extra columns
         UIntT fastCols = (cols & ~0x3);
         for(unsigned int i = 0;i < rows;i++,rowStart += stride) {
-          register const float *rowAt = rowStart;
-          register const float *vecAt = vec;
+          register const float * __restrict__  rowAt = rowStart;
+          register const float * __restrict__  vecAt = vec;
           register __m128 accum =  _mm_mul_ps(_mm_loadu_ps(rowAt),_mm_loadu_ps(vecAt));
           unsigned int j;
           for(j = 4;j < fastCols;j += 4) {
