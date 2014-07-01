@@ -655,7 +655,7 @@ namespace RavlN {
 #endif
     StringC buf;
 
-    double sec = (double) b.tm_sec + (USeconds() / 1000000.0f);
+    double sec = (double) b.tm_sec + ((double)USeconds() / 1000000.0);
     if(asUTC) {
       if(b.tm_sec < 10) {
         buf.form("%04u-%02u-%02uT%02u:%02u:0%1fZ",b.tm_year + 1900,b.tm_mon+1,b.tm_mday,b.tm_hour,b.tm_min,sec);
