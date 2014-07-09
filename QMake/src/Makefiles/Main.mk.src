@@ -1229,7 +1229,7 @@ ifdef TARG_DEFS
  # seperated by two seperate sections that vary between the installed or local
  # version of the .def file. We build three files (with .top, .mid and .tail
  # suffixes) for the common parts and assemble the two .def files from these
- # two files and the particular lines specifying the library and any MUSTLINK
+ # three files and the particular lines specifying the library and any MUSTLINK
  # object. In addition, the .def file for installation must be modified on
  # install (to allow specification of where the project libraries are being
  # installed). To achieve this, we create a .def.in file here and process it
