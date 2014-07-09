@@ -54,7 +54,16 @@ namespace RavlImageN
       it.Data1() = RealRGBValueC(it.Data2().Red(),it.Data2().Green(),it.Data2().Blue());
     return ret;
   }
+
+  // Real RGBA to Real RGB
   
+  ImageC<RealRGBValueC> RealRGBArray2dCT2RealRGBImageCT(const Array2dC<RealRGBValueC> &dat) {
+    ImageC<RealRGBValueC> ret(dat.Rectangle());
+    for(Array2dIter2C<RealRGBValueC,RealRGBValueC> it(ret,dat);it.IsElm();it.Next())
+      it.Data1() = RealRGBValueC(it.Data2().Red(),it.Data2().Green(),it.Data2().Blue());
+    return ret;
+  }
+
   // Real RGB to Real RGBA 
   
   ImageC<RealRGBAValueC> RealRGBImageCT2RealRGBAImageCT(const ImageC<RealRGBValueC> &dat) {
@@ -77,6 +86,10 @@ namespace RavlImageN
   DP_REGISTER_CONVERSION_FT_NAMED(ImageC<RealRGBValueC>,ImageC<RealRGBAValueC>,RealRGBImageCT2RealRGBAImageCT,1,
 				  "ImageC<RealRGBAValueC> RavlImageN::Convert(const ImageC<RealRGBValueC> &)");
   
+  DP_REGISTER_CONVERSION_FT_NAMED(Array2dC<RealRGBValueC>,ImageC<RealRGBValueC>,RealRGBArray2dCT2RealRGBImageCT,1,
+                                  "ImageC<RealRGBValueC> RavlImageN::Convert(const Array2dC<RealRGBValueC> &)");
+
+
   //////////////////////////////////////////////////////////////////////////////////////////
   
   // Byte colour to real colour image.

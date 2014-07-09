@@ -28,9 +28,9 @@ namespace RavlN {
    */
   bool Plot2dC::Plot(const SArray1dC<Point2dC> & data, const StringC & dataName)
   {
-    //RavlAssertMsg(0, "Abstract method called!");
-    RavlError("Abstract method called");
-    return false;
+    CollectionC<Tuple2C<StringC, CollectionC<Point2dC> > > aCollection(1);
+    aCollection.Append(Tuple2C<StringC, CollectionC<Point2dC> >(dataName,data));
+    return Plot(aCollection);
   }
 
   //: Plot values against their index, optional dataName will appear in the legend
@@ -262,7 +262,7 @@ namespace RavlN {
   //! userlevel=Develop
   Plot2dC::RefT CreatePlot2d_default(const StringC & name)
   {
-    RavlError("Abstract Create Plot called!");
+    RavlError("Abstract create plot called for %s.",name.c_str());
     return new Plot2dC(name);
   }
 

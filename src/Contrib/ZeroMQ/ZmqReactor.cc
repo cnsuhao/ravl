@@ -95,6 +95,7 @@ namespace RavlN {
     //! Add a read trigger
     SocketDispatcherC::RefT ReactorC::CallOnRead(const SocketC &socket,const TriggerC &trigger)
     {
+      RavlAssert(&socket != 0);
       SocketDispatcherC::RefT ret = new SocketDispatchTriggerC(socket,true,false,trigger);
       Add(*ret);
       return ret;
@@ -103,6 +104,7 @@ namespace RavlN {
     //! Add a write trigger
     SocketDispatcherC::RefT ReactorC::CallOnWrite(const SocketC &socket,const TriggerC &trigger)
     {
+      RavlAssert(&socket != 0);
       SocketDispatcherC::RefT ret = new SocketDispatchTriggerC(socket,false,true,trigger);
       Add(*ret);
       return ret;
@@ -177,14 +179,14 @@ namespace RavlN {
           timeToNext = m_teminateCheckInterval;
         long timeout = -1;
         if(m_teminateCheckInterval >= 0)
-          timeout = timeToNext * 1000000.0;
+          timeout = Round(timeToNext * 1000.0);
 
         if(m_verbose) {
-          RavlDebug("Reactor '%s' polling for %u sockets.",Name().data(),(unsigned) pollArr.size());
+          RavlDebug("Reactor '%s' polling for %u sockets. (Timeout:%u, %f seconds )",Name().data(),(unsigned) pollArr.size(),timeout,timeToNext);
         }
         int ret = zmq_poll (first, pollArr.size(),timeout);
         if(m_verbose) {
-          RavlDebug("Reactor '%s' got ready for %d sockets. (Timeout:%u) ",Name().data(),ret,timeout);
+          RavlDebug("Reactor '%s' got ready for %d sockets. (Timeout:%u, %f seconds ) ",Name().data(),ret,timeout,timeToNext);
         }
         if(ret < 0) {
           int anErrno = zmq_errno ();
@@ -301,6 +303,14 @@ namespace RavlN {
       return ret;
     }
 
+    //! Change period of event.
+    // Returns true if event is found and has been updated.
+    // This will take effect after the event is next run.
+    bool ReactorC::ChangePeriod(UIntT eventId, float period)
+    {
+      return m_timedQueue.ChangePeriod(eventId,period);
+    }
+
     //! Cancel pending event.
     // Will return TRUE if event in cancelled before
     // it was run.
@@ -314,6 +324,7 @@ namespace RavlN {
     //! Called when owner handles drop to zero.
     void ReactorC::ZeroOwners() {
       m_terminate = true;
+      m_wakeup->Send(*m_wakeMsg);
       ServiceThreadC::ZeroOwners();
     }
 

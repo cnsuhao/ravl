@@ -501,8 +501,9 @@ namespace RavlN {;
   bool XMLFactoryContextC::CreateContext(const StringC &key,XMLFactoryContextC &child) const
   {
     XMLTreeC childXML;
-    if(!Node().Child(key,childXML))
+    if(!Node().Child(key,childXML)) {
       return false;
+    }
     child = XMLFactoryContextC(Factory(),*new XMLFactoryNodeC(childXML,INode()));
     return true;
   }

@@ -251,9 +251,13 @@ namespace RavlGUIN {
       if(max < it.Data())
 	max = it.Data();
     }
+    ImageC<ByteT> tImg(inimg.Rectangle());
+    if(min == max) {
+      tImg.Fill(128);
+      return tImg;
+    }
     RealT scale = 255.0/(max - min);
     ONDEBUG(std::cerr << "DPDisplayImageRealBodyC::ScaleImage(), Min:" << min << " Max:" << max << " Scale:" << scale << "\n");
-    ImageC<ByteT> tImg(inimg.Rectangle());
     for(Array2dIter2C<ByteT,RealT> it(tImg,inimg);it;it++) 
       it.Data1() = (ByteT)((it.Data2() - min) * scale);
     return tImg;

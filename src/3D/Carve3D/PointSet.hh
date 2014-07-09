@@ -98,6 +98,7 @@ namespace Ravl3DN
   //! userlevel=Normal
   //: THIS CLASS IS OBSOLETE.  Use SurfacePoint3dArrayC instead.
   //  This class will be REMOVED from Ravl in early 2003!
+#error This class is obsolete.  Use SurfacePoint3dArrayC instead.
 
   class PointSetC: public RCHandleC<PointSetBodyC>
   {

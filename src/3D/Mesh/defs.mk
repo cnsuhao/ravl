@@ -12,14 +12,14 @@ PACKAGE=Ravl/3D
 HEADERS= Vertex.hh Tri.hh TriMesh.hh TexTriMesh.hh\
  HEMeshVertex.hh HEMeshEdge.hh HEMeshFace.hh HEMesh.hh \
  HEMeshVertexIter.hh  HEMeshFaceIter.hh VertexColourByteRGB.hh \
- MeshShapes.hh BuildTexTriMesh.hh
+ MeshShapes.hh BuildTexTriMesh.hh SurfacePoint3dArray.hh
 
 
 SOURCES= Vertex.cc Tri.cc TriMesh.cc TriMeshBinIO.cc \
  TexTriMesh.cc TexTriMeshBinIO.cc \
  HEMeshVertex.cc HEMeshEdge.cc HEMeshFace.cc HEMesh.cc \
  TriMesh2HEMesh.cc HEMeshFaceIter.cc VertexColourByteRGB.cc \
- MeshShapes.cc BuildTexTriMesh.cc
+ MeshShapes.cc BuildTexTriMesh.cc SurfacePoint3dArray.cc
 
 TESTEXES=testHEMesh.cc testTriMesh.cc
 

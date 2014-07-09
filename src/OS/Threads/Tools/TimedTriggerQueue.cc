@@ -201,11 +201,24 @@ namespace RavlN
   // Will return TRUE if event in cancelled before
   // it was run.
   
-  bool TimedTriggerQueueBodyC::Cancel(UIntT eventID) {
+  bool TimedTriggerQueueBodyC::Cancel(UIntT eventID)
+  {
     MutexLockC holdLock(access);
-    if(!events.IsElm(eventID))
+    Tuple2C<TriggerC,float> *eventEntry = events.Lookup(eventID);
+    if(eventEntry == 0)
       return false;
-    events[eventID].Data1().Invalidate(); // Cancel event.
+    eventEntry->Data1().Invalidate(); // Cancel event.
+    return true;
+  }
+
+  //: Change period
+  bool TimedTriggerQueueBodyC::ChangePeriod(UIntT eventId, float period)
+  {
+    MutexLockC holdLock(access);
+    Tuple2C<TriggerC,float> *eventEntry = events.Lookup(eventId);
+    if(eventEntry == 0)
+      return false;
+    eventEntry->Data2() = period;
     return true;
   }
 

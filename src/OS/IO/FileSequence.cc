@@ -194,7 +194,7 @@ namespace RavlN {
       postfix = nameComp.from(extStart);
       prefix = nameComp.before(extStart);
       ONDEBUG(cerr << "DPFileSequenceBaseBodyC::ProbeImplicit(), "<< StringC(extStart) << " Pre:'" << prefix <<"'  Post:'" << postfix << "'\n");
-      templateFile = pathComp + '/' + prefix + "%d" + postfix;
+      templateFile = pathComp + RavlN::filenameSeperator + prefix + "%d" + postfix;
     } else
       templateFile = rootFn + "%d";
     // Find number of digits...

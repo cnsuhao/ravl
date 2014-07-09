@@ -760,15 +760,17 @@ namespace RavlN {
     {
       RCWrapC<DataT> handle;
 
-
       StringC redirect = currentContext.AttributeString(name);
-      if(redirect.IsEmpty())
+      if(redirect.IsEmpty()) {
         redirect = name;
+      }
 
       XMLFactoryContextC newNode;
       if(!currentContext.CreateContext(redirect,newNode)) {
-        if(!suppressErrors)
+        if(!suppressErrors) {
+          RavlError("Failed to find child '%s' to create from path '%s' ",redirect.c_str(),currentContext.Path().c_str());
           throw RavlN::ExceptionBadConfigC("Failed to find child");
+        }
         return false;
       }
 

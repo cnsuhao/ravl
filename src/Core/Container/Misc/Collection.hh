@@ -263,6 +263,16 @@ namespace RavlN {
     { return Body().Copy(); }
     //: Create a copy of this collection.
     
+    CollectionC<DataT> DeepCopy(UIntT levels = ((UIntT) -1)) const {
+      if(levels <= 1)
+        return Copy();
+      CollectionC<DataT> ret(Size());
+      for(int i = 0;i < Size();i++)
+        ret[i] = StdDeepCopy((*this)[i],levels-1);
+      return ret;
+    }
+    //: Creates a new deep copy of the collection.
+
     inline
     UIntT Insert(const DataT &dat)
     { return Body().Insert(dat); }

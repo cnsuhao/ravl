@@ -61,26 +61,31 @@ namespace RavlN {
       //! Schedule event for running on the reactor thread
       // Thread safe.
       // Returns an ID for the event, which can
-      // be used for cancelling it.
+      // be used for cancelling it. The returned ID never has the value 0, so it may be used to flag not set.
       UIntT Schedule(const TriggerC &se);
 
       //! Schedule event for running after time 't' (in seconds).
       // Thread safe.
       // Returns an ID for the event, which can
-      // be used for cancelling it.
+      // be used for cancelling it. The returned ID never has the value 0, so it may be used to flag not set.
       UIntT Schedule(RealT t,const TriggerC &se,float period = -1);
 
       //! Schedule event for running.
       // Thread safe.
       // Returns an ID for the event, which can
-      // be used for cancelling it.
+      // be used for cancelling it. The returned ID never has the value 0, so it may be used to flag not set.
       UIntT Schedule(const DateC &at,const TriggerC &se,float period = -1);
 
       //! Schedule event for running periodically.
       // Thread safe.
       // Returns an ID for the event, which can
-      // be used for cancelling it.
+      // be used for cancelling it. The returned ID never has the value 0, so it may be used to flag not set.
       UIntT SchedulePeriodic(const TriggerC &se,float period);
+
+      //! Change period of event.
+      // Returns true if event is found and has been updated.
+      // This will take effect after the event is next run.
+      bool ChangePeriod(UIntT eventId, float period);
 
       //! Cancel pending event.
       // Will return TRUE if event in cancelled before
@@ -90,6 +95,9 @@ namespace RavlN {
       //! Run reactor loop.
       virtual bool Run();
 
+      //! Set verbose flag.
+      void SetVerbose(bool verboseMode)
+      { m_verbose = verboseMode; }
 
       //! Owner reference counted ptr to class
       typedef RavlN::SmartOwnerPtrC<ReactorC> RefT;

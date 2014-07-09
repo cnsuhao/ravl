@@ -56,27 +56,33 @@ namespace RavlN {
   {
     FilenameC ret = (*this);
     if(ret.IsEmpty())
-		ret = GetCwd();
-    while(ret[0] != '/') {
+      ret = GetCwd();
+
+    char currentDir[2];
+    currentDir[0] = '.';
+    currentDir[1] = RavlN::filenameSeperator;
+
+    while(ret[0] != RavlN::filenameSeperator) {
       if(ret == StringC(".")) {
-		ret = GetCwd();
+        ret = GetCwd();
 	break;
       }
-      if(ret.matches("./",0,false)) {
-		  ret = GetCwd();
-		  break;
+
+      if(ret.matches(currentDir,0,false)) {
+        ret = GetCwd();
+        break;
       }
       if(ret[0] == '~') { // Relative to home directory ?
 	StringC tmp = ret.after(1);
-	StringC userId = tmp.before("/");
-	StringC theRest = tmp.after("/");
+	StringC userId = tmp.before(RavlN::filenameSeperator);
+	StringC theRest = tmp.after(RavlN::filenameSeperator);
 	if(userId.IsEmpty())
 	  userId = tmp; // Maybe only user is defined.
 	UserInfoC ui(userId);
-	ret = ui.HomeDir() + '/' + theRest;
+	ret = ui.HomeDir() + RavlN::filenameSeperator + theRest;
 	break;
       }
-      ret = GetCwd() + '/' + ret;
+      ret = GetCwd() + RavlN::filenameSeperator + ret;
       break;
     };
   
@@ -89,7 +95,7 @@ namespace RavlN {
     FilenameC org(ret);
     bool orgExists = org.PathComponent().Exists(); // Check directory exists...
     ret = StringC(ret.after(AMDPrefix)); // Skip AMD prefix.
-    ret = StringC(ret.from('/')); // Skip matchine name.
+    ret = StringC(ret.from(RavlN::filenameSeperator)); // Skip matchine name.
     FilenameC newun(ret);
     // Is everything ok ?
     if(orgExists) { // Only if we can tell...

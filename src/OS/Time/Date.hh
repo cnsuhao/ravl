@@ -76,6 +76,19 @@ namespace RavlN {
     //: Generate date from ISO8601 string.
     // Note this may not support all variants, if the string fails to parse and exception will be thrown.
 
+    static bool DecomposeISO8601String(const StringC &dataString,
+                                    UIntT &year,
+                                    UIntT &month,
+                                    UIntT &day,
+                                    UIntT &hour,
+                                    UIntT &min,
+                                    UIntT &sec,
+                                    UIntT &usec,
+                                    IntT & tzOffset);
+
+    //: Decompose a ISO8601 string.
+    // Note this may not support all variants, if the string fails to parse and exception will be thrown.
+
     inline DateC(bool setval,bool useVirt = false);
     //: Constructor.
     // This constructor is obsolete. Use one of NowUTC,NowLocal or NowVirtual.
@@ -220,6 +233,10 @@ namespace RavlN {
     // if string is not recognised.
     //!param: str '2012-11-22 00:00:00' or '2012/11/22 00:00:00'
     //!param: isLocalTimeZone - When true assumes parameters are in the local timezone.  It will convert to UTC.
+
+    StringC ISO8601(bool asUTC = true) const;
+    //: Format as ISO8601 string
+    // If asUTC is true, the timezone will be UTZ, else it will be undefined.
 
     StringC CTime(bool convertUTCToLocal = false) const;
     //: Returns results equivalent to calling ctime().

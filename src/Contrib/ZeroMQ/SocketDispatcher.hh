@@ -9,6 +9,7 @@
 //! lib=RavlZmq
 
 #include "Ravl/Zmq/Socket.hh"
+#include "Ravl/Collection.hh"
 #include <zmq.h>
 
 namespace RavlN {
@@ -45,7 +46,34 @@ namespace RavlN {
       bool m_onWriteReady;
     };
 
+    //! Set of dispatchers to dissconnect when finished with.
 
+    class SocketDispatchSetC
+     : public RavlN::CollectionC<SocketDispatcherC::RefT>
+    {
+    public:
+      //! Default constructor
+      SocketDispatchSetC();
+
+      //! Destructors
+      ~SocketDispatchSetC();
+
+      //! Disconnect all dispatchers.
+      void DisconnectAll();
+
+      //! Add dispatcher
+      bool operator+=(const SocketDispatcherC::RefT &dispatcher)
+      {
+        if(dispatcher.IsValid()) {
+          (*this).Append(dispatcher);
+          return true;
+        }
+        return false;
+      }
+
+    protected:
+
+    };
   }
 }
 

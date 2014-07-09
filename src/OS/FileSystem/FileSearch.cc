@@ -21,7 +21,7 @@ namespace RavlN {
   
   FilenameC FilenameC::Search(const DListC<StringC> &dirs) const  {
     for(DLIterC<StringC> it(dirs);it.IsElm();it.Next()) {
-      FilenameC tmp(it.Data() + "/" + (*this));
+      FilenameC tmp(it.Data() + RavlN::filenameSeperator + (*this));
       if(tmp.Exists())
         return tmp;
     }
@@ -60,11 +60,11 @@ namespace RavlN {
       if(!homeDir.IsEmpty()) {
         result = homeDir + StringC(filename).after('~');
       }
-    } else if(filename.firstchar() == '/') { //absolute path
+    } else if(filename.firstchar() == RavlN::filenameSeperator) { //absolute path
       result = filename;
     } else {
       if(!currentDirectory.IsEmpty()) { //current directory
-        result = currentDirectory + '/' + filename;
+        result = currentDirectory + RavlN::filenameSeperator + filename;
         if(result.Exists())
           return result;
       }

@@ -386,40 +386,129 @@ namespace RavlN {
     return str;
   }
 
+
+  bool DateC::DecomposeISO8601String(const StringC &dataString,
+                                  UIntT &year,
+                                  UIntT &month,
+                                  UIntT &day,
+                                  UIntT &hour,
+                                  UIntT &min,
+                                  UIntT &sec,
+                                  UIntT &usec,
+                                  IntT & tzOffset)
+  {
+    const StringC &work = dataString;
+    int at = 0;
+    year = 0;
+    month = 1;
+    day = 1;
+    hour = 0;
+    min = 0;
+    sec = 0;
+    usec = 0;
+    tzOffset = 0;
+
+    //2012-01-30 10:00Z
+    //2012-01-30T10:00Z
+    //2012-01-30T10:00:00Z
+
+    int elems = sscanf(&work[at],"%4u-%2u-%2u",&year,&month,&day);
+    if(elems != 3) {
+      return false;
+    }
+    if(work.Size() <= 10) {
+      // No timezone, so must be local time.
+      tzOffset = DateC::TimeZoneOffset().TotalSeconds();
+      return true;
+    }
+    at += 10;
+    if(work[at] != ' ' && work[at] != 'T') {
+      return false;
+    }
+    at++;
+
+    //RavlDebug("Scanning time:%s ",work.c_str());
+    double secf;
+    elems = sscanf(&work[at],"%2u:%2u:%lf",&hour,&min,&secf);
+    if(elems != 3) {
+      return false;
+    }
+    sec = secf;
+    usec = RavlN::Round((secf - floor(secf)) * 1000000.0);
+    at += 8;
+    if(work[at] == '.') {
+      at++;
+      // Fractional seconds ?
+      for(;at < work.Size();at++) {
+        if(!isdigit(work[at]))
+          break;
+      }
+    }
+
+    if(work[at] == 0) {
+      // No timezone, so must be local time.
+      tzOffset = DateC::TimeZoneOffset().TotalSeconds();
+      return true;
+    }
+
+    if(work[at] == 'Z') {
+      // UTZ timezone
+      return true;
+    }
+    if(work[at] != '+' && work[at] != '-') {
+      RavlError("Invalid timezone %s ",work.c_str());
+      return false;
+    }
+    bool isNeg = work[at] == '-';
+    at++;
+
+    int tzHours = 0;
+    int tzMinutes = 0;
+    elems = sscanf(&work[at],"%2u",&tzHours);
+    if(work.Size()-at > 2) {
+      at += 2;
+      if(work[3]==':')
+        at++;
+      elems = sscanf(&work[at],"%2u",&tzMinutes);
+    }
+
+    tzOffset = tzHours * 60 + tzMinutes;
+    if(isNeg) tzOffset *= -1;
+
+    return true;
+  }
+
   //: Generate date from ISO8601 string.
   // Note this may not support all variants, if the string fails to parse and exception will be thrown.
 
   DateC DateC::FromISO8601String(const StringC &dataString,bool storeInUTC)
   {
-    StringC work = dataString;
     UIntT year = 0;
     UIntT month = 1;
     UIntT day = 1;
     UIntT hour = 0;
     UIntT min = 0;
     UIntT sec = 0;
-    //2012-01-30 10:00Z
-    //2012-01-30T10:00Z
-    //2012-01-30T10:00:00Z
+    UIntT usec = 0;
+    IntT tzOffset = 0;
 
-    int elems = sscanf(work.data(),"%4u-%2u-%2u",&year,&month,&day);
-    if(elems != 3) {
-      RavlDebug("Failed to parse date from: '%s' ",work.data());
+    if(!DecomposeISO8601String(dataString,
+                               year,
+                               month,
+                               day,
+                               hour,
+                               min,
+                               sec,
+                               usec,
+                               tzOffset)) {
+
+      RavlDebug("Failed to parse date from: '%s' ",dataString.data());
       throw ExceptionOperationFailedC("Parse error in date.");
     }
-    if(work.Size() > 10) {
-      work = work.from(10);
-      if(work[0] != ' ' && work[0] != 'T') {
-        throw ExceptionOperationFailedC("Parse error in date.");
-      }
-      work = work.from(1);
-    }
-    elems = sscanf(work.data(),"%2u:%2u:%2u",&hour,&min,&sec);
-    if(elems != 3) {
-      RavlDebug("Failed to parse time from: '%s' ",work.data());
-      throw ExceptionOperationFailedC("Parse error in time.");
-    }
-    return DateC(year,month,day,hour,min,sec);
+    DateC ret(year,month,day,hour,min,sec,usec);
+    if(!storeInUTC)
+      ret += tzOffset * 60.0;
+    return ret;
   }
 
   //: Generate date from odbc string.
@@ -548,8 +637,42 @@ namespace RavlN {
     return true;
   }
 
+  //: Format as ISO8601 string
 
-  //: Returns results equivelent to calling ctime().
+  StringC DateC::ISO8601(bool asUTC) const
+  {
+    struct tm b;
+
+    time_t s = (time_t) TotalSeconds();
+#if !RAVL_COMPILER_VISUALCPP
+    gmtime_r(&s,&b);
+#else
+    // VC++ does not support asctime_r or gmtime_r so use the non-thread-safe versions
+    // in lieu os anythings else
+    // In VC++ the result is stored in thread local storage, so this should
+    // be thread safe.
+    b = *gmtime(&s);
+#endif
+    StringC buf;
+
+    double sec = (double) b.tm_sec + ((double)USeconds() / 1000000.0);
+    if(asUTC) {
+      if(b.tm_sec < 10) {
+        buf.form("%04u-%02u-%02uT%02u:%02u:0%1fZ",b.tm_year + 1900,b.tm_mon+1,b.tm_mday,b.tm_hour,b.tm_min,sec);
+      } else {
+        buf.form("%04u-%02u-%02uT%02u:%02u:%2fZ",b.tm_year + 1900,b.tm_mon+1,b.tm_mday,b.tm_hour,b.tm_min,sec);
+      }
+    } else {
+      if(b.tm_sec < 10) {
+        buf.form("%04u-%02u-%02uT%02u:%02u:0%1f",b.tm_year + 1900,b.tm_mon+1,b.tm_mday,b.tm_hour,b.tm_min,sec);
+      } else {
+        buf.form("%04u-%02u-%02uT%02u:%02u:%2f",b.tm_year + 1900,b.tm_mon+1,b.tm_mday,b.tm_hour,b.tm_min,sec);
+      }
+    }
+    return buf;
+  }
+
+  //: Returns results equivalent to calling ctime().
   
   StringC DateC::CTime(bool useUTCToLocal) const  {
     char buff[50];

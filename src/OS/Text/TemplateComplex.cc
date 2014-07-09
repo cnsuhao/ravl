@@ -437,11 +437,11 @@ namespace RavlN {
     if(stb == 0) {
       FilenameC fn(data);
       if(templateDir != "") {
-	if(fn.firstchar() != '/') {
+	if(fn.firstchar() != RavlN::filenameSeperator) {
 	  if(fn.firstchar() == '@')
 	    fn = fn.after('@');
 	  else
-	    fn = templateDir + '/' + fn;
+	    fn = templateDir + RavlN::filenameSeperator + fn;
 	}
       }
       if(!fn.Exists()) {
