@@ -10,6 +10,8 @@ PACKAGE = Ravl/VisualHull
 
 PLIB = RavlVisualHull
 
+SUMMARY_LIB=Ravl
+
 HEADERS = \
  MovingLeastSquares.hh \
  VisualHull.hh \
