@@ -499,8 +499,6 @@ exebuild: prebuildstep build_subdirs build_exe $(TARG_HDRCERTS) postbuildstepexe
 
 fullbuild: prebuildstep build_subdirs build_libs build_exe build_aux  $(TARG_HDRCERTS) postbuildstepexe
 
-exebuild: prebuildstep build_subdirs build_exe $(TARG_HDRCERTS) postbuildstepexe
-
 testbuild: prebuildstep build_subdirs build_libs build_test  $(TARG_HDRCERTS) postbuildstep
 
 libbuild: prebuildstep build_subdirs build_libs build_aux postbuildstep
