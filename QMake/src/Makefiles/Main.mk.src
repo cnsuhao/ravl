@@ -1379,7 +1379,7 @@ ifdef TARG_DEFS
     ifeq ($(filter Auto,$(USESLIBS)),)
      ifneq ($(strip $(TARG_USESLIBS_R)),)
       ifneq ($(strip $(filter-out $(PLIB).def $(LIBDEPS).def,$(TARG_USESLIBS_R))),)
-	$(SHOWIT)echo 'NEEDED_DEFS += $$(filter-out $$(PLIB).def $$(LIBDEPS).def,$(TARG_USESLIBS_R))' >> $@ ; \
+	$(SHOWIT)echo '$(REQUIRES_INDENT)  NEEDED_DEFS += $$(filter-out $$(PLIB).def $$(LIBDEPS).def,$(TARG_USESLIBS_R))' >> $@ ; \
 	echo >> $@
       endif
 	$(SHOWIT)echo '$(REQUIRES_INDENT)  include $(TARG_USESLIBS_R)' >> $@ ; \
@@ -1393,7 +1393,7 @@ ifdef TARG_DEFS
      ifneq ($(strip $(AUTOUSELIBS)),)
       ifneq ($(strip $(EXTRA_USESLIBS_R)),)
        ifneq ($(strip $(filter-out $(PLIB).def $(LIBDEPS).def,$(EXTRA_USESLIBS_R))),)
-	$(SHOWIT)echo 'NEEDED_DEFS += $$(filter-out $$(PLIB).def $$(LIBDEPS).def,$(EXTRA_USESLIBS_R))' >> $@ ; \
+	$(SHOWIT)echo '$(REQUIRES_INDENT)  NEEDED_DEFS += $$(filter-out $$(PLIB).def $$(LIBDEPS).def,$(EXTRA_USESLIBS_R))' >> $@ ; \
 	echo >> $@
        endif
 	$(SHOWIT)echo '$(REQUIRES_INDENT)  include $(EXTRA_USESLIBS_R)' >> $@ ; \
