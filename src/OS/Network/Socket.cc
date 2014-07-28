@@ -77,7 +77,8 @@ namespace RavlN {
   SocketBodyC::SocketBodyC(StringC name,bool nserver)
     : UnixStreamIOC(-1,g_defaultTimeout,g_defaultTimeout,false),
       server(nserver),
-      addr(0)
+      addr(0),
+      m_addrReuse(false)
   {
     int at = name.index(':');
     if(at < 0) {
@@ -99,7 +100,8 @@ namespace RavlN {
   SocketBodyC::SocketBodyC(StringC name,UIntT portno,bool nserver)
     : UnixStreamIOC(-1,g_defaultTimeout,g_defaultTimeout),
       server(nserver),
-      addr(0)
+      addr(0),
+      m_addrReuse(false)
   {
     ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "Opening connection '" << name << "' port " << portno << " ");
     if(server)
@@ -114,7 +116,8 @@ namespace RavlN {
   SocketBodyC::SocketBodyC(struct sockaddr *naddr,int nfd,bool nserver)
     : UnixStreamIOC(nfd,g_defaultTimeout,g_defaultTimeout),
       server(nserver),
-      addr(naddr)
+      addr(naddr),
+      m_addrReuse(false)
   {
     ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "SocketBodyC::SocketBodyC(), fd = " << m_fd );
   }
@@ -266,7 +269,31 @@ namespace RavlN {
       Close();
       return -1;
     }
+    if(m_addrReuse) {
+      int one = 1;
+      setsockopt(m_fd,SOL_SOCKET,SO_REUSEADDR,&one,sizeof(one));
+    }
     return m_fd;
+  }
+
+  //: Set address reuse flag
+  bool SocketBodyC::SetAddressReuse(bool state)
+  {
+    m_addrReuse = true;
+    if(m_fd < 0)
+      return false;
+    /*
+     This socket option tells the kernel that even if this port is busy (in
+     the TIME_WAIT state), go ahead and reuse it anyway.  If it is busy,
+     but with another state, you will still get an address already in use
+     error.  It is useful if your server has been shut down, and then
+     restarted right away while sockets are still active on its port.  You
+     should be aware that if any unexpected data comes in, it may confuse
+     your server, but while this is possible, it is not likely.
+    */
+    int one = 1;
+    setsockopt(m_fd,SOL_SOCKET,SO_REUSEADDR,&one,sizeof(one));
+    return true;
   }
 
   //: Listen for a connection from a client.
