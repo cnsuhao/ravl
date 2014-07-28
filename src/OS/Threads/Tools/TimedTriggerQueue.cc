@@ -19,6 +19,7 @@
 #include "Ravl/Threads/LaunchThread.hh"
 #include "Ravl/Exception.hh"
 #include "Ravl/SysLog.hh"
+#include "Ravl/TypeName.hh"
 
 #define DODEBUG 0
 
@@ -159,13 +160,18 @@ namespace RavlN
           ne.Invoke();
 #if CATCHEXCEPTIONS
         } catch(ExceptionC &ex) {
-          RavlError("Caught exception in timed trigger event thread. Message:'%s'",ex.Text());
+          RavlError("Caught exception in timed trigger event thread. Type:%s Message:'%s'",RavlN::TypeName(typeid(ex)),ex.Text());
           // Dump a stack.
           ex.Dump(std::cerr);
           // If in check or debug stop.
           RavlAssertMsg(0,"Aborting due to exception in timed trigger event thread. ");
           // Otherwise ignore and struggle on.
-        } catch(...) {
+        } catch(std::exception &ex) {
+          RavlError("Caught std exception in timed trigger event thread. Type:%s What:%s ",RavlN::TypeName(typeid(ex)),ex.what());
+          // If in check or debug stop.
+          RavlAssertMsg(0,"Aborting due to exception in timed trigger event thread. ");
+          // Otherwise ignore and struggle on.
+        }catch(...) {
           RavlError("Caught exception in timed trigger event thread.");
           // If in check or debug stop.
           RavlAssertMsg(0,"Aborting due to exception in timed trigger event thread. ");
