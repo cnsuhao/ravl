@@ -16,6 +16,7 @@
 //! date="07/05/1998"
 
 #include "Ravl/Types.hh"
+#include "Ravl/StdConst.hh"
 
 namespace RavlN {
   class StringC;
@@ -89,7 +90,7 @@ namespace RavlN {
     //: Decompose a ISO8601 string.
     // Note this may not support all variants, if the string fails to parse and exception will be thrown.
 
-    inline DateC(bool setval,bool useVirt = false);
+    DateC(bool setval,bool useVirt = false);
     //: Constructor.
     // This constructor is obsolete. Use one of NowUTC,NowLocal or NowVirtual.
     //!param: setval - if false an invalid date is created, otherwise a time is set.
@@ -169,10 +170,10 @@ namespace RavlN {
     //: Get an estimate of the resolution of timer in microseconds.
     // NB. This assumes 100Hz by default.
     
-    inline void NormalisePos();
+    void NormalisePos();
     //: Normalise time representation after addition
     
-    inline void NormaliseNeg();
+    void NormaliseNeg();
     //: Normalise time representation after subtraction
     
     inline bool operator==(const DateC &oth) const;
@@ -194,19 +195,19 @@ namespace RavlN {
     inline bool operator<=(const DateC &oth) const;
     //: Compare times.
   
-    inline DateC operator+(const DateC &oth) const;
+    DateC operator+(const DateC &oth) const;
     //: Add times.
     
-    inline DateC operator-(const DateC &oth) const;
+    DateC operator-(const DateC &oth) const;
     //: Subtract times.
     
-    inline const DateC &operator-=(const DateC &val);
+    const DateC &operator-=(const DateC &val);
     //: In-place subtraction.
     
     const DateC &operator-=(double val);
     //: In-place subtraction (seconds).
     
-    inline const DateC &operator+=(const DateC &val);
+    const DateC &operator+=(const DateC &val);
     //: In-place addition.
     
     const DateC &operator+=(double val);
@@ -253,7 +254,10 @@ namespace RavlN {
     //: Get total whole seconds that have passed.
     
     inline double Double() const
-    { return (double) sec + (((double)usec) / ((double) MaxUSeconds())); }
+    {
+      if(!IsValid()) return RavlConstN::nanReal;
+      return (double) sec + (((double)usec) / ((double) MaxUSeconds()));
+    }
     //: Get time in seconds from the epoch in double form.
     
     IntT Seconds(bool convertUTCToLocal = false) const;
@@ -321,15 +325,6 @@ namespace RavlN {
   
   //////////////////////////////////////////////////////////
   
-  inline 
-  DateC::DateC(bool setval,bool useVirt)  {
-    if(setval)
-      SetToNow(useVirt);
-    else {
-      sec = 0;
-      usec = -1;
-    }
-  }
   
   inline 
   bool DateC::operator==(const DateC &oth) const {
@@ -374,58 +369,6 @@ namespace RavlN {
     return (usec <= oth.usec);
   }
   
-  inline 
-  void DateC::NormalisePos()  {
-    if(usec >= MaxUSeconds()) {
-      int diff = usec / MaxUSeconds();
-      usec -= diff * MaxUSeconds();
-      sec += diff;
-    }
-  }
-  
-  inline 
-  void DateC::NormaliseNeg()  {
-    if(usec < 0) {
-      int diff = (-usec / MaxUSeconds())+1;
-      usec += diff * MaxUSeconds();
-      sec -= diff;
-    }
-  }
-  
-  inline 
-  DateC DateC::operator+(const DateC &oth) const  {
-    DateC ret;
-    ret.sec = sec + oth.sec;
-    ret.usec = usec + oth.usec;
-    ret.NormalisePos();
-    return ret;
-  }
-  
-  inline 
-  DateC DateC::operator-(const DateC &oth) const  {
-    DateC ret;
-    ret.sec = sec - oth.sec;
-    ret.usec = usec - oth.usec;
-    ret.NormaliseNeg();
-    return ret;
-  }
-  
-  inline
-  const DateC &DateC::operator-=(const DateC &val) {
-    sec -= val.sec;
-    usec -= val.usec;
-    NormaliseNeg();
-    return *this;
-  }
-
-  inline
-  const DateC &DateC::operator+=(const DateC &val)  {
-    sec += val.sec;
-    usec += val.usec;
-    NormalisePos();
-    return *this;
-  }
-
 }
 
 #endif

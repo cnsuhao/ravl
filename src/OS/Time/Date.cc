@@ -90,6 +90,15 @@ extern int sleep(int x); // A hack, I hope it doesn't cause problems later...
 
 namespace RavlN {
 
+  DateC::DateC(bool setval,bool useVirt)  {
+    if(setval)
+      SetToNow(useVirt);
+    else {
+      sec = 0;
+      usec = -1;
+    }
+  }
+
   //: Construct from a stream
   
   DateC::DateC(istream &in) { 
@@ -1016,29 +1025,73 @@ namespace RavlN {
 #endif
 
   const DateC &DateC::operator+=(double val) {
-
-#if 0
-    sec += (SecondT) val;
-    usec += ((long) ((RealT) val * 1000000) % 1000000);
-#else
     double frac;
+    if(!IsValid())
+      return *this;
     usec += Round(modf(val,&frac) * 1000000);
     sec += (SecondT) frac;
-#endif
     NormalisePos();
     return *this;
   }
 
   const DateC &DateC::operator-=(double val) {
-#if 0
-    sec -= (SecondT) val;
-    usec -= ((long) ((RealT) val * 1000000) % 1000000);
-#else
     double frac;
+    if(!IsValid())
+      return *this;
     usec -= Round(modf(val,&frac) * 1000000);
     sec -= (SecondT) frac;
-#endif
     NormaliseNeg();
+    return *this;
+  }
+
+  void DateC::NormalisePos()  {
+    if(usec >= MaxUSeconds()) {
+      int diff = usec / MaxUSeconds();
+      usec -= diff * MaxUSeconds();
+      sec += diff;
+    }
+  }
+
+  void DateC::NormaliseNeg()  {
+    if(usec < 0) {
+      int diff = (-usec / MaxUSeconds())+1;
+      usec += diff * MaxUSeconds();
+      sec -= diff;
+    }
+  }
+
+  DateC DateC::operator+(const DateC &oth) const  {
+    DateC ret;
+    if(!IsValid() || !oth.IsValid()) return *this;
+    ret.sec = sec + oth.sec;
+    ret.usec = usec + oth.usec;
+    ret.NormalisePos();
+    return ret;
+  }
+
+  DateC DateC::operator-(const DateC &oth) const  {
+    DateC ret;
+    if(!IsValid() || !oth.IsValid()) return *this;
+    ret.sec = sec - oth.sec;
+    ret.usec = usec - oth.usec;
+    ret.NormaliseNeg();
+    return ret;
+  }
+
+  const DateC &DateC::operator-=(const DateC &val)
+  {
+    if(!IsValid() || !val.IsValid()) return *this;
+    sec -= val.sec;
+    usec -= val.usec;
+    NormaliseNeg();
+    return *this;
+  }
+
+  const DateC &DateC::operator+=(const DateC &val)  {
+    if(!IsValid() || !val.IsValid()) return *this;
+    sec += val.sec;
+    usec += val.usec;
+    NormalisePos();
     return *this;
   }
 
