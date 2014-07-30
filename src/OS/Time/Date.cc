@@ -481,7 +481,7 @@ namespace RavlN {
   //: Generate date from ISO8601 string.
   // Note this may not support all variants, if the string fails to parse and exception will be thrown.
 
-  DateC DateC::FromISO8601String(const StringC &dataString,bool storeInUTC)
+  DateC DateC::FromISO8601String(const StringC &dateString,bool storeInUTC)
   {
     UIntT year = 0;
     UIntT month = 1;
@@ -492,7 +492,11 @@ namespace RavlN {
     UIntT usec = 0;
     IntT tzOffset = 0;
 
-    if(!DecomposeISO8601String(dataString,
+    // Check for undefind date/time
+    if(dateString == "undefined" || dateString == "")
+      return DateC::InvalidTime();
+
+    if(!DecomposeISO8601String(dateString,
                                year,
                                month,
                                day,
@@ -502,7 +506,7 @@ namespace RavlN {
                                usec,
                                tzOffset)) {
 
-      RavlDebug("Failed to parse date from: '%s' ",dataString.data());
+      RavlDebug("Failed to parse date from: '%s' ",dateString.data());
       throw ExceptionOperationFailedC("Parse error in date.");
     }
     DateC ret(year,month,day,hour,min,sec,usec);
@@ -642,6 +646,8 @@ namespace RavlN {
   StringC DateC::ISO8601(bool asUTC) const
   {
     struct tm b;
+    if(!IsValid())
+      return "undefined";
 
     time_t s = (time_t) TotalSeconds();
 #if !RAVL_COMPILER_VISUALCPP

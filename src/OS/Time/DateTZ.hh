@@ -30,6 +30,7 @@ namespace RavlN {
   public:
     DateTZC();
     //: Default constructor
+    //: Creates time at the epoch, with GMT time zone.
 
     DateTZC(RealT val);
     //: Construct from a real in seconds.
@@ -55,8 +56,15 @@ namespace RavlN {
     static DateTZC Now();
     //: Get the time now
 
+    static DateTZC InvalidTime();
+    //: Get an invalid time.
+
     RavlN::DateC UTC() const;
     //: Time in UTC.
+
+    inline bool IsValid() const
+    { return m_localTime.IsValid(); }
+    //: Check we have a valid time.
 
     double Double() const
     { return UTC().Double(); }
@@ -110,10 +118,10 @@ namespace RavlN {
     int m_timeZoneOffsetMinutes; // Offset from GMT in minutes.
   };
 
-  ostream &operator <<(ostream &out,const DateTZC &date);
+  std::ostream &operator <<(std::ostream &out,const DateTZC &date);
   //: Stream operator.
 
-  istream &operator >>(istream &in,DateTZC &date);
+  std::istream &operator >>(std::istream &in,DateTZC &date);
   //: Stream operator.
 
   BinOStreamC &operator <<(BinOStreamC &out,const DateTZC &date);

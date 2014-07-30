@@ -38,7 +38,7 @@ namespace RavlN {
 	usec(0)
     {}
     //: Default constructor.
-    // Sets time to 0.
+    // Creates time at the epoch.
 
     static DateC InvalidTime();
     //: Get an invalid time.
@@ -53,7 +53,7 @@ namespace RavlN {
     //: Get the current time in Coordinated Universal Time  (UTC)
     
     static DateC NowLocal();
-    //: Get the time in local timezone
+    //: Get the time in local time zone
     
     static DateC NowVirtual();
     //: Get the time since the process started.
@@ -109,7 +109,7 @@ namespace RavlN {
     //!param: usec - 1000000's of a second.
     //!param: useLocalTimeZone - When true assume parameters are in the local time zone and convert to UTC
     
-    DateC(istream &in);
+    DateC(std::istream &in);
     //: Construct from a stream
     
     inline DateC(SecondT xsec,long xusec)
@@ -291,7 +291,7 @@ namespace RavlN {
     //: Wait until this time.
     // this is implemented with the DeadLineTimer.
     
-    void Save(ostream &out) const;
+    void Save(std::ostream &out) const;
     //: Write to a stream.
     
     size_t Hash() const
@@ -307,10 +307,10 @@ namespace RavlN {
   bool Sleep(RealT delay);
   //: Pause execution for 'delay' seconds.
   
-  ostream &operator <<(ostream &out,const DateC &date);
+  std::ostream &operator <<(std::ostream &out,const DateC &date);
   //: Stream operator.
   
-  istream &operator >>(istream &in,DateC &date);
+  std::istream &operator >>(std::istream &in,DateC &date);
   //: Stream operator.
   
   BinOStreamC &operator <<(BinOStreamC &out,const DateC &date);
