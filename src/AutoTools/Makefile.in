@@ -664,7 +664,7 @@ uninstallQMake:
 uninstallRavlDefs: uninstallRavlMultiDefs uninstallRavl.def
 
 uninstallRavlMultiDefs:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=debug SHAREDBUILD=1 STRIP_SWITCH=$(STRIP_SWITCH) PROJECT_DIR=Ravl uninsDefs recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=debug SHAREDBUILD=1 STRIP_SWITCH=$(STRIP_SWITCH) PROJECT_DIR=Ravl uinsDefs recurse
 
 uninstallRavl.def:
 	@if [ -f $(ABS_DESTDIR)$(datadir)/QMake/Projects/Ravl/libdep/Ravl.def ] ; \
