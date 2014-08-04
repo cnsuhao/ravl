@@ -612,7 +612,7 @@ testsingleoptshared:
 	@$(RM) -f $(PROJECT_OUT)/test/opt/shared/single.Ravl/bin/*
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=opt SHAREDBUILD=1 SUMMARIES=Ravl TEST_TARGET=optshared test
 
-uninstall: uninstallQMake uninstallsingleoptshared uninstallHdrs uninstallpkgconf uninstallRavlDefs
+uninstall: uninstallQMake uninstallsingleoptshared uninstallHdrs uninstallMustLinks uninstallpkgconf uninstallRavlDefs
 
 uninstalldebuglib:
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=debug uinsLibs recurse
@@ -622,6 +622,9 @@ uninstalldebugsharedlib:
 
 uninstallHdrs:
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project uinsHdrs recurse
+
+uninstallMustLinks:
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) RAVL_BODGE=Ravl uinsMustLinks recurse
 
 uninstallopt: uninstalloptgeneral uninstalloptlib
 
@@ -849,11 +852,11 @@ endif
  singlesharedSetRootInstalled singlesharedSetRootStaged test testgprof \
  testgprofshared testopt testoptshared testsinglegprof testsinglegprofshared \
  testsingleopt testsingleoptshared uninstall uninstalldebuglib \
- uninstalldebugsharedlib uninstallHdrs uninstallopt uninstalloptgeneral \
- uninstalloptlib uninstalloptshared uninstalloptsharedgeneral \
- uninstalloptsharedlib uninstallpkgconf uninstallQMake uninstallRavl.def \
- uninstallRavlDefs uninstallRavlMultiDefs uninstallsingledebuglib \
- uninstallsingledebugsharedlib uninstallsingleopt uninstallsingleoptgeneral \
- uninstallsingleoptlib uninstallsingleoptshared uninstallsingleoptsharedgeneral \
- uninstallsingleoptsharedlib .DEFAULT
+ uninstalldebugsharedlib uninstallHdrs uninstallMustLinks uninstallopt \
+ uninstalloptgeneral uninstalloptlib uninstalloptshared \
+ uninstalloptsharedgeneral uninstalloptsharedlib uninstallpkgconf \
+ uninstallQMake uninstallRavl.def uninstallRavlDefs uninstallRavlMultiDefs \
+ uninstallsingledebuglib uninstallsingledebugsharedlib uninstallsingleopt \
+ uninstallsingleoptgeneral uninstallsingleoptlib uninstallsingleoptshared \
+ uninstallsingleoptsharedgeneral uninstallsingleoptsharedlib .DEFAULT
 
