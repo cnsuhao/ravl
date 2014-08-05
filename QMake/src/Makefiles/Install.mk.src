@@ -115,37 +115,113 @@ uinsDev: uinsLibs uinsDefs uinsHdrs
 
 
 
-# Aux files - original form of DATA, Ravl specific installed to:
+# AUXFILES - original method of installing DATA, SCRIPTS, etc.
 #
-#               $(datadir)/$(AUXHOME)/$(AUXDIR)
+# Developed in a time when there was no seperate install phase, AUXFILES
+# was used to copy the various types of supplemental files to PROJECT_OUT.
+# In parallel with this, AUXDIR allowed the target directory to be selected
+# so the files were installed under
 #
-# where AUXDIR is the path as listed in the defs.mk file and AUXHOME is set to
-# allow Ravl files to get installed to a suitable location under $(datadir)/Ravl
-# which would otherwise not be possible as Ravl predates the standard use of
-# $(PROJECT_DIR) and $(PACKAGE) [Ravl only uses PACKAGE and sets this to what
-# should be $(PROJECT_DIR)/$(PACKAGE)]
-
-ifndef AUXHOME
-  ifndef PROJECT_DIR
-    ifdef PACKAGE
-      # Likely to be Ravl, assume PACKAGE is PRODUCT/PACKAGE
-      AUXHOME=$(dir $(PACKAGE))
-    endif
-  else
-    AUXHOME=$PROJECT_DIR
-  endif
-endif
-
+#                     $(PROJECT_OUT)/$(AUXDIR)
+#
+# With the comming of a full install system, multiple install locations were
+# introduced for the differing file types ($(datadir), $(includedir), etc.).
+# To allow support for older packages configured with AUXDIR, we inspect the
+# value of the variable to determine the file type and hence where they
+# should be installed. 
+#
+# For target directories that we recognise, we drop the top-level directory
+# from AUXDIR and install into the appropriate location.  For example, if:
+#
+#                       AUXDIR=include/SubPkg
+#
+# we recognise this as being an include directory and install this to:
+#
+#                       $(includedir)/SubPkg
+#
+# If we do not recognise the first directory part of AUXDIR (or there is no
+# AUXDIR setting) we assume the file is data and install it to:
+#
+#                       $(datadir)/$(AUXDIR).
+#
+# Items directed to share (or any path underneath) will have the share removed
+# if this would otherwise install the files under .../share/share/... i.e. if 
+# $(datadir) itself ends in /share as well. This is both for appearance of the
+# pathname and to enable the Ravl Resource function to better operate (this
+# function also dates from the time of a flatter install structure and for full
+# backwards compatability requires all files to be installed in bin, share, and
+# lib directories under $(prefix) - please see the Ravl documentation for the
+# function).
+#
+# With items directed to lib/.../libdep/, we check to see if the list of files 
+# consits of .def files and .def files alone. If so, we install thsese into the
+# appropriate QMake directory as long as we will not be competing with the
+# automatically generated .def files for the current directory (i.e. if the
+# files we are installing are not named $(PLIB).def or $(LIBDEPS).def). If name
+# collision occurs, we generate an error. If files other than .def files are
+# listed in AUXFILES, we install everything under $(datadir)/$(AUXDIR) and
+# generate a warning that any .def files have not been treated as QMake .def
+# files. 
+#
+# Declare the code for recognising the file type from AUXDIR:
+CALCULATE_AUXDEST=case "$(AUXDIR)" in \
+            bin )       AUXDEST=$(ABS_DESTDIR)$(bindir) ;\
+                        ;; \
+            bin/* )     AUX_SUBDIR=`echo $(AUXDIR) |$(SED) -n s-^bin/-/-p` ;\
+                        AUXDEST=$(ABS_DESTDIR)$(bindir)$$AUX_SUBDIR ;\
+                        ;; \
+            include)    AUXDEST=$(ABS_DESTDIR)$(includedir) ;\
+                        ;; \
+            include/* ) AUX_SUBDIR=`echo $(AUXDIR) |$(SED) -n s-^include/-/-p` ;\
+                        AUXDEST=$(ABS_DESTDIR)$(includedir)$$AUX_SUBDIR ;\
+                        ;; \
+            lib/*/libdep | lib/*/libdep/ ) \
+                        if [ -z ""$(filter-out %.def, $(AUXFILES)) ] ;\
+                        then \
+                          DOT_DEFS=$(filter $(patsubst %,%.def,$(PLIB) $(LIBDEPS)), $(AUXFILES)) ;\
+                          if [ ! -z ""$DOT_DEFS ] ;\
+                          then \
+                            echo Error:Cannot install $DOT_DEFS as this would overwite the QMake generated version ;\
+                            exit -1 ;\
+                          fi ;\
+                          AUX_SUBDIR=`echo $(AUXDIR) |$(SED) -n s-^lib/-/-p` ;\
+                          AUXDEST=$(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)$$AUX_SUBDIR ;\
+                        else \
+                          DOT_DEFS=$(filter %.def, $(AUXFILES)) ;\
+                          if [ ! -z ""$DOT_DEFS ] ;\
+                          then \
+                            echo Warning: $DOT_DEFS not installed as QMake dot def files ;\
+                            echo          Consider using EXTERNALLIBS if these are really QMake dot def files;\
+                          fi ;\
+                          AUXDEST=$(ABS_DESTDIR)$(datadir)/$(AUXDIR) ;\
+                        fi ;\
+                        ;; \
+            lib )       AUXDEST=$(ABS_DESTDIR)$(libdir) ;\
+                        ;; \
+            lib/* )     AUX_SUBDIR=`echo $(AUXDIR) |$(SED) -n s-^lib/-/-p` ;\
+                        AUXDEST=$(ABS_DESTDIR)$(libdir)$$AUX_SUBDIR ;\
+                        ;; \
+            share | share/* ) \
+                        AUXDEST=$(strip $(patsubst %/share, %, $(ABS_DESTDIR)$(datadir)))/$(AUXDIR) ;\
+                        ;; \
+            *)          AUXDEST=$(ABS_DESTDIR)$(datadir)/$(AUXDIR) ;\
+                        ;; \
+            esac
+# This sets AUXDEST to be the intended installation path where the AUXFILES
+# will be installed (or un-installed from as approriate).
+#
+# Now define the actual rules for install and un-install of AUXFILES
 insAux: 
 	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(AUXFILES)" != X ] ;\
          then \
-            if [ ! -d $(ABS_DESTDIR)$(datadir)/$(AUXHOME)/$(AUXDIR) ] ;\
+            $(CALCULATE_AUXDEST) ;\
+            if [ ! -d $$AUXDEST ] ;\
             then \
                if [ X$(QMAKE_INFO) != X ] ;\
                then \
-                  echo $(MKDIR_P) $(ABS_DESTDIR)$(datadir)/$(AUXHOME)/$(AUXDIR) ;\
+                  echo $(MKDIR_P) $$AUXDEST ;\
                fi ;\
-               $(MKDIR_P) $(ABS_DESTDIR)$(datadir)/$(PROJECT_DIR)$(AUXHOME)/$(AUXDIR) ;\
+               $(MKDIR_P) $$AUXDEST ;\
                RET=$$? ;\
                if [ $$RET -ne 0 ] ;\
                then \
@@ -154,9 +230,9 @@ insAux:
             fi ;\
             if [ X$(QMAKE_INFO) != X ] ;\
             then \
-               echo $(INSTALL) $(patsubst %,$(INSTALLHOME)/$(AUXDIR)/%, $(AUXFILES)) $(ABS_DESTDIR)$(datadir)/$(AUXHOME)/$(AUXDIR) ; \
+               echo $(INSTALL) $(patsubst %,$(INSTALLHOME)/$(AUXDIR)/%, $(AUXFILES)) $$AUXDEST ; \
             fi ;\
-            $(INSTALL) $(patsubst %,$(INSTALLHOME)/$(AUXDIR)/%, $(AUXFILES)) $(ABS_DESTDIR)$(datadir)/$(AUXHOME)/$(AUXDIR) ; \
+            $(INSTALL) $(patsubst %,$(INSTALLHOME)/$(AUXDIR)/%, $(AUXFILES)) $$AUXDEST ; \
             RET=$$? ;\
             if [ $$RET -ne 0 ] ;\
             then \
@@ -167,15 +243,16 @@ insAux:
 uinsAux:
 	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(AUXFILES)" != X ] ;\
          then \
+            $(CALCULATE_AUXDEST) ;\
             for f in $(AUXFILES) ;\
             do \
-               if [ -f $(ABS_DESTDIR)$(datadir)/$(AUXHOME)/$(AUXDIR)/$$f ] ;\
+               if [ -f $$AUXDEST/$$f ] ;\
                then \
                   if [ X$(QMAKE_INFO) != X ] ;\
                   then \
-                     echo $(RM) -f $(ABS_DESTDIR)$(datadir)/$(AUXHOME)/$(AUXDIR)/$$f ;\
+                     echo $(RM) -f $$AUXDEST/$$f ;\
                   fi ;\
-                  $(RM) -f $(ABS_DESTDIR)$(datadir)/$(AUXHOME)/$(AUXDIR)/$$f ;\
+                  $(RM) -f $$AUXDEST/$$f ;\
                   RET=$$? ;\
                   if [ $$RET -ne 0 ] ;\
                   then \
@@ -989,8 +1066,8 @@ info:
 	@echo "    ABS_DESTDIR     [ $(ABS_DESTDIR) ]"
 	@echo "    ARC             [ $(ARC) ]"
 	@echo "    AUXFILES        [ $(AUXFILES) ]"
-	@echo "    AUXFILESDIR     [ $(AUXFILESDIR) ]"
-	@echo "    AUXHOME         [ $(AUXHOME) ]"
+	@$(CALCULATE_AUXDEST) ;\
+         echo "    AUXDEST         [ $$AUXDEST ]"
 	@echo "    CFGFILES        [ $(CFGFILES) ]"
 	@echo "    DATA            [ $(DATA) ]"
 	@echo "    DATADIR         [ $(DATADIR) ]"

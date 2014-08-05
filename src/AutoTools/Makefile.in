@@ -192,7 +192,7 @@ installHdrs:
 installopt:
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=opt SetRootInstalled
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile optbin
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project AUXHOME=Ravl VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) install recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) install recurse
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) insLibs recurse
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) RAVL_BODGE=Ravl insMustLinks recurse
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=opt SetRootStaged
@@ -230,7 +230,7 @@ installoptlib:
 installoptshared: installoptsharedgeneral installoptsharedlib
 
 installoptsharedgeneral:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project AUXHOME=Ravl VAR=opt SHAREDBUILD=1 STRIP_SWITCH=$(STRIP_SWITCH) install recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt SHAREDBUILD=1 STRIP_SWITCH=$(STRIP_SWITCH) install recurse
 #       Use the 'install' function of QMake to install the Ravl utility
 #       binaries; config files; data files and scripts. 
 
@@ -312,7 +312,7 @@ endif
 installsingleopt:
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=opt singleSetRootInstalled
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile singleoptbin
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project AUXHOME=Ravl VAR=opt SHARED_LIB_POSTFIX=/single STRIP_SWITCH=$(STRIP_SWITCH) install recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt SHARED_LIB_POSTFIX=/single STRIP_SWITCH=$(STRIP_SWITCH) install recurse
 	$(SHOWIT)if [ ! -d $(ABS_DESTDIR)$(libdir) ] ; then $(MKDIR_P) $(ABS_DESTDIR)$(libdir) ; fi
 	$(INSTALL) $(STRIP_SWITCH) $(PROJECT_OUT)/lib/$(ARC)/opt/single/libRavl.a $(ABS_DESTDIR)$(libdir)/libRavl.a
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) RAVL_BODGE=Ravl insMustLinks recurse
@@ -359,7 +359,7 @@ installsingleoptlib:
 installsingleoptshared:installsingleoptsharedgeneral installsingleoptsharedlib
 
 installsingleoptsharedgeneral:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project AUXHOME=Ravl VAR=opt SUMMARIES=Ravl SHAREDBUILD=1 STRIP_SWITCH=$(STRIP_SWITCH) install recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt SUMMARIES=Ravl SHAREDBUILD=1 STRIP_SWITCH=$(STRIP_SWITCH) install recurse
 #       Use the 'install' function of QMake to install the Ravl utility
 #       binaries; config files; data files and scripts. Setting SUMMARIES to
 #       Ravl forces QMake to use the version of the binaries compiled against
@@ -510,7 +510,7 @@ rpm: qmake
 SetRootInstalled:
 	$(SHOWIT)$(WORKING_QMAKE)/bin/untouch -f $(SOURCEHOME)/Core/Base/Resource.cc
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Core/Base -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
-                CCFLAGS="$(CCFLAGS) -DDEFAULT_ROOT=\\\"$(datadir)/Ravl\\\"" NOEXEBUILD=1 libbuild
+                CCFLAGS="$(CCFLAGS) -DDEFAULT_ROOT=\\\"$(patsubst %/share,%,$(datadir))\\\"" NOEXEBUILD=1 libbuild
 	$(SHOWIT)$(WORKING_QMAKE)/bin/untouch -f $(SOURCEHOME)/Contrib/Gnome/Gnome.cc
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Contrib/Gnome -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
                 CCFLAGS="$(CCFLAGS) -DPREFIX=\\\"$(prefix)\\\" -DDATADIR=\\\"$(datadir)/Ravl\\\" -DSYSCONFDIR=\\\"$(sysconfdir)/Ravl\\\" -DLIBDIR=\\\"$(libdir)\\\"" \
@@ -629,7 +629,7 @@ uninstallMustLinks:
 uninstallopt: uninstalloptgeneral uninstalloptlib
 
 uninstalloptgeneral:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project AUXHOME=Ravl VAR=opt uninstall recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt uninstall recurse
 #       Seperate versions of the uninstall generals exist to allow for differing
 #       manifests dependant on VAR, SHAREDBUILD, etc.
 
@@ -639,7 +639,7 @@ uninstalloptlib:
 uninstalloptshared: uninstalloptsharedgeneral uninstalloptsharedlib
 
 uninstalloptsharedgeneral:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project AUXHOME=Ravl VAR=opt SHAREDBUILD=1 uninstall recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt SHAREDBUILD=1 uninstall recurse
 #       Seperate versions of the uninstall generals exist to allow for differing
 #       manifests dependant on VAR, SHAREDBUILD, etc.
 
@@ -750,7 +750,7 @@ endif
 uninstallsingleopt:uninstallsingleoptgeneral uninstallsingleoptlib
 
 uninstallsingleoptgeneral: 
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project AUXHOME=Ravl VAR=opt uninstall recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt uninstall recurse
 #       Seperate versions of the uninstall generals exist to allow for differing
 #       manifests dependant on VAR, SHAREDBUILD, etc.
 
@@ -772,7 +772,7 @@ uninstallsingleoptlib:
 uninstallsingleoptshared: uninstallsingleoptsharedgeneral  uninstallsingleoptsharedlib
 
 uninstallsingleoptsharedgeneral:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project AUXHOME=Ravl VAR=opt SHARED_LIB_POSTFIX=/shared/single SHAREDBUILD=1 uninstall recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt SHARED_LIB_POSTFIX=/shared/single SHAREDBUILD=1 uninstall recurse
 #       Seperate versions of the uninstall generals exist to allow for differing
 #       manifests dependant on VAR, SHAREDBUILD, etc.
 
