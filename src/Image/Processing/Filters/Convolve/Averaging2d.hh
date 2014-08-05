@@ -23,11 +23,13 @@ namespace RavlImageN {
   //! userlevel=Normal
   //: Averaging filter
 
-  // This is based on the SumRectangles function, and is included for
+  // <p>This is based on the SumRectangles function, and is included for
   // consistency.  It can also be used as a summing filter by omitting the
-  // normalising step.<br>
+  // normalising step.</p>
 
-  // <b><font color="cc0088">Note:</font></b> This filter is not recommended  for byte pixel types.
+  // This filter can be used to generate an efficient approximation to a Gaussian filter for large filter widths, by applying the filter multiple times (typically 3 or 4 times).  For an averaging filter of width/height n, applied 3 times, the resulting Gaussian approximation has a "&sigma;" of about n/2.  If applied 4 times, "&sigma;" is about n/&radic;3.
+
+  // <p><b><font color="cc0088">Note:</font></b> This filter is not recommended  for byte pixel types.</p>
 
   template<class InPixelT,class OutPixelT> 
   class Averaging2dC {

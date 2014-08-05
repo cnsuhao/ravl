@@ -23,14 +23,16 @@ namespace RavlImageN {
   //! userlevel=Normal
   //: Low-pass-filters an image with a finite-width approximation to a Gaussian mask
   //
-  // <p>This class is just wraps <a href="RavlImageN.ConvolveSeparable2dC.html">ConvolveSeparable2dC</a> and
+  // <p>This class just wraps <a href="RavlImageN.ConvolveSeparable2dC.html">ConvolveSeparable2dC</a> and
   // <a href="RavlN.GenerateBinomialObUIntT_bool_bool_UIntTCb.html">GenerateBinomial()</a> calls in a convenient form.</p>
 
   //<p> The filter design is based on a normalised row from Pascal's triangle
   // (i.e. binomial coefficients).  E.g. a 5th order filter has mask of:</p>
   // <pre> (1 4 6 4 1) / 16 </pre>
 
-  //<p> The "standard deviation" of such a filter, with <i>n</i> coefficients, is thus ((<i>n</i>-1)/4)^&frac12;.  For more details, see <a href="RavlN.GenerateBinomialObSizeT_bool_bool_UIntTCb.html">GenerateBinomial()</a>.</p>
+  //<p> The "&sigma", or effective half-width of such a filter, with <i>n</i> coefficients, is thus &frac12;&radic;(<i>n</i>-1).  For more details, see <a href="RavlN.GenerateBinomialObSizeT_bool_bool_UIntTCb.html">GenerateBinomial()</a>.</p>
+
+  //<p> This filter design becomes expensive for large values of n.  Instead, use repeated applications of <a href="RavlImageN.Averaging2dC.html">Averaging2dC</a> as described there.
 
   // <p>The default form of this function is setup to handle single channel images. (e.g. byte, real, int)
   // if you want to convolve multi channel images you should change the 'SumTypeT' template argument to
