@@ -312,7 +312,7 @@ $(STAGING)/AutoBuild/%.sh: $(SRC)/AutoBuild/%.sh.src
 StagePkgConf: $(STAGING)/lib/pkgconfig $(STAGING)/lib/pkgconfig/QMake.pc
 	@:
 
-$(STAGING)/lib/pkgconfig/QMake.pc: @abs_top_builddir@/Config.QMake
+$(STAGING)/lib/pkgconfig/QMake.pc: @abs_top_builddir@/Targets.QMake @abs_top_builddir@/Makefile
 	@echo prefix=$(prefix) > $@
 	@echo datarootdir=$(datarootdir) >> $@
 	@echo datadir=$(datadir) >> $@
