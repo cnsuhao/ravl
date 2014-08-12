@@ -17,7 +17,7 @@ namespace RavlImageN {
 #ifdef MUSTLINK_JPEG
       InitJPEGCompressConv();
 #endif
-#ifdef MUSTLINK_WTIFF
+#ifdef MUSTLINK_TIFF
       InitTIFFFormat();
 #endif
 #ifdef MUSTLINK_JPEG
