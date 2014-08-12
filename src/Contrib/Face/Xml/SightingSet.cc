@@ -1,4 +1,3 @@
-// This file is part of OmniSoft, Pattern recognition software 
 // Copyright (C) 2003, Omniperception Ltd.
 // file-header-ends-here
 //! rcsid="$Id$"
@@ -112,7 +111,7 @@ namespace RavlN {
     {
     }
 
-    static TypeNameC typeNameSightingSetC(typeid(SightingSetC), "OmniSoft::SightingSetC");
+    static TypeNameC typeNameSightingSetC(typeid(SightingSetC), "FaceN::SightingSetC");
 
     FileFormatXMLStreamC<SightingSetC> FileFormatXMLStream_SightingSetC;
 

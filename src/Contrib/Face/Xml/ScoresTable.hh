@@ -6,8 +6,8 @@
  * General Public License (LGPL). See the gpl.licence file for details or
  * see http://www.gnu.org/copyleft/lesser.html
  ******************************************************************************/
-#ifndef OMNI_SCORES_TABLE_HH
-#define OMNI_SCORES_TABLE_HH
+#ifndef RAVL_SCORES_TABLE_HH
+#define RAVL_SCORES_TABLE_HH
 
 #include "Ravl/TwoWayMap.hh"
 #include "Ravl/String.hh"

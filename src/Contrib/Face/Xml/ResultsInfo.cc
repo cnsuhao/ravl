@@ -1,9 +1,7 @@
-// This file is part of OmniSoft, Pattern recognition software 
 // Copyright (C) 2003, Omniperception Ltd.
 // file-header-ends-here
 //! rcsid="$Id$"
-//! lib=OmniFaceXml
-//! file="OmniSoft/Biometrics/Xml/ResultsInfo.cc"
+//! lib=RavlFace
 
 #include "Ravl/Face/ResultsInfo.hh"
 #include "Ravl/StringList.hh"
@@ -112,7 +110,7 @@ namespace RavlN {
     {
     }
 
-    static TypeNameC typeNameResultsInfoC(typeid(ResultsInfoC), "OmniSoft::ResultsInfoC");
+    static TypeNameC typeNameResultsInfoC(typeid(ResultsInfoC), "FaceN::ResultsInfoC");
     
     FileFormatXMLStreamC<ResultsInfoC> FileFormatXMLStream_ResultsInfoC;
   }

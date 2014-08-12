@@ -216,4 +216,3 @@ RESOURCES += LibGnome
 #### RLog ################
 
 #RESOURCES += RLog
-#RLOG_HOME=/opt/Omni/rlog

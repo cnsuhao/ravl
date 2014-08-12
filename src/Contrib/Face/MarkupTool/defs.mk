@@ -1,4 +1,3 @@
-# This file is part of OmniSoft,
 # Copyright (C) 2003, OmniPerception Ltd.
 # This code may be redistributed under the terms of the GNU Lesser
 # General Public License (LGPL). See the lgpl.licence file for details or

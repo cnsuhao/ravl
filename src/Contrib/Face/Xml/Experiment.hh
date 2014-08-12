@@ -1,4 +1,3 @@
-// Thisliewnt file is part of OmniSoft, Pattern recognition software 
 // Copyright (C) 2003, Omniperception Ltd.
 // file-header-ends-here
 #ifndef OMNIIMAGE_EXPERIMENT_HEADER

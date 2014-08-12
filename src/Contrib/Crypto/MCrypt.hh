@@ -4,8 +4,8 @@
 // Public License (GPL). See the gpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-#ifndef OMNI_MCRYPT_HEADER
-#define OMNI_MCRYPT_HEADER 1
+#ifndef RAVL_MCRYPT_HEADER
+#define RAVL_MCRYPT_HEADER 1
 //! rcsid="$Id$"
 //! author="Jos Hickson"
 //! lib=RavlCrypto
@@ -234,4 +234,4 @@ namespace RavlN {
   
 } // namespace RavlCryptN
 
-#endif // OMNI_MCRYPT_HEADER
+#endif // RAVL_MCRYPT_HEADER

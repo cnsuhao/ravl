@@ -1,4 +1,3 @@
-// This file is part of OmniSoft, Pattern recognition software 
 // Copyright (C) 2003, Omniperception Ltd.
 // file-header-ends-here
 //! rcsid="$Id$"
@@ -98,7 +97,7 @@ namespace RavlN {
     {
     }
     
-    static TypeNameC typeNameEnrolSessionC(typeid(EnrolSessionC), "OmniSoft::EnrolSessionC");
+    static TypeNameC typeNameEnrolSessionC(typeid(EnrolSessionC), "FaceN::EnrolSessionC");
 
     FileFormatXMLStreamC<EnrolSessionC> FileFormatXMLStream_EnrolSessionC;
 

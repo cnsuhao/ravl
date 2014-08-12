@@ -4,8 +4,8 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-#ifndef OMNI_THINPLATESPLINE_HEADER
-#define OMNI_THINPLATESPLINE_HEADER 1
+#ifndef RAVL_THINPLATESPLINE_HEADER
+#define RAVL_THINPLATESPLINE_HEADER 1
 //! author="Charles Galambos"
 //! date="29/1/2003"
 //! rcsid="$Id$"
