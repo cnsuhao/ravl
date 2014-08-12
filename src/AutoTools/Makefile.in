@@ -431,43 +431,14 @@ QMake:
 #       under $(datadir)/QMake/Makefiles).
 
 LocalQMake: 
-	$(MAKE) -f @abs_builddir@/QMake/Makefile DESTDIR=staged bindir=@abs_builddir@/share/QMake/bin \
-                         datadir=@abs_builddir@/share sysconfdir=@abs_builddir@ STAGING=@abs_builddir@/share/QMake
-	$(SHOWIT)if [ ! -f @abs_builddir@/share/QMake/bin/Validate ]; \
-                 then \
-                   if [ ! -h @abs_builddir@/share/QMake/bin/Validate ]; \
-                   then \
-                     cd @abs_builddir@/share/QMake/bin; \
-                     $(LN_S) @abs_builddir@/bin/Validate Validate; \
-                   fi \
-                 fi
-	$(SHOWIT)if [ ! -f @abs_builddir@/share/QMake/bin/CxxDoc ]; \
-                 then \
-                   if [ ! -h @abs_builddir@/share/QMake/bin/CxxDoc ]; \
-                   then \
-                     cd @abs_builddir@/share/QMake/bin; \
-                     $(LN_S) @abs_builddir@/bin/CxxDoc CxxDoc; \
-                   fi \
-                 fi
-#       Stage QMake under the Ravl build directory in a form that will run
-#       from that directory.
-#       To achieve this, we have to set the destination for both the staging
-#       and install targets to be the same for the makefiles. The install
-#       target for the makefiles uses $(datadir)/QMake/Makefiles as its
-#       destination, while the staging target uses $(STAGING)/Makefiles; hence
-#       the slightly different values for those two variables. DESTDIR=staged
-#       prevents make complaining about using identical destinations for both
-#       the staged and install targets. As we are only staging and not
-#       performing an install, DESTDIR will have no other effect and gives us
-#       the functionality we are looking for. As well as $(datadir),
-#       $(sysconfdir) automatically has /QMake suffixed to it for the install
-#       process, hence the value of $(sysconfdir) that is used here.
-#       The final two symbolic links allow the local QMake to find Validate and
-#       CxxDoc that, while they should be part of QMake, are currently part of
-#       RAVL. This last stage is a bit of a bodge as it won't work on platforms
-#       that do not support symbolic links (as the target doesn't actually exist
-#       at this point). The proper solution is to uncouple the utilities from
-#       RAVL (re-write it) and move then into QMake.
+	$(MAKE) -f @abs_builddir@/QMake/Makefile \
+                   prefix=@abs_builddir@ STAGING=@abs_builddir@/transient/QMake
+	$(MAKE) -f @abs_builddir@/QMake/Makefile  prefix=@abs_builddir@ \
+                   STAGING=@abs_builddir@/transient/QMake install
+#       Install a copy of QMake under the Ravl build directory in a form that
+#       will run from that directory.
+#       To achieve this, we have to build QMake into a staging directory and
+#       then install that.
 
 
 recheck: retest
