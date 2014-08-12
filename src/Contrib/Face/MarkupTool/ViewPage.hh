@@ -1,13 +1,11 @@
-// This file is part of OmniSoft, Pattern recognition software
 // Copyright (C) 2003, Omniperception Ltd.
 // file-header-ends-here
 #ifndef VIEWPAGE_HEADER
 #define VIEWPAGE_HEADER 1
-//! file="OmniSoft/Applications/WhoFIT/ViewPage.hh"
 //! docentry = "Ravl.Applications.Mainment Tool"
 //! author   = "Kieron Messer"
 //! userlevel=Develop
-//! lib=OmniWhoFIT
+//! lib=RavlFace
 
 #include "Ravl/GUI/LBox.hh"
 

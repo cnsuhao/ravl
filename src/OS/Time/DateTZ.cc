@@ -110,6 +110,11 @@ namespace RavlN {
   DateTZC DateTZC::Now()
   { return DateTZC(DateC::NowLocal(),DateC::TimeZoneOffset().TotalSeconds()); }
 
+  //: Get an invalid time.
+
+  DateTZC DateTZC::InvalidTime()
+  { return DateTZC(DateC::InvalidTime(),0); }
+
   //: Time in UTC.
 
   RavlN::DateC DateTZC::UTC() const
@@ -121,7 +126,7 @@ namespace RavlN {
 
   //: Generate date from ISO8601 string.
   // Note this may not support all variants, if the string fails to parse and exception will be thrown.
-  DateTZC DateTZC::FromISO8601String(const StringC &dataString)
+  DateTZC DateTZC::FromISO8601String(const StringC &dateString)
   {
     UIntT year = 0;
     UIntT month = 1;
@@ -132,7 +137,11 @@ namespace RavlN {
     UIntT usec = 0;
     IntT tzOffset = 0;
 
-    if(!DateC::DecomposeISO8601String(dataString,
+    // Check for undefind date/time
+    if(dateString == "undefined" || dateString == "")
+      return DateTZC::InvalidTime();
+
+    if(!DateC::DecomposeISO8601String(dateString,
                                year,
                                month,
                                day,
@@ -142,7 +151,7 @@ namespace RavlN {
                                usec,
                                tzOffset)) {
 
-      RavlDebug("Failed to parse date: '%s' ",dataString.data());
+      RavlDebug("Failed to parse date: '%s' ",dateString.data());
       throw ExceptionOperationFailedC("Parse error in date.");
     }
 
@@ -153,6 +162,9 @@ namespace RavlN {
   StringC DateTZC::ISO8601() const
   {
     struct tm b;
+
+    if(!m_localTime.IsValid())
+      return "undefined";
 
     time_t s = (time_t) m_localTime.TotalSeconds();
 #if !RAVL_COMPILER_VISUALCPP

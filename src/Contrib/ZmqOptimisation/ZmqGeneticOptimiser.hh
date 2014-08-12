@@ -1,5 +1,12 @@
-#ifndef OMNI_OBJECT_ZMQGENETICOPTIMISER_HH
-#define OMNI_OBJECT_ZMQGENETICOPTIMISER_HH 1
+// This file is part of RAVL, Recognition And Vision Library 
+// This code may be redistributed under the terms of the GNU Lesser
+// General Public License (LGPL). See the lgpl.licence file for details or
+// see http://www.gnu.org/copyleft/lesser.html
+// file-header-ends-here
+#ifndef RAVL_GENETIC_ZMQGENETICOPTIMISER_HH
+#define RAVL_GENETIC_ZMQGENETICOPTIMISER_HH 1
+//! lib=RavlGeneticOptimisation
+//! docentry=Ravl.API.Math.Genetic.Optimisation
 
 #include "Ravl/Genetic/GeneticOptimiser.hh"
 #include "Ravl/XMLFactory.hh"

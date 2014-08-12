@@ -4,8 +4,8 @@
  *
  */
 
-#ifndef OMNI_OBJECT_GnuPlot3d_HH
-#define	OMNI_OBJECT_GnuPlot3d_HH
+#ifndef RAVL_OBJECT_GnuPlot3d_HH
+#define	RAVL_OBJECT_GnuPlot3d_HH
 
 #include "Ravl/SmartPtr.hh"
 #include "Ravl/DList.hh"

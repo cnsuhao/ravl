@@ -1,13 +1,11 @@
-// This file is part of OmniSoft, Pattern recognition software
 // Copyright (C) 2003, Omniperception Ltd.
 // file-header-ends-here
 #ifndef RAVL_FACE_CONTROLWIN_HEADER
 #define RAVL_FACE_CONTROLWIN_HEADER 1
-//! file="OmniSoft/Applications/WhoFIT/ControlWin.hh"
 //! docentry = "Ravl.Applications.Mainment Tool"
 //! author   = "Kieron Messer"
 //! userlevel=Develop
-//! lib=OmniWhoFIT
+//! lib=RavlFace
 
 #include "ViewPage.hh"
 

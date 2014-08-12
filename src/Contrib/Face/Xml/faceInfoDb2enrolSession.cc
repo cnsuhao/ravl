@@ -1,7 +1,5 @@
-// This file is part of OmniSoft, Pattern recognition software 
 // Copyright (C) 2003, Omniperception Ltd.
 // file-header-ends-here
-// This file is part of OmniSoft, Pattern recognition software 
 // Copyright (C) 2002, Omniperception Ltd.
 //! rcsid="$Id: modifyXml.cc 5236 2005-01-28 11:11:46Z kieron $"
 //! docentry="Ravl.Applications.Image.Face"

@@ -108,11 +108,6 @@
   <libpath>C:\Python24\libs</libpath>
 </extlib>
 
-<extlib name="OmniMagCore">
-  <lib>Rpcrt4.lib</lib>
-  <lib>comsuppw.lib</lib>
-</extlib>
-
 <extlib name="SentinelSuperPro">
 <includepath>C:\Program Files\Rainbow Technologies\SuperPro\6.3\MSVCDev\include</includepath>
 <libpath>C:\Program Files\Rainbow Technologies\SuperPro\6.3\MSVCDev\lib</libpath>

@@ -1,7 +1,5 @@
-// This file is part of OmniSoft, Pattern recognition software 
 // Copyright (C) 2003, Omniperception Ltd.
 // file-header-ends-here
-//! file="OmniSoft/Biometrics/Pca/FaceInfoStream.cc"
 //! author="Kieron J Messer"
 //! rcsid="$Id$"
 //! lib=RavlFace

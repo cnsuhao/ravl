@@ -90,6 +90,15 @@ extern int sleep(int x); // A hack, I hope it doesn't cause problems later...
 
 namespace RavlN {
 
+  DateC::DateC(bool setval,bool useVirt)  {
+    if(setval)
+      SetToNow(useVirt);
+    else {
+      sec = 0;
+      usec = -1;
+    }
+  }
+
   //: Construct from a stream
   
   DateC::DateC(istream &in) { 
@@ -481,7 +490,7 @@ namespace RavlN {
   //: Generate date from ISO8601 string.
   // Note this may not support all variants, if the string fails to parse and exception will be thrown.
 
-  DateC DateC::FromISO8601String(const StringC &dataString,bool storeInUTC)
+  DateC DateC::FromISO8601String(const StringC &dateString,bool storeInUTC)
   {
     UIntT year = 0;
     UIntT month = 1;
@@ -492,7 +501,11 @@ namespace RavlN {
     UIntT usec = 0;
     IntT tzOffset = 0;
 
-    if(!DecomposeISO8601String(dataString,
+    // Check for undefind date/time
+    if(dateString == "undefined" || dateString == "")
+      return DateC::InvalidTime();
+
+    if(!DecomposeISO8601String(dateString,
                                year,
                                month,
                                day,
@@ -502,7 +515,7 @@ namespace RavlN {
                                usec,
                                tzOffset)) {
 
-      RavlDebug("Failed to parse date from: '%s' ",dataString.data());
+      RavlDebug("Failed to parse date from: '%s' ",dateString.data());
       throw ExceptionOperationFailedC("Parse error in date.");
     }
     DateC ret(year,month,day,hour,min,sec,usec);
@@ -642,6 +655,8 @@ namespace RavlN {
   StringC DateC::ISO8601(bool asUTC) const
   {
     struct tm b;
+    if(!IsValid())
+      return "undefined";
 
     time_t s = (time_t) TotalSeconds();
 #if !RAVL_COMPILER_VISUALCPP
@@ -1010,29 +1025,73 @@ namespace RavlN {
 #endif
 
   const DateC &DateC::operator+=(double val) {
-
-#if 0
-    sec += (SecondT) val;
-    usec += ((long) ((RealT) val * 1000000) % 1000000);
-#else
     double frac;
+    if(!IsValid())
+      return *this;
     usec += Round(modf(val,&frac) * 1000000);
     sec += (SecondT) frac;
-#endif
     NormalisePos();
     return *this;
   }
 
   const DateC &DateC::operator-=(double val) {
-#if 0
-    sec -= (SecondT) val;
-    usec -= ((long) ((RealT) val * 1000000) % 1000000);
-#else
     double frac;
+    if(!IsValid())
+      return *this;
     usec -= Round(modf(val,&frac) * 1000000);
     sec -= (SecondT) frac;
-#endif
     NormaliseNeg();
+    return *this;
+  }
+
+  void DateC::NormalisePos()  {
+    if(usec >= MaxUSeconds()) {
+      int diff = usec / MaxUSeconds();
+      usec -= diff * MaxUSeconds();
+      sec += diff;
+    }
+  }
+
+  void DateC::NormaliseNeg()  {
+    if(usec < 0) {
+      int diff = (-usec / MaxUSeconds())+1;
+      usec += diff * MaxUSeconds();
+      sec -= diff;
+    }
+  }
+
+  DateC DateC::operator+(const DateC &oth) const  {
+    DateC ret;
+    if(!IsValid() || !oth.IsValid()) return *this;
+    ret.sec = sec + oth.sec;
+    ret.usec = usec + oth.usec;
+    ret.NormalisePos();
+    return ret;
+  }
+
+  DateC DateC::operator-(const DateC &oth) const  {
+    DateC ret;
+    if(!IsValid() || !oth.IsValid()) return *this;
+    ret.sec = sec - oth.sec;
+    ret.usec = usec - oth.usec;
+    ret.NormaliseNeg();
+    return ret;
+  }
+
+  const DateC &DateC::operator-=(const DateC &val)
+  {
+    if(!IsValid() || !val.IsValid()) return *this;
+    sec -= val.sec;
+    usec -= val.usec;
+    NormaliseNeg();
+    return *this;
+  }
+
+  const DateC &DateC::operator+=(const DateC &val)  {
+    if(!IsValid() || !val.IsValid()) return *this;
+    sec += val.sec;
+    usec += val.usec;
+    NormalisePos();
     return *this;
   }
 

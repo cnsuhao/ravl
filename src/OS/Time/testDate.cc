@@ -29,12 +29,12 @@ int CheckODBC();
 int CheckTime();
 int CheckTimeMath();
 int CheckDateTZ();
-
+int CheckISO8601();
 
 int main() 
 {
   cerr << "Starting DateC tests... \n";
-#if 0
+#if 1
   RAVL_RUN_TEST(CheckTimeMath());
   RAVL_RUN_TEST(CheckConsistant());
   RAVL_RUN_TEST(CheckIO());
@@ -42,8 +42,9 @@ int main()
   RAVL_RUN_TEST(CheckLocalTime());
   RAVL_RUN_TEST(CheckODBC());
   RAVL_RUN_TEST(CheckTime());
-#endif
   RAVL_RUN_TEST(CheckDateTZ());
+#endif
+  RAVL_RUN_TEST(CheckISO8601());
   cerr << "Test passed.\n";
   return 0;
 }
@@ -225,7 +226,34 @@ int CheckDateTZ()
   DateTZC dateRestored = DateTZC::FromISO8601String(ds);
   //RavlDebug("Restored time:%s ",dateRestored.ISO8601().c_str());
   RAVL_TEST_EQUALS(ds,dateRestored.ISO8601());
+  RAVL_TEST_TRUE(theDateTZ.IsValid());
+
+  DateTZC invalid = DateTZC::InvalidTime();
+  RAVL_TEST_EQUALS(invalid.ISO8601(),"undefined");
+  RAVL_TEST_FALSE(invalid.IsValid());
+
+  DateTZC dateRestored2 = DateTZC::FromISO8601String("undefined");
+  RAVL_TEST_FALSE(dateRestored2.IsValid());
 
   return 0;
 }
+
+int CheckISO8601()
+{
+  DateC theDate = DateC::NowUTC();
+  StringC ds = theDate.ISO8601();
+  DateC dateRestored = DateC::FromISO8601String(ds);
+  //RavlDebug("Restored time:%s ",dateRestored.ISO8601().c_str());
+  RAVL_TEST_EQUALS(ds,dateRestored.ISO8601());
+
+  DateC invalid = DateC::InvalidTime();
+  RAVL_TEST_EQUALS(invalid.ISO8601(),"undefined");
+  RAVL_TEST_FALSE(invalid.IsValid());
+
+  DateC dateRestored2 = DateC::FromISO8601String("undefined");
+  RAVL_TEST_FALSE(dateRestored2.IsValid());
+
+  return 0;
+}
+
 

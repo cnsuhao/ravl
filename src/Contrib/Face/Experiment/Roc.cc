@@ -1,11 +1,10 @@
-// This file is part of OmniSoft, Pattern recognition software 
 // Copyright (C) 2003, Omniperception Ltd.
 // file-header-ends-here
 ////////////////////////////////////////////////////////////////////////////
 //! author="Kieron J Messer"
-//! lib=OmniFaceXml
+//! lib=RavlFace
 //! date="11/10/101"
-//! file="OmniSoft/Biometrics/TestHarness/Roc.cc"
+//! file="Contrib/Face/Experiment/Roc.cc"
 
 #include "Ravl/Face/Roc.hh"
 #include "Ravl/CDLIter.hh"

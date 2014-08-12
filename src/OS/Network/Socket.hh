@@ -61,6 +61,9 @@ namespace RavlN {
     // If block is true, the call will not return until there
     // is a valid client.
 
+    bool SetAddressReuse(bool state);
+    //: Set address reuse flag
+
     void Close();
     //: Close the socket.
 
@@ -101,6 +104,7 @@ namespace RavlN {
 
     bool server;
     struct sockaddr *addr; // Allocated as a char array.
+    bool m_addrReuse;
   };
 
 
@@ -211,6 +215,18 @@ namespace RavlN {
     { return Body().SetNonBlocking(block); }
     //: Enable non-blocking use of read and write.
     // true= read and write's won't do blocking waits.
+
+    bool SetAddressReuse(bool state)
+    { return Body().SetAddressReuse(state); }
+    //: Set address reuse flag
+    // This socket option tells the kernel that even if this port is busy (in
+    // the TIME_WAIT state), go ahead and reuse it anyway.  If it is busy,
+    // but with another state, you will still get an address already in use
+    // error.  It is useful if your server has been shut down, and then
+    // restarted right away while sockets are still active on its port.  You
+    // should be aware that if any unexpected data comes in, it may confuse
+    // your server, but while this is possible, it is not likely.
+
 
     IntT Read(char *buff, UIntT size)
     { return Body().Read(buff, size); }

@@ -1,11 +1,10 @@
-// This file is part of OmniSoft, Pattern recognition software 
 // Copyright (C) 2003, Omniperception Ltd.
 // file-header-ends-here
 #ifndef RAVLN_FACEN_FACEINFOSTREAM_HEADER
 #define RAVLN_FACEN_FACEINFOSTREAM_HEADER 1
 //! lib=RavlFace
 //! docentry="Ravl.Applications.Image.Face"
-//! file="OmniFace/Xml/FaceInfoStream.hh"
+//! file="Ravl/Contrib/Face/Xml/FaceInfoStream.hh"
 //! author="Kieron J Messer"
 //! rcsid="$Id$"
 

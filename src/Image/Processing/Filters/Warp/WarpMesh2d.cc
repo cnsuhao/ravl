@@ -6,7 +6,7 @@
 // file-header-ends-here
 //! rcsid="$Id$"
 //! lib=RavlImageProc
-//! file="OmniTools/ActiveAppearanceModels/WarpMesh2d.cc"
+//! file="Ravl/Image/Processing/Filters/Warp/WarpMesh2d.cc"
 
 #include "Ravl/Image/WarpMesh2d.hh"
 #include "Ravl/THEMeshFaceIter.hh"

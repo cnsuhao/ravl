@@ -149,7 +149,7 @@ namespace RavlN {
 
     static XMLFactoryRegisterConvertC<ZmqGeneticOptimiserC, GeneticOptimiserC> g_registerConvertZmqGeneticOptimiser("RavlN::ZmqN::ZmqGeneticOptimiserC");
     static RavlN::TypeNameC g_typeZmqGeneticOptimiserRef(typeid(RavlN::ZmqN::ZmqGeneticOptimiserC::RefT),
-        "RavlN::SmartPtrC<OmniN::ObjectN::GeneticOptimiserC>");
+        "RavlN::SmartPtrC<RavlN::GeneticN::GeneticOptimiserC>");
 
   }
 }

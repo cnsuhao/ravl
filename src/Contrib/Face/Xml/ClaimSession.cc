@@ -1,4 +1,3 @@
-// This file is part of OmniSoft, Pattern recognition software
 // Copyright (C) 2003, Omniperception Ltd.
 // file-header-ends-here
 //! rcsid="$Id$"
@@ -786,7 +785,7 @@ namespace RavlN {
     void InitClaimSessionFormat()
     {
     }
-    static TypeNameC typeNameClaimSessionC(typeid(ClaimSessionC), "OmniSoft::ClaimSessionC");
+    static TypeNameC typeNameClaimSessionC(typeid(ClaimSessionC), "FaceN::ClaimSessionC");
     FileFormatXMLStreamC<ClaimSessionC> FileFormatXMLStream_ClaimSessionC;
 
 //RAVL_INITVIRTUALCONSTRUCTOR_FULL_NAMED(niformLBPNormaliseBodyC,UniformLBPNormaliseC,FaceNormAbstractC,"UniformLBPNormalise");

@@ -124,12 +124,6 @@
 <libpath>c:\WindowsSources\Python-2.6.6\libs</libpath>
 </extlib>
 
-<extlib name="OmniMagCore">
-<lib>OmniMagCore.lib</lib>
-<lib>Rpcrt4.lib</lib>
-<lib>comsuppw.lib</lib>
-</extlib>
-
 <extlib name="SentinelSuperPro">
 <!--
 <includepath>C:\Program Files\Rainbow Technologies\SuperPro\6.3\MSVCDev\include</includepath>
@@ -193,11 +187,6 @@
 </extlib>
 
 <extlib name="Socket">
-</extlib>
-
-<extlib name="OmniHostComputer">
-<lib>OmniHostComputer.lib</lib>
-<lib>iphlpapi.lib</lib>
 </extlib>
 
 <!-- TODO(WM) Fix this in appropriate defs.mk -->

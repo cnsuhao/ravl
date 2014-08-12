@@ -74,6 +74,7 @@ int main()
 
   // Current State of the System - x(k), P(k)
   VectorMatrixC state(3);
+  state.SetZero();
 
   // Set up the motion model - for the odometry measurement
   KalmanTwoWheelDifferentialMotionModelC odometry;

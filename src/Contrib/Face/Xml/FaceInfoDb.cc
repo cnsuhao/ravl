@@ -1,4 +1,3 @@
-// This file is part of OmniSoft, Pattern recognition software
 // Copyright (C) 2003, Omniperception Ltd.
 // file-header-ends-here
 //! lib=RavlFace
@@ -619,9 +618,9 @@ namespace RavlN {
     {
     }
 
-    static TypeNameC typeNameFaceInfoDbC(typeid(FaceInfoDbC), "OmniSoft::FaceInfoDbC");
+    static TypeNameC typeNameFaceInfoDbC(typeid(FaceInfoDbC), "FaceN::FaceInfoDbC");
 
-    static RavlN::XMLFactoryRegisterHandleC<FaceInfoDbC> g_registerFaceInfoDbC("OmniSoft::FaceInfoDbC");
+    static RavlN::XMLFactoryRegisterHandleC<FaceInfoDbC> g_registerFaceInfoDbC("FaceN::FaceInfoDbC");
 
     FileFormatXMLStreamC<FaceInfoDbC> FileFormatXMLStream_FaceInfoDbC;
   }
