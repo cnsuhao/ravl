@@ -27,14 +27,24 @@ dnl No macro parameters
 dnl
 dnl Global variables used:
 dnl
-dnl       WORKING_QMAKE              Receives the location of the located
+dnl       WORKING_QMAKE_DATA         Receives the location of the located
 dnl                                  QMake's data files (Makefiles, Support
 dnl                                  sub-directories, etc.). This variable
 dnl                                  is in makefile form so it should not be
 dnl                                  used within the configure script (it
-dnl                                  will be set to $(PROJECT_OUT)/... if we
-dnl                                  are using the local QMake shipped with
-dnl                                  the project).
+dnl                                  will be set to:
+dnl                                       $(PROJECT_OUT)/share/QMake
+dnl                                  if we are using the local QMake shipped
+dnl                                  with the project).
+dnl       WORKING_QMAKE_BIN          Receives the location of the located
+dnl                                  QMake's executable files (helper scripts
+dnl                                  binaries, Perl programs, etc.). Again,
+dnl                                  this variable is in makefile form and
+dnl                                  should not be used within the configure
+dnl                                  script (it will be set to:
+dnl                                           $(PROJECT_OUT)/bin
+dnl                                  if we are using the local QMake shipped
+dnl                                  with the project).
 dnl       QMAKE_CFG                  Receives the location of the located
 dnl                                  QMake's configuration file.
 dnl       InheritCFG                 Records if we should be bootstrapping
@@ -129,12 +139,14 @@ AC_DEFUN([QM_LOCATE_QMAKE],
             PKG_CHECK_EXISTS([$with_QMake_pkgconf],
                              [if ( test x$Require_QMake_pkgconf = xyes )
                               then
-                                WORKING_QMAKE=`$PKG_CONFIG --variable=datadir $with_QMake_pkgconf 2>/dev/null`/QMake
-                                #  "      "  = ${datadir}/QMake
+                                WORKING_QMAKE_DATA=`$PKG_CONFIG --variable=datadir $with_QMake_pkgconf 2>/dev/null`/QMake
+                                #  "      "     "  = ${datadir}/QMake
+                                WORKING_QMAKE_BIN=`$PKG_CONFIG --variable=bindir $with_QMake_pkgconf 2>/dev/null`
+                                #  "      "    " = ${bindir}
                                 QMAKE_CONFIGFILES=`$PKG_CONFIG --variable=sysconfdir $with_QMake_pkgconf 2>/dev/null`/QMake
                                 # "        "     = ${sysconfdir}/QMake
                                 QMAKE_CFG=$QMAKE_CONFIGFILES/Config.QMake
-                                if ( test X$WORKING_QMAKE == X || test X$QMAKE_CONFIGFILES == X )
+                                if ( test X$WORKING_QMAKE_DATA == X ||  test X$WORKING_QMAKE_BIN == X || test X$QMAKE_CONFIGFILES == X )
                                 then
                                   AC_MSG_FAILURE([Required QMake is unavailable])
                                 else
@@ -179,15 +191,22 @@ AC_DEFUN([QM_LOCATE_QMAKE],
                                      )
                                   then
                                     # Local (supplied with client product) is latest version, use this.
-                                    WORKING_QMAKE=uselocal
+                                    WORKING_QMAKE_DATA=uselocal
+                                    WORKING_QMAKE_BIN=uselocal
                                     AC_MSG_RESULT([older])
                                   else
                                     # Installed version is latest, use that
-                                    WORKING_QMAKE=`$PKG_CONFIG --variable=datadir $with_QMake_pkgconf 2>/dev/null`/QMake
-                                    #  "      "  = ${datadir}/QMake
-                                    if ( test X$WORKING_QMAKE == X )
+                                    WORKING_QMAKE_DATA=`$PKG_CONFIG --variable=datadir $with_QMake_pkgconf 2>/dev/null`/QMake
+                                    #  "      "    "   = ${datadir}/QMake
+                                    if ( test X$WORKING_QMAKE_DATA == X )
                                     then
                                       AC_MSG_FAILURE([Unable to determine datadir of installed QMake.])
+                                    fi
+                                    WORKING_QMAKE_BIN=`$PKG_CONFIG --variable=bindir $with_QMake_pkgconf 2>/dev/null`
+                                    #  "      "    "   = ${bindir}
+                                    if ( test X$WORKING_QMAKE_BIN == X )
+                                    then
+                                      AC_MSG_FAILURE([Unable to determine bindir of installed QMake.])
                                     fi
                                     QMAKE_CONFIGFILES=`$PKG_CONFIG --variable=sysconfdir $with_QMake_pkgconf 2>/dev/null`/QMake
                                     # "        "     = ${sysconfdir}/QMake
@@ -202,7 +221,8 @@ AC_DEFUN([QM_LOCATE_QMAKE],
                                   trace 4 Local QMake version $LocalMajor.$LocalMinor.$LocalPatch
                                 else
                                   # No existing version, use Local
-                                  WORKING_QMAKE=uselocal
+                                  WORKING_QMAKE_DATA=uselocal
+                                  WORKING_QMAKE_BIN=uselocal
                                   AC_MSG_RESULT([local])
                                 fi
                               fi
@@ -226,13 +246,14 @@ AC_DEFUN([QM_LOCATE_QMAKE],
                             )
           fi
 
-          if ( test x$WORKING_QMAKE = x || test x$WORKING_QMAKE = xuselocal )
+          if ( test x$WORKING_QMAKE_DATA = x || test x$WORKING_QMAKE_DATA = xuselocal || test x$WORKING_QMAKE_BIN = x || test x$WORKING_QMAKE_BIN = xuselocal )
           then
              trace 2 "Will use local QMake:"
 
              # No installed QMake found or we explicitly want to use the use one staged
              # from the source included with the project distribution. 
-             WORKING_QMAKE=\$\(PROJECT_OUT\)/share/QMake
+             WORKING_QMAKE_DATA=\$\(PROJECT_OUT\)/share/QMake
+             WORKING_QMAKE_BIN=\$\(PROJECT_OUT\)/bin
              QMAKE_CONFIGFILES=\$\(PROJECT_OUT\)/QMake
              if ( test "x$PACKAGE_NAME" == xQMake )
              then
@@ -264,10 +285,12 @@ AC_DEFUN([QM_LOCATE_QMAKE],
              InheritCFG=yes
           fi
           AC_SUBST([QMAKE_CONFIGFILES])
-          AC_SUBST([WORKING_QMAKE])
+          AC_SUBST([WORKING_QMAKE_DATA])
+          AC_SUBST([WORKING_QMAKE_BIN])
           AC_SUBST([NeededQMake])
           trace 3 "   Config file $QMAKE_CONFIGFILES/Config.QMake"
-          trace 3 "   Live QMake under $WORKING_QMAKE"
+          trace 3 "   Live QMake data under $WORKING_QMAKE_DATA"
+          trace 3 "   Live QMake executables under $WORKING_QMAKE_BIN"
           trace 4 "   Build target(s) $NeededQMake"
          ]
         )

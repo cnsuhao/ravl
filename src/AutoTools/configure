@@ -949,7 +949,8 @@ CFLAGS
 CC
 GET_CWD
 NeededQMake
-WORKING_QMAKE
+WORKING_QMAKE_BIN
+WORKING_QMAKE_DATA
 QMAKE_CONFIGFILES
 SED
 PKG_CONFIG
@@ -4056,12 +4057,14 @@ $as_echo_n "checking pkg-config for QMake... " >&6; }
   test $ac_status = 0; }; then
   if ( test x$Require_QMake_pkgconf = xyes )
                               then
-                                WORKING_QMAKE=`$PKG_CONFIG --variable=datadir $with_QMake_pkgconf 2>/dev/null`/QMake
-                                #  "      "  = ${datadir}/QMake
+                                WORKING_QMAKE_DATA=`$PKG_CONFIG --variable=datadir $with_QMake_pkgconf 2>/dev/null`/QMake
+                                #  "      "     "  = ${datadir}/QMake
+                                WORKING_QMAKE_BIN=`$PKG_CONFIG --variable=bindir $with_QMake_pkgconf 2>/dev/null`
+                                #  "      "    " = ${bindir}
                                 QMAKE_CONFIGFILES=`$PKG_CONFIG --variable=sysconfdir $with_QMake_pkgconf 2>/dev/null`/QMake
                                 # "        "     = ${sysconfdir}/QMake
                                 QMAKE_CFG=$QMAKE_CONFIGFILES/Config.QMake
-                                if ( test X$WORKING_QMAKE == X || test X$QMAKE_CONFIGFILES == X )
+                                if ( test X$WORKING_QMAKE_DATA == X ||  test X$WORKING_QMAKE_BIN == X || test X$QMAKE_CONFIGFILES == X )
                                 then
                                   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
@@ -4102,18 +4105,28 @@ $as_echo "yes" >&6; }
                                      )
                                   then
                                     # Local (supplied with client product) is latest version, use this.
-                                    WORKING_QMAKE=uselocal
+                                    WORKING_QMAKE_DATA=uselocal
+                                    WORKING_QMAKE_BIN=uselocal
                                     { $as_echo "$as_me:${as_lineno-$LINENO}: result: older" >&5
 $as_echo "older" >&6; }
                                   else
                                     # Installed version is latest, use that
-                                    WORKING_QMAKE=`$PKG_CONFIG --variable=datadir $with_QMake_pkgconf 2>/dev/null`/QMake
-                                    #  "      "  = ${datadir}/QMake
-                                    if ( test X$WORKING_QMAKE == X )
+                                    WORKING_QMAKE_DATA=`$PKG_CONFIG --variable=datadir $with_QMake_pkgconf 2>/dev/null`/QMake
+                                    #  "      "    "   = ${datadir}/QMake
+                                    if ( test X$WORKING_QMAKE_DATA == X )
                                     then
                                       { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
 as_fn_error "Unable to determine datadir of installed QMake.
+See \`config.log' for more details." "$LINENO" 5; }
+                                    fi
+                                    WORKING_QMAKE_BIN=`$PKG_CONFIG --variable=bindir $with_QMake_pkgconf 2>/dev/null`
+                                    #  "      "    "   = ${bindir}
+                                    if ( test X$WORKING_QMAKE_BIN == X )
+                                    then
+                                      { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Unable to determine bindir of installed QMake.
 See \`config.log' for more details." "$LINENO" 5; }
                                     fi
                                     QMAKE_CONFIGFILES=`$PKG_CONFIG --variable=sysconfdir $with_QMake_pkgconf 2>/dev/null`/QMake
@@ -4133,7 +4146,8 @@ $as_echo "yes" >&6; }
                                   trace 4 Local QMake version $LocalMajor.$LocalMinor.$LocalPatch
                                 else
                                   # No existing version, use Local
-                                  WORKING_QMAKE=uselocal
+                                  WORKING_QMAKE_DATA=uselocal
+                                  WORKING_QMAKE_BIN=uselocal
                                   { $as_echo "$as_me:${as_lineno-$LINENO}: result: local" >&5
 $as_echo "local" >&6; }
                                 fi
@@ -4168,13 +4182,14 @@ $as_echo "$as_me: WARNING: Cannot find an installed QMake, will use the embedded
 fi
           fi
 
-          if ( test x$WORKING_QMAKE = x || test x$WORKING_QMAKE = xuselocal )
+          if ( test x$WORKING_QMAKE_DATA = x || test x$WORKING_QMAKE_DATA = xuselocal || test x$WORKING_QMAKE_BIN = x || test x$WORKING_QMAKE_BIN = xuselocal )
           then
              trace 2 "Will use local QMake:"
 
              # No installed QMake found or we explicitly want to use the use one staged
              # from the source included with the project distribution.
-             WORKING_QMAKE=\$\(PROJECT_OUT\)/share/QMake
+             WORKING_QMAKE_DATA=\$\(PROJECT_OUT\)/share/QMake
+             WORKING_QMAKE_BIN=\$\(PROJECT_OUT\)/bin
              QMAKE_CONFIGFILES=\$\(PROJECT_OUT\)/QMake
              if ( test "x$PACKAGE_NAME" == xQMake )
              then
@@ -4208,8 +4223,10 @@ fi
 
 
 
+
           trace 3 "   Config file $QMAKE_CONFIGFILES/Config.QMake"
-          trace 3 "   Live QMake under $WORKING_QMAKE"
+          trace 3 "   Live QMake data under $WORKING_QMAKE_DATA"
+          trace 3 "   Live QMake executables under $WORKING_QMAKE_BIN"
           trace 4 "   Build target(s) $NeededQMake"
 
 

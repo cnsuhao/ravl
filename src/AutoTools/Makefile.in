@@ -9,7 +9,8 @@ SOURCEHOME=@abs_srcdir@/src
 
 PROJECT_OUT=@abs_builddir@
 
-WORKING_QMAKE=@WORKING_QMAKE@
+WORKING_QMAKE_DATA=@WORKING_QMAKE_DATA@
+WORKING_QMAKE_BIN=@WORKING_QMAKE_BIN@
 
 # Ensure any DESTDIR is an absolute path
 ifdef DESTDIR
@@ -30,7 +31,7 @@ include $(PROJECT_OUT)/Targets.Project
 
 # RAVL Makefile and default flags for QMake and RAVL itself
 
-RAVL_MAKEFILE=$(WORKING_QMAKE)/Makefiles/QMake.mk
+RAVL_MAKEFILE=$(WORKING_QMAKE_DATA)/Makefiles/QMake.mk
 
 RAVL_FLAGS=RAVL_BODGE=Ravl BASEINSTALL=1 FULLBUILDSRC='BASE_VAR=none' CONFIGFILE=$(PROJECT_OUT)/Config.Project INCLUDEDIR=$(PROJECT_OUT)/include 
 
@@ -82,7 +83,7 @@ debugshared: qmake
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=debug SHAREDBUILD=1 NOEXEBUILD=1 libbuild
 
 dist:
-	$(MAKE) -C @abs_srcdir@ -f $(WORKING_QMAKE)/Makefiles/Dist.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project DIST_ADDITIONS="$(DIST_ADDITIONS)" dist 
+	$(MAKE) -C @abs_srcdir@ -f $(WORKING_QMAKE_DATA)/Makefiles/Dist.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project DIST_ADDITIONS="$(DIST_ADDITIONS)" dist
 
 doc: qmake
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/.. -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) PROJECT_NAME=Ravl PROJECT_DESC="RAVL, Recognition And Vision Library" LLP="LD_LIBRARY_PATH=$(PROJECT_OUT)/lib/$(ARC)/opt/shared/single:$$LD_LIBRARY_PATH" fulldoc
@@ -142,7 +143,7 @@ install-stripProject:
 installRavlDefs: installRavl.def installRavlMultiDefs
 
 installRavlMultiDefs:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=debug SHAREDBUILD=1 STRIP_SWITCH=$(STRIP_SWITCH) PROJECT_DIR=Ravl insDefs recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=debug SHAREDBUILD=1 STRIP_SWITCH=$(STRIP_SWITCH) PROJECT_DIR=Ravl insDefs recurse
 
 installRavl.def: $(ABS_DESTDIR)$(datadir)/QMake/Projects/Ravl/libdep/Ravl.def
 
@@ -166,7 +167,7 @@ $(PROJECT_OUT)/lib/libdep/4install/Ravl.def: $(PROJECT_OUT)/lib/libdep/4install/
 
 installdebuglib:
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=debug SetRootInstalled
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=debug STRIP_SWITCH=$(STRIP_SWITCH) insLibs recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=debug STRIP_SWITCH=$(STRIP_SWITCH) insLibs recurse
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=debug SetRootStaged
 #       First re-link those modules that need to be built with the location of
 #       the library reflected in the code. 
@@ -177,7 +178,7 @@ installdebuglib:
 
 installdebugsharedlib:
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=debug SHAREDBUILD=1 SetRootInstalled
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=debug SHAREDBUILD=1 STRIP_SWITCH=$(STRIP_SWITCH) insLibs recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=debug SHAREDBUILD=1 STRIP_SWITCH=$(STRIP_SWITCH) insLibs recurse
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=debug SHAREDBUILD=1 SetRootStaged
 #       First re-link those modules that need to be built with the location of
 #       the library reflected in the code. 
@@ -187,14 +188,14 @@ installdebugsharedlib:
 #       to the staging area.
 
 installHdrs:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project insHdrs recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project insHdrs recurse
 
 installopt:
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=opt SetRootInstalled
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile optbin
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) install recurse
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) insLibs recurse
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) RAVL_BODGE=Ravl insMustLinks recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) install recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) insLibs recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) RAVL_BODGE=Ravl insMustLinks recurse
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=opt SetRootStaged
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile optbin
 #       First re-link those modules that need to be built with the location of
@@ -214,8 +215,8 @@ installopt:
 
 installoptlib:
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=opt SetRootInstalled
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) insLibs recurse
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) RAVL_BODGE=Ravl insMustLinks recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) insLibs recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) RAVL_BODGE=Ravl insMustLinks recurse
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=opt SetRootStaged
 #       First re-link those modules that need to be built with the location of
 #       the library reflected in the code. Install the libraries, then the
@@ -230,14 +231,14 @@ installoptlib:
 installoptshared: installoptsharedgeneral installoptsharedlib
 
 installoptsharedgeneral:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt SHAREDBUILD=1 STRIP_SWITCH=$(STRIP_SWITCH) install recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt SHAREDBUILD=1 STRIP_SWITCH=$(STRIP_SWITCH) install recurse
 #       Use the 'install' function of QMake to install the Ravl utility
 #       binaries; config files; data files and scripts. 
 
 installoptsharedlib:
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=opt SHAREDBUILD=1 SetRootInstalled
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt SHAREDBUILD=1 STRIP_SWITCH=$(STRIP_SWITCH) insLibs recurse
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt SHAREDBUILD=1 STRIP_SWITCH=$(STRIP_SWITCH) RAVL_BODGE=Ravl insMustLinks recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt SHAREDBUILD=1 STRIP_SWITCH=$(STRIP_SWITCH) insLibs recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt SHAREDBUILD=1 STRIP_SWITCH=$(STRIP_SWITCH) RAVL_BODGE=Ravl insMustLinks recurse
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=opt SHAREDBUILD=1 SetRootStaged
 #       First re-link those modules that need to be built with the location of
 #       the library reflected in the code. Install the libraries via QMake and
@@ -312,10 +313,10 @@ endif
 installsingleopt:
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=opt singleSetRootInstalled
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile singleoptbin
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt SHARED_LIB_POSTFIX=/single STRIP_SWITCH=$(STRIP_SWITCH) install recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt SHARED_LIB_POSTFIX=/single STRIP_SWITCH=$(STRIP_SWITCH) install recurse
 	$(SHOWIT)if [ ! -d $(ABS_DESTDIR)$(libdir) ] ; then $(MKDIR_P) $(ABS_DESTDIR)$(libdir) ; fi
 	$(INSTALL) $(STRIP_SWITCH) $(PROJECT_OUT)/lib/$(ARC)/opt/single/libRavl.a $(ABS_DESTDIR)$(libdir)/libRavl.a
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) RAVL_BODGE=Ravl insMustLinks recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) RAVL_BODGE=Ravl insMustLinks recurse
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=opt singleSetRootStaged
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile singleoptbin
 #       First rebuild those modules that rely on the installation path and
@@ -343,7 +344,7 @@ installsingleoptlib:
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=opt singleSetRootInstalled
 	$(SHOWIT)if [ ! -d $(ABS_DESTDIR)$(libdir) ] ; then $(MKDIR_P) $(ABS_DESTDIR)$(libdir) ; fi
 	$(INSTALL) $(STRIP_SWITCH) $(PROJECT_OUT)/lib/$(ARC)/opt/single/libRavl.a $(ABS_DESTDIR)$(libdir)/libRavl.a
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) RAVL_BODGE=Ravl insMustLinks recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) RAVL_BODGE=Ravl insMustLinks recurse
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=opt singleSetRootStaged
 #       First rebuild those modules that rely on the installation path and
 #       relink their libraries. 
@@ -359,7 +360,7 @@ installsingleoptlib:
 installsingleoptshared:installsingleoptsharedgeneral installsingleoptsharedlib
 
 installsingleoptsharedgeneral:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt SUMMARIES=Ravl SHAREDBUILD=1 STRIP_SWITCH=$(STRIP_SWITCH) install recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt SUMMARIES=Ravl SHAREDBUILD=1 STRIP_SWITCH=$(STRIP_SWITCH) install recurse
 #       Use the 'install' function of QMake to install the Ravl utility
 #       binaries; config files; data files and scripts. Setting SUMMARIES to
 #       Ravl forces QMake to use the version of the binaries compiled against
@@ -386,7 +387,7 @@ ifneq ($(STAMP_SINGLE),NO)
                  cd $(ABS_DESTDIR)$(libdir); $(LN_S) libRavl$(STAMP_SINGLE_EXT) libRavl.so ; \
                  fi
 endif
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) RAVL_BODGE=Ravl insMustLinks recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) RAVL_BODGE=Ravl insMustLinks recurse
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=opt SHAREDBUILD=1 singlesharedSetRootStaged
 #       First rebuild those modules that rely on the installation path and
 #       relink their libraries and the single library itself. 
@@ -508,25 +509,25 @@ rpm: qmake
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) rpmbuild 
 
 SetRootInstalled:
-	$(SHOWIT)$(WORKING_QMAKE)/bin/untouch -f $(SOURCEHOME)/Core/Base/Resource.cc
+	$(SHOWIT)$(WORKING_QMAKE_BIN)/untouch -f $(SOURCEHOME)/Core/Base/Resource.cc
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Core/Base -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
                 CCFLAGS="$(CCFLAGS) -DDEFAULT_ROOT=\\\"$(patsubst %/share,%,$(datadir))\\\"" NOEXEBUILD=1 libbuild
-	$(SHOWIT)$(WORKING_QMAKE)/bin/untouch -f $(SOURCEHOME)/Contrib/Gnome/Gnome.cc
+	$(SHOWIT)$(WORKING_QMAKE_BIN)/untouch -f $(SOURCEHOME)/Contrib/Gnome/Gnome.cc
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Contrib/Gnome -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
                 CCFLAGS="$(CCFLAGS) -DPREFIX=\\\"$(prefix)\\\" -DDATADIR=\\\"$(datadir)/Ravl\\\" -DSYSCONFDIR=\\\"$(sysconfdir)/Ravl\\\" -DLIBDIR=\\\"$(libdir)\\\"" \
                 NOEXEBUILD=1 libbuild
 
 SetRootStaged:
-	$(SHOWIT)$(WORKING_QMAKE)/bin/untouch -f $(SOURCEHOME)/Core/Base/Resource.cc
+	$(SHOWIT)$(WORKING_QMAKE_BIN)/untouch -f $(SOURCEHOME)/Core/Base/Resource.cc
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Core/Base -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) NOEXEBUILD=1 libbuild
-	$(SHOWIT)$(WORKING_QMAKE)/bin/untouch -f $(SOURCEHOME)/Contrib/Gnome/Gnome.cc
+	$(SHOWIT)$(WORKING_QMAKE_BIN)/untouch -f $(SOURCEHOME)/Contrib/Gnome/Gnome.cc
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Contrib/Gnome -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) NOEXEBUILD=1 libbuild
 
 singledebug: debug
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Projects/Ravl/Makefiles/SingleLib.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=debug makedirs buildstatic
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Projects/Ravl/Makefiles/SingleLib.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=debug makedirs buildstatic
 
 singledebugbin: singledebug debugbin
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Projects/Ravl/Makefiles/Recursive.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=debug SINGLELIB=1 programs recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Projects/Ravl/Makefiles/Recursive.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=debug SINGLELIB=1 programs recurse
 
 singledebugshared: debugshared
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Single -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=debug SHAREDBUILD=1 LIB_STAMP=$(STAMP_SINGLE) NOEXEBUILD=1 libbuild
@@ -535,10 +536,10 @@ singledebugsharedbin:singledebugshared
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=debug SHAREDBUILD=1 SUMMARIES=Ravl exebuild
 
 singlegprof: gprof
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Projects/Ravl/Makefiles/SingleLib.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=gprof makedirs buildstatic
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Projects/Ravl/Makefiles/SingleLib.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=gprof makedirs buildstatic
 
 singlegprofbin: singlegprof gprofbin
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Projects/Ravl/Makefiles/Recursive.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=gprof SINGLELIB=1 programs recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Projects/Ravl/Makefiles/Recursive.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=gprof SINGLELIB=1 programs recurse
 
 singlegprofshared: gprofshared
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Single -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=gprof SHAREDBUILD=1 LIB_STAMP=$(STAMP_SINGLE) NOEXEBUILD=1 libbuild
@@ -547,10 +548,10 @@ singlegprofsharedbin: singlegprofshared
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=gprof SHAREDBUILD=1 SUMMARIES=Ravl exebuild
 
 singleopt: opt
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Projects/Ravl/Makefiles/SingleLib.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt makedirs buildstatic
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Projects/Ravl/Makefiles/SingleLib.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt makedirs buildstatic
 
 singleoptbin: singleopt optbin
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Projects/Ravl/Makefiles/Recursive.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt SINGLELIB=1 programs recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Projects/Ravl/Makefiles/Recursive.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt SINGLELIB=1 programs recurse
 
 singleoptshared: optshared
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Single -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=opt SHAREDBUILD=1 LIB_STAMP=$(STAMP_SINGLE) NOEXEBUILD=1 libbuild
@@ -559,10 +560,10 @@ singleoptsharedbin: singleoptshared
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=opt SHAREDBUILD=1 SUMMARIES=Ravl exebuild
 
 singleSetRootInstalled: SetRootInstalled
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Projects/Ravl/Makefiles/SingleLib.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project makedirs buildstatic
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Projects/Ravl/Makefiles/SingleLib.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project makedirs buildstatic
 
 singleSetRootStaged: SetRootStaged
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Projects/Ravl/Makefiles/SingleLib.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project makedirs buildstatic
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Projects/Ravl/Makefiles/SingleLib.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project makedirs buildstatic
 
 singlesharedSetRootInstalled: SetRootInstalled
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Single -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) LIB_STAMP=$(STAMP_SINGLE) NOEXEBUILD=1 libbuild
@@ -590,7 +591,7 @@ testoptshared:
 
 testsinglegprof:
 	@$(RM) -f $(PROJECT_OUT)/test/gprof/single/bin/*
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Projects/Ravl/Makefiles/Recursive.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=gprof SINGLELIB=1 test recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Projects/Ravl/Makefiles/Recursive.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=gprof SINGLELIB=1 test recurse
 	@cd $(PROJECT_OUT)/test/gprof/single/bin; ls > ../TestExes
 	cd $(PROJECT_OUT)/test/gprof/single && \
            PATH=$(PROJECT_OUT)/test/gprof/single/bin:$(PROJECT_OUT)/bin/utils/gprof/single/bin:$$PATH \
@@ -602,7 +603,7 @@ testsinglegprofshared:
 
 testsingleopt:
 	@$(RM) -f $(PROJECT_OUT)/test/opt/single/bin/*
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Projects/Ravl/Makefiles/Recursive.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt SINGLELIB=1 test recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Projects/Ravl/Makefiles/Recursive.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt SINGLELIB=1 test recurse
 	@cd $(PROJECT_OUT)/test/opt/single/bin; ls > ../TestExes
 	cd $(PROJECT_OUT)/test/opt/single && \
            PATH=$(PROJECT_OUT)/test/opt/single/bin:$(PROJECT_OUT)/bin/utils/opt/single/bin:$$PATH \
@@ -615,36 +616,36 @@ testsingleoptshared:
 uninstall: uninstallQMake uninstallsingleoptshared uninstallHdrs uninstallMustLinks uninstallpkgconf uninstallRavlDefs
 
 uninstalldebuglib:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=debug uinsLibs recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=debug uinsLibs recurse
 
 uninstalldebugsharedlib:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=debug SHAREDBUILD=1 uinsLibs recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=debug SHAREDBUILD=1 uinsLibs recurse
 
 uninstallHdrs:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project uinsHdrs recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project uinsHdrs recurse
 
 uninstallMustLinks:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) RAVL_BODGE=Ravl uinsMustLinks recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) RAVL_BODGE=Ravl uinsMustLinks recurse
 
 uninstallopt: uninstalloptgeneral uninstalloptlib
 
 uninstalloptgeneral:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt uninstall recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt uninstall recurse
 #       Seperate versions of the uninstall generals exist to allow for differing
 #       manifests dependant on VAR, SHAREDBUILD, etc.
 
 uninstalloptlib:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) uinsLibs recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) uinsLibs recurse
 
 uninstalloptshared: uninstalloptsharedgeneral uninstalloptsharedlib
 
 uninstalloptsharedgeneral:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt SHAREDBUILD=1 uninstall recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt SHAREDBUILD=1 uninstall recurse
 #       Seperate versions of the uninstall generals exist to allow for differing
 #       manifests dependant on VAR, SHAREDBUILD, etc.
 
 uninstalloptsharedlib:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt SHAREDBUILD=1 STRIP_SWITCH=$(STRIP_SWITCH) uinsLibs recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt SHAREDBUILD=1 STRIP_SWITCH=$(STRIP_SWITCH) uinsLibs recurse
 
 uninstallpkgconf: 
 	@if [ -f $(ABS_DESTDIR)$(libdir)/pkgconfig/Ravl.pc ] ; \
@@ -667,7 +668,7 @@ uninstallQMake:
 uninstallRavlDefs: uninstallRavlMultiDefs uninstallRavl.def
 
 uninstallRavlMultiDefs:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=debug SHAREDBUILD=1 STRIP_SWITCH=$(STRIP_SWITCH) PROJECT_DIR=Ravl uinsDefs recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=debug SHAREDBUILD=1 STRIP_SWITCH=$(STRIP_SWITCH) PROJECT_DIR=Ravl uinsDefs recurse
 
 uninstallRavl.def:
 	@if [ -f $(ABS_DESTDIR)$(datadir)/QMake/Projects/Ravl/libdep/Ravl.def ] ; \
@@ -750,7 +751,7 @@ endif
 uninstallsingleopt:uninstallsingleoptgeneral uninstallsingleoptlib
 
 uninstallsingleoptgeneral: 
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt uninstall recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt uninstall recurse
 #       Seperate versions of the uninstall generals exist to allow for differing
 #       manifests dependant on VAR, SHAREDBUILD, etc.
 
@@ -772,7 +773,7 @@ uninstallsingleoptlib:
 uninstallsingleoptshared: uninstallsingleoptsharedgeneral  uninstallsingleoptsharedlib
 
 uninstallsingleoptsharedgeneral:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt SHARED_LIB_POSTFIX=/shared/single SHAREDBUILD=1 uninstall recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt SHARED_LIB_POSTFIX=/shared/single SHAREDBUILD=1 uninstall recurse
 #       Seperate versions of the uninstall generals exist to allow for differing
 #       manifests dependant on VAR, SHAREDBUILD, etc.
 
