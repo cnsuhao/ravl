@@ -55,10 +55,10 @@
 #define ONDEBUG(x)
 #endif
 
-#define OMNIAAM_USE_THINPLATEWARP 0
+#define RAVLAAM_USE_THINPLATEWARP 0
 // Allows to select whether piece-wise affine warping or thin-plate spline warping should be used.
 
-#if OMNIAAM_USE_THINPLATEWARP
+#if RAVLAAM_USE_THINPLATEWARP
 #include "Ravl/Image/WarpThinPlateSpline.hh"
 #else
 #include "Ravl/Image/WarpMesh2d.hh"
@@ -72,7 +72,7 @@ namespace RavlImageN {
   //!param: nWarpSigma - stiffness to use in warping process.
   // Note: this parameter is relevant only in the case where thin-plate splines are used for warping.
   // In the case of a piece-wise affine warping, this parameter is ignored.
-  // The warping technique to be used is defined at compilation time by the parameter OMNIAAM_USE_THINPLATEWARP.
+  // The warping technique to be used is defined at compilation time by the parameter RAVLAAM_USE_THINPLATEWARP.
   AAMAppearanceModelBodyC::AAMAppearanceModelBodyC(RealT nWarpSigma,
                                                          bool fixTextureMeanStdDev,
                                                          bool equaliseTextureResolution)
@@ -228,7 +228,7 @@ namespace RavlImageN {
   //  The input appearance 'inst' is warped such that its control points are located at the mean positions in the returned image.
   ImageC<ByteT> AAMAppearanceModelBodyC::WarpToMaskShape(const AAMAppearanceC &inst) const {
     ImageC<ByteT> ret(maskSize);
-#if OMNIAAM_USE_THINPLATEWARP
+#if RAVLAAM_USE_THINPLATEWARP
     WarpThinPlateSplineC<ByteT> warp(warpSigma);
     warp.Apply(inst.Image(),Array1dC<Point2dC>(inst.Points()),maskPoints,ret);
 #else
@@ -241,7 +241,7 @@ namespace RavlImageN {
   ImageC<RealT> AAMAppearanceModelBodyC::WarpToMaskShape(const ImageC<RealT> &image, const SArray1dC<Point2dC> &points) const {
     ImageC<RealT> nimg(maskSize);
     ONDEBUG(nimg.Fill(0));
-#if OMNIAAM_USE_THINPLATEWARP
+#if RAVLAAM_USE_THINPLATEWARP
     WarpThinPlateSplineC<RealT,RealT> warp(warpSigma,true);
     warp.Apply(image,Array1dC<Point2dC>(points),Array1dC<Point2dC>(maskPoints),nimg);
 #else
@@ -253,7 +253,7 @@ namespace RavlImageN {
 
   ImageC<ByteT> AAMAppearanceModelBodyC::WarpFromMaskShape(const RealRange2dC &range, const ImageC<RealT> &image, const SArray1dC<Point2dC> &points) const {
     ImageC<RealT> nimg(range.IndexRange());
-#if OMNIAAM_USE_THINPLATEWARP
+#if RAVLAAM_USE_THINPLATEWARP
     WarpThinPlateSplineC<RealT,RealT> warp(warpSigma);
     warp.Apply(image,Array1dC<Point2dC>(maskPoints),Array1dC<Point2dC>(points),nimg);
 #else

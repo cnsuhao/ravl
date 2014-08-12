@@ -37,7 +37,7 @@ namespace RavlImageN {
     //!param: nWarpSigma - stiffness to use in warping process.
     // Note: this parameter is relevant only in the case where thin-plate splines are used for warping.
     // In the case of a piece-wise affine warping, this parameter is ignored.
-    // The warping technique to be used is defined at compilation time by the parameter OMNIAAM_USE_THINPLATEWARP
+    // The warping technique to be used is defined at compilation time by the parameter RAVLAAM_USE_THINPLATEWARP
     // in the file "AAMAppearanceModel.cc".
 
     AAMAppearanceModelBodyC(BinIStreamC &is);
@@ -254,7 +254,7 @@ namespace RavlImageN {
     //!param: nWarpSigma - stiffness to use in warping process.
     // Note: this parameter is relevant only in the case where thin-plate splines are used for warping.
     // In the case of a piece-wise affine warping, this parameter is ignored.
-    // The warping technique to be used is defined at compilation time by the parameter OMNIAAM_USE_THINPLATEWARP
+    // The warping technique to be used is defined at compilation time by the parameter RAVLAAM_USE_THINPLATEWARP
     // in the file "AAMAppearanceModel.cc".
 
     AAMAppearanceModelC(BinIStreamC &is);
