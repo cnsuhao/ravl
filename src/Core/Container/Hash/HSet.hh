@@ -299,7 +299,8 @@ namespace RavlN {
     // Maybe not the fastest method, but it'll do for now.
     IntT sel = RandomInt() % Size();
     HashIterC<T,EmptyC> it(set.Data());
-    for(;sel > 0 && it.IsElm();sel--,it.Next()) ;
+    for(;sel > 0 && it.IsElm();sel--,it.Next())
+      ;
     RavlAssert(it.IsElm());
     return it.Key();
   }

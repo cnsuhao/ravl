@@ -35,14 +35,7 @@ namespace RavlN {
     Y[0] = Cost (X);
     return Y;    
   }
-  
-  VectorC CostBodyC::Evaluate (const VectorC &X) const
-  {
-    VectorC Y (1);
-    Y[0] = Cost (X);
-    return Y;
-  }
-  
+
   void CostBodyC::SetMask (const SArray1dC<IntT> &mask)
   {
     _parameters.SetMask (mask);

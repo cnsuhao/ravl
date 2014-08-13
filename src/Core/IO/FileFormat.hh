@@ -277,16 +277,16 @@ namespace RavlN {
     //: Default constructor.
     // This creates an invalid handle.
     
-    FileFormatC(StringC name)
-      : FileFormatBaseC(name,typeid(DataT))
+    FileFormatC(bool forLoad,StringC name)
+      : FileFormatBaseC(forLoad,name,typeid(DataT))
       {}
     //: Construct from format name.
     // Find a file format which supports the requested format.
     // if not suitable format exists it will create an invalid handle. <p>
     // Uses FileFormatBodyC::FindFormat(...).
     
-    FileFormatC(const StringC &filename,const StringC &formName)
-      : FileFormatBaseC(filename,formName,typeid(DataT))
+    FileFormatC(bool forLoad,const StringC &filename,const StringC &formName)
+      : FileFormatBaseC(forLoad,filename,formName,typeid(DataT))
       {}
     //: Load constructor.
     // Find a file format which supports the requested format.

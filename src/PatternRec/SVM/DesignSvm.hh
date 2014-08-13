@@ -54,6 +54,8 @@ public:
     { callbackFunc = Func; callbackData = Data; }
   //: Sets callback function
 
+  using DesignClassifierSupervisedBodyC::Apply;
+
   virtual Classifier2C Apply(const SampleC<VectorC> &TrainingSetVectors,
                              const SampleC<SByteT> &TrainingSetLabels,
                              const SArray1dC<IndexC> &ObjectsToUse);

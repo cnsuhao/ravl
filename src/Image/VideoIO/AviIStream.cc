@@ -38,7 +38,8 @@ namespace RavlImageN{
   }//END OF AviIStreamC::AviIStreamC(int fd, bool verbose = true)  
 #endif
   
-  AviIStreamC::AviIStreamC(const StringC &nIn, bool verb, bool buffered) : GenBinIStreamC(nIn,false,buffered)  
+  AviIStreamC::AviIStreamC(const StringC &nIn, bool verb, bool buffered)
+    : GenBinIStreamC(nIn,false,buffered)
   {
     verbose = verb;
     correct = LoadStreamInfo();

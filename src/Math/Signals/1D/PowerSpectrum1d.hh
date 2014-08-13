@@ -24,7 +24,7 @@ namespace RavlN {
   //: Power Spectrum 
   
   class PowerSpectrum1dC
-   : public DPProcessBodyC<SArray1dC<RealT>,SArray1dC<RealT> >
+   : public DPProcessBodyC<Array1dC<RealT>,Array1dC<RealT> >
   {
   public:
     PowerSpectrum1dC(IntT size,bool useWindow = true);

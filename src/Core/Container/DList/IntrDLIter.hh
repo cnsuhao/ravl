@@ -24,8 +24,8 @@ namespace RavlN {
   //: Intrinsic list iterator.
   // See IntrDListC for more details.
   // FIXME :- Most of this need not be templated, should make a base class?
-  
-  template <class DataT,typename DeRefT = IntrDListDefaultDeRefC<DataT> >
+  //  = IntrDListDefaultDeRefC<DataT>
+  template <class DataT,typename DeRefT> // default DeRefT = IntrDListDefaultDeRefC<DataT>
   class IntrDLIterC {
   public:
     IntrDLIterC()

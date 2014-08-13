@@ -345,9 +345,8 @@ namespace RavlImageN{
     // From a file name.Set swapEndian to swap between littleendian AVI  to bigendian. 
     // Set verbose to print on std err more info about the stream. 
     
-    AviOStreamC()
-    {}
-    //: Default construtor.
+    AviOStreamC();
+    //: Default constructor.
     
     ~AviOStreamC();
     //: Destructor. It writes the AVI index.
@@ -430,20 +429,20 @@ namespace RavlImageN{
     UIntT indexSize;//size of index chunk
 
     int dataChunks;//number of data chunks written
-    int current; //is the data chunk to write next (NOTE: not necesserily the one after the last one). 1st = 1.
+    int current; //is the data chunk to write next (NOTE: not necessarily the one after the last one). 1st = 1.
 
     bool verbose; //if true writes into std::cerr info strings
-    bool hasIndex; //true if the index has been writen yet and the header updated 
+    bool hasIndex; //true if the index has been written yet and the header updated
 
     //positions of data to access after constructor is called
-    streampos end;//end of the stream
+    std::streampos end;//end of the stream
 
-    streampos moviSizePos;//position of the movi list size slot
-    streampos avihPos;//next tokens are header: ('avih')(size)
-    streampos moviPos;//next tokens are header: (LIST)(size)('movi')
-    streampos indxPos;//next tokens are header: ('idx1')(size)
-    DListC<streampos> StrlPosList;//next tokens are header: (LIST)(size)('strl')
-    DListC<streampos> frameNumberPos;//each position in the stream containing the number of frames
+    std::streampos moviSizePos;//position of the movi list size slot
+    std::streampos avihPos;//next tokens are header: ('avih')(size)
+    std::streampos moviPos;//next tokens are header: (LIST)(size)('movi')
+    std::streampos indxPos;//next tokens are header: ('idx1')(size)
+    DListC<std::streampos> StrlPosList;//next tokens are header: (LIST)(size)('strl')
+    DListC<std::streampos> frameNumberPos;//each position in the stream containing the number of frames
 
   };
 }

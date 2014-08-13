@@ -263,7 +263,7 @@ namespace RavlN {
     for (SArray1dIterC<Tuple2C<UIntT, RealT> > it(scores); it; it++) {
 
       UIntT label = it.Data().Data1();
-      RealT score = it.Data().Data2();
+      //RealT score = it.Data().Data2();
 
       // have we got a positive or negative sample
       if (label == m_positiveLabel) {

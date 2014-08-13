@@ -11,8 +11,7 @@
 #include <string.h>
 #include <sys/stat.h>
 
-using namespace std;
-
+//using namespace std;
 
 int main(int nargs,char **argv) {
   if(nargs < 2) {

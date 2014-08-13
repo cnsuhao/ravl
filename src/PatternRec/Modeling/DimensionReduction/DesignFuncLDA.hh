@@ -51,6 +51,8 @@ namespace RavlN {
     virtual bool Save (BinOStreamC &out) const;
     //: Writes object to stream, can be loaded using constructor
     
+    using DesignFuncReduceBodyC::Apply;
+
     virtual FunctionC Apply(const DataSetVectorLabelC &in);
     //: Create function from the given labelled data sets.
 
