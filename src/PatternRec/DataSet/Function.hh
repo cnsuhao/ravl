@@ -95,7 +95,7 @@ namespace RavlN {
     // can be calculated analytically.
     
     virtual VectorMatrixC Evaluate(const VectorC &X);
-    //: Evalate the function and its jacobian at the same time.
+    //: Evaluate the function and its jacobian at the same time.
     // This method defaults to calling 'Apply' and 'Jacobian' sperately.
     // OBSOLETE Use, bool Evaluate(const VectorC &X,RealT &value,VectorC &jacobian);
     

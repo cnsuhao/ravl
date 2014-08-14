@@ -9,7 +9,7 @@
 //! lib=RavlCore
 //! file="Ravl/Core/Base/Stream.cc"
 
-
+#include "Ravl/config.h"
 
 #include "Ravl/Stream.hh"
 #include "Ravl/StreamType.hh"
@@ -17,8 +17,10 @@
 
 #if RAVL_COMPILER_GCC
 #include "Ravl/fdstream.hh"
+#if !RAVL_COMPILER_LLVM
 #include "Ravl/stdio_fdstream.hh"
 #include <ext/stdio_filebuf.h>
+#endif
 #endif
 
 #if RAVL_HAVE_ANSICPPHEADERS
@@ -244,7 +246,7 @@ namespace RavlN {
 
     if(append)
       fmode |= ios::app;
-#if RAVL_COMPILER_GCC
+#if RAVL_COMPILER_GCC && !RAVL_COMPILER_LLVM
 #if RAVL_HAVE_INTFILEDESCRIPTORS
     // We can't use the native open, because we need to be able to handle large files.
     int mode = O_WRONLY | O_CREAT;
@@ -282,13 +284,14 @@ namespace RavlN {
 #endif
 #else // RAVL_COMPILER_GCC
     Init(ofstrm = new ofstream(filename.chars(),fmode),filename);
-#if RAVL_COMPILER_VISUALCPP
+#if RAVL_COMPILER_VISUALCPP || RAVL_COMPILER_LLVM
     if(!buffered) {
       std::cerr << "WARNING: Unbuffered streams are not currently supported under windows.\n";
     }
 #else // RAVL_COMPILER_VISUALCPP
-    if(!buffered)
+    if(!buffered) {
       ofstrm->setbuf(0,0);
+    }
 #endif // RAVL_COMPILER_VISUALCPP
 #endif // RAVL_COMPILER_GCC
     out = ofstrm;
@@ -322,10 +325,10 @@ namespace RavlN {
     va_list args;
     va_start(args,format);
 
-	const int formSize = 4096;
-	char buff[formSize];
+    const int formSize = 4096;
+    char buff[formSize];
 #if RAVL_COMPILER_VISUALCPPNET_2005
-	int x = vsprintf_s(buff,formSize,format,args);
+    int x = vsprintf_s(buff,formSize,format,args);
 #elif RAVL_COMPILER_VISUALCPP
     int x = _vsnprintf(buff,formSize,format,args);
 #else
@@ -391,7 +394,7 @@ namespace RavlN {
       fmode |= ios::binary;
 #endif
 
-#if RAVL_HAVE_INTFILEDESCRIPTORS
+#if RAVL_HAVE_INTFILEDESCRIPTORS && !RAVL_COMPILER_LLVM
     // We can't use the native open, because we need to be able to handle large files.
     //cerr << "USING NEW OPEN. \n";
     int mode = O_RDONLY;

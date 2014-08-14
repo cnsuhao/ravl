@@ -15,18 +15,20 @@
 #include "Ravl/config.h"
 #include "Ravl/Assert.hh"
 
-#if RAVL_COMPILER_GCC3 && !RAVL_COMPILER_GCC3_4 && !RAVL_COMPILER_GCC4
+#if (RAVL_COMPILER_GCC3 && !RAVL_COMPILER_GCC3_4 && !RAVL_COMPILER_GCC4) || RAVL_COMPILER_LLVM
 
-#include <fstream>
 #include <streambuf>
 #include <unistd.h>
 
+#ifndef BUFSIZ
+#define BUFSIZ 4096
+#endif
+
 namespace RavlN {
   using namespace std;
-  
   template<typename CharT, typename TraitsT>
   class basic_fdbuf 
-    : public basic_streambuf<CharT, TraitsT>
+    : public std::basic_streambuf<CharT, TraitsT>
   {
   public:
     typedef CharT                     	        char_type;
@@ -36,13 +38,22 @@ namespace RavlN {
     typedef typename traits_type::off_type 	off_type;
     
     basic_fdbuf()
-      : fd(-1)
+      : fd(-1),
+        m_buffer(0),
+        m_bufferSize(0),
+        m_reqBufferSize(static_cast<size_t>(BUFSIZ))
     {}
     //: Constructor.
     
-    basic_fdbuf(int nfd,ios_base::openmode mode) 
-      : fd(-1)
+    basic_fdbuf(int nfd,ios_base::openmode mode,size_t reqBuffSize = static_cast<size_t>(BUFSIZ))
+      : fd(-1),
+        m_buffer(0),
+        m_bufferSize(0),
+        m_reqBufferSize(reqBuffSize)
     {
+      if ((mode & ios_base::in) && m_reqBufferSize <= 5) {
+        m_reqBufferSize = 5;
+      }
       fdbuf_init(nfd,mode);
     }
     //: Constructor.
@@ -61,57 +72,61 @@ namespace RavlN {
     
     basic_fdbuf<CharT,TraitsT> *close() {
       ::close(fd);
-      if(_M_buf) {
-	setg(0, 0, 0);
-	setp(0, 0);
-	delete [] _M_buf;
-	_M_buf = 0;
-	_M_buf_size_opt = 0;
-	_M_buf_size = 0; 
+      if(m_buffer) {
+        this->setg(0, 0, 0);
+	this->setp(0, 0);
+	delete [] m_buffer;
+	m_bufferSize = 0;
       }
       fd = -1;
       return this;
     }
     //: Close buffer.
 
+    void setbuf();
   private:
     int fd;
+    char_type *m_buffer;
+    size_t m_bufferSize;
+    size_t m_reqBufferSize; // Requested buffer size
     
   protected:
     void fdbuf_init(int nfd,ios_base::openmode mode) {
       fd = nfd;
-      _M_buf_size = 1024;
-      _M_buf_size_opt = 1024;
-      _M_mode = mode;
-      _M_buf = new char_type[_M_buf_size];
-      
-      if (_M_mode & ios_base::in) {
-	setg(0,0,0);
+      m_bufferSize = m_reqBufferSize;
+      if(m_bufferSize <= 0)
+        return ;
+      m_buffer = new char_type[m_bufferSize];
+      if (mode & ios_base::in) {
+        this->setg(m_buffer+4,m_buffer+4,m_buffer+4);
       }
-      if (_M_mode & ios_base::out) {
-	setp(_M_buf,_M_buf+_M_buf_size);
+      if (mode & ios_base::out) {
+	this->setp(m_buffer,m_buffer + m_bufferSize);
       }
       // Don't support input and output from the same buffer...
-      RavlAssert(!((_M_mode & ios_base::out) && (_M_mode & ios_base::in )));
+      RavlAssert(!((mode & ios_base::out) && (mode & ios_base::in )));
     }
     //: Setup buffer.
     
     virtual int sync() {
-      //cerr << "basic_fdbuf::sync() Called. Ptrs:" << (void *) pbase() << " " << (void *) pptr() << " " << (void *) epptr() << "\n";
-      char *at = (char *) pbase();
-      while(at < pptr()) {
-	int blen = ((char *)pptr()) - at;
+      //std::cerr << "basic_fdbuf::sync() Called. Ptrs:" << (void *) this->pbase() << " " << (void *) this->pptr() << " " << (void *) this->epptr() << "\n";
+      char *at = (char *) this->pbase();
+      while(at < this->pptr()) {
+	int blen = ((char *)this->pptr()) - at;
 	int n = write(fd,at,blen);
-	if(n == 0)
-	  std::cerr << "Write of zero bytes. \n";
+	if(n == 0) {
+	  //std::cerr << "Write of zero bytes. \n";
+	}
 	if(n < 0) {
-	  std::cerr << "Write failed. \n";
+	  if(errno == EINTR || errno == EAGAIN)
+	    continue;
+	  //std::cerr << "Write failed. \n";
 	  //setstate(ios_base::badbit);
 	  return -1;
 	}
 	at += n;
       }
-      setp(_M_buf,_M_buf+_M_buf_size);
+      this->setp(m_buffer,m_buffer + m_bufferSize);
       return 0;
     }
     //: Flush buffer to output.
@@ -119,37 +134,65 @@ namespace RavlN {
     virtual int_type overflow(int_type c = traits_type::eof()) {
       //cerr << "basic_fdbuf::overflow() Called. Ptrs:" << (void *) pbase() << " " << (void *) pptr() << " " << (void *) epptr() << "\n";
       sync();
-      if(c != traits_type::eof())
-	(*(_M_out_cur++)) = c;
+      if(c != traits_type::eof()) {
+        if(this->pptr() == 0) {
+          char_type buff = c;
+          int n = 0;
+          char *at = &buff;
+          do {
+            n = write(fd,at,((char *) ((&buff)+1)) - ((char *)at));
+            std::cerr << "Wrote: " << n << "\n";
+            if(n < 0) {
+              if(errno == EAGAIN || errno == EINTR)
+                continue;
+              return traits_type::eof();
+            }
+            at += n;
+          } while(at < ((&buff) + 1));
+          return c;
+        }
+        *(this->pptr()) = c;
+        this->pbump(1);
+      }
       return c;
     }
     //: Overflow buffer on write.
-    
+
+
     virtual int_type underflow() {
-      //cerr << "basic_fdbuf::underflow() Called. Ptrs:" << (void *) eback() << " " << (void *) gptr() << " " << (void *) egptr() << "\n";
-      int rsize = _M_buf_size;
-      RavlAssert(gptr() == egptr()); // We're assuming the buffer's empty...
-      int n = read(fd,_M_buf,rsize  * sizeof(CharT));
-      //cerr << "basic_fdbuf::underflow() Read " << n << " bytes of " << _M_buf_size << ". " << (int) (*_M_buf) << "\n";
-      setg(_M_buf,_M_buf,_M_buf + (n/sizeof(CharT)));
-      if(n <= 0)
-	return traits_type::eof();
-      return traits_type::to_int_type(_M_buf[0]);
+     // std::cerr << "basic_fdbuf::underflow() Called. BufferSize:" << m_bufferSize << " Ptrs:" << (void *) m_buffer << " " << (void *) this->gptr() << " " << (void *) this->egptr() << "\n";
+      if(this->gptr() < this->egptr()) {
+        //std::cerr << "Got data.... \n";
+        return traits_type::to_int_type(*this->gptr());
+      }
+      RavlAssert(m_buffer != 0);
+      int nPutback;
+      nPutback = this->gptr() - this->eback();
+      if(nPutback > 4)
+        nPutback = 4;
+      memmove(m_buffer+(4-nPutback),this->gptr() - nPutback,nPutback);
+      CharT *buf = m_buffer+4;
+      int rnum = m_bufferSize-4;
+
+      //std::cerr << "Attempting to read " << rnum << " chars. \n";
+      int num = 0;
+      do {
+        num = read(fd,buf,rnum * sizeof(CharT));
+        if(num > 0)
+          break;
+        if(num <= 0) {
+          if(errno  == EINTR || errno == EAGAIN)
+            continue;
+          //std::cerr << "Error reading chars.. " << errno << " \n";
+          return traits_type::eof();
+        }
+      } while(true);
+      //std::cerr << "Read " << num << " chars. \n";
+      this->setg(m_buffer+(4-nPutback),m_buffer+4,m_buffer+4+num);
+      return traits_type::to_int_type(*this->gptr());
     }
     //: Underflow the buffer on read.
-    
-    virtual int_type uflow() {
-      //cerr << "basic_fdbuf::uflow(), Called. Ptrs:" << (void *) eback() << " " << (void *) gptr() << " " << (void *) egptr() << " \n";
-      RavlAssert(gptr() == egptr()); // Assume the buffer's empty.
-      underflow();
-      if(gptr() < egptr())
-	return traits_type::to_int_type(*(_M_in_cur++));
-      std::cerr << "basic_fdbuf::uflow(), Got end of file... \n";
-      return traits_type::eof();
-    }
-    //: Underflow the buffer on read.
-    
-    
+
     virtual int_type pbackfail(int_type c = traits_type::eof()) {
       std::cerr << "basic_fdbuf::pbackfail() Called. \n";
       RavlAssert(0);
@@ -177,6 +220,9 @@ namespace RavlN {
       return 0;
     }
     //: Seek absolute position.
+
+  protected:
+
   };
   
 }

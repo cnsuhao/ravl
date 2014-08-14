@@ -50,13 +50,14 @@ namespace RavlN {
     
     virtual IntT Args() const;
     //: Number of args for process.
-    
     virtual const std::type_info &ArgType(IntT i) const;
     //: Type of args.
     
     virtual const std::type_info &Output() const;
     //: Output type.
     
+    using DPProcInfoBodyC::Apply;
+
     RCAbstractC Apply(const RCAbstractC &dat);
     //: Apply conversion.
 

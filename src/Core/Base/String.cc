@@ -81,7 +81,7 @@ extern "C" { extern long long atoll(const char *); } ;
 namespace RavlN {
 
 
-#if RAVL_OS_LINUX || RAVL_OS_LINUX64 || RAVL_OS_SOLARIS
+#if RAVL_OS_LINUX || RAVL_OS_LINUX64 || RAVL_OS_SOLARIS || RAVL_OS_MACOSX
 #ifndef RAVL_ATOMIC_INIT
 #define RAVL_ATOMIC_INIT(x) (x)
 #endif
@@ -1350,7 +1350,7 @@ namespace RavlN {
     new_state = s.rdstate();
     if (i == 0) new_state |= std::ios::failbit;
     if (ch == EOF) new_state |= std::ios::eofbit;
-#if RAVL_COMPILER_GCC
+#if RAVL_COMPILER_GCC && !RAVL_COMPILER_LLVM
     s.clear((std::_Ios_Iostate )new_state);
 #else
     s.clear(new_state);

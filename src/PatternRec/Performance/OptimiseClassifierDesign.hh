@@ -22,6 +22,8 @@ namespace RavlN {
     //! XML factory constructor
     OptimiseClassifierDesignBodyC(const XMLFactoryContextC &factory);
 
+    using DesignFunctionSupervisedBodyC::Apply;
+
     //! Optimise a the design for a classifier given some data and a designer
     virtual bool Apply(DesignClassifierSupervisedC &designer,
                        const SampleVectorC & x,

@@ -7,7 +7,6 @@
 #ifndef RAVLGUI_RAWCANVAS_HEADER 
 #define RAVLGUI_RAWCANVAS_HEADER  1
 //////////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! file="Ravl/GUI/GTK/RawCanvas.hh"
 //! lib=RavlGUI
 //! author="Charles Galambos"
@@ -15,6 +14,7 @@
 //! docentry="Ravl.API.Graphics.GTK.Control"
 
 #include "Ravl/GUI/Widget.hh"
+#include "Ravl/GUI/Pixbuf.hh"
 
 namespace RavlImageN {
   template<class PixelT> class ImageC;

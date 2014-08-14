@@ -33,7 +33,10 @@ namespace RavlLogicN {
   public:
     LiteralIndexBaseBodyC();
     //: Default constructor.
-    
+
+    LiteralIndexBaseBodyC(BinIStreamC &strm);
+    //: Stream constructor.
+
     virtual bool Load(BinIStreamC &strm);
     //: Save to a binary stream.
     

@@ -49,6 +49,10 @@ namespace RavlImageN{
     WriteEmptyAVI(fccTypes);
   } //END OF AviOStreamC::AviOStreamC(const StringC &nOut,bool buffered) 
 
+  AviOStreamC::AviOStreamC()
+  {}
+  //: Default constructor.
+
   AviOStreamC::~AviOStreamC()
   {
     Seek(end);

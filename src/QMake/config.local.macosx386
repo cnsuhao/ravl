@@ -158,7 +158,7 @@ RESOURCES += libCurl
 
 #### LibGnome2 ################
 
-RESOURCES += LibGnome
+#RESOURCES += LibGnome
 
 #### CPPUnit ################
 

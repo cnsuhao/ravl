@@ -104,7 +104,7 @@ namespace RavlCxxDocN
     ONDEBUG(std::cerr << "Setting up file parse for '" << fn << "'\n");
     curFilename = fn;
     comment.FileReset();
-    ifstream input(fn); 
+    std::ifstream input(fn.c_str());
     yyFlexLexer tmp(&input,&cerr);
     lex = &tmp;
     currentParser = this;

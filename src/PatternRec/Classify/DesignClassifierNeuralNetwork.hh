@@ -19,7 +19,9 @@ namespace RavlN {
   //! userlevel=Develop
   //: Design a neural network classifier .
 
-  class DesignClassifierNeuralNetworkBodyC: public DesignClassifierSupervisedBodyC {
+  class DesignClassifierNeuralNetworkBodyC
+     : public DesignClassifierSupervisedBodyC
+  {
     public:
       DesignClassifierNeuralNetworkBodyC(UIntT nLayers, UIntT nInputs, UIntT nHidden, UIntT nOutputs, RealT desiredError,
         UIntT maxEpochs, UIntT displayEpochs);
@@ -48,7 +50,7 @@ namespace RavlN {
       virtual ClassifierC Apply(const SampleC<VectorC> &in, const SampleC<UIntT> &out, const SampleC<RealT> &weight);
       //: Create a classifier with weights for the samples.
 
-
+      using DesignClassifierSupervisedBodyC::Apply;
 
       virtual FunctionC Apply(const SampleC<VectorC>&in, const SampleC<VectorC>&out);
 

@@ -55,11 +55,11 @@ namespace RavlN {
     return true;
   }
   
-  RealT ErrorBodyC::Error(const ClassifierC & classifier, const SampleVectorC & x, const SampleLabelC & labels) {
+  RealT ErrorBodyC::Error(const ClassifierC & classifier, const SampleVectorC & x, const SampleLabelC & labels) const {
     return Error(classifier, DataSetVectorLabelC(x, labels));
   }
 
-  RealT ErrorBodyC::Error(const ClassifierC & classifier, const DataSetVectorLabelC & dset) {
+  RealT ErrorBodyC::Error(const ClassifierC & classifier, const DataSetVectorLabelC & dset) const {
     UIntT correct = 0;
     UIntT wrong = 0;    
     for(DataSet2IterC<SampleVectorC, SampleLabelC>it(dset);it;it++) {
@@ -72,7 +72,7 @@ namespace RavlN {
   }
 
   
-  SArray1dC<RealT> ErrorBodyC::ErrorByLabel(const ClassifierC & classifier, const DataSetVectorLabelC & dset) {
+  SArray1dC<RealT> ErrorBodyC::ErrorByLabel(const ClassifierC & classifier, const DataSetVectorLabelC & dset) const {
 
     SArray1dC<RealT> errors(classifier.NumLabels());
     errors.Fill(0.0);
@@ -89,7 +89,7 @@ namespace RavlN {
   }
      //: Compute errors on the data set by label
 
-  RealT ErrorBodyC::Error(const Classifier2C & classifier, const DataSetVectorLabelC & dset, UIntT label, RealT threshold) {
+  RealT ErrorBodyC::Error(const Classifier2C & classifier, const DataSetVectorLabelC & dset, UIntT label, RealT threshold) const {
     UIntT correct = 0;
     UIntT wrong = 0;    
     
@@ -105,7 +105,7 @@ namespace RavlN {
     return pmc;
   }
   
-  RealT ErrorBodyC::Error(const ClassifierC & classifier, const DataSetVectorLabelC & dset, const SArray1dC<IndexC> & features)
+  RealT ErrorBodyC::Error(const ClassifierC & classifier, const DataSetVectorLabelC & dset, const SArray1dC<IndexC> & features) const
   {
 #if 0
     SizeT dim = dset.Sample1().First().Size();

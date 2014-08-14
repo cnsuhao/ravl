@@ -76,9 +76,13 @@ namespace RavlImageN {
      //data[0] - 32768,data[1] - 32768,data[2] - 32768);
     }
     //: Convert to float.
+
+#if !RAVL_COMPILER_LLVM
     operator YPbPrBT601ValueC<float>() const
     { return FloatYPbPr(); }
     //: Convert to floating point values.
+    // FIXME:- The llvm compiler complains this will never be used, is this a problem?
+#endif
     
     operator YPbPrBT601ValueC<UInt8T>() const
     { return YPbPrBT601ValueC<FloatT>((FloatT) data[0],(FloatT) data[1],(FloatT) data[2]);}  //>>8,(UInt16T) data[1]>>8,(UInt16T) data[2]>>8); }

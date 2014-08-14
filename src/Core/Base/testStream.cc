@@ -310,7 +310,8 @@ int testRawFD() {
   int fds[2];
   pipe(fds);
   
-  char let = 'a';
+  char let1 = 'a';
+  char let2 = 'b';
   std::cerr << "Writting data... \n";
   
 #if 0
@@ -319,7 +320,7 @@ int testRawFD() {
 #else
   OStreamC os(fds[1],true,false);
   if(!os)  return __LINE__;
-  os << let << let;
+  os << let1 << let2;
   os.os().flush();
 #endif
   std::cerr << "Read data... \n";
@@ -344,10 +345,10 @@ int testRawFD() {
   is >> rlet2;
   if(!is)  return __LINE__;  
 #endif
-  std::cerr << "Let=" << (int) let << " RLet1=" << (int) rlet1 << " RLet2=" << (int) rlet2 << "\n";
+  std::cerr << "Let 1=" << (int) let1 << " 2=" << (int) let2 << " RLet1=" << (int) rlet1 << " RLet2=" << (int) rlet2 << "\n";
   
-  if(let != rlet1) return __LINE__;
-  if(let != rlet2) return __LINE__;
+  if(let1 != rlet1) return __LINE__;
+  if(let2 != rlet2) return __LINE__;
   return 0;
 }
 #endif

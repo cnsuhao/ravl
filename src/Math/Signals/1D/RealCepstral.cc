@@ -27,7 +27,7 @@ namespace RavlN {
   //: Factory constructor.
 
   RealCepstralC::RealCepstralC(const XMLFactoryContextC &factory)
-   : DPProcessBodyC<SArray1dC<RealT>,SArray1dC<RealT> >(factory)
+   : DPProcessBodyC<Array1dC<RealT>,Array1dC<RealT> >(factory)
   {}
 
 
@@ -57,5 +57,5 @@ namespace RavlN {
   void LinkRealCepstral()
   {}
 
-  static XMLFactoryRegisterConvertC<RealCepstralC,DPProcessBodyC<SArray1dC<RealT>,SArray1dC<RealT> > > g_register("RavlN::RealCepstralC");
+  static XMLFactoryRegisterConvertC<RealCepstralC,DPProcessBodyC<Array1dC<RealT>,Array1dC<RealT> > > g_register("RavlN::RealCepstralC");
 }

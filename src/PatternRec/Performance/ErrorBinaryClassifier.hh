@@ -50,6 +50,8 @@ namespace RavlN {
     virtual bool Save(BinOStreamC &out) const;
     //: Writes object to stream, can be loaded using constructor
     
+    using ErrorBodyC::Error;
+
     virtual RealT Error(const ClassifierC & classifier, const DataSetVectorLabelC & dset) const;
     //: Compute the error on the labelled dataset
 
