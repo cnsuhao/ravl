@@ -133,7 +133,7 @@ namespace RavlImageN {
     
     template<class ClassT, class PixelT> 
     void UpdateStats(const ImageC<PixelT> & img)
-    { Body().UpdateStats<ClassT, PixelT>(img); }
+    { Body().template UpdateStats<ClassT, PixelT>(img); }
     //: Calculates the statistics of the regions in the segmentation map from scratch
     
     UIntT CompressAndRelabel(SArray1dC<UIntT> &newLabs) 

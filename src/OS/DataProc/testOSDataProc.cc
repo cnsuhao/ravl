@@ -130,18 +130,18 @@ int testBlackboard() {
   if(!bb.Get("Hello",ival)) return __LINE__;
   if(ival != (IntT) bval) return __LINE__;
   
-  cerr << "Saving blackboard. \n";
+  std::cerr << "Saving blackboard. \n";
   BufOStreamC bos;
   {
     BinOStreamC os(bos);
     os << bb;
   }
-  cerr << "Loading blackboard. \n";
+  std::cerr << "Loading blackboard. \n";
   BufIStreamC bis(bos.Data());
   BinIStreamC is(bis);
   BlackboardC bb2;
   is >> bb2;
-  cerr << "Done.. \n";
+  std::cerr << "Done.. \n";
   ival = 0;
   if(!bb2.Get("Hello",ival)) return __LINE__;
   if(ival != (IntT) bval) return __LINE__;

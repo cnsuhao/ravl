@@ -6,6 +6,7 @@
 #include "Ravl/OS/CharIO.hh"
 #include "Ravl/Types.hh"
 #include "Ravl/Stream.hh"
+#include <unistd.h>
 
 using namespace std;
 using namespace RavlN;

@@ -35,7 +35,7 @@
 namespace RavlImageN {
 
 
-  static bool IsLittleEndian()
+  static inline bool IsLittleEndian()
   {
     short test = 0x4321;
     if(((char *) &test)[0] != 0x21) 
