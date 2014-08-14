@@ -35,13 +35,15 @@ namespace RavlN {
   {
   public:
     BufferStringBodyC(std::string &nstr,UIntT size)
-      : BufferBodyC<char>(size,(char *) nstr.data()),
-	str(nstr)
-    {}
+      : str(nstr)
+    {
+      RavlAssert(size <= str.size());
+      Attach(SizeBufferAccessC<char>(const_cast<char *>(str.data()),size));
+    }
     //: Constructor.
     
   protected:
-    string str;
+    std::string str;
   };
 
   class BufferStringC 
@@ -65,7 +67,7 @@ namespace RavlN {
   BufOStreamC::BufOStreamC()
     : 
 #if RAVL_HAVE_STRINGSTREAM
-    OStreamC(*(oss = new ostringstream(ostringstream::binary)),true)
+    OStreamC(*(oss = new std::ostringstream(ostringstream::out|ostringstream::binary)),true)
 #else
     OStreamC(*(oss = new ostrstream(0,0,ios_base::app | ios_base::binary)),true)
 #endif
@@ -122,7 +124,7 @@ namespace RavlN {
   BufOStreamC::BufOStreamC(const TriggerC &sendto)
   :
 #if RAVL_HAVE_STRINGSTREAM
-  OStreamC(*(oss = new ostringstream(ostringstream::binary)),true)
+  OStreamC(*(oss = new std::ostringstream(ostringstream::binary)),true)
 #else
   OStreamC(*(oss = new ostrstream(0,0,ios_base::app | ios_base::binary)),true)
 #endif
@@ -144,7 +146,7 @@ namespace RavlN {
 #else
 
     // Fix horrible bug in irix implementation. 
-    // pcount gets incremtned when str() is called 
+    // pcount gets incremented when str() is called
 #if RAVL_COMPILER_MIPSPRO
     char * astr = oss->str() ;  
     int    size = oss->pcount() ;
@@ -166,7 +168,7 @@ namespace RavlN {
     IStreamC(*(iss = new istrstream(const_cast<char *>(dat.ReferenceElm()),dat.Size())),true),
 #else
 #if RAVL_HAVE_STRINGSTREAM
-    IStreamC(*(iss = new istringstream(string(dat.ReferenceElm(),static_cast<size_t>(dat.Size())),istringstream::binary)),true),
+    IStreamC(*(iss = new std::istringstream(std::string(dat.ReferenceElm(),static_cast<size_t>(dat.Size())),istringstream::binary)),true),
 #else
     IStreamC(*(iss = new istrstream(dat.ReferenceElm(),static_cast<size_t>(dat.Size()))),true),
 #endif
