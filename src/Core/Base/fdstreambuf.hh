@@ -141,7 +141,7 @@ namespace RavlN {
           char *at = &buff;
           do {
             n = write(fd,at,((char *) ((&buff)+1)) - ((char *)at));
-            std::cerr << "Wrote: " << n << "\n";
+            //std::cerr << "Wrote: " << n << " of " << << "\n";
             if(n < 0) {
               if(errno == EAGAIN || errno == EINTR)
                 continue;

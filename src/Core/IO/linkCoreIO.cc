@@ -13,6 +13,8 @@
 namespace RavlN {
   
   void InitFileFormatBinStream();
+  void InitFileFormatBinStreamMeta();
+  void IncludeFileFormatStreamMeta();
   void LinkProcIStream();
 
 
@@ -21,6 +23,8 @@ namespace RavlN {
   void LinkRavlIO () {
     InitCoreIO();
     InitFileFormatBinStream();
+    InitFileFormatBinStreamMeta();
+    IncludeFileFormatStreamMeta();
     LinkProcIStream();
   }
   

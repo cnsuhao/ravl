@@ -27,12 +27,10 @@
 #include "Ravl/DP/SPortAttach.hh"
 #include "Ravl/OS/Date.hh"
 #include "Ravl/SmartPtr.hh"
+#include "Ravl/UnitTest.hh"
+#include "Ravl/DP/PrintIOInfo.hh"
 
 using namespace RavlN;
-
-#if RAVL_COMPILER_MIPSPRO 
-#pragma instantiate RavlN::DPProcessBodyC<int,int>
-#endif
 
 template class DPThreadPipeC<IntT,IntT>;
 template class DPMTIOConnectC<IntT>;
@@ -41,21 +39,16 @@ int testThreadPipe();
 int testBlackboard();
 int testPlayControl();
 
+
 int main() {
-  int ln;
-  if((ln = testThreadPipe()) != 0) {
-    cerr << "Error on line " << ln << "\n";
-    return 1;
-  }
-  if((ln = testBlackboard()) != 0) {
-    cerr << "Error on line " << ln << "\n";
-    return 1;
-  }
-  if((ln = testPlayControl()) != 0) {
-    cerr << "Error on line " << ln << "\n";
-    return 1;
-  }
-  cerr << "Test passed. \n";
+
+  PrintIOFormats(std::cerr);
+
+  RAVL_RUN_TEST(testThreadPipe());
+  RAVL_RUN_TEST(testBlackboard());
+  RAVL_RUN_TEST(testPlayControl());
+
+  std::cerr << "Test passed. \n";
   return 0;
 }
 
@@ -80,7 +73,7 @@ public:
 };
 
 int testThreadPipe() {
-  cerr << "testThreadPipe() Called. \n";
+  std::cerr << "testThreadPipe() Called. \n";
   {
     CounterC::RefT aCounter = new CounterC();
     DPIPortC<int> source = IMethodPtr(aCounter,&CounterC::GetValue);
@@ -116,7 +109,7 @@ int testThreadPipe() {
 }
 
 int testBlackboard() {
-  cerr << "testBlackboard() Called. \n";
+  std::cerr << "testBlackboard() Called. \n";
   BlackboardC bb(true);
   IntT bval = 1;
   UIntT uintval = 2;
@@ -136,8 +129,19 @@ int testBlackboard() {
     BinOStreamC os(bos);
     os << bb;
   }
-  std::cerr << "Loading blackboard. \n";
-  BufIStreamC bis(bos.Data());
+  bos.os().flush();
+
+  SArray1dC<char> buf = bos.Data();
+  std::cerr << "Loading blackboard. " << buf.Size() <<  "\n";
+#if 0
+  for(int i = 0;i < buf.Size();i++)
+    std::cerr << std::hex << ((unsigned) ((ByteT) buf[i]))  << " ";
+  std::cerr << std::endl;
+  for(int i = 0;i < buf.Size();i++)
+    std::cerr << buf[i] << " ";
+  std::cerr << std::dec << std::endl;
+#endif
+  BufIStreamC bis(buf);
   BinIStreamC is(bis);
   BlackboardC bb2;
   is >> bb2;
@@ -150,7 +154,7 @@ int testBlackboard() {
 }
 
 int testPlayControl() {
-  cerr << "testPlayControl(), Called. \n";
+  std::cerr << "testPlayControl(), Called. \n";
   DListC<UIntT> list;
   UIntT i;
   UIntT max = 200;
@@ -167,16 +171,16 @@ int testPlayControl() {
   
   playControl.PlayFwd();
   
-  cerr << "Waiting for complete. \n";
+  std::cerr << "Waiting for complete. \n";
   while(playControl.Tell() != (max-1)) {
-    //cerr << " *********************************************************** " << playControl.Tell() << ". \n";
+    //std::cerr << " *********************************************************** " << playControl.Tell() << ". \n";
     Sleep(0.01);
   }
   playControl.Stop();
-  cerr << "Checking list. \n";
+  std::cerr << "Checking list. \n";
   i = 0;
   for(DLIterC<UIntT> it(olist);it;it++,i++)
     if(*it != i) return __LINE__;
-  cerr << "testPlayControl(), Done. \n";
+  std::cerr << "testPlayControl(), Done. \n";
   return 0;
 }

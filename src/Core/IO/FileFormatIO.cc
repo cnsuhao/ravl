@@ -101,11 +101,11 @@ namespace RavlN {
   
   //! userlevel=Advanced
   //: Load to an abstract object handle.
-  // NB. an instace of TypeInfoInstC must exists for the contained class if this
+  // NB. an instance of TypeInfoInstC must exists for the contained class if this
   // is to work.
   
   bool LoadAbstract(IStreamC &strm,RCWrapAbstractC &obj,StringC fileformat,bool verbose) { 
-    ONDEBUG(cerr << "LoadAbstract(IStreamC &,RCWrapAbstractC &), Called.  \n");
+    ONDEBUG(std::cerr << "LoadAbstract(IStreamC &,RCWrapAbstractC &), Called.  \n");
     return SystemFileFormatRegistry().Load(strm,obj,fileformat,verbose); 
   }
   
@@ -115,7 +115,7 @@ namespace RavlN {
   // is to work.
   
   bool SaveAbstract(OStreamC &strm,const RCWrapAbstractC &obj,StringC fileformat,bool verbose) { 
-    ONDEBUG(cerr << "SaveAbstract(OStreamC &,const RCWrapAbstractC &), Called. Type=" << TypeName(obj.DataType()) << " \n");
+    ONDEBUG(std::cerr << "SaveAbstract(OStreamC &,const RCWrapAbstractC &), Called. Type=" << TypeName(obj.DataType()) << " \n");
     return SystemFileFormatRegistry().Save(strm,obj,fileformat,verbose); 
   }
   

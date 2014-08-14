@@ -34,15 +34,19 @@ namespace RavlN {
   {}
   //: Constructor with full format info.
 
-  const std::type_info &FileFormatBinStreamMetaBodyC::ProbeLoad(IStreamC &in,const std::type_info &/*obj_type*/) const
+  const std::type_info &FileFormatBinStreamMetaBodyC::ProbeLoad(IStreamC &in,const std::type_info &obj_type) const
   {
-    if(!in.good())
+    ONDEBUG(RavlDebug("ProbeLoad for type '%s' ",TypeName(obj_type)));
+    if(!in.good()) {
+      ONDEBUG(RavlDebug("ProbeLoad failed, stream not good."));
       return typeid(void);
+    }
     BinIStreamC bin(in);
     std::streampos mark = bin.Tell();
     UInt16T id;
     // Check magic number.
     bin >> id;
+    ONDEBUG(RavlDebug("ProbeLoad got stream id '%04x' .",id));
     switch(id)
     {
       case RavlN::RAVLBinaryID64:
@@ -68,12 +72,13 @@ namespace RavlN {
       default:
         // Unknown format string.
         bin.Seek(mark);
+        ONDEBUG(RavlDebug("ProbeLoad unknown stream type '%04x' .",id));
         return typeid(void);
     }
     // Check class name.
     StringC classname;
     bin >> classname;
-    //cout << "Stream Probe: '" << classname << "' Looking for: '" << TypeName(typeid(DataT)) << "'\n";
+    ONDEBUG(RavlDebug("ProbeLoad got class name '%s' .",classname.c_str()));
     bin.Seek(mark);
     FileFormatBaseC ff;
     if(!m_class2format.Lookup(classname,ff))
@@ -212,7 +217,6 @@ namespace RavlN {
 
   //: Register format
   bool FileFormatBinStreamMetaBodyC::RegisterFormat(FileFormatBaseC &fileformat) {
-    //ONDEBUG(std::cerr << "Registering type '" << RavlN::TypeName(fileformat.DefaultType()) << "' Name:'" << fileformat.Name() << "'\n");
     ONDEBUG(RavlDebug("Registering type '%s' Name:'%s' ",RavlN::TypeName(fileformat.DefaultType()),fileformat.Name().c_str()));
     RavlAssert(fileformat.DefaultType() != typeid(void));
     if(!HaveTypeName(fileformat.DefaultType())) {
@@ -246,6 +250,8 @@ namespace RavlN {
 
   
   void InitFileFormatBinStreamMeta()
-  {}
+  {
+    DefaultFormatBinStreamMeta();
+  }
   
 }

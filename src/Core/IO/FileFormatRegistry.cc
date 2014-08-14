@@ -551,7 +551,7 @@ namespace RavlN {
 #endif
     }
     if(!bestFormat.IsValid()) {
-      RavlError("CreateInput(StreamC), Can't load stream. ");
+      RavlError("CreateInput(StreamC), Can't load stream in format '%s' for type '%s',  stream name '%s' buff:%s ",format.c_str(),TypeName(obj_type),in.Name().c_str(),TypeName(typeid(in.is())));
       if(verbose ONDEBUG(|| 1)) 
         RavlWarning("CreateInput(StreamC), Can't identify format. ");
       return DPIPortBaseC();

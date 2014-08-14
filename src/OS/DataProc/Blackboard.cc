@@ -4,8 +4,9 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-//! rcsid="$Id$"
 //! lib=RavlDPMT
+//! file="Ravl/OS/DataProc/Blackboard.cc"
+
 #include "Ravl/config.h"
 #include "Ravl/DP/Blackboard.hh"
 #include "Ravl/DP/TypeConverter.hh"
@@ -16,11 +17,7 @@
 #include "Ravl/TypeName.hh"
 #include "Ravl/DP/FileFormatStream.hh"
 #include "Ravl/DP/FileFormatBinStream.hh"
-//! file="Ravl/OS/DataProc/Blackboard.cc"
-
-#if RAVL_COMPILER_MIPSPRO 
-#pragma instantiate RavlN::DPIPortBodyC<RavlN::RCWrapAbstractC>
-#endif 
+#include "Ravl/SysLog.hh"
 
 namespace RavlN {
   
@@ -36,7 +33,7 @@ namespace RavlN {
   {
     int version;
     strm >> version;
-    if(version > 0) {
+    if(version != 0) {
       cerr << "BlackboardBodyC::BlackboardBodyC(), Illegal stream version = " << version << "\n";
       throw ExceptionOutOfRangeC("BlackboardBodyC::BlackboardBodyC(istream &), Unexpected version number. ");
     }
@@ -66,11 +63,12 @@ namespace RavlN {
     int version;
     strm >> version;
     if(version != 0) {
-      cerr << "BlackboardBodyC::BlackboardBodyC(), Illegal stream version = " << version << "\n";
-      throw ExceptionOutOfRangeC("BlackboardBodyC::BlackboardBodyC(istream &), Unexpected version number. ");
+      RavlError("BlackboardBodyC::BlackboardBodyC(), Illegal stream version = %d ",version);
+      throw ExceptionUnexpectedVersionInStreamC("BlackboardBodyC::BlackboardBodyC(istream &), Unexpected version number. ");
     }
     UInt32T size;
     strm >> size;
+    RavlDebug("Got %d keys ",size);
     for(;size > 0;size--) {
       StringC key;
       strm >> key;
@@ -136,18 +134,20 @@ namespace RavlN {
       strm << it.Key();
       BufOStreamC ss;
       StringC formatClue = "abs";
-      if(!RavlN::SaveAbstract(ss,it.Data(),formatClue,verbose)) { // abs is prefered...
+      if(!RavlN::SaveAbstract(ss,it.Data(),formatClue,verbose)) { // abs is preferred...
 	formatClue = "stream";
 	if(!RavlN::SaveAbstract(ss,it.Data(),formatClue,verbose)) { // Then strm.
 	  formatClue = "";
 	  if(!RavlN::SaveAbstract(ss,it.Data(),formatClue,verbose)) { // Then anyhow!
-	    cerr << "Failed to save key '" << it.Key() << "'\n";
+	    RavlError("Failed to save key '%s' ",it.Key().c_str());
+	    throw RavlN::ExceptionOperationFailedC("Failed to find method to save key.");
 	    return false;
 	  }
 	}
       }
       strm << formatClue;
-      strm << ss.Data();
+      SArray1dC<char> buf = ss.Data();
+      strm << buf;
     }
     for(HashIterC<StringC,Tuple2C<StringC,SArray1dC<char> > > it(unknown);it;it++) {
       if(entries.IsElm(it.Key()))

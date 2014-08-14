@@ -29,6 +29,7 @@
 #include "Ravl/FuncStream.hh"
 #include "Ravl/Calls.hh"
 #include "Ravl/Math.hh"
+#include "Ravl/UnitTest.hh"
 #include <string.h>
 
 #if RAVL_HAVE_UNISTD_H
@@ -44,8 +45,9 @@ int SimpleTest();
 int VectorTest();
 int StringTest();
 int StrStreamTest();
-int testRawFD(); /* NB. This is only usefull on some platforms. */
+int testRawFD(); /* NB. This is only useful on some platforms. */
 int testFDStream();
+int testFDStream2();
 int testBitStream();
 int testFuncStream();
 
@@ -57,48 +59,24 @@ StringC testFile = "/tmp/testStream" + StringC((IntT) getpid());
 
 int main() {
   std::cerr << "Starting test... \n";
-  int errLine;
   // NOTE: test may fail if file exits and belongs to someone else!!
-  if((errLine = SimpleTest()) != 0) {
-    std::cerr << "Stream test failed line: " << errLine << "\n";
-    return 1;
-  }
-  if((errLine = VectorTest()) != 0) {
-    std::cerr << "Stream vector test failed line: " << errLine << "\n";
-    return 1;
-  }
-  if((errLine = StringTest()) != 0) {
-    std::cerr << "Stream string test failed line: " << errLine << "\n";
-    return 1;
-  }
-  if((errLine = StrStreamTest()) != 0) {
-    std::cerr << "String stream test failed line: " << errLine << "\n";
-    return 1;
-  }
-  if((errLine = testFDStream()) != 0) {
-    std::cerr << "test failed line: " << errLine << "\n";
-    return 1;
-  }
+  RAVL_RUN_TEST(SimpleTest());
+  RAVL_RUN_TEST(VectorTest());
+  RAVL_RUN_TEST(StringTest());
+  RAVL_RUN_TEST(StrStreamTest());
+  RAVL_RUN_TEST(testFDStream());
+  RAVL_RUN_TEST(testFDStream2());
 #if RAVL_HAVE_INTFILEDESCRIPTORS
-  if((errLine = testRawFD()) != 0) {
-    std::cerr << "test failed line: " << errLine << "\n";
-    return 1;
-  }
+  RAVL_RUN_TEST(testRawFD());
 #endif
-  if((errLine = testBitStream()) != 0) {
-    std::cerr << "test failed line: " << errLine << "\n";
-    return 1;
-  }
-  if((errLine = testFuncStream()) != 0) {
-    std::cerr << "test failed line: " << errLine << "\n";
-    return 1;
-  }
+  RAVL_RUN_TEST(testBitStream());
+  RAVL_RUN_TEST(testFuncStream());
   std::cerr << "Test passed. \n";
   return 0;
 }
 
 int VectorTest() {
-  std::cerr << "VectorTest(), Called. \n";
+  //std::cerr << "VectorTest(), Called. \n";
   TFVectorC<ByteT,3> val;
   
   val[0] = 1;
@@ -129,13 +107,12 @@ int VectorTest() {
       return __LINE__; 
     }
   }
-  std::cerr << "VectorTest(), Done. \n";
+  //std::cerr << "VectorTest(), Done. \n";
   return 0;
   
 }
 
 int StringTest() {
-  std::cerr << "StringTest(), Called. \n";
   StringC strings[] = {"Hello", "this", "is", "a", "test"};
   {
     OStreamC os(testFile);
@@ -163,23 +140,22 @@ int StringTest() {
       StringC str;
       is >> ii >> str;
       if (ii != i || str != strings[i]) {
-	cerr << "Test failed on string " << i << " = " << ii << ", '" << str << "'\n";
+	std::cerr << "Test failed on string " << i << " = " << ii << ", '" << str << "'\n";
 	return __LINE__; 
       }
       else {
-	cerr << str << " ";
+	//std::cerr << str << " ";
       }
     }
-    std::cerr << "\n";
+    //std::cerr << "\n";
   }
-  std::cerr << "StringTest(), Done. \n";
+  //std::cerr << "StringTest(), Done. \n";
   return 0;
   
 }
 
 
 int SimpleTest() {
-  std::cerr << "SimpleTest(), Called. \n";
   
   ByteT val;
   RealT rval = 0.5;
@@ -210,7 +186,7 @@ int SimpleTest() {
   }
   if(Abs(nval - rval) > 0.00000001)  return __LINE__;
   if(Abs(nfval - fval) > 0.00000001) return __LINE__;
-  std::cerr << "SimpleTest(), Done. \n";
+  //std::cerr << "SimpleTest(), Done. \n";
   return 0;
 }
 
@@ -232,9 +208,9 @@ int StrStreamTest() {
     OStreamC *tmp = new OStreamC(sos);
     delete tmp;
     StringC got = sos.String();
-    std::cerr << "'" << got << "'\n";
+    //std::cerr << "'" << got << "'\n";
     if(got != "hello hellozyzxhellello") {
-      std::cerr << " Got:'" << got << "'\n";
+      //std::cerr << " Got:'" << got << "'\n";
       return __LINE__;
     }
   }
@@ -244,7 +220,7 @@ int StrStreamTest() {
     SubStringC rol = hello.from(0);
     sos << rol;
     StringC ret = sos.String();
-    std::cerr << "'" << ret << "'\n";
+    //std::cerr << "'" << ret << "'\n";
     
   }  
   {
@@ -268,40 +244,99 @@ int StrStreamTest() {
     if(strm2)
       return __LINE__;
   }
+  {
+    StringC tst("Hello\nThere");
+    StrIStreamC strStream(tst);
+
+    std::streampos pos = strStream.Tell();
+
+    StringC word;
+    strStream >> word;
+    if(word != "Hello") return __LINE__;
+
+    strStream.Seek(pos);
+    StringC word2;
+    strStream >> word2;
+    if(word2 != "Hello") return __LINE__;
+
+  }
+
   return 0;
 }
 
 int testFDStream() {
 #if RAVL_COMPILER_GCC
-  std::cerr << "testFDStream(), Started. \n";
   int fds[2];
   pipe(fds);
   char let = 'a';
-  std::cerr << "Writting data... \n";
+  //std::cerr << "Writing data... \n";
   
   ofdstream os(fds[1]);
   if(!os)  return __LINE__;
   os << let << let;
   os.flush();
   
-  std::cerr << "Read data... \n";
+  //std::cerr << "Read data... \n";
   
   char rlet1 = 0,rlet2 = 0;
   
   ifdstream is(fds[0]);
   if(!is)  return __LINE__;
-  std::cerr << "Reading byte1 \n";
+  //std::cerr << "Reading byte1 \n";
   is >> rlet1;
-  std::cerr << "Reading byte1 done. Let=" << (int) rlet1 <<" \n";
+  //std::cerr << "Reading byte1 done. Let=" << (int) rlet1 <<" \n";
   if(!is)  return __LINE__;  
   is >> rlet2;
   if(!is)  return __LINE__;  
   
-  std::cerr << "Let=" << (int) let << " RLet1=" << (int) rlet1 << " RLet2=" << (int) rlet2 << "\n";
+  //std::cerr << "Let=" << (int) let << " RLet1=" << (int) rlet1 << " RLet2=" << (int) rlet2 << "\n";
   
   if(let != rlet1) return __LINE__;
   if(let != rlet2) return __LINE__;
 #endif  
+  return 0;
+}
+
+int testFDStream2()
+{
+#if RAVL_COMPILER_GCC
+
+  int fds[2];
+  pipe(fds);
+
+  OStreamC os(fds[1],true,false);
+  IStreamC is(fds[0],true,false);
+
+  const char *someText = "Hello how are you?\n";
+  for(int i = 0;i < 10000;i++) {
+    os << someText;
+    os.os().flush();
+
+    StringC buff;
+    RavlN::readline(is,buff,'\n',false);
+    if(buff != someText) {
+      return __LINE__;
+    }
+  }
+
+#if 0
+  // This blocks, hard to tell if its a deadlock from file io or a bug.
+  // really need threads to test this properly.
+  const int buffSize = 1024;
+  char buff[buffSize];
+  for(int i = 0;i < buffSize;i++)
+    buff[i] = 'a' + i % 26;
+  buff[buffSize-1] = 0;
+
+  os << buff;
+  os.os().flush();
+
+  char rbuff[buffSize];
+  is >> rbuff;
+  for(int i = 0;i < buffSize-1;i++)
+    if(rbuff[i] != ('a' + i % 26)) return __LINE__;
+#endif
+#endif
   return 0;
 }
 
@@ -312,7 +347,7 @@ int testRawFD() {
   
   char let1 = 'a';
   char let2 = 'b';
-  std::cerr << "Writting data... \n";
+  //std::cerr << "Writting data... \n";
   
 #if 0
   write(fds[1],&let,1);
@@ -323,7 +358,7 @@ int testRawFD() {
   os << let1 << let2;
   os.os().flush();
 #endif
-  std::cerr << "Read data... \n";
+  //std::cerr << "Read data... \n";
   
   char rlet1 = 0,rlet2 = 0;
   
@@ -338,14 +373,14 @@ int testRawFD() {
 #else
   IStreamC is(fds[0],true,false);
   if(!is)  return __LINE__;
-  std::cerr << "Reading byte1 \n";
+  //std::cerr << "Reading byte1 \n";
   is >> rlet1;
-  std::cerr << "Reading byte1 done. Let=" << (int) rlet1 <<" \n";
+  //std::cerr << "Reading byte1 done. Let=" << (int) rlet1 <<" \n";
   if(!is)  return __LINE__;  
   is >> rlet2;
   if(!is)  return __LINE__;  
 #endif
-  std::cerr << "Let 1=" << (int) let1 << " 2=" << (int) let2 << " RLet1=" << (int) rlet1 << " RLet2=" << (int) rlet2 << "\n";
+  //std::cerr << "Let 1=" << (int) let1 << " 2=" << (int) let2 << " RLet1=" << (int) rlet1 << " RLet2=" << (int) rlet2 << "\n";
   
   if(let1 != rlet1) return __LINE__;
   if(let2 != rlet2) return __LINE__;
@@ -354,7 +389,7 @@ int testRawFD() {
 #endif
 
 int testBitStream() {
-  std::cerr << "testBitStream(), Called. \n";
+  //std::cerr << "testBitStream(), Called. \n";
   StrOStreamC ostr;
   int i;
   {
@@ -427,7 +462,7 @@ int testBitStream() {
 
 SizeT writeCount = 0;
 bool WriteMethod(const char *data,SizeT len) {
-  std::cerr << "Write:" << len << "\n";
+  //std::cerr << "Write:" << len << "\n";
   writeCount += len;
   return true;
 }
@@ -441,13 +476,13 @@ SizeT ReadMethod(char *data,SizeT bufferSize) {
 }
 
 int testFuncStream() {
-  std::cerr << "testFuncStream(). \n";
+  //std::cerr << "testFuncStream(). \n";
   {
     FuncOStreamBufC oStrmBuf(RavlN::Trigger(&::WriteMethod,(const char *)0,0));
     std::ostream ostrm(&oStrmBuf);
     ostrm << "Hello.\n" << std::flush;
   }
-  std::cerr << "Data:" << writeCount << "\n";
+  //std::cerr << "Data:" << writeCount << "\n";
   if(writeCount != 7) return __LINE__;
   
   {
@@ -456,7 +491,8 @@ int testFuncStream() {
     StringC str;
     istrmOfInifinitGreetings >> str;
     
-    std::cerr<< " Read:'" << str << "' \n";
+    //std::cerr<< " Read:'" << str << "' \n";
   }
   return 0;
 }
+

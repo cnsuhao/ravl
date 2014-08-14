@@ -34,7 +34,7 @@ namespace RavlN {
   StrOStreamC::StrOStreamC()
     :
 #if RAVL_HAVE_STRINGSTREAM
-  OStreamC(*(oss = new ostringstream(ostringstream::binary)),true)
+  OStreamC(*(oss = new std::ostringstream(std::ostringstream::binary)),true)
 #else
     OStreamC(*(oss = new ostrstream()),true)
 #endif
@@ -140,7 +140,7 @@ namespace RavlN {
   StrIStreamC::StrIStreamC(const StringC &dat)
     :
 #if RAVL_HAVE_STRINGSTREAM
-    IStreamC(*(iss = new istringstream(string(dat.chars(),dat.length()),istringstream::binary)),true),
+    IStreamC(*(iss = new std::istringstream(std::string(dat.chars(),dat.length()),std::istringstream::binary)),true),
 #else
 #if RAVL_COMPILER_VISUALCPP
     IStreamC(*(iss = new istrstream(const_cast<char *>(dat.chars()),dat.length())),true),
@@ -152,7 +152,7 @@ namespace RavlN {
   {
 #if !RAVL_HAVE_STRINGSTREAM
     // This will ensure a handle is held to 'dat' until we're finished with it.
-    // its not completely clear if this is needed, but to be safe.
+    // its not completely clear if this is needed, but better to be safe.
     AddDestructionOp(Trigger(&RemoveBuffer,dat));
 #endif
   }
