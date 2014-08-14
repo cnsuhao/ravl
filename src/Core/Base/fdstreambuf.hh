@@ -15,10 +15,14 @@
 #include "Ravl/config.h"
 #include "Ravl/Assert.hh"
 
-#if (RAVL_COMPILER_GCC3 && !RAVL_COMPILER_GCC3_4 && !RAVL_COMPILER_GCC4) || RAVL_COMPILER_LLVM || 1
+#if (RAVL_COMPILER_GCC3 && !RAVL_COMPILER_GCC3_4 && !RAVL_COMPILER_GCC4) || RAVL_COMPILER_LLVM
 
 #include <streambuf>
 #include <unistd.h>
+
+#ifndef BUFSIZ
+#define BUFSIZ 4096
+#endif
 
 namespace RavlN {
   using namespace std;
