@@ -283,11 +283,11 @@ namespace RavlN {
     {}
     //: Create form an DPEntityC handle.
     
-  protected:
-    DPIFileSequenceC(DPIFileSequenceC &bod)
+    DPIFileSequenceC(const DPIFileSequenceC &bod)
       : DPEntityC(bod)
     {}
     //: Body constructor.
+  protected:
     
     DPIFileSequenceBodyC &Body() 
     { return dynamic_cast<DPIFileSequenceBodyC &>(DPEntityC::Body()); }
@@ -368,11 +368,11 @@ namespace RavlN {
     {}
     //: Create form an DPEntityC handle.
     
-  protected:
-    DPOFileSequenceC(DPOFileSequenceC &bod)
+    DPOFileSequenceC(const DPOFileSequenceC &bod)
       : DPEntityC(bod)
     {}
     //: Body constructor.
+  protected:
     
     DPOFileSequenceBodyC &Body() 
     { return dynamic_cast<DPOFileSequenceBodyC &>(DPEntityC::Body()); }

@@ -10,7 +10,6 @@
 //! userlevel=Normal
 //! author="Charles Galambos"
 //! docentry="Ravl.API.Math"
-//! rcsid="$Id$"
 //! date="11/02/2010"
 
 #include "Ravl/StdConst.hh"
@@ -76,7 +75,7 @@ namespace RavlN {
       if(score <= m_results[0].Data1())
         return false;
       // Add pushing worst out.
-      register SizeT j = 1;
+      SizeT j = 1;
       for(;j < N && m_results[j].Data1() < score;j++)
         m_results[j-1] = m_results[j];
       m_results[j-1].Data1() = score;
@@ -153,7 +152,7 @@ namespace RavlN {
       if(score < m_worseAcceptableScore)
         return false;
       RavlAssert(m_used < N);
-      register SizeT j = 0;
+      SizeT j = 0;
 
       // Find where to put new entry.
       for(;j < m_used && m_results[j].Data1() < score;j++);
