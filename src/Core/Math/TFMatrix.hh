@@ -565,7 +565,7 @@ namespace RavlN {
   TFMatrixC<DataT,N,N> &TFVectorC<DataT,N>::OuterProduct(const TFVectorC<DataT,N> &av, 
 							 TFMatrixC<DataT,N,N> &result) const {
     for(unsigned int i = 0;i < N;i++) 
-      for(unsigned int j = 0;j < N;i++) 
+      for(unsigned int j = 0;j < N;j++) 
 	result[i][j] = av[i] * data[j];
     return result;
   }
