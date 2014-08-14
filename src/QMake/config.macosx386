@@ -41,6 +41,8 @@ ULF=-l#
 
 #EXELIB := -framework libstdc++ 
 
+#POSIX_C_SOURCE_DEFAULT=1
+
 SHAREDEXT=dylib#
 
 ifndef DYNAMICFLAG
@@ -57,8 +59,12 @@ RM=rm
 LIBPATHSWITCH = -Wl,-F#
 
 AMKDEPFLAGS = -Wp,-MMD,$(WORKTMP)/$*.d
-MKDEPUP = /bin/bash -c "echo -n '\$$(INST_OBJS)/'" > $(INST_DEPEND)/$*.d ; cat $(WORKTMP)/$*.d  >> $(INST_DEPEND)/$*.d ; \
- rm $(WORKTMP)/$*.d
+
+# Use this for gcc
+#MKDEPUP = /bin/bash -c "echo -n '\$$(INST_OBJS)/'" > $(INST_DEPEND)/$*.d ; cat $(WORKTMP)/$*.d  >> $(INST_DEPEND)/$*.d ; rm $(WORKTMP)/$*.d
+
+# This works with clang/llvm
+MKDEPUP = sed 's|$(INST_OBJS)|$$(INST_OBJS)|' $(WORKTMP)/$*.d > $(INST_DEPEND)/$*.d ; rm $(WORKTMP)/$*.d
 
 NOLIBRARYPRELINK=1
 
@@ -67,10 +73,12 @@ DYNAMICLIBEXT=dylib#
 ############################
 # Universal flags.
 
-CFLAGS   = -Wall -pipe -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -m64
+CFLAGS   = -Wall -pipe 
+#-D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -m64
 CFLAGS   += $(EXTRA_CFLAGS) 
 
-CCFLAGS  = -pipe -Wall -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -m64
+CCFLAGS  = -pipe -Wall -m64
+# -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE
 CCFLAGS  += $(EXTRA_CCFLAGS)
 
 CCPPFLAGS= -DGNU -Dunix -I /sw/include
