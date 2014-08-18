@@ -118,6 +118,14 @@ namespace RavlN {
   const std::type_info &FileFormatBodyC::DefaultType() const
   { return typeid(void); }
   
+
+  //: Find the priority of the format. the higher the better.
+  // Default is zero.
+
+  IntT FileFormatBodyC::Priority() const {
+    return 0;
+  }
+
   ///////////////////////////////
   //: Test if format is a fully streamable.
   // i.e. check if you can read/write more than object object.

@@ -16,6 +16,7 @@
 #include "Ravl/DP/FileFormatDesc.hh"
 #include "Ravl/MTLocks.hh"
 #include "Ravl/SysLog.hh"
+#include "Ravl/StdMath.hh"
 
 #define DODEBUG 0
 #if DODEBUG
@@ -397,7 +398,7 @@ namespace RavlN {
     FileFormatBaseC minForm;
     DListC<DPConverterBaseC> bestConv;
     const std::type_info *bestout = 0;
-    IntT bestPri = 0;
+    IntT bestPri = -100;
     
     HSetC<StringC> ignoreFmts,acceptFmts;
     bool acceptAll = ParseFmts(format,ignoreFmts,acceptFmts);
@@ -422,6 +423,7 @@ namespace RavlN {
 	continue;
       if(ti == obj_type || obj_type == typeid(void)) {
 	if(minCost > 0 || it.Data().Priority() > bestPri) {
+	  ONDEBUG(RavlDebug("Conversion for %s priority %d (Best so far:%d) Cost:%f ",it.Data().Name().c_str(),it.Data().Priority(),bestPri,minCost));
 	  minForm = it.Data();
 	  bestConv = DListC<DPConverterBaseC>();
 	  minCost = 0;
@@ -431,12 +433,15 @@ namespace RavlN {
 	continue;
       }
 #if RAVL_USE_IO_AUTO_TYPECONVERTER
-      if(minCost == 0)
-	continue; // Found a format needing no conversion !
-      RealT acost = -1;
+      if(minCost == 0) {
+	continue; // Already found a format needing no conversion !
+      }
+      RealT acost = 1000;
       DListC<DPConverterBaseC> aConv(typeConverter.FindConversion(obj_type,ti,acost));
+      RavlAssert(!IsNan(acost));
       if(aConv.Size() == 0)
 	continue; // Can't convert !
+      ONDEBUG(RavlDebug("Conversion cost %f (Best so far:%f) ",acost,minCost));
       if(acost < minCost || (acost == minCost && it.Data().Priority() > bestPri)) {
 	bestConv = aConv;
 	minForm = it.Data();
@@ -457,7 +462,8 @@ namespace RavlN {
     }  
     if(verbose ONDEBUG(|| 1)) {
       //std::cerr << "Saving object '" << TypeName(obj_type) << "' in format '" << minForm.Name() << "' with type '" << TypeName(*bestout) << "' to file '" << filename << "' Steps:" << bestConv.Size() << " Priority:" << bestPri <<  " \n";
-      RavlInfo("Saving object '%s' in format '%s' with type '%s' to file '%s' in %d steps with priority:%f ",TypeName(obj_type),minForm.Name().c_str(),TypeName(*bestout),filename.c_str(),bestConv.Size().V(),bestPri);
+      RavlInfo("Saving object '%s' in format '%s' with type '%s' to file '%s' in %d steps with priority:%d cost:%f ",
+          TypeName(obj_type),minForm.Name().c_str(),TypeName(*bestout),filename.c_str(),(int) bestConv.Size().V(),bestPri,minCost);
       for(RavlN::DLIterC<DPConverterBaseC> it(bestConv);it.IsElm();it++) {
         if(!it.IsLast())
           RavlDebug(" Via %s ",RavlN::TypeName(it->Output()));

@@ -113,7 +113,7 @@ namespace RavlN {
     // This specifies the native class for representing the data in a file. <p>
     // typeid(void) if none, indicates an indirect driver.
     
-    virtual IntT Priority() const { return 0; }
+    virtual IntT Priority() const;
     //: Find the priority of the format. the higher the better.
     // Default is zero.
     
