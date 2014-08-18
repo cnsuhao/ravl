@@ -101,7 +101,7 @@ namespace RavlImageN {
 
   static TypeNameC type1(typeid(CompressedImageJ2kC),"RavlImageN::CompressedImageJ2kC");
   
-  DP_REGISTER_CONVERSION_NAMED(RGBImage2CompressedImageJ2K ,0.9,
+  DP_REGISTER_CONVERSION_NAMED(RGBImage2CompressedImageJ2K ,1.1,
 			       "CompressedImageJ2kC RavlImageN::Convert(const ImageC<ByteRGBValueC> &)");
   
   DP_REGISTER_CONVERSION_NAMED(CompressedImageJ2K2RGBImage ,1,

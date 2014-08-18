@@ -58,13 +58,13 @@ namespace RavlImageN {
     // Will create an Invalid port if not supported.
     
     virtual const type_info &DefaultType() const; 
-    //: Get prefered IO type.
+    //: Get preferred IO type.
     
-    virtual IntT Priority() const { return -2; }
+    virtual IntT Priority() const;
     //: Find the priority of the format. the higher the better.
     // Default is zero, this is better than the default (streams.)
     
-    virtual bool IsStream() const { return false; }
+    virtual bool IsStream() const;
     //: Test if format is a fully streamable.
     // i.e. check if you can read/write more than object object.
     // png supports sequences.. but not with this software for now...

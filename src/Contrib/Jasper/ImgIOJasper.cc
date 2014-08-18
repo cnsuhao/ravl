@@ -129,6 +129,7 @@ namespace RavlImageN {
     if(img == 0) {
       cerr << "DPImageIOJasperBaseC::LoadImage(), Failed. \n";
     }
+    ONDEBUG(std::cerr << "Loaded Image: x=" << img->tlx_ << " y=" << img->tly_ << " brx=" << img->brx_ << " bry=" << img->bry_ << "\n");
     return img;
   }
 
@@ -312,6 +313,8 @@ namespace RavlImageN {
     jas_clrspc_t clrspc = JAS_CLRSPC_SRGB;
     jas_image_t *jimg = jas_image_create(3,cmptparms,clrspc);
     
+
+
     Array2dIterC<ByteRGBValueC> it(img);
     int r = 0;
     for(;it;) {
@@ -346,6 +349,7 @@ namespace RavlImageN {
     int fam = jas_clrspc_fam(cspc);
     cerr << "Cspc=" << cspc << " Fam=" << fam << "\n";
 #endif
+    ONDEBUG(std::cerr << "Created Image: x=" << jimg->tlx_ << " y=" << jimg->tly_ << " brx=" << jimg->brx_ << " bry=" << jimg->bry_ << "\n");
     return jimg;
   }
   
