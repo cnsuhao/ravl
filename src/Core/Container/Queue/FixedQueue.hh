@@ -44,7 +44,7 @@ namespace RavlN {
     //: Resize the queue.
     // The new size must be larger than the number of used elements.
 
-    inline bool IsSpace();
+    inline bool IsSpace() const;
     //: Is there space to add an item into ring ?
     
     inline void InsLast(const T &Obj);
@@ -411,8 +411,8 @@ namespace RavlN {
   
   template<class T>
   inline 
-  bool FixedQueueC<T>::IsSpace()  {
-    T *nhead = head + 1;
+  bool FixedQueueC<T>::IsSpace() const {
+    const T *nhead = head + 1;
     if(nhead >= eoa)
       nhead = ArrayStart();
     return (nhead != tail);
