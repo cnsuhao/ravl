@@ -37,6 +37,7 @@ int testStream() {
   
   // Generate test image.
   ImageC<ByteRGBValueC> testImg(100,100);
+  testImg.ShiftArray(Index2dC(-20,20));
   ByteRGBValueC back(0,0,0);
   ByteRGBValueC white(255,255,255);
   DrawFrame(testImg,white,IndexRange2dC(20,80,20,80),true);
@@ -58,7 +59,7 @@ int testStream() {
     if(!imgRGB.Get(outImg)) return __LINE__;
   }
   cerr << "Testing. \n";
-  if(outImg.Frame() != testImg.Frame()) return __LINE__;
+  if(outImg.Size() != testImg.Size()) return __LINE__;
   for(Array2dIter2C<ByteRGBValueC,ByteRGBValueC> it(testImg,outImg);it;it++) {
     if(Abs(it.Data1().Y() - it.Data2().Y()) > 2) return __LINE__;
   }

@@ -287,7 +287,6 @@ namespace RavlImageN {
   
   jas_image_t *DPImageIOJasperBaseC::Ravl2Jas(const ImageC<ByteRGBValueC> &img) {
     jas_image_cmptparm_t cmptparms[3];
-    IndexRange2dC frame = img.Frame();
     
     jas_matrix_t *matrix[3];
 
@@ -314,9 +313,9 @@ namespace RavlImageN {
     jas_image_t *jimg = jas_image_create(3,cmptparms,clrspc);
     
     Array2dIterC<ByteRGBValueC> it(img);
-    int r = img.Frame().LCol().V();
+    int r = 0;
     for(;it;) {
-      int c = img.Frame().TRow().V();
+      int c = 0;
       do {
         jas_matrix_set(matrix[0],r,c,it->Red());
         jas_matrix_set(matrix[1],r,c,it->Green());
@@ -331,7 +330,7 @@ namespace RavlImageN {
     
     for(int i = 0;i < 3;i++) {
       jas_image_writecmpt(jimg, i,
-                          x,y,width,height,
+                          0,0,width,height,
                           matrix[i]);
     }
     
