@@ -216,7 +216,8 @@ namespace RavlN {
   public:
     DPConverterFuncC(OutT (*func)(const InT &in),RealT ncost = 1,const char *funcName = 0)
       : DPConverterC<DPProcessC<InT,OutT> > (*new DPConverterBodyC<DPProcessC<InT,OutT> > (DPFuncP2ProcC<InT,OutT>(func)
-											   ,ncost)) {
+											   ,ncost))
+    {
       if(funcName != 0)
 	RegisterFunction(funcName,func);
     }
@@ -231,6 +232,8 @@ namespace RavlN {
     : DPConverterBaseBodyC(typeid(InT),typeid(OutT),ncost),
       conv(inst)
   {
+    RavlAssertMsg(ncost >= 1.0,"Costs are multiplicative and should always be greater than or equal to 1.");
+
     static DPTypeInfoInstC<InT> inType;
     static DPTypeInfoInstC<OutT> outType;
     //static DPConverterFuncC<OutT,RCWrapBaseC,DPConverterBodyC<ProcT>::Convert2Wrapper> ConvToWrapper(1);
