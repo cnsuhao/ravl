@@ -381,30 +381,50 @@ ifeq ($(SUPPORT_OK),yes)
 
  # Calculate what libraries we will need to build.
  ifdef SHAREDBUILD
-  # Shared build; do we have anything to put into a SINGLESO?
-  ifneq (,$(USESLIBS))
-   # Yes. Do we have anything to put into a PLIB?
-   ifneq (,$(SOURCES))
-    # Again yes, if PLIB and/or SINGLESO are defined we need to build them both.
-    # The patsubst takes care of the situation when SINGLESO and/or PLIB are not
-    # defined.
-    TARG_LIBS=$(strip $(patsubst %,$(INST_LIB)/lib%$(LIBEXT),$(PLIB)) $(patsubst %,$(INST_LIB)/single/%$(LIBEXT),$(SINGLESO)))#
+  # Shared build; are we using any libraries that summarise this directory?
+  ifeq (,$(filter 1,$(foreach lib,$(SUMMARY_LIB) $(SINGLESO),$(USE_SINGLE_$(lib)))))
+   # Test looks through all of the USE_SINGLE_<lib> flags for the libraries
+   # that summarise this directory. Any that are set to 1 cause a non-null
+   # string and cause the if to fail; hence we only arrive here if we are
+   # not using a summary library. So...
+   #
+   # The current directory is not summarised by any SUMMARY_LIB, we need to
+   # consider building PLIB and/or SINGLESO. Do we have anything to put into
+   # a SINGLESO?
+   ifneq (,$(USESLIBS))
+    # Yes. Do we have anything to put into a PLIB?
+    ifneq (,$(SOURCES))
+     # Again yes, if PLIB and/or SINGLESO are defined we need to build them both.
+     # The patsubst takes care of the situation when SINGLESO and/or PLIB are not
+     # defined.
+     TARG_LIBS=$(strip $(patsubst %,$(INST_LIB)/lib%$(LIBEXT),$(PLIB)) $(patsubst %,$(INST_LIB)/single/%$(LIBEXT),$(SINGLESO)))#
+    else
+     # We have nothing to go into a PLIB so just consider SINGLESO (again, the
+     # patsubst takes care of the situation if we do not have SINGLESO set).
+     TARG_LIBS=$(strip $(patsubst %,$(INST_LIB)/single/%$(LIBEXT),$(SINGLESO)))#
+    endif
    else
-    # We have nothing to go into a PLIB so just consider SINGLESO (again, the
-    # patsubst takes care of the situation if we do not have SINGLESO set).
-    TARG_LIBS=$(strip $(patsubst %,$(INST_LIB)/single/%$(LIBEXT),$(SINGLESO)))#
+    # We have nothing to go into any SINGLESO, how about PLIB?
+    ifneq (,$(SOURCES))
+     # If PLIB is set then we need to build it..
+     TARG_LIBS=$(strip $(patsubst %,$(INST_LIB)/lib%$(LIBEXT),$(PLIB)))#
+    endif
    endif
   else
-   # We have nothing to go into any SINGLESO, how about PLIB?
-   ifneq (,$(SOURCES))
-    # If PLIB is set then we need to build it..
-    TARG_LIBS=$(strip $(patsubst %,$(INST_LIB)/lib%$(LIBEXT),$(PLIB)))#
+   # We are using summaries of this directory so we will not need PLIB.
+   # However, are we using SINGLESO?
+   ifeq ($(SINGLESO),$(filter $(SINGLESO),$(SUMMARIES)))
+    # We are using SINGLESO so we have to build it..
+    TARG_LIBS=$(strip $(patsubst %,$(INST_LIB)/single/%$(LIBEXT),$(SINGLESO)))#
    endif
   endif
  else
-  # Static build, we never have a SINGLESO. Is it worth building PLIB?
+  # For a static build, we never have any summary libraries. We just need to
+  # consider if it is worth building any PLIB?
   ifneq (,$(SOURCES))
    # Will need to build any PLIB as we have SOURCES to add to it.
+   # Again, the patsubst will deal with the situation if we do not actually
+   # have PLIB set.
    TARG_LIBS=$(strip $(patsubst %,$(INST_LIB)/lib%$(LIBEXT),$(PLIB)))#
   endif
  endif
@@ -874,10 +894,14 @@ endif
 
 .SECONDARY : $(INST_LIB)/dummymain$(OBJEXT)
 
+ifndef SHAREDBUILD
+ STATIC_SUPPORT_OBJS = $(TARG_MUSTLINK_OBJS) $(INST_LIB)/dummymain$(OBJEXT)
+endif
+
 ifneq ($(strip $(TARG_JAVA)),)
- build_libs: $(TARG_LIBS) buildjavalibs prebuildstep
+ build_libs: $(STATIC_SUPPORT_OBJS) $(TARG_LIBS) buildjavalibs prebuildstep
 else
- build_libs: $(TARG_LIBS) prebuildstep
+ build_libs: $(STATIC_SUPPORT_OBJS) $(TARG_LIBS) prebuildstep
 endif
 
 #$(TARG_JAVA)
@@ -891,13 +915,13 @@ $(INST_LIB)/dummymain$(OBJEXT) :: $(QMAKE_SUPPORT)/dummymain$(CEXT) $(INST_LIB)/
 
 ifndef SHAREDBUILD
  ifeq ($(NOLIBRARYPRELINK),1)
-$(INST_LIB)/lib$(PLIB)$(LIBEXT) : $(TARG_OBJS) $(TARG_MUSTLINK_OBJS) $(INST_LIB)/dummymain$(OBJEXT) $(INST_LIB)/.dir
+$(INST_LIB)/lib$(PLIB)$(LIBEXT) : $(TARG_OBJS) $(INST_LIB)/.dir
 	$(SHOWIT)echo "--- Building" $(@F) ; \
 	$(AR) $(PKG_ARFLAGS) $(INST_LIB)/$(@F) $(TARG_OBJS) ; \
 	$(UNTOUCH) $(INST_LIB)/$(@F) $(TARG_OBJS) $(TARG_MUSTLINK_OBJS) ;
 
  else
-$(INST_LIB)/lib$(PLIB)$(LIBEXT) : $(TARG_OBJS) $(TARG_MUSTLINK_OBJS) $(INST_LIB)/dummymain$(OBJEXT) $(INST_LIB)/.dir
+$(INST_LIB)/lib$(PLIB)$(LIBEXT) : $(TARG_OBJS) $(INST_LIB)/.dir | $(STATIC_SUPPORT_OBJS)
 	$(SHOWIT)echo "--- Building" $(@F) ; \
 	$(AR) $(PKG_ARFLAGS) $(INST_LIB)/$(@F) $(TARG_OBJS) ; \
 	if $(CXX) $(PKG_LDFLAGS) $(LDFLAGS) $(INST_LIB)/dummymain$(OBJEXT) $(TARG_OBJS) $(LIBS) -o $(WORKTMP)/a.out ; then \
