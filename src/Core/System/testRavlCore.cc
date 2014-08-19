@@ -47,6 +47,8 @@
 #include "Ravl/XMLStream.hh"
 #include "Ravl/UnitTest.hh"
 #include "Ravl/XMLTree.hh"
+#include "Ravl/BinStream.hh"
+#include "Ravl/BufStream.hh"
 #include "Ravl/IndexRangeSet.hh"
 #include "Ravl/SysLog.hh"
 
@@ -85,9 +87,10 @@ int testSmartPtr();
 int testStreamParse();
 int testXMLTree();
 int testIndexRangeSet();
+int testBinStream();
 
 int testRavlCore(int argc,char **argv) {
-#if 1
+#if 0
   RAVL_RUN_TEST(testArray1());
   RAVL_RUN_TEST(testArray2());
   RAVL_RUN_TEST(testDList());
@@ -109,6 +112,7 @@ int testRavlCore(int argc,char **argv) {
   RAVL_RUN_TEST(testXMLTree());
   RAVL_RUN_TEST(testIndexRangeSet());
 #endif
+  RAVL_RUN_TEST(testBinStream());
   std::cout << "Test passed. \n";
   return 0;
 }
@@ -794,6 +798,72 @@ int testIndexRangeSet()
       }
     }
   }
+
+  return 0;
+}
+
+
+int testBinStream()
+{
+  SArray1dC<char> testBuff(12450);
+  for(int i = 0;i < testBuff.Size();i++)
+    testBuff[i] = i;
+
+  BufOStreamC obuf;
+  {
+    BinOStreamC bos(obuf);
+    int n = 1;
+    bos << n;
+    bos << testBuff;
+    bos << testBuff;
+    StringC str("hello");
+    bos << str;
+
+    BufOStreamC ss;
+    BinOStreamC sbos(ss);
+    sbos << str;
+    ss.os().flush();
+    SArray1dC<char> buf = ss.Data();
+    for(int i = 0;i < buf.Size();i++)
+      RavlDebug(" %d %x ",i,(int)((ByteT)buf[i]));
+    bos << buf;
+  }
+
+  {
+    BufIStreamC ibuf(obuf.Data());
+    BinIStreamC bis(ibuf);
+    int n = 0;
+    bis >> n;
+    if(n != 1) return __LINE__;
+    SArray1dC<char> rbuf1;
+    bis >> rbuf1;
+    if(rbuf1.Size() != testBuff.Size()) return __LINE__;
+    for(int i = 0;i < testBuff.Size();i++)
+      if(rbuf1[i] != testBuff[i]) return __LINE__;
+    SArray1dC<char> rbuf2;
+    bis >> rbuf2;
+    if(rbuf2.Size() != testBuff.Size()) return __LINE__;
+    for(int i = 0;i < testBuff.Size();i++)
+      if(rbuf2[i] != testBuff[i]) return __LINE__;
+
+    StringC aStr;
+    bis >> aStr;
+    if(aStr != "hello") return __LINE__;
+
+    SArray1dC<char> subBuf;
+    bis >> subBuf;
+
+    for(int i = 0;i < subBuf.Size();i++)
+      RavlDebug(" %d %x ",i,(int)((ByteT)subBuf[i]));
+
+    StringC istr;
+    BufIStreamC sis(subBuf);
+    BinIStreamC sbis(sis);
+    sbis >> istr;
+    RavlDebug("String:%s ",istr.c_str());
+    if(istr != "hello") return __LINE__;
+  }
+
 
   return 0;
 }

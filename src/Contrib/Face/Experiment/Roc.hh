@@ -6,7 +6,7 @@
 //! author="Kieron J Messer"
 //! date="11/10/2001"
 //! lib=RavlFace
-//! docentry="Ravl.Applications.Image.Face"
+//! docentry="Ravl.API.Applications.Image.Face"
 //! file="Ravl/Contrib/Face/Experiment/Roc.hh"
 
 #include "Ravl/RefCounter.hh"

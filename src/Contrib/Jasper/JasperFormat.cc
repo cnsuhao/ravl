@@ -76,8 +76,13 @@ namespace RavlImageN {
   FileFormatJasperBodyC::ProbeSave(const StringC &filename,const type_info &obj_type,bool forceFormat ) const {
 #if USE_JASPERWRITE
     if(!forceFormat) {
-      if(DPImageIOJasperBaseC::FindFormatByFilename(filename) < 0)
-	return typeid(void);
+      int fmt = DPImageIOJasperBaseC::FindFormatByFilename(filename);
+      if(fmt < 0)
+        return typeid(void);
+      jas_image_fmtinfo_t *fmtInfo = jas_image_lookupfmtbyid(fmt);
+      // Jasper makes false claims about saving pnm files, so disable it.
+      if(strcmp(fmtInfo->ext,"pnm") == 0)
+        return typeid(void);
     }
     const type_info &pref = ChooseFormat(obj_type);
     ONDEBUG(cerr << "FileFormatJasperBodyC::ProbeSave(), Req:" << obj_type.name() << "  Ret:" << pref.name() << " \n");
@@ -124,6 +129,16 @@ namespace RavlImageN {
   const type_info &FileFormatJasperBodyC::DefaultType() const  { 
     return typeid(ImageC<ByteRGBValueC>); 
   }
+
+
+  IntT FileFormatJasperBodyC::Priority() const { return -2; }
+  //: Find the priority of the format. the higher the better.
+  // Default is zero, this is better than the default (streams.)
+
+  bool FileFormatJasperBodyC::IsStream() const { return false; }
+  //: Test if format is a fully streamable.
+  // i.e. check if you can read/write more than object object.
+  // png supports sequences.. but not with this software for now...
 
 #if USE_JASPERWRITE
   FileFormatJasperC RegisterFileFormatJasper(1.0,"Jasper","Jasper file IO. ");

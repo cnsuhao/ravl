@@ -23,7 +23,7 @@ namespace RavlN {
   //: Compute the real cepstral 
   
   class RealCepstralC
-    : public DPProcessBodyC<SArray1dC<RealT>,SArray1dC<RealT> >
+    : public DPProcessBodyC<Array1dC<RealT>,Array1dC<RealT> >
   {
   public:
     RealCepstralC(const XMLFactoryContextC &factory);
@@ -32,7 +32,7 @@ namespace RavlN {
     RealCepstralC(SizeT size);
     //: Constructor.
 
-    Array1dC<RealT> Apply(const Array1dC<RealT> &data);
+    virtual Array1dC<RealT> Apply(const Array1dC<RealT> &data);
     //: Compute the real cepstral of time series data.
 
     typedef SmartPtrC<RealCepstralC> RefT;

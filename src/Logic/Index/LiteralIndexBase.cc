@@ -35,6 +35,14 @@ namespace RavlLogicN {
       indexGrounded(true)
   {}
   
+  LiteralIndexBaseBodyC::LiteralIndexBaseBodyC(BinIStreamC &strm)
+  : maxArity(1),
+    indexGrounded(true)
+  {
+    RavlIssueError("not implemented");
+  }
+  //: Stream constructor.
+
   //: Load from a binary stream.
   
   bool LiteralIndexBaseBodyC::Load(BinIStreamC &strm) {

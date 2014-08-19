@@ -58,7 +58,7 @@ namespace RavlN {
     for(GraphEdgeIterC<StringC,DPConverterBaseC> it(SystemTypeConverter().Graph());
         it.IsElm();it.Next()) {
       StringC name1 = TypeName(it.Data().ArgType(0)); 
-      os << " " << name1 << MakePad(name1.Size()+1,4) << " -> " << TypeName(it.Data().Output()) << "\n";
+      os << " " << name1 << MakePad(name1.Size()+1,4) << " -> " << TypeName(it.Data().Output()) << " (cost=" << it.Data().Cost() << ") \n";
     }
   }
 

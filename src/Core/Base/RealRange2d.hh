@@ -305,7 +305,7 @@ namespace RavlN {
 
     RealRangeC &operator[](UIntT ind) {
 #if RAVL_CHECK
-      if(ind < 0 || ind > 1)
+      if(ind > 1)
         IssueError(__FILE__,__LINE__,"Index %u out of range, 0 - 1",ind);
 #endif
       if(ind <= 0)
@@ -316,7 +316,7 @@ namespace RavlN {
 
     const RealRangeC &operator[](UIntT ind) const {
 #if RAVL_CHECK
-      if(ind < 0 || ind > 1)
+      if(ind > 1)
         IssueError(__FILE__,__LINE__,"Index %u out of range, 0 - 1",ind);
 #endif
       if(ind <= 0)

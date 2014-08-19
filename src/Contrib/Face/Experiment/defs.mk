@@ -8,8 +8,6 @@ REQUIRES=RLog
 
 ORGANISATION=
 
-PACKAGENAME=RavlFace
-
 DESCRIPTION=Specification of face data sets using XML
 
 PACKAGE = Ravl/Face

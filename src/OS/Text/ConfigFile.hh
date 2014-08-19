@@ -64,9 +64,14 @@ namespace RavlN {
 
     bool Load(BinIStreamC & strm) ; 
     //: Load from stream 
-    
-    bool Save(XMLIStreamC &strm) const;
+
+    bool Save(std::ostream &strm) const;
+    //: Save config to text
+    // Not supported.
+
+    bool Save(XMLOStreamC &strm) const;
     //: Save config to XML stream.
+    // Not supported.
     
     bool Save(BinOStreamC & strm) const ; 
     //: Save to Binary Stream
@@ -249,10 +254,16 @@ namespace RavlN {
     { return Body().Save(strm) ; } 
     //: Save to a binary stream
     
-    bool Save(XMLIStreamC &strm) const 
+    bool Save(XMLOStreamC &strm) const
     { return Body().Save(strm); }
     //: Save config to XML stream.
-    
+    // Not supported
+
+    bool Save(std::ostream &strm) const
+    { return Body().Save(strm); }
+    //: Save config to text stream.
+    // Not supported
+
     const StringC &Name() const
     { return Body().Name(); }
     //: Get name of configuration.

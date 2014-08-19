@@ -493,7 +493,8 @@ namespace RavlN {
       cerr << "DPIFileSequenceBodyC::DPIFileSequenceBodyC(), Failed to find type information.... \n";
       return DPIPortBaseC(); // Failed to find typeinformation...
     }
-    DPIPipeBaseC fin(ti.CreateIPipe(DPIFileSequenceC(*this)));
+    DPIFileSequenceC fseq(*this);
+    DPIPipeBaseC fin(ti.CreateIPipe(fseq));
     RavlAssert(fin.IsValid());
     fin.SetStreamStatus(true,true);
     fin.SetAuxOperation(AuxFunction);
@@ -566,7 +567,8 @@ namespace RavlN {
       cerr << "DPOFileSequenceBodyC::DPOFileSequenceBodyC(), Failed to find type information.... \n";
       return DPOPortBaseC(); // Failed to find typeinformation...
     }
-    DPOPipeBaseC fin(ti.CreateOPipe(DPOFileSequenceC(*this)));
+    DPOFileSequenceC fseq(*this);
+    DPOPipeBaseC fin(ti.CreateOPipe(fseq));
     RavlAssert(fin.IsValid());
     fin.SetStreamStatus(true,true);
     fin.SetAuxOperation(AuxFunction);

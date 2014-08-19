@@ -104,7 +104,6 @@ namespace RavlN {
 
     VectorC v(2);
     v.Fill(0);
-    RealT sum = 0.0;
     for(SArray1dIter3C<ClassifierC, RealT, FuncSubsetC>it(m_classifiers, m_thresholds, m_features);it;it++) {
 
       // Reduce vec

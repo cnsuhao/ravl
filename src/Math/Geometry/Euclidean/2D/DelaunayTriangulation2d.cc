@@ -141,7 +141,7 @@ namespace RavlN {
     idMap = Array1dC<IntT>(vertIds,vertIds+points.Size());
     
     HashC<Tuple2C<HEMeshBaseVertexC,HEMeshBaseVertexC> , HEMeshBaseEdgeC> edgeTab;
-    THEMeshFaceC<Point2dC> firstFace =ret.InsertFace(tempFace,edgeTab); // Insert initial face.
+    THEMeshFaceC<Point2dC> firstFace = ret.InsertFace(tempFace,edgeTab); // Insert initial face.
     
     SArray1dC<HEMeshBaseVertexC> vertices(points.Size());
     // Start inserting points,
@@ -155,7 +155,7 @@ namespace RavlN {
       HEMeshBaseEdgeC me;
       THEMeshFaceC<Point2dC> face = FindFace(ret,me,it.Data1());
 #if 0
-      if(face.IsValid())
+      if(!face.IsValid())
 	face = firstFace;
 #else
       RavlAssert(face.IsValid());

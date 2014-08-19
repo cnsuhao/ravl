@@ -19,12 +19,11 @@
 
 #include "Ravl/Stream.hh"
 
-#if !RAVL_COMPILER_GCC3_4 && !RAVL_COMPILER_GCC4
+#if !RAVL_COMPILER_GCC3_4 && !RAVL_COMPILER_GCC4 || RAVL_COMPILER_LLVM
 
 #include "Ravl/fdstreambuf.hh"
 
 namespace RavlN {
-  using namespace __gnu_cxx;
   
   //! userlevel=Develop
   //: Basic input from a fd stream.
@@ -40,13 +39,14 @@ namespace RavlN {
     typedef typename traits_type::pos_type  pos_type;
     typedef typename traits_type::off_type  off_type;
     
-    typedef basic_fdbuf <char_type, traits_type>  buf_type;
+    typedef RavlN::basic_fdbuf <char_type, traits_type>  buf_type;
     
-    explicit basic_ifdstream(int fd, ios_base::openmode mode = ios_base::in)
+    explicit basic_ifdstream(int fd, ios_base::openmode mode = ios_base::in,
+                             size_t buffSize = static_cast<size_t>(BUFSIZ))
       : basic_istream<char_type, traits_type>(0),
-	filebuf(fd,mode)
+	filebuf(fd,mode,buffSize)
     {
-      init(&filebuf);
+      this->init(&filebuf);
     }
     //: Construct from a file handle and an open mode.
     
@@ -74,10 +74,12 @@ namespace RavlN {
 
     typedef basic_fdbuf <char_type, traits_type>  buf_type;
     
-    explicit basic_ofdstream(int fd,ios_base::openmode mode = ios_base::out|ios_base::trunc)
+    explicit basic_ofdstream(int fd,
+                             ios_base::openmode mode = ios_base::out|ios_base::trunc,
+                             size_t buffSize = static_cast<size_t>(BUFSIZ))
       : basic_ostream<char_type, traits_type>(0),
-	filebuf(fd,mode)
-    { init(&filebuf); }
+	filebuf(fd,mode,buffSize)
+    { this->init(&filebuf); }
     //: Construct from a file handle.
     
   private:
@@ -100,11 +102,13 @@ namespace RavlN {
     
     typedef basic_fdbuf <char_type, traits_type>  buf_type;
     
-    explicit basic_fdstream(int fd,ios_base::openmode mode = ios_base::in | ios_base::out)
+    explicit basic_fdstream(int fd,
+                            ios_base::openmode mode = ios_base::in | ios_base::out,
+                            size_t buffSize = static_cast<size_t>(BUFSIZ))
       : basic_iostream<char_type, traits_type>(NULL), 
-	filebuf(fd,mode)
-    { init(&filebuf); }
-    //: Cosntructor.
+	filebuf(fd,mode,buffSize)
+    { this->init(&filebuf); }
+    //: Constructor.
     
   private:
     buf_type  filebuf;

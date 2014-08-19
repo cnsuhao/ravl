@@ -72,7 +72,7 @@ namespace RavlN {
         RavlSysLogf(SYSLOG_ERR,"Unused attribute '%s' in string hash table definition in %s ",ait.Key().data(),node.Path().data());
         throw RavlN::ExceptionBadConfigC("Unused attribute found ");
       }
-      std::string key = key = it->AttributeString("key",it->Name()).data();
+      std::string key = it->AttributeString("key",it->Name()).data();
       std::string value = it->AttributeString("value",it->Content()).data();
       if(hashTable.IsElm(key)) {
         RavlSysLogf(SYSLOG_ERR,"Duplicate definition of attribute '%s' in string hash table definition in %s ",it->Name().data(),node.Path().data());

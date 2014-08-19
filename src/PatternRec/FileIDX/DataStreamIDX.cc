@@ -5,13 +5,19 @@
 // for details or see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 
+#if RAVL_COMPILER_LLVM
+#undef _POSIX_C_SOURCE
+#endif
+
+#include <fstream>
+
 #include "Ravl/IO/DataStreamIDX.hh"
 #include "Ravl/SysLog.hh"
 #include "Ravl/BinStream.hh"
 #include "Ravl/TypeName.hh"
 #include "Ravl/OS/Filename.hh"
-#include <fstream>
 #include <unistd.h>
+
 
 namespace RavlN { namespace ION {
 

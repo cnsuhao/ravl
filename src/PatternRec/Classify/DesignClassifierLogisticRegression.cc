@@ -75,7 +75,7 @@ namespace RavlN {
     : DesignClassifierSupervisedBodyC(factory),
       m_regularisation(factory.AttributeReal("regularisation",0)),
       m_prependUnit(factory.AttributeBool("prependUnit",true)),
-      m_doNormalisation(factory.AttributeReal("doNormalisation", true)),
+      m_doNormalisation(factory.AttributeBool("doNormalisation", true)),
       m_verbose(factory.AttributeBool("verbose",true))
   {
     if(!factory.UseChildComponent("FeatureMap",m_featureExpand,true)) { // Optional feature expansion.

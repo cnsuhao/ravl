@@ -49,7 +49,7 @@ namespace RavlN {
   ////////////////////////////
   //! userlevel=Normal
   //: Output stream to memory.
-  // Wraps the standard library ostrstream class.
+  // Wraps the standard library ostringstream class.
   
   class BufOStreamC 
     : public OStreamC
@@ -67,11 +67,11 @@ namespace RavlN {
     SArray1dC<char> &Data();
     //: Get data written to stream. 
     // Note, this will reset the buffer.
-    
+
   protected:
     SArray1dC<char> data;
 #if RAVL_HAVE_STRINGSTREAM
-    ostringstream *oss; // Output string stream.
+    std::ostringstream *oss; // Output string stream.
 #else
     ostrstream *oss; // Output string stream.
 #endif
@@ -80,7 +80,7 @@ namespace RavlN {
   ////////////////////////////
   //! userlevel=Normal
   //: Input stream from memory.
-  // Wraps the standard library istrstream class.
+  // Wraps the standard library std::istringstream class.
   
   class BufIStreamC 
     : public IStreamC
@@ -95,12 +95,15 @@ namespace RavlN {
     //: Constructor.
     
     inline SArray1dC<char> &Data() { return data; }
-    //: Get string used as buffer.
-    
+    //: Get array used as buffer.
+
+    inline const SArray1dC<char> &Data() const { return data; }
+    //: Get array used as buffer.
+
   protected:
     SArray1dC<char> data;
 #if RAVL_HAVE_STRINGSTREAM
-    istringstream *iss; // Output string stream.
+    std::istringstream *iss; // Output string stream.
 #else
     istrstream *iss; // Output string stream.
 #endif

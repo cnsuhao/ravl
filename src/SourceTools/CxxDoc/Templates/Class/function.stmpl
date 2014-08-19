@@ -31,13 +31,13 @@ $(set:tabData=<td align="left"><font size="+2" color="#23238E" FACE="arial,Helve
 $(ifset:brief:<tr><td align=center COLSPAN="2"><font size="+2" color="#23238E" FACE="arial,Helvetica">$(brief)</font>
 <tr><td COLSPAN="2">&nbsp;</tr>
 )
-                  $(tabTitle)#include $(tabData)"<A HREF="../../../../../../include/$(filename)">$(filename)</A>"</tr>$(set:lastFilename=$(filename))
-$(ifset:date:     $(tabTitle)Created:$(tabData)$(date)&nbsp;</tr>
-)$(if:$pagemode=develop:$(ifset:file:$(tabTitle)Source file:$(tabData)<B>$(file)</B></tr>
-))                $(tabTitle)User Level:$(tabData)<b>$(userlevel)</b></tr>
-$(ifset:lib:      $(tabTitle)Library:$(tabData)<b>$(lib)</b></tr>
-)$(ifset:example: $(tabTitle)Example:$(tabData)$(for:;:$example:<A HREF="../../Examples/%arg%.html">%arg%</A>)</tr>
-)                 $(tabTitle)In Scope:$(tabData)$(set:FullNamespace=$(FullParentScope))<a href="$(subst:\:\::.:$(FullNamespace)).html"> $(FullNamespace)</a></tr>
+                  $(tabTitle)#include</font></td> $(tabData)"<A HREF="../../../../../../include/$(filename)">$(filename)</A>"</font></td></tr>$(set:lastFilename=$(filename))
+$(ifset:date:     $(tabTitle)Created:</font></td>$(tabData)$(date)&nbsp;</font></td></tr>
+)$(if:$pagemode=develop:$(ifset:file:$(tabTitle)Source file:</font></td>$(tabData)<B>$(file)</B></font></td></tr>
+))                $(tabTitle)User Level:</font></td>$(tabData)<b>$(userlevel)</b></font></td></tr>
+$(ifset:lib:      $(tabTitle)Library:</font></td>$(tabData)<b>$(lib)</b></font></td></tr>
+)$(ifset:example: $(tabTitle)Example:</font></td>$(tabData)$(for:;:$example:<A HREF="../../Examples/%arg%.html">%arg%</A>)</font></td></tr>
+)                 $(tabTitle)In Scope:</font></td>$(tabData)$(set:FullNamespace=$(FullParentScope))<a href="$(subst:\:\::.:$(FullNamespace)).html"> $(FullNamespace)</a></font></td></tr>
 </table><p>
 </center>
 

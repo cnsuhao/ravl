@@ -9,6 +9,13 @@
 //! file="Ravl/SourceTools/VisualCPP/AutoPortSource.cc"
 //! lib=RavlAutoPort2
 
+#include "Ravl/config.h"
+
+#if RAVL_COMPILER_LLVM
+#include <iostream>
+#include <fstream>
+#endif
+
 #include "Ravl/AutoPort2/AutoPortSource.hh"
 #include "Ravl/SourceTools/SourceCodeManager.hh"
 #include "Ravl/OS/Filename.hh"
@@ -16,10 +23,12 @@
 #include "Ravl/CallMethods.hh"
 #include "Ravl/HashIter.hh"
 
+#if !RAVL_COMPILER_LLVM
 #if RAVL_HAVE_ANSICPPHEADERS
 #include <fstream>
 #else
 #include <fstream.h>
+#endif
 #endif
 
 #define DODEBUG 0
@@ -111,7 +120,7 @@ namespace RavlN {
 	li = LibInfoC(libName);
       li.Add(defs,where);
     } else {
-      if(!defs["HEADERS"].TopAndTail().length() == 0)
+      if(defs["HEADERS"].TopAndTail().length() == 0)
 	cerr << "WARNING: defs.mk has header files but no library in " << where << " \n";
     }
     {
@@ -204,17 +213,17 @@ namespace RavlN {
   bool AutoPortSourceBodyC::Dos2Unix(const StringC &src,const StringC &vcpp) {    
     FilenameC vcppFn(vcpp);
     if(!vcppFn.Exists()) {
-      cerr << "ERROR: Failed to checkout file " << src << " for update. \n";
+      std::cerr << "ERROR: Failed to checkout file " << src << " for update. \n";
       return false;
     }
-    ifstream in1(vcpp.chars());
-    ofstream in2(src.chars());
+    std::ifstream in1(vcpp.c_str());
+    std::ofstream in2(src.c_str());
     if(!in1) {
-      cerr << "ERROR: Failed to open file :" << vcpp << " for update." <<endl;
+      std::cerr << "ERROR: Failed to open file :" << vcpp << " for update." <<endl;
       return false;
     }
     if(!in2) {
-      cerr << "ERROR: Failed to open file :" << src << " for update." << endl;
+      std::cerr << "ERROR: Failed to open file :" << src << " for update." << endl;
       return false;
     }
     

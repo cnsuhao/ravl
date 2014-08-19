@@ -5,11 +5,10 @@
   </head>
 
   <body>
-    <p>These functions allow control of where programs and libraries look for program resources. Examples
-of such resources include fonts, images, configuration files etc.</p>
-    <p>The default resource root directory is set when the Ravl library is built and takes the value of where
-Ravl is to be installed. It is therefore likely to be a read-only location.  Use <code>SetResourceRoot()</code>
-to change this.</p>
+    <p>These functions allow control of where programs and libraries look for
+    data resources. Examples of such resources include fonts, images,
+    configuration files etc.</p>
+    <p>The default for the root of the resource directory is the root of the installation (and is therefore likely to be a read-only location).  More precisely, it is the value of <code>$PROJECT_OUT</code> when the function was compiled.  In practice therefore the default could have one of two values, depending on whether you are using the functions from an existing library or a version you have explicitly compiled yourself.  In the former case it will have a value corresponding to the root of the library; in the latter case, <code>$PROJECT_OUT</code>, if set.  In either case, there is no trailing separator.  If for any reason <code>$PROJECT_OUT</code> was not set when the functions were compiled, its value will be an empty string.  Use <code>SetResourceRoot()</code> to change the resource root.</p>
   </body>
 </html>
 

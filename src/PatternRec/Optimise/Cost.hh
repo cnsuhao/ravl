@@ -50,24 +50,11 @@ namespace RavlN {
     
     CostBodyC (std::istream &in);
     //: Contructs from stream with derived class name
-
-#if 0
-    const MatrixC &TransP2X () const
-    { return _parameters.TransP2X (); }
-    //: Convert variable parameters to X vector
-    
-    const MatrixC &TransX2P () const
-    { return _parameters.TransX2P (); }
-    //: Convert X vector to variable parameters
-#endif
     
     const VectorC &ConstP () const
     { return _parameters.ConstP (); }
-    //: Constant componant of X vector
-    
-    virtual VectorC Evaluate (const VectorC &X) const;
-    //: Evaluate Y=f(X) where Yc=1
-    
+    //: Constant component of X vector
+
     virtual RealT Cost (const VectorC &X) const=0;
     //: Determines cost of X
     

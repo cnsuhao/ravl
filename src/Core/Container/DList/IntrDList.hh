@@ -22,10 +22,6 @@
 
 namespace RavlN {
 
-  template <class DataT,typename DeRefT> class IntrDListC;
-  template <class DataT,typename DeRefT> class IntrDLIterC;
-  template <class DataT,typename DeRefT>
-  std::ostream & operator<<(std::ostream & s, const IntrDListC<DataT,DeRefT> & list);
   
   //! userlevel=Advanced
   //: Default class for handling list element derefrence's
@@ -53,6 +49,11 @@ namespace RavlN {
     
     
   };
+
+  template <class DataT,typename DeRefT = IntrDListDefaultDeRefC<DataT> > class IntrDListC;
+  template <class DataT,typename DeRefT = IntrDListDefaultDeRefC<DataT> > class IntrDLIterC;
+  template <class DataT,typename DeRefT>
+  std::ostream & operator<<(std::ostream & s, const IntrDListC<DataT,DeRefT> & list);
 
   //! userlevel=Advanced
   //: Default class for handling list element derefrence's
@@ -90,7 +91,7 @@ namespace RavlN {
   // as graphs. <p>
   // NB. This is a SMALL object.
   
-  template <typename DataT,typename DeRefT = IntrDListDefaultDeRefC<DataT> >
+  template <typename DataT,typename DeRefT> // default DeRefT = IntrDListDefaultDeRefC<DataT>
   class IntrDListC
     : public DLinkHeadC
   {

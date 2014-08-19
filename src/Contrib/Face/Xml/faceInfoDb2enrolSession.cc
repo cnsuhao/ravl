@@ -2,7 +2,7 @@
 // file-header-ends-here
 // Copyright (C) 2002, Omniperception Ltd.
 //! rcsid="$Id: modifyXml.cc 5236 2005-01-28 11:11:46Z kieron $"
-//! docentry="Ravl.Applications.Image.Face"
+//! docentry="Ravl.API.Applications.Image.Face"
 //! lib=RavlFace
 //! file="Ravl/Contrib/Face/Xml/modifyXml.cc"
 

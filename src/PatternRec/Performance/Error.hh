@@ -49,19 +49,19 @@ namespace RavlN {
     virtual bool Save (BinOStreamC &out) const;
     //: Writes object to stream, can be loaded using constructor
     
-    virtual RealT Error(const ClassifierC & classifier, const DataSetVectorLabelC & dset);
+    virtual RealT Error(const ClassifierC & classifier, const DataSetVectorLabelC & dset) const;
     //: Compute the error on the labelled dataset
 
-    virtual SArray1dC<RealT> ErrorByLabel(const ClassifierC & classifier, const DataSetVectorLabelC & dset);
+    virtual SArray1dC<RealT> ErrorByLabel(const ClassifierC & classifier, const DataSetVectorLabelC & dset) const;
     //: Compute errors on the data set by label
 
-    RealT Error(const ClassifierC & classifier, const SampleVectorC & x, const SampleLabelC & labels);
+    virtual RealT Error(const ClassifierC & classifier, const SampleVectorC & x, const SampleLabelC & labels) const;
     //: Compute the error on the labelled dataset
 
-    RealT Error(const ClassifierC & classifier, const DataSetVectorLabelC & dset, const SArray1dC<IndexC> & features);
+    virtual RealT Error(const ClassifierC & classifier, const DataSetVectorLabelC & dset, const SArray1dC<IndexC> & features) const;
     //: Compute the error on the labelled dataset
 
-    virtual RealT Error(const Classifier2C & classifier, const DataSetVectorLabelC & dset, UIntT label, RealT threshold);
+    virtual RealT Error(const Classifier2C & classifier, const DataSetVectorLabelC & dset, UIntT label, RealT threshold) const;
     //: Compute the error on the labelled dataset and a 2 class classifier at a specified threshold level
         
   };
@@ -112,7 +112,7 @@ namespace RavlN {
     //: Access body.
     
   public:
-    RealT Error(const ClassifierC & classifier, const SampleVectorC & x, const SampleLabelC & labels)
+    RealT Error(const ClassifierC & classifier, const SampleVectorC & x, const SampleLabelC & labels) const
     { return Body().Error(classifier, x, labels); }
     //: Compute the error of a classifier on a sample set
     //!param: classifier - the classifier
@@ -120,25 +120,23 @@ namespace RavlN {
     //!param: labels - the corresponding labels
     //!return: the probability of mis-classification
 
-    RealT Error(const ClassifierC & classifier, const DataSetVectorLabelC & dset)
+    RealT Error(const ClassifierC & classifier, const DataSetVectorLabelC & dset) const
     { return Body().Error(classifier, dset); }
     //: Compute the error of a classifier on a sample set
     //!param: classifier - the classifier
     //!param: dset - the labelled dataset
     //!return: the probability of mis-classification
 
-    SArray1dC<RealT> ErrorByLabel(const ClassifierC & classifier, const DataSetVectorLabelC & dset) {
-      return Body().ErrorByLabel(classifier, dset);
-    }
-       //: Compute errors on the data set by label
+    SArray1dC<RealT> ErrorByLabel(const ClassifierC & classifier, const DataSetVectorLabelC & dset) const
+    { return Body().ErrorByLabel(classifier, dset); }
+    //: Compute errors on the data set by label
 
-    RealT Error(const Classifier2C & classifier, const DataSetVectorLabelC & dset, UIntT label, RealT threshold=0)
+    RealT Error(const Classifier2C & classifier, const DataSetVectorLabelC & dset, UIntT label, RealT threshold=0) const
     { return Body().Error(classifier, dset, label, threshold); }
     //: Compute the error on the labelled data set and a 2 class classifier if label at or below specified threshold
     
-    RealT Error(const ClassifierC & classifier, const DataSetVectorLabelC & dset, const SArray1dC<IndexC> & features) {
-      return Body().Error(classifier, dset, features);
-    }
+    RealT Error(const ClassifierC & classifier, const DataSetVectorLabelC & dset, const SArray1dC<IndexC> & features) const
+    { return Body().Error(classifier, dset, features); }
     //: Compute the error on the data set only using features specified
     
   };

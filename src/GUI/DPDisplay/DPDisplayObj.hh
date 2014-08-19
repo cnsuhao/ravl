@@ -53,6 +53,8 @@ namespace RavlGUIN {
     //: Query a point in the display.
     // Return true if point is within object.
     
+    using RCBodyVC::Save;
+
     virtual bool Save(const StringC &str) const;
     //: Save to a file.
     

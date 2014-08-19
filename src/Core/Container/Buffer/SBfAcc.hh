@@ -13,7 +13,6 @@
 //! docentry="Ravl.API.Core.Arrays.Buffer"
 //! date="14/02/1997"
 //! userlevel=Develop
-//! rcsid="$Id$"
 
 #include "Ravl/IndexRange1d.hh"
 #include "Ravl/BufferAccess.hh"
@@ -216,9 +215,9 @@ namespace RavlN {
     template<unsigned int N>
     void CopyFrom(const TFVectorC<DataT, N> &vec) {
       RavlAssert(Size() == N);
-      register DataT *to = ReferenceElm();
-      register const DataT *from = &(vec[0]);
-      register const DataT *endOfRow = &to[Size()];
+      DataT *to = ReferenceElm();
+      const DataT *from = &(vec[0]);
+      const DataT *endOfRow = &to[Size()];
       for(;to != endOfRow;to++,from++)
 	*to = *from;
     }
@@ -258,9 +257,9 @@ namespace RavlN {
   void 
   SizeBufferAccessC<DataT>::CopyFrom(const SizeBufferAccessC<DataT> &oth) {
     RavlAssert(oth.Size() == Size());
-    register DataT *to = ReferenceElm();
-    register const DataT *from = oth.ReferenceElm();
-    register DataT *endOfRow = &to[Size()];
+    DataT *to = ReferenceElm();
+    const DataT *from = oth.ReferenceElm();
+    DataT *endOfRow = &to[Size()];
     for(;to != endOfRow;to++,from++)
       *to = *from;
   }

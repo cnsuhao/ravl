@@ -8,14 +8,13 @@
 #define RAVL_STDIO_FDSTREAM_HEADER 1
 /////////////////////////////////////////////////////////////////
 //! author="Charles Galambos"
-//! rcsid="$Id$"
 //! lib=RavlCore
 //! file="Ravl/Core/Base/stdio_fdstream.hh"
 //! docentry="Ravl.API.Core.IO.Streams"
 
 #include "Ravl/config.h"
 
-#if RAVL_COMPILER_GCC3 || RAVL_COMPILER_GCC4
+#if (RAVL_COMPILER_GCC3 || RAVL_COMPILER_GCC4) && !RAVL_COMPILER_LLVM
 
 #include "Ravl/Stream.hh"
 #include <ext/stdio_filebuf.h>

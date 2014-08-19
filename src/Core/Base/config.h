@@ -6,7 +6,6 @@
 // file-header-ends-here*/
 #ifndef RAVL_CONFIG_HEADER
 #define RAVL_CONFIG_HEADER 1
-/*! rcsid="$Id$" */
 /*! file="Ravl/Core/Base/config.h" */
 /*! lib=RavlCore */
 
@@ -42,6 +41,7 @@
 /***** Detect the OS, compiler and processor type being used. *******************/
 
 #if !defined(WIN32)
+  #define RAVL_COMPILER_LLVM defined(__llvm__)
   #define RAVL_COMPILER_GCC defined(__GNUC__)                        /* GNU compiler ? */
   #define RAVL_COMPILER_GCC2 (defined(__GNUC__) && (__GNUC__ == 2))   /* gcc 2.x (No longer supported) */
   #define RAVL_COMPILER_GCC3 (defined(__GNUC__) && (__GNUC__ == 3))  /* gcc 3.x */
@@ -288,7 +288,7 @@
  * headers.
  */
 
-#if (!RAVL_OS_IRIX && !RAVL_OS_FREEBSD)
+#if (!RAVL_OS_IRIX && !RAVL_OS_FREEBSD && !RAVL_COMPILER_LLVM)
   #ifndef _GNU_SOURCE
     #define _GNU_SOURCE 1
   #endif

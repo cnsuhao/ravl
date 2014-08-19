@@ -6,8 +6,6 @@
 
 REQUIRES=RLog
 
-PACKAGENAME = RavlFace
-
 PACKAGE= Ravl/Face
 
 MAINS =  markupTool.cc

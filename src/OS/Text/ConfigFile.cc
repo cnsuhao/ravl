@@ -294,12 +294,19 @@ namespace RavlN {
   
   //: Save config to XML stream.
   
-  bool ConfigFileBodyC::Save(XMLIStreamC &strm) const {
+  bool ConfigFileBodyC::Save(XMLOStreamC &strm) const
+  {
     RavlAssert(0);     
     return false;
   }
   
-  
+  //: Save config to text
+  bool ConfigFileBodyC::Save(std::ostream &strm) const
+  {
+    RavlAssert(0);
+    return false;
+  }
+
   //////////////////////////
   // Check if a tag is valid.
   

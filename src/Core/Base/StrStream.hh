@@ -51,7 +51,7 @@ namespace RavlN {
   ////////////////////////////
   //! userlevel=Normal
   //: Output stream to memory.
-  // Wraps the standard library ostrstream class.
+  // Wraps the standard library std::ostrstream class.
   
   class StrOStreamC 
     : public OStreamC
@@ -76,7 +76,7 @@ namespace RavlN {
   protected:
 
 #if RAVL_HAVE_STRINGSTREAM
-    ostringstream *oss; // Output string stream.
+    std::ostringstream *oss; // Output string stream.
 #else
     ostrstream *oss; // Output string stream.
 #endif
@@ -85,7 +85,7 @@ namespace RavlN {
   ////////////////////////////
   //! userlevel=Normal
   //: Input stream from memory.
-// Wraps the standard library istrstream class.
+  // Wraps the standard library std::istrstream class.
   
   class StrIStreamC 
     : public IStreamC
@@ -102,7 +102,7 @@ namespace RavlN {
     
   protected:
 #if RAVL_HAVE_STRINGSTREAM
-    istringstream *iss; // Output string stream.
+    std::istringstream *iss; // Output string stream.
 #else
     istrstream *iss; // Output string stream.
 #endif

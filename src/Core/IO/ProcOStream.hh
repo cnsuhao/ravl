@@ -48,12 +48,12 @@ namespace RavlN {
     }
     //: Process next piece of data.  
     
-    virtual IntT PutArray(SArray1dC<InT> &src) {
+    virtual IntT PutArray(const SArray1dC<InT> &src) {
       SArray1dC<OutT> dest(src.Size());
 #ifdef NDEBUG
       ApplyArray(src,dest);
 #else
-      RavlAssert((UIntT) this->ApplyArray(src,dest) == src.Size());
+      RavlAssert((UIntT) this->ApplyArray(src,dest) == src.Size()); // This is only used when asserts are enabled.
 #endif
       return this->output.PutArray(dest);
     }

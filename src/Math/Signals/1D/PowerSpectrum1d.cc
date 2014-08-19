@@ -103,7 +103,7 @@ namespace RavlN {
     return mag;
   }
 
-  static XMLFactoryRegisterConvertC<PowerSpectrum1dC,DPProcessBodyC<SArray1dC<RealT>,SArray1dC<RealT> > > g_regiserPowerSpectrum1d("RavlN::PowerSpectrum1dC");
+  static XMLFactoryRegisterConvertC<PowerSpectrum1dC,DPProcessBodyC<Array1dC<RealT>,Array1dC<RealT> > > g_regiserPowerSpectrum1d("RavlN::PowerSpectrum1dC");
 
   void LinkPowerSpectrum1d()
   {}
