@@ -25,7 +25,7 @@ PROJECT_DISTDIR=ProjectFiles-$(PROJECT_VERSION)
 #
 # Location for built binaries
 ifndef PROJECT_OUT
-  PROJECT_OUT=$(HOME)/build
+  PROJECT_OUT=$(HOME)/ProjectOut
 endif
 #
 # Location for libraries

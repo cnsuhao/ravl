@@ -1,6 +1,6 @@
 #! @SHELL@
 QMAKE_UTILS=@QMAKE_UTILS@
 if test -z ${PROJECT_OUT} ; then
-  PROJECT_OUT=${HOME}/build 
+  PROJECT_OUT=${HOME}/ProjectOut 
 fi
 @PERL@ ${QMAKE_UTILS}/QLibs.pl
