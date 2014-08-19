@@ -4,8 +4,8 @@
 #define RAVLN_FACEN_Enrol_HEADER 1
 //! rcsid="$Id$"
 //! lib=RavlFace
-//! docentry="Ravl.Applications.Image.Face"
-//! file="Ravl/Contrib/Face/Xml/Xml/Enrol.hh"
+//! docentry="Ravl.API.Applications.Image.Face"
+//! file="Ravl/Contrib/Face/Xml/Enrol.hh"
 //! author="Kieron J Messer"
 
 #include "Ravl/RefCounter.hh"

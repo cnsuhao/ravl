@@ -2,7 +2,7 @@
 // file-header-ends-here
 #ifndef VIEWPAGE_HEADER
 #define VIEWPAGE_HEADER 1
-//! docentry = "Ravl.Applications.Mainment Tool"
+//! docentry = "Ravl.API.Applications.Mainment Tool"
 //! author   = "Kieron Messer"
 //! userlevel=Develop
 //! lib=RavlFace

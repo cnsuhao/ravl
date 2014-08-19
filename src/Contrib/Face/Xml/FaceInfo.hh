@@ -4,7 +4,7 @@
 #define RAVLN_FACEN_FaceInfo_HEADER 1
 //! rcsid="$Id$"
 //! lib=RavlFace
-//! docentry="Ravl.Applications.Image.Face"
+//! docentry="Ravl.API.Applications.Image.Face"
 //! file="Contrib/Face/Xml/FaceInfo.hh"
 //! author="Kieron J Messer"
 

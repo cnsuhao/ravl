@@ -4,7 +4,7 @@
 #define RAVLN_FACEN_FacePairSet_HEADER 1
 //! rcsid="$Id$"
 //! lib=RavlFace
-//! docentry="Ravl.Applications.Image.Face"
+//! docentry="Ravl.API.Applications.Image.Face"
 //! file="Ravl/Contrib/Face/Xml/FacePairSet.hh"
 //! author="Kieron J Messer"
 

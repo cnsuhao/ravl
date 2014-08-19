@@ -1,6 +1,6 @@
 // Copyright (C) 2002, Omniperception Ltd.
 // file-header-ends-here
-//! docentry="Ravl.Applications.Image.Face"
+//! docentry="Ravl.API.Applications.Image.Face"
 //! file="Ravl/Contrib/Face/Xml/generateIdentificationProtocol.cc"
 
 #include "Ravl/Option.hh"

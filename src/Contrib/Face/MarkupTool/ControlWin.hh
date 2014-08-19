@@ -2,7 +2,7 @@
 // file-header-ends-here
 #ifndef RAVL_FACE_CONTROLWIN_HEADER
 #define RAVL_FACE_CONTROLWIN_HEADER 1
-//! docentry = "Ravl.Applications.Mainment Tool"
+//! docentry = "Ravl.API.Applications.Mainment Tool"
 //! author   = "Kieron Messer"
 //! userlevel=Develop
 //! lib=RavlFace
