@@ -114,13 +114,13 @@ endif
 
 # NOTE: gcc 4.x sometimes produces incorrect code (even where the aliasing rules are followed) with stict-aliasing.
 ifndef OPTCFLAGS
-  OPTCFLAGS  = -O2 -$(OPTFLAGS) 
+  OPTCFLAGS  = -O2 $(OPTFLAGS) 
 endif
 ifndef OPTCCFLAGS
-  OPTCCFLAGS = -O2 -$(OPTFLAGS) 
+  OPTCCFLAGS = -O2 $(OPTFLAGS) 
 endif
 ifndef LOWOPT
-  LOWOPT = -O -$(OPTFLAGS) 
+  LOWOPT = -O $(OPTFLAGS) 
 endif
 
 # While using fno-math-errno breaks full standards compliance, it is used to
