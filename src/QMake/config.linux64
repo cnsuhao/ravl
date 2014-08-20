@@ -73,7 +73,7 @@ CCFLAGS  += $(EXTRA_CCFLAGS)
 CCPPFLAGS= -DGNU -Dunix
 CPPFLAGS = -DGNU -Dunix
 
-LDFLAGS = 
+LDFLAGS = -B/home/charles/bin
 LDFLAGS += $(EXTRA_LDFLAGS)
 
 PAR_MAKE = --jobs=$(PROCS)
@@ -83,6 +83,7 @@ UNDEFSYMB = -u #
 
 COMPILER_VERSION:=$(strip $(shell $(CC) -dumpversion))#
 COMPILER_MAJOR_VERSION=$(basename $(COMPILER_VERSION))
+COMPILER_MINOR_VERSION=$(suffix $(COMPILER_VERSION))
 
 
 ############################
@@ -95,28 +96,31 @@ COMPILER_MAJOR_VERSION=$(basename $(COMPILER_VERSION))
 # these you will need to explicitly specify the appropriate processor type
 # for your machine.
 #
+
 ifeq ($(COMPILER_MAJOR_VERSION),3)
- # Use the following for gcc-3.x
- ifndef OPTCFLAGS
-  OPTCFLAGS= -O2 -fno-math-errno
- endif
- ifndef OPTCCFLAGS
-  OPTCCFLAGS = -O2 -fno-math-errno
- endif
- ifndef LOWOPT
-  LOWOPT = -O -fno-math-errno
- endif
+ OPTFLAGS = -fno-math-errno
 else
- # NOTE: gcc 4.x sometimes produces incorrect code (even where the aliasing rules are followed) with stict-aliasing.
- ifndef OPTCFLAGS
-  OPTCFLAGS  = -O2 -fno-math-errno -fno-strict-aliasing
- endif
- ifndef OPTCCFLAGS
-  OPTCCFLAGS = -O2 -fno-math-errno -fno-strict-aliasing
- endif
- ifndef LOWOPT
-  LOWOPT = -O -fno-math-errno -fno-strict-aliasing
- endif
+ifeq ($(COMPILER_MAJOR_VERSION),4)
+# NOTE: gcc 4.x sometimes produces incorrect code (even where the aliasing rules are followed) with stict-aliasing.
+# Version 2 had the issue, 7 doesn't the rest are disabled to be safe
+ifneq (,$(findstring $(COMPILER_MINOR_VERSION),0 1 2 3 4 5 6))
+ OPTFLAGS = -fno-math-errno -fno-strict-aliasing
+else
+# Version 7 onward should be fine
+ OPTFLAGS = -fno-math-errno 
+endif
+endif
+endif
+
+# NOTE: gcc 4.x sometimes produces incorrect code (even where the aliasing rules are followed) with stict-aliasing.
+ifndef OPTCFLAGS
+  OPTCFLAGS  = -O2 -$(OPTFLAGS) 
+endif
+ifndef OPTCCFLAGS
+  OPTCCFLAGS = -O2 -$(OPTFLAGS) 
+endif
+ifndef LOWOPT
+  LOWOPT = -O -$(OPTFLAGS) 
 endif
 
 # While using fno-math-errno breaks full standards compliance, it is used to
@@ -148,9 +152,9 @@ endif
 # 'opt' variant.
 
 ifeq ($(VAR),opt)
- CFLAGS += $(OPTCFLAGS) 
- CCFLAGS += $(OPTCFLAGS)
- LDFLAGS += -O 
+ CFLAGS += -g -fno-omit-frame-pointer $(OPTCFLAGS) 
+ CCFLAGS += -g -fno-omit-frame-pointer $(OPTCFLAGS)
+ LDFLAGS += -O -g 
 endif
 
 ############################
