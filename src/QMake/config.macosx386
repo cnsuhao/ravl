@@ -123,13 +123,13 @@ else
  # NOTE: gcc 4.x sometimes produces incorrect code (even where the aliasing
  # rules are followed) with stict-aliasing.
  ifndef OPTCFLAGS
-  OPTCFLAGS= -O2 -fno-strict-aliasing
+  OPTCFLAGS= -O2 
  endif
  ifndef OPTCCFLAGS
-  OPTCCFLAGS= -O2 -fno-strict-aliasing
+  OPTCCFLAGS= -O2
  endif
  ifndef LOWOPT
-  LOWOPT = -O -fno-strict-aliasing
+  LOWOPT = -O 
  endif
 endif
 
