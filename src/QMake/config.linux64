@@ -73,7 +73,7 @@ CCFLAGS  += $(EXTRA_CCFLAGS)
 CCPPFLAGS= -DGNU -Dunix
 CPPFLAGS = -DGNU -Dunix
 
-LDFLAGS = -B/home/charles/bin
+#LDFLAGS = -B/home/charles/bin
 LDFLAGS += $(EXTRA_LDFLAGS)
 
 PAR_MAKE = --jobs=$(PROCS)
@@ -107,7 +107,7 @@ ifneq (,$(findstring $(COMPILER_MINOR_VERSION),0 1 2 3 4 5 6))
  OPTFLAGS = -fno-math-errno -fno-strict-aliasing
 else
 # Version 7 onward should be fine
- OPTFLAGS = -fno-math-errno 
+ OPTFLAGS = -fno-math-errno  -march=native
 endif
 endif
 endif
