@@ -43,6 +43,10 @@ namespace RavlImageN {
   class ByteYCbCrBT709ValueC ; 
   class UInt16YCbCrBT709ValueC ;
   class UInt16YCbCr422BT709ValueC ; 
+
+  //:-
+  //: This is the complete list of image converters
+  // For more fine-grained lists see the <a href="../Tree/Ravl.API.Images.Pixel_Types.html">individual pixel categories</a>
   
   //! docentry="Ravl.API.Images.Converters;Ravl.API.Images.Pixel Types.Grey Level"
 
@@ -115,6 +119,7 @@ namespace RavlImageN {
 
   ImageC<RealT>  RealRGBImageCT2DoubleImageCT(const ImageC<RealRGBValueC> &dat);
   //: Image conversion: double RGB &rarr; double
+  // Mean of R,G,B, returned.
 
   ImageC<UInt16RGBValueC> ByteRGBImageCT2UInt16RGBImageCT(const ImageC<ByteRGBValueC> &dat);
   //: Image conversion: byte RGB &rarr; UInt16 RGB
@@ -189,6 +194,24 @@ namespace RavlImageN {
   //: Image conversion: byte VYU &rarr; byte YUV
   
   //:-
+  //! docentry="Ravl.API.Images.Converters;Ravl.API.Images.Pixel Types.YUV.YUV422"
+
+  ImageC<ByteYUVValueC> ByteYUV422ImageCT2ByteYUVImageCT(const ImageC<ByteYUV422ValueC> &dat);
+  //: Image conversion: byte YUV422 &rarr; byte YUV
+  
+  ImageC<ByteRGBValueC> ByteYUV422ImageCT2ByteRGBImageCT(const ImageC<ByteYUV422ValueC> &dat);
+  //: Image conversion: byte YUV &rarr; byte YUV422
+
+  ImageC<ByteT> ByteYUV422ImageCT2ByteImageCT(const ImageC<ByteYUV422ValueC> &dat);
+  //: Image conversion: byte YUV422 &rarr; byte grey-level
+  
+  ImageC<ByteYUV422ValueC> ByteImageCT2ByteYUV422ImageCT(const ImageC<ByteT> &dat);
+  //: Image conversion: byte grey-level &rarr; byte YUV422
+
+  ImageC<ByteYUV422ValueC> ByteRGBImageCT2ByteYUV422ImageCT(const ImageC<ByteRGBValueC> &dat);
+  //: Image conversion: byte RGB &rarr; byte YUV422
+
+  //:-
   //! docentry="Ravl.API.Images.Converters;Ravl.API.Images.Pixel Types.HSV"
 
   ImageC<RealHSVValueC> RealRGBImageCT2RealHSVImageCT(const ImageC<RealRGBValueC> & dat) ;
@@ -262,22 +285,6 @@ namespace RavlImageN {
 
   ImageC<YCbCrBT709ValueC<float> > ImageRGBValueFloat2YCbCrBT709ValueFloatImage(const ImageC<RGBValueC<float> > &dat);
   //: Image conversion: float RGB &rarr; float YCbCr
-  
-  ImageC<ByteYUVValueC> ByteYUV422ImageCT2ByteYUVImageCT(const ImageC<ByteYUV422ValueC> &dat);
-  //: Image conversion: byte YUV422 &rarr; byte YUV
-  
-  ImageC<ByteRGBValueC> ByteYUV422ImageCT2ByteRGBImageCT(const ImageC<ByteYUV422ValueC> &dat);
-  //: Image conversion: byte YUV &rarr; byte YUV422
-
-  ImageC<ByteT> ByteYUV422ImageCT2ByteImageCT(const ImageC<ByteYUV422ValueC> &dat);
-  //: Image conversion: byte YUV422 &rarr; byte grey-level
-  
-  ImageC<ByteYUV422ValueC> ByteImageCT2ByteYUV422ImageCT(const ImageC<ByteT> &dat);
-  //: Image conversion: byte grey-level &rarr; byte YUV422
-
-  ImageC<ByteYUV422ValueC> ByteRGBImageCT2ByteYUV422ImageCT(const ImageC<ByteRGBValueC> &dat);
-  //: Image conversion: byte RGB &rarr; byte YUV422
-
 
   //:-
   //! docentry="Ravl.API.Images.Converters;Ravl.API.Images.Pixel Types.Grey Level"
