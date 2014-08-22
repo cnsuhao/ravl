@@ -44,11 +44,16 @@ namespace RavlN {
 
   void InitURLStreamIO() {}
 
-  static size_t dataReady(void *ptr, size_t size, size_t nmemb, void *stream) {      
+  static size_t dataWrite(void *ptr, size_t size, size_t nmemb, void *stream) {      
     static_cast<OStreamC*>(stream)->write(static_cast<char*>(ptr),size*nmemb);
     return size*nmemb;
   }
-  
+
+  static size_t dataRead(void *ptr, size_t size, size_t nmemb, void *stream) {
+    static_cast<IStreamC*>(stream)->read(static_cast<char*>(ptr),size*nmemb);
+    return static_cast<IStreamC*>(stream)->gcount();
+  }
+
 
   //: Retrieve file into a byte array.
   
@@ -56,7 +61,7 @@ namespace RavlN {
     static StringC user,passwd;
     return URLRetrieve(url,user,passwd,buf);
   }
-  
+
   //: Retrieve file into a byte array.
   //!param:url - URL to retrieve
   //!param:user - Username
@@ -79,7 +84,7 @@ namespace RavlN {
     // Set options
 
     curl_easy_setopt(curl, CURLOPT_URL, url.chars());
-    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, dataReady);
+    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, dataWrite);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &tmpstrm);
     curl_easy_setopt(curl, CURLOPT_VERBOSE, 0);
     curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1);
@@ -103,6 +108,59 @@ namespace RavlN {
   }
 
 
+  //: Retrieve file into a byte array.
+  //!param:url - URL to retrieve
+  //!param:reply - buffer to store data into.
+  //!return: Error code, 0 if all's well.
+  IntT URLPut(const StringC &url,const SArray1dC<char> &putData,SArray1dC<char> &reply)
+  {
+    // Create temporary memory buffer
+    BufOStreamC tmpstrm;
+    BufIStreamC tmpistrm(putData);
+    // Fetch URL
+    //CURL *curl = NULL;
+    ONDEBUG(cerr << "Retrieving URL: " << url);
+
+    // Initialise CURL
+    CurlC curl;
+
+    IntT errVal = 0;
+
+    // Set options
+
+    curl_easy_setopt(curl, CURLOPT_URL, url.chars());
+    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, dataWrite);
+    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &tmpstrm);
+    curl_easy_setopt(curl, CURLOPT_READFUNCTION, dataRead);
+    curl_easy_setopt(curl, CURLOPT_READDATA, &tmpistrm);
+    curl_easy_setopt(curl, CURLOPT_VERBOSE, 0);
+    curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1);
+
+    curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
+    curl_easy_setopt(curl, CURLOPT_PUT, 1L);
+    curl_easy_setopt(curl, CURLOPT_INFILESIZE_LARGE,(curl_off_t)putData.Size().V());
+
+#if 0
+    // Setup password if provided.
+    if(!user.IsEmpty() || !passwd.IsEmpty()) {
+      curl_easy_setopt(curl, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
+      StringC str = user + ':' + passwd;
+      curl_easy_setopt(curl, CURLOPT_USERPWD,str.chars());
+    }
+#endif
+
+    // Get the URL
+    errVal = curl_easy_perform(curl);
+
+    // Clean up
+    ONDEBUG(cerr << "Building output stream. ");
+    // Recreate IStream from the read pipe
+    reply = tmpstrm.Data();
+
+    return errVal;
+  }
+
+
   //:Form a url given the base url and key value pairs for the parameters.
   StringC FormURL(const StringC & baseURL, const RCHashC<StringC, StringC> & args)
   {
@@ -123,65 +181,17 @@ namespace RavlN {
     return url;
   }
 
-  
-  URLIStreamC::URLIStreamC(const StringC& url,bool buffered) 
-    : m_strTemp("/tmp/ravldl")
+  //: Get a string describing the error
+  StringC URLErrorString(int errNum)
   {
-#if URLISTREAM_USEFILEBUFFER
-    // Create temporary file
-    m_strTemp.MkTemp();
-    OStreamC tmpstrm(m_strTemp);
-    // Fetch URL
-    CURL *curl = NULL;
-    // Initialise CURL
-    curl = curl_easy_init();
-    if(curl) {
-      // Set options
-      curl_easy_setopt(curl, CURLOPT_URL, url.chars());
-      curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, dataReady);
-      curl_easy_setopt(curl, CURLOPT_WRITEDATA, &tmpstrm);
-      curl_easy_setopt(curl, CURLOPT_VERBOSE, 0);
-      curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1);
-      // Get the URL
-      m_iError = curl_easy_perform(curl);
-      // Clean up
-      curl_easy_cleanup(curl);
-    }
-    // Recreate IStream from the read pipe
-    (*this).IStreamC::operator=(IStreamC(m_strTemp,true,buffered));
-#else
-    SArray1dC<char> buf;
-    m_iError = URLRetrieve(url,buf);
-    (*this).IStreamC::operator=(BufIStreamC(buf));
-#endif
-  }
-  
-  //: Open net connection for input.
-  //: Uses Basic http authentication with the given username and password. 
-  
-  URLIStreamC::URLIStreamC(const StringC &url,const StringC &user,const StringC &password) 
-    : m_strTemp("/tmp/ravldl")
-  {
-    SArray1dC<char> buf;
-    m_iError = URLRetrieve(url,user,password,buf);
-    (*this).IStreamC::operator=(BufIStreamC(buf));
-  }
-
-  URLIStreamC::~URLIStreamC() {
-#if URLISTREAM_USEFILEBUFFER
-    m_strTemp.Remove();
-#endif
-  }
-
-  StringC URLIStreamC::ErrorString() const {
     static const char* strerror[] = {
-      "OK",
-      "UNSUPPORTED PROTOCOL",
-      "FAILED INIT",
-      "URL MALFORMAT",
-      "URL MALFORMAT USER",
-      "COULDNT RESOLVE PROXY",
-      "COULDNT RESOLVE HOST",
+      "OK",                      /* 0 - Nothing wrong! */
+      "UNSUPPORTED PROTOCOL",    /* 1 - */
+      "FAILED INIT",             /* 2 - */
+      "URL MALFORMAT",           /* 3 - */
+      "URL MALFORMAT USER",      /* 4 - */
+      "COULDNT RESOLVE PROXY",   /* 5 - */
+      "COULDNT RESOLVE HOST",    /* 6 -  */
       "COULDNT CONNECT",
       "FTP WEIRD SERVER REPLY",
       "FTP ACCESS DENIED",
@@ -231,7 +241,61 @@ namespace RavlN {
       "SSL ENGINE NOTFOUND",
       "SSL ENGINE SETFAILED"
     };
-    return StringC(strerror[m_iError]);
+    return StringC(strerror[errNum]);
+  }
+
+
+  URLIStreamC::URLIStreamC(const StringC& url,bool buffered)
+    : m_strTemp("/tmp/ravldl")
+  {
+#if URLISTREAM_USEFILEBUFFER
+    // Create temporary file
+    m_strTemp.MkTemp();
+    OStreamC tmpstrm(m_strTemp);
+    // Fetch URL
+    CURL *curl = NULL;
+    // Initialise CURL
+    curl = curl_easy_init();
+    if(curl) {
+      // Set options
+      curl_easy_setopt(curl, CURLOPT_URL, url.chars());
+      curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, dataWrite);
+      curl_easy_setopt(curl, CURLOPT_WRITEDATA, &tmpstrm);
+      curl_easy_setopt(curl, CURLOPT_VERBOSE, 0);
+      curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1);
+      // Get the URL
+      m_iError = curl_easy_perform(curl);
+      // Clean up
+      curl_easy_cleanup(curl);
+    }
+    // Recreate IStream from the read pipe
+    (*this).IStreamC::operator=(IStreamC(m_strTemp,true,buffered));
+#else
+    SArray1dC<char> buf;
+    m_iError = URLRetrieve(url,buf);
+    (*this).IStreamC::operator=(BufIStreamC(buf));
+#endif
+  }
+
+  //: Open net connection for input.
+  //: Uses Basic http authentication with the given username and password.
+
+  URLIStreamC::URLIStreamC(const StringC &url,const StringC &user,const StringC &password)
+    : m_strTemp("/tmp/ravldl")
+  {
+    SArray1dC<char> buf;
+    m_iError = URLRetrieve(url,user,password,buf);
+    (*this).IStreamC::operator=(BufIStreamC(buf));
+  }
+
+  URLIStreamC::~URLIStreamC() {
+#if URLISTREAM_USEFILEBUFFER
+    m_strTemp.Remove();
+#endif
+  }
+
+  StringC URLIStreamC::ErrorString() const {
+    return URLErrorString(m_iError);
   }
 
   StringC URLIStreamC::URLEncode(const StringC& string) {

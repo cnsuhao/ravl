@@ -27,6 +27,13 @@ namespace RavlN {
   //!param:buf - buffer to store data into.
   //!return: Error code, 0 if all's well.
 
+  IntT URLPut(const StringC &url,const SArray1dC<char> &putData,SArray1dC<char> &reply);
+  //: Retrieve file into a byte array.
+  //!param:url - URL to retrieve
+  //!param:putData - buffer to send
+  //!param:reply - buffer to store data into.
+  //!return: Error code, 0 if all's well.
+
   IntT URLRetrieve(const StringC &url,const StringC &user,const StringC &passwd,SArray1dC<char> &buf);
   //: Retrieve file into a byte array.
   //!param:url - URL to retrieve
@@ -41,6 +48,8 @@ namespace RavlN {
   //!param:args the arguments, key value pairs.
   //!return the combined url with whitespace substitution.
 
+  StringC URLErrorString(int errNum);
+  //: Get a string describing the error
 
   //:-
   
@@ -54,6 +63,7 @@ namespace RavlN {
   public:
 
     URLIStreamC()
+      : m_iError(0)
     {}
     //: Default constructor
     
