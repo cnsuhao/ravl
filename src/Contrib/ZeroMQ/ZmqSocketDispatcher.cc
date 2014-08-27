@@ -15,15 +15,29 @@ namespace RavlN {
     //! Construct from a socket.
     SocketDispatcherC::SocketDispatcherC(const SocketC &socket,bool readReady,bool writeReady)
      : m_socket(&socket),
+       m_fd(-1),
        m_onReadReady(readReady),
-       m_onWriteReady(writeReady)
+       m_onWriteReady(writeReady),
+       m_onError(false)
     {
+    }
+
+    //! Construct from a file descriptor
+    SocketDispatcherC::SocketDispatcherC(int fd,bool readReady,bool writeReady,bool onError)
+    : m_fd(fd),
+      m_onReadReady(readReady),
+      m_onWriteReady(writeReady),
+      m_onError(onError)
+    {
+
     }
 
     //! Factory constructor
     SocketDispatcherC::SocketDispatcherC(const XMLFactoryContextC &factory)
-     : m_onReadReady(factory.AttributeBool("onRead",true)),
-       m_onWriteReady(factory.AttributeBool("onWrite",false))
+     : m_fd(-1),
+       m_onReadReady(factory.AttributeBool("onRead",true)),
+       m_onWriteReady(factory.AttributeBool("onWrite",false)),
+       m_onError(factory.AttributeBool("onError",false))
     {
       rThrowBadConfigContextOnFailS(factory,UseComponent("Socket",m_socket),"No socket given");
     }
@@ -44,8 +58,14 @@ namespace RavlN {
 
     bool SocketDispatcherC::SetupPoll(zmq_pollitem_t &pollItem)
     {
-      RavlAssert(m_socket.IsValid());
-      pollItem.socket = m_socket->RawSocket();
+      RavlAssert(m_socket.IsValid() || m_fd >= 0);
+      if(m_socket.IsValid()) {
+        pollItem.socket = m_socket->RawSocket();
+        pollItem.fd = -1;
+      } else {
+        pollItem.socket = 0;
+        pollItem.fd = m_fd;
+      }
       pollItem.events = 0;
       if(m_onReadReady) {
         pollItem.events |= ZMQ_POLLIN;
@@ -53,7 +73,10 @@ namespace RavlN {
       if(m_onWriteReady) {
         pollItem.events |= ZMQ_POLLOUT;
       }
-      return m_onReadReady || m_onWriteReady;
+      if(m_onError) {
+        pollItem.events |= ZMQ_POLLERR;
+      }
+      return m_onReadReady || m_onWriteReady || m_onError;
     }
 
 

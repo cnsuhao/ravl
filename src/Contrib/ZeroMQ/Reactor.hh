@@ -52,6 +52,9 @@ namespace RavlN {
       //! Add a write trigger
       SocketDispatcherC::RefT CallOnWrite(const SocketC &socket,const TriggerC &trigger);
 
+      //! Add a read trigger
+      SocketDispatcherC::RefT CallOnReadOrError(int fd,const TriggerC &trigger);
+
       //! Add handler to system
       bool Add(const SocketDispatcherC &handler);
 

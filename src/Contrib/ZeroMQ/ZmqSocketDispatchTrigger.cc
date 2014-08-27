@@ -19,6 +19,14 @@ namespace RavlN {
     {
     }
 
+    //! Construct from a socket.
+    SocketDispatchTriggerC::SocketDispatchTriggerC(int fd,bool readReady,bool writeReady,bool onError,const TriggerC &trigger)
+     : SocketDispatcherC(fd,readReady,writeReady,onError),
+       m_trigger(trigger)
+    {
+
+    }
+
     //! Factory constructor
     SocketDispatchTriggerC::SocketDispatchTriggerC(const XMLFactoryContextC &factory)
      : SocketDispatcherC(factory)
