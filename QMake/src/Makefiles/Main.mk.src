@@ -1016,7 +1016,7 @@ else
   # being libXXX.so (or .whatever shared library suffix is in use).
   # SET_PLIB_SONAME will set the SONAME (to libXXX.so.A) if we are appending
   # a revision number to the library name (otherwise it will do nothing)
-  $(INST_LIB)/lib$(PLIB)$(LIB_STAMP_EXT) : $(TARG_OBJS) $(TARG_MUSTLINK_OBJS) $(INST_LIB)/dummymain$(OBJEXT) $(INST_LIB)/.dir $(LIBRARY_INVENTORY)
+  $(INST_LIB)/lib$(PLIB)$(LIB_STAMP_EXT) : $(TARG_OBJS) $(INST_LIB)/.dir $(LIBRARY_INVENTORY)
 	@echo "--- Building " $(@F)
 	$(SHOWIT)$(CXX) $(PKG_LDLIBFLAGS) $(LDLIBFLAGS) $(patsubst %,@%,$(LIBRARY_INVENTORY)) $(filter-out -l$(PLIB),$(LIBSONLY)) $(SET_PLIB_SONAME) -o $(INST_LIB)/$(@F)
 	@$(UNTOUCH) $(INST_LIB)/$(@F) $(TARG_OBJS) $(TARG_MUSTLINK_OBJS)
