@@ -895,7 +895,7 @@ endif
 .SECONDARY : $(INST_LIB)/dummymain$(OBJEXT)
 
 ifndef SHAREDBUILD
- STATIC_SUPPORT_OBJS = $(TARG_MUSTLINK_OBJS) $(INST_LIB)/dummymain$(OBJEXT)
+ STATIC_SUPPORT_OBJS = $(TARG_MUSTLINK_OBJS)
 endif
 
 ifneq ($(strip $(TARG_JAVA)),)
