@@ -921,7 +921,7 @@ $(INST_LIB)/lib$(PLIB)$(LIBEXT) : $(TARG_OBJS) $(INST_LIB)/.dir
 	$(UNTOUCH) $(INST_LIB)/$(@F) $(TARG_OBJS) $(TARG_MUSTLINK_OBJS) ;
 
  else
-$(INST_LIB)/lib$(PLIB)$(LIBEXT) : $(TARG_OBJS) $(INST_LIB)/.dir | $(STATIC_SUPPORT_OBJS)
+$(INST_LIB)/lib$(PLIB)$(LIBEXT) : $(TARG_OBJS) $(INST_LIB)/.dir | $(INST_LIB)/dummymain$(OBJEXT)
 	$(SHOWIT)echo "--- Building" $(@F) ; \
 	$(AR) $(PKG_ARFLAGS) $(INST_LIB)/$(@F) $(TARG_OBJS) ; \
 	if $(CXX) $(PKG_LDFLAGS) $(LDFLAGS) $(INST_LIB)/dummymain$(OBJEXT) $(TARG_OBJS) $(LIBS) -o $(WORKTMP)/a.out ; then \
