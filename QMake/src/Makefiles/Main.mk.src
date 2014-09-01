@@ -894,14 +894,10 @@ endif
 
 .SECONDARY : $(INST_LIB)/dummymain$(OBJEXT)
 
-ifndef SHAREDBUILD
- STATIC_SUPPORT_OBJS = $(TARG_MUSTLINK_OBJS)
-endif
-
 ifneq ($(strip $(TARG_JAVA)),)
- build_libs: $(STATIC_SUPPORT_OBJS) $(TARG_LIBS) buildjavalibs prebuildstep
+ build_libs: $(TARG_LIBS) buildjavalibs prebuildstep
 else
- build_libs: $(STATIC_SUPPORT_OBJS) $(TARG_LIBS) prebuildstep
+ build_libs: $(TARG_LIBS) prebuildstep
 endif
 
 #$(TARG_JAVA)
@@ -915,13 +911,13 @@ $(INST_LIB)/dummymain$(OBJEXT) :: $(QMAKE_SUPPORT)/dummymain$(CEXT) $(INST_LIB)/
 
 ifndef SHAREDBUILD
  ifeq ($(NOLIBRARYPRELINK),1)
-$(INST_LIB)/lib$(PLIB)$(LIBEXT) : $(TARG_OBJS) $(INST_LIB)/.dir
+$(INST_LIB)/lib$(PLIB)$(LIBEXT) : $(TARG_OBJS) $(INST_LIB)/.dir | $(TARG_MUSTLINK_OBJS)
 	$(SHOWIT)echo "--- Building" $(@F) ; \
 	$(AR) $(PKG_ARFLAGS) $(INST_LIB)/$(@F) $(TARG_OBJS) ; \
 	$(UNTOUCH) $(INST_LIB)/$(@F) $(TARG_OBJS) $(TARG_MUSTLINK_OBJS) ;
 
  else
-$(INST_LIB)/lib$(PLIB)$(LIBEXT) : $(TARG_OBJS) $(INST_LIB)/.dir | $(INST_LIB)/dummymain$(OBJEXT)
+$(INST_LIB)/lib$(PLIB)$(LIBEXT) : $(TARG_OBJS) $(INST_LIB)/.dir | $(INST_LIB)/dummymain$(OBJEXT) $(TARG_MUSTLINK_OBJS)
 	$(SHOWIT)echo "--- Building" $(@F) ; \
 	$(AR) $(PKG_ARFLAGS) $(INST_LIB)/$(@F) $(TARG_OBJS) ; \
 	if $(CXX) $(PKG_LDFLAGS) $(LDFLAGS) $(INST_LIB)/dummymain$(OBJEXT) $(TARG_OBJS) $(LIBS) -o $(WORKTMP)/a.out ; then \
@@ -1016,7 +1012,7 @@ else
   # being libXXX.so (or .whatever shared library suffix is in use).
   # SET_PLIB_SONAME will set the SONAME (to libXXX.so.A) if we are appending
   # a revision number to the library name (otherwise it will do nothing)
-  $(INST_LIB)/lib$(PLIB)$(LIB_STAMP_EXT) : $(TARG_OBJS) $(INST_LIB)/.dir $(LIBRARY_INVENTORY)
+  $(INST_LIB)/lib$(PLIB)$(LIB_STAMP_EXT) : $(TARG_OBJS) $(INST_LIB)/.dir $(LIBRARY_INVENTORY) | $(TARG_MUSTLINK_OBJS)
 	@echo "--- Building " $(@F)
 	$(SHOWIT)$(CXX) $(PKG_LDLIBFLAGS) $(LDLIBFLAGS) $(patsubst %,@%,$(LIBRARY_INVENTORY)) $(filter-out -l$(PLIB),$(LIBSONLY)) $(SET_PLIB_SONAME) -o $(INST_LIB)/$(@F)
 	@$(UNTOUCH) $(INST_LIB)/$(@F) $(TARG_OBJS) $(TARG_MUSTLINK_OBJS)
