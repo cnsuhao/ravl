@@ -333,9 +333,7 @@ namespace RavlAudioN {
       const PaDeviceInfo *xdevInfo = 0;
       xdevInfo = Pa_GetDeviceInfo(i);
       // Does it match the device number ?
-      if(StringC(i) == devName)
-        return xdevInfo;
-      if(devName == xdevInfo->name) {
+      if(StringC(i) == devName || devName == xdevInfo->name) {
         devId = i;
         return xdevInfo;
       }
