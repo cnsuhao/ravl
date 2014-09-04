@@ -488,6 +488,7 @@ MKDEPFLAGS=-MM
 AMKDEPFLAGS = -Wp,-MMD,$(WORKTMP)/$*.d
 MKDEPUP = $(SED) -e 's!^ *$(INST_OBJS)/$*.o *: *!$$(INST_OBJS)/$*.o : !g' \
                  -e 's!^ *$*.o *: *!$$(INST_OBJS)/$*.o : !' \
+                 -e 's!$$(INST_OBJS)/$*.o *: *!$$(INST_DEPEND)/$*.d $$(INST_OBJS)/$*.o: !' \
                  $(WORKTMP)/$*.d > $(INST_DEPEND)/$*.d ; \
           $(RM) $(WORKTMP)/$*.d
 # MKDEPUP is usually used in a block of code already protected with @
