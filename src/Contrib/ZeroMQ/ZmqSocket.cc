@@ -258,6 +258,9 @@ namespace RavlN {
           theHost = ahost.before('.');
         else
           theHost = ahost;
+#else
+        // Use the full host name
+        theHost = ahost;
 #endif
       }
 
