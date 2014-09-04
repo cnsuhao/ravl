@@ -21,20 +21,13 @@ HEADERS = ExtImgIO.hh
 MUSTLINK =  ExtImgIO.cc
 
 # Set what functionality the MUSTLINK module needs to initialise
-ifeq (JPEG, $(filter JPEG,$(RESOURCES)))
-  CFLAGS+=-DMUSTLINK_JPEG
-  CCFLAGS+=-DMUSTLINK_JPEG
-endif
+LOCAL_MUSTLINK_DEFS = $(patsubst LibTIFF,  -DMUSTLINK_TIFF , \
+                          $(patsubst libPNG,  -DMUSTLINK_PNG ,\
+                              $(patsubst JPEG, -DMUSTLINK_JPEG , \
+                                  $(filter JPEG libPNG LibTIFF, $(RESOURCES)))))
 
-ifeq (libPNG, $(filter libPNG,$(RESOURCES)))
-  CFLAGS+=-DMUSTLINK_PNG
-  CCFLAGS+=-DMUSTLINK_PNG
-endif
-
-ifeq (LibTIFF, $(filter LibTIFF,$(RESOURCES)))
-  CFLAGS+=-DMUSTLINK_TIFF
-  CCFLAGS+=-DMUSTLINK_TIFF
-endif
+CFLAGS += $(LOCAL_MUSTLINK_DEFS)
+CCFLAGS += $(LOCAL_MUSTLINK_DEFS)
 
 EXAMPLES = exExtImgIO.cc exImgMemIO.cc
 
