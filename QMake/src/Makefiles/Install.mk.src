@@ -819,13 +819,13 @@ uinsMains:
 insMustLinks:
 	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(PLIB)" != X ] && [ X$(LIBDEPS) = X ] && [ "X$(MUSTLINK)" != X ] ;\
          then \
-            if [ ! -d $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)$(RAVL_BODGE)/MustLink ] ;\
+            if [ ! -d $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)$(FALLBACK_PROJNAME)/MustLink ] ;\
             then \
                if [ X$(QMAKE_INFO) != X ] ;\
                then \
-                  echo $(MKDIR_P) $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)$(RAVL_BODGE)/MustLink ;\
+                  echo $(MKDIR_P) $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)$(FALLBACK_PROJNAME)/MustLink ;\
                fi ;\
-               $(MKDIR_P) $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)$(RAVL_BODGE)/MustLink ;\
+               $(MKDIR_P) $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)$(FALLBACK_PROJNAME)/MustLink ;\
                RET=$$? ;\
                if [ $$RET -ne 0 ] ;\
                then \
@@ -834,39 +834,39 @@ insMustLinks:
             fi ;\
             if [ X$(QMAKE_INFO) != X ] ;\
             then \
-               echo $(INSTALL) $(INST_FORCEOBJS)/$(basename $(MUSTLINK))$(OBJEXT) $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)$(RAVL_BODGE)/MustLink/$(basename $(MUSTLINK))$(OBJEXT) ; \
+               echo $(INSTALL) $(INST_FORCEOBJS)/$(basename $(MUSTLINK))$(OBJEXT) $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)$(FALLBACK_PROJNAME)/MustLink/$(basename $(MUSTLINK))$(OBJEXT) ; \
             fi ;\
-            $(INSTALL) $(INST_FORCEOBJS)/$(basename $(MUSTLINK))$(OBJEXT) $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)$(RAVL_BODGE)/MustLink/$(basename $(MUSTLINK))$(OBJEXT) ; \
+            $(INSTALL) $(INST_FORCEOBJS)/$(basename $(MUSTLINK))$(OBJEXT) $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)$(FALLBACK_PROJNAME)/MustLink/$(basename $(MUSTLINK))$(OBJEXT) ; \
          fi
 #        MUSTLINK file for the current PLIB (do not bother if we are in
 #        a second directory that feeds into a particular library - i.e. if
 #        LIBDEPS is set). Ravl poses a problem as PROJECT_DIR is not set
 #        while building, but is needed on install (and is still not set
-#        automatically). RAVL_BODGE is used to compensate for this. This
-#        rule must be called with RAVL_BODGE set to Ravl. Doing that will
-#        effectivly suppliment the null PROJECT_DIR with the Ravl that
-#        install requires.
+#        automatically). FALLBACK_PROJNAME is used to compensate for this.
+#        The Ravl Config.Project file sets FALLBACK_PROJNAME to Ravl and, 
+#        in doing so, effectivly suppliments the null PROJECT_DIR with the
+#        Ravl that install requires.
 
 uinsMustLinks:
 	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(PLIB)" != X ] && [ X$(LIBDEPS) = X ] && [ "X$(MUSTLINK)" != X ] ;\
          then \
-            if [ -f $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)$(RAVL_BODGE)/MustLink/$(basename $(MUSTLINK))$(OBJEXT) ] ; \
+            if [ -f $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)$(FALLBACK_PROJNAME)/MustLink/$(basename $(MUSTLINK))$(OBJEXT) ] ; \
             then \
                if [ X$(QMAKE_INFO) != X ] ;\
                then \
-                  echo $(RM) -f $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)$(RAVL_BODGE)/MustLink/$(basename $(MUSTLINK)$(OBJEXT))  ;\
+                  echo $(RM) -f $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)$(FALLBACK_PROJNAME)/MustLink/$(basename $(MUSTLINK)$(OBJEXT))  ;\
                fi ;\
-               $(RM) -f $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)$(RAVL_BODGE)/MustLink/$(basename $(MUSTLINK))$(OBJEXT) ;\
+               $(RM) -f $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)$(FALLBACK_PROJNAME)/MustLink/$(basename $(MUSTLINK))$(OBJEXT) ;\
             fi ;\
          fi
-#        Un-install the MUSTLINK file for the current PLIB. Again we check LIBDEPS
-#        to minimise the deletion attempts for libraries constructed from
-#        multiple directories. You would not want to automatically delete the 
-#        MUSTLINK files when you remove the library as you may still have an
-#        alternative version of the library installed (be that the version with a
-#        different VAR setting or shared opposed to static).  The same Ravl
-#        limitations (needing RAVL_BODGE to be manually set on the call to this
-#        rule) as for the install also apply to unistall.
+#        Un-install the MUSTLINK file for the current PLIB. Again we check
+#        LIBDEPS to minimise the deletion attempts for libraries constructed
+#        from multiple directories. You would not want to automatically delete
+#        the MUSTLINK files when you remove the library as you may still have
+#        an alternative version of the library installed (be that the version
+#        with a different VAR setting or shared opposed to static).  The same
+#        Ravl limitations (needing FALLBACK_PROJNAME) as for the install also
+#        apply to unistall.
 
 insScripts: 
 	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(SCRIPTS)" != X ] ;\
@@ -1045,50 +1045,50 @@ info:
 	@echo Effective Makefile settings...
 	@echo
 	@echo GNU standard installation variables:
-	@echo "    DESTDIR         [ $(DESTDIR) ]"
-	@echo "    prefix          [ $(prefix) ]"
-	@echo "    datarootdir     [ $(datarootdir) ]"
-	@echo "    datadir         [ $(datadir) ]"
-	@echo "    sysconfdir      [ $(sysconfdir) ]"
-	@echo "    sharedstatedir  [ $(sharedstatedir) ]"
-	@echo "    localstatedir   [ $(localstatedir) ]"
-	@echo "    includedir      [ $(includedir) ]"
-	@echo "    oldincludedir   [ $(oldincludedir) ]"
-	@echo "    exec_prefix     [ $(exec_prefix) ]"
-	@echo "    bindir          [ $(bindir) ]"
-	@echo "    libdir          [ $(libdir) ]"
-	@echo "    libexecdir      [ $(libexecdir) ]"
-	@echo "    sbindir         [ $(sbindir) ]"
-	@echo "    docdir          [ $(docdir) ]"
+	@echo "    DESTDIR           [ $(DESTDIR) ]"
+	@echo "    prefix            [ $(prefix) ]"
+	@echo "    datarootdir       [ $(datarootdir) ]"
+	@echo "    datadir           [ $(datadir) ]"
+	@echo "    sysconfdir        [ $(sysconfdir) ]"
+	@echo "    sharedstatedir    [ $(sharedstatedir) ]"
+	@echo "    localstatedir     [ $(localstatedir) ]"
+	@echo "    includedir        [ $(includedir) ]"
+	@echo "    oldincludedir     [ $(oldincludedir) ]"
+	@echo "    exec_prefix       [ $(exec_prefix) ]"
+	@echo "    bindir            [ $(bindir) ]"
+	@echo "    libdir            [ $(libdir) ]"
+	@echo "    libexecdir        [ $(libexecdir) ]"
+	@echo "    sbindir           [ $(sbindir) ]"
+	@echo "    docdir            [ $(docdir) ]"
 	@echo
 	@echo QMake environment
 	@echo
-	@echo "    ABS_DESTDIR     [ $(ABS_DESTDIR) ]"
-	@echo "    ARC             [ $(ARC) ]"
-	@echo "    AUXFILES        [ $(AUXFILES) ]"
+	@echo "    ABS_DESTDIR       [ $(ABS_DESTDIR) ]"
+	@echo "    ARC               [ $(ARC) ]"
+	@echo "    AUXFILES          [ $(AUXFILES) ]"
 	@$(CALCULATE_AUXDEST) ;\
-         echo "    AUXDEST         [ $$AUXDEST ]"
-	@echo "    CFGFILES        [ $(CFGFILES) ]"
-	@echo "    DATA            [ $(DATA) ]"
-	@echo "    DATADIR         [ $(DATADIR) ]"
-	@echo "    DONOT_SUPPORT   [ $(DONOT_SUPPORT) ]"
-	@echo "    EGDATA          [ $(EGDATA) ]"
-	@echo "    EGDATADIR       [ $(EGDATADIR) ]"
-	@echo "    EXAMPLES        [ $(EXAMPLES) ]"
-	@echo "    HEADERS         [ $(HEADERS) ]"
-	@echo "    MAINS           [ $(MAINS) ]"
-	@echo "    PACKAGE         [ $(PACKAGE) ]"
-	@echo "    PROJECT         [ $(PROJECT) ]"
-	@echo "    PROJECT_DIR     [ $(PROJECT_DIR) ]"
-	@echo "    PLIB            [ $(PLIB) ]"
-	@echo "    RAVL_BODGE      [ $(RAVL_BODGE) ]"
-	@echo "    REQUIRED_DIRS   [ $(REQUIRED_DIRS) ]"
-	@echo "    SCRIPTS         [ $(SCRIPTS) ]"
-	@echo "    SET_DESTDIR     [ $(SET_DESTDIR) ]"
-	@echo "    SUPPORT_ONLY    [ $(SUPPORT_ONLY) ]"
-	@echo "    TESTEXES        [ $(TESTEXES) ]"
-	@echo "    TESTDATA        [ $(TESTDATA) ]"
-	@echo "    TESTDATADIR     [ $(TESTDATADIR) ]"
+         echo "    AUXDEST           [ $$AUXDEST ]"
+	@echo "    CFGFILES          [ $(CFGFILES) ]"
+	@echo "    DATA              [ $(DATA) ]"
+	@echo "    DATADIR           [ $(DATADIR) ]"
+	@echo "    DONOT_SUPPORT     [ $(DONOT_SUPPORT) ]"
+	@echo "    EGDATA            [ $(EGDATA) ]"
+	@echo "    EGDATADIR         [ $(EGDATADIR) ]"
+	@echo "    EXAMPLES          [ $(EXAMPLES) ]"
+	@echo "    HEADERS           [ $(HEADERS) ]"
+	@echo "    MAINS             [ $(MAINS) ]"
+	@echo "    PACKAGE           [ $(PACKAGE) ]"
+	@echo "    PROJECT           [ $(PROJECT) ]"
+	@echo "    PROJECT_DIR       [ $(PROJECT_DIR) ]"
+	@echo "    PLIB              [ $(PLIB) ]"
+	@echo "    FALLBACK_PROJNAME [ $(FALLBACK_PROJNAME) ]"
+	@echo "    REQUIRED_DIRS     [ $(REQUIRED_DIRS) ]"
+	@echo "    SCRIPTS           [ $(SCRIPTS) ]"
+	@echo "    SET_DESTDIR       [ $(SET_DESTDIR) ]"
+	@echo "    SUPPORT_ONLY      [ $(SUPPORT_ONLY) ]"
+	@echo "    TESTEXES          [ $(TESTEXES) ]"
+	@echo "    TESTDATA          [ $(TESTDATA) ]"
+	@echo "    TESTDATADIR       [ $(TESTDATADIR) ]"
 	@echo
 
 

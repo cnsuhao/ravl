@@ -954,8 +954,11 @@ echo \# Ravl configuration file - regenerate using configure >> ./Config.Project
 echo >> ./Config.Project.in
 echo \# We would like to set PROJECT_NAME=RAVL here. However, because Ravl pre-dates >> ./Config.Project.in
 echo \# the full QMake PROJECT concept, we cannot currently set PROJECT_NAME owing to >> ./Config.Project.in
-echo \# the knock on effect. >> ./Config.Project.in
-echo PROJECT_DESCRIPTION=Recognition And Vision Library with modules for Computer Vision, Pattern Recognition and much more >> ./Config.Project.in
+echo \# the knock on effect. Instead we use FALLBACK_PROJNAME as this provides the name >> ./Config.Project.in
+echo \# for certain functionality while not introducing the full consequences of setting >> ./Config.Project.in
+echo \# PROJECT_NAME. >> ./Config.Project.in
+echo FALLBACK_PROJNAME=Ravl >> ./Config.Project.in
+echo PROJECT_DESCRIPTION='RAVL, Recognition And Vision Library' >> ./Config.Project.in
 echo PROJECT_URL=@PACKAGE_URL@ >> ./Config.Project.in
 echo PROJECT_BUGREPORT=@PACKAGE_BUGREPORT@ >> ./Config.Project.in
 
