@@ -28,6 +28,7 @@
 #include "Ravl/SourceTools/DefsFile.hh"
 #include "Ravl/SourceTools/SourceCodeManager.hh"
 #include "Ravl/SourceTools/SourceFile.hh"
+#include "Ravl/Resource.hh"
 
 #ifndef NDEBUG
 #define YYDEBUG 1
@@ -156,8 +157,9 @@ int BuildCxx(int argc, char **argv)
 
   StringC instAdmin = opt.String("ia", localProjOut + "/transient/" + projName, "Install Admin.");
   StringC ehtFiles = opt.String("eht", instAdmin + "/CxxDoc/EHT", "Location of EHT files. ");
-  StringC templFiles = opt.String("tc", instAdmin + "/CxxDoc/Class", "Directory of template files for class pages, or single template file");
-  StringC docNodeFiles = opt.String("td", instAdmin + "/CxxDoc/DocNode", "Directory of template files for doc node page, or single template file");
+  StringC installHome = opt.String("ih", ResourceRoot() + "/share/CxxDoc", "Install Home.");
+  StringC templFiles = opt.String("tc", installHome + "/default/Class", "Directory of template files for class pages, or single template file");
+  StringC docNodeFiles = opt.String("td", installHome + "/default/DocNode", "Directory of template files for doc node page, or single template file");
   
   stopOnError = opt.Boolean("s",false,"Stop on error. ");
   bool noParse = opt.Boolean("np",false,"Don't do a header parse. ");

@@ -8,11 +8,7 @@
 
 DESCRIPTION = Templates for CxxDoc documentation system.
 
-AUXDIR = $(ROOTDIR)/transient/Ravl/CxxDoc/Class
-# Would better be $(INST_ADMIN)/CxxDoc/Class but as Ravl does not build using
-# PROJECT_NAME, we have to manually include the Ravl subdirectory in the path
-# because the CxxDoc stage expects it (that phase must be run with PROJECT_NAME
-# set, even for Ravl)
+AUXDIR = share/CxxDoc/default/Class
 
 AUXFILES = user.class.tmpl user.namespace.tmpl develop.class.tmpl \
  develop.namespace.tmpl index.tmpl bugs.tmpl class.stmpl scope.stmpl \
