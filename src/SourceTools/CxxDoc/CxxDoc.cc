@@ -155,7 +155,7 @@ int BuildCxx(int argc, char **argv)
 
   StringC sourceTree = opt.String("st", ".", "Source tree.");
 
-  StringC instAdmin = opt.String("ia", localProjOut + "/transient/" + projName, "Install Admin.");
+  StringC instAdmin = opt.String("ia", localProjOut + "/transient", "Install Admin.");
   StringC ehtFiles = opt.String("eht", instAdmin + "/CxxDoc/EHT", "Location of EHT files. ");
   StringC installHome = opt.String("ih", ResourceRoot() + "/share/CxxDoc", "Install Home.");
   StringC templFiles = opt.String("tc", installHome + "/default/Class", "Directory of template files for class pages, or single template file");
