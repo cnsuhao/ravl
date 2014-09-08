@@ -48,6 +48,10 @@ namespace RavlN {
     //! Run thread directly.
     virtual bool Run();
 
+    //! Check if thread has been terminated.
+    bool IsTerminated() const
+    { return m_terminate; }
+
     //! Owner reference counted ptr to class
     typedef RavlN::SmartOwnerPtrC<ServiceThreadC> RefT;
 
