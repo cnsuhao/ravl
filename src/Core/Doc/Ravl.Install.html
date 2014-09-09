@@ -42,21 +42,21 @@
     <ol>
       <li> Make sure you use the appropriate commands depending on your shell
       (C or bash).  Decide on a place for the installation and define the
-      environment variable <code>RAVL_INSTALLATION</code> accordingly.  This
+      environment variable <code>RAVL_INSTALL</code> accordingly.  This
       can optionally point to an existing directory. 
 
         <ul>
           <li><p><b> bash shell:</b></p>
             <pre>
-export RAVL_INSTALLATION=~/RavlProject
-mkdir -p $RAVL_INSTALLATION/src
-cd $RAVL_INSTALLATION/src</pre></li>
+export RAVL_INSTALL=~/RavlProject
+mkdir -p $RAVL_INSTALL/src
+cd $RAVL_INSTALL/src</pre></li>
 
           <li> <p><b>C shell:</b></p>
         <pre>
-setenv RAVL_INSTALLATION ~/RavlProject
-mkdir -p $RAVL_INSTALLATION/src
-cd $RAVL_INSTALLATION/src</pre></li>
+setenv RAVL_INSTALL ~/RavlProject
+mkdir -p $RAVL_INSTALL/src
+cd $RAVL_INSTALL/src</pre></li>
         </ul>
       </li>
       <li>Download the source code:
@@ -67,10 +67,10 @@ cd ravl
       </li>
 
       <li> Select the relevant <code>config.local</code> file from
-      <code>$RAVL_INSTALLATION/src/ravl/src/QMake</code> as follows.  Determine
+      <code>$RAVL_INSTALL/src/ravl/src/QMake</code> as follows.  Determine
       the correct suffix for the file by running:
 <pre>
-$RAVL_INSTALLATION/src/ravl/src/QMake/config.arc</pre> 
+$RAVL_INSTALL/src/ravl/src/QMake/config.arc</pre> 
 
         For a standard Linux installation on a 64-bit machine the returned
         string should be <code>linux64</code>, and so the required config file
@@ -132,8 +132,8 @@ cp src/QMake/config.local.xxx .</pre></li>
       <li>Finally, the installation is:
 
         <pre>
-cd $RAVL_INSTALLATION/src/ravl/src
-./install $RAVL_INSTALLATION auto $RAVL_INSTALLATION/src/ravl/config.local.xxx
+cd $RAVL_INSTALL/src/ravl/src
+./install $RAVL_INSTALL auto $RAVL_INSTALL/src/ravl/config.local.xxx
 rehash</pre> 
     (<code>rehash</code> is only necessary if using a C-shell.)
       </li>
@@ -148,7 +148,7 @@ rehash</pre>
     compilation errors, you should remove the following directory trees before
     re-running the install script:</p>
     <ul>
-      <li>Everything in <code>$RAVL_INSTALLATION</code> except <code>src</code></li>
+      <li>Everything in <code>$RAVL_INSTALL</code> except <code>src</code></li>
       <li><code>/tmp/$USER/qm</code></li>
     </ul>
 
@@ -161,9 +161,9 @@ rehash</pre>
           file (use <code>linux</code> in place of <code>linux64</code> on 32-bit machines):</p>
 
         <pre>
-export RAVL_INSTALLATION=~/RavlProject
+export RAVL_INSTALL=~/RavlProject
 export PROJECT_OUT=~/ProjOut
-export PATH=${PATH}:${PROJECT_OUT}/lib/RAVL/linux64/bin:${RAVL_INSTALLATION}/bin
+export PATH=${PATH}:${PROJECT_OUT}/lib/RAVL/linux64/bin:${RAVL_INSTALL}/bin
 </pre>
       </li>
       <li>
@@ -172,15 +172,15 @@ export PATH=${PATH}:${PROJECT_OUT}/lib/RAVL/linux64/bin:${RAVL_INSTALLATION}/bin
         file:</p>
 
         <pre>
-setenv RAVL_INSTALLATION ~/RavlProject
+setenv RAVL_INSTALL ~/RavlProject
 setenv PROJECT_OUT ~/ProjOut
-setenv PATH  ${PATH}:${PROJECT_OUT}/lib/RAVL/linux64/bin:${RAVL_INSTALLATION}/bin
+setenv PATH  ${PATH}:${PROJECT_OUT}/lib/RAVL/linux64/bin:${RAVL_INSTALL}/bin
 rehash
 </pre></li>
     </ul> 
     <p>Notes:</p>
     <ul>
-      <li><code>$RAVL_INSTALLATION</code> <i>must</i> be set here to the same
+      <li><code>$RAVL_INSTALL</code> <i>must</i> be set here to the same
       as for the installation above.</li>
 
       <li><code>$PROJECT_OUT</code> controls the directory into which your own
@@ -191,7 +191,7 @@ rehash
     </ul>
 
     <p>Locally-built documentation for the RAVL classes can then be found at:
-    <nobr><code>$RAVL_INSTALLATION/share/doc/RAVL/Auto/Basic/Tree/Ravl.html</code></nobr></p>
+    <nobr><code>$RAVL_INSTALL/share/doc/RAVL/Auto/Basic/Tree/Ravl.html</code></nobr></p>
 
     <p>Now you are <a href="Ravl.Introduction.Getting_Started.html">ready to
     program</a> using the RAVL library and QMake make system.</p>
