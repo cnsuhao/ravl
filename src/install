@@ -113,6 +113,6 @@ fi
 
 echo "\nInstallation was successful.\n"
 
-echo "Refer to file:$RAVL_INSTALLATION/RavlProject/share/doc/RAVL/Auto/Basic/Tree/Ravl.Installation.html#USAGE for usage."
+echo "Refer to file:$RAVL_INSTALL/RavlProject/share/doc/RAVL/Auto/Basic/Tree/Ravl.Installation.html#USAGE for usage."
 
 exit 0
