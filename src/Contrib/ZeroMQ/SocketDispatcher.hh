@@ -24,6 +24,9 @@ namespace RavlN {
       //! Construct from a socket.
       SocketDispatcherC(const SocketC &socket,bool readReady,bool writeReady);
 
+      //! Construct from a file descriptor
+      SocketDispatcherC(int fd,bool readReady,bool writeReady,bool onError);
+
       //! Factory constructor
       SocketDispatcherC(const XMLFactoryContextC &factory);
 
@@ -42,11 +45,13 @@ namespace RavlN {
 
     protected:
       SocketC::RefT m_socket;
+      int m_fd;
       bool m_onReadReady;
       bool m_onWriteReady;
+      bool m_onError;
     };
 
-    //! Set of dispatchers to dissconnect when finished with.
+    //! Set of dispatchers to disconnect when finished with.
 
     class SocketDispatchSetC
      : public RavlN::CollectionC<SocketDispatcherC::RefT>

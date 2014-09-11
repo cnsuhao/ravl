@@ -110,6 +110,16 @@ namespace RavlN {
       return ret;
     }
 
+    //! Add a read trigger
+    SocketDispatcherC::RefT ReactorC::CallOnReadOrError(int fd,const TriggerC &trigger)
+    {
+      RavlAssert(fd >= 0);
+      SocketDispatcherC::RefT ret = new SocketDispatchTriggerC(fd,true,false,true,trigger);
+      Add(*ret);
+      return ret;
+    }
+
+
 
     //! Add handler to system
     bool ReactorC::Add(const SocketDispatcherC &handler)

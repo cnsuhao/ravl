@@ -26,7 +26,7 @@ namespace RavlAudioN {
     : public AudioIOBaseC
   {
   public:
-    PortAudioBaseC(const StringC &fileName,int channel,bool forInput,const type_info &dtype);
+    PortAudioBaseC(const StringC &fileName,int channel,bool forInput,const std::type_info &dtype);
     //: Constructor
     
     ~PortAudioBaseC();
@@ -89,7 +89,7 @@ namespace RavlAudioN {
 
     PaStream *m_stream;
     bool m_doneSetup;
-    IntT m_latency;
+    float m_latency;
 
     UIntT m_frameSize;
     IntT m_channel;
@@ -97,6 +97,8 @@ namespace RavlAudioN {
     RealT m_sampleRate;
     bool m_forInput;
     UIntT m_framerPerBuffer;
+    int m_frameCount;
+    int m_reportedOverflowFrame;
   };
   
 

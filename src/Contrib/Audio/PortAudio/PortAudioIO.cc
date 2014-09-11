@@ -27,7 +27,7 @@ namespace RavlAudioN {
   
   //: Constructor.
   
-  PortAudioBaseC::PortAudioBaseC(const StringC &fileName,int nchannel,bool nforInput,const type_info &ndtype)
+  PortAudioBaseC::PortAudioBaseC(const StringC &fileName,int nchannel,bool nforInput,const std::type_info &ndtype)
     : m_stream(0),
       m_doneSetup(false),
       m_latency(0),
@@ -36,7 +36,9 @@ namespace RavlAudioN {
       m_dtype(&ndtype),
       m_sampleRate(16000),
       m_forInput(nforInput),
-      m_framerPerBuffer(0) // FIXME:- Should be an attribute.
+      m_framerPerBuffer(0), // FIXME:- Should be an attribute.
+      m_frameCount(0),
+      m_reportedOverflowFrame(-10000)
   {
     RavlN::MutexLockC lock(PortAudioMutex());
     const PaDeviceInfo *devInfo = Pa_GetDeviceInfo(m_channel);
@@ -50,13 +52,22 @@ namespace RavlAudioN {
         devInfo->name,
         devInfo->maxInputChannels,devInfo->maxOutputChannels,
         RavlN::TypeName(ndtype),m_sampleRate);
+#if 0
     if(nforInput) {
       m_latency = devInfo->defaultLowInputLatency;
     } else {
       m_latency = devInfo->defaultLowOutputLatency;
     }
+#else
+    // Go for a medium latency by default .
+    if(nforInput) {
+      m_latency = (devInfo->defaultHighInputLatency + devInfo->defaultLowInputLatency)/2.0;
+    } else {
+      m_latency = (devInfo->defaultHighOutputLatency + devInfo->defaultLowInputLatency)/2.0;
+    }
+#endif
     m_frameSize = FileFormatPortAudioBodyC::FrameSize(ndtype);
-    ONDEBUG(RavlDebug("Default latency %d frame size %u ",m_latency,(unsigned) m_frameSize));
+    ONDEBUG(RavlDebug("Default latency %f frame size %u ",m_latency,(unsigned) m_frameSize));
   }
 
   //: Destructor.
@@ -254,9 +265,16 @@ namespace RavlAudioN {
       return false;
     }
     int blocks = len / m_frameSize;
+    m_frameCount++;
     PaError err = Pa_ReadStream(m_stream, buf, blocks);
-    if(err != paNoError) {
-      RavlError("Error reading from stream. Error: %s ",Pa_GetErrorText (err));
+    if(err == paInputOverflowed) {
+      // Throttle the frequency of this message so it doesn't interfere with catching up...
+      if(m_reportedOverflowFrame < (m_frameCount - 5)) {
+        RavlWarning("Overflow reading from stream. Requested %d blocks with frame size %d. Error: %s ",blocks,(int) m_frameSize,Pa_GetErrorText (err));
+        m_reportedOverflowFrame = m_frameCount;
+      }
+    } else if(err != paNoError) {
+      RavlError("Problem reading from stream. Error: %s ",Pa_GetErrorText (err));
       return false;
     }
     return true;
@@ -278,6 +296,7 @@ namespace RavlAudioN {
     }
     int blocks = len / m_frameSize;
 
+    m_frameCount++;
     PaError err = Pa_WriteStream(m_stream, buf, blocks);
     if(err != paNoError) {
       RavlError("Error writing to stream. Error: %s ",Pa_GetErrorText (err));

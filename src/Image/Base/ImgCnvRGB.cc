@@ -114,10 +114,23 @@ namespace RavlImageN
     return ret;
   }
   
+  // Real RGB to real grey image
+
+  ImageC<RealT>  RealRGBImageCT2DoubleImageCT(const ImageC<RealRGBValueC> &dat) {
+    ImageC<RealT> ret(dat.Rectangle());
+    for(Array2dIter2C<RealT,RealRGBValueC> it(ret,dat);it.IsElm();it.Next()) {
+      it.Data1() = it.Data2().Y();
+    }
+    return ret;
+  }
+
+
   DP_REGISTER_CONVERSION_FT_NAMED(ImageC<ByteRGBValueC>,ImageC<RealRGBValueC>,ByteRGBImageCT2RealRGBImageCT ,1,
 				  "ImageC<RealRGBValueC> RavlImageN::Convert(const ImageC<ByteRGBValueC> &)");
   DP_REGISTER_CONVERSION_FT_NAMED(ImageC<RealRGBValueC>,ImageC<ByteRGBValueC>,RealRGBImageCT2ByteRGBImageCT ,8,
 				  "ImageC<ByteRGBValueC> RavlImageN::Convert(const ImageC<RealRGBValueC> &)");
+  DP_REGISTER_CONVERSION_FT_NAMED(ImageC<RealRGBValueC>,ImageC<RealT>,RealRGBImageCT2DoubleImageCT ,3,
+				  "ImageC<RealT> RavlImageN::Convert(const ImageC<RealRGBValueC> &)");
   
   /////////////////////////////////////////////////////////////////////////////////////////
   

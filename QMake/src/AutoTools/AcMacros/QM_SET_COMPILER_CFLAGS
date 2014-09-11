@@ -1,5 +1,5 @@
 dnl This file is part of QMake, Quick Make System
-dnl Copyright (C) 2011, University of Surrey
+dnl Copyright (C) 2011-14, University of Surrey
 dnl This code may be redistributed under the terms of the GNU General
 dnl Public License (GPL). See the gpl.licence file for details or
 dnl see http://www.gnu.org/copyleft/gpl.html
@@ -88,15 +88,26 @@ AC_DEFUN([QM_SET_COMPILER_CFLAGS],
              # Again, the above caveat applies to fno-math-errno
 
              # strict-aliasing enabled by optimised builds has been known to
-             # sometimes cause gcc 4.x to produce incorrect code (even where
-             # the aliasing rules are followed). So, we turn it off...
+             # sometimes cause gcc 4.x (x<7) to produce incorrect code (even
+             # where the aliasing rules are followed). So we turn it off...
              dnl Using @S|@ glyph to prevent expansion of $1/2/3 as macro arg
              CC_VERSION=`$CC -v 2>&1 | $GREP 'gcc version' | $AWK '{ print @S|@3 }'`
              CC_MAJOR=`echo $CC_VERSION | $AWK -F. '{ print @S|@1 }'`
+             CC_MINOR=`echo $CC_VERSION | $AWK -F. '{ print @S|@2 }'`
              if ( test X$CC_MAJOR = X4 )
              then
-                COMPILER_NON_OPT_CFLAGS=" "$COMPILER_NON_OPT_CFLAGS" -fno-strict-aliasing "
-                COMPILER_OPT_CFLAGS=" "$COMPILER_OPT_CFLAGS" -fno-strict-aliasing "
+                if (( test X$CC_MINOR != X ) && ( test $CC_MINOR -gt 6 ))
+                then
+                   trace 5 We have a version of gcc 4.x without the aliasing bug
+                   trace 6 gcc version $CC_MAJOR.$CC_MINOR
+                else
+                   trace 5 We potentially have the aliasing bug in our gcc compiler
+                   trace 6 gcc version $CC_MAJOR.$CC_MINOR
+                   COMPILER_NON_OPT_CFLAGS=" "$COMPILER_NON_OPT_CFLAGS" -fno-strict-aliasing "
+                   COMPILER_OPT_CFLAGS=" "$COMPILER_OPT_CFLAGS" -fno-strict-aliasing "
+                fi
+             else
+                trace 5 We are using gcc but not version 4.x
              fi
 
              COMPILER_PROF_CFLAGS=" -p "

@@ -252,10 +252,16 @@ namespace RavlN {
         theHost = StringC(hostnameBuffer);
       } else {
         StringC ahost(hostnameBuffer);
+        // Stick with fully qualified name.
+#if 0
         if(ahost.contains('.'))
           theHost = ahost.before('.');
         else
           theHost = ahost;
+#else
+        // Use the full host name
+        theHost = ahost;
+#endif
       }
 
       // FIXME:- Should check for real local interface names ?

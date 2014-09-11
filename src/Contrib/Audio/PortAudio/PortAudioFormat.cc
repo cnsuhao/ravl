@@ -75,11 +75,12 @@ namespace RavlAudioN {
 
     // Device found ?
     if(devInfo == 0) {
+      RavlError("Requested device %s not found. ",device.c_str());
       return typeid(void);
     }
     int channels = devInfo->maxInputChannels;
     if(channels == 0) {
-      ONDEBUG(RavlWarning("No channels found."));
+      RavlError("No channels found. Input:%d Output:%d",(int) devInfo->maxInputChannels,(int) devInfo->maxOutputChannels);
       return typeid(void);
     }
     
@@ -323,17 +324,16 @@ namespace RavlAudioN {
         }
       }
       devId = ind;
+      ONDEBUG(RavlDebug("Using default device %d ",(int) devId));
       return Pa_GetDeviceInfo(ind);
     }
 
     int numDevices = Pa_GetDeviceCount();
     for(int i = 0;i < numDevices;i++) {
       const PaDeviceInfo *xdevInfo = 0;
-      // Does it match the device number ?
-      if(StringC(i) == devName)
-        return xdevInfo;
       xdevInfo = Pa_GetDeviceInfo(i);
-      if(devName == xdevInfo->name) {
+      // Does it match the device number ?
+      if(StringC(i) == devName || devName == xdevInfo->name) {
         devId = i;
         return xdevInfo;
       }

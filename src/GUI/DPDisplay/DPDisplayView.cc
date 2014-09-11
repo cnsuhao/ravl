@@ -312,9 +312,9 @@ namespace RavlGUIN {
   
   bool DPDisplayViewBodyC::UpdateInfo(const Vector2dC &at) {
     Vector2dC pos = at; // ravl co-ords
-    StringC rowps((int) pos[0]);
+    StringC rowps((IndexC) pos[0]);
     rowPos.Label(rowps);
-    StringC colps((int) pos[1]);
+    StringC colps((IndexC) pos[1]);
     colPos.Label(colps);
     StringC infos("-");
     Query(pos,infos);

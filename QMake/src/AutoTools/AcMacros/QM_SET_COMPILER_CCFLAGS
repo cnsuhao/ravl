@@ -1,5 +1,5 @@
 dnl This file is part of QMake, Quick Make System
-dnl Copyright (C) 2011, University of Surrey
+dnl Copyright (C) 2011-14, University of Surrey
 dnl This code may be redistributed under the terms of the GNU General
 dnl Public License (GPL). See the gpl.licence file for details or
 dnl see http://www.gnu.org/copyleft/gpl.html
@@ -121,21 +121,32 @@ AC_DEFUN([QM_SET_COMPILER_CCFLAGS],
              # Likewise, we need the -Xcompiler prefix on -fno-math-errno
 
              # strict-aliasing enabled by optimised builds has been known to
-             # sometimes cause g++ 4.x to produce incorrect code (even where
-             # the aliasing rules are followed). So we turn it off...
+             # sometimes cause g++ 4.x (x<7) to produce incorrect code (even
+             # where the aliasing rules are followed). So we turn it off...
              dnl Using @S|@ glyph to prevent expansion of $1/2/3 as macro arg
              CXX_VERSION=`$CXX -v 2>&1 | $GREP 'gcc version' | $AWK '{ print @S|@3 }'`
              CXX_MAJOR=`echo $CXX_VERSION | $AWK -F. '{ print @S|@1 }'`
+             CXX_MINOR=`echo $CXX_VERSION | $AWK -F. '{ print @S|@2 }'`
              if ( test X$CXX_MAJOR = X4 )
              then
-                COMPILER_NON_OPT_CCFLAGS=" "$COMPILER_NON_OPT_CCFLAGS" -fno-strict-aliasing "
-                NVCC_NON_OPT_NVCCFLAGS=" "$NVCC_NON_OPT_NVCCFLAGS" -Xcompiler -fno-strict-aliasing "
-                # CUDA compiler driver does not recognise the -fno-strict-aliasing
-                # switch so we have to use the -Xcompiler switch to tell the
-                # driver to ignore the following option.
-                COMPILER_OPT_CCFLAGS=" "$COMPILER_OPT_CCFLAGS" -fno-strict-aliasing "
-                NVCC_OPT_NVCCFLAGS=" "$NVCC_OPT_NVCCFLAGS" -Xcompiler -fno-strict-aliasing "
-                # Again we need to get the compiler driver to ignore the switch.
+                if (( test X$CXX_MINOR != X ) && ( test $CXX_MINOR -gt 6 ))
+                then
+                   trace 5 We have a version of g++ 4.x without the aliasing bug
+                   trace 6 g++ version $CXX_MAJOR.$CXX_MINOR
+                else
+                   trace 5 We potentially have the aliasing bug in our g++ compiler
+                   trace 6 g++ version $CXX_MAJOR.$CXX_MINOR
+                   COMPILER_NON_OPT_CCFLAGS=" "$COMPILER_NON_OPT_CCFLAGS" -fno-strict-aliasing "
+                   NVCC_NON_OPT_NVCCFLAGS=" "$NVCC_NON_OPT_NVCCFLAGS" -Xcompiler -fno-strict-aliasing "
+                   # CUDA compiler driver does not recognise the -fno-strict-aliasing
+                   # switch so we have to use the -Xcompiler switch to tell the
+                   # driver to ignore the following option.
+                   COMPILER_OPT_CCFLAGS=" "$COMPILER_OPT_CCFLAGS" -fno-strict-aliasing "
+                   NVCC_OPT_NVCCFLAGS=" "$NVCC_OPT_NVCCFLAGS" -Xcompiler -fno-strict-aliasing "
+                   # Again we need to get the compiler driver to ignore the switch.
+                fi
+             else
+                trace 5 We are using g++ but not version 4.x
              fi
 
              COMPILER_PROF_CCFLAGS=" -p "

@@ -34,6 +34,7 @@ int main(int nargs,char **argv) {
   StringC odev = opt.String("o","@PORTAUDIO","Output device.");
   bool listFormats = opt.Boolean("lf",false,"List formats ");
   double sampleRate = opt.Real("sr",0,"Sample rate to use.");
+
   opt.Check();
 
   if(listFormats) {
@@ -66,7 +67,6 @@ int main(int nargs,char **argv) {
   //cout << "\nAvailable Attributes are :\n" << attrList ;
 #if 1
   // lets get some attributes 
-  IntT  sampleBits ;
   if(sampleRate != 0) {
     if(!in.SetAttr("samplerate", sampleRate)) {
       RavlWarning("Failed to set sample rate.");
@@ -75,6 +75,7 @@ int main(int nargs,char **argv) {
   } else {
     in.GetAttr("samplerate", sampleRate) ;
   }
+  IntT  sampleBits = 0;
   in.GetAttr("samplebits", sampleBits) ; 
     
   // now lets read data from file and play to device

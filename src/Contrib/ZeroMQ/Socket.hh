@@ -158,6 +158,10 @@ namespace RavlN {
       void *RawSocket()
       { return m_socket; }
 
+      //! Access the socket type
+      SocketTypeT LocalSocketType() const
+      { return m_socketType; }
+
       //! Handle to socket.
       typedef SmartPtrC<SocketC> RefT;
     protected:
