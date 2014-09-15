@@ -53,13 +53,13 @@ ifndef STAMP_SINGLE
 endif
 
 ifeq ($(STAMP_SINGLE),VER)
- STAMP_SINGLE_EXT=.so.$(PROJECT_VERSION)
+ STAMP_SINGLE_EXT=.$(SHAREDEXT).$(PROJECT_VERSION)
 else
  ifeq ($(STAMP_SINGLE),NO)
   # Version stamping switched off
-  STAMP_SINGLE_EXT=.so
+  STAMP_SINGLE_EXT=.$(SHAREDEXT)
  else
-  STAMP_SINGLE_EXT=.so.$(PROJECT_MAJOR)
+  STAMP_SINGLE_EXT=.$(SHAREDEXT).$(PROJECT_MAJOR)
  endif
 endif
 
@@ -276,19 +276,19 @@ installsingledebugsharedlib:
 	$(SHOWIT)if [ ! -d $(ABS_DESTDIR)$(libdir)/debug$(libdir) ] ; then $(MKDIR_P) $(ABS_DESTDIR)$(libdir)/debug$(libdir) ; fi
 	$(INSTALL) $(STRIP_SWITCH) $(PROJECT_OUT)/lib/$(ARC)/debug/shared/single/libRavl$(STAMP_SINGLE_EXT) $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl$(STAMP_SINGLE_EXT)
 ifeq ($(STAMP_SINGLE),VER)
-	$(SHOWIT)if [ -h $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.so.$(PROJECT_MAJOR) ] || [ -f $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.so.$(PROJECT_MAJOR) ] ; \
+	$(SHOWIT)if [ -h $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.$(SHAREDEXT).$(PROJECT_MAJOR) ] || [ -f $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.$(SHAREDEXT).$(PROJECT_MAJOR) ] ; \
                  then \
-                    $(RM) $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.so.$(PROJECT_MAJOR) ; \
+                    $(RM) $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.$(SHAREDEXT).$(PROJECT_MAJOR) ; \
                  fi ; \
-                 cd $(ABS_DESTDIR)$(libdir)/debug$(libdir); $(LN_S) libRavl$(STAMP_SINGLE_EXT) libRavl.so.$(PROJECT_MAJOR) ; \
+                 cd $(ABS_DESTDIR)$(libdir)/debug$(libdir); $(LN_S) libRavl$(STAMP_SINGLE_EXT) libRavl.$(SHAREDEXT).$(PROJECT_MAJOR) ; \
                  fi
 endif
 ifneq ($(STAMP_SINGLE),NO)
-	$(SHOWIT)if [ -h $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.so ] || [ -f $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.so ] ; \
+	$(SHOWIT)if [ -h $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.$(SHAREDEXT) ] || [ -f $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.$(SHAREDEXT) ] ; \
                  then \
-                    $(RM) $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.so ; \
+                    $(RM) $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.$(SHAREDEXT) ; \
                  fi ; \
-                 cd $(ABS_DESTDIR)$(libdir)/debug$(libdir); $(LN_S) libRavl$(STAMP_SINGLE_EXT) libRavl.so ; \
+                 cd $(ABS_DESTDIR)$(libdir)/debug$(libdir); $(LN_S) libRavl$(STAMP_SINGLE_EXT) libRavl.$(SHAREDEXT) ; \
                  fi
 endif
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=debug SHAREDBUILD=1 singlesharedSetRootStaged
@@ -364,19 +364,19 @@ installsingleoptsharedlib:
 	$(SHOWIT)if [ ! -d $(ABS_DESTDIR)$(libdir) ] ; then $(MKDIR_P) $(ABS_DESTDIR)$(libdir) ; fi
 	$(INSTALL) $(STRIP_SWITCH) $(PROJECT_OUT)/lib/$(ARC)/opt/shared/single/libRavl$(STAMP_SINGLE_EXT) $(ABS_DESTDIR)$(libdir)/libRavl$(STAMP_SINGLE_EXT)
 ifeq ($(STAMP_SINGLE),VER)
-	$(SHOWIT)if [ -h $(ABS_DESTDIR)$(libdir)/libRavl.so.$(PROJECT_MAJOR) ] || [ -f $(ABS_DESTDIR)$(libdir)/libRavl.so.$(PROJECT_MAJOR) ] ; \
+	$(SHOWIT)if [ -h $(ABS_DESTDIR)$(libdir)/libRavl.$(SHAREDEXT).$(PROJECT_MAJOR) ] || [ -f $(ABS_DESTDIR)$(libdir)/libRavl.$(SHAREDEXT).$(PROJECT_MAJOR) ] ; \
                  then \
-                    $(RM) $(ABS_DESTDIR)$(libdir)/libRavl.so.$(PROJECT_MAJOR) ; \
+                    $(RM) $(ABS_DESTDIR)$(libdir)/libRavl.$(SHAREDEXT).$(PROJECT_MAJOR) ; \
                  fi ; \
-                 cd $(ABS_DESTDIR)$(libdir); $(LN_S) libRavl$(STAMP_SINGLE_EXT) libRavl.so.$(PROJECT_MAJOR) ; \
+                 cd $(ABS_DESTDIR)$(libdir); $(LN_S) libRavl$(STAMP_SINGLE_EXT) libRavl.$(SHAREDEXT).$(PROJECT_MAJOR) ; \
                  fi
 endif
 ifneq ($(STAMP_SINGLE),NO)
-	$(SHOWIT)if [ -h $(ABS_DESTDIR)$(libdir)/libRavl.so ] || [ -f $(ABS_DESTDIR)$(libdir)/libRavl.so ] ; \
+	$(SHOWIT)if [ -h $(ABS_DESTDIR)$(libdir)/libRavl.$(SHAREDEXT) ] || [ -f $(ABS_DESTDIR)$(libdir)/libRavl.$(SHAREDEXT) ] ; \
                  then \
-                    $(RM) $(ABS_DESTDIR)$(libdir)/libRavl.so ; \
+                    $(RM) $(ABS_DESTDIR)$(libdir)/libRavl.$(SHAREDEXT) ; \
                  fi ; \
-                 cd $(ABS_DESTDIR)$(libdir); $(LN_S) libRavl$(STAMP_SINGLE_EXT) libRavl.so ; \
+                 cd $(ABS_DESTDIR)$(libdir); $(LN_S) libRavl$(STAMP_SINGLE_EXT) libRavl.$(SHAREDEXT) ; \
                  fi
 endif
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) insMustLinks recurse
@@ -678,13 +678,13 @@ uninstallsingledebugsharedlib:
             fi ;\
          fi
 ifeq ($(STAMP_SINGLE),VER)
-	@if [ -h $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.so.$(PROJECT_MAJOR) ] || [ -f $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.so.$(PROJECT_MAJOR) ] ; \
+	@if [ -h $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.$(SHAREDEXT).$(PROJECT_MAJOR) ] || [ -f $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.$(SHAREDEXT).$(PROJECT_MAJOR) ] ; \
          then \
             if [ X$(QMAKE_INFO) != X ] ;\
             then \
-               echo $(RM) -f $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.so.$(PROJECT_MAJOR) ; \
+               echo $(RM) -f $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.$(SHAREDEXT).$(PROJECT_MAJOR) ; \
             fi ;\
-            $(RM) -f $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.so.$(PROJECT_MAJOR) ; \
+            $(RM) -f $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.$(SHAREDEXT).$(PROJECT_MAJOR) ; \
             RET=$$? ; \
             if [ $$RET -ne 0 ] ; \
             then \
@@ -693,13 +693,13 @@ ifeq ($(STAMP_SINGLE),VER)
          fi
 endif
 ifneq ($(STAMP_SINGLE),NO)
-	@if [ -h $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.so ] || [ -f $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.so ] ; \
+	@if [ -h $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.$(SHAREDEXT) ] || [ -f $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.$(SHAREDEXT) ] ; \
          then \
             if [ X$(QMAKE_INFO) != X ] ;\
             then \
-               echo $(RM) -f $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.so ; \
+               echo $(RM) -f $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.$(SHAREDEXT) ; \
             fi ;\
-            $(RM) -f $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.so ; \
+            $(RM) -f $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.$(SHAREDEXT) ; \
             RET=$$? ; \
             if [ $$RET -ne 0 ] ; \
             then \
@@ -755,13 +755,13 @@ uninstallsingleoptsharedlib:
             fi ;\
          fi
 ifeq ($(STAMP_SINGLE),VER)
-	@if [ -h $(ABS_DESTDIR)$(libdir)/libRavl.so.$(PROJECT_MAJOR) ] || [ -f $(ABS_DESTDIR)$(libdir)/libRavl.so.$(PROJECT_MAJOR) ] ; \
+	@if [ -h $(ABS_DESTDIR)$(libdir)/libRavl.$(SHAREDEXT).$(PROJECT_MAJOR) ] || [ -f $(ABS_DESTDIR)$(libdir)/libRavl.$(SHAREDEXT).$(PROJECT_MAJOR) ] ; \
          then \
             if [ X$(QMAKE_INFO) != X ] ;\
             then \
-               echo $(RM) -f $(ABS_DESTDIR)$(libdir)/libRavl.so.$(PROJECT_MAJOR) ; \
+               echo $(RM) -f $(ABS_DESTDIR)$(libdir)/libRavl.$(SHAREDEXT).$(PROJECT_MAJOR) ; \
             fi ;\
-            $(RM) -f $(ABS_DESTDIR)$(libdir)/libRavl.so.$(PROJECT_MAJOR) ; \
+            $(RM) -f $(ABS_DESTDIR)$(libdir)/libRavl.$(SHAREDEXT).$(PROJECT_MAJOR) ; \
             RET=$$? ; \
             if [ $$RET -ne 0 ] ; \
             then \
@@ -770,13 +770,13 @@ ifeq ($(STAMP_SINGLE),VER)
          fi
 endif
 ifneq ($(STAMP_SINGLE),NO)
-	@if [ -h $(ABS_DESTDIR)$(libdir)/libRavl.so ] || [ -f $(ABS_DESTDIR)$(libdir)/libRavl.so ] ; \
+	@if [ -h $(ABS_DESTDIR)$(libdir)/libRavl.$(SHAREDEXT) ] || [ -f $(ABS_DESTDIR)$(libdir)/libRavl.$(SHAREDEXT) ] ; \
          then \
             if [ X$(QMAKE_INFO) != X ] ;\
             then \
-               echo $(RM) -f $(ABS_DESTDIR)$(libdir)/libRavl.so ; \
+               echo $(RM) -f $(ABS_DESTDIR)$(libdir)/libRavl.$(SHAREDEXT) ; \
             fi ;\
-            $(RM) -f $(ABS_DESTDIR)$(libdir)/libRavl.so ; \
+            $(RM) -f $(ABS_DESTDIR)$(libdir)/libRavl.$(SHAREDEXT) ; \
             RET=$$? ; \
             if [ $$RET -ne 0 ] ; \
             then \
