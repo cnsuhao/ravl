@@ -33,32 +33,6 @@
 	  editing of the Config.Project file (see above) will enable the use
 	  of that compatible library.
 
-+ The static version of the single library is not currently configured for
-  selective linking (the MUSTLINK infrastructure needs incorporating) so client
-  code must include the whole library (using the -Wl,--whole-archive switch).
-  This results in unusably large binaries.
-
-	- There are several ways to allow the removal of the “greedy” linking
-
-		+ Include the MUSTLINKS in the user's link in much the same way
-		  as currently 
-
-		+ Force the linker to regard the relevant functions as
-		  undefined via the -u switch. The user will have to add these
-		  switches to their link-line.
-
-		+ Replace the current mechanism with an initialisation function
-		  the client code must call to enable the requisite part of
-		  Ravl. The initialisation function will effectivly be a
-		  renamed version of the current MUSTLINK function, so will
-		  bring about the link organically.
-
-	  The benefit of the last approach is that this optimises the amount of
-	  code that will be linked into a binary. The downside is this requires
-	  more end-user knowledge. For the first approaches, we can provided a
-	  pro-forma link line/makefile for the user which addresses this
-	  somewhat.
-
 + Shared version of single library currently still includes code for  dynamic
   loads of individual component libraries.
 
