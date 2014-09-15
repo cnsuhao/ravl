@@ -16,9 +16,8 @@
 	  added in due course, as priority dictates. In the meantime, manual
 	  editing of the Config.Project file can allow the build to use an 
 	  unsupported library (add it's identifier to RESOURCES; declare the
-	  XXX_CFLAGS and XXX_LIBS variables; set the appropriate XXX_SUPPORT
-	  variable and add the value of XXX_LIBS to an appropriate point in the
-	  setting of the ALL_EXTERNAL_LIBS variable).
+	  XXX_CFLAGS and XXX_LIBS variables and declare the appropriate
+	  XXX_SUPPORT variable).
 
 + In addition to those libraries for which configure has not currently been
   written to support, the Firewire support libraries, along with the AVIfile
