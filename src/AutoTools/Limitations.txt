@@ -36,7 +36,8 @@
 + Shared version of single library currently still includes code for  dynamic
   loads of individual component libraries.
 
-	- Rectification pending decision on future of MUSTLINKS
+	- Rectification pending possible future work on dynamically loading
+          all external libraries (and enabling functionality as available).
 
 + The configure script currently does not produce compiler options for Mac or
   BSD platforms. 
