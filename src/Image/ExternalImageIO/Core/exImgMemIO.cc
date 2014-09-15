@@ -1,12 +1,12 @@
 // This file is part of RAVL, Recognition And Vision Library 
-// Copyright (C) 2005, OmniPerception Ltd.
+// Copyright (C) 2005-12, OmniPerception Ltd.
 // This code may be redistributed under the terms of the GNU Lesser
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 //! author="Charles Galambos"
 //! lib=RavlExtImgIO
-//! file="Ravl/Image/ExternalImageIO/exImgMemIO.cc"
+//! file="Ravl/Image/ExternalImageIO/Core/exImgMemIO.cc"
 //! docentry="Ravl.API.Images.IO.Formats"
 
 #include "Ravl/Option.hh"

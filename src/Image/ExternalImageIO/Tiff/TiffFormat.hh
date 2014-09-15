@@ -1,43 +1,39 @@
 // This file is part of RAVL, Recognition And Vision Library 
-// Copyright (C) 2001, University of Surrey
+// Copyright (C) 2001-12, University of Surrey
 // This code may be redistributed under the terms of the GNU Lesser
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-#ifndef RAVLPNGFORMAT_HEADER
-#define RAVLPNGFORMAT_HEADER 1
+#ifndef RAVLTIFFFORMAT_HEADER
+#define RAVLTIFFFORMAT_HEADER 1
 ////////////////////////////////////////////////////////////
-//! rcsid="$Id$"
-//! file="Ravl/Image/ExternalImageIO/PNGFormat.hh"
+//! file="Ravl/Image/ExternalImageIO/Tiff/TiffFormat.hh"
 //! lib=RavlExtImgIO
 //! author="Charles Galambos"
 //! docentry="Ravl.API.Images.IO.Formats"
 //! date="29/10/98"
 
 #include "Ravl/DP/FileFormat.hh"
-#include "Ravl/Image/ImgIOPNGB.hh"
+#include "Ravl/Image/Image.hh"
 
 namespace RavlImageN {
-  
+
   //! userlevel=Develop
-  //: PNG File format information.
+  //: TIFF File format information.
   
-  class FileFormatPNGBodyC 
+  class FileFormatTIFFBodyC 
     : public FileFormatBodyC 
   {
   public:
-    FileFormatPNGBodyC(bool nonly16Bit,const StringC &id,const StringC &desc);
+    FileFormatTIFFBodyC(const StringC &id,const StringC &desc);
     //: Constructor.
     
     const std::type_info &ChooseFormat(const std::type_info &obj_type) const;
     //: Try and choose best format for IO.
     
-    const std::type_info &ChooseFormat(const std::type_info &obj_type,int bit_depth,int colour_type,int interlace) const;
-    //: Try and choose best format for IO.
-    
     virtual const std::type_info &ProbeLoad(IStreamC &in,const std::type_info &obj_type) const;
     //: Is stream in std stream format ?
-  
+    
     virtual const std::type_info &ProbeLoad(const StringC &filename,IStreamC &in,const std::type_info &obj_type) const;
     //: Probe for load.
     
@@ -47,7 +43,7 @@ namespace RavlImageN {
     virtual DPIPortBaseC CreateInput(const StringC &filename,const std::type_info &obj_type) const;
     //: Create a input port for loading from file 'filename'.
     // Will create an Invalid port if not supported. <p>
-  
+    
     virtual DPOPortBaseC CreateOutput(const StringC &filename,const std::type_info &obj_type) const;
     //: Create a output port for saving to file 'filename'..
     // Will create an Invalid port if not supported. <p>
@@ -73,19 +69,18 @@ namespace RavlImageN {
     // png supports sequences.. but not with this software for now...
     
   protected:
-    bool only16Bit; // 
   };
   
   /////////////////////////////
   //! userlevel=Advanced
-  //: Create an instance of a PNG File Format.
+  //: Create an instance of a TIFF File Format.
   
-  class FileFormatPNGC : public FileFormatC<ImageC<ByteT> > {
+  class FileFormatTIFFC : public FileFormatC<ImageC<ByteT> > {
   public:
-    FileFormatPNGC(bool nonly16Bit,const StringC &id,const StringC &desc)
-      : FileFormatC<ImageC<ByteT> >(*new FileFormatPNGBodyC(nonly16Bit,id,desc))
+    FileFormatTIFFC(const StringC &id,const StringC &desc)
+      : FileFormatC<ImageC<ByteT> >(*new FileFormatTIFFBodyC(id,desc))
       {}
   };
-
 }
+
 #endif

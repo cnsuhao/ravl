@@ -1,13 +1,12 @@
 // This file is part of RAVL, Recognition And Vision Library 
-// Copyright (C) 2001, University of Surrey
+// Copyright (C) 2001-12, University of Surrey
 // This code may be redistributed under the terms of the GNU Lesser
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 /////////////////////////////////////////////
-//! rcsid="$Id: exExtImgIO.cc 5240 2005-12-06 17:16:50Z plugger $"
 //! lib=RavlExtImgIO
-//! file="Ravl/Image/ExternalImageIO/exExtImgIO.cc"
+//! file="Ravl/Image/ExternalImageIO/Core/exExtImgIO.cc"
 //! docentry="Ravl.API.Images.IO.Formats"
 //! userlevel=Normal
 //! author="Charles Galambos"
@@ -21,6 +20,8 @@
 #include "Ravl/Array2dIter.hh"
 #include "Ravl/Image/ImageConv.hh"
 
+#define DODEBUG 0
+// No need to define ONDEBUG as that is declared in Ravl/DP/MemIO.hh
 
 using namespace RavlImageN;
 
@@ -33,27 +34,35 @@ int testImgMemIO(const StringC &formatName,bool isLossy) {
   }
 
   SArray1dC<char> buffer;
-  if(!MemSave(buffer,img,formatName,false)) {
-    std::cerr << "Failed to save image. \n";
+  if(!MemSave(buffer,img,formatName,DODEBUG)) {
+    std::cerr << "Failed to save " << formatName << " image. \n";
     return __LINE__;
   }
 
   ImageC<PixelT> img2;
-  if(!MemLoad(buffer,img2,formatName,false)) {
-    std::cerr << "Failed to load image. \n";
+  if(!MemLoad(buffer,img2,formatName,DODEBUG)) {
+    std::cerr << "Failed to load " << formatName << " image. \n";
     return __LINE__;
   }
 
   for(Array2dIter2C<PixelT,PixelT> it(img,img2);it;it++) {
     if(isLossy) {
       if(Abs((int) it.Data1() - (int) it.Data2()) > 8) {
-        Save("@X:in",img);
-        Save("@X:out",img2);
+        if ( DODEBUG )
+        {
+          Save("@X:in",img);
+          Save("@X:out",img2);
+        }
         std::cerr << "Images differ for format " << formatName << " v1:" << (int) it.Data1() << " v2:" << (int) it.Data2() << " @ " << it.Index() << " \n";
         return __LINE__;
       }
     } else {
       if(it.Data1() != it.Data2()) {
+        if ( DODEBUG )
+        {
+          Save("@X:in",img);
+          Save("@X:out",img2);
+        }
         std::cerr << "Images differ for format " << formatName << " v1:" << (int) it.Data1() << " v2:" << (int) it.Data2() << " @ " << it.Index() << " \n";
         return __LINE__;
       }
