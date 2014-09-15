@@ -43,16 +43,6 @@
   BSD platforms. 
 	- Current state of development, will be provided.
 
-+ A build of the single libraries (shared or static) currently requires a 
-  previous build of the corresponding version of the multiple libraries to
-  have been carried out first. In fact, the build of the single shared library
-  currently requires both the shared and the static individual libraries to
-  have been built first.
-	- In future, the build process should be optimised to obliviate the
-	  need for this. However, this is best carried out after a decision
-	  on the long-term direction over the use and provision of the
-	  multiple/individual/traditional Ravl libraries.
-
 + RavlRawVidIO library has been omitted from the single libraries
 
 	- Omitted owing to an issue made more apparent by the single library.
