@@ -596,7 +596,6 @@ ac_includes_default="\
 ac_subst_vars='LTLIBOBJS
 LIBOBJS
 RESOURCES
-ARC
 RavlZmqOptimisation
 SerialIO_SUPPORT
 RavlXMPP
@@ -32331,9 +32330,6 @@ echo >> ./Config.Project.in
 echo >> ./Config.Project.in
 echo \# Relevant Ravl build process flags >> ./Config.Project.in
 echo >> ./Config.Project.in
-echo \# Declare platform architecture >> ./Config.Project.in
-echo ARC=@ARC@ >> ./Config.Project.in
-echo >> ./Config.Project.in
 echo \# Flags for the C compiler >> ./Config.Project.in
 echo >> ./Config.Project.in
 echo \# User specified at configure time >> ./Config.Project.in
@@ -33178,65 +33174,6 @@ else
    trace 3 SGIVL is not supported on Linux
    SGIVL_SUPPORT=""
 fi
-
-# Map Platform/OS into Ravl ARCs
-case X$host_os in
-           Xarm )      ARC=arm
-                       # Unlikely to ever encounter this as an OS, most
-                       # likely to find arm as a linux cpu type (should
-                       # process that as a variation of linux). This is only
-                       # here as this is what we used to do
-                       ;;
-           Xcygwin )   ARC=cygwin
-                       # Support assumes an old i*86 platform.
-                       ;;
-           Xdarwin* )  case X`uname -m` in
-                        Xx86_64 )  ARC=macosx64
-                                   ;;
-                        Xi386 )    ARC=macosx32
-                                   ;;
-                        Xpowerpc ) ARC=macosxppc
-                                   ;;
-                       esac
-                       # The above is needed as host_os currently comes
-                       # back as i386 even for 64-bit installations of OSX.
-                       ;;
-           Xirix* )    ARC=sgi
-                       ;;
-           Xlinux* )   case X$host_cpu in
-                        Xi386* | Xi486* | Xi586* | Xi686* | Xi786* )
-                                   ARC=linux
-                                   ;;
-                        Xx86_64* ) ARC=linux64
-                                   ;;
-                        Xalpha* )  ARC=linux_alpha
-                                   # Will encompass more processors than the
-                                   # original config.arc accounted for but
-                                   # should not be an issue.
-                                   ;;
-                        * )        ARC=unknown
-                                   ;;
-                       esac
-                       ;;
-           Xosf* )     ARC=alpha
-                       ;;
-           Xsolaris* ) VER_STRING=`$EXPR X$host_os : 'Xsolaris2\.\([0-9]*\).*'`
-                       # config.guess returns solaris2.X regardless of if it is Solaris 2.5;
-                       #  Solaris 2.6, Solaris 7, Solaris 8, etc.
-                       if ( test X$VER_STRING= X )
-                       then
-                          # Just in case GNU change config.guess
-                          ARC=sol
-                       else
-                          ARC=sol2_$VER_STRING
-                       fi
-                       ;;
-           * )         ARC=unknown
-                       ;;
-           esac
-
-
-
 
 # Add, to Config.Project.in, the initialisation of the make variables used by
 # SingleLib.mk. These have been recorded in ExtPkgSupp.$$ as this script has

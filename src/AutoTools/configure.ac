@@ -1263,9 +1263,6 @@ echo >> ./Config.Project.in
 echo >> ./Config.Project.in
 echo \# Relevant Ravl build process flags >> ./Config.Project.in
 echo >> ./Config.Project.in
-echo \# Declare platform architecture >> ./Config.Project.in
-echo ARC=@ARC@ >> ./Config.Project.in
-echo >> ./Config.Project.in
 echo \# Flags for the C compiler >> ./Config.Project.in
 echo >> ./Config.Project.in
 echo \# User specified at configure time >> ./Config.Project.in
@@ -2123,10 +2120,6 @@ else
    trace 3 SGIVL is not supported on Linux
    SGIVL_SUPPORT=""
 fi
-
-# Map Platform/OS into Ravl ARCs
-QM_SET_ARC()
-AC_SUBST([ARC])
 
 # Add, to Config.Project.in, the initialisation of the make variables used by
 # SingleLib.mk. These have been recorded in ExtPkgSupp.$$ as this script has
