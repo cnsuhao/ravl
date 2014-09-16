@@ -46,6 +46,7 @@ m4_include([../../QMake/src/AutoTools/AcMacros/QM_SET_COMPILER_CFLAGS])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_SET_COMPILER_CCFLAGS])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_SET_LINKER_LDFLAGS])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_SET_MAKE_MAKEFLAGS])
+m4_include([../../QMake/src/AutoTools/AcMacros/QM_SET_SHAREDEXT])
 
 
 

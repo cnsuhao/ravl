@@ -598,6 +598,7 @@ LIBOBJS
 RESOURCES
 CONFIGURE_NVCCFLAGS
 QMAKE_PROJECT_DEST
+SHAREDEXT
 ARC
 SWIG
 EGREP
@@ -3163,6 +3164,16 @@ trace ()
 
 
 #     End of section inspired by LT_PATH_LD from libtool
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -31101,7 +31112,14 @@ RESOURCES="$RESOURCES PERL"
 
 
 # Process Architecture specific issues
+#
+# Set the QMake ARC type...
 case X$host_os in
+           Xaix* )     ARC=aix
+                       # Not fully tested, only added as a means to including
+                       # what we know about SHAREDEXT on this platform when
+                       # we were adding code to define that variable.
+                       ;;
            Xarm )      ARC=arm
                        # Unlikely to ever encounter this as an OS, most
                        # likely to find arm as a linux cpu type (should
@@ -31121,6 +31139,11 @@ case X$host_os in
                        esac
                        # The above is needed as host_os currently comes
                        # back as i386 even for 64-bit installations of OSX.
+                       ;;
+           Xhpux* )    ARC=hpux
+                       # Not fully tested, only added as a means to including
+                       # what we know about SHAREDEXT on this platform when
+                       # we were adding code to define that variable.
                        ;;
            Xirix* )    ARC=sgi
                        ;;
@@ -31158,6 +31181,26 @@ case X$host_os in
 
 
 
+#
+# Set the shared library extension. (In a perfect world this
+# would be set by AC_PROG_CC as OBJEXT and EXEEXT are. Sadly
+# we do not live there.)
+case "x$ARC" in #(
+  xaix) :
+    SHAREDEXT=a ;; #(
+  xhpux) :
+    SHAREDEXT=sl ;; #(
+  xmac*) :
+    SHAREDEXT=dylib ;; #(
+  *) :
+    SHAREDEXT=so
+                  ;;
+esac
+
+
+
+#
+# Enable processor specific functionality...`
 trace 3 Host OS is $host_os, CPU is $host_cpu
 case X$host_cpu in
    Xi386* | Xi486* | Xi586* | Xi686* )
@@ -31278,6 +31321,10 @@ echo \# Relevant QMake build process flags >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo \# Declare platform architecture >> ./Config.QMake.in
 echo ARC=@ARC@ >> ./Config.QMake.in
+echo >> ./Config.QMake.in
+echo \# File extension for shared libraries >> ./Config.QMake.in
+echo SHAREDEXT=@SHAREDEXT@ >> ./Config.QMake.in
+echo >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo \# Flags for the C compiler >> ./Config.QMake.in
 echo >> ./Config.QMake.in

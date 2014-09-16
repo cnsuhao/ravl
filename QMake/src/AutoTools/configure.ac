@@ -34,6 +34,7 @@ m4_include([./AcMacros/QM_SET_COMPILER_CFLAGS])
 m4_include([./AcMacros/QM_SET_COMPILER_CCFLAGS])
 m4_include([./AcMacros/QM_SET_LINKER_LDFLAGS])
 m4_include([./AcMacros/QM_SET_MAKE_MAKEFLAGS])
+m4_include([./AcMacros/QM_SET_SHAREDEXT])
 
 dnl#JFi:ToDo-Check for ver 5 of Perl as a requirement
 
@@ -116,8 +117,18 @@ RESOURCES="$RESOURCES PERL"
 
 
 # Process Architecture specific issues
+#
+# Set the QMake ARC type...
 QM_SET_ARC
 AC_SUBST([ARC])
+#
+# Set the shared library extension. (In a perfect world this
+# would be set by AC_PROG_CC as OBJEXT and EXEEXT are. Sadly
+# we do not live there.)
+QM_SET_SHAREDEXT
+AC_SUBST([SHAREDEXT])
+#
+# Enable processor specific functionality...`
 trace 3 Host OS is $host_os, CPU is $host_cpu
 case X$host_cpu in
    Xi386* | Xi486* | Xi586* | Xi686* )
@@ -241,6 +252,10 @@ echo \# Relevant QMake build process flags >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo \# Declare platform architecture >> ./Config.QMake.in
 echo ARC=@ARC@ >> ./Config.QMake.in
+echo >> ./Config.QMake.in
+echo \# File extension for shared libraries >> ./Config.QMake.in
+echo SHAREDEXT=@SHAREDEXT@ >> ./Config.QMake.in
+echo >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo \# Flags for the C compiler >> ./Config.QMake.in
 echo >> ./Config.QMake.in
