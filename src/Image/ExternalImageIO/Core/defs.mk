@@ -20,18 +20,28 @@ HEADERS = ExtImgIO.hh
 
 MUSTLINK =  ExtImgIO.cc
 
+# Check which resources that can be used by this library are available
+EXTIMGIO_RESOURCES = $(filter JPEG libPNG LibTIFF, $(RESOURCES))
+
 # Set what functionality the MUSTLINK module needs to initialise
-LOCAL_MUSTLINK_DEFS = $(patsubst LibTIFF,  -DMUSTLINK_TIFF , \
+EXTIMGIO_MUSTLINK_DEFS = $(patsubst LibTIFF,  -DMUSTLINK_TIFF , \
                           $(patsubst libPNG,  -DMUSTLINK_PNG ,\
                               $(patsubst JPEG, -DMUSTLINK_JPEG , \
-                                  $(filter JPEG libPNG LibTIFF, $(RESOURCES)))))
+                                  $(EXTIMGIO_RESOURCES))))
 
-CFLAGS += $(LOCAL_MUSTLINK_DEFS)
-CCFLAGS += $(LOCAL_MUSTLINK_DEFS)
+CFLAGS += $(EXTIMGIO_MUSTLINK_DEFS)
+CCFLAGS += $(EXTIMGIO_MUSTLINK_DEFS)
+
+# Set what external libraries we will be linking this library with
+# (The JPEG and PNG RESOURCE name do not match the name of the
+# USESLIBS setting, so we have to alter the name. TIFF shares
+# the same name between the two settings so needs no processing)
+EXTIMGIO_EXTERNALS = $(patsubst libPNG,  LibPNG, \
+                      $(patsubst JPEG, LibJPEG , $(EXTIMGIO_RESOURCES)))
+
+USESLIBS = RavlImage RavlIO RavlImageIO $(EXTIMGIO_EXTERNALS)
 
 EXAMPLES = exExtImgIO.cc exImgMemIO.cc
-
-USESLIBS = RavlImage RavlIO RavlImageIO LibJPEG LibPNG LibTIFF
 
 PROGLIBS = RavlDPDisplay.opt
 
