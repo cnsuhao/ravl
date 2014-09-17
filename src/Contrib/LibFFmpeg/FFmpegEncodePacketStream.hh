@@ -21,12 +21,12 @@
 #include "Ravl/Image/ByteRGBValue.hh"
 
 extern "C" {
-#if defined(LIBAVFORMAT_VERSION_MAJOR) && LIBAVFORMAT_VERSION_MAJOR >= 52
-#include <libavformat/avformat.h>
-#include <libavcodec/avcodec.h>
-#else 
+#if FFMPEG_OLD_HDR
 #include <avformat.h>
 #include <avcodec.h>
+#else 
+#include <libavformat/avformat.h>
+#include <libavcodec/avcodec.h>
 #endif
 }
 

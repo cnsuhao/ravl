@@ -6,7 +6,7 @@
 // file-header-ends-here
 #ifndef RAVL_FFMPEGPACKET_HEADEER
 #define RAVL_FFMPEGPACKET_HEADEER 1
-//! rcsid="$Id$"
+//! rcsid="$Id: FFmpegPacket.hh 7406 2009-12-07 16:57:04Z simondennis $"
 //! lib=RavlLibFFmpeg
 //! docentry = "Ravl.API.Images.Video.Video IO.LibFFmpeg"
 
@@ -20,12 +20,12 @@
 #include "Ravl/Stream.hh"
 //link ffmpeg as a purely c library since all c++ wrapper functions were removed
 extern "C" {
-#if defined(LIBAVFORMAT_VERSION_MAJOR) && LIBAVFORMAT_VERSION_MAJOR >= 52
-#include <libavcodec/avcodec.h>
-#include <libavformat/avformat.h>
-#else 
+#if FFMPEG_OLD_HDR
 #include <avcodec.h>
 #include <avformat.h>
+#else 
+#include <libavcodec/avcodec.h>
+#include <libavformat/avformat.h>
 #endif
 }
 

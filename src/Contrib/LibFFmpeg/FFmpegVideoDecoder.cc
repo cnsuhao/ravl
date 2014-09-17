@@ -4,7 +4,7 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-//! rcsid="$Id$"
+//! rcsid="$Id: FFmpegVideoDecoder.cc 7867 2010-10-22 15:27:16Z robowaz $"
 //! lib=RavlLibFFmpeg
 
 #ifndef __STDC_CONSTANT_MACROS
@@ -22,10 +22,10 @@
 
 #ifdef LIBAVFORMAT_USE_SWSCALER
 extern "C" {
-  #if defined(LIBAVFORMAT_VERSION_MAJOR) && LIBAVFORMAT_VERSION_MAJOR >= 52
-  #include <libswscale/swscale.h>
+  #if FFMPEG_OLD_HDR
+    #include <swscale.h>
   #else
-  #include <swscale.h>
+    #include <libswscale/swscale.h>
   #endif
 }
 #endif

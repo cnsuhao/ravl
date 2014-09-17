@@ -30,9 +30,9 @@
 
 #ifdef LIBAVFORMAT_USE_SWSCALER
 extern "C" {
-  #if defined(LIBAVFORMAT_VERSION_MAJOR) && LIBAVFORMAT_VERSION_MAJOR >= 52
-    // Rough point at which headers were moved. Unfortunately, this was
-    // originally carried out without a revision bump.
+  #if FFMPEG_OLD_HDR
+    #include <swscale.h>
+  #else
     #include <libswscale/swscale.h>
     #if  LIBAVFORMAT_VERSION_MAJOR > 52 && ( LIBAVFORMAT_VERSION_MAJOR > 53 || defined(LIBAVFORMAT_VERSION_MINOR) && LIBAVFORMAT_VERSION_MINOR >= 2)
       // Libav fork removemd mathematics.h from avutil.h between 53-2-0 and
@@ -41,8 +41,6 @@ extern "C" {
         #include <libavutil/mathematics.h>
       #endif
     #endif
-  #else
-    #include <swscale.h>
   #endif
 }
 #endif

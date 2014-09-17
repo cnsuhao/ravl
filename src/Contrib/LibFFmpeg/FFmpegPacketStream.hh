@@ -6,7 +6,7 @@
 // file-header-ends-here
 #ifndef RAVL_FFMPEG_AVFORMAT_HEADER 
 #define RAVL_FFMPEG_AVFORMAT_HEADER 
-//! rcsid="$Id$"
+//! rcsid="$Id: FFmpegPacketStream.hh 7052 2008-12-04 14:43:12Z ees1wc $"
 //! lib=RavlLibFFmpeg
 //! docentry = "Ravl.API.Images.Video.Video IO.LibFFmpeg"
 
@@ -19,10 +19,10 @@
 #include "Ravl/Image/FFmpegPacket.hh"
 
 extern "C" {
-#if defined(LIBAVFORMAT_VERSION_MAJOR) && LIBAVFORMAT_VERSION_MAJOR >= 52
-#include <libavformat/avformat.h>
-#else 
+#if FFMPEG_OLD_HDR
 #include <avformat.h>
+#else 
+#include <libavformat/avformat.h>
 #endif
 }
 
