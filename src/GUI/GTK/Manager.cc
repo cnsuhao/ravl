@@ -187,10 +187,12 @@ namespace RavlGUIN {
     ONDEBUG(std::cerr << "ManagerC::Init(), Called. \n");
     RavlAssert(!initCalled); // Init should only be called once.
 
-
+#if 0
+    // This function is depricated since GTK version 2.32 of glib
     if(!g_thread_supported ()) {
       //cerr << "Enable glib threads. \n";
       g_thread_init(0);
+#endif
 #if !(RAVL_USE_IDLEMETHOD && RAVL_OS_WIN32)
       // Disable thread support on windows as it seems
       // to cause hangs on most XP boxes
