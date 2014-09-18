@@ -192,13 +192,13 @@ namespace RavlGUIN {
     if(!g_thread_supported ()) {
       //cerr << "Enable glib threads. \n";
       g_thread_init(0);
-#endif
 #if !(RAVL_USE_IDLEMETHOD && RAVL_OS_WIN32)
       // Disable thread support on windows as it seems
       // to cause hangs on most XP boxes
       gdk_threads_init();
 #endif
     }
+#endif
     
 #if  RAVL_USE_GTKTHREADS
     // In theory no other threads should be running yet so the following
