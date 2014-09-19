@@ -536,6 +536,8 @@ dnl Now for those libraries needing manual compilation checks:
 dnl
 # GLUT not directly used by Ravl
 AC_SUBST([GLUT_SUPPORT])
+libmkl_RavlLib=RavlIntelMKL
+AC_SUBST([libmkl_SUPPORT])
 LibJasper_RavlLib=libRavlImgIOJasper
 AC_SUBST([LibJasper_SUPPORT])
 AC_SUBST([JPEG_SUPPORT])
@@ -562,8 +564,6 @@ dnl#
 dnl#      libClipStationPro_RavlLib=CSPDriver
 dnl#
 dnl#      LibGd_RavlLib=RavlImgGd
-dnl#
-dnl#      libmkl_RavlLib=RavlIntelMKL
 dnl#
 dnl#      libmcrypt_RavlLib=RavlCrypto
 dnl#
@@ -635,9 +635,6 @@ echo LibGd_SUPPORT=@LibGd_SUPPORT@ >> ./ExtPkgSupp.$$
 AC_SUBST([libGuppi_SUPPORT])
 libGuppi_SUPPORT=""
 echo libGuppi_SUPPORT=@libGuppi_SUPPORT@ >> ./ExtPkgSupp.$$
-AC_SUBST([libmkl_SUPPORT])
-libmkl_SUPPORT=""
-echo libmkl_SUPPORT=@libmkl_SUPPORT@ >> ./ExtPkgSupp.$$
 AC_SUBST([MacOSXRunLoop_SUPPORT])
 MacOSXRunLoop_SUPPORT=""
 echo MacOSXRunLoop_SUPPORT=@MacOSXRunLoop_SUPPORT@ >> ./ExtPkgSupp.$$

@@ -21,6 +21,8 @@ TESTEXES= testIntelFFT2d.cc testIntelMKL.cc
 
 PLIB=RavlIntelMKL
 
+SUMMARY_LIB=Ravl
+
 USESLIBS=IntelMKL RavlMath
 
 PROGLIBS=RavlOS

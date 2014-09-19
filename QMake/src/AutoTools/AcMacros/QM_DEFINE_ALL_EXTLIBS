@@ -182,6 +182,16 @@ AC_DEFUN([QM_DEFINE_ALL_EXTLIBS],
                               [GL/glut.h],
                               [C]
                              )
+          QM_DEFINE_EXTLIB_CC([libmkl],
+                              [DFTI_DESCRIPTOR_HANDLE * pHandle;
+                               MKL_LONG dimension, length;
+                               DftiCreateDescriptor(pHandle,DFTI_DOUBLE,DFTI_COMPLEX,dimension,length);
+                              ],
+                              [posixThreads Math DynLink],
+                              [-lmkl_rt],
+                              [mkl_dfti.h],
+                              [C]
+                             )
           QM_DEFINE_EXTLIB_CC([LibJasper],
                               [jas_init ();],
                               [],
@@ -568,8 +578,6 @@ dnl
           dnl#                 resource that goes with the DVS_SDK.def file.
           dnl#  ..._EXTLIB_xC([LibGd],       [],                 [],     [-lgd],       [])
           dnl#  ..._EXTLIB_xC([libmcrypt],   [],                 [],     [-lmcrypt],   [])
-          dnl#  ..._EXTLIB_xC([libmkl],      [],                 [posixThreads Math], [-lmkl_ia32 -lguide], [])
-          dnl#                 Existing .def file is IntelMKL.def       
           dnl#  ..._EXTLIB_xC([libmpeg2],    [],                 [],     [-lmpeg2],    [])
           dnl#                 Existing .def file is LibMPEG2.def       
           dnl#  ..._EXTLIB_xC([LibPython],   [],                 [],     [],           [])
