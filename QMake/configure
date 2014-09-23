@@ -3401,6 +3401,9 @@ case $host_os in *\ *) host_os=`echo "$host_os" | sed 's/ /-/g'`;; esac
 
 
 
+
+
+
           if ( test "x$AR" != x )
           then
              # User has supplied their own setting, record this
@@ -6473,6 +6476,10 @@ See \`config.log' for more details." "$LINENO" 5; }
 # Now record the correct switches for the individual tools in use
 trace 2 Set compiler specific CFLAGS
 
+
+
+
+
           if ( test x$GCC = xyes )
           then
              trace 3 We have a GNU C Compiler
@@ -6579,6 +6586,10 @@ trace 2 Set compiler specific CFLAGS
 
 
 trace 2 Set compiler specific CCFLAGS
+
+
+
+
 
           if ( test x$GXX = xyes )
           then

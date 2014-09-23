@@ -64,6 +64,17 @@ dnl
 AC_DEFUN([QM_SET_COMPILER_CFLAGS],
          [trace 2 Set compiler specific CFLAGS
           
+          dnl# First declare that this macro should never be called after
+          dnl# QM_PROCESS_EXTLIBS (for QMake project configure programs, this
+          dnl# macro need not be called (if the configure does not alter the
+          dnl# compiler settings) so the relationship is not an AC_REQUIRE in
+          dnl# QM_PROCESS_EXTLIBS).
+          AC_BEFORE([QM_SET_COMPILER_CFLAGS],[QM_PROCESS_EXTLIBS])
+
+          dnl# Additionally, this macro should never be called unless
+          dnl# QM_LOCATE_KEY_TOOLS has already been called.
+          AC_REQUIRE([QM_LOCATE_KEY_TOOLS])
+          
           if ( test x$GCC = xyes )
           then
              trace 3 We have a GNU C Compiler

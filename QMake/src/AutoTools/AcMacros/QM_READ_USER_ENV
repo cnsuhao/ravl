@@ -71,7 +71,7 @@ AC_DEFUN([QM_READ_USER_ENV],
           dnl# to execution of this one.
           dnl#
           AC_BEFORE([QM_READ_USER_ENV, QM_LOCATE_KEY_TOOLS])
-          dnl# Macros called from QM_LOCATE_KEY_TOOLS that are also postrequisites
+          dnl# Macros called from QM_LOCATE_KEY_TOOLS that are thus postrequisites
                     AC_BEFORE([QM_READ_USER_ENV, PKG_PROG_PKG_CONFIG])
                     AC_BEFORE([QM_READ_USER_ENV, AC_PROG_SED])
                     AC_BEFORE([QM_READ_USER_ENV, AC_PROG_AWK])
@@ -82,8 +82,13 @@ AC_DEFUN([QM_READ_USER_ENV],
                     AC_BEFORE([QM_READ_USER_ENV, AC_PROG_GREP])
                     AC_BEFORE([QM_READ_USER_ENV, QM_LOCATE_LD])
                     AC_BEFORE([QM_READ_USER_ENV, QM_LOCATE_MAKE])
+          dnl# Macros that are postrequisites of QM_LOCATE_KEY_TOOLS
+                    AC_BEFORE([QM_READ_USER_ENV, QM_SET_COMPILER_CCFLAGS])
+                    AC_BEFORE([QM_READ_USER_ENV, QM_SET_COMPILER_CFLAGS])
+                    dnl# And the postrequisite of both of these macros
+                              AC_BEFORE([QM_READ_USER_ENV, QM_PROCESS_EXTLIBS])
           AC_BEFORE([QM_READ_USER_ENV, QM_LOCATE_QMAKE_DEPS])
-          dnl# Macros called from QM_LOCATE_QMAKE_DEPS that are also postrequisites
+          dnl# Macros called from QM_LOCATE_QMAKE_DEPS that are thus postrequisites
                     AC_BEFORE([QM_READ_USER_ENV, AC_PROG_INSTALL])
                     AC_BEFORE([QM_READ_USER_ENV, AC_PROG_LEX])
                     AC_BEFORE([QM_READ_USER_ENV, AC_PROG_MKDIR_P])
