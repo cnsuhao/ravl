@@ -58,6 +58,9 @@ dnl                                  the inclusion of the debug function
 dnl                                  "trace" in any code calling this macro.
 dnl                                  A suitable trace function is defined in
 dnl                                  the QMake AcMacros/QM_Debug_fn file.
+dnl       GXX                        Variable indicates if our C++ compile is
+dnl                                  the GNU one (Cuda support requires the
+dnl                                  GNU compiler).
 dnl       LibsToProcess              List of the external libs that need
 dnl                                  processing. For QMake; this will be all
 dnl                                  the declared libs ($KnownLibs). For a
