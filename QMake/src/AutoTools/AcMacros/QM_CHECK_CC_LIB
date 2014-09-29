@@ -1,5 +1,5 @@
 dnl This file is part of QMake, Quick Make System
-dnl Copyright (C) 2011-3, University of Surrey
+dnl Copyright (C) 2011-14, University of Surrey
 dnl This code may be redistributed under the terms of the GNU General
 dnl Public License (GPL). See the gpl.licence file for details or
 dnl see http://www.gnu.org/copyleft/gpl.html
@@ -150,7 +150,11 @@ AC_DEFUN([QM_CHECK_CC_LIB],
           preserve_CPPFLAGS=$CPPFLAGS
           preserve_LIBS=$LIBS
           CPPFLAGS=$LIB_CPPFLAGS
-          AC_MSG_NOTICE([checking for external package $1...])
+          AC_MSG_CHECKING([for external package $1])
+          AC_MSG_RESULT([])
+          dnl# We use AC_MSG_CHECKING as AC_MSG_NOTICE prefixes a configure:
+          dnl# to the output. We then use AC_MSG_RESULT with an empty string
+          dnl# to force output of a newline
           eval hdr_lst="\$with_${fix_expan}_hdr"
           preamble=""
           found=true

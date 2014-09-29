@@ -31542,9 +31542,11 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
           preserve_CPPFLAGS=$CPPFLAGS
           preserve_LIBS=$LIBS
           CPPFLAGS=$LIB_CPPFLAGS
-          { $as_echo "$as_me:${as_lineno-$LINENO}: checking for external package $lib..." >&5
-$as_echo "$as_me: checking for external package $lib..." >&6;}
-          eval hdr_lst="\$with_${fix_expan}_hdr"
+          { $as_echo "$as_me:${as_lineno-$LINENO}: checking for external package $lib" >&5
+$as_echo_n "checking for external package $lib... " >&6; }
+          { $as_echo "$as_me:${as_lineno-$LINENO}: result: " >&5
+$as_echo "" >&6; }
+                                        eval hdr_lst="\$with_${fix_expan}_hdr"
           preamble=""
           found=true
           if ( test X"$hdr_lst" != X )
@@ -31706,9 +31708,11 @@ ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
           preserve_CPPFLAGS=$CPPFLAGS
           preserve_LIBS=$LIBS
           CPPFLAGS=$LIB_CPPFLAGS
-          { $as_echo "$as_me:${as_lineno-$LINENO}: checking for external package $lib..." >&5
-$as_echo "$as_me: checking for external package $lib..." >&6;}
-          eval hdr_lst="\$with_${fix_expan}_hdr"
+          { $as_echo "$as_me:${as_lineno-$LINENO}: checking for external package $lib" >&5
+$as_echo_n "checking for external package $lib... " >&6; }
+          { $as_echo "$as_me:${as_lineno-$LINENO}: result: " >&5
+$as_echo "" >&6; }
+                                        eval hdr_lst="\$with_${fix_expan}_hdr"
           preamble=""
           found=true
           if ( test X"$hdr_lst" != X )
