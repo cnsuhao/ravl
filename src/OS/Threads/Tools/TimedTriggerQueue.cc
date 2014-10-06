@@ -37,7 +37,7 @@
 namespace RavlN
 {
 
-  //: Default constuctor
+  //: Default constructor
   
   TimedTriggerQueueBodyC::TimedTriggerQueueBodyC(bool launchProcessThread)
     : m_started(true),
