@@ -312,7 +312,9 @@ namespace RavlN {
         }
         ret = zmq_bind (m_socket, newAddr.c_str());
         if(ret != 0 && errno == EADDRINUSE) {
-          RavlDebug("Address '%s' in use, trying the next.", newAddr.data());
+          if(m_verbose) {
+            RavlDebug("Address '%s' in use, trying the next.", newAddr.data());
+          }
           continue;
         } else {
           addr = newAddr.c_str();
