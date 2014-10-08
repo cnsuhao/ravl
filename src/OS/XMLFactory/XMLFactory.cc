@@ -393,7 +393,7 @@ namespace RavlN {;
         newName = name + '-' + StringC(count++);
       } while(m_children.IsElm(newName)) ;
       
-      RavlWarning("Child of name '%s' already exists in '%s', using name '%s' instead ",name.chars(),Path().chars(),newName.chars());
+      ONDEBUG(RavlWarning("Child of name '%s' already exists in '%s', using name '%s' instead ",name.chars(),Path().chars(),newName.chars()));
     }
     m_children[newName] = &child; 
     child.m_parent = this;
