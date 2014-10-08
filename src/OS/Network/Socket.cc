@@ -319,7 +319,9 @@ namespace RavlN {
 	  return SocketC(cn_addr,nfd); // Socket accepted ok.
 	// Recoverable error ?
       } while(errno == EAGAIN || errno == EINTR) ;
-      RavlSysLog(SYSLOG_ERR) << "ERROR: Failed to accept connection. errno=" << errno << " "; ;
+      char errStrBuff[256];
+      strerror_r(errno,errStrBuff,256);
+      RavlError("ERROR: Failed to accept connection. errno=%d  %s ",errno,errStrBuff);
       delete [] (char *) cn_addr;
     } while(block);
     return SocketC();
