@@ -122,6 +122,10 @@ namespace RavlN {
     // i.e. check if you can read/write more than object object.
     // (Default value of this function is true).
     
+    virtual StringC TypenameAlias() const;
+    //: Alias for typename of default type.
+    // Returns empty string if not set.
+
     static bool ReadString(IStreamC &is,StringC &buff,UIntT maxLen = 256);
     //: read a string form the input.
     // returns false if the stream contains non text charters or is longer
@@ -248,7 +252,12 @@ namespace RavlN {
     inline bool IsStream() const;
     //: Test if format is a fully streamable.
     // i.e. check if you can read/write more than object object.
-    
+
+    StringC TypenameAlias() const
+    { return Body().TypenameAlias(); }
+    //: Alias for typename of default type.
+    // Returns empty string if not set.
+
   protected:
     FileFormatBaseC(FileFormatBodyC &bod) 
       : DPEntityC(bod)

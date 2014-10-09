@@ -134,7 +134,12 @@ namespace RavlN {
   bool FileFormatBodyC::IsStream() const
   { return true; }
   
+  //: Alias for typename of default type.
+  // Returns empty string if not set.
   
+  StringC FileFormatBodyC::TypenameAlias() const
+  { return StringC(); }
+
   //: read a string from the input.
   
   bool FileFormatBodyC::ReadString(IStreamC &s,StringC &buff,UIntT maxLen) {

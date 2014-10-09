@@ -187,8 +187,8 @@ namespace RavlN {
             throw ExceptionOperationFailedC("Bad file id. ");
         }
         in >> classname >> version;  // Read class name & version
-        if(classname != TypeName(typeid(DataT))) {
-          cerr << "DPIBinFileC ERROR: Bad file type. " << classname << " Expected:" << TypeName(typeid(DataT)) << " \n";
+        if(classname != TypeName(typeid(DataT)) && (classname != m_typenameAlias || m_typenameAlias.IsEmpty())) {
+          cerr << "DPIBinFileC ERROR: Bad file type. '" << classname << "' Expected: '" << TypeName(typeid(DataT)) << "' \n";
           throw ExceptionOperationFailedC("File type mismatch. ");
         }
       }
@@ -202,10 +202,11 @@ namespace RavlN {
     //: Default constructor.
 
 
-    DPIBinFileBodyC(const StringC &nfname,bool useHeader = false)
+    DPIBinFileBodyC(const StringC &nfname,bool useHeader = false,const StringC &typenameAlias = StringC())
       : in(nfname),
 	version(0),
-	off(0)
+	off(0),
+        m_typenameAlias(typenameAlias)
     {
       if(useHeader)
         ReadHeader();
@@ -213,10 +214,11 @@ namespace RavlN {
     }
     //: Construct from a filename.
 
-    inline DPIBinFileBodyC(BinIStreamC &strmin,bool useHeader = false)
+    inline DPIBinFileBodyC(BinIStreamC &strmin,bool useHeader = false,const StringC &typenameAlias = StringC())
       : in(strmin),
         version(0),
-	off(0)
+	off(0),
+	m_typenameAlias(typenameAlias)
     {
       if(useHeader)
         ReadHeader();
@@ -288,6 +290,7 @@ namespace RavlN {
     UInt32T version;
     UIntT off;
     streampos dataStart;
+    StringC m_typenameAlias;
   };
 
   ///////////////////////////////
@@ -329,13 +332,13 @@ namespace RavlN {
     inline DPIBinFileC() {}
     //: Default constructor.
 
-    inline DPIBinFileC(BinIStreamC &strm,bool useHeader=false)
-      : DPEntityC(*new DPIBinFileBodyC<DataT>(strm,useHeader))
+    inline DPIBinFileC(BinIStreamC &strm,bool useHeader=false,const StringC &typenameAlias = StringC())
+      : DPEntityC(*new DPIBinFileBodyC<DataT>(strm,useHeader,typenameAlias))
     {}
     //: Stream constructor.
 
-    inline DPIBinFileC(const StringC &afname,bool useHeader=false)
-      : DPEntityC(*new DPIBinFileBodyC<DataT>(afname,useHeader))
+    inline DPIBinFileC(const StringC &afname,bool useHeader=false,const StringC &typenameAlias = StringC())
+      : DPEntityC(*new DPIBinFileBodyC<DataT>(afname,useHeader,typenameAlias))
     {}
     //: Filename constructor.
   };
