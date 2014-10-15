@@ -25,7 +25,7 @@ EXTERNALLIBS= LibDV.def
 
 USESLIBS=system RavlCore RavlImage RavlIO RavlOS RavlOSIO LibDV  RavlVideoIO RavlAV
 
-PROGLIBS= RavlDPDisplay.opt RavlDPDisplay RavlDevAudio
+PROGLIBS= RavlDPDisplay.opt RavlDevAudio
 
 MUSTLINK = RAVLVidIDV.cc
 
