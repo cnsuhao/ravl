@@ -1,11 +1,9 @@
 # This file is part of CxxDoc, The RAVL C++ Documentation tool 
-# Copyright (C) 2001-12, University of Surrey
+# Copyright (C) 2001-14, University of Surrey
 # This code may be redistributed under the terms of the GNU General 
 # Public License (GPL). See the gpl.licence file for details or
 # see http://www.gnu.org/copyleft/gpl.html
 # file-header-ends-here
-#! rcsid="$Id$"
-#! file="Ravl/SourceTools/CxxDoc/defs.mk"
 
 DONOT_SUPPORT=VCPP
 
@@ -30,7 +28,8 @@ PACKAGE= Ravl/CxxDoc
 
 NESTED = Templates.r
 
-LOCALHEADERS= tokenizer.h FlexLexer.h
+LOCALHEADERS= tokenizer.h FlexLexer.h cxx.tab.h
+
 
 HEADERS= Object.hh Document.hh Parser.hh CxxElements.hh \
  CxxScope.hh DocNode.hh DocTree.hh Strings.hh Executables.hh
