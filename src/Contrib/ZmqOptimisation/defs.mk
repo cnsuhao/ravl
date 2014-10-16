@@ -15,7 +15,7 @@ PLIB= RavlZmqOptimisation
 
 USESLIBS= RavlXMLFactory RavlZmq RavlService RavlRLog RavlGeneticOptimisation 
 
-PROGLIBS= RavlIO RavlDPMT RavlOSIO RavlDPDisplay RavlExtImgIO RavlPatternRec
+PROGLIBS= RavlIO RavlDPMT RavlOSIO RavlDPDisplay.opt RavlExtImgIO RavlPatternRec
 
 EXTERNALLIBS =
 

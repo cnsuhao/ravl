@@ -1,5 +1,5 @@
 # This file is part of RAVL, Recognition And Vision Library
-# Copyright (C) 2008, OmniPerception Ltd.
+# Copyright (C) 2008-14, OmniPerception Ltd.
 # This code may be redistributed under the terms of the GNU Lesser
 # General Public License (LGPL). See the lgpl.licence file for details or
 # see http://www.gnu.org/copyleft/lesser.html
@@ -19,10 +19,15 @@ PLIB = RavlPython
 
 USESLIBS = RavlOS RavlCore RavlThreads Python 
 
-PROGLIBS = RavlGUI
+EXAMPLES = exPython.cc exPythonThreaded.cc exPythonMultipleInterpreters.cc
+
+ifeq (libGTK2,$(filter libGTK2,$(RESOURCES)))
+  # This example requires RavlGUI which depends on libGTK2
+  # hence we only build it if we have the GTK libraries
+  PROGLIBS = RavlGUI
+  EXAMPLES += exPyGTK.cc
+endif
 
 TESTEXES =
-
-EXAMPLES = exPython.cc exPythonThreaded.cc exPythonMultipleInterpreters.cc exPyGTK.cc
 
 EXTERNALLIBS = Python.def

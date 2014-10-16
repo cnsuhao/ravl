@@ -1,11 +1,11 @@
 # This file is part of RAVL, Recognition And Vision Library 
-# Copyright (C) 2001, University of Surrey
+# Copyright (C) 2001-14, University of Surrey
 # This code may be redistributed under the terms of the GNU Lesser
 # General Public License (LGPL). See the lgpl.licence file for details or
 # see http://www.gnu.org/copyleft/lesser.html
 # file-header-ends-here
-#! rcsid="$Id$"
-#! file="Ravl/GUI/GTK/defs.mk"
+
+REQUIRES = libGTK2
 
 #ifeq ($(ARC),sol2)
 ifneq ($(filter $(ARC), sol2_7 sol2_9),)
@@ -58,8 +58,8 @@ EXAMPLES = exButton.cc exMenu.cc exCList.cc exList.cc \
  exSlider.cc exRadioButton.cc exRuler.cc exWheel.cc \
  exNotebook.cc exCursor.cc exFixed.cc exTree.cc exTextBox.cc exTextView.cc \
  exMessageBox.cc exStyle.cc exLBox.cc exFrame.cc exScrolledArea.cc \
- exLabel.cc exTreeStore.cc exFileSelector.cc exFileChooser.cc exCombo.cc exGUIThread.cc \
- exKeyboard.cc exPixmap.cc exPixbuf.cc \
+ exLabel.cc exTreeStore.cc exFileSelector.cc exFileChooser.cc exCombo.cc \
+ exGUIThread.cc exKeyboard.cc exPixmap.cc exPixbuf.cc \
  exComboBox.cc exComboBoxEntry.cc exComboBoxText.cc exComboBoxEntryText.cc
 
 #  exGUI.cc exCanvas.cc   exGraph1d.cc \
@@ -72,8 +72,10 @@ USESLIBS = RavlCore RavlIO RavlOS GTK RavlThreads system RavlXMLFactory
 
 PROGLIBS = RavlImageIO RavlExtImgIO 
 
-EHT = Ravl.API.GUI.Control.eht  Ravl.API.GUI.Layout.eht  Ravl.API.GUI.eht  Ravl.API.GUI.Internal.eht
+EHT = Ravl.API.GUI.Control.eht  Ravl.API.GUI.Layout.eht  Ravl.API.GUI.eht  \
+ Ravl.API.GUI.Internal.eht
 #libRavlGUI.eht
 
-HTML = tutorial.html spinbutton.png check-button.png radio-group.png toggle-button.png combo-box.png
+HTML = tutorial.html spinbutton.png check-button.png radio-group.png \
+ toggle-button.png combo-box.png
 

@@ -1,11 +1,9 @@
 # This file is part of RAVL, Recognition And Vision Library 
-# Copyright (C) 2003, University of Surrey
+# Copyright (C) 2003-14, University of Surrey
 # This code may be redistributed under the terms of the GNU
 # General Public License (GPL). See the gpl.licence file for details or
 # see http://www.gnu.org/copyleft/gpl.html
 # file-header-ends-here
-#! rcsid="$Id$"
-#! file="Ravl/Contrib/MPEG/LibMPEG2/defs.mk"
 
 REQUIRES = libmpeg2
 
@@ -23,7 +21,7 @@ MUSTLINK = MustLinkLibMPEG2.cc
 
 USESLIBS = RavlImage RavlIO LibMPEG2 
 
-PROGLIBS = RavlGUI RavlDPDisplay
+PROGLIBS = RavlGUI.opt RavlDPDisplay.opt
 
 EXAMPLES = exMPEG2.cc exMPEG2Seek.cc
 

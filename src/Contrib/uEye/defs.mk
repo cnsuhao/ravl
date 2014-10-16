@@ -1,5 +1,5 @@
 # This file is part of RAVL, Recognition And Vision Library 
-# Copyright (C) 2008, OmniPerception Ltd.
+# Copyright (C) 2008-14, OmniPerception Ltd.
 # This code may be redistributed under the terms of the MIT
 # License. See http://www.opensource.org/licenses/mit-license.html
 # file-header-ends-here
@@ -19,7 +19,5 @@ PLIB= RavlImgIOuEye
 USESLIBS=RavlImageIO RavlThreads uEye RavlOS 
 
 MUSTLINK=linkRavlImgIOuEye.cc
-
-PROGLIBS=RavlDPDisplay
 
 EXTERNALLIBS = uEye.def
