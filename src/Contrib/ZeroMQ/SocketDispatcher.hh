@@ -31,7 +31,10 @@ namespace RavlN {
       SocketDispatcherC(const XMLFactoryContextC &factory);
 
       //! Handle event.
-      virtual void Dispatch();
+      bool CheckDispatch(int events);
+
+      //! Handle event.
+      virtual void Dispatch(int events);
 
       //! Stop handling of events.
       virtual void Stop();
@@ -39,6 +42,9 @@ namespace RavlN {
       //! Setup poll item,
       // Return false if socket should be ignored.
       virtual bool SetupPoll(zmq_pollitem_t &pollItem);
+
+      //! Is ready
+      virtual bool IsActive() const;
 
       //! Pointer to class
       typedef SmartPtrC<SocketDispatcherC> RefT;

@@ -12,16 +12,26 @@
 #include "Ravl/OS/SysLog.hh"
 #include "Ravl/Exception.hh"
 #include "Ravl/XMLFactoryRegister.hh"
+
 #if RAVL_OS_LINUX || RAVL_OS_LINUX64 || RAVL_OS_MACOSX
 #include <unistd.h>
 #endif
 #include <string.h>
+
 #if RAVL_OS_MACOSX
 // FIXME: There is probably a define I can use to get this from the header, but I haven't worked out which one yet...
 extern "C" {
   int  gethostname(char *, size_t);
 }
 #endif
+
+#define DODEBUG 0
+#if DODEBUG
+#define ONDEBUG(x) x
+#else
+#define ONDEBUG(x)
+#endif
+
 namespace RavlN {
   namespace ZmqN {
 
@@ -288,6 +298,8 @@ namespace RavlN {
     //! Bind to an address
     void SocketC::Bind(const std::string &addr)
     {
+      if(m_name.IsEmpty())
+        m_name = StringC("Bind:") + addr.c_str();
       RavlAssert(m_socket != 0);
       int ret;
       if((ret = zmq_bind (m_socket, addr.c_str())) != 0) {
@@ -335,6 +347,8 @@ namespace RavlN {
     //! Connect to an address.
     void SocketC::Connect(const std::string &addr)
     {
+      if(m_name.IsEmpty())
+        m_name = StringC("Connect:") +addr.c_str();
       RavlAssert(m_socket != 0);
       int ret;
       if((ret = zmq_connect(m_socket, addr.c_str())) != 0) {

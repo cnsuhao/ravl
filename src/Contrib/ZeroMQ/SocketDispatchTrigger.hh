@@ -30,10 +30,13 @@ namespace RavlN {
       SocketDispatchTriggerC(const XMLFactoryContextC &factory);
 
       //! Handle event.
-      virtual void Dispatch();
+      virtual void Dispatch(int events);
 
       //! Stop handling of events.
       virtual void Stop();
+
+      //! Is ready
+      virtual bool IsActive() const;
 
       //! Pointer to class
       typedef SmartPtrC<SocketDispatchTriggerC> RefT;

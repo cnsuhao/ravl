@@ -34,16 +34,25 @@ namespace RavlN {
     }
 
     //! Handle event.
-    void SocketDispatchTriggerC::Dispatch()
+    void SocketDispatchTriggerC::Dispatch(int events)
     {
-      if(m_trigger.IsValid())
-        m_trigger();
+      if(!m_trigger.IsValid()) {
+        RavlDebug("No trigger!");
+      }
+      m_trigger();
     }
 
     //! Stop handling of events.
     void SocketDispatchTriggerC::Stop() {
       m_trigger.Invalidate();
     }
+
+    //! Is ready
+    bool SocketDispatchTriggerC::IsActive() const
+    {
+      return m_trigger.IsValid();
+    }
+
 
   }
 }

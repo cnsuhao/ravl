@@ -9,6 +9,13 @@
 #include "Ravl/Zmq/SocketDispatcher.hh"
 #include "Ravl/XMLFactoryRegister.hh"
 
+#define DODEBUG 0
+#if DODEBUG
+#define ONDEBUG(x) x
+#else
+#define ONDEBUG(x)
+#endif
+
 namespace RavlN {
   namespace ZmqN {
 
@@ -43,7 +50,36 @@ namespace RavlN {
     }
 
     //! Handle event.
-    void SocketDispatcherC::Dispatch()
+    bool SocketDispatcherC::CheckDispatch(int events)
+    {
+      if(!IsActive())
+        return false;
+#if DODEBUG
+      if((events & ZMQ_POLLERR) != 0 && !m_onError)
+      {
+        RavlWarning("Unexpected error. ");
+      }
+      if((events & ZMQ_POLLOUT) != 0 && !m_onWriteReady)
+      {
+        RavlWarning("Unexpected write. ");
+      }
+      if((events & ZMQ_POLLIN) != 0 && !m_onReadReady)
+      {
+        RavlWarning("Unexpected read. ");
+      }
+#endif
+      Dispatch(events);
+#if DODEBUG
+      return ((events & ZMQ_POLLERR) != 0 && m_onError) ||
+          ((events & ZMQ_POLLOUT) != 0 && m_onWriteReady) ||
+          ((events & ZMQ_POLLIN) != 0 && m_onReadReady);
+#else
+      return true;
+#endif
+    }
+
+    //! Handle event.
+    void SocketDispatcherC::Dispatch(int events)
     {
       RavlAssertMsg(0,"Abstract method called.");
     }
@@ -58,6 +94,8 @@ namespace RavlN {
 
     bool SocketDispatcherC::SetupPoll(zmq_pollitem_t &pollItem)
     {
+      if(!IsActive())
+        return false;
       RavlAssert(m_socket.IsValid() || m_fd >= 0);
       if(m_socket.IsValid()) {
         pollItem.socket = m_socket->RawSocket();
@@ -79,6 +117,9 @@ namespace RavlN {
       return m_onReadReady || m_onWriteReady || m_onError;
     }
 
+    //! Is ready
+    bool SocketDispatcherC::IsActive() const
+    { return true; }
 
     // -------------------------------------------------------------------
 
