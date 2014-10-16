@@ -20,7 +20,7 @@ SOURCES = ViewPage.cc ControlWin.cc
 
 PLIB = MarkupTool
 
-USESLIBS = RavlGUI RavlFace RavlGUI2D GTK
+USESLIBS = RavlGUI RavlFace RavlGUI2D RavlRLog GTK
 
-PROGLIBS = RavlExtImgIO RavlImgIOJasper.opt RLog
+PROGLIBS = RavlExtImgIO RavlImgIOJasper.opt
 
