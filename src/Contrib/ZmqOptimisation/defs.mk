@@ -1,7 +1,9 @@
 
 DONOT_SUPPORT=VCPP
 
-REQUIRES=ZeroMQ
+REQUIRES=ZeroMQ RLog
+# Requirement for RLog stems from the use of RavlRLog rather than
+# from a direct requirement.
 
 PACKAGE= Ravl/Zmq
 

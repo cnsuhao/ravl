@@ -10,9 +10,10 @@ PACKAGE=Ravl/OpenSceneGraph
 
 LICENSE=LGPL
 
-REQUIRES=OpenSceneGraph OpenSceneGraphGTK libGL GTKGLExt libGTK2
+REQUIRES=OpenSceneGraph OpenSceneGraphGTK libGL GTKGLExt RLog libGTK2
 # NOTE: Do NOT comment out the GTKGLExt, if its not enabled though it may 
 # compile this library will not work.
+# Requirement for RLog is from needing RavlRLog not a direct requirement.
 # The requirement for libGTK2 is a threefold requirement; from direct
 # usage; from the use of RavlGUI and implicit from the need for GTKGLExt.
 
