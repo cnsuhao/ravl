@@ -38,6 +38,7 @@ namespace RavlN {
     {
       if(!m_trigger.IsValid()) {
         RavlDebug("No trigger!");
+        return ;
       }
       m_trigger();
     }
