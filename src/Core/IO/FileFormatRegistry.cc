@@ -349,13 +349,11 @@ namespace RavlN {
       }
       return false;
     }
-    if(verbose ONDEBUG(|| 1))
-      cerr << "Loading object '" << TypeName(obj_type) << "' in format '" << bestFormat.Name() << "' from file '" << filename << "' Steps:" << bestConverterList.Size()<< "\n";
-    
-#if DODEBUG
-    for(DLIterC<DPConverterBaseC> it(bestConverterList);it.IsElm();it.Next())
-      cerr << "Conv:" <<TypeName(it.Data().ArgType(0)) << " -> " << TypeName(it.Data().Output()) << endl;
-#endif
+    if(verbose ONDEBUG(|| 1)) {
+      std::cerr << "Loading object '" << TypeName(obj_type) << "' in format '" << bestFormat.Name() << "' from file '" << filename << "' Steps:" << bestConverterList.Size()<< "\n";
+      for(DLIterC<DPConverterBaseC> it(bestConverterList);it.IsElm();it.Next())
+        std::cerr << " Via:" <<TypeName(it.Data().ArgType(0)) << " -> " << TypeName(it.Data().Output()) << std::endl;
+    }
     fmtInfo = FileFormatDescC(bestFormat,bestConverterList,*bestFormatType,true);
     return true;
   }
@@ -466,7 +464,7 @@ namespace RavlN {
           TypeName(obj_type),minForm.Name().c_str(),TypeName(*bestout),filename.c_str(),(int) bestConv.Size().V(),bestPri,minCost);
       for(RavlN::DLIterC<DPConverterBaseC> it(bestConv);it.IsElm();it++) {
         if(!it.IsLast())
-          RavlDebug(" Via %s ",RavlN::TypeName(it->Output()));
+          RavlInfo(" Via %s ",RavlN::TypeName(it->Output()));
       }
     }
     
