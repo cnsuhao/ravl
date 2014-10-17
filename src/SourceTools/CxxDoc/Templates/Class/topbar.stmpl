@@ -9,6 +9,7 @@ $(//: *********************** Title ***************************** )
 
 $(//: *********************** option bar ***************************** )
 $(ifset:!toroot:$(set:toroot=../..))
+$(ifset:!thispagemode:$(set:thispagemode=Basic))
 <table width=100% bgcolor="#C0C0C0"><tr>
 <td width=25% align="middle" border=2><font size="-1" face="helvetica,arial">
 $(ifset:othpagemode:<a href="$(othref:)"><B>$(uppercase:$(othpagemode))</B></a>)
@@ -16,7 +17,7 @@ $(else:<a href="$(othlink)"><B>$(uppercase:$(othname))</B></a>)</font></td>
 <td width=25% align="middle"><font size="-1" face="helvetica,arial">
 <a href="$(toroot)/Basic/Tree/Ravl.html"><B>HOME PAGE</B></a></font></td>
 <td width=25% align="middle"><font size="-1" face="helvetica,arial">
-<a href="$(toroot)/Basic/index.html"><B>CLASS LIST</B></a></font></td>
+<a href="$(toroot)/$(thispagemode)/index.html"><B>CLASS LIST</B></a></font></td>
 <td width=25% align="middle"><font size="-1" face="helvetica,arial">
 <a href="$(toroot)/sitemap.html"><B>CONTENTS</B></a></font></td>
 </tr></table>

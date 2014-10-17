@@ -3,6 +3,11 @@ $(FileObject:one)$(FilePattern:Develop/index.html)
 <body BGCOLOR=#FFFFFF>
 
 $(set:toroot=..)
+$(set:hdrcolour=#00DF5F)
+$(set:pagemode=develop)
+$(set:othpagemode=user)
+$(set:thispagemode=Develop)
+$(define:othref:$(MakeFilename:../Basic/index.html))
 $(include:topbar.stmpl)
 
 &nbsp;<p>
