@@ -1,12 +1,10 @@
 // This file is part of RAVL, Recognition And Vision Library 
-// Copyright (C) 2001, University of Surrey
+// Copyright (C) 2001-14, University of Surrey
 // This code may be redistributed under the terms of the GNU Lesser
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 ///////////////////////////////////////////////////////////
-//! rcsid="$Id$"
-//! file="Ravl/Applications/VGrab/VGrab.cc"
 //! docentry="Ravl.Applications.Video"
 //! author="Lee Gregory"
 //! userlevel=Normal
@@ -46,7 +44,7 @@ using namespace RavlImageN ;
 // Nasty global variables ; 
   IntT  delay ; 
   bool showTC ;       
-  bool verbose ; 
+  bool BeVerbose ; 
   StringC start ;    
   StringC end ; 
   FilenameC outFile ; 
@@ -74,15 +72,15 @@ int VGrab(int argc, char ** argv)
   opts = OptionC (argc,argv) ; 
   StringC usage = "This program captures video from grabber cards. The grabber device can be specified using RAVL virtual files and defaults to the ClipStationPro driver. \n Output formats are determined by the extension specified, 4cif is the defalut." ; 
   opts.Comment(usage) ;
-  delay       = opts.Int     ("delay", 0  ,               "The delay in seconds " ) ; 
-  showTC       = opts.Boolean ("g",     false,             "Get current timecode " ) ; 
-  verbose      = opts.Boolean ("v",     false,             "Be verbose ? " ) ; 
+  delay     = opts.Int     ("delay", 0  ,               "The delay in seconds " ) ; 
+  showTC    = opts.Boolean ("g",     false,             "Get current timecode " ) ; 
+  BeVerbose = opts.Boolean ("v",     false,             "Be verbose ? " ) ; 
   start     = opts.String  ("start", "now",             "The starting timecode [HH:MM:SS:FF , now] " ) ; 
   end       = opts.String  ("end",   "",                "The ending timecode [HH:MM:SS:FF] ") ; 
-  outFile = opts.String  ("out",   "tmp1.4cif",       "The output filename for capture device 1 (.cif, .4cif,  .ppm, .avi, .jpg ) ") ; 
-  device  = opts.String  ("dev",   "@CSP:PCI,card:0", "The capture device (See RAVL virtual files for more details )" ) ; 
-  howMany    = opts.Int     ("n",     25,                "Duration of capture (number of frames to be grabbed), NB Cannot be used with real timecodes") ; 
-  frameStep  = opts.Int     ("step",  1,                 "Capture every nth frame " ) ; 
+  outFile   = opts.String  ("out",   "tmp1.4cif",       "The output filename for capture device 1 (.cif, .4cif,  .ppm, .avi, .jpg ) ") ; 
+  device    = opts.String  ("dev",   "@CSP:PCI,card:0", "The capture device (See RAVL virtual files for more details )" ) ; 
+  howMany   = opts.Int     ("n",     25,                "Duration of capture (number of frames to be grabbed), NB Cannot be used with real timecodes") ; 
+  frameStep = opts.Int     ("step",  1,                 "Capture every nth frame " ) ; 
   opts.DependXor ("end n") ; 
   opts.Check() ;  
  
@@ -139,9 +137,9 @@ int doGrab (void)
 
   // try to setup the capture device 
   // --------------------------------
-  if (verbose) cout << "\n   -  Trying to setup capture device " << device << " ....  " ; 
+  if (BeVerbose) cout << "\n   -  Trying to setup capture device " << device << " ....  " ; 
   DPIPortC<ImageT> inStream ;
-  if ( ! OpenISequence ( inStream, device, "", verbose) ) 
+  if ( ! OpenISequence ( inStream, device, "", BeVerbose) ) 
     { RavlIssueError ("\n   -  Failed to open input device, exiting .... " ) ; } 
 //	cout << "\n inStream type " << inStream.InputStream().Name() ; 
 
@@ -151,7 +149,7 @@ int doGrab (void)
   //cerr << "\n outfile name is " << outFile ; 
   DPOPortC<ImageT>  outStream ;
   //cerr << "\n  file format is " << TypeName ( typeid(ImageT) ) ;  
-  if ( ! OpenOSequence ( outStream, outFile, "", verbose) ) 
+  if ( ! OpenOSequence ( outStream, outFile, "", BeVerbose) ) 
     { RavlIssueError ("\n\n   - Failed to open output file stream ") ; }
 
 
@@ -166,7 +164,7 @@ int doGrab (void)
   
   // check timecode support for device 
   // -------------------------
-  if (verbose ) cout << "\n   -  Checking Timecode Support .... " ;
+  if (BeVerbose) cout << "\n   -  Checking Timecode Support .... " ;
   bool hasTimecode = false ; 
   bool useTimecode = false ;
   
@@ -184,7 +182,7 @@ int doGrab (void)
 
 
   // display some status 
-  if (verbose) {
+  if (BeVerbose) {
     if ( hasTimecode ) 
       cout << "\n     -  Device supports timecodes " ; 
     else 
@@ -207,7 +205,7 @@ int doGrab (void)
   // ----------------------------
   if ( showTC ) {
     if ( hasTimecode ) 
-      if (verbose) 
+      if (BeVerbose) 
 	cout << "\n\n   -  The Current timecode is " << timeNow.ToText() << "\n\n" ; 
       else 
 	cout << timeNow.ToText() ; 
@@ -221,7 +219,7 @@ int doGrab (void)
 
   // Wait for timecode 
   // -----------------
-  if (verbose) cout << "\n\n   -  Waiting for timecode ...."  ; 
+  if (BeVerbose) cout << "\n\n   -  Waiting for timecode ...."  ; 
   //: Wait for timecode 
   IntT statusStep = 0 ; 
   if ( start != "now" )
@@ -245,20 +243,20 @@ int doGrab (void)
 	TimeCodeC timeLeft (0) ;
 	if (statusStep >= 100 ) {
 	  timeLeft = startTC - timeNow ; 
-	  if (verbose) 
+	  if (BeVerbose) 
 	    cout << "\n    -  Time now: " << timeNow.ToText()  << "\t Waiting for: " << startTC.ToText() << "\t\tTime remaining: " << timeLeft.ToText() ;  
 	  statusStep = 0 ; } 
       }}
 
   
-  if ( (!hasTimecode) && verbose ) cout << "\n   - Device: " << device << " has no timecode support, unable to detect dropped frames " ;  
+  if ( (!hasTimecode) && BeVerbose ) cout << "\n   - Device: " << device << " has no timecode support, unable to detect dropped frames " ;  
   if ( (!hasTimecode) ) Sleep(delay) ;
   
 
   //   Start capture 
   // -----------------
   // -----------------
-  if (verbose) cout << "\n\n   - Starting capture " ; 
+  if (BeVerbose) cout << "\n\n   - Starting capture " ; 
  
   
   // using timecodes 
@@ -268,7 +266,7 @@ int doGrab (void)
       TimeCodeC nextGrab = timeNow + 1 ; 
       TimeCodeC endTime = end ; 
       if ( !opts.IsOnCommandLine("end") ) endTime = nextGrab + ((howMany-1)*frameStep); 
-      if (verbose) cout << "\n   -  First Grab will be: " << nextGrab.ToText() << "  \t and endtime is: " << endTime.ToText() ; 
+      if (BeVerbose) cout << "\n   -  First Grab will be: " << nextGrab.ToText() << "  \t and endtime is: " << endTime.ToText() ; 
 
       while ( true ) 
       {
@@ -280,7 +278,7 @@ int doGrab (void)
 	// decide if we want this frame 
 	if ( timeNow >= nextGrab ) 
 	  {
-	    if (verbose) cout << "\n     -  Grabbed frame " << timeNow.ToText() << "\t expected: " << nextGrab.ToText() ; 
+	    if (BeVerbose) cout << "\n     -  Grabbed frame " << timeNow.ToText() << "\t expected: " << nextGrab.ToText() ; 
 
 	    if ( timeNow != nextGrab ) {
 	      cout << "\n  *** Dropped frame with timecode " << nextGrab.ToText() 
@@ -324,10 +322,10 @@ int doGrab (void)
 
   // Save image sequence 
   // ---------------------
-  if (verbose) cout << "\n   - Saving " << imgList.Size() << " frames .... " ; 
+  if (BeVerbose) cout << "\n   - Saving " << imgList.Size() << " frames .... " ; 
   for ( DLIterC<ImageT> iter (imgList) ; iter.IsElm() ; iter.Next() )
     outStream.Put( iter.Data() ) ; 
-  if (verbose) cout << "\t\t\t\tdone! \n\n" ; 
+  if (BeVerbose) cout << "\t\t\t\tdone! \n\n" ; 
 
   // Save timecodes 
   // ----------------
