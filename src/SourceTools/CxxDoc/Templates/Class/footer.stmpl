@@ -1,7 +1,7 @@
 $(ifset:!thispagemode:$(set:thispagemode=Basic))
 <table width=100% align="middle"><tr>
 <td align="center" bgcolor="black"><FONT face="helvetica,arial" color="white"><b>
-$(ifset:author:Maintainer:$(author),) $(ifset:date:Created: $(date),) Documentation by <a href="../Tree/Ravl.API.Source_Tools.CxxDoc.html">CxxDoc</a>: $(buildtime)
+$(ifset:author:Maintainer:$(author),) $(ifset:date:Created: $(date),) Documentation by <a href="$(toroot)/$(thispagemode)/Tree/Ravl.API.Source_Tools.CxxDoc.html">CxxDoc</a>: $(buildtime)
 </b></FONT></td>
 </tr></table>
 
