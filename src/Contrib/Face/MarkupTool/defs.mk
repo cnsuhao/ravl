@@ -5,8 +5,6 @@
 # file-header-ends-here
 
 REQUIRES=RLog libGTK2
-# Requirement for RLog is from using the relevant Ravl library
-# rather than a direct dependency on the external library.
 # Requirement for libGTK2 is both direct and from utilising
 # RavlGUI and RavlGUI2D.
 
@@ -20,7 +18,9 @@ SOURCES = ViewPage.cc ControlWin.cc
 
 PLIB = MarkupTool
 
-USESLIBS = RavlGUI RavlFace RavlGUI2D RavlRLog GTK
+USESLIBS = RavlGUI RavlFace RavlGUI2D RavlRLog RLog GTK
+# Including Ravl/RLog.hh in the source causes a dependency on both RavlRLog
+# and RLog itself
 
 PROGLIBS = RavlExtImgIO RavlImgIOJasper.opt
 

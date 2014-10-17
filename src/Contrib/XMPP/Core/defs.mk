@@ -15,4 +15,6 @@ SOURCES=XMPPConnection.cc
 
 PLIB=RavlXMPP
 
-USESLIBS=RavlOS RavlThreads RavlRLog
+USESLIBS=RavlOS RavlThreads RavlRLog RLog
+# Including Ravl/RLog.hh in the source causes a dependency on both RavlRLog
+# and RLog itself

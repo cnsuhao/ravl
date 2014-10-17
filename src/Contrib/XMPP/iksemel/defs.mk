@@ -17,7 +17,9 @@ PLIB=RavlXMPPIksemel
 
 MAINS= testIksemel.cc
 
-USESLIBS=RavlOS iksemel RavlXMPP RavlRLog
+USESLIBS=RavlOS iksemel RavlXMPP RavlRLog RLog
+# including Ravl/RLog.hh in the source causes a dependency on both RavlRLog
+# and RLog itself.
 
 PROGLIBS=RavlIO RavlXMLFactory
 

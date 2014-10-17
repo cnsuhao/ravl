@@ -32,9 +32,11 @@ PLIB    = RavlFace
 LIBDEPS= 
 
 USESLIBS=RavlMath RavlImageProc RavlCore RavlIO RavlImage RavlOS \
- RavlXMLFactory RavlRLog RavlGnuPlot RavlDataSet
+ RavlXMLFactory RavlRLog RLog RavlGnuPlot RavlDataSet
+# Including Ravl/RLog.hh in the source causes a dependency on both RavlRLog
+# and RLog itself
 
-PROGLIBS = RavlExtImgIO.opt  RavlPatternRecIO RLog
+PROGLIBS = RavlExtImgIO.opt  RavlPatternRecIO
 
 SCRIPTS=
 

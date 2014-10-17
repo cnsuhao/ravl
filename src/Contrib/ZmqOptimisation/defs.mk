@@ -2,8 +2,6 @@
 DONOT_SUPPORT=VCPP
 
 REQUIRES=ZeroMQ RLog
-# Requirement for RLog stems from the use of RavlRLog rather than
-# from a direct requirement.
 
 PACKAGE= Ravl/Zmq
 
@@ -15,7 +13,9 @@ MUSTLINK=
 
 PLIB= RavlZmqOptimisation
 
-USESLIBS= RavlXMLFactory RavlZmq RavlService RavlRLog RavlGeneticOptimisation 
+USESLIBS= RavlXMLFactory RavlZmq RavlService RavlRLog RLog RavlGeneticOptimisation 
+# including Ravl/RLog.hh in the source causes a dependency on both RavlRLog
+# and RLog itself.
 
 PROGLIBS= RavlIO RavlDPMT RavlOSIO RavlDPDisplay.opt RavlExtImgIO RavlPatternRec
 
