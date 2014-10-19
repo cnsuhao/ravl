@@ -1351,7 +1351,7 @@ namespace RavlN {
     if (i == 0) new_state |= std::ios::failbit;
     if (ch == EOF) new_state |= std::ios::eofbit;
 #if RAVL_COMPILER_GCC && !RAVL_COMPILER_LLVM
-    s.clear((std::io_base::iostate)new_state);
+    s.clear(new_state);
 #else
     s.clear(new_state);
 #endif
