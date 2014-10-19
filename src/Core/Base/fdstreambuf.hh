@@ -19,6 +19,8 @@
 
 #include <streambuf>
 #include <unistd.h>
+#include <errno.h>
+#include <string.h>
 
 #ifndef BUFSIZ
 #define BUFSIZ 4096

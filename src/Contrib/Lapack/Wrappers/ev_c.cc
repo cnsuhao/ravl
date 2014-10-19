@@ -216,7 +216,7 @@ int ssyev_c(int Size, float *Matrix, float *EigValues, bool UpperTriangle,
   int lwork = 3 * Size - 1;
   float *work = UseStack ? (float*)alloca(lwork * sizeof(float)) :
                            (float*)malloc(lwork * sizeof(float));
-  int ok;
+  int ok = 0;
   /* to call a Fortran routine from C we have to transpose the matrix since
     matrix is symmetric we just change the sense of UpperTriangle to opposite */
   if(RowMajor)

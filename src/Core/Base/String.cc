@@ -1326,7 +1326,7 @@ namespace RavlN {
     int i = 0;
     x.rep = Sresize(x.rep, 20);
     register std::streambuf *sb = s.rdbuf();
-    int new_state;
+    std::ios_base::iostate new_state;
     // Skip spaces.
     while ((ch = sb->sbumpc()) != EOF) {
       if (!isspace(ch))
@@ -1351,7 +1351,7 @@ namespace RavlN {
     if (i == 0) new_state |= std::ios::failbit;
     if (ch == EOF) new_state |= std::ios::eofbit;
 #if RAVL_COMPILER_GCC && !RAVL_COMPILER_LLVM
-    s.clear((std::_Ios_Iostate )new_state);
+    s.clear((std::io_base::iostate)new_state);
 #else
     s.clear(new_state);
 #endif
