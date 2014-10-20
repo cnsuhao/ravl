@@ -21,7 +21,13 @@ namespace RavlN { namespace ZmqN {
       //! Constructor.
     ContextC::ContextC(const XMLFactoryContextC &context)
     {
-      m_zmqContext = zmq_init (context.AttributeInt("threads",1));
+      int numThreads = context.AttributeInt("threads",1);
+      m_zmqContext = zmq_init (numThreads);
+
+      int numSockets = context.AttributeInt("maxSockets",-1);
+      if(numSockets >= 0 ) {
+        zmq_ctx_set (m_zmqContext, ZMQ_MAX_SOCKETS,numSockets);
+      }
     }
 
     //! Destructor.
