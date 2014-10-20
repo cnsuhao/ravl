@@ -1,4 +1,4 @@
-# Copyright (C) 2003, Omniperception Ltd.
+# Copyright (C) 2003-14, Omniperception Ltd.
 # file-header-ends-here
 
 PACKAGE=Ravl
@@ -13,16 +13,10 @@ HEADERS= TwoWayMap.hh
 
 SOURCES= TwoWayMap.cc
 
-MAINS=
-
-TESTEXES=
-
 PLIB = RavlTwoWayMap
 
 SUMMARY_LIB=Ravl
 
 USESLIBS= RavlOS RavlCore RavlIO 
-
-PROGLIBS=RavlDPDisplay RavlExtImgIO
 
 MUSTLINK=
