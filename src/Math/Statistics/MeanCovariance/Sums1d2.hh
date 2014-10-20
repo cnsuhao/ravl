@@ -73,19 +73,19 @@ namespace RavlN {
     }
     //: Subtract another set of sums.
     
-    UIntT Size() const
+    const UIntT &Size() const
     { return n; }
     //: Number of data points.
     
-    UIntT N() const
+    const UIntT &N() const
     { return n; }
     //: Number of data points.
     
-    RealT Sum() const
+    const RealT &Sum() const
     { return sum; }
     //: Sum of all data points.
 
-    RealT Sum2() const
+    const RealT &Sum2() const
     { return sum2; }
     //: Sum of squares of all data points.
     
@@ -125,6 +125,9 @@ namespace RavlN {
     //!param: rollLen - Length of rolling average.
     //!param: value   - Value to add.
     
+    size_t Hash() const
+    { return n; }
+    //: Hash of value
   protected:
     UIntT n;
     RealT sum; // Sum of data.
@@ -135,6 +138,8 @@ namespace RavlN {
   istream& operator>>(istream &s, Sums1d2C &mv);
   BinOStreamC& operator<<(BinOStreamC &s,const Sums1d2C &mv);
   BinIStreamC& operator>>(BinIStreamC &s, Sums1d2C &mv);
+  bool operator==(const Sums1d2C &v2,const Sums1d2C &v1);
+  bool operator!=(const Sums1d2C &v2,const Sums1d2C &v1);
 
 }
 

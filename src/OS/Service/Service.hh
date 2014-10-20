@@ -39,6 +39,10 @@ namespace RavlN {
     const RavlN::StringC &Name() const
     { return m_name; }
 
+    //! Set the name of the service.
+    void SetName(const StringC &theName)
+    { m_name = theName; }
+
     //! Start service.
     virtual bool Start();
 

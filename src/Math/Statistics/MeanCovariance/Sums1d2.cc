@@ -39,5 +39,13 @@ namespace RavlN {
     mv = Sums1d2C(n,s1,s2);
     return s;
   }
-  
+
+  bool operator==(const Sums1d2C &v2,const Sums1d2C &v1) {
+    return &v1 == &v2;
+  }
+
+  bool operator!=(const Sums1d2C &v2,const Sums1d2C &v1) {
+    return &v1 != &v2;
+  }
+
 }

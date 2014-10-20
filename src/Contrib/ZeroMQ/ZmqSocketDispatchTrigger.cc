@@ -9,6 +9,13 @@
 #include "Ravl/Zmq/SocketDispatchTrigger.hh"
 #include "Ravl/XMLFactoryRegister.hh"
 
+#define DODEBUG 0
+#if DODEBUG
+#define ONDEBUG(x) x
+#else
+#define ONDEBUG(x)
+#endif
+
 namespace RavlN {
   namespace ZmqN {
 
@@ -34,16 +41,26 @@ namespace RavlN {
     }
 
     //! Handle event.
-    void SocketDispatchTriggerC::Dispatch()
+    void SocketDispatchTriggerC::Dispatch(int events)
     {
-      if(m_trigger.IsValid())
-        m_trigger();
+      if(!m_trigger.IsValid()) {
+        ONDEBUG(RavlDebug("No trigger!"));
+        return ;
+      }
+      m_trigger();
     }
 
     //! Stop handling of events.
     void SocketDispatchTriggerC::Stop() {
       m_trigger.Invalidate();
     }
+
+    //! Is ready
+    bool SocketDispatchTriggerC::IsActive() const
+    {
+      return m_trigger.IsValid();
+    }
+
 
   }
 }

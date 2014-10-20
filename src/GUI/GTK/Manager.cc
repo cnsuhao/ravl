@@ -187,7 +187,8 @@ namespace RavlGUIN {
     ONDEBUG(std::cerr << "ManagerC::Init(), Called. \n");
     RavlAssert(!initCalled); // Init should only be called once.
 
-
+#if 0
+    // This function is deprecated since GTK version 2.32 of glib
     if(!g_thread_supported ()) {
       //cerr << "Enable glib threads. \n";
       g_thread_init(0);
@@ -197,10 +198,11 @@ namespace RavlGUIN {
       gdk_threads_init();
 #endif
     }
+#endif
     
 #if  RAVL_USE_GTKTHREADS
     // In theory no other threads should be running yet so the following
-    // lock is not nessary.
+    // lock is not necessary.
     
     LockGtkThreadC  gtkLock(*this); 
 #endif

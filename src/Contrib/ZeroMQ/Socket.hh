@@ -70,6 +70,10 @@ namespace RavlN {
       //! Set name for socket, used in debugging
       void SetName(const RavlN::StringC &name);
 
+      //! Access socket name
+      const StringC &Name() const
+      { return m_name; }
+
       //! Write to an ostream
       bool Save(std::ostream &strm) const;
 

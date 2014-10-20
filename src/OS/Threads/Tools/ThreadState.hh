@@ -130,10 +130,40 @@ namespace RavlN
       return true;
     }
 
-    bool Update(const StateT &expectedCurrentState1,const StateT &expectedCurrentState2,const StateT &expectedCurrentState3,const StateT &newState) {
+    bool Update(const StateT &expectedCurrentState1,
+                const StateT &expectedCurrentState2,
+                const StateT &expectedCurrentState3,
+                const StateT &newState)
+    {
       ONDEBUG_TH(RavlDebug("Updating state (current %i) expected current %i %i or %i  to %i", int(m_state), int(expectedCurrentState1), int(expectedCurrentState2), int(expectedCurrentState3),int(newState)));
       m_access.Lock();
-      if(m_state != expectedCurrentState1 && m_state != expectedCurrentState2 && m_state != expectedCurrentState3) {
+      if(m_state != expectedCurrentState1 &&
+          m_state != expectedCurrentState2 &&
+          m_state != expectedCurrentState3) {
+        // No change.
+        m_access.Unlock();
+        return false;
+      }
+      m_state = newState;
+      m_access.Unlock();
+      m_cond.Broadcast();
+      m_sigState(newState);
+      ONDEBUG_TH(RavlDebug("New state %i", int(m_state)));
+      return true;
+    }
+
+    bool Update(const StateT &expectedCurrentState1,
+                const StateT &expectedCurrentState2,
+                const StateT &expectedCurrentState3,
+                const StateT &expectedCurrentState4,
+                const StateT &newState)
+    {
+      ONDEBUG_TH(RavlDebug("Updating state (current %i) expected current %i %i or %i  to %i", int(m_state), int(expectedCurrentState1), int(expectedCurrentState2), int(expectedCurrentState3),int(newState)));
+      m_access.Lock();
+      if(m_state != expectedCurrentState1 &&
+          m_state != expectedCurrentState2 &&
+          m_state != expectedCurrentState3 &&
+          m_state != expectedCurrentState4) {
         // No change.
         m_access.Unlock();
         return false;

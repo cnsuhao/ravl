@@ -55,6 +55,9 @@ namespace RavlN {
       //! Add a read trigger
       SocketDispatcherC::RefT CallOnReadOrError(int fd,const TriggerC &trigger);
 
+      //! Add a read trigger
+      SocketDispatcherC::RefT CallOnError(int fd,const TriggerC &trigger);
+
       //! Add handler to system
       bool Add(const SocketDispatcherC &handler);
 

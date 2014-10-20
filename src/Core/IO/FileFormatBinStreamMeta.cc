@@ -228,6 +228,16 @@ namespace RavlN {
       return false;
     }
     entry = fileformat;
+
+    StringC aliasName = fileformat.TypenameAlias();
+    if(!aliasName.IsEmpty()) {
+      FileFormatBaseC &aliasEntry = m_class2format[aliasName];
+      if(aliasEntry.IsValid()) {
+        RavlError("File abs format for '%s' already registered.",aliasName.c_str());
+      }
+      aliasEntry = fileformat;
+    }
+
     if(!m_ext.IsMember(fileformat.Name())) {
       ONDEBUG(RavlDebug("Adding extension '%s' ",fileformat.Name().c_str()));
       m_ext += fileformat.Name();

@@ -13,6 +13,8 @@
 #include "Ravl/Threads/MessageQueue.hh"
 #include "Ravl/Stream.hh"
 #include "Ravl/OS/SysLog.hh"
+#include "Ravl/TypeName.hh"
+#include <exception>
 
 #define RAVL_REUSE_THREADS 0
 #define CATCH_EXCEPTIONS !RAVL_CHECK
@@ -61,10 +63,12 @@ namespace RavlN {
       se.Invoke();
 #if CATCH_EXCEPTIONS
     } catch(RavlN::ExceptionC &exception) {
-      RavlSysLog(SYSLOG_ERR) << "ERROR: LaunchThreadBodyC::Startup(), Caught exception running thread. Text:" << exception.what() ;
+      RavlError("Caught RAVL exception running thread. Type:%s Text:%s ",RavlN::TypeName(typeid(exception)),exception.what());
       exception.Dump(RavlSysLog(SYSLOG_ERR));
+    } catch(std::exception &exception) {
+      RavlError("Caught std exception running thread.  Type:%s Text:",RavlN::TypeName(typeid(exception)),exception.what());
     } catch(...) {
-      RavlSysLog(SYSLOG_ERR) << "ERROR: LaunchThreadBodyC::Startup(), Caught exception running thread ";
+      RavlError("Caught unknown exception running thread ");
     }
 #endif
     done.Post();

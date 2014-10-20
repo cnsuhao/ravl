@@ -237,7 +237,7 @@ namespace RavlN {
 
     // Normal open.
 
-    int fmode = ios::out;
+    ios_base::openmode fmode = ios::out;
 #if RAVL_HAVE_IOS_BINARY
     if(binaryMod)
       fmode |= ios::binary;

@@ -79,7 +79,8 @@ namespace RavlN {
       bin >> classname;
       //cout << "Stream Probe: '" << classname << "' Looking for: '" << TypeName(typeid(DataT)) << "'\n";
       bin.Seek(mark);
-      if(classname != StringC(TypeName(typeid(DataT))))
+      if(classname != StringC(TypeName(typeid(DataT))) &&
+          (m_typenameAlias.IsEmpty() || classname != m_typenameAlias))
 	return typeid(void); // Don't know how to load this.
       return typeid(DataT);
     }
@@ -111,7 +112,7 @@ namespace RavlN {
       if(obj_type != typeid(DataT))
 	return DPIPortBaseC();
       BinIStreamC bs(in);
-      return DPIBinFileC<DataT>(bs,true);
+      return DPIBinFileC<DataT>(bs,true,m_typenameAlias);
     }
     //: Create a input port for loading.
     // Will create an Invalid port if not supported.
@@ -130,7 +131,7 @@ namespace RavlN {
       if(obj_type != typeid(DataT))
 	return DPIPortBaseC();
       BinIStreamC bs(filename);
-      return DPIBinFileC<DataT>(bs,true);
+      return DPIBinFileC<DataT>(bs,true,m_typenameAlias);
     }
 
     //: Create a input port for loading.
@@ -153,6 +154,16 @@ namespace RavlN {
     { return true; }
     //: Just to make it clear its a streamable format.
 
+    virtual StringC TypenameAlias() const
+    { return m_typenameAlias; }
+    //: Access alias if set
+    // The string will be empty if not set.
+
+    void SetAlias(const StringC &anAlias)
+    { m_typenameAlias = anAlias; }
+    //: Set alias to use if class name changes.
+  protected:
+    StringC m_typenameAlias;
   };
 
 
@@ -167,10 +178,15 @@ namespace RavlN {
       : FileFormatC<DataT>(*new FileFormatBinStreamBodyC<DataT>(true))
     { RegisterFormatBinStreamMeta(*this); }
 
-    FileFormatBinStreamC(const char *typeName)
+    FileFormatBinStreamC(const char *typeName,bool asAlias = false)
       : FileFormatC<DataT>(*new FileFormatBinStreamBodyC<DataT>(true))
     {
-      AddTypeName(this->DefaultType(),typeName);
+      if(!asAlias) {
+        AddTypeName(this->DefaultType(),typeName);
+      } else {
+        static_cast<FileFormatBinStreamBodyC<DataT> &>(FileFormatC<DataT>::Body()).SetAlias(typeName);
+      }
+
       RegisterFormatBinStreamMeta(*this);
     }
 

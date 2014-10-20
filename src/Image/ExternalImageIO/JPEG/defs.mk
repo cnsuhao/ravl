@@ -24,4 +24,14 @@ HEADERS = ImgIOJPeg.hh ImgIOJPegB.hh JPEGFormat.hh CompressedImageJPEG.hh
 
 SOURCES = ImgIOJPeg.cc JPEGFormat.cc CompressedImageJPEG.cc
 
-USESLIBS = RavlImage RavlIO RavlImageIO LibJPEG
+# Check which resources that can be used by this library are available
+EXTIMGIO_RESOURCES = $(filter JPEG libPNG LibTIFF, $(RESOURCES))
+
+# Set what external libraries we will be linking this library with
+# (The JPEG and PNG RESOURCE name do not match the name of the
+# USESLIBS setting, so we have to alter the name. TIFF shares
+# the same name between the two settings so needs no processing)
+EXTIMGIO_EXTERNALS = $(patsubst libPNG,  LibPNG, \
+                      $(patsubst JPEG, LibJPEG , $(EXTIMGIO_RESOURCES)))
+
+USESLIBS = RavlImage RavlIO RavlImageIO $(EXTIMGIO_EXTERNALS)

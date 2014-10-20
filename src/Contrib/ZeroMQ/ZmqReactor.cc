@@ -10,6 +10,14 @@
 #include "Ravl/Zmq/SocketDispatchTrigger.hh"
 #include "Ravl/OS/SysLog.hh"
 #include "Ravl/XMLFactoryRegister.hh"
+#include <string.h>
+
+#define DODEBUG 0
+#if DODEBUG
+#define ONDEBUG(x) x
+#else
+#define ONDEBUG(x)
+#endif
 
 namespace RavlN {
   namespace ZmqN {
@@ -38,7 +46,7 @@ namespace RavlN {
      : ServiceThreadC(factory),
        m_teminateCheckInterval(factory.AttributeReal("terminateCheckInterval",5.0)),
        m_pollListChanged(true),
-       m_verbose(factory.AttributeBool("verbose",false)),
+       m_verbose(factory.AttributeBool("verbose",DODEBUG)),
        m_timedQueue(false)
     {
       ContextC::RefT context;
@@ -119,6 +127,13 @@ namespace RavlN {
       return ret;
     }
 
+    //! Add a read trigger
+    SocketDispatcherC::RefT ReactorC::CallOnError(int fd,const TriggerC &trigger)
+    {
+      SocketDispatcherC::RefT ret = new SocketDispatchTriggerC(fd,false,false,true,trigger);
+      Add(*ret);
+      return ret;
+    }
 
 
     //! Add handler to system
@@ -173,6 +188,8 @@ namespace RavlN {
           inUse.reserve(m_sockets.size());
           zmq_pollitem_t item;
           for(unsigned i = 0;i < m_sockets.size();i++) {
+            // Just for paranoia zero the structure.
+            memset(&item,0,sizeof(zmq_pollitem_t));
             if(m_sockets[i]->SetupPoll(item)) {
               inUse.push_back(m_sockets[i]);
               pollArr.push_back(item);
@@ -198,6 +215,7 @@ namespace RavlN {
         if(m_verbose) {
           RavlDebug("Reactor '%s' got ready for %d sockets. (Timeout:%u, %f seconds ) ",Name().data(),ret,timeout,timeToNext);
         }
+
         if(ret < 0) {
           int anErrno = zmq_errno ();
           // Shutting down ?
@@ -222,8 +240,12 @@ namespace RavlN {
           // Avoid repeatedly setting up try/catch as it can be expensive.
           try {
             for(;i < pollArr.size() && ret > 0;i++) {
-              if(pollArr[i].revents != 0)
-                inUse[i]->Dispatch();
+              if(pollArr[i].revents != 0) {
+                if(!inUse[i]->CheckDispatch(pollArr[i].revents)) {
+                  m_pollListChanged = true; // Refresh list.
+                }
+                ret--;
+              }
             }
           } catch(std::exception &ex) {
             RavlError("Caught c++ exception %s : %s ",RavlN::TypeName(typeid(ex)),ex.what());
@@ -241,6 +263,7 @@ namespace RavlN {
             i++; // Skip it an go to next.
           }
         }
+        RavlAssertMsg(ret == 0,"Poll event count doesn't match events found!");
       }
 
       OnFinish();
@@ -326,6 +349,7 @@ namespace RavlN {
     // it was run.
     bool ReactorC::Cancel(UIntT eventID)
     {
+
       return m_timedQueue.Cancel(eventID);
     }
 
