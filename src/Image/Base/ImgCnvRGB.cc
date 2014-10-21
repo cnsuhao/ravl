@@ -22,9 +22,6 @@
 namespace RavlImageN
 {
 
-  void InitRGBImageCnv()
-  {}
-
   // Conversions between RGBA and RGB
   
   // Byte RGBA to Byte RGB 
@@ -55,15 +52,6 @@ namespace RavlImageN
     return ret;
   }
 
-  // Real RGBA to Real RGB
-  
-  ImageC<RealRGBValueC> RealRGBArray2dCT2RealRGBImageCT(const Array2dC<RealRGBValueC> &dat) {
-    ImageC<RealRGBValueC> ret(dat.Rectangle());
-    for(Array2dIter2C<RealRGBValueC,RealRGBValueC> it(ret,dat);it.IsElm();it.Next())
-      it.Data1() = RealRGBValueC(it.Data2().Red(),it.Data2().Green(),it.Data2().Blue());
-    return ret;
-  }
-
   // Real RGB to Real RGBA 
   
   ImageC<RealRGBAValueC> RealRGBImageCT2RealRGBAImageCT(const ImageC<RealRGBValueC> &dat) {
@@ -73,21 +61,6 @@ namespace RavlImageN
     }
     return ret;
   }
-
-  // Register conversions...
-  DP_REGISTER_CONVERSION_FT_NAMED(ImageC<ByteRGBAValueC>,ImageC<ByteRGBValueC>,ByteRGBAImageCT2ByteRGBImageCT,1.25,
-				  "ImageC<ByteRGBValueC> RavlImageN::Convert(const ImageC<ByteRGBAValueC> &)");  
-  DP_REGISTER_CONVERSION_FT_NAMED(ImageC<ByteRGBValueC>,ImageC<ByteRGBAValueC>,ByteRGBImageCT2ByteRGBAImageCT,1,
-				  "ImageC<ByteRGBAValueC> RavlImageN::Convert(const ImageC<ByteRGBValueC> &)");
-  
-  // Register conversions...
-  DP_REGISTER_CONVERSION_FT_NAMED(ImageC<RealRGBAValueC>,ImageC<RealRGBValueC>,RealRGBAImageCT2RealRGBImageCT,1.25,
-				  "ImageC<RealRGBValueC> RavlImageN::Convert(const ImageC<RealRGBAValueC> &)");  
-  DP_REGISTER_CONVERSION_FT_NAMED(ImageC<RealRGBValueC>,ImageC<RealRGBAValueC>,RealRGBImageCT2RealRGBAImageCT,1,
-				  "ImageC<RealRGBAValueC> RavlImageN::Convert(const ImageC<RealRGBValueC> &)");
-  
-  DP_REGISTER_CONVERSION_FT_NAMED(Array2dC<RealRGBValueC>,ImageC<RealRGBValueC>,RealRGBArray2dCT2RealRGBImageCT,1,
-                                  "ImageC<RealRGBValueC> RavlImageN::Convert(const Array2dC<RealRGBValueC> &)");
 
 
   //////////////////////////////////////////////////////////////////////////////////////////
@@ -125,13 +98,6 @@ namespace RavlImageN
   }
 
 
-  DP_REGISTER_CONVERSION_FT_NAMED(ImageC<ByteRGBValueC>,ImageC<RealRGBValueC>,ByteRGBImageCT2RealRGBImageCT ,1,
-				  "ImageC<RealRGBValueC> RavlImageN::Convert(const ImageC<ByteRGBValueC> &)");
-  DP_REGISTER_CONVERSION_FT_NAMED(ImageC<RealRGBValueC>,ImageC<ByteRGBValueC>,RealRGBImageCT2ByteRGBImageCT ,8,
-				  "ImageC<ByteRGBValueC> RavlImageN::Convert(const ImageC<RealRGBValueC> &)");
-  DP_REGISTER_CONVERSION_FT_NAMED(ImageC<RealRGBValueC>,ImageC<RealT>,RealRGBImageCT2DoubleImageCT ,3,
-				  "ImageC<RealT> RavlImageN::Convert(const ImageC<RealRGBValueC> &)");
-  
   /////////////////////////////////////////////////////////////////////////////////////////
   
   // Byte colour to UInt16 colour image.
@@ -175,17 +141,6 @@ namespace RavlImageN
                                    static_cast<UInt16T>(it.Data2().Blue()));
     return ret;
   }
-  
-  // Register conversions...
-  
-  DP_REGISTER_CONVERSION_FT_NAMED(ImageC<ByteRGBValueC>,ImageC<UInt16RGBValueC>,ByteRGBImageCT2UInt16RGBImageCT,1,
-				  "ImageC<UInt16RGBValueC> RavlImageN::Convert(const ImageC<ByteRGBValueC> &)");
-  DP_REGISTER_CONVERSION_FT_NAMED(ImageC<UInt16RGBValueC>,ImageC<ByteRGBValueC>,UInt16RGBImageCT2ByteRGBImageCT,2,
-				  "ImageC<ByteRGBValueC> RavlImageN::Convert(const ImageC<UInt16RGBValueC> &dat)");
-  DP_REGISTER_CONVERSION_FT_NAMED(ImageC<UInt16RGBValueC>,ImageC<RealRGBValueC>,UInt16RGBImageCT2RealRGBImageCT,1,
-				  "ImageC<RealRGBValueC> RavlImageN::Convert(const ImageC<UInt16RGBValueC> &dat)");
-  DP_REGISTER_CONVERSION_FT_NAMED(ImageC<RealRGBValueC>,ImageC<UInt16RGBValueC>,RealRGBImageCT2UInt16RGBImageCT,4,
-				  "ImageC<UInt16RGBValueC> RavlImageN::Convert(const ImageC<RealRGBValueC> &dat)");
   
   
 }
