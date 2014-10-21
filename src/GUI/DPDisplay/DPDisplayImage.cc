@@ -98,7 +98,9 @@ namespace RavlGUIN {
       maxValue = Max(it->Blue(),maxValue);
     }
     for(Array2dIter2C<ByteRGBValueC,RealRGBValueC> it(img,realImg);it;it++) {
-      it.Data1() = (it.Data2() * 255.0)/maxValue;
+      it.Data1().Red()   = Max((it.Data2().Red()   * 255.0)/maxValue,0.0);
+      it.Data1().Green() = Max((it.Data2().Green() * 255.0)/maxValue,0.0);
+      it.Data1().Blue()  = Max((it.Data2().Blue()  * 255.0)/maxValue,0.0);
     }
   }
 
@@ -150,7 +152,10 @@ namespace RavlGUIN {
       maxValue = Max(it->Blue(),maxValue);
     }
     for(Array2dIter2C<ByteRGBValueC,RealRGBAValueC> it(img,realImg);it;it++) {
-      RealRGBAValueC tmp = (it.Data2() * 255.0)/maxValue;
+      RealRGBAValueC tmp = it.Data2();
+      tmp.Red()   = Max((tmp.Red()   * 255.0)/maxValue,0.0);
+      tmp.Green() = Max((tmp.Green() * 255.0)/maxValue,0.0);
+      tmp.Blue()  = Max((tmp.Blue()  * 255.0)/maxValue,0.0);
       it.Data1().Set(tmp.Red(),tmp.Green(),tmp.Blue());
     }
   }

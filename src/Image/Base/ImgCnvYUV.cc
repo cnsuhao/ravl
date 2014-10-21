@@ -14,67 +14,9 @@
 #include "Ravl/Image/Image.hh"
 #include "Ravl/Image/ByteYUVValue.hh"
 #include "Ravl/Image/RealYUVValue.hh"
-#include "Ravl/Image/ByteYUVAValue.hh"
 
 
 namespace RavlImageN
 {
 
-  void InitYUVImageCnv()
-  {}
-  
-  // Byte YUVA to Byte YUV 
-  
-  ImageC<ByteYUVValueC> ByteYUVAImageCT2ByteYUVImageCT(const ImageC<ByteYUVAValueC> &dat) {
-    ImageC<ByteYUVValueC> ret(dat.Rectangle());
-    for(Array2dIter2C<ByteYUVValueC,ByteYUVAValueC> it(ret,dat);it.IsElm();it.Next()) 
-      it.Data1() = ByteYUVValueC(it.Data2().Y(),it.Data2().U(),it.Data2().V());
-    return ret;
-  }
-  
-  // Byte YUV to Byte YUVA 
-  
-  ImageC<ByteYUVAValueC> ByteYUVImageCT2ByteYUVAImageCT(const ImageC<ByteYUVValueC> &dat) {
-    ImageC<ByteYUVAValueC> ret(dat.Rectangle());
-    for(Array2dIter2C<ByteYUVAValueC,ByteYUVValueC> it(ret,dat);it.IsElm();it.Next()) {
-      it.Data1() = ByteYUVAValueC(it.Data2().Y(),it.Data2().U(),it.Data2().V(),(char) 0xff);
-    }
-    return ret;
-  }
-
-  // Register conversions...
-  DP_REGISTER_CONVERSION_NAMED(ByteYUVAImageCT2ByteYUVImageCT,1.25,
-			       "ImageC<ByteYUVValueC> RavlImageN::Convert(const ImageC<ByteYUVAValueC> &)");
-  DP_REGISTER_CONVERSION_NAMED(ByteYUVImageCT2ByteYUVAImageCT,1,
-			       "ImageC<ByteYUVAValueC> RavlImageN::Convert(const ImageC<ByteYUVValueC> &)");
-  
-  //////////////////////////////////////////////////////////////////////////////////////////
-  
-  // Byte colour to real colour image.
-  
-  ImageC<RealYUVValueC> ByteYUVImageCT2RealYUVImageCT(const ImageC<ByteYUVValueC> &dat) {
-    ImageC<RealYUVValueC> ret(dat.Rectangle());
-    for(Array2dIter2C<RealYUVValueC,ByteYUVValueC> it(ret,dat);it.IsElm();it.Next()) {
-      it.Data1() = RealYUVValueC(it.Data2().Y(),it.Data2().U(),it.Data2().V());
-    }
-    return ret;
-  }
-  
-  // Real colour to byte colour image.
-
-  ImageC<ByteYUVValueC> RealYUVImageCT2ByteYUVImageCT(const ImageC<RealYUVValueC> &dat) {
-    ImageC<ByteYUVValueC> ret(dat.Rectangle());
-    for(Array2dIter2C<ByteYUVValueC,RealYUVValueC> it(ret,dat);it.IsElm();it.Next()) {
-      RealYUVValueC v(it.Data2());
-      v.LimitYUV(0,255,-128,127);
-      it.Data1() = ByteYUVValueC((ByteT)v.Y(),(ByteT)v.U(),(ByteT)v.V());
-    }
-    return ret;
-  }
-  
-  DP_REGISTER_CONVERSION_NAMED(ByteYUVImageCT2RealYUVImageCT ,1,
-			       "ImageC<RealYUVValueC> RavlImageN::Convert(const ImageC<ByteYUVValueC> &)");
-  DP_REGISTER_CONVERSION_NAMED(RealYUVImageCT2ByteYUVImageCT ,8,
-			       "ImageC<ByteYUVValueC> RavlImageN::Convert(const ImageC<RealYUVValueC> &)");
-  
 }
