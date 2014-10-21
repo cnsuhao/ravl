@@ -101,6 +101,9 @@ namespace RavlN {
       //! Run reactor loop.
       virtual bool Run();
 
+      //! Shutdown service
+      virtual bool Shutdown();
+
       //! Set verbose flag.
       void SetVerbose(bool verboseMode)
       { m_verbose = verboseMode; }
@@ -113,13 +116,15 @@ namespace RavlN {
 
     protected:
       //! Do some initial setup
-      void Init(ContextC &context);
+      void Init();
 
       //! Called by the main loop when its first run.
       virtual bool OnStart();
 
       //! Called when loop is exiting.
       virtual bool OnFinish();
+
+      RavlN::ZmqN::ContextC::RefT m_zmqContext;
 
       std::vector<SocketDispatcherC::RefT> m_sockets;
       float m_teminateCheckInterval;

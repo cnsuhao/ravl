@@ -25,7 +25,8 @@ namespace RavlN {
        m_fd(-1),
        m_onReadReady(readReady),
        m_onWriteReady(writeReady),
-       m_onError(false)
+       m_onError(false),
+       m_isStopped(false)
     {
     }
 
@@ -34,7 +35,8 @@ namespace RavlN {
     : m_fd(fd),
       m_onReadReady(readReady),
       m_onWriteReady(writeReady),
-      m_onError(onError)
+      m_onError(onError),
+      m_isStopped(false)
     {
 
     }
@@ -44,7 +46,8 @@ namespace RavlN {
      : m_fd(-1),
        m_onReadReady(factory.AttributeBool("onRead",true)),
        m_onWriteReady(factory.AttributeBool("onWrite",false)),
-       m_onError(factory.AttributeBool("onError",false))
+       m_onError(factory.AttributeBool("onError",false)),
+       m_isStopped(false)
     {
       rThrowBadConfigContextOnFailS(factory,UseComponent("Socket",m_socket),"No socket given");
     }
@@ -86,7 +89,8 @@ namespace RavlN {
 
     //! Stop handling of events.
     void SocketDispatcherC::Stop() {
-
+      m_isStopped = true;
+      //m_socket.Invalidate();
     }
 
     //! Setup poll item,
@@ -94,13 +98,16 @@ namespace RavlN {
 
     bool SocketDispatcherC::SetupPoll(zmq_pollitem_t &pollItem)
     {
-      if(!IsActive())
+      if(!IsActive() || m_isStopped)
         return false;
       RavlAssert(m_socket.IsValid() || m_fd >= 0);
       if(m_socket.IsValid()) {
         pollItem.socket = m_socket->RawSocket();
         pollItem.fd = -1;
       } else {
+        if(m_fd < 0) {
+          return false;
+        }
         pollItem.socket = 0;
         pollItem.fd = m_fd;
       }
@@ -120,6 +127,13 @@ namespace RavlN {
     //! Is ready
     bool SocketDispatcherC::IsActive() const
     { return true; }
+
+    //! Clear handles
+    bool SocketDispatcherC::Clear()
+    {
+      m_socket.Invalidate();
+      return true;
+    }
 
     // -------------------------------------------------------------------
 

@@ -46,6 +46,9 @@ namespace RavlN {
       //! Is ready
       virtual bool IsActive() const;
 
+      //! Clear handles
+      virtual bool Clear();
+
       //! Pointer to class
       typedef SmartPtrC<SocketDispatcherC> RefT;
 
@@ -55,6 +58,7 @@ namespace RavlN {
       bool m_onReadReady;
       bool m_onWriteReady;
       bool m_onError;
+      bool m_isStopped;
     };
 
     //! Set of dispatchers to disconnect when finished with.

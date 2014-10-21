@@ -32,12 +32,13 @@ namespace RavlN {
 
     //! Default constructor.
     ReactorC::ReactorC(ContextC &context)
-     : m_teminateCheckInterval(5.0),
+     : m_zmqContext(&context),
+       m_teminateCheckInterval(5.0),
        m_pollListChanged(true),
        m_verbose(false),
        m_timedQueue(false)
     {
-      Init(context);
+      Init();
     }
 
 
@@ -49,9 +50,8 @@ namespace RavlN {
        m_verbose(factory.AttributeBool("verbose",DODEBUG)),
        m_timedQueue(false)
     {
-      ContextC::RefT context;
-      factory.UseComponent("ZmqContext",context);
-      Init(*context);
+      factory.UseComponent("ZmqContext",m_zmqContext);
+      Init();
     }
 
     //! Write to an ostream
@@ -69,14 +69,16 @@ namespace RavlN {
     }
 
     //! Do some initial setup
-    void ReactorC::Init(ContextC &context)
+    void ReactorC::Init()
     {
-      m_wakeup = new ZmqN::SocketC(context,ZST_PAIR);
+      m_wakeup = new ZmqN::SocketC(*m_zmqContext,ZST_PAIR);
+      m_wakeup->SetLinger(0.0);
       RavlN::StringC sktId;
       sktId.form("inproc://Reactor-%p",this);
       m_wakeup->Bind(sktId);
 
-      ZmqN::SocketC::RefT wakeupLocal = new ZmqN::SocketC(context,ZST_PAIR);
+      ZmqN::SocketC::RefT wakeupLocal = new ZmqN::SocketC(*m_zmqContext,ZST_PAIR);
+      wakeupLocal->SetLinger(0.0);
       wakeupLocal->Connect(sktId);
       CallOnRead(*wakeupLocal,RavlN::Trigger(&DiscardMessage,wakeupLocal));
 
@@ -188,6 +190,13 @@ namespace RavlN {
           inUse.reserve(m_sockets.size());
           zmq_pollitem_t item;
           for(unsigned i = 0;i < m_sockets.size();i++) {
+            if(!m_sockets[i]->IsActive()) {
+              SocketDispatcherC::RefT old =m_sockets[i];
+              old->Clear();
+              Remove(*old);
+              continue;
+            }
+
             // Just for paranoia zero the structure.
             memset(&item,0,sizeof(zmq_pollitem_t));
             if(m_sockets[i]->SetupPoll(item)) {
@@ -266,11 +275,25 @@ namespace RavlN {
         RavlAssertMsg(ret == 0,"Poll event count doesn't match events found!");
       }
 
+      for(unsigned i = 0;i < m_sockets.size();i++)
+        m_sockets[i]->Clear();
+      m_sockets.clear();
       OnFinish();
 
       if(m_verbose) {
         RavlDebug("Shutdown of reactor '%s' complete.",Name().data());
       }
+      return true;
+    }
+
+    //! Shutdown service
+    bool ReactorC::Shutdown()
+    {
+      ServiceThreadC::Shutdown();
+      RavlN::MutexLockC lock(m_accessWakeup);
+      RavlAssert(m_wakeup.IsValid());
+      m_wakeup->Send(*m_wakeMsg,ZSB_NOBLOCK);
+      lock.Unlock();
       return true;
     }
 
@@ -358,7 +381,6 @@ namespace RavlN {
     //! Called when owner handles drop to zero.
     void ReactorC::ZeroOwners() {
       m_terminate = true;
-      m_wakeup->Send(*m_wakeMsg);
       ServiceThreadC::ZeroOwners();
     }
 

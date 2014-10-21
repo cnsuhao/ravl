@@ -53,6 +53,7 @@ namespace RavlN {
     //! Stop handling of events.
     void SocketDispatchTriggerC::Stop() {
       m_trigger.Invalidate();
+      SocketDispatcherC::Stop();
     }
 
     //! Is ready
