@@ -28,8 +28,6 @@ PLIB = RavlRawVidIO
 
 USESLIBS = RavlImageIO RavlOSIO RavlImage RavlExtImgIO RavlIO
 
-PROGLIBS = DynLink
-
 MUSTLINK=RavlRawVidIO.cc
 #MAINS= readgrab.cc
 

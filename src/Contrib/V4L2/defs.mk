@@ -1,10 +1,9 @@
 # This file is part of RAVL, Recognition And Vision Library 
-# Copyright (C) 2001-11, OmniPerception Ltd.
+# Copyright (C) 2001-14, OmniPerception Ltd.
 # This code may be redistributed under the terms of the GNU Lesser
 # General Public License (LGPL). See the lgpl.licence file for details or
 # see http://www.gnu.org/copyleft/lesser.html
 # file-header-ends-here
-#! file="Ravl/Contrib/V4L2/defs.mk"
 
 REQUIRES = devVideo4Linux2
 
@@ -24,7 +23,7 @@ MUSTLINK = MustLinkV4L2.cc
 
 USESLIBS = RavlImage RavlIO RavlThreads
 
-PROGLIBS = RavlOSIO RavlDPDisplay.opt DynLink
+PROGLIBS = RavlOSIO RavlDPDisplay.opt
 
 ANSIFLAG =
 

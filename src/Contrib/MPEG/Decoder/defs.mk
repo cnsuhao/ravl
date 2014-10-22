@@ -28,7 +28,7 @@ EXAMPLES = exMPEGI.cc
 
 USESLIBS = RavlImageIO RavlImage RavlOSIO LibMPEG 
 
-PROGLIBS = RavlDPDisplay.opt DynLink
+PROGLIBS = RavlDPDisplay.opt
 
 EXTERNALLIBS=LibMPEG.def
 #USERCFLAGS = -g

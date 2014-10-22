@@ -25,7 +25,7 @@ LIBDEPS=RavlImageProcHT.def
 USESLIBS=RavlImageProc 
 
 PROGLIBS=RavlIO RavlOS RavlOSIO RavlImageIO RavlMathIO RavlImgIOV4L.opt \
- RavlDPDisplay.opt RavlExtImgIO DynLink
+ RavlDPDisplay.opt RavlExtImgIO
 
 EHT = Ravl.API.Images.Lines.html 
 

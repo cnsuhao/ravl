@@ -29,6 +29,6 @@ MAINS= dsd.cc
 USESLIBS= RavlNet RavlOSIO 
 
 PROGLIBS= RavlIO RavlImageIO RavlVideoIO RavlExtImgIO RavlImage \
- RavlImgIOV4L2.opt DynLink
+ RavlImgIOV4L2.opt
 
 MUSTLINK=MustLinkRavlDataServer.cc

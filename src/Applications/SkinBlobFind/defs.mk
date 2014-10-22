@@ -9,6 +9,6 @@ DONOT_SUPPORT=arm
 
 MAINS=SkinBlobFind.cc
 
-PROGLIBS=RavlImage RavlImageIO RavlExtImgIO RavlOSIO RavlImageProc DynLink
+PROGLIBS=RavlImage RavlImageIO RavlExtImgIO RavlOSIO RavlImageProc
 
 #EHT=exeSkinBlobFind.eht

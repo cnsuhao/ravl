@@ -25,7 +25,7 @@ MUSTLINK=InitLib1394dc.cc
 
 USESLIBS=RavlCore RavlIO RavlImage Lib1394dc 
 
-PROGLIBS=  RavlOSIO RavlDPDisplay.opt DynLink
+PROGLIBS=  RavlOSIO RavlDPDisplay.opt
 
 EHT=Ravl.Contrib.Video_IO.IIDC.html
 

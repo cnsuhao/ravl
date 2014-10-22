@@ -26,6 +26,6 @@ SUMMARY_LIB=Ravl
 USESLIBS=RavlImageProc
 
 PROGLIBS=RavlIO RavlImageIO RavlExtImgIO RavlOSIO RavlOptimise \
- RavlDPDisplay.opt DynLink
+ RavlDPDisplay.opt
 
 
