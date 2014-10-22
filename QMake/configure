@@ -688,6 +688,8 @@ libGTK2_LIBS
 libGTK2_CFLAGS
 LibGnome_LIBS
 LibGnome_CFLAGS
+glib_LIBS
+glib_CFLAGS
 libglade2_LIBS
 libglade2_CFLAGS
 iksemel_LIBS
@@ -882,6 +884,8 @@ with_iksemel_pkgconf
 with_iksemel
 with_libglade2_pkgconf
 with_libglade2
+with_glib_pkgconf
+with_glib
 with_LibGnome_pkgconf
 with_LibGnome
 with_libGTK2_pkgconf
@@ -1778,6 +1782,13 @@ Optional Packages:
 
   --with-libglade2        Enable functionality that relies on the libglade2
                           library [default=check]
+
+  --with-glib-pkgconf     Enable the glib library package via pkg-config and
+                          declare the name by which the glib library package
+                          is known to pkg-config
+
+  --with-glib             Enable functionality that relies on the glib library
+                          [default=check]
 
   --with-LibGnome-pkgconf Enable the LibGnome library package via pkg-config
                           and declare the name by which the LibGnome library
@@ -9754,6 +9765,117 @@ fi
              UnconfiguredLibs=$UnconfiguredLibs" "libglade2
           else
              ConfiguredLibs=$ConfiguredLibs" "libglade2
+          fi
+
+
+
+
+
+# Check whether --with-glib-pkgconf was given.
+if test "${with_glib_pkgconf+set}" = set; then :
+  withval=$with_glib_pkgconf; case $with_glib_pkgconf in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                          use_glib=no
+                                          trace 4 --with-glib-pkgconf disabling glib
+                                          ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                          if test Xglib-2.0 != X; then :
+  with_glib_pkgconf=glib-2.0
+                                                 use_glib=yes
+                                                 trace 4 --with-glib-pkgconf set to default [$with_glib_pkgconf]
+
+else
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Asking to configure glib via pkg-config but configure is unaware of the name of the DOTpc metadata file
+See \`config.log' for more details." "$LINENO" 5; }
+
+
+fi
+                                          ;;
+                        * )               use_glib=yes
+                                          trace 4 --with-glib-pkgconf set to [$with_glib_pkgconf]
+                                          ;;
+                       esac
+
+else
+  if test Xglib-2.0 != X; then :
+  with_glib_pkgconf=glib-2.0
+                              trace 4 No --with-glib-pkgconf specified using default [$with_glib_pkgconf]
+
+
+fi
+
+
+fi
+
+
+# Check whether --with-glib was given.
+if test "${with_glib+set}" = set; then :
+  withval=$with_glib; case $with_glib in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                       trace 4 --with-glib disabling glib libraries
+                                       if test X$use_glib = Xyes ; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Asking to disable glib by --with-glib but --with-glib-pkgconf has specifically enabled it
+See \`config.log' for more details." "$LINENO" 5; }
+
+else
+  use_glib=no
+
+fi
+                                       ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                       trace 4 --with-glib enabling glib libraries
+                                       if test X$use_glib = Xno; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Asking to enable glib by --with-glib but --with-glib-pkgconf has specifically disabled it
+See \`config.log' for more details." "$LINENO" 5; }
+
+else
+  use_glib=yes
+
+fi
+                                       ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                       trace 4 --with-glib checking for glib libraries
+                                       if test X$use_glib = Xyes; then :
+  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-glib asking to check for the libs but --with-glib-pkgconf has specifically enabled it" >&5
+$as_echo "$as_me: WARNING: --with-glib asking to check for the libs but --with-glib-pkgconf has specifically enabled it" >&2;}
+
+else
+  if test X$use_glib = Xno; then :
+  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-glib asking to check for the libs but --with-glib-pkgconf has specifically disabled it" >&5
+$as_echo "$as_me: WARNING: --with-glib asking to check for the libs but --with-glib-pkgconf has specifically disabled it" >&2;}
+
+else
+  use_glib=check
+
+fi
+
+
+fi
+                                       ;;
+                        * )            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-glib set to an unknown option, setting ignored" >&5
+$as_echo "$as_me: WARNING: --with-glib set to an unknown option, setting ignored" >&2;}
+                                       ;;
+                       esac
+
+else
+  trace 5 No --with-glib specified
+
+fi
+
+          KnownLibs=$KnownLibs" "glib
+          with_glib_virtual="no"
+          if ( test X$use_glib = X )
+          then
+             use_glib=check
+             UnconfiguredLibs=$UnconfiguredLibs" "glib
+          else
+             ConfiguredLibs=$ConfiguredLibs" "glib
           fi
 
 

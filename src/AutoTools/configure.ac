@@ -488,6 +488,8 @@ AC_SUBST([FFMPEGSWS_SUPPORT])
 AC_SUBST([FFMPEGUTIL_SUPPORT])
 dnl     Ravl wants FFMPEG as only a single entity (libffmpeg). To support this,
 dnl     this script will (later) define libffmpeg as a virtual package
+AC_SUBST([glib_SUPPORT])
+dnl     Ravl does not use glib so we need not set glib_SUPPORT
 iksemel_RavlLib=libRavlXMPPIksemel
 AC_SUBST([iksemel_SUPPORT])
 libglade2_RavlLib=libRavlLibGlade

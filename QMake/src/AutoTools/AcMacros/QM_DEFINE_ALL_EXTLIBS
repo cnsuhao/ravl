@@ -45,6 +45,7 @@ AC_DEFUN([QM_DEFINE_ALL_EXTLIBS],
           QM_DEFINE_EXTLIB_PC([FreeType2],        [freetype2])
           QM_DEFINE_EXTLIB_PC([iksemel],          [iksemel])
           QM_DEFINE_EXTLIB_PC([libglade2],        [libglade-2.0])
+          QM_DEFINE_EXTLIB_PC([glib],             [glib-2.0])
           QM_DEFINE_EXTLIB_PC([LibGnome],         [libgnome-2.0])
           QM_DEFINE_EXTLIB_PC([libGTK2],          [gtk+-2.0])
           QM_DEFINE_EXTLIB_PC([GTKGLExt],         [gtkglext-1.0])
@@ -628,9 +629,9 @@ dnl
           dnl#
           dnl# Dropped
           dnl#
-          dnl#    CPPUnit DMedia FFTW glib {GNU}ReadLine JavaScript libmpeg
-          dnl#    Meteor1 Perl5 php libptp2 QtTestRunner SQLite3 Sys system
-          dnl#    Video4Linux Xaw Xerces Xt x11
+          dnl#    CPPUnit DMedia FFTW {GNU}ReadLine JavaScript libmpeg Meteor1
+          dnl#    Perl5 php libptp2 QtTestRunner SQLite3 Sys system Video4Linux
+          dnl#    Xaw Xerces Xt x11
           dnl#
          ]
         )
