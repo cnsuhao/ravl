@@ -182,6 +182,8 @@ namespace RavlN {
 
       pollArr.reserve(m_sockets.size());
       zmq_pollitem_t *first = 0;
+      std::vector<SocketDispatcherC::RefT> toGo;
+      toGo.reserve(4);
       while(!m_terminate) {
         if(m_pollListChanged) {
           pollArr.clear();
@@ -191,9 +193,8 @@ namespace RavlN {
           zmq_pollitem_t item;
           for(unsigned i = 0;i < m_sockets.size();i++) {
             if(!m_sockets[i]->IsActive()) {
-              SocketDispatcherC::RefT old =m_sockets[i];
-              old->Clear();
-              Remove(*old);
+              // Put on list to deal with when we're finished.
+              toGo.push_back(m_sockets[i]);
               continue;
             }
 
@@ -204,10 +205,19 @@ namespace RavlN {
               pollArr.push_back(item);
             }
           }
+
           if(pollArr.size() > 0)
             first = &pollArr[0];
           else
             first = 0;
+
+          // Clear out old links.
+          for(unsigned i = 0;i < toGo.size();i++) {
+            toGo[i]->Clear();
+            Remove(*toGo[i]);
+          }
+          toGo.clear();
+
           m_pollListChanged = false;
         }
         double timeToNext = m_timedQueue.ProcessStep();
