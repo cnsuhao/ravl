@@ -220,69 +220,80 @@ namespace RavlN {
 
           m_pollListChanged = false;
         }
+
+        long timeout = -1;
+
         double timeToNext = m_timedQueue.ProcessStep();
         if(timeToNext < 0 || (timeToNext > m_teminateCheckInterval && m_teminateCheckInterval > 0))
           timeToNext = m_teminateCheckInterval;
-        long timeout = -1;
         if(m_teminateCheckInterval >= 0)
           timeout = Round(timeToNext * 1000.0);
 
         if(m_verbose) {
           RavlDebug("Reactor '%s' polling for %u sockets. (Timeout:%u, %f seconds )",Name().data(),(unsigned) pollArr.size(),timeout,timeToNext);
         }
-        int ret = zmq_poll (first, pollArr.size(),timeout);
-        if(m_verbose) {
-          RavlDebug("Reactor '%s' got ready for %d sockets. (Timeout:%u, %f seconds ) ",Name().data(),ret,timeout,timeToNext);
-        }
-
-        if(ret < 0) {
-          int anErrno = zmq_errno ();
-          // Shutting down ?
-          if(anErrno == ETERM) {
-            if(m_verbose) {
-              RavlDebug("Reactor '%s' context shutdown.",Name().data());
-            }
+        // Process all pending events.
+        int pollCount = 0;
+        do {
+          pollCount++;
+          int ret = zmq_poll (first, pollArr.size(),timeout);
+          if(m_verbose) {
+            RavlDebug("Reactor '%s' got ready for %d sockets. (Timeout:%u, %f seconds ) ",Name().data(),ret,timeout,timeToNext);
+          }
+          timeout = 0; // Spin around processing pending events until they're gone.
+          if(ret == 0) {
+            // no more events to process.
             break;
           }
-          if(anErrno == EINTR) {
-            if(m_verbose) {
-              RavlDebug("Reactor '%s' Got interrupted.",Name().data());
+          if(ret < 0) {
+            int anErrno = zmq_errno ();
+            // Shutting down ?
+            if(anErrno == ETERM) {
+              if(m_verbose) {
+                RavlDebug("Reactor '%s' context shutdown.",Name().data());
+              }
+              break;
             }
+            if(anErrno == EINTR) {
+              if(m_verbose) {
+                RavlDebug("Reactor '%s' Got interrupted.",Name().data());
+              }
+              continue;
+            }
+            RavlError("Reactor '%s' poll failed : %s ",Name().data(),zmq_strerror (anErrno));
+            RavlAssertMsg(0,"unexpected error");
             continue;
           }
-          RavlError("Reactor '%s' poll failed : %s ",Name().data(),zmq_strerror (anErrno));
-          RavlAssertMsg(0,"unexpected error");
-          continue;
-        }
-        unsigned i = 0;
-        while(i < pollArr.size() && ret > 0) {
-          // Avoid repeatedly setting up try/catch as it can be expensive.
-          try {
-            for(;i < pollArr.size() && ret > 0;i++) {
-              if(pollArr[i].revents != 0) {
-                if(!inUse[i]->CheckDispatch(pollArr[i].revents)) {
-                  m_pollListChanged = true; // Refresh list.
+          unsigned i = 0;
+          while(i < pollArr.size() && ret > 0) {
+            // Avoid repeatedly setting up try/catch as it can be expensive.
+            try {
+              for(;i < pollArr.size() && ret > 0;i++) {
+                if(pollArr[i].revents != 0) {
+                  if(!inUse[i]->CheckDispatch(pollArr[i].revents)) {
+                    m_pollListChanged = true; // Refresh list.
+                  }
+                  ret--;
                 }
-                ret--;
               }
+            } catch(std::exception &ex) {
+              RavlError("Caught c++ exception %s : %s ",RavlN::TypeName(typeid(ex)),ex.what());
+              RavlAssert(0);
+              i++;
+            } catch(RavlN::ExceptionC &ex) {
+              RavlError("Caught Ravl exception %s : %s ",RavlN::TypeName(typeid(ex)),ex.what());
+              ex.Dump(std::cerr);
+              RavlAssert(0);
+              i++;
+            } catch(...) {
+              // FIXME: Be more informative!
+              RavlError("Caught unknown exception dispatching message. ");
+              RavlAssert(0);
+              i++; // Skip it an go to next.
             }
-          } catch(std::exception &ex) {
-            RavlError("Caught c++ exception %s : %s ",RavlN::TypeName(typeid(ex)),ex.what());
-            RavlAssert(0);
-            i++;
-          } catch(RavlN::ExceptionC &ex) {
-            RavlError("Caught Ravl exception %s : %s ",RavlN::TypeName(typeid(ex)),ex.what());
-            ex.Dump(std::cerr);
-            RavlAssert(0);
-            i++;
-          } catch(...) {
-            // FIXME: Be more informative!
-            RavlError("Caught unknown exception dispatching message. ");
-            RavlAssert(0);
-            i++; // Skip it an go to next.
           }
-        }
-        RavlAssertMsg(ret == 0,"Poll event count doesn't match events found!");
+          RavlAssertMsg(ret == 0,"Poll event count doesn't match events found!");
+        } while(!m_pollListChanged && !m_terminate && pollCount < 100) ;
       }
 
       for(unsigned i = 0;i < m_sockets.size();i++)
