@@ -240,11 +240,11 @@ namespace RavlN {
           if(m_verbose) {
             RavlDebug("Reactor '%s' got ready for %d sockets. (Timeout:%u, %f seconds ) ",Name().data(),ret,timeout,timeToNext);
           }
-          timeout = 0; // Spin around processing pending events until they're gone.
           if(ret == 0) {
             // no more events to process.
             break;
           }
+          timeout = 0; // Spin around processing pending events until they're gone.
           if(ret < 0) {
             int anErrno = zmq_errno ();
             // Shutting down ?
