@@ -3634,21 +3634,51 @@ case $host_os in *\ *) host_os=`echo "$host_os" | sed 's/ /-/g'`;; esac
 
           if ( test "x$AR" != x )
           then
-             # User has supplied their own setting, record this
-             USER_AR=$AR
+             # User has supplied their own setting, is it usable?
+             if ( test -x "$AR" )
+             then
+                # It is an executable, remember the user setting
+                USER_AR=$AR
+             else
+                # The user setting is unusable
+                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Setting for AR is incorrect
+See \`config.log' for more details" "$LINENO" 5; }
+             fi
           fi
 
 
           if ( test "x$AWK" != x )
           then
-             # User has supplied their own setting, record this
-             USER_AWK=$AWK
+             # User has supplied their own setting, is it usable?
+             if ( test -x "$AWK" )
+             then
+                # It is an executable, remember the user setting
+                USER_AWK=$AWK
+             else
+                # The user setting is unusable
+                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Setting for AWK is incorrect
+See \`config.log' for more details" "$LINENO" 5; }
+             fi
           fi
 
                     if ( test "x$CC" != x )
           then
-             # User has supplied their own setting, record this
-             USER_CC=$CC
+             # User has supplied their own setting, is it usable?
+             if ( test -x "$CC" )
+             then
+                # It is an executable, remember the user setting
+                USER_CC=$CC
+             else
+                # The user setting is unusable
+                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Setting for CC is incorrect
+See \`config.log' for more details" "$LINENO" 5; }
+             fi
           fi
 
 
@@ -3657,215 +3687,525 @@ case $host_os in *\ *) host_os=`echo "$host_os" | sed 's/ /-/g'`;; esac
 
                     if ( test "x$CCPP" != x )
           then
-             # User has supplied their own setting, record this
-             USER_CCPP=$CCPP
+             # User has supplied their own setting, is it usable?
+             if ( test -x "$CCPP" )
+             then
+                # It is an executable, remember the user setting
+                USER_CCPP=$CCPP
+             else
+                # The user setting is unusable
+                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Setting for CCPP is incorrect
+See \`config.log' for more details" "$LINENO" 5; }
+             fi
           fi
 
 
           if ( test "x$CHGRP" != x )
           then
-             # User has supplied their own setting, record this
-             USER_CHGRP=$CHGRP
+             # User has supplied their own setting, is it usable?
+             if ( test -x "$CHGRP" )
+             then
+                # It is an executable, remember the user setting
+                USER_CHGRP=$CHGRP
+             else
+                # The user setting is unusable
+                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Setting for CHGRP is incorrect
+See \`config.log' for more details" "$LINENO" 5; }
+             fi
           fi
 
 
           if ( test "x$CHMOD" != x )
           then
-             # User has supplied their own setting, record this
-             USER_CHMOD=$CHMOD
+             # User has supplied their own setting, is it usable?
+             if ( test -x "$CHMOD" )
+             then
+                # It is an executable, remember the user setting
+                USER_CHMOD=$CHMOD
+             else
+                # The user setting is unusable
+                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Setting for CHMOD is incorrect
+See \`config.log' for more details" "$LINENO" 5; }
+             fi
           fi
 
 
           if ( test "x$CHOWN" != x )
           then
-             # User has supplied their own setting, record this
-             USER_CHOWN=$CHOWN
+             # User has supplied their own setting, is it usable?
+             if ( test -x "$CHOWN" )
+             then
+                # It is an executable, remember the user setting
+                USER_CHOWN=$CHOWN
+             else
+                # The user setting is unusable
+                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Setting for CHOWN is incorrect
+See \`config.log' for more details" "$LINENO" 5; }
+             fi
           fi
 
 
           if ( test "x$CP" != x )
           then
-             # User has supplied their own setting, record this
-             USER_CP=$CP
+             # User has supplied their own setting, is it usable?
+             if ( test -x "$CP" )
+             then
+                # It is an executable, remember the user setting
+                USER_CP=$CP
+             else
+                # The user setting is unusable
+                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Setting for CP is incorrect
+See \`config.log' for more details" "$LINENO" 5; }
+             fi
           fi
 
                     if ( test "x$CXX" != x )
           then
-             # User has supplied their own setting, record this
-             USER_CXX=$CXX
+             # User has supplied their own setting, is it usable?
+             if ( test -x "$CXX" )
+             then
+                # It is an executable, remember the user setting
+                USER_CXX=$CXX
+             else
+                # The user setting is unusable
+                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Setting for CXX is incorrect
+See \`config.log' for more details" "$LINENO" 5; }
+             fi
           fi
 
                     if ( test "x$CXXPP" != x )
           then
-             # User has supplied their own setting, record this
-             USER_CXXPP=$CXXPP
+             # User has supplied their own setting, is it usable?
+             if ( test -x "$CXXPP" )
+             then
+                # It is an executable, remember the user setting
+                USER_CXXPP=$CXXPP
+             else
+                # The user setting is unusable
+                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Setting for CXXPP is incorrect
+See \`config.log' for more details" "$LINENO" 5; }
+             fi
           fi
 
 
           if ( test "x$EXPR" != x )
           then
-             # User has supplied their own setting, record this
-             USER_EXPR=$EXPR
+             # User has supplied their own setting, is it usable?
+             if ( test -x "$EXPR" )
+             then
+                # It is an executable, remember the user setting
+                USER_EXPR=$EXPR
+             else
+                # The user setting is unusable
+                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Setting for EXPR is incorrect
+See \`config.log' for more details" "$LINENO" 5; }
+             fi
           fi
 
 
           if ( test "x$GREP" != x )
           then
-             # User has supplied their own setting, record this
-             USER_GREP=$GREP
+             # User has supplied their own setting, is it usable?
+             if ( test -x "$GREP" )
+             then
+                # It is an executable, remember the user setting
+                USER_GREP=$GREP
+             else
+                # The user setting is unusable
+                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Setting for GREP is incorrect
+See \`config.log' for more details" "$LINENO" 5; }
+             fi
           fi
 
 
           if ( test "x$INSTALL" != x )
           then
-             # User has supplied their own setting, record this
-             USER_INSTALL=$INSTALL
+             # User has supplied their own setting, is it usable?
+             if ( test -x "$INSTALL" )
+             then
+                # It is an executable, remember the user setting
+                USER_INSTALL=$INSTALL
+             else
+                # The user setting is unusable
+                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Setting for INSTALL is incorrect
+See \`config.log' for more details" "$LINENO" 5; }
+             fi
           fi
 
 
           if ( test "x$INSTALL_DATA" != x )
           then
-             # User has supplied their own setting, record this
-             USER_INSTALL_DATA=$INSTALL_DATA
+             # User has supplied their own setting, is it usable?
+             if ( test -x "$INSTALL_DATA" )
+             then
+                # It is an executable, remember the user setting
+                USER_INSTALL_DATA=$INSTALL_DATA
+             else
+                # The user setting is unusable
+                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Setting for INSTALL_DATA is incorrect
+See \`config.log' for more details" "$LINENO" 5; }
+             fi
           fi
 
 
           if ( test "x$INSTALL_PROGRAM" != x )
           then
-             # User has supplied their own setting, record this
-             USER_INSTALL_PROGRAM=$INSTALL_PROGRAM
+             # User has supplied their own setting, is it usable?
+             if ( test -x "$INSTALL_PROGRAM" )
+             then
+                # It is an executable, remember the user setting
+                USER_INSTALL_PROGRAM=$INSTALL_PROGRAM
+             else
+                # The user setting is unusable
+                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Setting for INSTALL_PROGRAM is incorrect
+See \`config.log' for more details" "$LINENO" 5; }
+             fi
           fi
 
 
           if ( test "x$INSTALL_SCRIPT" != x )
           then
-             # User has supplied their own setting, record this
-             USER_INSTALL_SCRIPT=$INSTALL_SCRIPT
+             # User has supplied their own setting, is it usable?
+             if ( test -x "$INSTALL_SCRIPT" )
+             then
+                # It is an executable, remember the user setting
+                USER_INSTALL_SCRIPT=$INSTALL_SCRIPT
+             else
+                # The user setting is unusable
+                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Setting for INSTALL_SCRIPT is incorrect
+See \`config.log' for more details" "$LINENO" 5; }
+             fi
           fi
 
 
           if ( test "x$LD" != x )
           then
-             # User has supplied their own setting, record this
-             USER_LD=$LD
+             # User has supplied their own setting, is it usable?
+             if ( test -x "$LD" )
+             then
+                # It is an executable, remember the user setting
+                USER_LD=$LD
+             else
+                # The user setting is unusable
+                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Setting for LD is incorrect
+See \`config.log' for more details" "$LINENO" 5; }
+             fi
           fi
 
 
           if ( test "x$LEX" != x )
           then
-             # User has supplied their own setting, record this
-             USER_LEX=$LEX
+             # User has supplied their own setting, is it usable?
+             if ( test -x "$LEX" )
+             then
+                # It is an executable, remember the user setting
+                USER_LEX=$LEX
+             else
+                # The user setting is unusable
+                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Setting for LEX is incorrect
+See \`config.log' for more details" "$LINENO" 5; }
+             fi
           fi
 
 
           if ( test "x$LEXLIB" != x )
           then
-             # User has supplied their own setting of LEXLIB, record this
-             USER_LEXLIB=$LEXLIB
+             # User has supplied their own setting, is it usable?
+             if ( test -x "$LEXLIB" )
+             then
+                # It is an executable, remember the user setting
+                USER_LEXLIB=$LEXLIB
+             else
+                # The user setting is unusable
+                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Setting for LEXLIB is incorrect
+See \`config.log' for more details" "$LINENO" 5; }
+             fi
           fi
 
 
           if ( test "x$LN_S" != x )
           then
-             # User has supplied their own setting, record this
-             USER_LN_S=$LN_S
+             # User has supplied their own setting, is it usable?
+             if ( test -x "$LN_S" )
+             then
+                # It is an executable, remember the user setting
+                USER_LN_S=$LN_S
+             else
+                # The user setting is unusable
+                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Setting for LN_S is incorrect
+See \`config.log' for more details" "$LINENO" 5; }
+             fi
           fi
 
 
           if ( test "x$MAKE" != x )
           then
-             # User has supplied their own setting, record this
-             USER_MAKE=$MAKE
+             # User has supplied their own setting, is it usable?
+             if ( test -x "$MAKE" )
+             then
+                # It is an executable, remember the user setting
+                USER_MAKE=$MAKE
+             else
+                # The user setting is unusable
+                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Setting for MAKE is incorrect
+See \`config.log' for more details" "$LINENO" 5; }
+             fi
           fi
 
 
           if ( test "x$MKDIR_P" != x )
           then
-             # User has supplied their own setting, record this
-             USER_MKDIR_P=$MKDIR_P
+             # User has supplied their own setting, is it usable?
+             if ( test -x "$MKDIR_P" )
+             then
+                # It is an executable, remember the user setting
+                USER_MKDIR_P=$MKDIR_P
+             else
+                # The user setting is unusable
+                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Setting for MKDIR_P is incorrect
+See \`config.log' for more details" "$LINENO" 5; }
+             fi
           fi
 
 
           if ( test "x$NVCC" != x )
           then
-             # User has supplied their own setting, record this
-             USER_NVCC=$NVCC
+             # User has supplied their own setting, is it usable?
+             if ( test -x "$NVCC" )
+             then
+                # It is an executable, remember the user setting
+                USER_NVCC=$NVCC
+             else
+                # The user setting is unusable
+                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Setting for NVCC is incorrect
+See \`config.log' for more details" "$LINENO" 5; }
+             fi
           fi
 
 
           if ( test "x$PAGER" != x )
           then
-             # User has supplied their own setting, record this
-             USER_PAGER=$PAGER
+             # User has supplied their own setting, is it usable?
+             if ( test -x "$PAGER" )
+             then
+                # It is an executable, remember the user setting
+                USER_PAGER=$PAGER
+             else
+                # The user setting is unusable
+                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Setting for PAGER is incorrect
+See \`config.log' for more details" "$LINENO" 5; }
+             fi
           fi
 
 
           if ( test "x$PERL" != x )
           then
-             # User has supplied their own setting, record this
-             USER_PERL=$PERL
+             # User has supplied their own setting, is it usable?
+             if ( test -x "$PERL" )
+             then
+                # It is an executable, remember the user setting
+                USER_PERL=$PERL
+             else
+                # The user setting is unusable
+                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Setting for PERL is incorrect
+See \`config.log' for more details" "$LINENO" 5; }
+             fi
           fi
 
                     if ( test "x$PKG_CONFIG" != x )
           then
-             # User has supplied their own setting, record this
-             USER_PKG_CONFIG=$PKG_CONFIG
+             # User has supplied their own setting, is it usable?
+             if ( test -x "$PKG_CONFIG" )
+             then
+                # It is an executable, remember the user setting
+                USER_PKG_CONFIG=$PKG_CONFIG
+             else
+                # The user setting is unusable
+                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Setting for PKG_CONFIG is incorrect
+See \`config.log' for more details" "$LINENO" 5; }
+             fi
           fi
 
 
           if ( test "x$RANLIB" != x )
           then
-             # User has supplied their own setting, record this
-             USER_RANLIB=$RANLIB
+             # User has supplied their own setting, is it usable?
+             if ( test -x "$RANLIB" )
+             then
+                # It is an executable, remember the user setting
+                USER_RANLIB=$RANLIB
+             else
+                # The user setting is unusable
+                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Setting for RANLIB is incorrect
+See \`config.log' for more details" "$LINENO" 5; }
+             fi
           fi
 
 
           if ( test "x$RM" != x )
           then
-             # User has supplied their own setting, record this
-             USER_RM=$RM
+             # User has supplied their own setting, is it usable?
+             if ( test -x "$RM" )
+             then
+                # It is an executable, remember the user setting
+                USER_RM=$RM
+             else
+                # The user setting is unusable
+                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Setting for RM is incorrect
+See \`config.log' for more details" "$LINENO" 5; }
+             fi
           fi
 
 
           if ( test "x$SORT" != x )
           then
-             # User has supplied their own setting, record this
-             USER_SORT=$SORT
+             # User has supplied their own setting, is it usable?
+             if ( test -x "$SORT" )
+             then
+                # It is an executable, remember the user setting
+                USER_SORT=$SORT
+             else
+                # The user setting is unusable
+                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Setting for SORT is incorrect
+See \`config.log' for more details" "$LINENO" 5; }
+             fi
           fi
 
 
           if ( test "x$SYNC" != x )
           then
-             # User has supplied their own setting, record this
-             USER_SYNC=$SYNC
+             # User has supplied their own setting, is it usable?
+             if ( test -x "$SYNC" )
+             then
+                # It is an executable, remember the user setting
+                USER_SYNC=$SYNC
+             else
+                # The user setting is unusable
+                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Setting for SYNC is incorrect
+See \`config.log' for more details" "$LINENO" 5; }
+             fi
           fi
 
 
           if ( test "x$TOUCH" != x )
           then
-             # User has supplied their own setting, record this
-             USER_TOUCH=$TOUCH
+             # User has supplied their own setting, is it usable?
+             if ( test -x "$TOUCH" )
+             then
+                # It is an executable, remember the user setting
+                USER_TOUCH=$TOUCH
+             else
+                # The user setting is unusable
+                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Setting for TOUCH is incorrect
+See \`config.log' for more details" "$LINENO" 5; }
+             fi
           fi
 
 
           if ( test "x$TR" != x )
           then
-             # User has supplied their own setting, record this
-             USER_TR=$TR
+             # User has supplied their own setting, is it usable?
+             if ( test -x "$TR" )
+             then
+                # It is an executable, remember the user setting
+                USER_TR=$TR
+             else
+                # The user setting is unusable
+                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Setting for TR is incorrect
+See \`config.log' for more details" "$LINENO" 5; }
+             fi
           fi
 
 
           if ( test "x$YACC" != x )
           then
-             # User has supplied their own setting, record this
-             USER_YACC=$YACC
+             # User has supplied their own setting, is it usable?
+             if ( test -x "$YACC" )
+             then
+                # It is an executable, remember the user setting
+                USER_YACC=$YACC
+             else
+                # The user setting is unusable
+                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Setting for YACC is incorrect
+See \`config.log' for more details" "$LINENO" 5; }
+             fi
           fi
 
 
           if ( test "x$XARGS" != x )
           then
-             # User has supplied their own setting, record this
-             USER_XARGS=$XARGS
+             # User has supplied their own setting, is it usable?
+             if ( test -x "$XARGS" )
+             then
+                # It is an executable, remember the user setting
+                USER_XARGS=$XARGS
+             else
+                # The user setting is unusable
+                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Setting for XARGS is incorrect
+See \`config.log' for more details" "$LINENO" 5; }
+             fi
           fi
 
 
