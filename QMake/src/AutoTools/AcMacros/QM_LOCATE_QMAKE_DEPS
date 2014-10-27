@@ -96,6 +96,10 @@ AC_DEFUN([QM_LOCATE_QMAKE_DEPS],
           dnl# of its specifying variable (e.g. touch and TOUCH for that 
           dnl# particular utility).
           dnl#
+          dnl# You also need to add code into QM_READ_USER_ENV so that the
+          dnl# USER_<CMD> variable has been primed by any setting from the
+          dnl# user. Please refer to the relevant comment within that macro.
+          dnl#
 
           # First check for those programs that GNU coding standards regard as
           # safe to use in a makefile if they are employed via make variables
