@@ -5,8 +5,6 @@
 # see http://www.gnu.org/copyleft/lesser.html
 # file-header-ends-here
 
-$(error LibMPEG2 not currently supported)
-
 ifndef LIBMPEG2_DEF
 
   LIBMPEG2_DEF=1
