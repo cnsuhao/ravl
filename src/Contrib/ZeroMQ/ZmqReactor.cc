@@ -32,12 +32,13 @@ namespace RavlN {
 
     //! Default constructor.
     ReactorC::ReactorC(ContextC &context)
-     : m_teminateCheckInterval(5.0),
+     : m_zmqContext(&context),
+       m_teminateCheckInterval(5.0),
        m_pollListChanged(true),
        m_verbose(false),
        m_timedQueue(false)
     {
-      Init(context);
+      Init();
     }
 
 
@@ -49,9 +50,8 @@ namespace RavlN {
        m_verbose(factory.AttributeBool("verbose",DODEBUG)),
        m_timedQueue(false)
     {
-      ContextC::RefT context;
-      factory.UseComponent("ZmqContext",context);
-      Init(*context);
+      factory.UseComponent("ZmqContext",m_zmqContext);
+      Init();
     }
 
     //! Write to an ostream
@@ -69,14 +69,16 @@ namespace RavlN {
     }
 
     //! Do some initial setup
-    void ReactorC::Init(ContextC &context)
+    void ReactorC::Init()
     {
-      m_wakeup = new ZmqN::SocketC(context,ZST_PAIR);
+      m_wakeup = new ZmqN::SocketC(*m_zmqContext,ZST_PAIR);
+      m_wakeup->SetLinger(0.0);
       RavlN::StringC sktId;
       sktId.form("inproc://Reactor-%p",this);
       m_wakeup->Bind(sktId);
 
-      ZmqN::SocketC::RefT wakeupLocal = new ZmqN::SocketC(context,ZST_PAIR);
+      ZmqN::SocketC::RefT wakeupLocal = new ZmqN::SocketC(*m_zmqContext,ZST_PAIR);
+      wakeupLocal->SetLinger(0.0);
       wakeupLocal->Connect(sktId);
       CallOnRead(*wakeupLocal,RavlN::Trigger(&DiscardMessage,wakeupLocal));
 
@@ -180,6 +182,8 @@ namespace RavlN {
 
       pollArr.reserve(m_sockets.size());
       zmq_pollitem_t *first = 0;
+      std::vector<SocketDispatcherC::RefT> toGo;
+      toGo.reserve(4);
       while(!m_terminate) {
         if(m_pollListChanged) {
           pollArr.clear();
@@ -188,6 +192,12 @@ namespace RavlN {
           inUse.reserve(m_sockets.size());
           zmq_pollitem_t item;
           for(unsigned i = 0;i < m_sockets.size();i++) {
+            if(!m_sockets[i]->IsActive()) {
+              // Put on list to deal with when we're finished.
+              toGo.push_back(m_sockets[i]);
+              continue;
+            }
+
             // Just for paranoia zero the structure.
             memset(&item,0,sizeof(zmq_pollitem_t));
             if(m_sockets[i]->SetupPoll(item)) {
@@ -195,82 +205,116 @@ namespace RavlN {
               pollArr.push_back(item);
             }
           }
+
           if(pollArr.size() > 0)
             first = &pollArr[0];
           else
             first = 0;
+
+          // Clear out old links.
+          for(unsigned i = 0;i < toGo.size();i++) {
+            toGo[i]->Clear();
+            Remove(*toGo[i]);
+          }
+          toGo.clear();
+
           m_pollListChanged = false;
         }
+
+        long timeout = -1;
+
         double timeToNext = m_timedQueue.ProcessStep();
         if(timeToNext < 0 || (timeToNext > m_teminateCheckInterval && m_teminateCheckInterval > 0))
           timeToNext = m_teminateCheckInterval;
-        long timeout = -1;
         if(m_teminateCheckInterval >= 0)
           timeout = Round(timeToNext * 1000.0);
 
         if(m_verbose) {
           RavlDebug("Reactor '%s' polling for %u sockets. (Timeout:%u, %f seconds )",Name().data(),(unsigned) pollArr.size(),timeout,timeToNext);
         }
-        int ret = zmq_poll (first, pollArr.size(),timeout);
-        if(m_verbose) {
-          RavlDebug("Reactor '%s' got ready for %d sockets. (Timeout:%u, %f seconds ) ",Name().data(),ret,timeout,timeToNext);
-        }
-
-        if(ret < 0) {
-          int anErrno = zmq_errno ();
-          // Shutting down ?
-          if(anErrno == ETERM) {
-            if(m_verbose) {
-              RavlDebug("Reactor '%s' context shutdown.",Name().data());
-            }
+        // Process all pending events.
+        int pollCount = 0;
+        do {
+          pollCount++;
+          int ret = zmq_poll (first, pollArr.size(),timeout);
+          if(m_verbose) {
+            RavlDebug("Reactor '%s' got ready for %d sockets. (Timeout:%u, %f seconds ) ",Name().data(),ret,timeout,timeToNext);
+          }
+          timeout = 0; // Spin around processing pending events until they're gone.
+          if(ret == 0) {
+            // no more events to process.
             break;
           }
-          if(anErrno == EINTR) {
-            if(m_verbose) {
-              RavlDebug("Reactor '%s' Got interrupted.",Name().data());
+          if(ret < 0) {
+            int anErrno = zmq_errno ();
+            // Shutting down ?
+            if(anErrno == ETERM) {
+              if(m_verbose) {
+                RavlDebug("Reactor '%s' context shutdown.",Name().data());
+              }
+              break;
             }
+            if(anErrno == EINTR) {
+              if(m_verbose) {
+                RavlDebug("Reactor '%s' Got interrupted.",Name().data());
+              }
+              continue;
+            }
+            RavlError("Reactor '%s' poll failed : %s ",Name().data(),zmq_strerror (anErrno));
+            RavlAssertMsg(0,"unexpected error");
             continue;
           }
-          RavlError("Reactor '%s' poll failed : %s ",Name().data(),zmq_strerror (anErrno));
-          RavlAssertMsg(0,"unexpected error");
-          continue;
-        }
-        unsigned i = 0;
-        while(i < pollArr.size() && ret > 0) {
-          // Avoid repeatedly setting up try/catch as it can be expensive.
-          try {
-            for(;i < pollArr.size() && ret > 0;i++) {
-              if(pollArr[i].revents != 0) {
-                if(!inUse[i]->CheckDispatch(pollArr[i].revents)) {
-                  m_pollListChanged = true; // Refresh list.
+          unsigned i = 0;
+          while(i < pollArr.size() && ret > 0) {
+            // Avoid repeatedly setting up try/catch as it can be expensive.
+            try {
+              for(;i < pollArr.size() && ret > 0;i++) {
+                if(pollArr[i].revents != 0) {
+                  if(!inUse[i]->CheckDispatch(pollArr[i].revents)) {
+                    m_pollListChanged = true; // Refresh list.
+                  }
+                  ret--;
                 }
-                ret--;
               }
+            } catch(std::exception &ex) {
+              RavlError("Caught c++ exception %s : %s ",RavlN::TypeName(typeid(ex)),ex.what());
+              RavlAssert(0);
+              i++;
+            } catch(RavlN::ExceptionC &ex) {
+              RavlError("Caught Ravl exception %s : %s ",RavlN::TypeName(typeid(ex)),ex.what());
+              ex.Dump(std::cerr);
+              RavlAssert(0);
+              i++;
+            } catch(...) {
+              // FIXME: Be more informative!
+              RavlError("Caught unknown exception dispatching message. ");
+              RavlAssert(0);
+              i++; // Skip it an go to next.
             }
-          } catch(std::exception &ex) {
-            RavlError("Caught c++ exception %s : %s ",RavlN::TypeName(typeid(ex)),ex.what());
-            RavlAssert(0);
-            i++;
-          } catch(RavlN::ExceptionC &ex) {
-            RavlError("Caught Ravl exception %s : %s ",RavlN::TypeName(typeid(ex)),ex.what());
-            ex.Dump(std::cerr);
-            RavlAssert(0);
-            i++;
-          } catch(...) {
-            // FIXME: Be more informative!
-            RavlError("Caught unknown exception dispatching message. ");
-            RavlAssert(0);
-            i++; // Skip it an go to next.
           }
-        }
-        RavlAssertMsg(ret == 0,"Poll event count doesn't match events found!");
+          RavlAssertMsg(ret == 0,"Poll event count doesn't match events found!");
+        } while(!m_pollListChanged && !m_terminate && pollCount < 100) ;
       }
 
+      for(unsigned i = 0;i < m_sockets.size();i++)
+        m_sockets[i]->Clear();
+      m_sockets.clear();
       OnFinish();
 
       if(m_verbose) {
         RavlDebug("Shutdown of reactor '%s' complete.",Name().data());
       }
+      return true;
+    }
+
+    //! Shutdown service
+    bool ReactorC::Shutdown()
+    {
+      ServiceThreadC::Shutdown();
+      RavlN::MutexLockC lock(m_accessWakeup);
+      RavlAssert(m_wakeup.IsValid());
+      m_wakeup->Send(*m_wakeMsg,ZSB_NOBLOCK);
+      lock.Unlock();
       return true;
     }
 
@@ -358,7 +402,6 @@ namespace RavlN {
     //! Called when owner handles drop to zero.
     void ReactorC::ZeroOwners() {
       m_terminate = true;
-      m_wakeup->Send(*m_wakeMsg);
       ServiceThreadC::ZeroOwners();
     }
 

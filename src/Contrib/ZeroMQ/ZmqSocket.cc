@@ -111,6 +111,7 @@ namespace RavlN {
         RavlError("Failed to create socket: %s ",zmq_strerror (zmq_errno ()));
         throw ExceptionOperationFailedC("Failed to create socket. ");
       }
+      SetLinger(2.0);
     }
 
 
@@ -132,6 +133,8 @@ namespace RavlN {
         RavlError("Failed to create socket '%s' in %s ",zmq_strerror (zmq_errno ()),context.Path().c_str());
         throw ExceptionOperationFailedC("Failed to create socket. ");
       }
+      // Setup a default linger period.
+      SetLinger(context.AttributeReal("linger",2.0));
 
       // Bind if required.
       StringC defaultBind = context.AttributeString("bind","");
@@ -223,6 +226,7 @@ namespace RavlN {
     {
       if(m_socket != 0)
         zmq_close (m_socket);
+      ONDEBUG(RavlDebug("Socket %s destructing.",Name().c_str()));
     }
 
     //! Write to an ostream
@@ -568,7 +572,7 @@ namespace RavlN {
           int anErrno = zmq_errno();
           if(i == 0 && block == ZSB_NOBLOCK && (anErrno == EAGAIN || anErrno == EINTR))
             return false;
-          RavlError("Send failed : %s   flags=%x errno=%d ",zmq_strerror (anErrno),flags,anErrno);
+          RavlError("Send failed : %s   flags=%x errno=%d in %s ",zmq_strerror (anErrno),flags,anErrno,Name().c_str());
           zmq_msg_close(&zmsg);
 #if 0
           throw ExceptionOperationFailedC("Send failed. ");

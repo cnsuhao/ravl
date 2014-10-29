@@ -111,6 +111,9 @@ namespace RavlN {
       //! Write out message in human readable form.
       void Dump(std::ostream &strm) const;
 
+      //! Dump part of message
+      StringC DumpPart(int part,int maxLen) const;
+
       //! Handle to message.
       typedef SmartPtrC<MessageC> RefT;
     protected:

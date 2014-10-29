@@ -136,6 +136,23 @@ namespace RavlN {
 
     }
 
+    //! Dump part of message as text
+    StringC MessageC::DumpPart(int part,int maxLen) const
+    {
+      RavlAssert(part >= 0);
+      if(Parts().size() <=(unsigned) part) {
+        return "*no part*";
+      }
+      const SArray1dC<char> &arr = Parts()[part];
+      if(arr.Size() == 0)
+        return "";
+      if(arr.Size() < maxLen)
+        return StringC(arr.Size(),&(arr[0]));
+      StringC ret(maxLen,&arr[0]);
+      ret += (char) 0;
+      return ret;
+    }
+
     //! Dump human readable version of message
     std::ostream &operator<<(std::ostream &strm,const MessageC &msg)
     {
