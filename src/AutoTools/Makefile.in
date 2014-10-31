@@ -368,16 +368,14 @@ ifeq ($(STAMP_SINGLE),VER)
                  then \
                     $(RM) $(ABS_DESTDIR)$(libdir)/libRavl.$(SHAREDEXT).$(PROJECT_MAJOR) ; \
                  fi ; \
-                 cd $(ABS_DESTDIR)$(libdir); $(LN_S) libRavl$(STAMP_SINGLE_EXT) libRavl.$(SHAREDEXT).$(PROJECT_MAJOR) ; \
-                 fi
+                 cd $(ABS_DESTDIR)$(libdir); $(LN_S) libRavl$(STAMP_SINGLE_EXT) libRavl.$(SHAREDEXT).$(PROJECT_MAJOR)
 endif
 ifneq ($(STAMP_SINGLE),NO)
 	$(SHOWIT)if [ -h $(ABS_DESTDIR)$(libdir)/libRavl.$(SHAREDEXT) ] || [ -f $(ABS_DESTDIR)$(libdir)/libRavl.$(SHAREDEXT) ] ; \
                  then \
                     $(RM) $(ABS_DESTDIR)$(libdir)/libRavl.$(SHAREDEXT) ; \
                  fi ; \
-                 cd $(ABS_DESTDIR)$(libdir); $(LN_S) libRavl$(STAMP_SINGLE_EXT) libRavl.$(SHAREDEXT) ; \
-                 fi
+                 cd $(ABS_DESTDIR)$(libdir); $(LN_S) libRavl$(STAMP_SINGLE_EXT) libRavl.$(SHAREDEXT)
 endif
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) insMustLinks recurse
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=opt SHAREDBUILD=1 singlesharedSetRootStaged
