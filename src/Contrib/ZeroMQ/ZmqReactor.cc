@@ -338,10 +338,7 @@ namespace RavlN {
     // be used for cancelling it.
     UIntT ReactorC::Schedule(const TriggerC &se)
     {
-      UIntT ret = m_timedQueue.Schedule(0,se);
-      RavlN::MutexLockC lock(m_accessWakeup);
-      m_wakeup->Send(*m_wakeMsg);
-      return ret;
+      return SendWakeForTimeQueue(m_timedQueue.Schedule(0,se));
     }
 
     //! Schedule event for running after time 't' (in seconds).
@@ -350,10 +347,7 @@ namespace RavlN {
     // be used for cancelling it.
     UIntT ReactorC::Schedule(RealT t,const TriggerC &se,float period)
     {
-      UIntT ret = m_timedQueue.Schedule(t,se,period);
-      RavlN::MutexLockC lock(m_accessWakeup);
-      m_wakeup->Send(*m_wakeMsg);
-      return ret;
+      return SendWakeForTimeQueue(m_timedQueue.Schedule(t,se,period));
     }
 
     //! Schedule event for running.
@@ -362,10 +356,7 @@ namespace RavlN {
     // be used for cancelling it.
     UIntT ReactorC::Schedule(const DateC &at,const TriggerC &se,float period)
     {
-      UIntT ret = m_timedQueue.Schedule(at,se,period);
-      RavlN::MutexLockC lock(m_accessWakeup);
-      m_wakeup->Send(*m_wakeMsg);
-      return ret;
+      return SendWakeForTimeQueue(m_timedQueue.Schedule(at,se,period));
     }
 
     //! Schedule event for running periodically.
@@ -374,10 +365,15 @@ namespace RavlN {
     // be used for cancelling it.
     UIntT ReactorC::SchedulePeriodic(const TriggerC &se,float period)
     {
-      UIntT ret = m_timedQueue.SchedulePeriodic(se,period);
+      return SendWakeForTimeQueue(m_timedQueue.SchedulePeriodic(se,period));
+    }
+
+    //! Send wake up event for timed event queue.
+    UIntT ReactorC::SendWakeForTimeQueue(UIntT eventId)
+    {
       RavlN::MutexLockC lock(m_accessWakeup);
-      m_wakeup->Send(*m_wakeMsg);
-      return ret;
+      m_wakeup->Send(*m_wakeMsg,ZSB_NOBLOCK); // If this fails there is already one queued.
+      return eventId;
     }
 
     //! Change period of event.
@@ -393,7 +389,6 @@ namespace RavlN {
     // it was run.
     bool ReactorC::Cancel(UIntT eventID)
     {
-
       return m_timedQueue.Cancel(eventID);
     }
 

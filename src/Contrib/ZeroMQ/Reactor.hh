@@ -124,6 +124,9 @@ namespace RavlN {
       //! Called when loop is exiting.
       virtual bool OnFinish();
 
+      //! Send wake up event for timed event queue.
+      UIntT SendWakeForTimeQueue(UIntT eventId);
+
       RavlN::ZmqN::ContextC::RefT m_zmqContext;
 
       std::vector<SocketDispatcherC::RefT> m_sockets;
