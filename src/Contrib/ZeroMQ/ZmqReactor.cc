@@ -310,7 +310,7 @@ namespace RavlN {
       ServiceThreadC::Shutdown();
       RavlN::MutexLockC lock(m_accessWakeup);
       RavlAssert(m_wakeup.IsValid());
-      if(!m_wakeScheduled) {
+      if(!m_wakeScheduled && m_wakeup.IsValid()) {
         m_wakeScheduled = true;
         m_wakeup->Send(*m_wakeMsg,ZSB_NOBLOCK);
       }
