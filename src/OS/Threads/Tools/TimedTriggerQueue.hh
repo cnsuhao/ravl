@@ -7,7 +7,6 @@
 #ifndef RAVL_TIMEDTRIGGERQUEUE_HEADER
 #define RAVL_TIMEDTRIGGERQUEUE_HEADER 1
 /////////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! file="Ravl/OS/Threads/Tools/TimedTriggerQueue.hh"
 //! lib=RavlThreads
 //! docentry="Ravl.API.OS.Time"
@@ -23,6 +22,7 @@
 #include "Ravl/Threads/ThreadEvent.hh"
 #include "Ravl/Calls.hh"
 #include "Ravl/SmartLayerPtr.hh"
+#include <vector>
 
 // The new timed trigger code doesn't rely the un*x select system call,
 // but gives less accurate timing.  
@@ -67,6 +67,12 @@ namespace RavlN
     // Returns an ID for the event, which can
     // be used for cancelling it.
 
+    UIntT ScheduleIdle(const TriggerC &se);
+    //: Schedule event for running periodically when otherwise idle.
+    // Thread safe.
+    // Returns an ID for the event, which can
+    // be used for cancelling it.
+
     bool Cancel(UIntT eventID);
     //: Cancel pending event.
     // Will return TRUE if event in cancelled before
@@ -98,6 +104,10 @@ namespace RavlN
     //: Callback reference counter ptr to class
 
   protected:
+    UIntT AllocateId();
+    //: Allocate id,
+    // Mutex access must be held on call.
+
     bool Process();
     //: Process event queue.
 
@@ -109,6 +119,8 @@ namespace RavlN
     UIntT eventCount;
     PriQueueC<DateC,UIntT> schedule;
     HashC<UIntT,Tuple2C<TriggerC,float> > events;
+    int m_idlePlace;
+    std::vector<UIntT> m_onIdle;
     bool done;
     // Queue fd's
     SemaphoreC semaSched;
@@ -178,6 +190,13 @@ namespace RavlN
     // Thread safe.
     // Returns an ID for the event, which can
     // be used for cancelling it.  The returned ID never has the value 0, so it may be used to flag not set.
+
+    UIntT ScheduleIdle(const TriggerC &se)
+    { return Body().ScheduleIdle(se); }
+    //: Schedule event for running periodically when otherwise idle.
+    // Thread safe.
+    // Returns an ID for the event, which can
+    // be used for cancelling it.
 
     bool Cancel(UIntT eventID)
     { return Body().Cancel(eventID); }

@@ -70,6 +70,12 @@ namespace RavlN {
       // be used for cancelling it. The returned ID never has the value 0, so it may be used to flag not set.
       UIntT Schedule(const TriggerC &se);
 
+      //! Schedule event for running on the reactor thread when its idle
+      // Thread safe.
+      // Returns an ID for the event, which can
+      // be used for cancelling it. The returned ID never has the value 0, so it may be used to flag not set.
+      UIntT ScheduleIdle(const TriggerC &se);
+
       //! Schedule event for running after time 't' (in seconds).
       // Thread safe.
       // Returns an ID for the event, which can
@@ -124,6 +130,9 @@ namespace RavlN {
       //! Called when loop is exiting.
       virtual bool OnFinish();
 
+      //! Called when wake up has been done
+      bool WakeDone(ZmqN::SocketC::RefT &wakeupLocal);
+
       //! Send wake up event for timed event queue.
       UIntT SendWakeForTimeQueue(UIntT eventId);
 
@@ -138,7 +147,7 @@ namespace RavlN {
       MutexC m_accessWakeup;
       ZmqN::SocketC::RefT m_wakeup;
       MessageC::RefT m_wakeMsg;
-
+      bool m_wakeScheduled;
 
       //! Called when owner handles drop to zero.
       virtual void ZeroOwners();
