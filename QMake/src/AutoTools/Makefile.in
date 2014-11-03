@@ -226,10 +226,10 @@ StageUtils: $(STAGING)/bin BuildUtils StagePerl StageShScripts
 BuildUtils: $(STAGING)/bin $(patsubst %,$(STAGING)/bin/%,$(COMPILED_UTILS))
 	@:
 
-$(STAGING)/bin/%: $(SRC)/Utils/%.c
+$(STAGING)/bin/%: $(SRC)/Utils/%.c | $(STAGING)/bin
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(INCLUDES) $? -o $@
 
-$(STAGING)/bin/%: $(SRC)/Utils/%.cc
+$(STAGING)/bin/%: $(SRC)/Utils/%.cc | $(STAGING)/bin
 	$(CXX) $(CCPPFLAGS) $(CCFLAGS) $(INCLUDES) $? -o $@
 
 
@@ -239,7 +239,7 @@ $(STAGING)/bin/%: $(SRC)/Utils/%.cc
 StagePerl: $(STAGING)/bin $(patsubst %,$(STAGING)/bin/%,$(PERL_UTILS))
 	@:
 
-$(STAGING)/bin/%.pl: $(SRC)/Utils/%.pl.src
+$(STAGING)/bin/%.pl: $(SRC)/Utils/%.pl.src | $(STAGING)/bin
 	$(SED_SUBSTITUTION) $< > $@
 
 
@@ -249,7 +249,7 @@ $(STAGING)/bin/%.pl: $(SRC)/Utils/%.pl.src
 StageShScripts: $(STAGING)/bin $(patsubst %,$(STAGING)/bin/%,$(SHELL_UTILS))
 	@:
 
-$(STAGING)/bin/%: $(SRC)/Utils/%.sh.src 
+$(STAGING)/bin/%: $(SRC)/Utils/%.sh.src  | $(STAGING)/bin
 	$(SED_SUBSTITUTION) $< > $@
 
 
@@ -260,19 +260,19 @@ $(STAGING)/bin/%: $(SRC)/Utils/%.sh.src
 StageSupport: $(STAGING)/Support $(patsubst %,$(STAGING)/%,$(SUPPORT_FILES) $(SUPPORT_PERL) $(SUPPORT_SCRIPTS))
 	@:
 
-$(STAGING)/Support/%: $(SRC)/Support/%
+$(STAGING)/Support/%: $(SRC)/Support/% | $(STAGING)/Support
 	$(INSTALL_DATA) $< $@
 
-$(STAGING)/Support/%.csh: $(SRC)/Support/%.csh.src
+$(STAGING)/Support/%.csh: $(SRC)/Support/%.csh.src | $(STAGING)/Support
 	$(SED_SUBSTITUTION) $< > $@
 
-$(STAGING)/Support/%.cshrc: $(SRC)/Support/%.cshrc.src
+$(STAGING)/Support/%.cshrc: $(SRC)/Support/%.cshrc.src | $(STAGING)/Support
 	$(SED_SUBSTITUTION) $< > $@
 
-$(STAGING)/Support/%.pl: $(SRC)/Support/%.pl.src
+$(STAGING)/Support/%.pl: $(SRC)/Support/%.pl.src | $(STAGING)/Support
 	$(SED_SUBSTITUTION) $< > $@
 
-$(STAGING)/Support/%.sh: $(SRC)/Support/%.sh.src
+$(STAGING)/Support/%.sh: $(SRC)/Support/%.sh.src | $(STAGING)/Support
 	$(SED_SUBSTITUTION) $< > $@
 
 
@@ -281,7 +281,7 @@ $(STAGING)/Support/%.sh: $(SRC)/Support/%.sh.src
 # Stage default client-build settings
 StageDefaults: $(STAGING)/Projects/Skeleton $(patsubst %,$(STAGING)/Projects/Skeleton/%,$(DEFAULT_PKG_CFGFILES))
 
-$(STAGING)/Projects/Skeleton/%: $(SRC)/Projects/Skeleton/%
+$(STAGING)/Projects/Skeleton/%: $(SRC)/Projects/Skeleton/% | $(STAGING)/Projects/Skeleton
 	$(INSTALL_DATA) $< $@
 
 
@@ -290,19 +290,19 @@ $(STAGING)/Projects/Skeleton/%: $(SRC)/Projects/Skeleton/%
 StageAB: $(STAGING)/AutoBuild $(patsubst %,$(STAGING)/AutoBuild/%,$(AUTOBUILD_CFGFILES) $(AUTOBUILD_PERL) $(AUTOBUILD_SCRIPTS))
 	@:
 
-$(STAGING)/AutoBuild/%: $(SRC)/AutoBuild/%
+$(STAGING)/AutoBuild/%: $(SRC)/AutoBuild/% | $(STAGING)/AutoBuild
 	$(INSTALL_DATA) $< $@
 
-$(STAGING)/AutoBuild/%.csh: $(SRC)/AutoBuild/%.csh.src
+$(STAGING)/AutoBuild/%.csh: $(SRC)/AutoBuild/%.csh.src | $(STAGING)/AutoBuild
 	$(SED_SUBSTITUTION) $< > $@
 
-$(STAGING)/AutoBuild/%.cshrc: $(SRC)/AutoBuild/%.cshrc.src
+$(STAGING)/AutoBuild/%.cshrc: $(SRC)/AutoBuild/%.cshrc.src | $(STAGING)/AutoBuild
 	$(SED_SUBSTITUTION) $< > $@
 
-$(STAGING)/AutoBuild/%.pl: $(SRC)/AutoBuild/%.pl.src
+$(STAGING)/AutoBuild/%.pl: $(SRC)/AutoBuild/%.pl.src | $(STAGING)/AutoBuild
 	$(SED_SUBSTITUTION) $< > $@
 
-$(STAGING)/AutoBuild/%.sh: $(SRC)/AutoBuild/%.sh.src
+$(STAGING)/AutoBuild/%.sh: $(SRC)/AutoBuild/%.sh.src | $(STAGING)/AutoBuild
 	$(SED_SUBSTITUTION) $< > $@
 
 
@@ -312,7 +312,7 @@ $(STAGING)/AutoBuild/%.sh: $(SRC)/AutoBuild/%.sh.src
 StagePkgConf: $(STAGING)/lib/pkgconfig $(STAGING)/lib/pkgconfig/QMake.pc
 	@:
 
-$(STAGING)/lib/pkgconfig/QMake.pc: @abs_top_builddir@/Targets.QMake @abs_top_builddir@/Makefile
+$(STAGING)/lib/pkgconfig/QMake.pc: @abs_top_builddir@/Targets.QMake @abs_top_builddir@/Makefile | $(STAGING)/lib/pkgconfig
 	@echo prefix=$(prefix) > $@
 	@echo bindir=$(bindir) >> $@
 	@echo datarootdir=$(datarootdir) >> $@
@@ -397,7 +397,7 @@ InstallPreCheck:
 # Define how to install the config files for QMake
 InstallConfig: $(DESTDIR)$(sysconfdir)/QMake $(patsubst %,$(DESTDIR)$(sysconfdir)/QMake/%,$(QMAKE_CFGFILES))
 
-$(DESTDIR)$(sysconfdir)/QMake/%: @abs_top_builddir@/%
+$(DESTDIR)$(sysconfdir)/QMake/%: @abs_top_builddir@/% | $(DESTDIR)$(sysconfdir)/QMake
 	$(INSTALL_DATA)  $< $@
 
 UinsConfig:
@@ -437,7 +437,7 @@ InstallPerl: $(DESTDIR)$(bindir) $(patsubst %,$(DESTDIR)$(bindir)/%,$(PERL_UTILS
 InstallScripts: $(DESTDIR)$(bindir) $(patsubst %,$(DESTDIR)$(bindir)/%,$(SHELL_UTILS))
 	@:
 
-$(DESTDIR)$(bindir)/%: $(STAGING)/bin/%
+$(DESTDIR)$(bindir)/%: $(STAGING)/bin/% | $(DESTDIR)$(bindir)
 	$(if $(filter $(@F),$(COMPILED_UTILS)),$(INSTALL_PROGRAM) $(STRIP_SWITCH) $< $@,$(INSTALL_PROGRAM) $< $@)
 
 
@@ -449,19 +449,19 @@ $(DESTDIR)$(bindir)/%: $(STAGING)/bin/%
 InstallSupport: $(DESTDIR)$(datadir)/QMake/Support $(patsubst %,$(DESTDIR)$(datadir)/QMake/%,$(SUPPORT_FILES) $(SUPPORT_PERL) $(SUPPORT_SCRIPTS))
 	@:
 
-$(DESTDIR)$(datadir)/QMake/Support/%: $(STAGING)/Support/%
+$(DESTDIR)$(datadir)/QMake/Support/%: $(STAGING)/Support/% | $(DESTDIR)$(datadir)/QMake/Support
 	$(INSTALL_DATA) $< $@
 
-$(DESTDIR)$(datadir)/QMake/Support/%.csh: $(STAGING)/Support/%.csh
+$(DESTDIR)$(datadir)/QMake/Support/%.csh: $(STAGING)/Support/%.csh | $(DESTDIR)$(datadir)/QMake/Support
 	$(INSTALL_PROGRAM) $< $@
 
-$(DESTDIR)$(datadir)/QMake/Support/%.cshrc: $(STAGING)/Support/%.cshrc
+$(DESTDIR)$(datadir)/QMake/Support/%.cshrc: $(STAGING)/Support/%.cshrc | $(DESTDIR)$(datadir)/QMake/Support
 	$(INSTALL_PROGRAM) $< $@
 
-$(DESTDIR)$(datadir)/QMake/Support/%.pl: $(STAGING)/Support/%.pl
+$(DESTDIR)$(datadir)/QMake/Support/%.pl: $(STAGING)/Support/%.pl | $(DESTDIR)$(datadir)/QMake/Support
 	$(INSTALL_PROGRAM) $< $@
 
-$(DESTDIR)$(datadir)/QMake/Support/%.sh: $(STAGING)/Support/%.sh
+$(DESTDIR)$(datadir)/QMake/Support/%.sh: $(STAGING)/Support/%.sh | $(DESTDIR)$(datadir)/QMake/Support
 	$(INSTALL_PROGRAM) $< $@
 
 
@@ -472,7 +472,7 @@ UinsSupport:
 # Install default client-build settings
 InstallDefaults: $(DESTDIR)$(datadir)/QMake/Projects/Skeleton $(patsubst %,$(DESTDIR)$(datadir)/QMake/Projects/Skeleton/%, $(DEFAULT_PKG_CFGFILES))
 
-$(DESTDIR)$(datadir)/QMake/Projects/Skeleton/%: $(STAGING)/Projects/Skeleton/%
+$(DESTDIR)$(datadir)/QMake/Projects/Skeleton/%: $(STAGING)/Projects/Skeleton/% | $(DESTDIR)$(datadir)/QMake/Projects/Skeleton
 	$(INSTALL_DATA) $< $@
 
 UinsDefaults:
@@ -490,7 +490,7 @@ UinsAB: UinsABConfig UinsABProgs
 InstallABConfig: $(DESTDIR)$(sysconfdir)/QMake $(patsubst %,$(DESTDIR)$(sysconfdir)/QMake/%,$(AUTOBUILD_CFGFILES))
 	@:
 
-$(DESTDIR)$(sysconfdir)/QMake/%: $(STAGING)/AutoBuild/%
+$(DESTDIR)$(sysconfdir)/QMake/%: $(STAGING)/AutoBuild/% | $(DESTDIR)$(sysconfdir)/QMake
 	$(INSTALL_DATA) $< $@
 
 
@@ -499,7 +499,7 @@ UinsABConfig:
 
 InstallABProgs: $(DESTDIR)$(bindir) $(patsubst %,$(DESTDIR)$(bindir)/%,$(AUTOBUILD_PERL) $(AUTOBUILD_SCRIPTS))
 
-$(DESTDIR)$(bindir)/%: $(STAGING)/AutoBuild/%
+$(DESTDIR)$(bindir)/%: $(STAGING)/AutoBuild/% | $(DESTDIR)$(bindir)
 	$(INSTALL_PROGRAM) $< $@
 
 UinsABProgs:
@@ -512,7 +512,7 @@ UinsABProgs:
 InstallPkgConf: $(DESTDIR)$(libdir)/pkgconfig $(DESTDIR)$(libdir)/pkgconfig/QMake.pc
 	@:
  
-$(DESTDIR)$(libdir)/pkgconfig/QMake.pc: $(STAGING)/lib/pkgconfig/QMake.pc
+$(DESTDIR)$(libdir)/pkgconfig/QMake.pc: $(STAGING)/lib/pkgconfig/QMake.pc | $(DESTDIR)$(libdir)/pkgconfig
 	$(INSTALL_DATA) $< $@
 
 UinsPkgConf:
