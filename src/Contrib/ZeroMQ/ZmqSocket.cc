@@ -397,10 +397,27 @@ namespace RavlN {
       }
       if((ret = zmq_setsockopt (m_socket,ZMQ_RCVHWM,&queueLimit,sizeof(queueLimit))) != 0) {
         RavlError("Failed to set high water mark to %u : %s ",(UIntT) queueLimit,zmq_strerror (zmq_errno ()));
-        throw ExceptionOperationFailedC("connect failed. ");
+        throw ExceptionOperationFailedC("request failed. ");
       }
 #endif
     }
+
+    //! Set mandatory flag for router.
+    void SocketC::SetRouterMandatory(bool enable)
+    {
+#ifdef ZMQ_ROUTER_MANDATORY
+      int ret = 0;
+      int value = enable;
+      if((ret = zmq_setsockopt (m_socket,ZMQ_ROUTER_MANDATORY,&value,sizeof(value))) != 0) {
+        RavlError("Failed to set mandatory on router to %d, ret=%d ",value,ret);
+        throw ExceptionOperationFailedC("connect failed. ");
+      }
+#else
+      RavlError("Failed to set mandatory on router, option not supported ");
+      throw ExceptionOperationFailedC("request failed. ");
+#endif
+    }
+
 
     //! Subscribe to a topic
     void SocketC::Subscribe(const std::string &topic)
