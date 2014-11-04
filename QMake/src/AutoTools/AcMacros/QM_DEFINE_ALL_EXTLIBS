@@ -47,6 +47,7 @@ AC_DEFUN([QM_DEFINE_ALL_EXTLIBS],
           QM_DEFINE_EXTLIB_PC([iksemel],          [iksemel])
           QM_DEFINE_EXTLIB_PC([libglade2],        [libglade-2.0])
           QM_DEFINE_EXTLIB_PC([glib],             [glib-2.0])
+          QM_DEFINE_EXTLIB_PC([gthread],          [gthread-2.0])
           QM_DEFINE_EXTLIB_PC([LibGnome],         [libgnome-2.0])
           QM_DEFINE_EXTLIB_PC([libGTK2],          [gtk+-2.0])
           QM_DEFINE_EXTLIB_PC([GTKGLExt],         [gtkglext-1.0])

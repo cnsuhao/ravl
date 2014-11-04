@@ -14,6 +14,6 @@ EXTERNALLIBS= CUDA.def GTK.def LibPNG.def posixThreads.def zlib.def \
  RLog.def GLUT.def ObjC.def RT.def FreeType2.def Math.def OpenSceneGraph.def \
  PulseAudio.def QtCore.def QtGui.def QtNetwork.def QtSql.def Qt3.def \
  UMFPack.def Yajl.def tetgen.def vlfeat.def vtkCommon.def \
- vtkFiltering.def vtkGraphics.def glib.def 
+ vtkFiltering.def vtkGraphics.def glib.def gthread.def \
 
 
