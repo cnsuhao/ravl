@@ -113,6 +113,9 @@ namespace RavlN {
       //! Set the high water mark.
       void SetHighWaterMark(UInt64T number);
 
+      //! Set mandatory flag for router.
+      void SetRouterMandatory(bool enable);
+
       //! Send a message
       bool Send(const MessageC &msg,BlockT block = ZSB_BLOCK);
 
