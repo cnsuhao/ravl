@@ -63,14 +63,30 @@ namespace RavlN {
       return false;
     }
 
+    static unsigned g_internalConnectCount = 0;
+    static RavlN::MutexC g_accessinternalConnectCount;
+
     //! Do some initial setup
     void ReactorC::Init()
     {
       m_wakeup = new ZmqN::SocketC(*m_zmqContext,ZST_PAIR);
       m_wakeup->SetLinger(0.0);
       RavlN::StringC sktId;
-      sktId.form("inproc://Reactor-%p",this);
-      m_wakeup->Bind(sktId);
+
+      while(true) {
+        RavlN::MutexLockC lock(g_accessinternalConnectCount);
+        unsigned aCount = g_internalConnectCount++;
+        lock.Unlock();
+        sktId.form("inproc://Reactor-%d",aCount);
+        try {
+          m_wakeup->Bind(sktId);
+          break; //
+        } catch(const RavlN::ExceptionOperationFailedC &ex) {
+          continue; // Try again.
+        }
+        break;
+      }
+
 
       ZmqN::SocketC::RefT wakeupLocal = new ZmqN::SocketC(*m_zmqContext,ZST_PAIR);
       wakeupLocal->SetLinger(0.0);
@@ -414,11 +430,8 @@ namespace RavlN {
       return m_timedQueue.Cancel(eventID);
     }
 
-
-
     //! Called when owner handles drop to zero.
     void ReactorC::ZeroOwners() {
-      m_terminate = true;
       ServiceThreadC::ZeroOwners();
     }
 
