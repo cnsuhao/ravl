@@ -321,7 +321,12 @@ namespace RavlN {
       RavlAssert(maxPort >= minPort);
 
       int ret;
-      for(int i = minPort;i < maxPort;i++) {
+      int numPorts = (maxPort - minPort)+1;
+      // Start at a random port in the range.
+      int at = Floor(Random1() * numPorts) + minPort;
+      for(int i = 0;i < numPorts;i++,at++) {
+        if(at > maxPort)
+          at = minPort;
         StringC newAddr = rootName + StringC(i);
         if(m_verbose) {
           RavlInfo("Trying to connect to '%s'", newAddr.data());
