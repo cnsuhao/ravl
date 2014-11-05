@@ -42,7 +42,6 @@ AC_DEFUN([QM_DEFINE_ALL_EXTLIBS],
           QM_DEFINE_EXTLIB_PC([FFMPEGCONT],       [libavformat])
           QM_DEFINE_EXTLIB_PC([FFMPEGSWS],        [libswscale])
           QM_DEFINE_EXTLIB_PC([FFMPEGUTIL],       [libavutil])
-          QM_DEFINE_EXTLIB_PC([libmpeg2],         [libmpeg2])
           QM_DEFINE_EXTLIB_PC([FreeType2],        [freetype2])
           QM_DEFINE_EXTLIB_PC([iksemel],          [iksemel])
           QM_DEFINE_EXTLIB_PC([libglade2],        [libglade-2.0])
