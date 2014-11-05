@@ -841,8 +841,6 @@ iksemel_LIBS
 iksemel_CFLAGS
 FreeType2_LIBS
 FreeType2_CFLAGS
-libmpeg2_LIBS
-libmpeg2_CFLAGS
 FFMPEGUTIL_LIBS
 FFMPEGUTIL_CFLAGS
 FFMPEGSWS_LIBS
@@ -1073,8 +1071,6 @@ with_FFMPEGSWS_pkgconf
 with_FFMPEGSWS
 with_FFMPEGUTIL_pkgconf
 with_FFMPEGUTIL
-with_libmpeg2_pkgconf
-with_libmpeg2
 with_FreeType2_pkgconf
 with_FreeType2
 with_iksemel_pkgconf
@@ -1958,13 +1954,6 @@ Optional Packages:
                           package is known to pkg-config
 
   --with-FFMPEGUTIL       Enable functionality that relies on the FFMPEGUTIL
-                          library [default=check]
-
-  --with-libmpeg2-pkgconf Enable the libmpeg2 library package via pkg-config
-                          and declare the name by which the libmpeg2 library
-                          package is known to pkg-config
-
-  --with-libmpeg2         Enable functionality that relies on the libmpeg2
                           library [default=check]
 
   --with-FreeType2-pkgconf
@@ -9962,117 +9951,6 @@ fi
              UnconfiguredLibs=$UnconfiguredLibs" "FFMPEGUTIL
           else
              ConfiguredLibs=$ConfiguredLibs" "FFMPEGUTIL
-          fi
-
-
-
-
-
-# Check whether --with-libmpeg2-pkgconf was given.
-if test "${with_libmpeg2_pkgconf+set}" = set; then :
-  withval=$with_libmpeg2_pkgconf; case $with_libmpeg2_pkgconf in
-                        'n' | 'N' | 'no' | 'No' | 'NO' )
-                                          use_libmpeg2=no
-                                          trace 4 --with-libmpeg2-pkgconf disabling libmpeg2
-                                          ;;
-                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
-                                          if test Xlibmpeg2 != X; then :
-  with_libmpeg2_pkgconf=libmpeg2
-                                                 use_libmpeg2=yes
-                                                 trace 4 --with-libmpeg2-pkgconf set to default [$with_libmpeg2_pkgconf]
-
-else
-  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Asking to configure libmpeg2 via pkg-config but configure is unaware of the name of the DOTpc metadata file
-See \`config.log' for more details" "$LINENO" 5; }
-
-
-fi
-                                          ;;
-                        * )               use_libmpeg2=yes
-                                          trace 4 --with-libmpeg2-pkgconf set to [$with_libmpeg2_pkgconf]
-                                          ;;
-                       esac
-
-else
-  if test Xlibmpeg2 != X; then :
-  with_libmpeg2_pkgconf=libmpeg2
-                              trace 4 No --with-libmpeg2-pkgconf specified using default [$with_libmpeg2_pkgconf]
-
-
-fi
-
-
-fi
-
-
-# Check whether --with-libmpeg2 was given.
-if test "${with_libmpeg2+set}" = set; then :
-  withval=$with_libmpeg2; case $with_libmpeg2 in
-                        'n' | 'N' | 'no' | 'No' | 'NO' )
-                                       trace 4 --with-libmpeg2 disabling libmpeg2 libraries
-                                       if test X$use_libmpeg2 = Xyes ; then :
-  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Asking to disable libmpeg2 by --with-libmpeg2 but --with-libmpeg2-pkgconf has specifically enabled it
-See \`config.log' for more details" "$LINENO" 5; }
-
-else
-  use_libmpeg2=no
-
-fi
-                                       ;;
-                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
-                                       trace 4 --with-libmpeg2 enabling libmpeg2 libraries
-                                       if test X$use_libmpeg2 = Xno; then :
-  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Asking to enable libmpeg2 by --with-libmpeg2 but --with-libmpeg2-pkgconf has specifically disabled it
-See \`config.log' for more details" "$LINENO" 5; }
-
-else
-  use_libmpeg2=yes
-
-fi
-                                       ;;
-                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
-                                       trace 4 --with-libmpeg2 checking for libmpeg2 libraries
-                                       if test X$use_libmpeg2 = Xyes; then :
-  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-libmpeg2 asking to check for the libs but --with-libmpeg2-pkgconf has specifically enabled it" >&5
-$as_echo "$as_me: WARNING: --with-libmpeg2 asking to check for the libs but --with-libmpeg2-pkgconf has specifically enabled it" >&2;}
-
-else
-  if test X$use_libmpeg2 = Xno; then :
-  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-libmpeg2 asking to check for the libs but --with-libmpeg2-pkgconf has specifically disabled it" >&5
-$as_echo "$as_me: WARNING: --with-libmpeg2 asking to check for the libs but --with-libmpeg2-pkgconf has specifically disabled it" >&2;}
-
-else
-  use_libmpeg2=check
-
-fi
-
-
-fi
-                                       ;;
-                        * )            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-libmpeg2 set to an unknown option, setting ignored" >&5
-$as_echo "$as_me: WARNING: --with-libmpeg2 set to an unknown option, setting ignored" >&2;}
-                                       ;;
-                       esac
-
-else
-  trace 5 No --with-libmpeg2 specified
-
-fi
-
-          KnownLibs=$KnownLibs" "libmpeg2
-          with_libmpeg2_virtual="no"
-          if ( test X$use_libmpeg2 = X )
-          then
-             use_libmpeg2=check
-             UnconfiguredLibs=$UnconfiguredLibs" "libmpeg2
-          else
-             ConfiguredLibs=$ConfiguredLibs" "libmpeg2
           fi
 
 
