@@ -327,7 +327,7 @@ namespace RavlN {
       for(int i = 0;i < numPorts;i++,at++) {
         if(at > maxPort)
           at = minPort;
-        StringC newAddr = rootName + StringC(i);
+        StringC newAddr = rootName + StringC(at);
         if(m_verbose) {
           RavlInfo("Trying to connect to '%s'", newAddr.data());
         }
