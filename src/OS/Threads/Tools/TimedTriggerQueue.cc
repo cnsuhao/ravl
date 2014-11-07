@@ -32,7 +32,7 @@
 
 // Disabling catching of exceptions can be useful
 // if you need to establish what's throwing them
-#define CATCHEXCEPTIONS 1
+#define CATCHEXCEPTIONS 0
 
 namespace RavlN
 {
@@ -226,8 +226,8 @@ namespace RavlN
           // If in check or debug stop.
           RavlAssertMsg(0,"Aborting due to exception in timed trigger event thread. ");
           // Otherwise ignore and struggle on.
-        }catch(...) {
-          RavlError("Caught exception in timed trigger event thread.");
+        } catch(...) {
+          RavlError("Caught unknown exception in timed trigger event thread.");
           // If in check or debug stop.
           RavlAssertMsg(0,"Aborting due to exception in timed trigger event thread. ");
           // Otherwise ignore and struggle on.
