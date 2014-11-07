@@ -592,10 +592,12 @@ namespace RavlN {
 #endif
         {
           int anErrno = zmq_errno();
+          zmq_msg_close(&zmsg);
           if(i == 0 && block == ZSB_NOBLOCK && (anErrno == EAGAIN || anErrno == EINTR))
             return false;
+          if(anErrno == EHOSTUNREACH)
+            return false;
           RavlError("Send failed : %s   flags=%x errno=%d in %s ",zmq_strerror (anErrno),flags,anErrno,Name().c_str());
-          zmq_msg_close(&zmsg);
 #if 0
           throw ExceptionOperationFailedC("Send failed. ");
 #else
