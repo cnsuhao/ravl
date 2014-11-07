@@ -854,9 +854,6 @@ $(INST_OBJS)/%$(OBJEXT) : %.S $(INST_OBJS)/.dir
 ifndef BISON
  BISON=bison
 endif
-ifndef FLEX
- FLEX=flex
-endif
 ifndef SWIG
  SWIG=swig
 endif
@@ -876,8 +873,8 @@ endif
 %.yy$(CXXEXT) : %.l
 ifndef FLEX_DO_NOT_GENERATE
  ifeq ($(SUPPORT_OK),yes)
-	$(SHOWIT)echo "--- Flex" $< ; \
-	$(FLEX) -o$*.yy$(CXXEXT) $<
+	@echo "--- LEX" $<
+	$(SHOWIT)$(LEX) -o$*.yy$(CXXEXT) $<
  endif
 endif
 
