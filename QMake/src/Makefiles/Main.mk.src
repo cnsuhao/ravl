@@ -851,9 +851,6 @@ $(INST_OBJS)/%$(OBJEXT) : %.S $(INST_OBJS)/.dir
 
 # Sort out some defaults.
 
-ifndef BISON
- BISON=bison
-endif
 ifndef SWIG
  SWIG=swig
 endif
@@ -864,9 +861,9 @@ endif
 %.tab$(CXXEXT) %.tab$(CHEXT) : %.y
 ifndef BISON_DO_NOT_GENERATE
  ifeq ($(SUPPORT_OK),yes)
-	$(SHOWIT)echo "--- Bison" $< ; \
-	$(BISON) -d -o$*.tab$(CEXT) $< ; \
-	mv $*.tab$(CEXT) $*.tab$(CXXEXT)
+	@echo "--- YACC" $<
+	$(SHOWIT)$(YACC) -d -o$*.tab$(CEXT) $< ; \
+	         mv $*.tab$(CEXT) $*.tab$(CXXEXT)
  endif
 endif
 
