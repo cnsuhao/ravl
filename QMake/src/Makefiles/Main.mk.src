@@ -861,9 +861,13 @@ endif
 %.tab$(CXXEXT) %.tab$(CHEXT) : %.y
 ifndef BISON_DO_NOT_GENERATE
  ifeq ($(SUPPORT_OK),yes)
+  ifneq (,$(strip $(YACC)))
 	@echo "--- YACC" $<
 	$(SHOWIT)$(YACC) -d -o$*.tab$(CEXT) $< ; \
 	         mv $*.tab$(CEXT) $*.tab$(CXXEXT)
+  else
+	@echo Warning No YACC program to regenerate $@ from $<
+  endif
  endif
 endif
 

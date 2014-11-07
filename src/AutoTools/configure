@@ -7530,7 +7530,10 @@ test -n "$YACC" || YACC="yacc"
 
              fi
           fi
-          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES YACC"
+          # As for LEX and NVCC, QMake will downgrade its functionality on
+          # an absence of YACC so we do not flag it as a required depencdency
+          # i.e. we do not add it to QMAKE_DEPENDENCIES
+
 
           # GNU standards regard the following safe to call directly but as we
           # already implemented them via a make variable, set those here...
