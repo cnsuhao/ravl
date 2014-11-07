@@ -255,7 +255,19 @@ AC_DEFUN([QM_LOCATE_QMAKE_DEPS],
                 fi
              fi
           fi
-          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES LEX LEXLIB"
+          # We do not regard LEX and LEXLIB as mandatory QMake dependencies.
+          # Their absence downgrades the available support form QMake but, as
+          # the majority of QMake remains functional, we do not want to error
+          # if either are missing. Hence, we do not add them to the list of
+          # fatal dependencies (i.e. we do not add them to QMAKE_DEPENDENCIES)
+          #
+          # The AC_PROG_LEX macro may have set LEX to : if no utility was
+          # found. We need to reset this back to null to disable the support
+          # in QMake
+          if ( test x$LEX == x: )
+          then
+             LEX=""
+          fi
 
           dnl Again, AC_PROG_MKDIR_P is a macro that expands otuside of this
           dnl macro and will have been run by the time control reaches this

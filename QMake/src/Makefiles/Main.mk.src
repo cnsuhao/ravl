@@ -870,8 +870,12 @@ endif
 %.yy$(CXXEXT) : %.l
 ifndef FLEX_DO_NOT_GENERATE
  ifeq ($(SUPPORT_OK),yes)
+  ifneq (,$(strip $(LEX)))
 	@echo "--- LEX" $<
 	$(SHOWIT)$(LEX) -o$*.yy$(CXXEXT) $<
+  else
+	@echo Warning No LEX program to regenerate $@ from $<
+  endif
  endif
 endif
 
