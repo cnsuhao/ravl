@@ -178,7 +178,7 @@ namespace RavlN
         if(m_onIdle.size() <= 0)
           break;
         m_idlePlace++;
-        if(m_idlePlace >= m_onIdle.size())
+        if(m_idlePlace >= (int) m_onIdle.size())
           m_idlePlace = 0;
         onIdle = true;
         eventNo = m_onIdle[m_idlePlace];
@@ -193,7 +193,7 @@ namespace RavlN
       if(entry.Data2() < 0 || !ne.IsValid()) {
         events.Del(eventNo); // Remove from queue.
         if(onIdle) {
-          RavlAssert(m_idlePlace < m_onIdle.size());
+          RavlAssert(m_idlePlace < (int)m_onIdle.size());
           m_onIdle.erase(m_onIdle.begin() + m_idlePlace);
           if(m_idlePlace > 0) {
             m_idlePlace--;
