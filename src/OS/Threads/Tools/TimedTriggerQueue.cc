@@ -229,7 +229,10 @@ namespace RavlN
         } catch(...) {
           RavlError("Caught unknown exception in timed trigger event thread.");
           // If in check or debug stop.
-          RavlAssertMsg(0,"Aborting due to exception in timed trigger event thread. ");
+#ifndef NDEBUG
+          throw; // Throw it on, as its the only way to report what it is.
+          //RavlAssertMsg(0,"Aborting due to exception in timed trigger event thread. ");
+#endif
           // Otherwise ignore and struggle on.
         }
 #endif
