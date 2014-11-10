@@ -656,6 +656,8 @@ blas_LIBS
 blas_CFLAGS
 ZeroMQ_LIBS
 ZeroMQ_CFLAGS
+x11_LIBS
+x11_CFLAGS
 devVideo4Linux2_LIBS
 devVideo4Linux2_CFLAGS
 RLog_LIBS
@@ -938,6 +940,8 @@ with_RLog_pkgconf
 with_RLog
 with_devVideo4Linux2_pkgconf
 with_devVideo4Linux2
+with_x11_pkgconf
+with_x11
 with_ZeroMQ_pkgconf
 with_ZeroMQ
 with_blas_pkgconf
@@ -1962,6 +1966,13 @@ Optional Packages:
 
   --with-devVideo4Linux2  Enable functionality that relies on the
                           devVideo4Linux2 library [default=check]
+
+  --with-x11-pkgconf      Enable the x11 library package via pkg-config and
+                          declare the name by which the x11 library package is
+                          known to pkg-config
+
+  --with-x11              Enable functionality that relies on the x11 library
+                          [default=check]
 
   --with-ZeroMQ-pkgconf   Enable the ZeroMQ library package via pkg-config and
                           declare the name by which the ZeroMQ library package
@@ -12249,6 +12260,117 @@ fi
              UnconfiguredLibs=$UnconfiguredLibs" "devVideo4Linux2
           else
              ConfiguredLibs=$ConfiguredLibs" "devVideo4Linux2
+          fi
+
+
+
+
+
+# Check whether --with-x11-pkgconf was given.
+if test "${with_x11_pkgconf+set}" = set; then :
+  withval=$with_x11_pkgconf; case $with_x11_pkgconf in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                          use_x11=no
+                                          trace 4 --with-x11-pkgconf disabling x11
+                                          ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                          if test Xx11 != X; then :
+  with_x11_pkgconf=x11
+                                                 use_x11=yes
+                                                 trace 4 --with-x11-pkgconf set to default [$with_x11_pkgconf]
+
+else
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to configure x11 via pkg-config but configure is unaware of the name of the DOTpc metadata file
+See \`config.log' for more details" "$LINENO" 5; }
+
+
+fi
+                                          ;;
+                        * )               use_x11=yes
+                                          trace 4 --with-x11-pkgconf set to [$with_x11_pkgconf]
+                                          ;;
+                       esac
+
+else
+  if test Xx11 != X; then :
+  with_x11_pkgconf=x11
+                              trace 4 No --with-x11-pkgconf specified using default [$with_x11_pkgconf]
+
+
+fi
+
+
+fi
+
+
+# Check whether --with-x11 was given.
+if test "${with_x11+set}" = set; then :
+  withval=$with_x11; case $with_x11 in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                       trace 4 --with-x11 disabling x11 libraries
+                                       if test X$use_x11 = Xyes ; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to disable x11 by --with-x11 but --with-x11-pkgconf has specifically enabled it
+See \`config.log' for more details" "$LINENO" 5; }
+
+else
+  use_x11=no
+
+fi
+                                       ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                       trace 4 --with-x11 enabling x11 libraries
+                                       if test X$use_x11 = Xno; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to enable x11 by --with-x11 but --with-x11-pkgconf has specifically disabled it
+See \`config.log' for more details" "$LINENO" 5; }
+
+else
+  use_x11=yes
+
+fi
+                                       ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                       trace 4 --with-x11 checking for x11 libraries
+                                       if test X$use_x11 = Xyes; then :
+  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-x11 asking to check for the libs but --with-x11-pkgconf has specifically enabled it" >&5
+$as_echo "$as_me: WARNING: --with-x11 asking to check for the libs but --with-x11-pkgconf has specifically enabled it" >&2;}
+
+else
+  if test X$use_x11 = Xno; then :
+  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-x11 asking to check for the libs but --with-x11-pkgconf has specifically disabled it" >&5
+$as_echo "$as_me: WARNING: --with-x11 asking to check for the libs but --with-x11-pkgconf has specifically disabled it" >&2;}
+
+else
+  use_x11=check
+
+fi
+
+
+fi
+                                       ;;
+                        * )            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-x11 set to an unknown option, setting ignored" >&5
+$as_echo "$as_me: WARNING: --with-x11 set to an unknown option, setting ignored" >&2;}
+                                       ;;
+                       esac
+
+else
+  trace 5 No --with-x11 specified
+
+fi
+
+          KnownLibs=$KnownLibs" "x11
+          with_x11_virtual="no"
+          if ( test X$use_x11 = X )
+          then
+             use_x11=check
+             UnconfiguredLibs=$UnconfiguredLibs" "x11
+          else
+             ConfiguredLibs=$ConfiguredLibs" "x11
           fi
 
 
