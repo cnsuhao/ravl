@@ -95,14 +95,12 @@ int main(int nargs,char **argv) {
       run <b>qm</b> you'll get some messages similar to the following:</p>
 
 <pre>% qm
---- Making dir /buf/ees1cg/share/RAVL/Admin/linux/depend/local/local/None 
---- Making dir /buf/ees1cg/qm//buf/ees1cg//linux/local/None/check/objs 
+--- Making dir /buf/ees1cg/transient/linux64/depend/local/local/None 
+--- Making dir /buf/ees1cg/transient/linux64/local/None/check/objs 
 --- Compile check myprog.cc
 --- Binary dependency myprog
---- Making dir /buf/ees1cg/lib/RAVL/linux/bin 
---- Making dir /buf/ees1cg/bin 
---- Creating redirect for myprog.
---- Linking check myprog ( /buf/ees1cg/lib/RAVL/linux/bin/myprog ) 
+--- Making dir /buf/ees1cg/bin/utils/check/bin
+--- Linking check myprog ( /buf/ees1cg/bin/utils/check/bin/myprog ) 
 </pre>
 
     <p>In this example, <code>$PROJECT_OUT</code> was set to
@@ -112,8 +110,8 @@ int main(int nargs,char **argv) {
       You can then run the program.  For example, to get the program to list
       its options you use the <code>-help</code> switch: </p>
 
-<pre>% myprog -help
-Usage: myprog [options] 
+<pre>% $PROJECT_OUT/bin/myprog -help
+Usage: /buf/ees1cg/bin/myprog [options] 
    -i (infile.pgm) [infile.pgm] Input filename 
    -o (outfile.pgm) [outfile.pgm] Output filename 
    -help (true) [false] Print usage information. 
