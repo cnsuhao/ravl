@@ -12,6 +12,8 @@ ifndef QMAKE_MAKEFILES
   QMAKE_MAKEFILES=@QMAKE_MAKEFILES@
 endif
 
+include $(QMAKE_MAKEFILES)/Definitions.mk
+
 MAKEDEFS=$(PERL) -f $(QMAKE_UTILS)/mkdefs.pl
 
 # Set default uses lib to auto?
@@ -21,6 +23,11 @@ ifdef USERBUILD
 endif
 
 export TARGET
+
+# Include system config and Directories 
+
+NOVAR=1
+include $(QMAKE_MAKEFILES)/Definitions.mk
 
 ###############################################################################
 # Check for project out 
@@ -47,11 +54,6 @@ endif
 
 # Setup default build target.
 TARGET=fullbuild
-
-# Include system config and Directories 
-
-NOVAR=1
-include $(QMAKE_MAKEFILES)/Definitions.mk
 
 VPATH=$(QCWD)
 
