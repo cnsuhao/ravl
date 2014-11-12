@@ -39,6 +39,9 @@ is equivalent to
 and explicitly disables the use of OpenCV by RAVL (even if OpenCV is installed
 on the machine) while requiring libPNG.
 
+To find the actual name of the <lib>, use the value of the REQUIRES variable 
+in the defs.mk file of the corresponding RAVL wrapper.
+
 The configure program uses the pkg-config utility to locate the third-party
 libraries that RAVL can use. If the pkg-config meta file for a third-party
 library is not available in its usual location, configure provides an option
