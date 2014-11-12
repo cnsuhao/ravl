@@ -11,6 +11,7 @@
 //! docentry="Ravl.API.Math.Signals.2D;Ravl.API.Images.Transforms"
 //! lib=RavlMath
 //! file="Ravl/Math/Signals/2D/FFT2d.hh"
+//! example ="exFFT2d.cc"
 
 #include "Ravl/RefCounter.hh"
 #include "Ravl/Complex.hh"
