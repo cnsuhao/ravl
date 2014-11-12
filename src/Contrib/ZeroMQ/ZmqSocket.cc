@@ -321,8 +321,13 @@ namespace RavlN {
       RavlAssert(maxPort >= minPort);
 
       int ret;
-      for(int i = minPort;i < maxPort;i++) {
-        StringC newAddr = rootName + StringC(i);
+      int numPorts = (maxPort - minPort)+1;
+      // Start at a random port in the range.
+      int at = Floor(Random1() * numPorts) + minPort;
+      for(int i = 0;i < numPorts;i++,at++) {
+        if(at > maxPort)
+          at = minPort;
+        StringC newAddr = rootName + StringC(at);
         if(m_verbose) {
           RavlInfo("Trying to connect to '%s'", newAddr.data());
         }
@@ -397,10 +402,27 @@ namespace RavlN {
       }
       if((ret = zmq_setsockopt (m_socket,ZMQ_RCVHWM,&queueLimit,sizeof(queueLimit))) != 0) {
         RavlError("Failed to set high water mark to %u : %s ",(UIntT) queueLimit,zmq_strerror (zmq_errno ()));
-        throw ExceptionOperationFailedC("connect failed. ");
+        throw ExceptionOperationFailedC("request failed. ");
       }
 #endif
     }
+
+    //! Set mandatory flag for router.
+    void SocketC::SetRouterMandatory(bool enable)
+    {
+#ifdef ZMQ_ROUTER_MANDATORY
+      int ret = 0;
+      int value = enable;
+      if((ret = zmq_setsockopt (m_socket,ZMQ_ROUTER_MANDATORY,&value,sizeof(value))) != 0) {
+        RavlError("Failed to set mandatory on router to %d, ret=%d ",value,ret);
+        throw ExceptionOperationFailedC("connect failed. ");
+      }
+#else
+      RavlError("Failed to set mandatory on router, option not supported ");
+      throw ExceptionOperationFailedC("request failed. ");
+#endif
+    }
+
 
     //! Subscribe to a topic
     void SocketC::Subscribe(const std::string &topic)
@@ -570,10 +592,12 @@ namespace RavlN {
 #endif
         {
           int anErrno = zmq_errno();
+          zmq_msg_close(&zmsg);
           if(i == 0 && block == ZSB_NOBLOCK && (anErrno == EAGAIN || anErrno == EINTR))
             return false;
+          if(anErrno == EHOSTUNREACH)
+            return false;
           RavlError("Send failed : %s   flags=%x errno=%d in %s ",zmq_strerror (anErrno),flags,anErrno,Name().c_str());
-          zmq_msg_close(&zmsg);
 #if 0
           throw ExceptionOperationFailedC("Send failed. ");
 #else

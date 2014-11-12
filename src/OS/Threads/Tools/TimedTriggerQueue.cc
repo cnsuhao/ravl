@@ -32,7 +32,7 @@
 
 // Disabling catching of exceptions can be useful
 // if you need to establish what's throwing them
-#define CATCHEXCEPTIONS 1
+#define CATCHEXCEPTIONS 0
 
 namespace RavlN
 {
@@ -42,6 +42,7 @@ namespace RavlN
   TimedTriggerQueueBodyC::TimedTriggerQueueBodyC(bool launchProcessThread)
     : m_started(true),
       eventCount(0),
+      m_idlePlace(0),
       done(false),
       semaSched(0)
   {
@@ -94,6 +95,35 @@ namespace RavlN
     return Schedule(period,se,period);
   }
 
+  UIntT TimedTriggerQueueBodyC::AllocateId()
+  {
+    do {
+      eventCount++;
+      if(eventCount == 0)
+        eventCount++;
+    } while(events.IsElm(eventCount));
+    UIntT nEvent = eventCount;
+    return nEvent;
+  }
+  //: Allocate id,
+  // Mutex access must be held on call.
+
+  //: Schedule event for running periodically when otherwise idle.
+  UIntT TimedTriggerQueueBodyC::ScheduleIdle(const TriggerC &se)
+  {
+    if(!se.IsValid() || done)
+      return 0;
+    MutexLockC holdLock(access);
+    UIntT nEvent = AllocateId();
+    Tuple2C<TriggerC,float> &entry = events[nEvent];
+    entry.Data1() = se;
+    entry.Data2() = 0;
+    m_onIdle.push_back(nEvent);
+    holdLock.Unlock();
+    semaSched.Post();
+    return nEvent;
+  }
+
   //: Schedule event for running.
   // Thread safe.
   
@@ -101,16 +131,11 @@ namespace RavlN
     if(!se.IsValid() || done)
       return 0;
     MutexLockC holdLock(access);
-    do {
-      eventCount++;
-      if(eventCount == 0)
-        eventCount++;
-    } while(events.IsElm(eventCount));
-    UIntT nEvent = eventCount;
+    UIntT nEvent = AllocateId();
     schedule.Insert(at,nEvent);
     Tuple2C<TriggerC,float> &entry = events[nEvent];
     entry.Data1() = se;
-    entry.Data2() = period; // Don't repeat
+    entry.Data2() = period;
     
     holdLock.Unlock();
     ONDEBUG(std::cerr << "TimedTriggerQueueBodyC::Schedule() Event " << nEvent << " at " << at.Text() << " \n");
@@ -125,7 +150,9 @@ namespace RavlN
   double TimedTriggerQueueBodyC::ProcessStep()
   {
     DateC toGo(-1.0);
+    double retTime = -1;
     MutexLockC holdLock(access);
+    bool doneWork = false;
     // Are any events scheduled ??
     while(!done) {
       if(!schedule.IsElm()) {
@@ -137,26 +164,54 @@ namespace RavlN
       DateC now = DateC::NowUTC();
       toGo = nextTime - now;
       ONDEBUG(std::cerr << "Next scheduled event in " << toGo.Double() << " seconds\n");
-      if(toGo.Double() > 0.00001)
+      retTime = toGo.Double();
+#if 1
+      if(doneWork) {
+        if(retTime < 0)
+          retTime = 0;
         break;
+      }
+#endif
+      UIntT eventNo = 0;
+      bool onIdle = false;
+      if(retTime > 0.00001) {
+        if(m_onIdle.size() <= 0)
+          break;
+        m_idlePlace++;
+        if(m_idlePlace >= (int) m_onIdle.size())
+          m_idlePlace = 0;
+        onIdle = true;
+        eventNo = m_onIdle[m_idlePlace];
+      } else {
+        eventNo = schedule.GetTop();
+      }
       // Might as well do it now...
-      int eventNo = schedule.GetTop();
       ONDEBUG(std::cerr << "Executing event  " << eventNo << "\n");
       Tuple2C<TriggerC,float> &entry = events[eventNo];
       TriggerC ne = entry.Data1();
       // Is function non-periodic or cancelled?
       if(entry.Data2() < 0 || !ne.IsValid()) {
         events.Del(eventNo); // Remove from queue.
+        if(onIdle) {
+          RavlAssert(m_idlePlace < (int)m_onIdle.size());
+          m_onIdle.erase(m_onIdle.begin() + m_idlePlace);
+          if(m_idlePlace > 0) {
+            m_idlePlace--;
+          } else {
+            m_idlePlace = m_onIdle.size()-1;
+          }
+        }
       } else {
         // Reschedule periodic functions.
         DateC at = now + entry.Data2();
         schedule.Insert(at,eventNo);
       }
-      holdLock.Unlock(); // Unlock before invoke the event, incase it wants to add another.
+      holdLock.Unlock(); // Unlock before invoke the event, in case it wants to add another.
       if(ne.IsValid()) { // Check if event has been cancelled.
 #if CATCHEXCEPTIONS
         try {
 #endif
+          doneWork = true;
           ne.Invoke();
 #if CATCHEXCEPTIONS
         } catch(ExceptionC &ex) {
@@ -171,10 +226,13 @@ namespace RavlN
           // If in check or debug stop.
           RavlAssertMsg(0,"Aborting due to exception in timed trigger event thread. ");
           // Otherwise ignore and struggle on.
-        }catch(...) {
-          RavlError("Caught exception in timed trigger event thread.");
+        } catch(...) {
+          RavlError("Caught unknown exception in timed trigger event thread.");
           // If in check or debug stop.
-          RavlAssertMsg(0,"Aborting due to exception in timed trigger event thread. ");
+#ifndef NDEBUG
+          throw; // Throw it on, as its the only way to report what it is.
+          //RavlAssertMsg(0,"Aborting due to exception in timed trigger event thread. ");
+#endif
           // Otherwise ignore and struggle on.
         }
 #endif
@@ -183,7 +241,7 @@ namespace RavlN
       holdLock.Lock();
     }
     holdLock.Unlock();
-    return toGo.Double();
+    return retTime;
   }
 
   //: Process event queue.
@@ -195,7 +253,8 @@ namespace RavlN
       if(nextEvent < 0) {
         semaSched.Wait();
       } else {
-        semaSched.Wait(nextEvent);
+        if(nextEvent > 0)
+          semaSched.Wait(nextEvent);
       }
       ONDEBUG(std::cerr << "Time to check things out.\n");
     }

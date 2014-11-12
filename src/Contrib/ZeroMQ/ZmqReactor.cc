@@ -9,6 +9,7 @@
 #include "Ravl/Zmq/Reactor.hh"
 #include "Ravl/Zmq/SocketDispatchTrigger.hh"
 #include "Ravl/OS/SysLog.hh"
+#include "Ravl/CallMethodPtrs.hh"
 #include "Ravl/XMLFactoryRegister.hh"
 #include <string.h>
 
@@ -22,21 +23,14 @@
 namespace RavlN {
   namespace ZmqN {
 
-    //! Discard a message from a socket
-    static bool DiscardMessage(ZmqN::SocketC::RefT &skt)
-    {
-      MessageC::RefT msg;
-      skt->Recieve(msg);
-      return true;
-    }
-
     //! Default constructor.
     ReactorC::ReactorC(ContextC &context)
      : m_zmqContext(&context),
        m_teminateCheckInterval(5.0),
        m_pollListChanged(true),
        m_verbose(false),
-       m_timedQueue(false)
+       m_timedQueue(false),
+       m_wakeScheduled(false)
     {
       Init();
     }
@@ -48,7 +42,8 @@ namespace RavlN {
        m_teminateCheckInterval(factory.AttributeReal("terminateCheckInterval",5.0)),
        m_pollListChanged(true),
        m_verbose(factory.AttributeBool("verbose",DODEBUG)),
-       m_timedQueue(false)
+       m_timedQueue(false),
+       m_wakeScheduled(false)
     {
       factory.UseComponent("ZmqContext",m_zmqContext);
       Init();
@@ -68,19 +63,35 @@ namespace RavlN {
       return false;
     }
 
+    static unsigned g_internalConnectCount = 0;
+    static RavlN::MutexC g_accessinternalConnectCount;
+
     //! Do some initial setup
     void ReactorC::Init()
     {
       m_wakeup = new ZmqN::SocketC(*m_zmqContext,ZST_PAIR);
       m_wakeup->SetLinger(0.0);
       RavlN::StringC sktId;
-      sktId.form("inproc://Reactor-%p",this);
-      m_wakeup->Bind(sktId);
+
+      while(true) {
+        RavlN::MutexLockC lock(g_accessinternalConnectCount);
+        unsigned aCount = g_internalConnectCount++;
+        lock.Unlock();
+        sktId.form("inproc://Reactor-%d",aCount);
+        try {
+          m_wakeup->Bind(sktId);
+          break; //
+        } catch(const RavlN::ExceptionOperationFailedC &ex) {
+          continue; // Try again.
+        }
+        break;
+      }
+
 
       ZmqN::SocketC::RefT wakeupLocal = new ZmqN::SocketC(*m_zmqContext,ZST_PAIR);
       wakeupLocal->SetLinger(0.0);
       wakeupLocal->Connect(sktId);
-      CallOnRead(*wakeupLocal,RavlN::Trigger(&DiscardMessage,wakeupLocal));
+      CallOnRead(*wakeupLocal,RavlN::TriggerPtr(CBRefT(this),&ReactorC::WakeDone,wakeupLocal));
 
       m_wakeMsg = new MessageC("");
     }
@@ -224,8 +235,10 @@ namespace RavlN {
         long timeout = -1;
 
         double timeToNext = m_timedQueue.ProcessStep();
+
         if(timeToNext < 0 || (timeToNext > m_teminateCheckInterval && m_teminateCheckInterval > 0))
           timeToNext = m_teminateCheckInterval;
+
         if(m_teminateCheckInterval >= 0)
           timeout = Round(timeToNext * 1000.0);
 
@@ -240,11 +253,11 @@ namespace RavlN {
           if(m_verbose) {
             RavlDebug("Reactor '%s' got ready for %d sockets. (Timeout:%u, %f seconds ) ",Name().data(),ret,timeout,timeToNext);
           }
-          timeout = 0; // Spin around processing pending events until they're gone.
           if(ret == 0) {
             // no more events to process.
             break;
           }
+          timeout = 0; // Spin around processing pending events until they're gone.
           if(ret < 0) {
             int anErrno = zmq_errno ();
             // Shutting down ?
@@ -313,7 +326,10 @@ namespace RavlN {
       ServiceThreadC::Shutdown();
       RavlN::MutexLockC lock(m_accessWakeup);
       RavlAssert(m_wakeup.IsValid());
-      m_wakeup->Send(*m_wakeMsg,ZSB_NOBLOCK);
+      if(!m_wakeScheduled && m_wakeup.IsValid()) {
+        m_wakeScheduled = true;
+        m_wakeup->Send(*m_wakeMsg,ZSB_NOBLOCK);
+      }
       lock.Unlock();
       return true;
     }
@@ -338,10 +354,16 @@ namespace RavlN {
     // be used for cancelling it.
     UIntT ReactorC::Schedule(const TriggerC &se)
     {
-      UIntT ret = m_timedQueue.Schedule(0,se);
-      RavlN::MutexLockC lock(m_accessWakeup);
-      m_wakeup->Send(*m_wakeMsg);
-      return ret;
+      return SendWakeForTimeQueue(m_timedQueue.Schedule(0,se));
+    }
+
+    //! Schedule event for running on the reactor thread when its idle
+    // Thread safe.
+    // Returns an ID for the event, which can
+    // be used for cancelling it. The returned ID never has the value 0, so it may be used to flag not set.
+    UIntT ReactorC::ScheduleIdle(const TriggerC &se)
+    {
+      return SendWakeForTimeQueue(m_timedQueue.ScheduleIdle(se));
     }
 
     //! Schedule event for running after time 't' (in seconds).
@@ -350,10 +372,7 @@ namespace RavlN {
     // be used for cancelling it.
     UIntT ReactorC::Schedule(RealT t,const TriggerC &se,float period)
     {
-      UIntT ret = m_timedQueue.Schedule(t,se,period);
-      RavlN::MutexLockC lock(m_accessWakeup);
-      m_wakeup->Send(*m_wakeMsg);
-      return ret;
+      return SendWakeForTimeQueue(m_timedQueue.Schedule(t,se,period));
     }
 
     //! Schedule event for running.
@@ -362,10 +381,7 @@ namespace RavlN {
     // be used for cancelling it.
     UIntT ReactorC::Schedule(const DateC &at,const TriggerC &se,float period)
     {
-      UIntT ret = m_timedQueue.Schedule(at,se,period);
-      RavlN::MutexLockC lock(m_accessWakeup);
-      m_wakeup->Send(*m_wakeMsg);
-      return ret;
+      return SendWakeForTimeQueue(m_timedQueue.Schedule(at,se,period));
     }
 
     //! Schedule event for running periodically.
@@ -374,10 +390,28 @@ namespace RavlN {
     // be used for cancelling it.
     UIntT ReactorC::SchedulePeriodic(const TriggerC &se,float period)
     {
-      UIntT ret = m_timedQueue.SchedulePeriodic(se,period);
+      return SendWakeForTimeQueue(m_timedQueue.SchedulePeriodic(se,period));
+    }
+
+    //! Called when wake up has been done
+    bool ReactorC::WakeDone(ZmqN::SocketC::RefT &skt)
+    {
       RavlN::MutexLockC lock(m_accessWakeup);
-      m_wakeup->Send(*m_wakeMsg);
-      return ret;
+      m_wakeScheduled = false;
+      MessageC::RefT msg;
+      skt->Recieve(msg);
+      return true;
+    }
+
+    //! Send wake up event for timed event queue.
+    UIntT ReactorC::SendWakeForTimeQueue(UIntT eventId)
+    {
+      RavlN::MutexLockC lock(m_accessWakeup);
+      if(!m_wakeScheduled) {
+        m_wakeScheduled = true;
+        m_wakeup->Send(*m_wakeMsg,ZSB_NOBLOCK);
+      }
+      return eventId;
     }
 
     //! Change period of event.
@@ -393,15 +427,11 @@ namespace RavlN {
     // it was run.
     bool ReactorC::Cancel(UIntT eventID)
     {
-
       return m_timedQueue.Cancel(eventID);
     }
 
-
-
     //! Called when owner handles drop to zero.
     void ReactorC::ZeroOwners() {
-      m_terminate = true;
       ServiceThreadC::ZeroOwners();
     }
 
