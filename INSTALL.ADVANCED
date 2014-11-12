@@ -100,7 +100,7 @@ allow the specification of extra CFLAGS to use.
 A full list of configure's available command-line switches and significant
 environment variables may be seen by issuing the command:
 
-        ./configure --help
+        ./configure --help=recursive
 
 By executing configure in a directory away from where you installed the RAVL
 source, it is possible to separate out the build and source locations. For
