@@ -21,6 +21,8 @@ EXAMPLES=exFFT2d.cc
 
 PLIB=RavlMath
 
+SUMMARY_LIB=Ravl
+
 USESLIBS= RavlMath
 
 PROGLIBS=RavlOS
