@@ -145,7 +145,11 @@ namespace RavlN {
 
       // Open codec.
       bool ret = false;
+#if LIBAVCODEC_VERSION_MAJOR > 53
+      if (avcodec_open2(pCodecCtx, pCodec, NULL) >= 0) {
+#else
       if (avcodec_open(pCodecCtx, pCodec) >= 0) {
+#endif
         ONDEBUG(cerr << "FFmpegPacketStreamBodyC::CheckForOutPut codec constructed ok. " << endl);
         ret = true;
       }
@@ -218,13 +222,21 @@ namespace RavlN {
 
     AVCodecContext *c;
     AVStream *st;
+#if LIBAVFORMAT_VERSION_MAJOR > 53
+    st = avformat_new_stream(oc, NULL);
+#else
     st = av_new_stream(oc, 0);
+#endif
     if (!st) {
         fprintf(stderr, "Could not alloc stream\n");
         exit(1);
     }
     c = st->codec;
+#if LIBAVCODEC_VERSION_MAJOR > 53
+    c->codec_id = (AVCodecID)codec_id;
+#else
     c->codec_id = (CodecID)codec_id;
+#endif
 #if LIBAVUTIL_VERSION_MAJOR >= 51
     c->codec_type = AVMEDIA_TYPE_VIDEO;
 #else
@@ -268,7 +280,9 @@ namespace RavlN {
     
        c->coder_type = 1;
     
+#if LIBAVCODEC_VERSION_MAJOR < 53
        c->partitions = X264_PART_I4X4 + X264_PART_P8X8 + X264_PART_B8X8;
+#endif
     }
 
 
@@ -305,14 +319,25 @@ namespace RavlN {
     AVCodecContext *c;
     AVStream *st;
 
+#if LIBAVFORMAT_VERSION_MAJOR > 53
+    st = avformat_new_stream(oc, NULL);
+#else
     st = av_new_stream(oc, 1);
+#endif
     if (!st) {
         fprintf(stderr, "Could not alloc stream\n");
         exit(1);
     }
+#if LIBAVFORMAT_VERSION_MAJOR > 53
+    st->id = 1;
+#endif
 
     c = st->codec;
+#if LIBAVCODEC_VERSION_MAJOR > 53
+    c->codec_id = (AVCodecID)codec_id;
+#else
     c->codec_id = (CodecID)codec_id;
+#endif
 #if LIBAVUTIL_VERSION_MAJOR >= 51
     c->codec_type = AVMEDIA_TYPE_AUDIO;
 #else
@@ -342,7 +367,11 @@ namespace RavlN {
     }
 
     /* open it */
+#if LIBAVCODEC_VERSION_MAJOR > 53
+    if (avcodec_open2(c, codec, NULL) < 0) {
+#else
     if (avcodec_open(c, codec) < 0) {
+#endif
         fprintf(stderr, "could not open codec\n");
         exit(1);
     }
@@ -390,7 +419,11 @@ namespace RavlN {
     }
 
     /* open the codec */
+#if LIBAVCODEC_VERSION_MAJOR > 53
+    if (avcodec_open2(c, codec, NULL) < 0) {
+#else
     if (avcodec_open(c, codec) < 0) {
+#endif
         fprintf(stderr, "could not open codec, if you are using .h264 please make sure you have an ffmpeg installed that is built with libx264 enabled.\n");
         exit(1);
     }
@@ -460,44 +493,14 @@ namespace RavlN {
 
     codecid = pFormatCtx->oformat->video_codec;
 
+#if LIBAVFORMAT_VERSION_MAJOR < 54
     //Set output parameters, must be done even if no parameters.
     if(av_set_parameters(pFormatCtx,NULL) < 0) {
       ONDEBUG(cerr << "FFmpegPacketStreamBodyC::Open(" << out_filename << "), Failed to set parameters. \n");
       return false;
     }
-
-
-    if(false) {   //done_header == 0 && header_not_done_yet == true ) {  //header_done == 0) {
-    /* close each codec */
-    if (video_st)
-        close_video(pFormatCtx, video_st);
-    if (audio_st)
-        close_audio(pFormatCtx, audio_st);
-
-    /* free the streams */
-    IntT i;
-    for(i = 0; i < pFormatCtx->nb_streams; i++) {
-        av_freep(&pFormatCtx->streams[i]->codec);
-        av_freep(&pFormatCtx->streams[i]);
-    }
-
-#if (defined(LIBAVFORMAT_VERSION_INT) && LIBAVFORMAT_VERSION_INT >= (52 << 16)) || \
-    (defined(LIBAVFORMAT_VERSION_MAJOR) && LIBAVFORMAT_VERSION_MAJOR >= 52)
-    if (!(fmt->flags & AVFMT_NOFILE)) {
-        /* close the output file */
-        url_fclose(pFormatCtx->pb);
-    }
-#else
-    if (!(fmt->flags & AVFMT_NOFILE)) {
-        /* close the output file */
-        url_fclose(&pFormatCtx->pb);
-    }
 #endif
 
-    /* free the stream */
-    av_free(pFormatCtx);
-    pFormatCtx = 0;
-    }
     out_filename = filename;
 
     return true;
@@ -537,11 +540,13 @@ namespace RavlN {
 
     codecid = pFormatCtx->oformat->video_codec;
 
+#if LIBAVFORMAT_VERSION_MAJOR < 54
     //Set output parameters, must be done even if no parameters.
     if(av_set_parameters(pFormatCtx,NULL) < 0) {
       ONDEBUG(cerr << "FFmpegPacketStreamBodyC::Open(" << out_filename << "), Failed to set parameters. \n");
       return false;
     }
+#endif
 
 
 
@@ -566,13 +571,21 @@ namespace RavlN {
 
     //Open output file.
     if(!(fmt->flags & AVFMT_NOFILE)) {
+#if LIBAVFORMAT_VERSION_MAJOR > 53
+       if(avio_open(&pFormatCtx->pb,out_filename,AVIO_FLAG_WRITE) < 0) {
+#else
        if(url_fopen(&pFormatCtx->pb,out_filename,URL_WRONLY) < 0) {
+#endif
           ONDEBUG(cerr << "FFmpegPacketStreamBodyC::Open(" << out_filename << "), Failed to open output file. \n");
           return false;
        }
     }
     //Write header.
+#if LIBAVFORMAT_VERSION_MAJOR > 53
+    if(avformat_write_header(pFormatCtx, NULL) < 0 ) {
+#else
     if(av_write_header(pFormatCtx) < 0 ) {
+#endif
           ONDEBUG(cerr << "FFmpegPacketStreamBodyC::Open(" << out_filename << "), Failed to write header. \n");
           return false;
     }
