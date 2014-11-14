@@ -1,0 +1,253 @@
+dnl This file is part of QMake, Quick Make System
+dnl Copyright (C) 2011-13, University of Surrey
+dnl This code may be redistributed under the terms of the GNU General
+dnl Public License (GPL). See the gpl.licence file for details or
+dnl see http://www.gnu.org/copyleft/gpl.html
+dnl
+dnl file-header-ends-here
+
+
+
+dnl QM_CK_COMPILE_CK_LIB
+dnl
+dnl Macro to attempt to check if the specified external library package exists
+dnl on the system. This macro is for libraries specified as requiring a
+dnl compilation check rather than being specified via pkg-config.
+dnl
+dnl All libraries to be checked for must have previously been declared via
+dnl the QM_DEFINE_EXTIB_CC macro. Any package that is quantified as being
+dnl either present or absent will be removed from the global variable LeftToDo
+dnl At the same time, a quantified package will be added to the list held by
+dnl the RecentlyProcessed variable. 
+dnl
+dnl Macro parameters are:
+dnl       p1: QMake name for the external package
+dnl
+dnl Global variables used:
+dnl
+dnl   All variables listed with a <lib> in their name exist for each library
+dnl   that has been declared (via a QM_DEFINE_EXTLIB_[CP]C) with the <lib>
+dnl   being replaced by the RESOURCE name of the package. For example,
+dnl   the OpenCV package will have variables named with_OpenCV_prq; 
+dnl   use_OpenCV; etc. Similarly, libGTK2 has variables use_libGTK2; 
+dnl   with_libGTK2_prq; etc.
+dnl
+dnl       DBG                        Variable that holds the current trace
+dnl                                  level as requested by the user. Requires
+dnl                                  the inclusion of the debug function
+dnl                                  "trace" in any code calling this macro.
+dnl                                  A suitable trace function is defined in
+dnl                                  the QMake AcMacros/QM_Debug_fn file.
+dnl       LeftToDo                   List of the external libs that remain to
+dnl                                  be processed. As the compilation check
+dnl                                  packages should be processed last, this
+dnl                                  variable is analogous to the list of
+dnl                                  compile check libs that remain to be
+dnl                                  tested. This macro deletes <lib> from
+dnl                                  this list if it can determine if <lib>
+dnl                                  is available for use.
+dnl       RecentlyProcessed          Keeps track of the recently located libs.
+dnl                                  This macro adds <lib> to this list if it
+dnl                                  can determine whether or not the package
+dnl                                  is available.
+dnl       SED                        Standard substitution variable pointing
+dnl                                  to the UNIX sed command.
+dnl       TRACE_INDENT               Variable used for indenting trace debug
+dnl                                  messages (when DBG is set). The current
+dnl                                  convention in this script is to employ
+dnl                                  an indent of 5 spaces per level of 
+dnl                                  nesting in the code i.e. set the var to
+dnl                                  "     " for the first for loop, set it
+dnl                                  to "          " for the second, etc.
+dnl       with_<lib>_prq             Holds the list of prerequisite libraries
+dnl                                  that external library <lib> is dependant
+dnl                                  on. 
+dnl       use_<lib>                  Flag specifying useage of library, 
+dnl                                  initially primed from the command line
+dnl                                  settings, this will be updated to
+dnl                                  reflect the availability of the library
+dnl                                  <lib>
+dnl
+dnl   The following are all interim variables used within this macro:
+dnl
+dnl     failure; lib; lib_enablement; prereqs; prq; prq_state; process_now
+dnl
+AC_DEFUN([QM_CK_COMPILE_CK_LIB],
+         [trace 5 Seeing if we can do the compilation check for $1
+          lib=$1
+          dnl Use intermediate variable to circumvent any issues over macro
+          dnl substitution when we need to use {$lib} in the code
+
+          eval lib_enablement=\$use_${lib}
+
+
+          AS_IF([test "$lib_enablement" == check -o  "$lib_enablement" == needed -o  "$lib_enablement" == yes],
+                [# We need to check if this lib exists
+                 eval prereqs="\$with_${lib}_prq"
+                 process_now=yes
+                 if ( test "x$prereqs" != x )
+                 then
+                    TRACE_INDENT="     "
+                    trace 4 Checking we know the status of all the pre-requisites of $lib @<:@$prereqs@:>@
+                    for prq in $prereqs
+                    do
+                       eval prq_state=\$use_${prq}
+                       case "$prq_state" in
+                          present )     TRACE_INDENT="          "
+                                        trace 6 $prq is present
+                                        ;;
+                          no )          case $lib_enablement in
+                                           check )  TRACE_INDENT="          "
+                                                    trace 6 $prq is disabled, disabling $lib
+                                                    eval use_${lib}=blocked
+                                                    LeftToDo=`echo " $LeftToDo " | $SED "s/ $lib / /"`
+                                                    RecentlyProcessed="$RecentlyProcessed $lib"
+                                                    process_now=no
+                                                    break
+                                                    ;;
+                                           needed ) AC_MSG_FAILURE([Library $lib is a pre-requisite of a selected library but is unavailable due to a disabled pre-requisite])
+                                                    ;;
+                                           yes )    AC_MSG_FAILURE([Required library $lib is unavailable due to a disabled pre-requisite])
+                                                    ;;
+                                        esac
+                                        ;;
+                          missing )     case $lib_enablement in
+                                           check )  TRACE_INDENT="          "
+                                                    trace 6 $prq is not available, disabling $lib
+                                                    eval use_${lib}=blocked
+                                                    LeftToDo=`echo " $LeftToDo " | $SED "s/ $lib / /"`
+                                                    RecentlyProcessed="$RecentlyProcessed $lib"
+                                                    process_now=no
+                                                    break
+                                                    ;;
+                                           needed ) AC_MSG_FAILURE([Library $lib is a pre-requisite of a selected library but is unavailable due to a missing pre-requisite])
+                                                    ;;
+                                           yes )    AC_MSG_FAILURE([Required library $lib is unavailable due to a missing pre-requisite])
+                                                    ;;
+                                        esac
+                                        ;;
+                          blocked )     case $lib_enablement in
+                                           check )  TRACE_INDENT="          "
+                                                    trace 6 $prq is blocked, disabling $lib
+                                                    eval use_${lib}=blocked
+                                                    LeftToDo=`echo " $LeftToDo " | $SED "s/ $lib / /"`
+                                                    RecentlyProcessed="$RecentlyProcessed $lib"
+                                                    process_now=no
+                                                    break
+                                                    ;;
+                                           needed ) AC_MSG_FAILURE([Library $lib is a pre-requisite of a selected library but is unavailable due to a missing pre-requisite])
+                                                    ;;
+                                           yes )    AC_MSG_FAILURE([Required library $lib is unavailable due to a missing pre-requisite])
+                                                    ;;
+                                        esac
+                                        ;;
+                          check | needed | yes )
+                                        TRACE_INDENT="          "
+                                        trace 6 $prq has not yet been checked, cannot check $lib at the moment
+                                        process_now=no
+                                        # Do not break in case we can
+                                        # mark the library as blocked
+                                        # by dint of another pre-req.
+                                        ;;
+                          * )           case $lib_enablement in
+                                           check )  TRACE_INDENT="          "
+                                                    trace 1 Assert - unrecognised state for prerequisite $prq, disabling $lib
+                                                    eval use_${lib}=blocked
+                                                    LeftToDo=`echo " $LeftToDo " | $SED "s/ $lib / /"`
+                                                    RecentlyProcessed="$RecentlyProcessed $lib"
+                                                    process_now=no
+                                                    break
+                                                    ;;
+                                           needed ) AC_MSG_FAILURE([Library $lib is a prerequisite of a selected library but is unavailable due to a indeterminate pre-requisite state])
+                                                    ;;
+                                           yes )    AC_MSG_FAILURE([Required library $lib is unavailable due to a indeterminate pre-requisite state])
+                                                    ;;
+                                        esac
+                                        ;;
+                       esac
+                    done
+                 fi
+                 AS_IF([test "x$process_now" != xno],
+                       [AS_CASE([$lib_enablement],
+                                [check],  [failure=""],
+                                [needed], [failure="Library $lib is unavailable and a prerequisite of a selected library"],
+                                [yes],    [failure="Required library $lib is unavailable"],
+                                [trace 1 "Assert - Should never fall through here"]
+                               )
+                        eval test_lang="\$with_${lib}_lang"
+                        test_lang=`echo $test_lang`
+                        # Set test_lang from $with_$Lib_lang and strip external spaces
+
+                        dnl# As the stack for switching the current language is
+                        dnl# implemented in autoconf and not available at
+                        dnl# runtime, AC_LANG_xx must take a literal parameter.
+                        AS_CASE(["$test_lang"],
+                                ["C"],             [AC_LANG_PUSH([C])
+                                                  QM_CHECK_CC_LIB([$lib],[$failure])
+                                                  AC_LANG_POP([C])
+                                                 ],
+                                ["C++"],           [AC_LANG_PUSH([C++])
+                                                  QM_CHECK_CC_LIB([$lib],[$failure])
+                                                  AC_LANG_POP([C++])
+                                                 ],
+dnl
+dnl                     Disable non-C or C++ languages as QMake as a whole
+dnl                     cannot currently cope with them. The support that is
+dnl                     not currently present in QMake includes Makefile
+dnl                     support for other language file-extensions and any
+dnl                     support for the language xxFLAGS settings either in
+dnl                     the QMake makefiles or in these configuration script
+dnl                     macros/configuration files. The QM_CHECK_CC_LIB macro
+dnl                     also only supports C-like synatax for include file 
+dnl                     processing.
+dnl
+dnl                             ["Fortran"],       [AC_LANG_PUSH([Fortran])
+dnl                                               QM_CHECK_CC_LIB([$lib],[$failure])
+dnl                                               AC_LANG_POP([Fortran])
+dnl                                              ],
+dnl                             ["Fortran 77"],    [AC_LANG_PUSH([Fortran 77])
+dnl                                               QM_CHECK_CC_LIB([$lib],[$failure])
+dnl                                               AC_LANG_POP([Fortran 77])
+dnl                                              ],
+dnl                             ["Erlang"],        [AC_LANG_PUSH([Erlang])
+dnl                                               QM_CHECK_CC_LIB([$lib],[$failure])
+dnl                                               AC_LANG_POP([Erlang])
+dnl                                              ],
+dnl                             ["Objective C"],   [AC_LANG_PUSH([Objective C])
+dnl                                               QM_CHECK_CC_LIB([$lib],[$failure])
+dnl                                               AC_LANG_POP([Objective C])
+dnl                                              ],
+dnl                             ["Objective C++"], [AC_LANG_PUSH([Objective C++])
+dnl                                               QM_CHECK_CC_LIB([$lib],[$failure])
+dnl                                               AC_LANG_POP([Objective C++])
+dnl                                              ],
+dnl
+                                [AC_MSG_WARN([Unrecognised language @<:@$test_lang@:>@ for package $1])
+                                 AC_MSG_WARN([Unable to check for presence of package])
+                                ]
+                               )
+                        LeftToDo=`echo " $LeftToDo " | $SED "s/ $lib / /"`
+                        RecentlyProcessed="$RecentlyProcessed $lib"
+                       ]
+                      ) dnl End of process_now code
+                ], dnl End of lib_enablement = check|needed|yes code
+                [# We do not need to check for existance of this library; trace why
+                 case $lib_enablement in
+                    'no' )      TRACE_INDENT="     "
+                                trace 6 $lib is disabled, not checking for existance
+                                ;;
+                    'blocked' ) TRACE_INDENT="     "
+                                trace 6 $lib is blocked by a pre-requisite
+                                ;;
+                    * )         TRACE_INDENT="     "
+                                trace 1 "Assert - curious lib_enablement"
+                                ;;
+                 esac
+                 LeftToDo=`echo " $LeftToDo " | $SED "s/ $lib / /"`
+                 RecentlyProcessed="$RecentlyProcessed $lib"
+                ]
+               )
+          # Strip unnecessary spaces from LeftToDo
+          LeftToDo=`echo " $LeftToDo " | $SED "s/  */ /g;s/^ //;s/ $//"`
+         ]
+        )

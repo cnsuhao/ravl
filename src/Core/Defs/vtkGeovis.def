@@ -5,30 +5,15 @@
 # see http://www.gnu.org/copyleft/lesser.html
 # file-header-ends-here
 
-ifndef VTK_GEOVIS_DEF
+$(error vtkGeovis not currently supported)
 
-  VTK_GEOVIS_DEF = 1
+ifndef vtkGeovis_DEF
 
-  # Declare libraries for this particulat VTK kit
+  vtkGeovis_DEF = 1
 
-    VTK_GEOVIS_LIBS = -lvtkGeovis -lvtkproj4
+  EXELIB := $(vtkGeovis_LIBS) $(EXELIB)
 
-  # Ensure any dependencies of this kit are already included
-
-    ifndef VTK_VIEWS_DEF
-      include vtkViews.def
-      # Will include the following via recursive dependency:
-      #   vtkInfovis, vtkWidgets, vtkParallel, vtkHybrid, vtkVolumeRendering,
-      #   vtkRendering, vtkIO, vtkFiltering, vtkGraphics, vtkImaging, vtkCommon
-    endif
-
-  # Prefix any VTK libraries on the link line with this kit
-
-    EXELIB := $(subst $(VTK_LIBS_USED),$(VTK_GEOVIS_LIBS) $(VTK_LIBS_USED),$(EXELIB))
-
-  # Remember what the current set of VTK libs are
-
-    VTK_LIBS_USED := $(VTK_GEOVIS_LIBS) $(VTK_LIBS_USED)
+  INCLUDES += $(vtkGeovis_CFLAGS)
 
 endif
 

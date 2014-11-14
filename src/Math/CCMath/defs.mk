@@ -17,4 +17,6 @@ LIBDEPS= CCMath.def
 
 PLIB= RavlMath
 
+SUMMARY_LIB=Ravl
+
 USESLIBS=RavlCore ccmath

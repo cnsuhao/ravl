@@ -20,6 +20,8 @@ USERCPPFLAGS=-msse2
 
 PLIB=RavlCore
 
+SUMMARY_LIB=Ravl
+
 USESLIBS = RavlCore 
 
 PROGLIBS= RavlMath RavlOS

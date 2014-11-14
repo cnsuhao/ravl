@@ -15,6 +15,8 @@ SOURCES=ActiveBlackboard.cc Agent.cc AgentPlan.cc
 
 PLIB=RavlLogicAgent
 
+SUMMARY_LIB=Ravl
+
 USESLIBS=RavlLogic RavlDPMT RavlLogicNLP
 
 TESTEXES= testActiveBlackboard.cc

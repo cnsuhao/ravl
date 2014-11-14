@@ -5,35 +5,15 @@
 # see http://www.gnu.org/copyleft/lesser.html
 # file-header-ends-here
 
-ifndef VTK_HYBRID_DEF
+$(error vtkHybrid not currently supported)
 
-  VTK_HYBRID_DEF = 1
+ifndef vtkHybrid_DEF
 
-  # Declare libraries for this particulat VTK kit
+  vtkHybrid_DEF = 1
 
-    VTK_HYBRID_LIBS = -lvtkHybrid -lvtkexoIIc -lnetcdf -lvtkftgl -lGL -lfreetype
+  EXELIB := $(vtkHybrid_LIBS) $(EXELIB)
 
-  # Ensure any dependencies of this kit are already included
-
-    ifndef VTK_RENDERING_DEF
-      include vtkRendering.def
-      # Will include the following via recursive dependency:
-      #   vtkGraphics, vtkImaging, vtkFiltering, vtkCommon
-    endif
-
-    ifndef VTK_PARALLEL_DEF
-      include vtkParallel.def
-      # Will include the following via recursive dependency:
-      #   vtkIO, vtkGraphics, vtkImaging, vtkFiltering, vtkCommon
-    endif
-
-  # Prefix any VTK libraries on the link line with this kit
-
-    EXELIB := $(subst $(VTK_LIBS_USED),$(VTK_HYBRID_LIBS) $(VTK_LIBS_USED),$(EXELIB))
-
-  # Remember what the current set of VTK libs are
-
-    VTK_LIBS_USED := $(VTK_HYBRID_LIBS) $(VTK_LIBS_USED)
+  INCLUDES += $(vtkHybrid_CFLAGS)
 
 endif
 

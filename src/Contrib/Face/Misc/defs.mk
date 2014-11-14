@@ -15,6 +15,8 @@ SOURCES= TwoWayMap.cc
 
 PLIB = RavlTwoWayMap
 
+SUMMARY_LIB=Ravl
+
 USESLIBS= RavlOS RavlCore RavlIO 
 
 MUSTLINK=

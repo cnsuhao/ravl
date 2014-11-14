@@ -10,6 +10,7 @@ PACKAGE=Ravl/3D
 HEADERS=SurfacePoint3dArray.hh #VoxelSet.hh PointSet.hh VoxelCameraLookup.hh VoxelCarve.hh 
 SOURCES= SurfacePoint3dArray.cc #VoxelCameraLookup.cc #VoxelCarve.cc
 PLIB=Ravl3D
+SUMMARY_LIB=Ravl
 LIBDEPS=RavlCarve3D.def
 USESLIBS=RavlCore RavlMath RavlImage # RavlCameraCal
 

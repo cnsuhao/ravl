@@ -20,6 +20,8 @@ TESTEXES= testSpecificFMatrix.cc
 
 PLIB=RavlMath
 
+SUMMARY_LIB=Ravl
+
 LIBDEPS=RavlFSLinear.def
 
 USESLIBS=RavlMath

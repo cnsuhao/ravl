@@ -1,0 +1,135 @@
+dnl This file is part of QMake, Quick Make System
+dnl Copyright (C) 2011-13, University of Surrey
+dnl This code may be redistributed under the terms of the GNU General
+dnl Public License (GPL). See the gpl.licence file for details or
+dnl see http://www.gnu.org/copyleft/gpl.html
+dnl
+dnl file-header-ends-here
+
+
+dnl QM_LOCATE_MAKE
+dnl
+dnl Macro to locate the make utility; preferring a GNU version.
+dnl
+dnl No macro parameters
+dnl
+dnl Global variables used:
+dnl
+dnl       MAKE                       Receives the path of the make utility
+dnl                                  selected. May initially have been set by
+dnl                                  the user if they initially specified the
+dnl                                  make utility to use (by setting the MAKE
+dnl                                  environment variable).
+dnl       GNU_MAKE                   Receives whether or not the make utility
+dnl                                  is a GNU version (simple yes no setting)
+dnl                                  This variable is also used as an
+dnl                                  interim variable during the macro to
+dnl                                  hold the path of the first GNU version
+dnl                                  of make that is found.
+dnl       save_ifs                   Interim variable preserves the system
+dnl                                  IFS setting while the macro manipulates
+dnl                                  the active setting for processing the
+dnl                                  searchlist.
+dnl       IFS                        UNIX Internal Field Seperator variable,
+dnl                                  temporarily modified when processing
+dnl                                  the searchlist.
+dnl       ANO_MAKE                   Interim variable that holds the path to
+dnl                                  the first non-GNU varion of make that
+dnl                                  may be found.
+dnl       EXPR                       Standard substitution variable pointing
+dnl                                  to the UNIX expr command.
+dnl       dir                        Interim variable set to the individual
+dnl                                  components of the PATH variable
+dnl       PATH_SEPARATOR             Informs the macro of the path separator,
+dnl                                  originally set either in the system
+dnl                                  environment or by the initialisation
+dnl                                  code of the configure script
+dnl       VER_STRING                 Interim variable receives the output
+dnl                                  from running make with the -v cmd-line
+dnl                                  option when checking if it is a GNU
+dnl                                  version
+dnl       PATH                       UNIX searchlist, use for locating the
+dnl                                  make utility
+dnl
+AC_DEFUN([QM_LOCATE_MAKE],
+         [
+          dnl# Preserve any user-supplied environment settings including any 
+          dnl# existing setting for MAKE
+          AC_REQUIRE([QM_READ_USER_ENV])
+
+          if ( test "X$MAKE" = X )
+          then
+             # User has not asked for a specific make utility, look for make
+             MAKE=make
+          fi
+     
+          if ( test X`$EXPR X$MAKE : '\(X[[\\/]].*\)'` != XX$MAKE )
+          then
+             # User has not asked for a specific path for the make utility,
+             # we have to look for it on the search list
+     
+             AC_MSG_CHECKING([for make utility])
+             GNU_MAKE=""
+             ANO_MAKE=""
+             save_ifs="$IFS"
+             IFS=$PATH_SEPARATOR
+             for dir in $PATH
+             do
+                IFS="$save_ifs"
+                if ( test X"$dir" != X && test $dir != '.' && test -x "$dir/$MAKE" )
+                then
+                   # Run $MAKE -v to check if we have GNU Make
+                   case `"$dir/$MAKE" -v 2>&1 </dev/null` in
+                    *GNU* | *'with BFD'*)  GNU_MAKE=$dir/$MAKE
+                                           # Found GNU Make which we prefer
+                                           # so we need look no further
+                                           break
+                                           ;;
+                    *)                     if ( test X$ANO_MAKE = X )
+                                           then
+                                              ANO_MAKE=$dir/$MAKE
+                                           fi
+                                           ;;
+                   esac
+                fi
+             done
+             IFS="$save_ifs"
+             if ( test X$GNU_MAKE = X )
+             then
+                # Preferred GNU Make not found, was there an alternative
+                if ( test  X$ANO_MAKE = X)
+                then
+                   AC_MSG_RESULT([no])
+                   AC_MSG_FAILURE([Cannot find a working make required for building with])
+                else
+                   MAKE=$ANO_MAKE
+                   AC_MSG_RESULT([$MAKE])
+                   GNU_MAKE=no
+                fi
+             else
+                MAKE=$GNU_MAKE
+                AC_MSG_RESULT([$MAKE])
+                GNU_MAKE=yes
+             fi
+          else
+             # User specified a full path to make (in MAKE environment variable)
+             AC_MSG_CHECKING([\$MAKE specified make utility])
+             if ( test -x $MAKE )
+             then
+                VER_STRING=`"$MAKE" -v 2>&1 </dev/null`
+                if ( test `$EXPR "$VER_STRING" : '.*GNU.*'` -gt 0 || test `$EXPR "$VER_STRING" : '.*with BFD.*'` -gt 0 )
+                then
+                   GNU_MAKE=yes
+                else
+                   GNU_MAKE=no
+                fi
+                AC_MSG_RESULT([$MAKE])
+             else
+                AC_MSG_RESULT([unexecutable])
+                AC_MSG_FAILURE([\$MAKE does not specify a usable make utility])
+             fi
+          fi
+         ]
+        )
+
+

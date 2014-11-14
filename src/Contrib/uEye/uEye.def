@@ -1,15 +1,19 @@
+# This file is part of RAVL, Recognition And Vision Library
+# Copyright (C) 2001-11,  University of Surrey.
+# This code may be redistributed under the terms of the GNU Lesser
+# General Public License (LGPL). See the lgpl.licence file for details or
+# see http://www.gnu.org/copyleft/lesser.html
+# file-header-ends-here
+
+$(error uEye not currently supported)
+
 ifndef UEYE_DEF
-UEYE_DEF = 1
 
-# INCLUDES += -I$(HOME_UEYE)/include
-ifeq ($(ARC),linux)
-    INCLUDES += -D__LINUX__
-endif
+  UEYE_DEF=1
 
-ifeq ($(ARC),linux64)
-    INCLUDES += -D__LINUX__
-endif
+  EXELIB := $(uEyeSDK_LIBS) $(EXELIB)
 
- EXELIB :=  -lueye_api $(EXELIB)
+  INCLUDES += $(uEyeSDK_CFLAGS)
 
 endif
+

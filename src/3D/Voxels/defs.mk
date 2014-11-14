@@ -10,6 +10,8 @@ PACKAGE = Ravl/Voxels
 
 PLIB = RavlVoxels
 
+SUMMARY_LIB=Ravl
+
 HEADERS = \
  Ray3d.hh \
  VoxelGrid.hh \

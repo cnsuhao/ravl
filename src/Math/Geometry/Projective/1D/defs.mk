@@ -27,6 +27,8 @@ HEADERS = PPoint1d.hh  PProjection1d.hh
 # PLIB = the project library ... where the objects will be archived
 PLIB = RavlMath
 
+SUMMARY_LIB=Ravl
+
 LIBDEPS = RavlMathProj1d.def
 
 USESLIBS=RavlMath

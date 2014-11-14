@@ -21,6 +21,8 @@ SOURCES= FeatureSelector.cc FeatureSelectAsymmetricAdaBoost.cc \
 
 PLIB = RavlPatternRec
 
+SUMMARY_LIB=Ravl
+
 LIBDEPS=RavlPatternRecFeatureSelection.def
 
 USESLIBS=RavlDataSet RavlPatternRec 

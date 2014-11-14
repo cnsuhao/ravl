@@ -18,9 +18,9 @@ SOURCES=BGraphBase.cc BGraphBaseIter.cc BGraphLinearIter.cc
 
 PLIB=RavlCore
 
-USESLIBS=RavlCore
-
 LIBDEPS=RavlBranch.def
+
+SUMMARY_LIB=Ravl
 
 TESTEXES= testBGraph.cc testBranch.cc
 

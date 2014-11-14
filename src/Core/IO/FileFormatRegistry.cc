@@ -500,6 +500,7 @@ namespace RavlN {
   {
     MTReadLockC readLock(6);
     FileFormatBaseC bestFormat;
+
     // Should look for best ??
     DListC<DPConverterBaseC> bestConverterList;
     const std::type_info *bestFormatType = 0;

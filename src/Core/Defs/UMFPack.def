@@ -1,15 +1,17 @@
-ifndef UMFPACK_DEF
+# This file is part of RAVL, Recognition And Vision Library
+# Copyright (C) 2013,  University of Surrey.
+# This code may be redistributed under the terms of the GNU Lesser
+# General Public License (LGPL). See the lgpl.licence file for details or
+# see http://www.gnu.org/copyleft/lesser.html
+# file-header-ends-here
 
-  UMFPACK_DEF = 1
+ifndef UMFPack_DEF
 
-  EXELIB := -lcolamd -lcxsparse -lumfpack -lamd -lblas -pthread $(EXELIB)
+  UMFPack_DEF=1
 
-ifndef UFMPACK_HOME
-  INCLUDES += -I/usr/include/suitesparse
-else
-  INCLUDES += -I$(UFMPACK_HOME)/include/suitesparse
+  EXELIB := $(UMFPack_LIBS) $(EXELIB)
 
-  EXELIB := -Wl,-rpath,$(UFMPACK_HOME)/lib -L$(UFMPACK_HOME)/lib $(EXELIB)
+  INCLUDES += $(UMFPack_CFLAGS)
+
 endif
 
-endif

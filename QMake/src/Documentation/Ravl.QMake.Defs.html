@@ -1,0 +1,787 @@
+<html>
+<head>
+  <title>Description File Variables</title>
+</head>
+<body>
+
+<!-- ***************** Table Of Contents (On RHS of Page)  ***************** -->
+
+    <table align="right" width=160 cellspacing=5>
+      <tr>
+        <td bgcolor="#007FFF">
+          &nbsp;
+          <font size=2 face="arial,helvetica" color="white">
+            <B>VARIABLES</B>
+          </font>
+        </td>
+      </tr><tr>
+        <td>
+          <font face="arial,helvetica" size=2>
+            <ul>
+              <li><a href="#naming">Project Naming</A>
+                <ul>
+                  <li><a href="#PROJECT_NAME">PROJECT_NAME</A>
+                  <li><a href="#PACKAGE">PACKAGE</A>
+                </ul>
+              <li><a href="#description">Directory structure</A>
+                <ul>
+                  <li><a href="#NESTED">NESTED</A></li>
+                  <li><a href="#DESCRIPTION">DESCRIPTION</A></li>
+                </ul>
+              <li><a href="#source">Source files</A>
+                <ul>
+                  <li><a href="#MAINS">MAINS</A></li>
+                  <li><a href="#SCRIPTS">SCRIPTS</A></li>
+                  <li><a href="#SOURCES">SOURCES</A>
+                  <li><a href="#MUSTLINK">MUSTLINK</A>
+                  <li><a href="#HEADERS">HEADERS</A>
+                  <li><a href="#LOCALHEADERS">LOCALHEADERS</A>
+                  <LI><A href="#CHXX">CHXX</A>
+                  <LI><A href="#CXXEXT">CXXEXT</A>
+                  <LI><A href="#CXXAUXEXT">CXXAUXEXT</A>
+                  <LI><A href="#CEXT">CEXT</A>
+                  <LI><A href="#CHEXT">CHEXT</A>
+                </ul>
+              <li><a href="#libs">Libraries</A>
+                <ul>
+                  <li><a href="#PLIB">PLIB</A>
+                  <li><a href="#USESLIBS">USESLIBS</A>
+                  <li><a href="#PROGLIBS">PROGLIBS</A>
+                  <li><a href="#TESTLIBS">TESTLIBS</A>
+                  <li><a href="#EXTERNALLIBS">EXTERNALLIBS</A>
+                  <li><a href="#LIBDEPS">LIBDEPS</A>
+                  <li><a href="#USESPKGCONFIG">USESPKGCONFIG</A> 
+                  <li><a href="#MAKEPKGCONFIG">MAKEPKGCONFIG</A>
+                </ul>
+              <li><a href="#platform">Platform support</A>
+                <ul>
+                  <li><a href="#SUPPORT_ONLY">SUPPORT_ONLY</A>
+                  <li><a href="#DONOT_SUPPORT">DONOT_SUPPORT</A>
+                  <li><a href="#REQUIRES">REQUIRES</A>
+                </ul>
+              <li><a href="#examples">Example programs</A>
+                <ul>
+                  <li><a href="#EXAMPLES">EXAMPLES</A>
+                  <li><a href="#TESTEXES">TESTEXES</A>
+                </ul>
+              <li><a href="#special">Special files</A>
+                <ul>
+                  <li><a href="#AUXFILES">AUXFILES,AUXDIR</A>
+                  <li><a href="#EXTRA_DIST_DIRS">EXTRA_DIST_DIRS</A>
+                  <li><a href="#PREBUILDSTEP">PREBUILDSTEP</A>
+                  <li><a href="#POSTBUILDSTEP">POSTBUILDSTEP</A>
+                </ul>
+              <li><a href="#documentation">Documentation</A></li>
+                <ul>
+                  <lI><A HREF="#EHT">EHT</A>
+                  <li><a href="#HTML">HTML</A>
+                  <li><a href="#MAN1">MAN1</A>
+                  <li><a href="#MAN3">MAN3</A>
+                  <li><a href="#MAN5">MAN5</A>
+                </ul>
+              <li><a href="#compopts">Compiler options</a></li>
+                <ul>
+                  <LI><A href="#CCPPFLAGS">CCPPFLAGS</A>
+                  <LI><A href="#CFLAGS">CFLAGS</A>
+                  <LI><A href="#LDFLAGS">LDFLAGS</A>
+                  <LI><A href="#ANSIFLAG">ANSIFLAG</A>
+                </ul>
+              </ul>
+          </font>
+        </td>
+      </tr>
+    </table>
+
+<!-- ******************* Page Summary (On LHS of Page)  ******************* -->
+
+<table align=left width=160><tr>
+<td valign=top bgcolor="black">
+  &nbsp;
+  <font size=2 face="arial,helvetica" color="white">
+  <B>DEFS.MK</B>
+  </font>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<td>
+  <font color="#23238E" size=4 face="arial,helvetica"><B>
+    The defs.mk file describes how QMake  builds the current directory.
+  </B></font>
+</td>
+</tr></table>
+
+
+<!-- *************************** Main Page Text  *************************** -->
+
+<table align=center><tr>
+<td>
+<P>
+The "defs.mk" description file is used by QMake to determine what files are to
+be processed when building the current directory. It achieves this by setting
+various categories of variables, listed on the right.
+</P>
+</td>
+</tr></table>
+<hr>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+
+
+
+<H3><A NAME="naming"></A>Project Naming</H3>
+<p>QMake divides up applications into the concept of a PROJECT and optionally
+several PACKAGEs. A PROJECT is the entire application suite that is being built
+by QMake, while a PACKAGE is a distinct logical sub-set of the software suite
+(be that a grouping defined by functionality, authorship or any other such
+classification). The following defs.mk file entries allow the user to declare
+the structure appropriate for their application. </p>
+
+<UL>
+
+<LI><DT><A NAME="PROJECT_NAME"></A><B>PROJECT_NAME</B></DT>
+<DD> <p>  The name of the project to which the whole directory tree belongs.
+This setting defines multiple aspects of the project, including the naming used
+on any documentation that is produced and the subdirectory path where public
+data or include files are installed. </p>
+<p>For example, a defs.mk file containing the following:</p><code><pre>
+    PROJECT_NAME = MyProject
+
+    PACKAGE = Functionality
+
+    HEADERS = HeaderFile.hh
+
+    DATA = DataFile
+
+    DATADIR = Data
+</pre></code><p> means that all public header files will be copied into the
+directory: </p><code><pre>
+    $PROJECT_OUT/include/MyProject/Functionality
+</pre></code><p> so the header file <code>HeaderFile.hh</code> would be used in
+any C++ source code by using the statement: </p><code><pre>
+    #include "MyProject/Functionality/HeaderFile.hh"
+</pre></code><p> and the data file, <code>DataFile</code> would ultimately be
+installed in: </p><code><pre>
+    $datadir/MyProject/Functionality/Data
+</pre></code>
+</DD>
+<LI><DT><A NAME="PACKAGE"></A><B>PACKAGE</B></DT>
+<DD><p><b>Advanced users only.</b></p>
+<p>  The name of the sub-package to which the directory belongs. In fact, it is
+a part of the subdirectory path where public data or include files are copied.
+For example, </p><code><pre>
+    PROJECT_NAME = MyProject
+
+    PACKAGE = Functionality
+
+    HEADERS = HeaderFile.hh
+
+    DATA = DataFile
+
+    DATADIR = Data
+</pre></code><p> means that all public header files will be copied into the
+directory: </p><code><pre>
+    $PROJECT_OUT/include/MyProject/Functionality
+</pre></code><p> so the header file <code>HeaderFile.hh</code> would be used in
+any C++ source code by using the statement: </p><code><pre>
+    #include "MyProject/Functionality/HeaderFile.hh"
+</pre></code><p> and the data file, <code>DataFile</code> would ultimately be
+installed in: </p><code><pre>
+    $datadir/MyProject/Functionality/Data
+</pre></code>
+
+<P><font size = +1><b>ATTENTION!!</b></font> Use of the PACKAGE concept should
+be carefully planned. It should be used to group similar functionality together
+to aid organisation of the installed header or data files. However, care should
+be taken so as to avoid a situation where many different PACKAGEs are defined,
+each declaring a directory that contains only a few files. Furthermore, once
+implemented, the variable should not be changed arbitrarily because it will
+break code that depends on the library.</P>
+</DD>
+</UL>
+<p>Some existing software employs a depreciated form of the project/package
+naming mechanism. This form uses solely the PACKAGE variable to organise the
+source code by setting PACKAGE=Project/Package. We suggest that new code
+implement the current form that uses the PROJECT_NAME variable alongside the
+PACKAGE setting.</p>
+
+
+
+
+<H3><A NAME="description"></A>Directory structure</H3>
+
+<P> The QMake system is capable of building a tree of directories. The following
+variable is used to specify the branches from the current directory. </P>
+<UL>
+<LI><DT><A NAME="NESTED"></A><B>NESTED</B></DT>
+<DD><p>The QMake system is capable of building a tree of directories. NESTED
+defines the list of subdirectories which are built before the current directory.
+A suffix '.r' flag is used to indicate that the directory is ready to be built
+otherwise it is ignored. For example: <code><pre> 
+    NESTED = Vector.r Matrix List.r
+</pre></code>means that the directory Vector is built first and List is built
+second. Matrix is skipped.</p>
+</DD>
+
+<LI><DT><A NAME="DESCRIPTION"></A><B>DESCRIPTION</B></DT> 
+<DD><p>The DESCRIPTION variable defines a one line description of the directory
+contents. This should give potential users an idea about the functionality that
+this directory contributes to the project. E.g. for the CxxDoc directory: <code><pre>
+    DESCRIPTION = The QMake C++ Documentation tool
+</pre></code></p>
+</DD>
+</UL>
+
+
+
+<H3><A NAME="source"></A>Source Files</H3>
+
+<P> The compilation of libraries and executables are controlled by the following
+variables: </P>
+
+<UL>
+<LI><DT><A NAME="MAINS"></A><B>MAINS</B></DT>
+<DD><p>Lists all source files that compile into executables. When QMake builds
+your project, each file listed in MAINS is compiled based on the suffix of the
+file name. The following <A NAME="Suffixes"></A>suffixes are supported:</p>
+<UL>
+<li> <b>.cc</b> or <b>.cxx</b> for programs written in C++. May be overridden
+by using the <a href="#CXXEXT">CXXEXT</a> or <a href="#CXXAUXEXT">CXXAUXEXT</a> 
+variables.
+<li> <b>.c</b> for programs written in C. May be overridden by using the
+<a href="#CEXT">CEXT</a> variable.
+<li> <b>.f</b> or <b>.for</b> for programs written in Fortran.
+<li> <b>.java</b> for programs written in Java.
+</UL>
+
+<p>For example, <code><PRE>
+    MAINS = rgbTool.cc matcher.c
+</PRE></code> will make two executables; rgbTool and matcher.  The first one
+will see rgbTool.cc compiled using the C++ compiler, while the second,
+matcher.c, is compiled by the C compiler.</p>
+
+<p> Once the source files listed in MAINS have been compiled, QMake will proceed
+to produce an executable for each file. The compiled object file will be linked
+with any library specified by the <a href="#PLIB">PLIB</A>,
+<a href="#USESLIBS">USESLIBS</A> and <a href="#PROGLIBS">PROGLIBS</A>
+definitions and any object file indicated by the
+<a href="#MUSTLINK">MUSTLINK</a> setting. The resultant executable will be named
+as per the entry in MAINS (minus the suffix)</p>
+
+<P> The names of the executables listed in all of the MAINS variables across the
+whole project must be unique (including at the base name level, you cannot have
+both a program.c and a program.for) </P>
+</DD>
+
+<LI><DT><A NAME="SCRIPTS"></A><B>SCRIPTS</B></DT>
+<DD><p>Lists all the source files that provide the non-compiled executables of
+your application, such as regular shell scripts (Bourne, C shell, etc.) or 
+interpreted programs (Perl, Ruby, etc.). </p>
+</DD>
+
+<LI><DT><A NAME="SOURCES"></A><B>SOURCES</B></DT>
+<DD><p>All source files which are not main programs.  If the variable
+<a href="#PLIB">PLIB</A> is defined, they are added to the library so defined.
+The <a href="#Suffixes">source file suffixes</a> play the same role as in the
+variable <a href="#MAINS">MAINS</a>.</p>
+
+<P> It is recommended that the names of files in all the SOURCES variables
+across your project should be unique. This will avoid clashes of names during
+any later restructuring of libraries.  As a minimum, the <b>names must be unique
+within the library specified by the variable PLIB</b>.</P>
+</DD>
+
+<LI><DT><A NAME="MUSTLINK"></A><B>MUSTLINK</B></DT>
+<DD> <p><b>Advanced users only.</b></p>
+<p>This is a list of source files that MUST be linked when using a library. The
+<a href="#Suffixes">suffixes</a> play the same role as in the variable
+<a href="#MAINS">MAINS</a>.</p>
+
+<P> The name of files specified in MUSTLINK, must be unique with respect
+to all other files specified in MUSTLINK throughout the project.  This directive
+can be used to force files to be included into executables, where dependencies
+alone would not caused it to be linked.  This mechanism can be used where
+constructors for global variables modify, or add to, global databases. </p>
+</DD>
+
+<LI><DT><A NAME="HEADERS"></A><B>HEADERS</B></DT>
+<DD><p>Declares the list of public header files, i.e. those headers that may be
+use by source files outside of the current directory. These files are
+automatically exported by QMake to the directory
+<code>include/$(PROJECT_NAME)/$(PACKAGE)</code>, to make them available to other
+source files.  E.g. if you have a file <code>HeaderFile.hh</code> to export, the
+content of the defs.mk file will be: </p><code><pre>
+    PROJECT_NAME = MyProject
+
+    PACKAGE = Functionality
+
+    HEADERS = HeaderFile.hh
+</pre></code><p> Thus to #include the header file, you need to put: </p>
+<pre><code>    #include "MyProject/Functionality/HeaderFile.hh"
+</code></pre> 
+
+<p>if either <a href="#PROJECT_NAME">PROJECT_NAME</a> or
+<a href="#PACKAGE">PACKAGE</a> is not set, that level will be omitted from the
+header path. For example, if PACKAGE were not set in the previous example, the
+header file would have been <code>"MyProject/HeaderFile.hh"</code>.</p>
+</DD>
+
+<LI><DT><A NAME="LOCALHEADERS"></A><B>LOCALHEADERS</B></DT>
+<DD><p>Header files which are used only for compilation in the current
+directory. These header files are not exported. </p>
+</DD>
+
+<LI><DT><A NAME="CHXX"></A><B>CHXX</B></DT>
+<DD><p> Extension expected for C++ header files. Defaults to '.hh'. </p>
+</DD>
+
+<LI><DT><A NAME="CXXEXT"></A><B>CXXEXT</B></DT>
+<DD><p> Extension expected for C++ source files. Defaults to '.cc'. </p>
+</DD>
+
+<LI><DT><A NAME="CXXAUXEXT"></A><B>CXXAUXEXT</B></DT>
+<DD><p> Auxiliary extension for C++ source files. Defaults to '.cxx'. </p>
+</DD>
+
+<LI><DT><A NAME="CEXT"></A><B>CEXT</B></DT>
+<DD><p> Extension expected for C source files. Defaults to '.c'. </p>
+</DD>
+
+<LI><DT><A NAME="CHEXT"></A><B>CHEXT</B></DT>
+<DD><p> Extension expected for C header files. Defaults to '.h'. </p>
+</DD>
+</UL>
+
+
+
+
+<H3><A NAME="libs"></A>Libraries</H3>
+
+These variables control the generation and linking of libraries.
+
+<UL>
+<LI><DT><A NAME="PLIB"></A><B>PLIB</B></DT>
+<DD><p>Use this to give your library a name (hence it must take only one
+value):</p><code><pre>
+    PLIB = mylib
+</pre></code><p> It is the name of the library in which the modules specified by
+the variable <a href="#SOURCES">SOURCES</a> are archived.  A unique name for
+each directory is recommended.  On the other hand, if you want to use the same
+PLIB library name for several directories, you need in addition to use the
+<a href="#LIBDEPS">LIBDEPS</a> variable.</p>
+</DD>
+
+<LI><DT><A NAME="USESLIBS"></A><B>USESLIBS</B></DT>
+<DD><p>This is an unordered list of the libraries needed to build the new
+library specified by <a href="#PLIB">PLIB</a>.  Use of this variable causes the
+automatic creation of a ".def" file called (PLIB).def.  There are different ways
+of creating this list:</p>
+<ul>
+<li>The easiest usage is simply to use the value <A NAME="Auto"></A>"Auto":
+<code><pre>
+    USESLIBS = Auto
+</pre></code>
+This should automatically generate the required list of libraries for both
+USESLIBS and <a href="#PROGLIBS">PROGLIBS</a>, without you even noticing.
+
+<li>The previous usage will not pick up any libraries that don't have a
+corresponding header file anywhere, which happens occasionally.  Use the "QLibs"
+tool (which is what makes the "Auto" method work) to print out the list of
+libraries that the Auto method can find; manually add these to USESLIBS along
+with those missing owing to the lack of a header.
+
+<li>The traditional way was to create the list yourself, using the libraries
+indicated in the class pages, e.g.: 
+<code><PRE>
+    USESLIBS = MyCore MyIOlib
+</PRE></code>
+You need only specify libraries you use explicitly; any others will be
+automatically included.
+</ul>
+
+<P><font size = +1><b>ATTENTION!!</b></font> If this variable is set the .def
+file is ALWAYS automatically generated. If <a href="#LIBDEPS">LIBDEPS</a> is set
+as well then this is used as the name of the generated file. if you have a
+library which depends on nothing else, but you wish to create a .def file, you
+may set USESLIBS to the dummy library 'None'.  For example, </p><code><pre>
+    USESLIBS = None
+</pre></code>
+</DD>
+
+<LI><DT><A NAME="PROGLIBS"></A><B>PROGLIBS</B></DT>
+<DD><p>The name of the libraries used to create executables specified in either
+<a href="#MAINS">MAINS</a> or <a href="#EXAMPLES">EXAMPLES</a> that are not
+already included with the <a href="#USESLIBS">USESLIBS</a> variable.  Typically
+you would include things like IO code which is not needed for the
+<a href="#PLIB">PLIB</a> library itself. For example the defs.mk file
+of: </p><code><PRE>
+    PLIB = MyDataProc
+
+    USESLIBS = MyMathRoutines
+
+    PROGLIBS = MyWindowIO
+
+    MAINS = DeskTopDataProc.cc
+</PRE></code><p> would use the three libraries; MyDataProc, MyMathRoutines and
+MyWindowIO when linking the DeskTopDataProc program. Any other program that
+uses the MyDataProc library, will automatically link in both that library and
+MyMathRoutines but will not automatically need MyWindowIO (unless that program
+uses the windowing code and explicitly lists MyWindowIO as one of its required
+libraries). </p>
+
+<p> You can use the
+<a href="#Auto">automatic methods described under USESLIBS</a> for PROGLIBS as
+well.</p>
+
+<P> Normally all libraries specified in PROGLIBS are required to exist to create
+the executables. This is not always ideal, as some libraries may relate to
+functionality that is not always required, or is not present on all systems.
+With this type of library, we may want to include them if they are available,
+but ignore them if the are not present. This can be achieved by adding 
+<code>.opt</code> to the end of the library names, indicating they are optional.
+For example an optional library would be added as: </p><code><pre>
+    PROGLIBS = MyOptionalLib.opt
+</pre></code>     
+</DD>
+
+<LI><DT><A NAME="TESTLIBS"></A><B>TESTLIBS</B></DT>
+<DD><p>The name of the libraries used to create test executables (specified in
+<a href="#TESTEXES">TESTEXES</a>) that are not already included with the
+<a href="#USESLIBS">USESLIBS</a> variable. Typically you would include libraries
+that implement any test framework you may use for your test programs but are not 
+needed for the <a href="#PLIB">PLIB</a> library or a normal executable. For
+example, given the defs.mk file: </p><code><PRE>
+    PLIB = MyDataProc
+
+    USESLIBS = MyMathRoutines
+
+    MAINS = DeskTopDataProc.cc
+
+    TESTEXES = TestDataProc.cc
+
+    TESTLIBS = MyUnitTestFW
+</PRE></code><p> The test program, TestDataProc, would be linked all three
+libraries; MyDataProc, MyMathRoutines and MyUnitTestFW. The regular program,
+DeskTopDataProc would not be linked with the MyUnitTestFW library.</p>
+
+<p> NOTE: You can not use an entry of <code>TESTLIBS=Auto</code> to activate the
+automatic inclusion of libraries as you can for PROGLIBS or USESLIBS. This
+feature is unsupported for TESTLIBS; these libraries must be specified manually.
+</p>
+
+<P> Normally all libraries specified in TESTLIBS are required to exist to create
+the executables. This is not always ideal, as some libraries may relate to
+functionality that is not always required, or is not present on all systems.
+With this type of library, we may want to include them if they are available,
+but ignore them if the are not present. This can be achieved by adding 
+<code>.opt</code> to the end of the library names, indicating they are optional.
+For example an optional library would be added as: </p><code><pre>
+    TESTLIBS = MyOptionalTestLib.opt
+</pre></code>     
+</DD>
+
+<LI><DT><A NAME="EXTERNALLIBS"></A><B>EXTERNALLIBS</B></DT>
+<DD><p> It is often useful to use external libraries from a project's programs
+or libraries. To do this QMake must be told where to look for the header files
+from the external package and where the actual external library resides. This is
+done with a library definition file or .def file.</p>
+
+<p> When an external library is to be used, the user must first create the .def
+file. This should be created in a suitable location in the project's directory
+tree. If the project has some code for interfacing to the external library,
+perhaps providing a wrapper library, it makes sense to create the .def file in
+that directory of the project structure. The .def file may be created from
+scratch, or from the pro-forma file provided as part of QMake (see the
+QMake/Support/Skeleton.def file, usually installed under /usr/local/share).</p>
+
+<p> Once created, the .def file needs to be made available to the QMake system.
+This is achieved by adding an <code>EXTERNALLIBS</code> entry to the defs.mk
+file for the directory where the .def file has been created. The variable should
+be set to the name of the .def file created. </p>
+
+<p> Having been made available to QMake (via the EXTERNALLIBS definition), the
+external library may be used by adding its name to the appropriate
+<a href="#USESLIBS">USESLIBS</a>, <a href="#PROGLIBS">PROGLIBS</a> or
+<a href="#TESTLIBS">TESTLIBS</a> variables as for any other library from your
+project.</p>
+
+<p> Adding a library to EXTERNALLIBS automatically adds the specified library to
+the current directory's USESLIBS, and will be treated as a normal dependency if
+a normal <a href="#PLIB">PLIB</a> library is also being created. </p>
+</DD>
+
+<LI><DT><A NAME="LIBDEPS"></A><B>LIBDEPS</B></DT> 
+
+<DD><p> LIBDEPS is used to redefine the name of the <code>.def</code> file
+associated with the directory.  It is needed where the source for a single
+library spans several directories.  The <code>defs.mk</code> in each directory
+must contain a <i>unique</i> LIBDEPS entry, of the form <code>sublib.def</code>.
+In this case, you don't need to create the <code>.def</code> file itself - it is
+created automatically. <b>N.B.</b> The <i>first</i> directory to be compiled
+must contain all the necessary <a href="#USESLIBS">USESLIBS</a> entries for the
+whole library.</p>
+
+<p> There is also a deprecated usage, to explicitly create references to
+external libraries. This has been replaced by
+<a href="#EXTERNALLIBS">EXTERNALLIBS</a>, above. </p>
+</DD>
+</LI>
+
+<LI><DT><A NAME="USESPKGCONFIG"></A><B>USESPKGCONFIG</B></DT> 
+
+<DD><p> USESPKGCONFIG allows the easy inclusion of libraries specified with the
+pkg-config mechanism.  The required libraries are listed as with USESLIBS and
+then are included into the linker with the library itself.</p>
+</DD>
+</LI>
+
+<LI><DT><A NAME="MAKEPKGCONFIG"></A><B>MAKEPKGCONFIG</B></DT> 
+
+<DD><p> Setting this variable causes QMake to generate a *.pc file which can be
+used by external make systems to include libraries generated by qmake. The .pc
+files are generated into pkgconfig subdirectory from the appropriate lib. </p>
+</DD>
+</LI>
+
+</UL>
+
+
+
+
+
+<H3><A NAME="platform"></A>Platform Support</H3>
+
+<P> The default behaviour of the make system is to support all packages on all
+platforms. The packages should be written in such a way that they can survive
+the arrival of new software and hardware architectures quite easily. Software
+written for a specific platform, like an operating system or a hardware card,
+usually dies with the platform which often happens within 2-3 years of writing.
+</P>
+
+<P> There is sometimes a necessity to maintain software for special hardware
+such as a frame grabber, etc. For these exceptional circumstances, the following
+variables are provided: </P>
+
+<UL>
+<LI><DT><A NAME="SUPPORT_ONLY"></A><B>SUPPORT_ONLY</B></DT>
+<DD><p>A list of architectures which are supported. If the contents of this
+variable clashes with DONOT_SUPPORT, then the architecture will be supported. If
+neither SUPPORT_ONLY or DONOT_SUPPORT is set, then all architectures are
+supported. For example: </p><code><PRE>
+    SUPPORT_ONLY = sol2 alpha
+</PRE></code><p>means that the subtree of directories including the current one
+will be processed only for the Solaris2 and Alpha architectures.</p>
+</DD>
+
+<LI><DT><A NAME="DONOT_SUPPORT"></A><B>DONOT_SUPPORT</B></DT>
+<DD><p> A list of architectures which is not supported. For example:</p><code><pre>
+    DONOT_SUPPORT = sgi
+</PRE></code><p> means that the subtree of directories including the current one
+will be processed for all architectures except Silicon Graphics.</p>
+</DD>
+
+<LI><DT><A NAME="REQUIRES"></A><B>REQUIRES</B></DT>
+<DD><p>A space-separated list of features required to compile the module. For
+example:</p><code><pre>
+    REQUIRES = libGTK
+</PRE></code><p> means that this directory and its subdirectories can only be
+compiled if resource libGTK is available. The typical use for the REQUIRES
+directive is to prevent code being built into the project if that code depends
+on an external library that might not always be available. With the above
+example, the REQUIRES entry could prevent QMake attempting to build any code
+that relied on the GTK libraries, if those libraries were not present on the
+system. </p>
+
+<p> When you place a REQUIRES entry in your defs.mk file, QMake will only
+attempt to use that directory (and any directories below it) if the required
+resource is regarded as being present on the system. A resource is regarded as
+being present  if its name appears in the list contained in the RESOURCES 
+configuration variable. This variable is defined in the Config.Project file and
+is a space separated list of available resources. If you have code protected by
+a REQUIRES, you need to ensure that the name of the resource is listed in the
+RESOURCES entry (assuming that the resource is actually installed on the 
+machine on which you are working), otherwise QMake will not compile that
+particular subset of your project. </p>
+</DD>
+</UL>
+
+
+
+<H3><A NAME="examples"></A>Example programs</H3>
+
+<P> The following two variables can be used for a specification of executables
+used for a demonstration how to use packages or for their run-time checking.
+</P>
+
+<UL>
+<LI><DT><A NAME="EXAMPLES"></A><B>EXAMPLES</B></DT>
+<DD><p> Contains the names of source files demonstrating the use of the software
+in the directory.  They are copied into the documentation area.  The example
+sources must be compilable; to check compilation, include them temporarily in
+the <a href="#MAINS">MAINS</a> list, e.g.: </p><kbd><pre>
+    qm MAINS=example.cc
+</pre></kbd>   
+</DD>
+
+<LI><DT><A NAME="TESTEXES"></A><B>TESTEXES</B></DT>
+<DD><p> The list of executables testing runtime consistency of the software.
+They are compiled and run to test if they produce expected results.  The
+executables should return 0 on success, non-zero on failure.  If the program
+doesn't exit normally it will be treated as a failure.  Both stdout and stderr
+of the program are stored in a log during testing to help trace bugs. Testing
+is performed using the 'qm test'.</p>
+</DD>
+</UL>
+
+
+
+
+<H3><A NAME="special"></A>Special Files</H3>
+
+<P>
+The directory can contain special files which should be extracted from the
+database of source files. They can be examples of data input, etc. The size of
+these file should be kept to a minimum. The following variables can be used for
+a specification of these files:
+</P>
+
+<UL>
+<LI><DT><A NAME="AUXFILES"></A><B>AUXFILES, AUXDIR</B></DT>
+<DD><p> Use these for data files that need to end up somewhere where your
+program will always find them.  All files listed in AUXFILES are installed in
+<code>$PROJECT_OUT/$AUXDIR</code>.  If AUXDIR is not used, the files are
+ installed in $PROJECT_OUT.  Thus: </p><code><PRE>
+    AUXFILES = mask.png
+    AUXDIR = share/myproject
+</PRE></code><p> will install the file mask.png in the directory
+<code>$PROJECT_OUT/share/data</code>.  Any necessary subdirectories are
+automatically created.</p>
+</DD>
+
+<LI><DT><A NAME="EXTRA_DIST_DIRS"></A><B>EXTRA_DIST_DIRS</B></DT>
+<DD><p> Occasionally, additional files exist that are part of a project but form
+no part of the build. To keep these files from being included in the build phase,
+their parent directory will not be listed for processing in the
+<a href="#NESTED">NESTED</a> definition. Normally, such an omission prevents the
+contents of that directory from being included in the distribution (source tar)
+file. To force the inclusion of the unprocessed files in the distribution file,
+add the name of the directory (without any trailing .r suffix) to the
+EXTRA_DIST_DIRS setting. For example: </p><code><PRE>
+    NESTED=Processed.r Unprocessed Used.r Unwanted
+    EXTRA_DIST_DIRS=Unprocessed
+</PRE></code><p>will ensure the build is carried out in the Processed and Used
+subdirectories (but not in Unprocessed or Unwanted), and that the three
+directories: Processed, Unprocessed and Used are included in any distribution
+file.</p>
+</DD>
+
+<LI><DT><A NAME="PREBUILDSTEP"></A><B>PREBUILDSTEP</B></DT>
+<DD><p> Command to execute before compiling libraries or executables. This
+should be in Bourne shell script. QMake macros like $(PROJECT_OUT) for the
+output directory may be used.</p>
+</DD>
+
+<LI><DT><A NAME="POSTBUILDSTEP"></A><B>POSTBUILDSTEP</B></DT>
+<DD><p> Command to execute after compiling libraries and executables. This
+should be in Bourne shell script. QMake macros like $(PROJECT_OUT) for the
+output directory may be used.</p>
+</DD>
+
+</UL>
+
+
+
+
+<H3><A NAME="documentation"></A>Documentation</H3>
+
+<P> QMake utilises the <a href=Ravl.Documentation.html>CxxDoc</a>
+documentation system to allow the production of project documentation from
+comments included in the project source code. The following configuration
+variables allow for extra information to supplement the documentation embedded
+in the source files' comments.</P>
+
+<UL>
+<LI><DT><A NAME="EHT"></A><B>EHT</B></DT>
+<DD><P> List of Extra HyperText files for supplementing the documentation
+produced from the embedded comments in your project source files. Files listed
+in this variable are used as additional input files for the CxxDoc utility when
+creating the project documentation. Please refer to the
+<a href=Ravl.Documentation.Branches.html>extra documentation</a> section of the
+guide to documenting your project.  </P>
+</DD>
+
+<LI><DT><A NAME="HTML"></A><B>HTML</B></DT>
+<DD><P> Contains the names of stand-alone documentation files (which need not
+actually be written in hypertext) that are installed into the <code>html</code>
+documentation sub-directory. Unlike those files listed by the
+<a href="#EHT">EHT</a> variable, these files are simply installed as is, without
+any preprocessing. They are not linked from the main documentation tree nor are
+they listed in the <a href=../../sitemap.html>table of contents</a></P>
+</DD>
+
+<LI><DT><A NAME="MAN1"></A><B>MAN1</B></DT>
+<DD><P> Lists the source files of manual pages to be integrated with section 1
+(executables and shell commands) of the system on-line reference manual.</P>
+</DD>
+
+<LI><DT><A NAME="MAN3"></A><B>MAN3</B></DT>
+<DD><P> Lists the source files of manual pages to be integrated with section 3
+(library calls) of the system on-line reference manual.</P>
+</DD>
+
+<LI><DT><A NAME="MAN5"></A><B>MAN5</B></DT>
+<DD><P> Lists the source files of manual pages to be integrated with section 5
+(file formats and conventions) of the system on-line reference manual.</P>
+</DD>
+</UL>
+
+
+
+
+<h3><a name="compopts">Compiler options</a></h3> <p>Any valid compiler options
+can be passed to the compiler and linker using the following variables.</p>
+
+<UL>
+<LI><DT><A NAME="CFLAGS"></A><B>CFLAGS CCFLAGS</B></DT>
+<DD><p> Allows the setting of flags that need to be passed to the C or C++
+compiler.  Should be set in the defs.mk file using the '+=' operator, to avoid
+cancelling other options, for example: </p><code><pre>
+    CFLAGS += -g
+</pre></code>
+</DD></LI>
+
+<LI><DT><A NAME="CCPPFLAGS"></A><B>CPPFLAGS CCPPFLAGS</B></DT>
+<DD><p> Sets any flags that need to be passed to the C or C++ preprocessor. 
+Should be set with the '+=' operator, to avoid cancelling other options; for
+example, to pass in a flag MYFLAG that your code can test with a preprocessor
+directive such as <code>#if</code> or <code>#ifdef</code>, you can
+use: </p><code><pre>
+    CCPPFLAGS += -DMYFLAG=3
+</pre></code>
+</DD></LI>
+
+<LI><DT><A NAME="LDFLAGS"></A><B>LDFLAGS</B></DT>
+<DD><p> Flags that need to be passed to the linker.  Should be used with the
+'+=' operator, to avoid cancelling other options. </p>
+</DD></LI>
+
+<LI><DT><A NAME="ANSIFLAG"></A><B>ANSIFLAG</B></DT>
+<DD><p> Putting <code>ANSIFLAG=</code> has the effect of turning off strict
+ANSI compatibility. </p>
+
+<p>Note that the default QMake behaviour is to set strict ANSI compatibility.
+So if for example you want C99 compatibility, which conflicts with ANSI C, you
+would have to do it like this:</p><code><pre>
+    CFLAGS += -std=c99
+    ANSIFLAG=
+</pre></code>
+</DD></LI>
+</UL>
+
+</body>
+</html>
+
+
+

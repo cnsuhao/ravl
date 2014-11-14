@@ -15,6 +15,8 @@ SOURCES=Corner.cc CornerDetector.cc CornerDetectorHarris.cc CornerDetectorSusan.
 
 PLIB=RavlImageProc
 
+SUMMARY_LIB=Ravl
+
 LIBDEPS=RavlImageCorner.def
 
 USESLIBS=RavlImageProc

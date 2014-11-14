@@ -19,6 +19,8 @@ MAINS=cwiz.cc
 
 PLIB=RavlClassWizard
 
+SUMMARY_LIB=Ravl
+
 USESLIBS=RavlCxxDoc
 
 EHT=Ravl.API.Source_Tools.Class_Wizard.html

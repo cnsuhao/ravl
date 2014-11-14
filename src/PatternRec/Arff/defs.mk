@@ -16,6 +16,8 @@ HEADERS  = ArffIO.hh
 
 PLIB     = ArffIO
 
+SUMMARY_LIB=Ravl
+
 USESLIBS = RavlCore 
 
 PROGLIBS = RavlOS

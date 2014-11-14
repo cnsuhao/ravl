@@ -15,6 +15,8 @@ SOURCES=HiddenMarkovModel.cc
 
 PLIB=RavlHMM
 
+SUMMARY_LIB=Ravl
+
 USESLIBS=RavlCore
 
 EXAMPLES=exHiddenMarkovModel.cc

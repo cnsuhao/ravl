@@ -13,6 +13,8 @@ HEADERS=Erode.hh Dilate.hh DilateSubSample2X.hh MorphOpen.hh MorphClose.hh
 
 PLIB=RavlImageProc
 
+SUMMARY_LIB=Ravl
+
 LIBDEPS=RavlImageMorphology.def
 
 USESLIBS=RavlImageProc 

@@ -4,9 +4,13 @@
 # public license (LGPL). See the lgpl.licence file for details or
 # see http://www.gnu.org/copyleft/lesser.html
 # file-header-ends-here
-ifndef MATH_DEF
-MATH_DEF=1
 
-EXELIB := $(EXELIB) -lm
+ifndef Math_DEF
+
+  Math_DEF=1
+
+  EXELIB := $(EXELIB) $(Math_LIBS)
+
+  INCLUDES += $(Math_CFLAGS)
 
 endif

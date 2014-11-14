@@ -19,13 +19,9 @@
 
 namespace RavlN {
 
-  bool DynamicLinkLoadDepends(const char *nm);
-  //: Load library dependancy file.
-  // Returns true on success
-  
-  bool DynamicLinkLoad(const StringC &libName);
+void * DynamicLinkLoad(const StringC &libName);
   //: Load a library.
-  // Returns true on success.
+  // Returns pointer to loaded library
 }
 
 

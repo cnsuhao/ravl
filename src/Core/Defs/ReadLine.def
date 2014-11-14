@@ -1,6 +1,1 @@
-ifndef DEFS_READLINE
-DEFS_READLINE=1
-
-EXELIB := -lreadline $(EXELIB)
-
-endif
+$(error Including a dropped .def file)

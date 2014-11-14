@@ -19,6 +19,8 @@ SOURCES=FuncLinearCoeff.cc FuncLinear.cc FuncQuadratic.cc FuncOrthPolynomial.cc 
  
 PLIB=RavlPatternRec
 
+SUMMARY_LIB=Ravl
+
 LIBDEPS=RavlPatternRecModelBasic.def
 
 MUSTLINK=LinkRavlPatternRecModelBasic.cc

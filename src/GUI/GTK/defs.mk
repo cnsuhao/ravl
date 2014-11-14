@@ -66,9 +66,11 @@ EXAMPLES = exButton.cc exMenu.cc exCList.cc exList.cc \
 
 PLIB = RavlGUI
 
+SUMMARY_LIB=Ravl
+
 MUSTLINK=LinkRavlGUI.cc
 
-USESLIBS = RavlCore RavlIO RavlOS GTK RavlThreads system RavlXMLFactory
+USESLIBS = RavlCore RavlIO RavlOS GTK RavlThreads RavlXMLFactory
 
 PROGLIBS = RavlImageIO RavlExtImgIO 
 

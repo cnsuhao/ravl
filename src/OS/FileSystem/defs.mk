@@ -34,6 +34,8 @@ MUSTLINK =
 # PLIB = the project library ... where the objects will be archived
 PLIB = RavlOS
 
+SUMMARY_LIB=Ravl
+
 LIBDEPS=RavlFileSystem.def
 
 # Uses libraries.

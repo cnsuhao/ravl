@@ -13,6 +13,8 @@ SOURCES = chcof.c csfit.c csplp.c evpsq.c fitval.c gnlsq.c plsq.c psqcf.c \
 
 PLIB = ccmath
 
+SUMMARY_LIB=Ravl
+
 LIBDEPS=ccmath_cfit.def
 
 USESLIBS=ccmath

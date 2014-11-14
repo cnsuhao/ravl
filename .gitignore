@@ -1,8 +1,15 @@
+core
 core.*
+/Makefile.in
+QMake/Makefile.in
+QMake/src/AutoTools/configure
+autom4te.cache
+tmp.ppm
+*.swp
+tags
 .project
 .cproject
 .csettings
-/Ravl/nbproject/private/
 *~
 gmon.out
 buildTag

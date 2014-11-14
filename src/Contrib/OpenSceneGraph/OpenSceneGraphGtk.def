@@ -1,19 +1,17 @@
 # This file is part of RAVL, Recognition And Vision Library
-# Copyright (C) 2010, OmniPerception Ltd.
+# Copyright (C) 2010-13, OmniPerception Ltd.
 # This code may be redistributed under the terms of the GNU Lesser
 # General Public License (LGPL). See the lgpl.licence file for details or
 # see http://www.gnu.org/copyleft/lesser.html
 # file-header-ends-here
 
 ifndef OPENSCENEGRAPHGTK_DEF
-  OPENSCENEGRAPHGTK_DEF = 1
 
-  ifdef OPENSCENEGRAPHGTK_HOME
-    PKG_CONFIG_PATH := $(OPENSCENEGRAPHGTK_HOME)/lib/pkgconfig:$(PKG_CONFIG_PATH)
-    EXELIB += -Wl,-rpath,$(OPENSCENEGRAPHGTK_HOME)/lib
-  endif
+  OPENSCENEGRAPHGTK_DEF=1
 
-  INCLUDES += `PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) pkg-config --cflags osgGtk-1.0` -DRAVL_USE_GTKGLEXT=1
-  EXELIB := `PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) pkg-config --libs osgGtk-1.0` $(EXELIB)
-  
+  EXELIB := $(OpenSceneGraphGTK_LIBS) $(EXELIB)
+
+  INCLUDES += $(OpenSceneGraphGTK_CFLAGS)
+
 endif
+

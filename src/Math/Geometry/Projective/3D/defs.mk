@@ -32,6 +32,8 @@ HEADERS =    PPointPlane3d.hh PPoint3d.hh PPlane3d.hh PProjection3d.hh \
 # PLIB = the project library ... where the objects will be archived
 PLIB = RavlMath
 
+SUMMARY_LIB=Ravl
+
 LIBDEPS = RavlMathProj3d.def
 
 USESLIBS=RavlMath

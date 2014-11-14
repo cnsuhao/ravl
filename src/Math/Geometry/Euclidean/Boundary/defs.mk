@@ -15,6 +15,8 @@ SOURCES=CrackCode.cc BVertex.cc Crack.cc Boundary.cc ConvexHull.cc Edge.cc
 
 PLIB=RavlMath
 
+SUMMARY_LIB=Ravl
+
 TESTEXES= testBoundry.cc
 
 LIBDEPS=RavlMathBoundry.def

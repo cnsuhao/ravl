@@ -88,7 +88,7 @@ namespace RavlN {
       return ret;
     }
     lock.Unlock();
-#ifdef GNU
+#ifdef __GNUC__
     // See if its a simple mangled name.
     if(isdigit(name[0])) {
       int len = atoi(name);

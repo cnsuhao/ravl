@@ -5,29 +5,15 @@
 # see http://www.gnu.org/copyleft/lesser.html
 # file-header-ends-here
 
-ifndef VTK_PARALLEL_DEF
+$(error vtkParallel not currently supported)
 
-  VTK_PARALLEL_DEF = 1
+ifndef vtkParallel_DEF
 
-  # Declare libraries for this particulat VTK kit
+  vtkParallel_DEF = 1
 
-    VTK_PARALLEL_LIBS = -lvtkParallel -lVPIC -lCosmo -lmpi_cxx -lmpi -lopen-rte -lopen-pal -lnsl -lutil -lvtkexoIIc -lnetcdf
+  EXELIB := $(vtkParallel_LIBS) $(EXELIB)
 
-  # Ensure any dependencies of this kit are already included
-
-    ifndef VTK_RENDERING_DEF
-      include vtkRendering.def
-      # Will include the following via recursive dependency:
-      #   vtkIO, vtkGraphics, vtkImaging, vtkFiltering, vtkCommon
-    endif
-
-  # Prefix any VTK libraries on the link line with this kit
-
-    EXELIB := $(subst $(VTK_LIBS_USED),$(VTK_PARALLEL_LIBS) $(VTK_LIBS_USED),$(EXELIB))
-
-  # Remember what the current set of VTK libs are
-
-    VTK_LIBS_USED := $(VTK_PARALLEL_LIBS) $(VTK_LIBS_USED)
+  INCLUDES += $(vtkParallel_CFLAGS)
 
 endif
 

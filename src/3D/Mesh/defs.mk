@@ -27,6 +27,8 @@ EXAMPLES = exBuildMesh.cc
 
 PLIB=Ravl3D
 
+SUMMARY_LIB=Ravl
+
 USESLIBS=RavlMath RavlImage
 
 PROGLIBS=RavlDPDisplay.opt RavlDPDisplay3d.opt

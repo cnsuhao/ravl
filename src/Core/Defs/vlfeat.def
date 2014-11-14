@@ -1,15 +1,17 @@
-ifndef VLFEAT_DEF
+# This file is part of RAVL, Recognition And Vision Library
+# Copyright (C) 2013,  University of Surrey.
+# This code may be redistributed under the terms of the GNU Lesser
+# General Public License (LGPL). See the lgpl.licence file for details or
+# see http://www.gnu.org/copyleft/lesser.html
+# file-header-ends-here
 
-  VLFEAT_DEF = 1
+ifndef vlfeat_DEF
 
-  EXELIB := -lvl $(EXELIB)
+  vlfeat_DEF=1
 
-ifdef VLFEAT_HOME
+  EXELIB := $(vlfeat_LIBS) $(EXELIB)
 
-    INCLUDES += -I$(VLFEAT_HOME)/include
+  INCLUDES += $(vlfeat_CFLAGS)
 
-    EXELIB := -Wl,-rpath,$(VLFEAT_HOME)/lib -L$(VLFEAT_HOME)/lib $(EXELIB)
+endif
 
-endif 
-
-endif 

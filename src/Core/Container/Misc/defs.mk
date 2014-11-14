@@ -19,6 +19,8 @@ SOURCES=Stack.cc
 
 PLIB=RavlCore
 
+SUMMARY_LIB=Ravl
+
 LIBDEPS=RavlCMisc.def
 
 USESLIBS=RavlCore

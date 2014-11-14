@@ -5,30 +5,15 @@
 # see http://www.gnu.org/copyleft/lesser.html
 # file-header-ends-here
 
-ifndef VTK_CHARTS_DEF
+$(error vtkCharts not currently supported)
 
-  VTK_CHARTS_DEF = 1
+ifndef vtkCharts_DEF
 
-  # Declare libraries for this particulat VTK kit
+  vtkCharts_DEF = 1
 
-    VTK_CHARTS_LIBS = -lvtkCharts -lvtkftgl -lGL -lfreetype
+  EXELIB := $(vtkCharts_LIBS) $(EXELIB)
 
-  # Ensure any dependencies of this kit are already included
-
-    ifndef VTK_VIEWS_DEF
-      include vtkViews.def
-      # Will include the following via recursive dependency:
-      #   vtkInfovis, vtkWidgets, vtkParallel, vtkHybrid, vtkVolumeRendering,
-      #   vtkRendering, vtkIO, vtkGraphics, vtkImaging, vtkFiltering, vtkCommon
-    endif
-
-  # Prefix any VTK libraries on the link line with this kit
-
-    EXELIB := $(subst $(VTK_LIBS_USED),$(VTK_CHARTS_LIBS) $(VTK_LIBS_USED),$(EXELIB))
-
-  # Remember what the current set of VTK libs are
-
-    VTK_LIBS_USED := $(VTK_CHARTS_LIBS) $(VTK_LIBS_USED)
+  INCLUDES += $(vtkCharts_CFLAGS)
 
 endif
 

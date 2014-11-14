@@ -5,9 +5,8 @@
 # see http://www.gnu.org/copyleft/lesser.html
 # file-header-ends-here
 
-REQUIRES=Loudmouth RLog
+REQUIRES=Loudmouth RLog gthread
 # Requirement for RLog is from needing RavlXMPP not a direct requirement
-
 
 PACKAGE=Ravl/XMPP
 
@@ -19,7 +18,9 @@ MAINS= exLoudmouth.cc
 
 PLIB=RavlXMPPLoudmouth
 
-USESLIBS=RavlXMPP RavlCore Loudmouth RavlOS RavlThreads RavlXMLFactory
+SUMMARY_LIB=Ravl
+
+USESLIBS=RavlXMPP RavlCore Loudmouth RavlOS RavlThreads RavlXMLFactory gthread
 
 PROGLIBS=
 

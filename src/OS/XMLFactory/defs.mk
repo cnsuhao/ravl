@@ -19,6 +19,8 @@ MUSTLINK=LinkXMLFactory.cc
 
 PLIB=RavlXMLFactory
 
+SUMMARY_LIB=Ravl
+
 USESLIBS=RavlCore RavlIO RavlThreads RavlOS
 
 PROGLIBS=
