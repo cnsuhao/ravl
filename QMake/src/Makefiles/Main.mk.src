@@ -1355,11 +1355,8 @@ ifdef TARG_DEFS
   MORE_SUMMARY_LIBS=$(strip $(filter-out $(firstword $(SUMMARY_LIB)),$(SUMMARY_LIB)))
  endif
 
-
-
- # Recipe for the common beginning of the two .def files
  ifeq ($(filter Auto,$(USESLIBS)),)
-  $(LOCALTMP)/libdep/%.def.top: $(LOCALTMP)/libdep/.dir \
+  LIBDEPDEF_TOP=$(LOCALTMP)/libdep/.dir \
                                 defs.mk \
                                 $(QMAKE_MAKEFILES)/Main.mk \
                                 $(LOCALTMP)/Copyright20$(COPYRIGHT_YEAR)
@@ -1367,7 +1364,7 @@ ifdef TARG_DEFS
   ifndef AUTOUSELIBS
    AUTOUSELIBS := $(shell $(QLIBS) -use -d -p $(ROOTDIR))
   endif
-  $(LOCALTMP)/libdep/%.def.top: $(LOCALTMP)/libdep/.dir \
+  LIBDEPDEF_TOP=$(LOCALTMP)/libdep/.dir \
                                 defs.mk \
                                 $(HEADERS) \
                                 $(SOURCES) \
@@ -1375,6 +1372,9 @@ ifdef TARG_DEFS
                                 $(QMAKE_MAKEFILES)/Main.mk \
                                 $(LOCALTMP)/Copyright20$(COPYRIGHT_YEAR)
  endif
+
+ # Recipe for the common beginning of the two .def files
+  $(LOCALTMP)/libdep/%.def.top: $(LIBDEPDEF_TOP) 
 	@echo "--- Creating $(@F)"
 	$(SHOWIT)if [ -f $@ ] ; then \
 	  $(CHMOD) +w $@ ; \
@@ -1452,22 +1452,21 @@ ifdef TARG_DEFS
 	$(CHMOD) 444 $@
 
 
- # Recipe for the common mid-part of the two .def files.
  ifeq ($(filter Auto,$(USESLIBS)),)
-  $(LOCALTMP)/libdep/%.def.mid: $(LOCALTMP)/libdep/.dir \
+  LIBDEPDEF_MID=$(LOCALTMP)/libdep/.dir \
                                 defs.mk \
                                 $(QMAKE_MAKEFILES)/Main.mk
  else
-  ifndef AUTOUSELIBS
-   AUTOUSELIBS := $(shell $(QLIBS) -use -d -p $(ROOTDIR))
-  endif
-  $(LOCALTMP)/libdep/%.def.mid: $(LOCALTMP)/libdep/.dir \
+  LIBDEPDEF_MID=$(LOCALTMP)/libdep/.dir \
                                 defs.mk \
                                 $(HEADERS) \
                                 $(SOURCES) \
                                 $(MAINS) \
                                 $(QMAKE_MAKEFILES)/Main.mk
  endif
+
+ # Recipe for the common mid-part of the two .def files.
+  $(LOCALTMP)/libdep/%.def.mid: $(LIBDEPDEF_MID) 
 	@echo "--- Creating $(@F)"
 	$(SHOWIT)if [ -f $@ ] ; then \
 	  $(CHMOD) +w $@ ; \
@@ -1537,8 +1536,9 @@ ifdef TARG_PKGCONFIG
   # different versions of the files all point to unique library paths.
   # The extra dependencies introduced if USESLIBS includes Auto are to ensure
   # that we have an up to date $(LIBS) in the file
+  
   ifeq ($(filter Auto,$(USESLIBS)),)
-   $(INST_PKGCONFIG)/$(PLIB).pc : defs.mk \
+    PKGCONFIGPLIBDEP= defs.mk \
                                  $(HEADERS) \
                                  $(SOURCES) \
                                  $(MAINS) \
@@ -1548,13 +1548,15 @@ ifdef TARG_PKGCONFIG
 	                         $(LOCALTMP)/lib/pkgconfig/$(PLIB).mid \
                                  | $(ROOTDIR)/lib/pkgconfig/4install/$(PLIB).pc.in
   else
-   $(INST_PKGCONFIG)/$(PLIB).pc : defs.mk \
+    PKGCONFIGPLIBDEP= defs.mk \
                                  $(INST_PKGCONFIG)/.dir \
                                  $(QMAKE_MAKEFILES)/Main.mk \
                                  $(LOCALTMP)/lib/pkgconfig/ProForma.top \
 	                         $(LOCALTMP)/lib/pkgconfig/$(PLIB).mid \
                                  | $(ROOTDIR)/lib/pkgconfig/4install/$(PLIB).pc.in
   endif
+  
+  $(INST_PKGCONFIG)/$(PLIB).pc : $(PKGCONFIGPLIBDEP)
 	@echo "--- Creating $@ "
 	$(SHOWIT)if [ -f $@ ] ; then \
 	  $(CHMOD) +w $@ ; \
@@ -1575,8 +1577,9 @@ ifdef TARG_PKGCONFIG
   #
   # The extra dependencies introduced if USESLIBS includes Auto are to ensure
   # that we have an up to date $(LIBSONLY) in the file
+  
   ifeq ($(filter Auto,$(USESLIBS)),)
-   $(INST_PKGCONFIG)/single/$(SINGLESO_NOPREFIX).pc : defs.mk \
+    PKGCONFIGSINGLEPCDEP=defs.mk \
                                                      $(HEADERS) \
                                                      $(SOURCES) \
                                                      $(MAINS) \
@@ -1586,13 +1589,15 @@ ifdef TARG_PKGCONFIG
 	                                             $(LOCALTMP)/lib/pkgconfig/$(SINGLESO_NOPREFIX).mid \
                                                      | $(ROOTDIR)/lib/pkgconfig/4install/$(SINGLESO_NOPREFIX).pc.in
   else
-   $(INST_PKGCONFIG)/single/$(SINGLESO_NOPREFIX).pc : defs.mk \
+    PKGCONFIGSINGLEPCDEP=defs.mk \
                                                      $(INST_PKGCONFIG)/single/.dir \
                                                      $(QMAKE_MAKEFILES)/Main.mk \
                                                      $(LOCALTMP)/lib/pkgconfig/ProForma.top \
 	                                             $(LOCALTMP)/lib/pkgconfig/$(SINGLESO_NOPREFIX).mid \
                                                      | $(ROOTDIR)/lib/pkgconfig/4install/$(SINGLESO_NOPREFIX).pc.in
   endif
+  
+  $(INST_PKGCONFIG)/single/$(SINGLESO_NOPREFIX).pc : $(PKGCONFIGSINGLEPCDEP) 
 	@echo "--- Creating $@ "
 	$(SHOWIT)if [ -f $@ ] ; then \
 	  $(CHMOD) +w $@ ; \
@@ -1709,8 +1714,9 @@ ifdef TARG_PKGCONFIG
   # for each combination of $VAR and static/shared builds.
   # The extra dependencies introduced if USESLIBS includes Auto are to ensure
   # that we have an up to date $(LIBSONLY) in the file
+  
   ifeq ($(filter Auto,$(USESLIBS)),)
-   $(ROOTDIR)/lib/pkgconfig/4install/$(SINGLESO_NOPREFIX).pc.in : defs.mk \
+    PKGCONFIGINSTALLDEP =defs.mk \
                                                                  $(HEADERS) \
                                                                  $(SOURCES) \
                                                                  $(MAINS) \
@@ -1719,12 +1725,14 @@ ifdef TARG_PKGCONFIG
 	                                                         $(LOCALTMP)/lib/pkgconfig/$(SINGLESO_NOPREFIX).mid \
                                                                  $(LOCALTMP)/lib/pkgconfig/4install/ProForma.top
   else
-   $(ROOTDIR)/lib/pkgconfig/4install/$(SINGLESO_NOPREFIX).pc.in : defs.mk \
+    PKGCONFIGINSTALLDEP = defs.mk \
                                                                  $(ROOTDIR)/lib/pkgconfig/4install/.dir \
                                                                  $(QMAKE_MAKEFILES)/Main.mk \
 	                                                         $(LOCALTMP)/lib/pkgconfig/$(SINGLESO_NOPREFIX).mid \
                                                                  $(LOCALTMP)/lib/pkgconfig/4install/ProForma.top
-  endif
+  endif 
+  
+   $(ROOTDIR)/lib/pkgconfig/4install/$(SINGLESO_NOPREFIX).pc.in : $(PKGCONFIGINSTALLDEP) 
 	@echo "--- Creating $@ "
 	$(SHOWIT)if [ -f $@ ] ; then \
 	  $(CHMOD) +w $@ ; \
