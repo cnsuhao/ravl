@@ -658,6 +658,8 @@ ZeroMQ_LIBS
 ZeroMQ_CFLAGS
 x11_LIBS
 x11_CFLAGS
+UUIdTheo_LIBS
+UUIdTheo_CFLAGS
 devVideo4Linux2_LIBS
 devVideo4Linux2_CFLAGS
 RLog_LIBS
@@ -940,6 +942,8 @@ with_RLog_pkgconf
 with_RLog
 with_devVideo4Linux2_pkgconf
 with_devVideo4Linux2
+with_UUIdTheo_pkgconf
+with_UUIdTheo
 with_x11_pkgconf
 with_x11
 with_ZeroMQ_pkgconf
@@ -1966,6 +1970,13 @@ Optional Packages:
 
   --with-devVideo4Linux2  Enable functionality that relies on the
                           devVideo4Linux2 library [default=check]
+
+  --with-UUIdTheo-pkgconf Enable the UUIdTheo library package via pkg-config
+                          and declare the name by which the UUIdTheo library
+                          package is known to pkg-config
+
+  --with-UUIdTheo         Enable functionality that relies on the UUIdTheo
+                          library [default=check]
 
   --with-x11-pkgconf      Enable the x11 library package via pkg-config and
                           declare the name by which the x11 library package is
@@ -12260,6 +12271,117 @@ fi
              UnconfiguredLibs=$UnconfiguredLibs" "devVideo4Linux2
           else
              ConfiguredLibs=$ConfiguredLibs" "devVideo4Linux2
+          fi
+
+
+
+
+
+# Check whether --with-UUIdTheo-pkgconf was given.
+if test "${with_UUIdTheo_pkgconf+set}" = set; then :
+  withval=$with_UUIdTheo_pkgconf; case $with_UUIdTheo_pkgconf in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                          use_UUIdTheo=no
+                                          trace 4 --with-UUIdTheo-pkgconf disabling UUIdTheo
+                                          ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                          if test Xuuid != X; then :
+  with_UUIdTheo_pkgconf=uuid
+                                                 use_UUIdTheo=yes
+                                                 trace 4 --with-UUIdTheo-pkgconf set to default [$with_UUIdTheo_pkgconf]
+
+else
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to configure UUIdTheo via pkg-config but configure is unaware of the name of the DOTpc metadata file
+See \`config.log' for more details" "$LINENO" 5; }
+
+
+fi
+                                          ;;
+                        * )               use_UUIdTheo=yes
+                                          trace 4 --with-UUIdTheo-pkgconf set to [$with_UUIdTheo_pkgconf]
+                                          ;;
+                       esac
+
+else
+  if test Xuuid != X; then :
+  with_UUIdTheo_pkgconf=uuid
+                              trace 4 No --with-UUIdTheo-pkgconf specified using default [$with_UUIdTheo_pkgconf]
+
+
+fi
+
+
+fi
+
+
+# Check whether --with-UUIdTheo was given.
+if test "${with_UUIdTheo+set}" = set; then :
+  withval=$with_UUIdTheo; case $with_UUIdTheo in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                       trace 4 --with-UUIdTheo disabling UUIdTheo libraries
+                                       if test X$use_UUIdTheo = Xyes ; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to disable UUIdTheo by --with-UUIdTheo but --with-UUIdTheo-pkgconf has specifically enabled it
+See \`config.log' for more details" "$LINENO" 5; }
+
+else
+  use_UUIdTheo=no
+
+fi
+                                       ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                       trace 4 --with-UUIdTheo enabling UUIdTheo libraries
+                                       if test X$use_UUIdTheo = Xno; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to enable UUIdTheo by --with-UUIdTheo but --with-UUIdTheo-pkgconf has specifically disabled it
+See \`config.log' for more details" "$LINENO" 5; }
+
+else
+  use_UUIdTheo=yes
+
+fi
+                                       ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                       trace 4 --with-UUIdTheo checking for UUIdTheo libraries
+                                       if test X$use_UUIdTheo = Xyes; then :
+  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-UUIdTheo asking to check for the libs but --with-UUIdTheo-pkgconf has specifically enabled it" >&5
+$as_echo "$as_me: WARNING: --with-UUIdTheo asking to check for the libs but --with-UUIdTheo-pkgconf has specifically enabled it" >&2;}
+
+else
+  if test X$use_UUIdTheo = Xno; then :
+  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-UUIdTheo asking to check for the libs but --with-UUIdTheo-pkgconf has specifically disabled it" >&5
+$as_echo "$as_me: WARNING: --with-UUIdTheo asking to check for the libs but --with-UUIdTheo-pkgconf has specifically disabled it" >&2;}
+
+else
+  use_UUIdTheo=check
+
+fi
+
+
+fi
+                                       ;;
+                        * )            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-UUIdTheo set to an unknown option, setting ignored" >&5
+$as_echo "$as_me: WARNING: --with-UUIdTheo set to an unknown option, setting ignored" >&2;}
+                                       ;;
+                       esac
+
+else
+  trace 5 No --with-UUIdTheo specified
+
+fi
+
+          KnownLibs=$KnownLibs" "UUIdTheo
+          with_UUIdTheo_virtual="no"
+          if ( test X$use_UUIdTheo = X )
+          then
+             use_UUIdTheo=check
+             UnconfiguredLibs=$UnconfiguredLibs" "UUIdTheo
+          else
+             ConfiguredLibs=$ConfiguredLibs" "UUIdTheo
           fi
 
 

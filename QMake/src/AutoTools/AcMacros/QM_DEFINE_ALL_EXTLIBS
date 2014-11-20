@@ -67,6 +67,7 @@ AC_DEFUN([QM_DEFINE_ALL_EXTLIBS],
           QM_DEFINE_EXTLIB_PC([OpenSceneGraphGTK],[osgGtk-1.0])
           QM_DEFINE_EXTLIB_PC([RLog],             [librlog])
           QM_DEFINE_EXTLIB_PC([devVideo4Linux2],  [libv4l2])
+          QM_DEFINE_EXTLIB_PC([UUIdTheo],         [uuid])
           QM_DEFINE_EXTLIB_PC([x11],              [x11])
           QM_DEFINE_EXTLIB_PC([ZeroMQ],           [libzmq])
           dnl
@@ -606,8 +607,6 @@ dnl
           dnl#                 Existing .def file is LibMPEG.def       
           dnl#  ..._EXTLIB_xC([uEyeSDK],     [],                 [],     [-lueye_api], [])
           dnl#                 Existing .def file is uEye.def       
-          dnl#  ..._EXTLIB_xC([UUIdTheo],    [],                 [],     [-luuid],     [])
-          dnl#                 Existing .def file is uuidTheo.def       
           dnl#  
           dnl#
           dnl# OS Specific

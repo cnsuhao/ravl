@@ -529,6 +529,8 @@ RLog_RavlLib=libRavlRLog
 AC_SUBST([RLog_SUPPORT])
 Socket_RavlLib=libRavlNet
 AC_SUBST([Socket_SUPPORT])
+UUIdTheo_RavlLib=RavlUUId
+AC_SUBST([UUIdTheo_SUPPORT])
 devVideo4Linux2_RavlLib=libRavlImgIOV4L2
 AC_SUBST([devVideo4Linux2_SUPPORT])
 ZeroMQ_RavlLib=libRavlZmq
@@ -589,9 +591,6 @@ dnl#      libmpeg_RavlLib=RavlMPEG
 dnl#
 dnl#      uEyeSDK_RavlLib=RavlImgIOuEye
 dnl#      Also need to set uEyeSDK_CFLAGS=-D__LINUX__
-dnl#
-dnl#      UUIdTheo_RavlLib=RavlUUId
-dnl#  
 dnl#
 dnl# Settings for OS specific externals
 dnl# 
@@ -664,9 +663,6 @@ echo SGIVL_SUPPORT=@SGIVL_SUPPORT@ >> ./ExtPkgSupp.$$
 AC_SUBST([SwigPython_SUPPORT])
 SwigPython_SUPPORT=""
 echo SwigPython_SUPPORT=@SwigPython_SUPPORT@ >> ./ExtPkgSupp.$$
-AC_SUBST([UUIdTheo_SUPPORT])
-UUIdTheo_SUPPORT=""
-echo UUIdTheo_SUPPORT=@UUIdTheo_SUPPORT@ >> ./ExtPkgSupp.$$
 dnl#     End of workaround for currently unsupported libraries
 dnl# 
 
