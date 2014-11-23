@@ -15,6 +15,9 @@ ifndef CUDA_DEF
 ifeq ($(ARC),macosx386)
   EXELIB :=  -Wl,-rpath,/usr/local/cuda/lib  $(EXELIB)
 endif
+ifeq ($(ARC),linux64)
+  EXELIB :=  -Wl,-rpath,/usr/local/cuda/lib64  $(EXELIB)
+endif
 
 endif
 
