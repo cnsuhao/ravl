@@ -18,7 +18,7 @@ SUBDIRS=$(patsubst %.r,%,$(filter %.r,$(NESTED))) $(EXTRA_DIST_DIRS)
 SOURCE_FILES=defs.mk $(MAINS) $(SCRIPTS) $(SOURCES) $(MUSTLINK) $(HEADERS) \
              $(LOCALHEADERS) $(EXAMPLES) $(TESTEXES) $(AUXFILES) \
              $(LOCAL_FILES) $(EHT) $(HTML) $(MAN1) $(MAN3) $(MAN5) \
-             $(EXTERNALLIBS)
+             $(EXTERNALLIBS) $(if $(PLIB),,$(LIBDEPS))
 
 dist: $(PROJECT_OUT)/$(PROJECT_DISTDIR).tgz
 	$(SHOWIT)echo Dist file is $(PROJECT_OUT)/$(PROJECT_DISTDIR).tgz
