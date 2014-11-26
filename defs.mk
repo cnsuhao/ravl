@@ -8,5 +8,5 @@
 
 NESTED=src.r QMake.r
 
-LOCAL_FILES=config.guess config.sub configure COPYING COPYING.LESSER INSTALL \
-            INSTALL.ADVANCED install-sh README
+LOCAL_FILES=config.guess config.sub configure configure.ac COPYING \
+ COPYING.LESSER INSTALL INSTALL.ADVANCED install-sh README
