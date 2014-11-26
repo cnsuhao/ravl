@@ -56,6 +56,11 @@ dnl#      (This can prevent multiple calls within the script's body)
 dnl       _AC_INCLUDES_DEFAULT_REQUIREMENTS
 
 
+dnl# We want to default to installing to /usr rather than /usr/local
+dnl# This is primarily because of a number of distributions that do not
+dnl# come configured to use /usr/local/lib as a default library location.
+AC_PREFIX_DEFAULT([/usr])
+
 
 # Locate the tools needed to run this script (shell utils, compilers etc.)
 QM_LOCATE_KEY_TOOLS

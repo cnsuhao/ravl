@@ -49,6 +49,11 @@ m4_include([../../QMake/src/AutoTools/AcMacros/QM_SET_MAKE_MAKEFLAGS])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_SET_SHAREDEXT])
 
 
+dnl# We want to default to installing to /usr rather than /usr/local
+dnl# This is primarily because of a number of distributions that do not
+dnl# come configured to use /usr/local/lib as a default library location.
+AC_PREFIX_DEFAULT([/usr])
+
 
 # Reset list of external libraries
 #

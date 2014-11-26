@@ -565,6 +565,7 @@ PACKAGE_STRING='QMake 1.6.0'
 PACKAGE_BUGREPORT='quickmake-support@lists.sourceforge.net'
 PACKAGE_URL='http://www.ee.surrey.ac.uk/CVSSP/Ravl/RavlDoc/share/doc/RAVL/Auto/Develop/Tree/Ravl.QMake.html'
 
+ac_default_prefix=/usr
 # Factoring default headers for most tests.
 ac_includes_default="\
 #include <stdio.h>
@@ -3431,6 +3432,8 @@ shift; shift
 host_os=$*
 IFS=$ac_save_IFS
 case $host_os in *\ *) host_os=`echo "$host_os" | sed 's/ /-/g'`;; esac
+
+
 
 
 

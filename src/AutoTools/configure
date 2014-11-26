@@ -565,6 +565,7 @@ PACKAGE_STRING='RAVL 1.1.7'
 PACKAGE_BUGREPORT='ravl-devel@lists.sourceforge.net'
 PACKAGE_URL='http://www.ee.surrey.ac.uk/CVSSP/Ravl'
 
+ac_default_prefix=/usr
 # Factoring default headers for most tests.
 ac_includes_default="\
 #include <stdio.h>
@@ -3421,6 +3422,8 @@ trace ()
 
 
 #     End of section inspired by LT_PATH_LD from libtool
+
+
 
 
 
