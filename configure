@@ -562,7 +562,7 @@ PACKAGE_TARNAME='QMake'
 PACKAGE_VERSION='1.6.0'
 PACKAGE_STRING='QMake 1.6.0'
 PACKAGE_BUGREPORT='quickmake-support@lists.sourceforge.net'
-PACKAGE_URL='http://www.ee.surrey.ac.uk/CVSSP/Ravl/RavlDoc/share/doc/RAVL/Auto/Develop/Tree/Ravl.QMake.html'
+PACKAGE_URL='http://www.ee.surrey.ac.uk/CVSSP/Ravl/RavlDoc/share/doc/Ravl/Auto/Develop/Tree/Ravl.QMake.html'
 
 enable_option_checking=no
 ac_subst_vars='LTLIBOBJS
@@ -1222,7 +1222,7 @@ if test -n "$ac_init_help"; then
   cat <<\_ACEOF
 
 Report bugs to <quickmake-support@lists.sourceforge.net>.
-QMake home page: <http://www.ee.surrey.ac.uk/CVSSP/Ravl/RavlDoc/share/doc/RAVL/Auto/Develop/Tree/Ravl.QMake.html>.
+QMake home page: <http://www.ee.surrey.ac.uk/CVSSP/Ravl/RavlDoc/share/doc/Ravl/Auto/Develop/Tree/Ravl.QMake.html>.
 _ACEOF
 ac_status=$?
 fi
@@ -2289,7 +2289,7 @@ Usage: $0 [OPTION]... [TAG]...
       --recheck    update $as_me by reconfiguring in the same conditions
 
 Report bugs to <quickmake-support@lists.sourceforge.net>.
-QMake home page: <http://www.ee.surrey.ac.uk/CVSSP/Ravl/RavlDoc/share/doc/RAVL/Auto/Develop/Tree/Ravl.QMake.html>."
+QMake home page: <http://www.ee.surrey.ac.uk/CVSSP/Ravl/RavlDoc/share/doc/Ravl/Auto/Develop/Tree/Ravl.QMake.html>."
 
 _ACEOF
 cat >>$CONFIG_STATUS <<_ACEOF || ac_write_fail=1
