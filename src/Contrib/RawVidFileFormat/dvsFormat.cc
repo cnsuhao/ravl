@@ -55,23 +55,45 @@ namespace RavlImageN {
   const type_info &
   FileFormatDVSYPbPr422BodyC::ProbeLoad(IStreamC &in,const type_info &obj_type) const { 
 
-    file_reader_pointer = NewGrabfileReader(in.Name(), false);
+    char buff[4];
+    int readin;
 
+    if(!in.good())
+      return typeid(void);
+
+    // Peek at input, is it in Grab format
+    // This will break really old Grab file support (they had no magic header)
+    // but because of the code below we need to protect ourselves from running
+    // that against something that isn't a Grab file
+    in.read(buff,4);
+    readin = in.gcount();
+    if (readin == 4) {
+      if (buff[0] != 'G' || buff[1] != 'r' || buff[2] != 'a' || buff[3] != 'b' ) {
+        in.Unget(buff,4);
+        return typeid(void);
+      }
+    }
+    else {
+      in.Unget(buff,readin);
+      return typeid(void);
+    }
+
+    file_reader_pointer = NewGrabfileReader(in.Name(), false);
+    // We really shouldn't be re-opening the stream but the code is what it is
     if(file_reader_pointer->Open(in.Name().chars())) { //, mode)) {
       switch(IdToColourMode(file_reader_pointer->ColourMode())) {
         case YUV422:   return typeid(ImageC<FloatYPbPr422BT709ValueC>);
                        break;
         case RGB_RGB:  return typeid(ImageC<ByteRGBValueC>);
                        break;
-        default:       RavlIssueError("Unknown Colour Mode in FileFormatYPbPrBodyC::ProbeLoad.") ;
+        default:       ONDEBUG(cerr << "FileFormatDVSYPbPr422BodyC::ProbeLoad() - unrecognised Grab file ColourMode\n");
                        break;
       }
     }
-    //else {
-    //Got this far then unable to open grab file so issue error.
-      RavlIssueError("Could not open grab file.") ;
-      return typeid(void);
-    //}
+    else
+      ONDEBUG(cerr << "FileFormatDVSYPbPr422BodyC::ProbeLoad() - unable to re-open Grab file\n");
+
+    return typeid(void);
   }
   
   const type_info &
@@ -105,30 +127,27 @@ namespace RavlImageN {
       bformat = BITS_10_DVS;
       vmode = SMPTE274_25I;
     }
-    if(obj_type == typeid(ImageC<ByteRGBValueC>)) {
-      cmode = RGB_RGB;
-      bformat = BITS_8;
-      vmode = PAL;
-    }
-    //: Setup the card
+    else
+      if(obj_type == typeid(ImageC<ByteRGBValueC>)) {
+        cmode = RGB_RGB;
+        bformat = BITS_8;
+        vmode = PAL;
+      }
+      else
+        return typeid(void);
    
     file_writer_pointer = NewGrabfileWriter(1);
 
-    if(file_writer_pointer->Open(nfilename,IdToVideoMode(vmode),IdToByteFormat(bformat),IdToColourMode(cmode),1245184,0)) {
-      //Check for YUV422 or RGB in header then return appropriate typeid.
-      if(obj_type == typeid(ImageC<FloatYPbPr422BT709ValueC>)) {
-        return typeid(ImageC<FloatYPbPr422BT709ValueC>);
-      }
-      else if(obj_type == typeid(ImageC<ByteRGBValueC>)) {
-        return typeid(ImageC<ByteRGBValueC>);
-      }
-      else {
-        RavlIssueError("Unknown Colour Mode in FileFormatYPbPrBodyC::ProbeLoad.") ;
-        return typeid(void);
-      }
+    // We should not be doing this here. It writes the Grab header at a point
+    // when we haven't actually committed to using the format.
+    // Leave in for now as we really (REALLY) need to re-write the whole of
+    // this, er, code.
+    if(file_writer_pointer->Open(nfilename,IdToVideoMode(vmode),IdToByteFormat(bformat),IdToColourMode(cmode),1245184,0))
+      return obj_type;
+    else {
+      ONDEBUG(cerr << "Could not open output grabfile\n"):
+      return typeid(void);
     }
-    RavlIssueError("Could not open output grabfile");
-    return typeid(void);
   }
   
   //: Create a input port for loading.
