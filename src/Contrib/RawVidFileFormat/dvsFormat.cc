@@ -145,7 +145,7 @@ namespace RavlImageN {
     if(file_writer_pointer->Open(nfilename,IdToVideoMode(vmode),IdToByteFormat(bformat),IdToColourMode(cmode),1245184,0))
       return obj_type;
     else {
-      ONDEBUG(cerr << "Could not open output grabfile\n"):
+      ONDEBUG(cerr << "Could not open output grabfile\n");
       return typeid(void);
     }
   }
