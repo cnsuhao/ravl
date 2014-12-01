@@ -22,6 +22,8 @@ SOURCES = ImgIOdvsypbpr.cc ImgIOdvsrgb.cc dvsFormat.cc GrabfileReader.cc \
 
 PLIB = RavlRawVidIO
 
+SUMMARY_LIB=Ravl
+
 #LIBDEBS=DVSFileFormat
 
 #EXAMPLES =

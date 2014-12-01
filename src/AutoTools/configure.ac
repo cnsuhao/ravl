@@ -1730,8 +1730,7 @@ RavlFace_LIBS="libMarkupTool libRavlFace"
 RavlGUI=libRavlGUI
 RavlImageProc=libRavlImageProc
 RavlLogic_LIBS="libRavlLogicAgent libRavlLogicNLP libRavlLogic"
-RavlRawVidIO=""
-# libRavlRawVidIO currently dropped
+RavlRawVidIO=libRavlRawVidIO
 RavlVDF=""
 # libRavlVDF not currently implemented
 RavlVPlay=libRavlVPlay
