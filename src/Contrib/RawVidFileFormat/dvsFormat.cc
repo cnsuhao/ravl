@@ -54,77 +54,82 @@ namespace RavlImageN {
   
   const type_info &
   FileFormatDVSYPbPr422BodyC::ProbeLoad(IStreamC &in,const type_info &obj_type) const { 
+
     file_reader_pointer = NewGrabfileReader(in.Name(), false);
+
     if(file_reader_pointer->Open(in.Name().chars())) { //, mode)) {
-       switch(IdToColourMode(file_reader_pointer->ColourMode())) {
-          case YUV422: {
-             return typeid(ImageC<FloatYPbPr422BT709ValueC>);
-          }
-          case RGB_RGB: {
-             return typeid(ImageC<ByteRGBValueC>);
-          }
-          default: {
-             RavlIssueError("Unknown Colour Mode in FileFormatYPbPrBodyC::ProbeLoad.") ;
-          } break;
-        }
+      switch(IdToColourMode(file_reader_pointer->ColourMode())) {
+        case YUV422:   return typeid(ImageC<FloatYPbPr422BT709ValueC>);
+                       break;
+        case RGB_RGB:  return typeid(ImageC<ByteRGBValueC>);
+                       break;
+        default:       RavlIssueError("Unknown Colour Mode in FileFormatYPbPrBodyC::ProbeLoad.") ;
+                       break;
+      }
     }
     //else {
     //Got this far then unable to open grab file so issue error.
-       RavlIssueError("Could not open grab file.") ;
-       return typeid(void);
+      RavlIssueError("Could not open grab file.") ;
+      return typeid(void);
     //}
   }
   
   const type_info &
   FileFormatDVSYPbPr422BodyC::ProbeLoad(const StringC &nfilename,IStreamC &in,const type_info &obj_type) const {
+
     StringC suffix = Extension(nfilename);
+
     ONDEBUG(cerr << "FileFormatDVSYPbPr422BodyC::ProbeLoad() [" << vName << "] Called. Filename:'"<<nfilename <<" Ext:'" << suffix << "'  LoadType:'" << TypeName(obj_type) << "'\n");
-    if (suffix != vName) {     
-       return typeid(void);
+
+    if (suffix != vName) {
+      return typeid(void);
     }
     else {
-       return ProbeLoad(in,obj_type);
+      return ProbeLoad(in,obj_type);
     }
   }
   
   const type_info &
   FileFormatDVSYPbPr422BodyC::ProbeSave(const StringC &nfilename,const type_info &obj_type,bool forceFormat) const {
+
     if(!forceFormat) {
       StringC suffix = Extension(nfilename);
       ONDEBUG(cerr << "FileFormatDVSYPbPr422BodyC::ProbeSave() [" << vName << "] Called. Filename:'"<<nfilename <<" Ext:'" << suffix << "'  LoadType:'" << TypeName(obj_type) << "'\n");
       if (suffix != vName) {     
-	return typeid(void);
+        return typeid(void);
       }
     }
-       if(obj_type == typeid(ImageC<FloatYPbPr422BT709ValueC>)) {
-          cmode = YUV422;
-	  bformat = BITS_10_DVS;
-	  vmode = SMPTE274_25I;
-       }
-       if(obj_type == typeid(ImageC<ByteRGBValueC>)) {
-          cmode = RGB_RGB;
-	  bformat = BITS_8;
-	  vmode = PAL;
-       }
-       //: Setup the card
-   
-	file_writer_pointer = NewGrabfileWriter(1);
-    if(file_writer_pointer->Open(nfilename,IdToVideoMode(vmode),IdToByteFormat(bformat),IdToColourMode(cmode),1245184,0)) {
-       //Check for YUV422 or RGB in header then return appropriate typeid.
-          if(obj_type == typeid(ImageC<FloatYPbPr422BT709ValueC>)) {
-             return typeid(ImageC<FloatYPbPr422BT709ValueC>);
-          }
-	  else if(obj_type == typeid(ImageC<ByteRGBValueC>)) {
-             return typeid(ImageC<ByteRGBValueC>);
-          }
-	  else {
-             RavlIssueError("Unknown Colour Mode in FileFormatYPbPrBodyC::ProbeLoad.") ;
-	     return typeid(void);
-          }
-        }
-	RavlIssueError("Could not open output grabfile");
-        return typeid(void);
+
+    if(obj_type == typeid(ImageC<FloatYPbPr422BT709ValueC>)) {
+      cmode = YUV422;
+      bformat = BITS_10_DVS;
+      vmode = SMPTE274_25I;
     }
+    if(obj_type == typeid(ImageC<ByteRGBValueC>)) {
+      cmode = RGB_RGB;
+      bformat = BITS_8;
+      vmode = PAL;
+    }
+    //: Setup the card
+   
+    file_writer_pointer = NewGrabfileWriter(1);
+
+    if(file_writer_pointer->Open(nfilename,IdToVideoMode(vmode),IdToByteFormat(bformat),IdToColourMode(cmode),1245184,0)) {
+      //Check for YUV422 or RGB in header then return appropriate typeid.
+      if(obj_type == typeid(ImageC<FloatYPbPr422BT709ValueC>)) {
+        return typeid(ImageC<FloatYPbPr422BT709ValueC>);
+      }
+      else if(obj_type == typeid(ImageC<ByteRGBValueC>)) {
+        return typeid(ImageC<ByteRGBValueC>);
+      }
+      else {
+        RavlIssueError("Unknown Colour Mode in FileFormatYPbPrBodyC::ProbeLoad.") ;
+        return typeid(void);
+      }
+    }
+    RavlIssueError("Could not open output grabfile");
+    return typeid(void);
+  }
   
   //: Create a input port for loading.
   // Will create an Invalid port if not supported.
@@ -167,14 +172,14 @@ namespace RavlImageN {
     if(obj_type == typeid(ImageC<FloatYPbPr422BT709ValueC>)) {
       IStreamC strm(filename);
       if(!strm) {
-	return DPIPortBaseC();
+        return DPIPortBaseC();
       }
       return DPIImageDVSYPbPr422C(*file_reader_pointer,strm,vSize);
     }
     if(obj_type == typeid(ImageC<ByteRGBValueC>)) {
       IStreamC strm(filename);
       if(!strm) {
-	return DPIPortBaseC();
+        return DPIPortBaseC();
       }
       return DPIImageDVSRGBC(*file_reader_pointer,strm,vSize);
     }
