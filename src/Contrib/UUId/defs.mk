@@ -24,6 +24,8 @@ MAINS=
 
 PLIB=RavlUUId
 
+SUMMARY_LIB=Ravl
+
 USESLIBS=uuidTheo RavlThreads 
 
 PROGLIBS=
