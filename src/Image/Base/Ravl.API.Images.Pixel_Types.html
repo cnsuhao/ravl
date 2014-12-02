@@ -31,14 +31,16 @@
 
       <li>The YUV colour space traditionally used by the image processing
       community is based on the colour space used in analogue composite colour
-      television signals.</li>
+      television signals, but ignoring the offset of the black level.</li>
 
-      <li> YCrCb is only relevant in the context of ITU Rec. 601 digital video
-      sources (or high-def equivalents).  Hence use YCrCb only if you are
-      operating directly on these sources or files grabbed directly from
-      them.</li>
+      <li> YCrCb pixels have a black offset of 16 grey levels.  These classes
+      are relevant in the context of ITU Rec. 601 digital video sources (or
+      high-def equivalents), such as the DVS digital video acquistion and
+      playback cards.  Hence use YCrCb only if you are operating directly on
+      these sources or files grabbed directly from them.</li>
     </ul>
 
+    <p>The possible use of the YPbPr classes is unclear at the time of writing.</p>
  
     <p>See the relevant subtopic for more information.</p>
 
