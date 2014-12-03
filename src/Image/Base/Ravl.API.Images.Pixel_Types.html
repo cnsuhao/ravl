@@ -20,12 +20,12 @@
     chromaticity completely, use the HSV classes.</p>
 
     <p>There is much confusion about the difference between YUV and YCbCr, and
-    the term YUV is frequently used when YCrCb is meant:</p>
+    the term YUV is frequently used when YCbCr is meant:</p>
 
     <ul>
       <li>The colour spaces for YUV and YCbCr are different; hence within
       RAVL, the difference is manifested in the matrix values used to convert
-      between YUV (or YCrCb) and RGB.  We have introduced separate pixel
+      between YUV (or YCbCr) and RGB.  We have introduced separate pixel
       classes for each to help people produce the correct colour rendering of
       their images. </li>
 
@@ -33,14 +33,14 @@
       community is based on the colour space used in analogue composite colour
       television signals, but ignoring the offset of the black level.</li>
 
-      <li> YCrCb pixels have a black offset of 16 grey levels.  These classes
+      <li> YCbCr pixels have a black offset of 16 grey levels.  These classes
       are relevant in the context of ITU Rec. 601 digital video sources (or
       high-def equivalents), such as the DVS digital video acquistion and
-      playback cards.  Hence use YCrCb only if you are operating directly on
+      playback cards.  Hence use YCbCr only if you are operating directly on
       these sources or files grabbed directly from them.</li>
     </ul>
 
-    <p>The possible use of the YPbPr classes is unclear at the time of writing.</p>
+    <p>The YPbPr classes are intended for a simulation of the analogue composite video format.</p>
  
     <p>See the relevant subtopic for more information.</p>
 
