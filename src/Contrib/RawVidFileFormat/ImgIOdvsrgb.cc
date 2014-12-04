@@ -186,9 +186,31 @@ namespace RavlImageN {
     head = ImageC<ByteRGBValueC>(Interlace(tmp));
     //Adjust RGB range from DVS 16 to 235 to 0 to 255 as expected by digital ppl.
     for(Array2dIterC<ByteRGBValueC> it(head);it;it++) {
-       it.Data().Red() = ((it.Data().Red()-16)*(255/219));
-       it.Data().Green() = ((it.Data().Green()-16)*(255/219));
-       it.Data().Blue() = ((it.Data().Blue()-16)*(255/219));
+       ByteT value;
+
+       value = it.Data().Red();
+       if ( value <= 16 )
+         it.Data().Red() = 0;
+       else if ( value >= 235 )
+         it.Data().Red() = 255;
+       else
+         it.Data().Red() = ((value -16)*255)/219;
+
+       value = it.Data().Green();
+       if ( value <= 16 )
+         it.Data().Green() = 0;
+       else if ( value >= 235 )
+         it.Data().Green() = 255;
+       else
+         it.Data().Green() = ((value -16)*255)/219;
+
+       value = it.Data().Blue();
+       if ( value <= 16 )
+         it.Data().Blue() = 0;
+       else if ( value >= 235 )
+         it.Data().Blue() = 255;
+       else
+         it.Data().Blue() = ((value -16)*255)/219;
     } 
     frameNo++;
     
