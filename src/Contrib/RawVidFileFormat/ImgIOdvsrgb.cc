@@ -292,6 +292,8 @@ namespace RavlImageN {
     if(Imgcopy.Size() == (576*720)) {
        //PAL
        if(file_writer.VideoBuffer() != 1245184) {
+                                     // == ? 576x720x3 += % 1024
+                                     // i.e round up to 1024 byte boundry
           //reset the video mode on the new grab file.
 	  vmode = PAL;
 	  bformat = BITS_8;
@@ -322,6 +324,7 @@ namespace RavlImageN {
        chararray[i] = (char)rgc.Red();
        chararray[i+1] = (char)rgc.Green();
        chararray[i+2] = (char)rgc.Blue();
+                   // Inconsistent with Get which scales between 0-255 and 16-235
        i+=3;
     }   
  
