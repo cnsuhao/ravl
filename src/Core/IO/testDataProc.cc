@@ -43,6 +43,13 @@
 
 using namespace RavlN;
 
+#define DODEBUG 0
+#if DODEBUG
+#define ONDEBUG(x) x
+#else
+#define ONDEBUG(x)
+#endif
+
 int conv(const int &val) {
   return val;
 }
@@ -70,42 +77,52 @@ int main(int nargs,char **argv) {
     cerr << "Error in testSimple(), Line:" << ln << "\n";
     return 1;
   }
+  ONDEBUG(cerr << "testSimple() ok\n");
   if((ln = testMultiplex()) != 0) {
     cerr << "Error in testMultiplex(), Line:" << ln << "\n";
     return 1;
   }
+  ONDEBUG(cerr << "testMultiplex() ok\n");
   if((ln = testCompose()) != 0) {
     cerr << "Error in testMultiplex(), Line:" << ln << "\n";
     return 1;
   }
+  ONDEBUG(cerr << "testCompose() ok\n");
   if((ln = testFunc2Proc()) != 0) {
     cerr << "Error in testFunc2Proc(), Line:" << ln << "\n";
     return 1;
   }
+  ONDEBUG(cerr << "testFunc2Proc() ok\n");
   if((ln = testSPort()) != 0) {
     cerr << "Error in testFunc2Proc(), Line:" << ln << "\n";
     return 1;
   }
+  ONDEBUG(cerr << "testSPort() ok\n");
   if((ln = testSampleStream()) != 0) {
     cerr << "Error in testFunc2Proc(), Line:" << ln << "\n";
     return 1;
   }
+  ONDEBUG(cerr << "testSampleStream() ok\n");
   if((ln = testIStreamCache()) != 0) {
     cerr << "Error in testIStreamCache(), Line:" << ln << "\n";
     return 1;
   }
+  ONDEBUG(cerr << "testIStreamCache() ok\n");
   if((ln = testMemIO()) != 0) {
     cerr << "Error in testMemIO(), Line:" << ln << "\n";
     return 1;
   }
+  ONDEBUG(cerr << "testMemIO() ok\n");
   if((ln = testMethodPtrIO()) != 0) {
     cerr << "Error in testMethodPtrIO(), Line:" << ln << "\n";
     return 1;
   }
+  ONDEBUG(cerr << "testMethodPtrIO() ok\n");
   if((ln = testMethodPtr2Proc()) != 0) {
     cerr << "Error in testMethodPtrIO(), Line:" << ln << "\n";
     return 1;
   }
+  ONDEBUG(cerr << "testMethodPtr2Proc() ok\n");
   cerr << "Test passed. \n";
   return 0;
 }
