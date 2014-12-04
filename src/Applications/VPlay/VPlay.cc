@@ -422,9 +422,9 @@ int doVPlay(int nargs,char *args[])
     rect = tmp.Rectangle();
   }
   
-  ONDEBUG(std::cerr << "VPlay: Image size found..\n");
   sy = rect.Rows();
   sx = rect.Cols();
+  ONDEBUG(std::cerr << "VPlay: Image size found: " << sx << " x " << sy << "\n");
   if(sx < 1 || sy < 1) {
     std::cerr << "ERROR: Image size too small opening : '" << infile << "'.\n";
     sy = 100;
