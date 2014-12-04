@@ -82,9 +82,11 @@ namespace RavlImageN {
     // We really shouldn't be re-opening the stream but the code is what it is
     if(file_reader_pointer->Open(in.Name().chars())) { //, mode)) {
       switch(IdToColourMode(file_reader_pointer->ColourMode())) {
-        case YUV422:   return typeid(ImageC<FloatYPbPr422BT709ValueC>);
+        case YUV422:   ONDEBUG(cerr << "FileFormatDVSYPbPr422BodyC::ProbeLoad() - YUV422 Grab file\n");
+                       return typeid(ImageC<FloatYPbPr422BT709ValueC>);
                        break;
-        case RGB_RGB:  return typeid(ImageC<ByteRGBValueC>);
+        case RGB_RGB:  ONDEBUG(cerr << "FileFormatDVSYPbPr422BodyC::ProbeLoad() - RGB Grab file\n");
+                       return typeid(ImageC<ByteRGBValueC>);
                        break;
         default:       ONDEBUG(cerr << "FileFormatDVSYPbPr422BodyC::ProbeLoad() - unrecognised Grab file ColourMode\n");
                        break;
@@ -159,11 +161,14 @@ namespace RavlImageN {
       return DPIPortBaseC();
     }
     if(obj_type == typeid(ImageC<FloatYPbPr422BT709ValueC>)) {
+      ONDEBUG(cerr << "Will use DPIImageDVSYPbPr422C(*file_reader_pointer, strm, (" << StringC(vSize.Col().V()) << " x " << StringC(vSize.Row().V()) << "))\n");
       return DPIImageDVSYPbPr422C(*file_reader_pointer,in,vSize);
     }
     if(obj_type == typeid(ImageC<ByteRGBValueC>)) {
+      ONDEBUG(cerr << "Will use DPIImageDVSRGBC(*file_reader_pointer, strm, (720 x 576))\n");
       return DPIImageDVSRGBC(*file_reader_pointer,in,Index2dC(576,720));
     }
+    ONDEBUG(cerr << "Unrecognised obj_type will use DPIPortBaseC()\n");
     return DPIPortBaseC();
   }
   
@@ -193,6 +198,7 @@ namespace RavlImageN {
       if(!strm) {
         return DPIPortBaseC();
       }
+      ONDEBUG(cerr << "Will use DPIImageDVSYPbPr422C(*file_reader_pointer, strm, (" << StringC(vSize.Col().V()) << " x " << StringC(vSize.Row().V()) << "))\n");
       return DPIImageDVSYPbPr422C(*file_reader_pointer,strm,vSize);
     }
     if(obj_type == typeid(ImageC<ByteRGBValueC>)) {
@@ -200,8 +206,10 @@ namespace RavlImageN {
       if(!strm) {
         return DPIPortBaseC();
       }
+      ONDEBUG(cerr << "Will use DPIImageDVSRGBC(*file_reader_pointer, strm, (" << StringC(vSize.Col().V()) << " x " << StringC(vSize.Row().V()) << "))\n");
       return DPIImageDVSRGBC(*file_reader_pointer,strm,vSize);
     }
+    ONDEBUG(cerr << "Unrecognised obj_type will use DPIPortBaseC()\n");
     return DPIPortBaseC();
   }
   
