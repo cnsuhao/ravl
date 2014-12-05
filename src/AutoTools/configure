@@ -4350,8 +4350,8 @@ $as_echo "$as_me: WARNING: --with-rpath set to an unknown option, setting ignore
 
 else
   trace 5 No --with-rpath specified
-                       with_rpath=N
-                       # Default to N. Do not set USER_with_rpath so that
+                       with_rpath=Y
+                       # Default to Y. Do not set USER_with_rpath so that
                        # the calling code knows to use default from QMake
                        # configuration.
 

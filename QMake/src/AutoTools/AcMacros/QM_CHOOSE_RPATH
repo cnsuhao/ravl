@@ -13,8 +13,8 @@ dnl
 dnl Macro to allow user selection over the inclusion of paths to linked
 dnl libraries when creating a binary or other library. Creates the cmd-line
 dnl switch --with-rpath which is a simple Yes/No switch (usual abbreviation
-dnl andcase rules apply) that enables or disables this functionality. There
-dnl is no default value (for this switch) implemented by this macro.
+dnl andcase rules apply) that enables or disables this functionality. The
+dnl default is to enable the rpath functionality.
 dnl
 dnl No macro parameters
 dnl
@@ -53,8 +53,8 @@ AC_DEFUN([QM_CHOOSE_RPATH],
                        esac
                       ],
                       [trace 5 No --with-rpath specified
-                       with_rpath=N
-                       # Default to N. Do not set USER_with_rpath so that
+                       with_rpath=Y
+                       # Default to Y. Do not set USER_with_rpath so that
                        # the calling code knows to use default from QMake
                        # configuration.
                       ]
