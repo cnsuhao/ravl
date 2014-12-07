@@ -88,6 +88,14 @@ extern int sleep(int x); // A hack, I hope it doesn't cause problems later...
 #include <sys/select.h>
 #endif
 
+#define DODEBUG 1
+#if DODEBUG
+#define ONDEBUG(x) x
+#else
+#define ONDEBUG(x)
+#endif
+
+
 namespace RavlN {
 
   DateC::DateC(bool setval,bool useVirt)  {
@@ -423,6 +431,7 @@ namespace RavlN {
 
     int elems = sscanf(&work[at],"%4u-%2u-%2u",&year,&month,&day);
     if(elems != 3) {
+      ONDEBUG(RavlDebug("Ran out of characters."));
       return false;
     }
     if(work.Size() <= 10) {
@@ -432,19 +441,29 @@ namespace RavlN {
     }
     at += 10;
     if(work[at] != ' ' && work[at] != 'T') {
+      ONDEBUG(RavlDebug("Ran out of characters."));
       return false;
     }
     at++;
-
+    if(at >= work.Size()) {
+      ONDEBUG(RavlDebug("Ran out of characters in '%s' ",dataString.c_str()));
+      return false;
+    }
     //RavlDebug("Scanning time:%s ",work.c_str());
     double secf;
     elems = sscanf(&work[at],"%2u:%2u:%lf",&hour,&min,&secf);
     if(elems != 3) {
+      ONDEBUG(RavlDebug("Not 3 elements."));
       return false;
     }
     sec = secf;
     usec = RavlN::Round((secf - floor(secf)) * 1000000.0);
     at += 8;
+    if(at >= work.Size()) {
+      // No timezone, so must be local time.
+      tzOffset = DateC::TimeZoneOffset().TotalSeconds();
+      return true;
+    }
     if(work[at] == '.') {
       at++;
       // Fractional seconds ?
@@ -453,7 +472,11 @@ namespace RavlN {
           break;
       }
     }
-
+    if(work.Size() == at) {
+      // No timezone, so must be local time.
+      tzOffset = DateC::TimeZoneOffset().TotalSeconds();
+      return true;
+    }
     if(work[at] == 0) {
       // No timezone, so must be local time.
       tzOffset = DateC::TimeZoneOffset().TotalSeconds();
@@ -470,13 +493,16 @@ namespace RavlN {
     }
     bool isNeg = work[at] == '-';
     at++;
-
+    if(at >= work.Size()) {
+      ONDEBUG(RavlDebug("Ran out of characters."));
+      return false;
+    }
     int tzHours = 0;
     int tzMinutes = 0;
     elems = sscanf(&work[at],"%2u",&tzHours);
     if(work.Size()-at > 2) {
       at += 2;
-      if(work[3]==':')
+      if(work[at]==':')
         at++;
       elems = sscanf(&work[at],"%2u",&tzMinutes);
     }
