@@ -6,4 +6,6 @@ SOURCES=HtmlString.cc HtmlTable.cc HtmlPage.cc
 
 PLIB=RavlHtml
 
+SUMMARY_LIB=Ravl
+
 USESLIBS=RavlCore RavlOS

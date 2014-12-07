@@ -23,6 +23,8 @@ SOURCES=Distance.cc DistanceEuclidean.cc DistanceMax.cc DistanceCityBlock.cc \
 
 PLIB=RavlPatternRec
 
+SUMMARY_LIB=Ravl
+
 TESTEXES=testMeasure.cc testDistanceXMLFactory.cc
 
 USESLIBS=RavlCore RavlMath RavlOSIO RavlIO fann RavlXMLFactory RavlMathIO RavlDataSet Optimisation

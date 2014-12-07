@@ -1,10 +1,17 @@
+# This file is part of RAVL, Recognition And Vision Library
+# Copyright (C) 2001-13,  University of Surrey.
+# This code may be redistributed under the terms of the GNU Lesser
+# General Public License (LGPL). See the lgpl.licence file for details or
+# see http://www.gnu.org/copyleft/lesser.html
+# file-header-ends-here
+
 ifndef GTKGLEXT_DEF
-GTKGLEXT_DEF = 1
 
-include GTK.def
-include x11.def
+  GTKGLEXT_DEF=1
 
-INCLUDES += `pkg-config gtkglext-1.0 --cflags`
-EXELIB := `pkg-config gtkglext-1.0 --libs` $(EXELIB)
+  EXELIB := $(GTKGLExt_LIBS) $(EXELIB)
+
+  INCLUDES += $(GTKGLExt_CFLAGS)
 
 endif
+

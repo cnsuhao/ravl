@@ -1,12 +1,17 @@
-EXELIB := -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_ml \
-          -lopencv_video -lopencv_features2d -lopencv_calib3d \
-          -lopencv_objdetect -lopencv_contrib -lopencv_legacy \
-          -lopencv_flann -lopencv_gpu $(EXELIB)
+# This file is part of RAVL, Recognition And Vision Library
+# Copyright (C) 2001-11,  University of Surrey.
+# This code may be redistributed under the terms of the GNU Lesser
+# General Public License (LGPL). See the lgpl.licence file for details or
+# see http://www.gnu.org/copyleft/lesser.html
+# file-header-ends-here
 
-# For earlier revisions of OpenCV replace the above with:
-#       EXELIB :=  -lcxcore -lcv -lcvaux -lhighgui $(EXELIB)
+ifndef OPENCV_DEF
 
-ifdef OPENCV_HOME
-  INCLUDES += -I$(OPENCV_HOME)/include
-  EXELIB :=  -Wl,-rpath,$(OPENCV_HOME)/lib -L$(OPENCV_HOME)/lib $(EXELIB)
+  OPENCV_DEF=1
+
+  EXELIB := $(OpenCV_LIBS) $(EXELIB)
+
+  INCLUDES += $(OpenCV_CFLAGS)
+
 endif
+

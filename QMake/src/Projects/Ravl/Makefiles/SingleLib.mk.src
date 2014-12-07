@@ -1,0 +1,168 @@
+QMAKE_MAKEFILES=@QMAKE_MAKEFILES@
+
+include $(QMAKE_MAKEFILES)/Definitions.mk
+
+LIB_WORK=$(PROJECT_OUT)/lib$(PROJECT_DIR)/$(ARC)/$(VAR)
+
+BUILT_ROOT=$(LOCALTMP)/$(ARC)
+
+
+# Control version stamping of single-shared library
+ifndef STAMP_SINGLE
+ ifdef LIB_STAMP
+  STAMP_SINGLE=$(LIB_STAMP)
+ else
+  STAMP_SINGLE=VER
+  # Default to full version stamping
+ endif
+endif
+
+ifeq ($(STAMP_SINGLE),VER)
+ STAMP_SINGLE_EXT=.so.$(PROJECT_VERSION)
+else
+ ifeq ($(STAMP_SINGLE),NO)
+  # Version stamping switched off
+  STAMP_SINGLE_EXT=.so
+ else
+  STAMP_SINGLE_EXT=.so.$(PROJECT_MAJOR)
+ endif
+endif
+
+
+
+buildsinglelibs: makedirs buildstatic buildshared
+
+makedirs: $(LIB_WORK)/single $(LIB_WORK)/shared/single
+	@: Suppress any Nothing to be done message if all dependencies exist
+
+$(LIB_WORK)/single:
+	@if [ ! -d $(LIB_WORK)/single ]; then $(MKDIR_P) $(LIB_WORK)/single; fi
+
+$(LIB_WORK)/shared:
+	@if [ ! -d $(LIB_WORK)/shared ]; then $(MKDIR_P) $(LIB_WORK)/shared; fi
+	
+$(LIB_WORK)/shared/single: $(LIB_WORK)/shared
+	@if [ ! -d $(LIB_WORK)/shared/single ]; then $(MKDIR_P) $(LIB_WORK)/shared/single; fi
+	
+
+# Ordered list of the libraries we want in libRavl.* 
+# Primed from recipe in Ravl Config.Project file
+ORDERED_LIST=$(SINGLE_RECIPE)
+
+
+# Fullpath version of $(ORDERED_LIST) as static libs
+ORDERED_PATHS=$(patsubst %,$(LIB_WORK)/%.a,$(ORDERED_LIST))
+
+
+# Full list of object files that make up the single library (shared or static)
+# Made from using $(ORDERED_LIST) which lists what order to use the individual
+# $(XXX_OBJS) $(YYY_OBJS) object file listings and the values of the $(ZZZ_OBJS)
+# lists themselves
+ORDERED_OBJ_LIST=$(patsubst %,$$(%_OBJS),$(ORDERED_LIST))
+$(eval ORDERED_OBJS=$(ORDERED_OBJ_LIST))
+
+
+# List of libraries that have been built
+BUILT_LIBS=$(wildcard $(LIB_WORK)/*.a)
+
+
+# Check that no needed libraries are missing
+MISSING=$(filter-out $(BUILT_LIBS),$(ORDERED_PATHS))
+ifneq "" "$(strip $(MISSING))"
+  $(error Error $(MISSING) not present)
+endif
+
+
+# From the list of built libraries, strip out those we know about as part of
+# the single library recipe, plus the dummy libRavlLibManager. If we have
+# anything left, it is a new library the makefiles have not been updated to
+# know about and should be flagged for correction.
+NEW=$(filter-out $(ORDERED_PATHS) $(LIB_WORK)/libRavlLibManager.a,$(BUILT_LIBS))
+ifneq ($(strip  $(NEW)),)
+  $(warning Addition of $(NEW) not accounted for.)
+  $(warning Please report this as a bug.)
+  NEW_OBJ_LIST=$(patsubst $(LIB_WORK)/%.a,$$(%_OBJS),$(NEW))
+  $(eval NEW_OBJS=$(NEW_OBJ_LIST))
+endif
+
+# For each library we have (minus the dummy libRavlLibManager), define XXX_OBJS
+# (where XXX is the library name) as the list of object files in that library
+define LIST_OBJS_IN_dotA
+ $(1)_OBJS=$(shell $(AR) -t $(LIB_WORK)/$(1).a | $(AWK) '{ print "$(BUILT_ROOT)/$(patsubst lib%,%,$(1))/$(VAR)/objs/"$$1 }')
+endef
+
+$(foreach lib,$(filter-out $(LIB_WORK)/libRavlLibManager.a,$(BUILT_LIBS)),$(eval $(call LIST_OBJS_IN_dotA,$(basename $(notdir $(lib))))))
+
+
+# Make libRavl.a from the objects in any new libraries we have found plus the
+# objects from the known ordered list
+buildstatic: $(LIB_WORK)/single/libRavl.a
+	@: Suppress any Nothing to be done message if library is up to date
+
+$(LIB_WORK)/single/libRavl.a: $(NEW_OBJS) $(ORDERED_OBJS)
+	$(AR) -rvs $@ $?
+
+
+# Shared objects come from the original target directory so substitue path
+# Existing pattern = $(BUILT_ROOT)/<LibName>/$(VAR)/objs/<ObjName>
+# Shared obj location = $(BUILT_ROOT)/<LibName>/$(VAR)/shared/<ObjName>
+SHARED_OBJS=$(subst /$(VAR)/objs/,/$(VAR)/shared/objs/,$(NEW_OBJS) $(ORDERED_OBJS))
+
+
+# Make libRavl.so from the objects in any new libraries we have found plus the
+# objects from the known ordered list
+buildshared: $(LIB_WORK)/shared/single/libRavl.so
+	@: Suppress any Nothing to be done message if library is up to date
+
+
+ifneq ($(STAMP_SINGLE),NO)
+ # We want to version stamp shared libraries.
+
+ # libXXX.so is just a symbolic link to the fully quantified name. We also
+ # need to depend on libXXX.so.A.
+ $(LIB_WORK)/shared/single/libRavl.so: $(LIB_WORK)/shared/single/libRavl.so.$(PROJECT_MAJOR)
+	$(SHOWIT)if [ -h $@ ] || [ -f $@ ] ; then $(RM) $@ ; fi
+	$(SHOWIT)cd $(@D); $(LN_S) libRavl$(STAMP_SINGLE_EXT) $(@F)
+
+ ifeq ($(STAMP_SINGLE),VER)
+  # We want to use the full version as the suffix
+
+  # libXXX.so.A is just a symbolic link to the fully quantified name. We also
+  # need to depend on libXXX.so.A.B.C
+  $(LIB_WORK)/shared/single/libRavl.so.$(PROJECT_MAJOR): $(LIB_WORK)/shared/single/libRavl.so.$(PROJECT_VERSION)
+	$(SHOWIT)if [ -h $@ ] || [ -f $@ ] ; then $(RM) $@ ; fi
+	$(SHOWIT)cd $(@D); $(LN_S) libRavl$(STAMP_SINGLE_EXT) $(@F)
+ endif
+
+endif #  STAMP_SINGLE!=no
+
+
+$(LIB_WORK)/shared/single/libRavl$(STAMP_SINGLE_EXT): $(SHARED_OBJS)
+	$(CXX) $(PKG_LDLIBFLAGS) $(LDLIBFLAGS) $(SHARED_OBJS) $(ALL_EXTERNAL_LIBS) -o $@
+
+
+clean:
+	$(RM) -rf $(LIB_WORK)/single
+	$(RM) -rf $(LIB_WORK)/shared/single
+
+.PHONY: buildsinglelibs buildshared buildstatic clean makedirs vars
+
+
+#List out the main variables used
+vars: 
+	@echo ORDERED_LIST=$(ORDERED_LIST)
+	@echo
+	@echo ORDERED_PATHS=$(ORDERED_PATHS)
+	@echo
+	@echo BUILT_LIBS=$(BUILT_LIBS)
+	@echo
+	@echo NEW=$(NEW)
+	@echo
+	@echo NEW_OBJS=$(NEW_OBJS)
+	@echo
+	@echo ORDERED_OBJS=$(ORDERED_OBJS)
+	@echo
+	@echo SHARED_OBJS=$(SHARED_OBJS)
+	@echo
+	@echo MISSING=$(MISSING)
+

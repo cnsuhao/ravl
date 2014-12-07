@@ -1,5 +1,5 @@
 # This file is part of RAVL, Recognition And Vision Library 
-# Copyright (C) 2001, University of Surrey
+# Copyright (C) 2001-11, University of Surrey
 # This code may be redistributed under the terms of the GNU Lesser
 # General Public License (LGPL). See the lgpl.licence file for details or
 # see http://www.gnu.org/copyleft/lesser.html
@@ -40,9 +40,11 @@ SOURCES=Assert.cc Exception.cc EntryPnt.cc Index.cc String.cc \
 
 PLIB=RavlCore
 
+SUMMARY_LIB=Ravl
+
 MUSTLINK=atexit.cc
 
-USESLIBS=Math 
+USESLIBS=None
 
 TESTEXES= testRavlBase.cc testCalls.cc testString.cc testStream.cc testTFVector.cc testRCLayer.cc testVectorUtils.cc
 

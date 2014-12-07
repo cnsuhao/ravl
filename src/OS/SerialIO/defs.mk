@@ -21,4 +21,6 @@ MUSTLINK=linkSerialDirect.cc
 
 PLIB=RavlSerialIO
 
+SUMMARY_LIB=Ravl
+
 USESLIBS=RavlCore RavlIO RavlOS

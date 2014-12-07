@@ -21,9 +21,11 @@ SOURCES=ImgIODv.cc DvDecode.cc DvIFormat.cc DvFrameConvert.cc
 
 PLIB=RavlDV
 
+SUMMARY_LIB=Ravl
+
 EXTERNALLIBS= LibDV.def
 
-USESLIBS=system RavlCore RavlImage RavlIO RavlOS RavlOSIO LibDV  RavlVideoIO RavlAV
+USESLIBS=RavlCore RavlImage RavlIO RavlOS RavlOSIO LibDV  RavlVideoIO RavlAV
 
 PROGLIBS= RavlDPDisplay.opt RavlDevAudio
 

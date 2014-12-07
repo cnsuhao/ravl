@@ -186,9 +186,31 @@ namespace RavlImageN {
     head = ImageC<ByteRGBValueC>(Interlace(tmp));
     //Adjust RGB range from DVS 16 to 235 to 0 to 255 as expected by digital ppl.
     for(Array2dIterC<ByteRGBValueC> it(head);it;it++) {
-       it.Data().Red() = ((it.Data().Red()-16)*(255/219));
-       it.Data().Green() = ((it.Data().Green()-16)*(255/219));
-       it.Data().Blue() = ((it.Data().Blue()-16)*(255/219));
+       ByteT value;
+
+       value = it.Data().Red();
+       if ( value <= 16 )
+         it.Data().Red() = 0;
+       else if ( value >= 235 )
+         it.Data().Red() = 255;
+       else
+         it.Data().Red() = ((value -16)*255)/219;
+
+       value = it.Data().Green();
+       if ( value <= 16 )
+         it.Data().Green() = 0;
+       else if ( value >= 235 )
+         it.Data().Green() = 255;
+       else
+         it.Data().Green() = ((value -16)*255)/219;
+
+       value = it.Data().Blue();
+       if ( value <= 16 )
+         it.Data().Blue() = 0;
+       else if ( value >= 235 )
+         it.Data().Blue() = 255;
+       else
+         it.Data().Blue() = ((value -16)*255)/219;
     } 
     frameNo++;
     
@@ -270,6 +292,8 @@ namespace RavlImageN {
     if(Imgcopy.Size() == (576*720)) {
        //PAL
        if(file_writer.VideoBuffer() != 1245184) {
+                                     // == ? 576x720x3 += % 1024
+                                     // i.e round up to 1024 byte boundry
           //reset the video mode on the new grab file.
 	  vmode = PAL;
 	  bformat = BITS_8;
@@ -300,6 +324,7 @@ namespace RavlImageN {
        chararray[i] = (char)rgc.Red();
        chararray[i+1] = (char)rgc.Green();
        chararray[i+2] = (char)rgc.Blue();
+                   // Inconsistent with Get which scales between 0-255 and 16-235
        i+=3;
     }   
  

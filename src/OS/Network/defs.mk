@@ -1,12 +1,13 @@
 # This file is part of RAVL, Recognition And Vision Library 
-# Copyright (C) 2001, University of Surrey
+# Copyright (C) 2001-12, University of Surrey
 # This code may be redistributed under the terms of the GNU Lesser
 # General Public License (LGPL). See the lgpl.licence file for details or
 # see http://www.gnu.org/copyleft/lesser.html
 # file-header-ends-here
-#! rcsid="$Id$"
 #! file="Ravl/OS/Network/defs.mk"
 DONOT_SUPPORT=cygwin
+
+REQUIRES = Socket
 
 PACKAGE=Ravl/OS
 
@@ -28,12 +29,14 @@ MUSTLINK = RavlSysNetworkML.cc
 
 PLIB = RavlNet
 
+SUMMARY_LIB=Ravl
+
 EHT=Ravl.API.OS.Network.html Ravl.API.OS.Network.NetPort.html
 
 EXAMPLES = exSocket.cc exEndPoint.cc exNetPort.cc
 
 TESTEXES=testNetPort.cc #testSocket.cc
 
-USESLIBS = RavlOS RavlCore Socket RavlThreads RavlIO system RavlService
+USESLIBS = RavlOS RavlCore Socket RavlThreads RavlIO RavlService
 
 PROGLIBS= RavlThreads

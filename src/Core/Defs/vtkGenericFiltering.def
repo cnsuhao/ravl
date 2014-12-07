@@ -5,28 +5,15 @@
 # see http://www.gnu.org/copyleft/lesser.html
 # file-header-ends-here
 
-ifndef VTK_GENERICFILTERING_DEF
+$(error vtkGenericFiltering not currently supported)
 
-  VTK_GENERICFILTERING_DEF = 1
+ifndef vtkGenericFiltering_DEF
 
-  # Declare libraries for this particulat VTK kit
+  vtkGenericFiltering_DEF = 1
 
-    VTK_GENERICFILTERING_LIBS = -lvtkGenericFiltering
+  EXELIB := $(vtkGenericFiltering_LIBS) $(EXELIB)
 
-  # Ensure any dependencies of this kit are already included
-
-    ifndef VTK_GRAPHICS_DEF
-      include vtkGraphics.def
-      # Will include vtkFiltering, vtkCommon via recursive dependency
-    endif
-
-  # Prefix any VTK libraries on the link line with this kit
-
-    EXELIB := $(subst $(VTK_LIBS_USED),$(VTK_GENERICFILTERING_LIBS) $(VTK_LIBS_USED),$(EXELIB))
-
-  # Remember what the current set of VTK libs are
-
-    VTK_LIBS_USED := $(VTK_GENERICFILTERING_LIBS) $(VTK_LIBS_USED)
+  INCLUDES += $(vtkGenericFiltering_CFLAGS)
 
 endif
 

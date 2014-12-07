@@ -31,6 +31,8 @@ MUSTLINK = RavlImgIO.cc
 
 PLIB = RavlImageIO
 
+SUMMARY_LIB=Ravl
+
 EXAMPLES = exImgIO.cc
 
 TESTEXES = testImgIO.cc

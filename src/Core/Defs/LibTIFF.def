@@ -1,39 +1,17 @@
 # This file is part of RAVL, Recognition And Vision Library
-# Copyright (C) 2001, University of Surrey.
-# This code may be redistributed under the terms of the GNU lesser
-# public license (LGPL). See the lgpl.licence file for details or
+# Copyright (C) 2001-11,  University of Surrey.
+# This code may be redistributed under the terms of the GNU Lesser
+# General Public License (LGPL). See the lgpl.licence file for details or
 # see http://www.gnu.org/copyleft/lesser.html
 # file-header-ends-here
+
 ifndef LIBTIFF_DEF
-LIBTIFF_DEF = 1
 
-include Math.def
-include zlib.def
+  LIBTIFF_DEF=1
 
-  ifndef LIBTIFF_HOME
-   EXELIB := -ltiff $(EXELIB)
-  else 
-   INCLUDES += -I$(LIBTIFF_HOME)/include 
+  EXELIB := $(LibTIFF_LIBS) $(EXELIB)
 
-     ifeq ($(ARC),linux)
-       EXELIB := -Wl,-rpath,$(LIBTIFF_HOME)/lib32 -L$(LIBTIFF_HOME)/lib32 -ltiff $(EXELIB)
-     else
-	ifeq ($(ARC),linux64)
-	       EXELIB := -Wl,-rpath,$(LIBTIFF_HOME)/lib64 -L$(LIBTIFF_HOME)/lib64 -ltiff $(EXELIB)
-	else
+  INCLUDES += $(LibTIFF_CFLAGS)
 
-       ifeq ($(ARC),sgi) 
-         EXELIB := -R $(LIBTIFF_HOME)/lib32 -L$(LIBTIFF_HOME)/lib32 -ltiff $(EXELIB)
-       else
-
-         ifneq ($(filter $(ARC), sol2_7 sol2_9),)
-           EXELIB := -R $(LIBTIFF_HOME)/lib -L$(LIBTIFF_HOME)/lib -ltiff $(EXELIB)
-         else
-
-           EXELIB := -L$(LIBTIFF_HOME)/lib -ltiff $(EXELIB)
-         endif 
-       endif 
-     endif 
-  endif 
-endif 
 endif
+

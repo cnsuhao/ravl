@@ -1,5 +1,5 @@
 # This file is part of RAVL, Recognition And Vision Library
-# Copyright (C) 2008, OmniPerception Ltd.
+# Copyright (C) 2008-12, OmniPerception Ltd.
 # This code may be redistributed under the terms of the GNU Lesser
 # General Public License (LGPL). See the lgpl.licence file for details or
 # see http://www.gnu.org/copyleft/lesser.html
@@ -8,19 +8,11 @@
 # file-header-ends-here
 
 ifndef NUMPY_DEF
-NUMPY_DEF = 1
 
-  ifndef PYTHON_VERSION
-    PYTHON_VERSION = $(shell python -c "import distutils.sysconfig; print distutils.sysconfig.get_config_var('VERSION')")
-  endif    
+  NUMPY_DEF = 1
 
-  ifndef NUMPY_HOME
-      NUMPY_HOME = /usr/lib64/python$(PYTHON_VERSION)/site-packages/numpy/core
-      
-  endif
+  EXELIB := $(NUMPY_LIBS) $(EXELIB)
 
-  INCLUDES += -I$(NUMPY_HOME)/include
+  INCLUDES += $(NUMPY_CFLAGS)
   
-  EXELIB := -L$(NUMPY_HOME)/lib $(EXELIB) -lnpymath
-
 endif

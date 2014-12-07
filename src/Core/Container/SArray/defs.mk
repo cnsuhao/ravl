@@ -32,7 +32,11 @@ HEADERS = SDArray1d.hh SArray1d.hh SArray1dIter.hh SArray1dIter2.hh \
 LOCALHEADERS = 
 
 # PLIB = the project library ... where the objects will be archived
+
 PLIB = RavlCore
+
+# SUMMARY_LIB = a summary library that includes multiple PLIBs; including this one
+SUMMARY_LIB=Ravl
 
 # Libraries for creating tasks
 LIBDEPS = RavlSArr.def

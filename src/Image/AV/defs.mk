@@ -15,4 +15,6 @@ SOURCES= AVFrame.cc AVMixer.cc
 
 PLIB=RavlAV
 
+SUMMARY_LIB=Ravl
+
 USESLIBS=RavlAudioUtil RavlImageIO

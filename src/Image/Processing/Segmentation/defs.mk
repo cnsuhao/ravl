@@ -19,6 +19,8 @@ MAINS=extrema.cc
 
 PLIB=RavlImageProc
 
+SUMMARY_LIB=Ravl
+
 LIBDEPS=RavlImageSegmentation.def
 
 TESTEXES=testConnectedComponents.cc 

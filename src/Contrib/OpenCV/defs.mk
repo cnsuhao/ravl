@@ -18,6 +18,8 @@ SOURCES = OpenCVConvert.cc
 
 PLIB = RavlOpenCV
 
+SUMMARY_LIB=Ravl
+
 EXTERNALLIBS = OpenCV.def
 
 USESLIBS = RavlImage OpenCV 

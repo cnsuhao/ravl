@@ -106,7 +106,11 @@ namespace RavlN {
     pCodecCtx = streamInfo->codec;
     
     // Find the decoder for the video stream
+#if LIBAVCODEC_VERSION_MAJOR > 53
+    AVCodec *pCodec = avcodec_find_decoder(static_cast<AVCodecID>(codecId));
+#else
     AVCodec *pCodec = avcodec_find_decoder(static_cast<CodecID>(codecId));
+#endif
     if (pCodec == NULL) {
       cerr << "FFmpegVideoDecoderBaseC::Open, Failed to find codec. \n";
       return false;
@@ -123,7 +127,11 @@ namespace RavlN {
     bool ret = false;
     
     // Open codec
+#if LIBAVCODEC_VERSION_MAJOR > 53
+    if (avcodec_open2(pCodecCtx, pCodec, NULL) >= 0) {
+#else
     if (avcodec_open(pCodecCtx, pCodec) >= 0) {
+#endif
       ONDEBUG(cerr << "FFmpegVideoDecoderBaseC::Open codec constructed ok. " << endl);
       ret = true;
     }

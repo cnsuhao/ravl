@@ -15,6 +15,8 @@ MUSTLINK=LinkRavlFileIDX.cc
 
 PLIB=RavlFileIDX
 
+SUMMARY_LIB=Ravl
+
 USESLIBS=RavlCore RavlIO RavlOSIO 
 
 MAINS=doFileIDX.cc doPrepData.cc

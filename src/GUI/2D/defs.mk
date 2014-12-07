@@ -21,6 +21,8 @@ MAINS=
 
 PLIB=RavlGUI2D
 
+SUMMARY_LIB=Ravl
+
 REQUIRES=libGTK2
 
 USESLIBS=RavlGUI RavlImage RavlIO RavlMath GTK

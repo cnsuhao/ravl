@@ -5,35 +5,6 @@
 # see http://www.gnu.org/copyleft/lesser.html
 # file-header-ends-here
 
-$(warning )
-$(warning The vtk.def file is being depreciated in favour of seperate files)
-$(warning for the individual parts of VTK. Please update your defs.mk file)
-$(warning to use vtkCore; vtkGraphics etc. rather than vtk in your USESLIBS,)
-$(warning PROGLIBS or REQUIRES settings.)
-$(warning )
+$(error The vtk.def file is depreciated in favour of seperate files for the individual parts of VTK. \
+Please update your defs.mk file to use vtkCore; vtkGraphics etc. rather than vtk in your USESLIBS, PROGLIBS or REQUIRES settings.)
 
-ifndef VTK_DEF
-  VTK_DEF = 1
-
-  # Include relevant kits to make up as much of original libraries as is
-  # portable (cannot exactly replicate the original list as some of the
-  # libraries are not available on all platforms/versions of VTK - E.G. no
-  # libvtkNetCDF for VTK 5.8 on Ubuntu 12.04, no libVPIC for vtk 5.2 on 
-  # Ubuntu 10.04)
-
-  include vtkGenericFiltering.def
-  # Including this implicitly includes:
-  #    vtkGraphics.def
-  #    vtkFiltering.def
-  #    vtkCommon.def
-  include vtkIO.def
-  include vtkImaging.def
-  include vtkRendering.def
-  include vtkVolumeRendering.def
-  # We would need to include vtkWidgets.def and vtkHybrid.def to replicate
-  # what was originally made available by this .def file. However, both of
-  # these  libraries introduce portability issues, with vtkWidgets bringing
-  # in vtkParallel.def which was not in the original set of libraries and
-  # vtkHybrid needing vtkNetCDF which is not available in later packages.
-
-endif

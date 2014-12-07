@@ -7,8 +7,6 @@
 
 DONOT_SUPPORT=VCPP
 
-PACKAGENAME = Ravl
-
 DESCRIPTION = The RAVL C++ Documentation tool
 
 LICENSE = GPL
@@ -47,11 +45,13 @@ BISON_DO_NOT_GENERATE = 1
 
 PLIB = RavlCxxDoc
 
+SUMMARY_LIB=Ravl
+
 MAINS = CxxDoc.cc 
 
 EHT= Ravl.API.Source_Tools.CxxDoc.html Documentation.html \
  Documentation.Code.html Documentation.Sections.html \
- Documentation.docentry.html Documentation.Changes.html\
+ Documentation.docentry.html \
  Ravl.API.Source_Tools.CxxDoc.Templates.html Ravl.API.Source_Tools.CxxDoc.Internal.html \
  Ravl.undocumented.html Ravl.undocumented.anonymous.html
 # Documentation.Formatting.html

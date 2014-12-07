@@ -1,0 +1,384 @@
+dnl This file is part of QMake, Quick Make System
+dnl Copyright (C) 2011-13, University of Surrey
+dnl This code may be redistributed under the terms of the GNU General
+dnl Public License (GPL). See the gpl.licence file for details or
+dnl see http://www.gnu.org/copyleft/gpl.html
+dnl
+dnl file-header-ends-here
+
+
+
+dnl QM_LOCATE_KEY_TOOLS
+dnl
+dnl Macro to locate those UNIX tools that are required for the configure
+dnl script to run correctly. Any user-provided paths for these tools will be
+dnl preferred over locating the utility.
+dnl
+dnl No Macro parameters
+dnl
+dnl Global variables used:
+dnl
+dnl   All variables listed with a <CMD> in their name exist for each command
+dnl   that is set up in this macro. For example, locating the sed command via
+dnl   this macro will update the SED variable (with the path to the utility)
+dnl   unless the USER_SED variable indicates the user has specified a given
+dnl   path to use. The list of possible values for <CMD> (the list of tools
+dnl   located by this macro) is:
+dnl
+dnl        AR; AWK; CC; CPP; CXX; CXXCPP; EXPR; GET_CWD; GREP; LD;
+dnl        MAKE; PKG_CONFIG; SED; SORT and TR.
+dnl
+dnl       <CMD>                      Receives the path to the utility <cmd>.
+dnl                                  Can initially be primed by the user to
+dnl                                  force the use of a particular program.
+dnl                                  It is this variable that is used when
+dnl                                  <cmd> is wanted within the configure
+dnl                                  script.
+dnl       USER_<CMD>                 Holds any user-provided setting for the
+dnl                                  particular path to use for the utility
+dnl                                  <cmd>.
+dnl       CFLAGS                     Can initially be set by the user to
+dnl                                  supply specific CFLAGS for use by QMake
+dnl                                  (this value will be preserved in the
+dnl                                  CONFIGURE_CFLAGS variable). Otherwise
+dnl                                  this variable is used as an interim
+dnl                                  variable by the macro.
+dnl       CONFIGURE_CFLAGS           Receives any user supplied CFLAGS
+dnl                                  to preserve them so they may be used
+dnl                                  by QMake for all builds.
+dnl       CCFLAGS                    Can initially be set by the user to
+dnl                                  supply specific CCFLAGS for use by QMake
+dnl                                  (this value will be preserved in the
+dnl                                  CONFIGURE_CCFLAGS variable). Otherwise
+dnl                                  this variable is used as an interim
+dnl                                  variable by the macro.
+dnl       CONFIGURE_CCFLAGS          Receives any user supplied CCFLAGS
+dnl                                  to preserve them so they may be used
+dnl                                  by QMake for all builds.
+dnl       QMAKE_CFG                  Primed (by calling the QM_LOCATE_QMAKE
+dnl                                  macro) with the location of QMake's
+dnl                                  configuration file.
+dnl       InheritCFG                 Specifies if we should use the QMAKE_CFG
+dnl                                  file to bootstrap our configuration
+dnl                                  settings.
+dnl       with_rpath                 Dependant on configuration, this var may
+dnl                                  be primed by call to the QM_CHOSE_RPATH
+dnl                                  macro made by this macro; or it may be
+dnl                                  set from the configuration in any
+dnl                                  existing Config.QMake file; or indeed,
+dnl                                  it may remain unset. Its value, Y or N,
+dnl                                  indicates if the user has requested the
+dnl                                  path to external libraries be included
+dnl                                  in the runtime serachlist of any shared 
+dnl                                  binary produced by QMake.
+dnl       GNU_MAKE                   Indicates if the make utility in use is
+dnl                                  a GNU version (simple yes no setting).
+dnl                                  Dependant on the execution path through
+dnl                                  this macro, this variable may be set
+dnl                                  directly or from calling the macro
+dnl                                  QM_LOCATE_MAKE.
+dnl       GNU_LD                     Indicates if the linker in use is a GNU
+dnl                                  program (simple yes no setting). Dependant
+dnl                                  on the execution path through this macro,
+dnl                                  this variable may be set directly or from 
+dnl                                  calling the QM_LOCATE_LD macro.
+dnl
+AC_DEFUN([QM_LOCATE_KEY_TOOLS],
+         [
+          dnl First ensure we have recorded any user settings
+          AC_REQUIRE([QM_READ_USER_ENV])
+
+          # Check for pkg-config as we may need that next to check for QMake
+          # and will certainly need it later
+          #
+          PKG_PROG_PKG_CONFIG
+
+
+          # sed is a pre-requisite of the following code so find it first
+          #
+          if ( test x$SED = x )
+          then
+             # User has not specified a sed program to use, attempt to
+             # find one
+             AC_PROG_SED
+          fi
+
+          # Look for QMake
+          #
+          trace 2 Looking for QMake
+          QM_LOCATE_QMAKE
+
+          # Declare non library specific cmd-line flags (all override any
+          # global QMake setting if present)
+          #
+          trace 2 Processing switches that effect QMake
+          # Switch to store library search paths in the calling library
+          QM_CHOOSE_RPATH
+
+          # Allow use of pawd instead of pwd
+          QM_CHOOSE_GETCWD
+
+
+          # Locate required programs.
+          trace 2 Checking for support programs
+
+          # Look for the programs and utilities that this script will need to
+          # call (It may be too late to check for a lot of commands as the
+          # preceding code has already used them (test, print, etc.) but we
+          # can check for what we're about to use...)
+
+          # Is there an existing QMake installation to prime the pumps?
+          AS_IF([test "x$InheritCFG" = xyes ],
+                [trace 2 Reading configuration from $QMAKE_CFG
+
+                 # We are using an existing QMake so we can use the locations
+                 # of the support programs as already determined by 
+                 # configuring QMake.
+     
+                 # We have already found/used sed, but if the user did not
+                 # provide that path, we need to read the value from the QMake
+                 # config file
+                 if ( test x$USER_SED = x )
+                 then
+                    OriginalSetting=`cat $QMAKE_CFG | $SED -n 's/^SED=\(.*\)/\1/p'`
+                    if ( test x$OriginalSetting != x )
+                    then
+                       SED=$OriginalSetting
+                    fi
+                 fi
+         
+
+                 # Now find the rest of the required programs (if the user
+                 # has not specified them). As we do not immediately require
+                 # these commands, we need not check if we get no value back
+                 # from the config file; the tail end of this macro will deal
+                 # with unset variables.
+          
+                 if ( test "x$AR" = x )
+                 then
+                    AR=`cat $QMAKE_CFG | $SED -n 's/^AR=\(.*\)/\1/p'`
+                 fi
+
+                 if ( test x$AWK = x )
+                 then
+                    AWK=`cat $QMAKE_CFG | $SED -n 's/^AWK=\(.*\)/\1/p'`
+                 fi
+     
+                 if ( test x$CC = x )
+                 then
+                    CC=`cat $QMAKE_CFG | $SED -n 's/^CC=\(.*\)/\1/p'`
+                 fi
+                 dnl We also need to call AC_PROG_CC as that initialises
+                 dnl several prerequisites of configure's operation. However,
+                 dnl we cannot call it here as the prerequisite code will get
+                 dnl generated soley in this branch of the AS_IF (even if we
+                 dnl also call AC_PROG_CC in the else branch).
+
+                 if ( test x$CPP = x )
+                 then
+                    CPP=`cat $QMAKE_CFG | $SED -n 's/^CPP=\(.*\)/\1/p'`
+                 fi
+                 dnl# Again we will need to call AC_PROG_CPP but cannot do that here
+               
+                 if ( test x$CXX = x )
+                 then
+                    CXX=`cat $QMAKE_CFG | $SED -n 's/^CXX=\(.*\)/\1/p'`
+                 fi
+                 dnl# Need to call AC_PROG_CXX outside this AS_IF
+     
+                 if ( test x$CXXCPP = x )
+                 then
+                    CXXCPP=`cat $QMAKE_CFG | $SED -n 's/^CXXCPP=\(.*\)/\1/p'`
+                 fi
+                 dnl# Will need to call AC_PROG_CXXCPP later
+     
+                 if ( test x$EXPR = x )
+                 then
+                    EXPR=`cat $QMAKE_CFG | $SED -n 's/^EXPR=\(.*\)/\1/p'`
+                 fi
+     
+                 if ( test x$GREP = x )
+                 then
+                    GREP=`cat $QMAKE_CFG | $SED -n 's/^GREP=\(.*\)/\1/p'`
+                 fi
+     
+                 if ( test x$LD = x )
+                 then
+                    LD=`cat $QMAKE_CFG | $SED -n 's/^LD=\(.*\)/\1/p'`
+                 fi
+     
+                 if ( test x$MAKE = x )
+                 then
+                    MAKE=`cat $QMAKE_CFG | $SED -n 's/^MAKE=\(.*\)/\1/p'`
+                 fi
+     
+                 # We have already found/used pkg-config, but if the user did not
+                 # provide that path, we need to read the value from the QMake
+                 # config file
+                 if ( test x$USER_PKG_CONFIG = x )
+                 then
+                    OriginalSetting=`cat $QMAKE_CFG | $SED -n 's/^PKG_CONFIG=\(.*\)/\1/p'`
+                    if ( test x$OriginalSetting != x )
+                    then
+                       PKG_CONFIG=$OriginalSetting
+                    fi
+                 fi
+
+                 if ( test x$SORT = x )
+                 then
+                    SORT=`cat $QMAKE_CFG | $SED -n 's/^SORT=\(.*\)/\1/p'`
+                 fi
+     
+                 if ( test x$TR = x )
+                 then
+                    TR=`cat $QMAKE_CFG | $SED -n 's/^TR=\(.*\)/\1/p'`
+                 fi
+     
+
+                 # Process command line switches that effect QMake directly
+
+                 if ( test x$USER_with_rpath = x )
+                 then
+                    # QMake settings not overridden, so check what they were
+                    with_rpath=`cat $QMAKE_CFG | $SED -n 's/^USE_LIBPATHSWITCH=\(.*\)/\1/p'`
+                    if ( test x$with_rpath != xY )
+                    then
+                       # QMake did not enable it so do not consider it from
+                       # now on.
+                       with_rpath="N"
+                    fi
+                 fi
+
+                 dnl QM_CHOOSE_GETCWD does not default GET_CWD if the user
+                 dnl did not use the command-line option (or set GET_CWD on
+                 dnl the command line or set it in the environment), hence
+                 dnl there is no USER_GET_CWD variable yet.
+                 if ( test x$GET_CWD = x )
+                 then
+                    GET_CWD=`cat $QMAKE_CFG | $SED -n 's/^GET_CWD=\(.*\)/\1/p'`
+                 else
+                    USER_GET_CWD=$GET_CWD
+                 fi
+                ],
+dnl    ELSE
+                [
+                 trace 2 No existing QMake configuration
+     
+                 dnl Although we have already called QM_CHOOSE_GETCWD that
+                 dnl will only have set GET_CWD if the user caused it to be
+                 dnl primed. Hence, we can infer a user setting if GET_CWD
+                 dnl is set
+                 if ( test x$GET_CWD != x )
+                 then
+                    USER_GET_CWD=$GET_CWD
+                 fi
+                ]
+               )
+  
+          # The definitive list of support programs will be located by the
+          # full QMake configure script. However, we have to ascertain where
+          # the programs are for those utilities that this script requires.
+          #
+          if ( test "x$AR" = x )
+          then
+             # We do not already know which archiver to use
+             AC_PATH_PROG([AR],[ar],[missing])
+             AS_IF([test $AR = missing],
+                   [AC_MSG_FAILURE([Cannot find a working ar required for using QMake])]
+                  )
+          fi
+
+          if ( test "x$AWK" = x )
+          then
+             # We do not already know which awk program to use so find one.
+             AC_PROG_AWK
+          fi
+  
+          dnl Call routines to locate compilers etc. This is as much to
+          dnl initialise the prerequisites of later configure tests as to
+          dnl find the compiler themselves (as we should already know where
+          dnl they are if we are using an existing QMake installation or if
+          dnl the user has supplied their path).
+          # Locate/initialise C compiler
+          #
+          # First record any user-supplied CFLAGS
+          CONFIGURE_CFLAGS=$CFLAGS
+          AC_PROG_CC
+          # AC_PROG_CC will not have actually have altered CFLAGS if a value
+          # was already set however, if an initial value was not provided,
+          # AC_PROG_CC may have set CFLAGS to include optimisation or -g.
+          # As we do not unconditionally want this, we re-initialise CFLAGS
+          # to the original value (which may be null or what a user supplied
+          # on the command line).
+          CFLAGS=$CONFIGURE_CFLAGS
+     
+          # Locate/initialise C preprocessor
+          AC_PROG_CPP
+
+          # Locate/initialise C++ compiler
+          # 
+          # Record any CCFLAGS configured by the user
+          CONFIGURE_CCFLAGS=$CCFLAGS
+          AC_PROG_CXX
+          # Prevent optimisation or -g being to CCFLAGS if it was initially
+          # unset.
+          CCFLAGS=$CONFIGURE_CCFLAGS
+
+          # Locate/initialise C++ preprocessor
+          AC_PROG_CXXCPP
+
+          if ( test "x$EXPR" = x )
+          then
+             AC_PATH_PROG([EXPR],[expr],[missing])
+             AS_IF([test $EXPR = missing],
+                   [AC_MSG_FAILURE([Cannot find a working expr - configure cannot continue])]
+                  )
+          fi
+
+          if ( test "x$GREP" = x )
+          then
+             AC_PROG_GREP
+          fi
+
+          if ( test "x$SORT" = x )
+          then
+             AC_PATH_PROG([SORT],[sort],[missing])
+             AS_IF([test $SORT = missing],
+                   [AC_MSG_FAILURE([Cannot find a working sort required for building with])]
+                  )
+          fi
+
+          if ( test "x$TR" = x )
+          then
+             AC_PATH_PROG([TR],[tr],[missing])
+             AS_IF([test $TR = missing],
+                   [AC_MSG_FAILURE([Cannot find a working tr - configure cannot continue])]
+                  )
+          fi
+
+          dnl Although we have already called QM_CHOOSE_GETCWD, it does not
+          dnl default GET_CWD if the user did not use the command-line option
+          dnl (or if no value was available from any existing config file).
+          dnl Hence we need to ensure it is indeed set.
+          if ( test x$GET_CWD = x )
+          then
+             AC_PATH_PROG([GET_CWD],[pwd],[missing])
+             AS_IF([test $GET_CWD = missing],
+                   [AC_MSG_FAILURE([Cannot find a working pwd required for using QMake])]
+                  )
+          fi
+
+          dnl Locate ld; macro does not record USER_LD hence we have already
+          dnl done this above.
+          QM_LOCATE_LD
+
+          dnl Locate make; macro does not record USER_MAKE hence we have already
+          dnl done this above.
+          QM_LOCATE_MAKE
+
+         ]
+        )
+  
+
+
+

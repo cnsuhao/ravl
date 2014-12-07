@@ -10,12 +10,16 @@
 
 #include "Ravl/Resource.hh"
 
+#ifndef DEFAULT_ROOT
 #ifndef PROJECT_OUT
-#define PROJECT_OUT ""
+#define DEFAULT_ROOT ""
+#else
+#define DEFAULT_ROOT PROJECT_OUT
+#endif
 #endif
 
 namespace RavlN {
-  static StringC resourceRoot(PROJECT_OUT);
+  static StringC resourceRoot(DEFAULT_ROOT);
   
   ResourceLookupFuncT resouceLookup = 0; 
   

@@ -26,6 +26,8 @@ EHT=Ravl.API.OS.Signals.html
 
 PLIB=RavlThreads
 
+SUMMARY_LIB=Ravl
+
 LIBDEPS=RavlThreadTools.def
 
 USESLIBS = RavlThreads RavlOS

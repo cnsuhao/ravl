@@ -17,7 +17,11 @@ LIBDEPS=RavlSignal2.def
 
 TESTEXES=testFFT2d.cc
 
+EXAMPLES=exFFT2d.cc
+
 PLIB=RavlMath
+
+SUMMARY_LIB=Ravl
 
 USESLIBS= RavlMath
 

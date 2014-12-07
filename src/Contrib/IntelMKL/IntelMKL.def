@@ -1,35 +1,17 @@
-# This file is part of RAVL, Recognition And Vision Library 
-# Copyright (C) 2003, University of Surrey
+# This file is part of RAVL, Recognition And Vision Library
+# Copyright (C) 2003-14,  University of Surrey
 # This code may be redistributed under the terms of the GNU Lesser
 # General Public License (LGPL). See the lgpl.licence file for details or
 # see http://www.gnu.org/copyleft/lesser.html
 # file-header-ends-here
-ifndef IntelMKL_Def 
-IntelMKL_Def = 1
 
-# Look at http://software.intel.com/en-us/articles/intel-mkl-link-line-advisor/
-# which gives some guide-lines on which libs you need to link....
+ifndef IntelMKL_DEF
 
-ifeq ($(ARC),linux)
-  ifdef INTELMKL_HOME
-    ifeq ($(INTELMKL_HOME),/usr)
-      EXELIB :=  -lmkl_rt -lpthread $(EXELIB)
-    else
-      INCLUDES += -I$(INTELMKL_HOME)/include
-      EXELIB :=  -Wl,-rpath,$(INTELMKL_HOME)/lib/32 -L$(INTELMKL_HOME)/lib/ia32 -lmkl_rt -lpthread $(EXELIB)
-    endif
-  else
-    EXELIB :=  -lmkl_ia32 -lguide -lpthread -lm $(EXELIB)
-  endif
-endif
+  IntelMKL_DEF=1
 
-ifeq ($(ARC),linux64)
-  ifdef INTELMKL_HOME
-    INCLUDES += -I$(INTELMKL_HOME)/include
-    EXELIB :=  -Wl,-rpath,$(INTELMKL_HOME)/lib/intel64 -L$(INTELMKL_HOME)/lib/intel64 -lmkl_rt -lpthread $(EXELIB)  
-  else
-    EXELIB :=  -lmkl_rt -lpthread $(EXELIB)
-  endif
-endif
+  EXELIB := $(libmkl_LIBS) $(EXELIB)
+
+  INCLUDES += $(libmkl_CFLAGS)
 
 endif
+

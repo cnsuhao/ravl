@@ -5,30 +5,15 @@
 # see http://www.gnu.org/copyleft/lesser.html
 # file-header-ends-here
 
-ifndef VTK_VIEWS_DEF
+$(error vtkViews not currently supported)
 
-  VTK_VIEWS_DEF = 1
+ifndef vtkViews_DEF
 
-  # Declare libraries for this particulat VTK kit
+  vtkViews_DEF = 1
 
-    VTK_VIEWS_LIBS = -lvtkViews
+  EXELIB := $(vtkViews_LIBS) $(EXELIB)
 
-  # Ensure any dependencies of this kit are already included
-
-    ifndef VTK_INFOVIS_DEF
-      include vtkInfovis.def
-      # Will include the following via recursive dependency:
-      #   vtkWidgets, vtkParallel, vtkHybrid, vtkVolumeRendering, vtkRendering,
-      #   vtkIO, vtkGraphics, vtkImaging, vtkFiltering, vtkCommon
-    endif
-
-  # Prefix any VTK libraries on the link line with this kit
-
-    EXELIB := $(subst $(VTK_LIBS_USED),$(VTK_VIEWS_LIBS) $(VTK_LIBS_USED),$(EXELIB))
-
-  # Remember what the current set of VTK libs are
-
-    VTK_LIBS_USED := $(VTK_VIEWS_LIBS) $(VTK_LIBS_USED)
+  INCLUDES += $(vtkViews_CFLAGS)
 
 endif
 

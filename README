@@ -1,0 +1,89 @@
+
+                ------------------------------------
+                RAVL, Recognition And Vision Library
+                ------------------------------------
+
+RAVL provides a base C++ class library, together with a range of computer
+vision, pattern recognition classes and supporting tools. The aim of RAVL is
+to move software developed within the Centre for Vision, Speech and Signal
+Processing at the University of Surrey, England for research purposes into
+the public domain and to support its use in a wider community.
+
+Why should you use this library?
+
++ It has a simple user interface: the user does not have to use pointers or
+  deal with heap management. (Java programmers should find the interface
+  reasonably familiar.)
+
++ It has an I/O library that supports a wide range of file formats and
+  devices in a consistent manner (including image, video and audio). Type
+  conversion between file formats can be handled transparently.
+
++ It uses reference counting for large objects, making them thread-safe for
+  multi-threaded applications
+
++ It is freely available from SourceForge 
+                                     (http://sourceforge.net/projects/ravl)
+
++ It is distributed under the GNU Lesser General Public License
+
++ It is straightforward to port to any operating system / platform that
+  conforms to the Posix standard, has an ANSII C++ compiler and a make
+  utility that supports the GNU extensions to that program.
+
+Contributions to the library or suggestions on how it can be improved are
+welcome they can be posted via the sourceforge web pages 
+( http://sourceforge.net/projects/ravl ) or sent directly to me at
+john.field@surrey.ac.uk
+
+
+PREFACE TO THE 1.1.7 RELEASE
+----------------------------
+
+Version 1.1 of RAVL introduces the use of the GNU AutoTools for the
+installation process. This greatly simplifies the initial configuration of
+the environment needed to build RAVL. RAVL can now automatically determine
+what external libraries are available on your system and use them as is
+appropriate. Please refer to the enclosed INSTALL file for details on
+installing RAVL on UNIX and UNIX-like systems.
+
+Revision 1.1 of RAVL also moves to providing all of the class libraries
+in a single library file. This greatly simplifies the use of the class library
+as there is no longer a need to link with the correct list of multiple 
+libraries, just the one RAVL library is needed. To this end, the user may now
+employ the build tool of their choice and it is no longer necessary to build
+client projects using the QMake utility. The user may configure their build
+system either by manually declaring where the RAVL library and header files
+have been installed or, if their build tool supports it, by directing it to
+use the pkg-config utility which RAVL now supports.
+
+
+LICENSE
+-------
+
+The RAVL libraries are distributed under the GNU LESSER GENERAL PUBLIC 
+LICENSE (LGPL), however some of the tools built with the library have been
+issued under the more restrictive GNU GENERAL PUBLIC LICENSE, the headers
+attached to each of the files in the project indicate which of these apply.
+A copy of each software license is provided for information in the files
+COPYING and COPYING.LESSER.
+
+
+ACKNOWLEDGEMENTS
+----------------
+
+RAVL was originally derived from AMMA, written by Radek Marik with help from
+many other members of CVSSP. The work of porting AMMA to RAVL was largely
+undertaken by Charles Galambos, again with help from other members of CVSSP.
+The RavlMath library includes ccmath, written by Daniel A. Atkinson. RAVL is
+currently maintained by members of CVSSP and Omniperception.
+
+
+DOCUMENTATION
+-------------
+
+A full suite of on-line documentation (including an on-line manual and slides
+for an introductory presentation) is available from:
+
+http://www.ee.surrey.ac.uk/CVSSP/Ravl
+

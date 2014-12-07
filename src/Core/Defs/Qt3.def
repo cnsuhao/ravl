@@ -1,9 +1,17 @@
-ifndef QT3DEF
-QT3DEF = 1
+# This file is part of RAVL, Recognition And Vision Library
+# Copyright (C) 2013,  University of Surrey.
+# This code may be redistributed under the terms of the GNU Lesser
+# General Public License (LGPL). See the lgpl.licence file for details or
+# see http://www.gnu.org/copyleft/lesser.html
+# file-header-ends-here
 
-INCLUDES += -I/usr/include/qt3
+ifndef Qt3_DEF
 
-EXELIB += -L/usr/lib -lqt-mt -lpng -lz -lm -lXext -lX11 -lSM -lICE -lpthread
+  Qt3_DEF=1
+
+  EXELIB := $(Qt3_LIBS) $(EXELIB)
+
+  INCLUDES += $(Qt3_CFLAGS)
 
 endif
 

@@ -10,5 +10,6 @@ PACKAGE = Ravl/OS
 SOURCES = Parport.cc
 HEADERS = Parport.hh
 PLIB = PPDev
+SUMMARY_LIB=Ravl
 USESLIBS = RavlCore RavlOS
 SUPPORT_ONLY = linux 

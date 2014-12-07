@@ -18,6 +18,8 @@ SOURCES = ViewPage.cc ControlWin.cc
 
 PLIB = MarkupTool
 
+SUMMARY_LIB=Ravl
+
 USESLIBS = RavlGUI RavlFace RavlGUI2D RavlRLog RLog GTK
 # Including Ravl/RLog.hh in the source causes a dependency on both RavlRLog
 # and RLog itself

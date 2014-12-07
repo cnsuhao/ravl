@@ -30,12 +30,14 @@ SOURCES=Drawable.cc Sphere.cc Image.cc ImageByteRGBA.cc ImageByteRGB.cc \
 
 PLIB=RavlGUIOpenSceneGraph
 
+SUMMARY_LIB=Ravl
+
 MAINS=exOpenSceneGraphWidgetXML.cc
 
 MUSTLINK=MustLinkGtkGlExtInit.cc
 
 USESLIBS=RavlCore RavlMath RavlImage RavlGUI Ravl3D OpenGL GTK \
- OpenSceneGraphGtk RavlXMLFactory RavlRLog RLog
+ OpenSceneGraphGtk RavlXMLFactory RavlRLog RLog OpenSceneGraph.def
 # Including Ravl/RLog.hh in the source causes a dependency on both RavlRLog
 # and RLog itself
 

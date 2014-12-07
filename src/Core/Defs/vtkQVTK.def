@@ -5,30 +5,15 @@
 # see http://www.gnu.org/copyleft/lesser.html
 # file-header-ends-here
 
-ifndef VTK_QVTK_DEF
+$(error vtkQVTK not currently supported)
 
-  VTK_QVTK_DEF = 1
+ifndef vtkQVTK_DEF
 
-  # Declare libraries for this particulat VTK kit
+  vtkQVTK_DEF = 1
 
-    VTK_QVTK_LIBS = -lvtkQVTK -lvtkQtChart -lQtGui -lQtSql -lQtNetwork -lQtCore
+  EXELIB := $(vtkQVTK_LIBS) $(EXELIB)
 
-  # Ensure any dependencies of this kit are already included
-
-    ifndef VTK_VIEWS_DEF
-      include vtkViews.def
-      # Will include the following via recursive dependency:
-      #   vtkInfovis, vtkWidgets, vtkParallel, vtkHybrid, vtkVolumeRendering,
-      #   vtkRendering, vtkIO, vtkGraphics, vtkImaging, vtkFiltering, vtkCommon
-    endif
-
-  # Prefix any VTK libraries on the link line with this kit
-
-    EXELIB := $(subst $(VTK_LIBS_USED),$(VTK_QVTK_LIBS) $(VTK_LIBS_USED),$(EXELIB))
-
-  # Remember what the current set of VTK libs are
-
-    VTK_LIBS_USED := $(VTK_QVTK_LIBS) $(VTK_LIBS_USED)
+  INCLUDES += $(vtkQVTK_CFLAGS)
 
 endif
 

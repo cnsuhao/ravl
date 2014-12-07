@@ -35,6 +35,9 @@ LOCALHEADERS =
 # PLIB = the project library ... where the objects will be archived
 PLIB = RavlCore
 
+# SUMMARY_LIB = a summary library that includes multiple PLIBs; including this one
+SUMMARY_LIB=Ravl
+
 # Libraries this uses.
 USESLIBS = RavlCore
 

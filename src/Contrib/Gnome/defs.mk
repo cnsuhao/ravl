@@ -18,6 +18,8 @@ SOURCES= Gnome.cc
 
 PLIB=RavlGUIGnome
 
+SUMMARY_LIB=Ravl
+
 EXTERNALLIBS= LibGnome.def
 
 USESLIBS=RavlGUI LibGnome

@@ -28,6 +28,7 @@
 #include "Ravl/SourceTools/DefsFile.hh"
 #include "Ravl/SourceTools/SourceCodeManager.hh"
 #include "Ravl/SourceTools/SourceFile.hh"
+#include "Ravl/Resource.hh"
 
 #ifndef NDEBUG
 #define YYDEBUG 1
@@ -145,17 +146,20 @@ int BuildCxx(int argc, char **argv)
     prjo = PROJECT_OUT; // Hmmm ... where else ?
   
   OptionC opt(argc,argv);
-  projName = opt.String("pn","Ravl","Project Name. ").TopAndTail();
-  projDesc = opt.String("pd","RAVL, Recognition And Vision Library","Project description. ").TopAndTail();
-  StringC localProjOut = opt.String("p",prjo,"Project out. ");
-  StringC inFiles = opt.String("i",localProjOut + "/include" , "Directory containing header files");
-  StringC outFile = opt.String("o",localProjOut + "/share/doc/RAVL/Auto", "output document");
-  StringC sourceTree = opt.String("st",".", "Source tree.");
-  StringC ehtFiles = opt.String("eht",localProjOut + "/share/RAVL/Admin/AutoDoc/EHT","Location of EHT files. ");
-  StringC installHome = opt.String("ih",PROJECT_OUT,"Install home.");
-  StringC templFiles = opt.String("tc",installHome + "/share/RAVL/CxxDoc/Class", "Directory of template files for class pages, or single template file");
-  
-  StringC docNodeFiles = opt.String("td",installHome + "/share/RAVL/CxxDoc/DocNode", "Directory of template files for doc node page, or single template file");
+  projName = opt.String("pn", "MyProject", "Project Name. ").TopAndTail();
+  projDesc = opt.String("pd", projName + " Documentation", "Project description. ").TopAndTail();
+
+  StringC localProjOut = opt.String("p", prjo, "Project out. ");
+  StringC inFiles = opt.String("i", localProjOut + "/include" , "Directory containing header files");
+  StringC outFile = opt.String("o", localProjOut + "/share/doc/" + projName + "/Auto", "output document");
+
+  StringC sourceTree = opt.String("st", ".", "Source tree.");
+
+  StringC instAdmin = opt.String("ia", localProjOut + "/transient", "Install Admin.");
+  StringC ehtFiles = opt.String("eht", instAdmin + "/CxxDoc/EHT", "Location of EHT files. ");
+  StringC installHome = opt.String("ih", ResourceRoot() + "/share/CxxDoc", "Install Home.");
+  StringC templFiles = opt.String("tc", installHome + "/default/Class", "Directory of template files for class pages, or single template file");
+  StringC docNodeFiles = opt.String("td", installHome + "/default/DocNode", "Directory of template files for doc node page, or single template file");
   
   stopOnError = opt.Boolean("s",false,"Stop on error. ");
   bool noParse = opt.Boolean("np",false,"Don't do a header parse. ");

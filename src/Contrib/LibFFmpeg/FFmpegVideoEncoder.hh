@@ -127,7 +127,11 @@ namespace RavlImageN {
     FFmpegEncodePacketStreamC psc;
     StringC filename,out_filename;
     AVFormatContext *pFormatCtx;
+#if LIBAVCODEC_VERSION_MAJOR > 53
+    AVCodecID codec_id;
+#else
     CodecID codec_id;
+#endif
     //AttributeCtrlC attributes;
   };
   

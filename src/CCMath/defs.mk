@@ -16,4 +16,6 @@ HEADERS = ccmath.h
 
 PLIB = ccmath
 
+SUMMARY_LIB=Ravl
+
 

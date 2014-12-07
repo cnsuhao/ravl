@@ -22,6 +22,8 @@ SOURCES=GraphBase.cc Graph.cc GraphBaseLinearIter.cc  GraphBConIt.cc \
 
 PLIB=RavlCore
 
+SUMMARY_LIB=Ravl
+
 LIBDEPS=RavlGraph.def
 
 TESTEXES= testGraph.cc testTHEMesh.cc

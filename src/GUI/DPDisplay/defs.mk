@@ -17,6 +17,8 @@ SOURCES=DPWindow.cc DPDisplayObj.cc DPDisplayImage.cc DPWindowOPort.cc \
 
 PLIB=RavlDPDisplay
 
+SUMMARY_LIB=Ravl
+
 MUSTLINK=RavlGUIDisplay.cc
 
 USESLIBS=RavlIO RavlGUI RavlImageIO RavlGUI2D RavlImage GTK

@@ -20,5 +20,7 @@ MUSTLINK = linkMathIO.cc
 
 PLIB= RavlMathIO
 
+SUMMARY_LIB=Ravl
+
 USESLIBS = RavlMath RavlIO RavlXMLFactory
 

@@ -1,27 +1,17 @@
 # This file is part of RAVL, Recognition And Vision Library
-# Copyright (C) 2005, OmniPerception Ltd.
-# This code may be redistributed under the terms of the GNU lesser
-# public license (LGPL). See the lgpl.licence file for details or
+# Copyright (C) 2005-11,  OmniPerception Ltd.
+# This code may be redistributed under the terms of the GNU Lesser
+# General Public License (LGPL). See the lgpl.licence file for details or
 # see http://www.gnu.org/copyleft/lesser.html
 # file-header-ends-here
+
 ifndef LIBGNOME_DEF
-LIBGNOME_DEF = 1
 
-include GTK.def
+  LIBGNOME_DEF=1
 
-ifndef GNOMEINCLUDES
-GNOMEINCLUDES= `pkg-config libgnome-2.0 --cflags-only-I`
-endif
-ifndef GNOMECFLAGS
-GNOMEFLAGS= `pkg-config libgnome-2.0 --cflags-only-other` -DRAVL_USE_GTK=1
-endif
-ifndef GNOMELIBS
-GNOMELIBS= `pkg-config libgnome-2.0 --libs`
-endif
+  EXELIB := $(LibGnome_LIBS) $(EXELIB)
 
-INCLUDES += $(GNOMEINCLUDES)
-CFLAGS += $(GNOMEFLAGS)
-CCFLAGS += $(GNOMEFLAGS)
-EXELIB := $(GNOMELIBS) $(EXELIB)
+  INCLUDES += $(LibGnome_CFLAGS)
 
 endif
+

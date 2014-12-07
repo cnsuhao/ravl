@@ -173,7 +173,11 @@ namespace RavlN {
     Int64T Time2Frame(Int64T time) const;
     //: Convert a  time into a frame no
     
+#if LIBAVCODEC_VERSION_MAJOR > 53
+    AVCodecID codecid;
+#else
     CodecID codecid;
+#endif
 
 //////////////////////////////////////////////////////////////
    IntT audio_outbuf_size;

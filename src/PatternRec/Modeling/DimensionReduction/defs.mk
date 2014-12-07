@@ -17,6 +17,8 @@ SOURCES=FuncSubset.cc DesignFuncReduce.cc DesignFuncPCA.cc  DesignFuncLDA.cc
 
 PLIB=RavlPatternRec
 
+SUMMARY_LIB=Ravl
+
 LIBDEPS = RavlPatternRecDimReduce.def 
 
 USESLIBS=RavlPatternRec

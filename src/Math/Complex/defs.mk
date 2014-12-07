@@ -18,6 +18,8 @@ LIBDEPS= Complex.def
 
 PLIB= RavlMath
 
+SUMMARY_LIB=Ravl
+
 USESLIBS = RavlMath
 
 EXAMPLES = exComplx.cc

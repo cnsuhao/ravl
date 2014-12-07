@@ -26,6 +26,8 @@ MUSTLINK =
 
 PLIB = RavlAAMGUI
 
+SUMMARY_LIB=Ravl
+
 USESLIBS = RavlAAM RavlGUI2D 
 
 PROGLIBS = RavlImageIO RavlExtImgIO RavlMathIO RavlDPDisplay.opt RavlImgIOV4L2.opt

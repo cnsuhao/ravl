@@ -3,7 +3,9 @@
 # This code may be redistributed under the terms of the GNU Lesser
 # General Public License (LGPL). See the lgpl.licence file for details or
 # see http://www.gnu.org/copyleft/lesser.html
+#
 # file-header-ends-here
+
 PACKAGE = Ravl/PatternRec
 
 MAINS    = oneClassTest.cc \
@@ -47,6 +49,8 @@ HEADERS  = DesignSvm.hh \
            DesignOneClassLarge.hh \
 
 PLIB     = RavlSVM
+
+SUMMARY_LIB=Ravl
 
 USESLIBS = RavlCore \
            RavlPatternRec 

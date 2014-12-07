@@ -11,9 +11,6 @@ DONOT_SUPPORT=VCPP
 
 REQUIRES=ZeroMQ
 
-ANSIFLAG= 
-#-D_POSIX_C_SOURCE
-
 PACKAGE= Ravl/Zmq
 
 HEADERS= Context.hh Message.hh Socket.hh MsgBuffer.hh SocketDispatcher.hh Reactor.hh \
@@ -25,6 +22,8 @@ SOURCES= ZmqContext.cc ZmqMessage.cc ZmqSocket.cc ZmqMsgBuffer.cc ZmqSocketDispa
 MUSTLINK=LinkRavlZeroMQ.cc
 
 PLIB= RavlZmq
+
+SUMMARY_LIB=Ravl
 
 USESLIBS=RavlCore RavlXMLFactory Zmq RavlService
 

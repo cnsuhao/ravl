@@ -63,7 +63,11 @@ namespace RavlN {
   FFmpegPacketStreamBodyC::~FFmpegPacketStreamBodyC() {
     // Close the video file
     if(pFormatCtx != 0)
+#if LIBAVFORMAT_VERSION_MAJOR > 53
+      avformat_close_input(&pFormatCtx);    
+#else
       av_close_input_file(pFormatCtx);    
+#endif
   }
 
   //: Find info about first video stream.
@@ -175,7 +179,11 @@ namespace RavlN {
 
       // Open codec
       bool ret = false;
+#if LIBAVCODEC_VERSION_MAJOR > 53
+      if (avcodec_open2(pCodecCtx, pCodec, NULL) >= 0) {
+#else
       if (avcodec_open(pCodecCtx, pCodec) >= 0) {
+#endif
         ONDEBUG(cerr << "FFmpegPacketStreamBodyC::CheckForVideo codec constructed ok. " << endl);
         ret = true;
       }
@@ -197,13 +205,21 @@ namespace RavlN {
     ONDEBUG(cerr << "FFmpegPacketStreamBodyC::Open(" << filename << "), Called \n");
     
     // Open video file
+#if LIBAVFORMAT_VERSION_MAJOR > 53
+    if (avformat_open_input(&pFormatCtx, filename, NULL, NULL) != 0) {
+#else
     if (av_open_input_file(&pFormatCtx, filename, NULL, 0, NULL) != 0) {
+#endif
       ONDEBUG(cerr << "FFmpegPacketStreamBodyC::Open(" << filename << "), Failed to open file. \n");
       return false;
     }
     
     // Retrieve stream information
+#if LIBAVFORMAT_VERSION_MAJOR > 53
+    if (avformat_find_stream_info(pFormatCtx, NULL) < 0) {
+#else
     if (av_find_stream_info(pFormatCtx) < 0) {
+#endif
       ONDEBUG(cerr << "FFmpegPacketStreamBodyC::Open(" << filename << "), Failed to find stream info. \n");
       return false;
     }

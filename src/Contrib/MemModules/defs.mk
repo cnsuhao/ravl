@@ -6,12 +6,14 @@ SOURCES = MemModule.cc MemModules.cc MemItem.cc \
           MemUnit.cc MemIter.cc 
 
 PLIB = RavlMemModules
+
+SUMMARY_LIB=Ravl
  
 USESLIBS=  RavlCore RavlImage RavlOS RavlThreads RavlImageIO
 
 EHT = ThreadedMemory.html Modules_Header.html Wrapper.html ModuleSet.html MainProg.html Internals.html Example.html
 
-AUXDIR = share/doc/RAVL/Images
+AUXDIR = share/doc/Ravl/Images
 AUXFILES = ModuleGraph.pdf Memory.pdf
 
 

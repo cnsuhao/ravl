@@ -22,6 +22,8 @@ SOURCES=RBfAcc2d.cc SBfAcc2d.cc RBfAcc.cc SBfAcc.cc
 
 PLIB= RavlCore
 
+SUMMARY_LIB=Ravl
+
 LIBDEPS=RavlBuff.def
 
 USESLIBS=RavlCore

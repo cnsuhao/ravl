@@ -22,6 +22,8 @@ MUSTLINK=linkFaceExperiment.cc
 
 PLIB = RavlFace
 
+SUMMARY_LIB=Ravl
+
 LIBDEPS=RavlFaceRoc.def
 
 USESLIBS= RavlFace

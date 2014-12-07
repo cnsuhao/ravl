@@ -130,7 +130,7 @@ namespace RavlN {
     DPOFileSequenceC fileSeq(filename);
     DPOPortBaseC opipe(fileSeq.Setup(fmtInfo));
     if(!opipe.IsValid()) {
-      cerr << "OpenISequenceBase(), Failed to setup file sequence... \n";
+      cerr << "OpenOSequenceBase(), Failed to setup file sequence... \n";
       return false;
     }
     if(verbose)

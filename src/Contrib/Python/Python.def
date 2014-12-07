@@ -1,36 +1,19 @@
 # This file is part of RAVL, Recognition And Vision Library
-# Copyright (C) 2008, OmniPerception Ltd.
+# Copyright (C) 2008-11,  OmniPerception Ltd. # Copyright (C) 2001, 2002, 2003, 2004 Python Software Foundation; All Rights Reserved
 # This code may be redistributed under the terms of the GNU Lesser
 # General Public License (LGPL). See the lgpl.licence file for details or
 # see http://www.gnu.org/copyleft/lesser.html
-# Python is used under the terms of the Python License
-# Copyright (C) 2001, 2002, 2003, 2004 Python Software Foundation; All Rights Reserved
 # file-header-ends-here
 
+$(error Python not currently supported)
+
 ifndef PYTHON_DEF
-PYTHON_DEF = 1
 
-  ifndef PYTHON_VERSION
+  PYTHON_DEF=1
 
-    PYTHON_VERSION = $(shell python -c "import distutils.sysconfig; print distutils.sysconfig.get_config_var('VERSION')")
+  EXELIB := $(LibPython_LIBS) $(EXELIB)
 
-    ifndef PYTHON_INCLUDE
-      PYTHON_INCLUDE = $(shell python -c "import distutils.sysconfig; print distutils.sysconfig.get_python_inc()")
-    endif
-    
-  else
-
-    ifndef PYTHON_INCLUDE
-      PYTHON_INCLUDE = /usr/include/python$(PYTHON_VERSION)
-    endif
-
-  endif
-
-  ifndef PYTHON_LIB
-    PYTHON_LIB = python$(PYTHON_VERSION)
-  endif
-
-  INCLUDES += -I$(PYTHON_INCLUDE)
-  EXELIB := -l$(PYTHON_LIB) $(EXELIB)
+  INCLUDES += $(LibPython_CFLAGS)
 
 endif
+

@@ -34,12 +34,14 @@ MUSTLINK=LinkGeneticOpt.cc
 
 PLIB=RavlGeneticOptimisation
 
+SUMMARY_LIB=Ravl
+
 USESLIBS=RavlOS RavlIO RavlXMLFactory RavlService RavlThreads
 
 PROGLIBS= RavlGeneticProgram 
 
 AUXFILES= exGeneticOptimisation.xml
 
-AUXDIR= /share/Ravl/Genetic
+AUXDIR= share/Ravl/Genetic
  
 TESTEXES=testGeneticOpt.cc

@@ -5,47 +5,15 @@
 # see http://www.gnu.org/copyleft/lesser.html
 # file-header-ends-here
 
-ifndef VTK_IO_DEF
+$(error vtkIO not currently supported)
 
-  VTK_IO_DEF = 1
+ifndef vtkIO_DEF
 
-  # Declare libraries for this particulat VTK kit
+  vtkIO_DEF = 1
 
-    VTK_IO_LIBS = -lvtkIO -lvtkDICOMParser -lvtkmetaio
+  EXELIB := $(vtkIO_LIBS) $(EXELIB)
 
-  # Ensure any dependencies of this kit are already included:
-  #
-  #   vtkIO itself actually sometimes depends on vtksqlite and vtkNetCDF
-  #   depending on the exact VTK package in use (version/OS combination).
-  #   We should therefore automatically include those here on systems where
-  #   the libraries exist. However, to prevent having to process version
-  #   information, we omit them here. This should not pose a problem as
-  #   we are only ever dynamically linking to the VTK libraries.
-
-    ifndef VTK_FILTERING_DEF
-      include vtkFiltering.def
-      # Will include vtkCommon via recursive dependency
-    endif
-
-    ifndef DynLinkDEF
-      include DynLink.def
-    endif
-
-    ifndef MATH_DEF
-      include Math.def
-    endif
-
-    ifndef ZLIB_DEF
-      include zlib.def
-    endif
-
-  # Prefix any VTK libraries on the link line with this kit
-
-    EXELIB := $(subst $(VTK_LIBS_USED),$(VTK_IO_LIBS) $(VTK_LIBS_USED),$(EXELIB))
-
-  # Remember what the current set of VTK libs are
-
-    VTK_LIBS_USED := $(VTK_IO_LIBS) $(VTK_LIBS_USED)
+  INCLUDES += $(vtkIO_CFLAGS)
 
 endif
 

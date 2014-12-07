@@ -15,5 +15,7 @@ LIBDEPS=RavlImageMatching.def
 
 PLIB=RavlImageProc
 
+SUMMARY_LIB=Ravl
+
 USESLIBS=RavlImageProc
 

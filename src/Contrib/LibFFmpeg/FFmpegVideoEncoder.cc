@@ -126,7 +126,11 @@ namespace RavlImageN {
     }
 
         ONDEBUG(cerr << "FFmpegVideoEncoderDPOBaseC::Open codecID is " << codecId << " \n");
+#if LIBAVCODEC_VERSION_MAJOR > 53
+    codec_id = (AVCodecID)codecId;
+#else
     codec_id = (CodecID)codecId;
+#endif
     return true;
 
 

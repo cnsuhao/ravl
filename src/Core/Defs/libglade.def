@@ -1,27 +1,15 @@
-# This file is part of RAVL, Recognition And Vision Library 
-# Copyright (C) 2004, OmniPerception Ltd.
+# This file is part of RAVL, Recognition And Vision Library
+# Copyright (C) 2004-11,  OmniPerception Ltd.
 # This code may be redistributed under the terms of the GNU Lesser
 # General Public License (LGPL). See the lgpl.licence file for details or
 # see http://www.gnu.org/copyleft/lesser.html
-# file-header-ends-here
 ifndef LIBGLADE_DEF
-  LIBGLADE_DEF = 1
 
-  ifndef LIBGLADE_INCLUDES
-    LIBGLADE_INCLUDES = `pkg-config libglade-2.0 --cflags-only-I`
-  endif
+  LIBGLADE_DEF=1
 
-  ifndef LIBGLADE_CFLAGS
-    LIBGLADE_CFLAGS = `pkg-config libglade-2.0 --cflags-only-other`
-  endif
+  EXELIB := $(libglade2_LIBS) $(EXELIB)
 
-  ifndef LIBGLADE_LIBS
-    LIBGLADE_LIBS = `pkg-config libglade-2.0 --libs`
-  endif
-
-  INCLUDES += $(LIBGLADE_INCLUDES)
-  EXTRA_CFLAGS += $(LIBGLADE_CFLAGS)
-  EXTRA_CCFLAGS += $(LIBGLADE_CFLAGS)
-  EXELIB := $(LIBGLADE_LIBS) $(EXELIB)
+  INCLUDES += $(libglade2_CFLAGS)
 
 endif
+

@@ -21,6 +21,8 @@ EXAMPLES= exAudioFile.cc
 
 PLIB=RavlAudioFile
 
+SUMMARY_LIB=Ravl
+
 MUSTLINK=RavlAudioFile.cc
 
 USESLIBS=RavlIO AudioFile RavlAudioUtil RavlAudioIO

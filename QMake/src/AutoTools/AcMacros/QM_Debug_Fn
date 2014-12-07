@@ -1,0 +1,45 @@
+dnl This file is part of QMake, Quick Make System
+dnl Copyright (C) 2011, University of Surrey
+dnl This code may be redistributed under the terms of the GNU General
+dnl Public License (GPL). See the gpl.licence file for details or
+dnl see http://www.gnu.org/copyleft/gpl.html
+dnl
+dnl file-header-ends-here
+
+
+
+# Trace debug function
+#
+# Set DBG=<level> in the environment for extra output messages. Arguments to
+# the function are the 'level' of the trace message, and the message itself
+# (which may be provided over multiple arguments). Current values of level
+# are: 
+#	1 Assertions, 
+#	2 Progress tracing, 
+#	3 Moderate data reporting
+#       :
+#       6 High data reporting
+#
+# If an indentation is required (say, for iterated code), set TRACE_INDENT to
+# the indentation as you want if to appear on the screen (i.e. a number of
+# spaces, or -->, etc.). Current scheme is to use five spaces per level of 
+# indent.
+#
+trace ()
+{
+   if ( test X$DBG != X )
+   then
+      level=$1
+      shift
+      if ( test $DBG -ge $level )
+      then
+         if ( test X"$TRACE_INDENT" != X )
+         then
+            echo "$TRACE_INDENT" "$*"
+         else
+            echo "$*"
+         fi
+      fi
+   fi
+   TRACE_INDENT=""
+}

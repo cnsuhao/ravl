@@ -5,28 +5,13 @@
 # see http://www.gnu.org/copyleft/lesser.html
 # file-header-ends-here
 
-ifndef VTK_GRAPHICS_DEF
+ifndef vtkGraphics_DEF
 
-  VTK_GRAPHICS_DEF = 1
+  vtkGraphics_DEF = 1
 
-  # Declare libraries for this particulat VTK kit
+  EXELIB := $(vtkGraphics_LIBS) $(EXELIB)
 
-    VTK_GRAPHICS_LIBS = -lvtkGraphics -lvtkverdict
-
-  # Ensure any dependencies of this kit are already included
-
-    ifndef VTK_FILTERING_DEF
-      include vtkFiltering.def
-      # Will include vtkCommon via recursive dependency
-    endif
-
-  # Prefix any VTK libraries on the link line with this kit
-
-    EXELIB := $(subst $(VTK_LIBS_USED),$(VTK_GRAPHICS_LIBS) $(VTK_LIBS_USED),$(EXELIB))
-
-  # Remember what the current set of VTK libs are
-
-    VTK_LIBS_USED := $(VTK_GRAPHICS_LIBS) $(VTK_LIBS_USED)
+  INCLUDES += $(vtkGraphics_CFLAGS)
 
 endif
 

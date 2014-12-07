@@ -5,65 +5,13 @@
 # see http://www.gnu.org/copyleft/lesser.html
 # file-header-ends-here
 
-ifndef VTK_COMMON_DEF
+ifndef vtkCommon_DEF
 
-  VTK_COMMON_DEF = 1
+  vtkCommon_DEF = 1
 
-  # Declare VTK libraries common to all kits
+  EXELIB := $(vtkCommon_LIBS) $(EXELIB)
 
-    VTK_COMMON_LIBS = -lvtkCommon -lvtksys
-
-  # Ensure the external dependencies are already included
-
-    ifndef DynLinkDEF
-      include DynLink.def
-    endif
-
-    ifndef MATH_DEF
-      include Math.def
-    endif
-
-  # As this .def file is included in all VTK builds, we set the system include
-  # and link paths in this .def file.
-
-    ifdef VTK_HOME
-
-      ifndef VTK_INCLUDES
-        VTK_INCLUDES=$(VTK_HOME)/include/vtk-5.2
-      endif
-
-      ifndef VTK_LIBS
-        VTK_LIBS=$(VTK_HOME)/lib
-      endif
-
-    endif
-
-    ifdef VTK_INCLUDES
-      INCLUDES += -I$(VTK_INCLUDES)
-    endif
-
-    ifdef VTK_LIBS
-      VTK_LIB_LOCATOR := -Wl,-rpath,$(VTK_LIBS) -L$(VTK_LIBS)
-    endif
-
-
-  # Now add the common libraries and any path specification to the link line
-
-    ifdef VTK_LIBS_USED
-      # We already have some VTK libraries on the link line, prefix them with
-      # any library path specification and suffix then with the common libraries
-
-        EXELIB := $(subst $(VTK_LIBS_USED),$(VTK_LIB_LOCATOR) $(VTK_LIBS_USED) $(VTK_COMMON_LIBS),$(EXELIB))
-    else
-      # We have no existing VTK libraries, just add the common libraries and
-      # any path specification directly to the link line
-        EXELIB := $(VTK_LIB_LOCATOR) $(VTK_COMMON_LIBS) $(EXELIB)
-    endif
-
-
-  # Remember what the current set of VTK libraries are
-
-    VTK_LIBS_USED := $(VTK_LIBS_USED) $(VTK_COMMON_LIBS)
-
+  INCLUDES += $(vtkCommon_CFLAGS)
 
 endif
+

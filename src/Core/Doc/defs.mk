@@ -17,7 +17,6 @@ EHT= Ravl.Introduction.html \
      Ravl.Getting_Started.html \
      Ravl.Getting_Started.Windows.html \
      Ravl.Install.html \
-     Ravl.Config.Example.html \
      Ravl.Contrib.html \
      Ravl.Install.MS.html \
 
