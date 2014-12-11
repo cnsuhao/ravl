@@ -3,7 +3,6 @@
 // This code may be redistributed under the terms of the GNU Lesser
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
-// csqrt implementation based on CCMath
 // Copyright (C) 2000 Daniel A. Atkinson    All rights reserved.
 // This code may be redistributed under the terms of the GNU library
 // public license (LGPL). ( See the lgpl.license file for details.)
@@ -17,15 +16,12 @@
 #include "Ravl/Complex.hh"
 #include "Ravl/Stream.hh"
 
-#if RAVL_HAVE_CSQRT && 0
+#if RAVL_HAVE_CSQRT
 extern "C" {
   #include <complex.h>
 }
 #endif
 
-#if RAVL_HAVE_CSQRT
-#include <complex>
-#endif
 
 namespace RavlN {
   ostream & 
@@ -42,12 +38,10 @@ namespace RavlN {
   
   ComplexC Sqrt(const ComplexC & a) {
 #if RAVL_HAVE_CSQRT
-    complex<double> csqrt(complex<double> z);
-    complex<double> arg;
-    arg.real() = a.Re();
-    arg.imag() = a.Im();
-    complex<double> root = csqrt(arg);
-    return ComplexC (root.real(), root.imag());
+    double complex arg;
+    arg = a.Re() +1.0I * a.Im();
+    double complex root = csqrt(arg);
+    return ComplexC (creal(root), cimag(root));
     //: Returns one of the complex square roots of a complex number
     // The 2nd root is the -ve of the given one
 #else
