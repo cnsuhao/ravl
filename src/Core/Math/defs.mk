@@ -17,15 +17,13 @@ MAINS =
 
 # HEADERS = all include files of this project to be exported
 HEADERS = StdMath.hh Random.hh RandomGauss.hh Angle.hh ScalMath.hh \
- TFMatrix.hh RandomMersenneTwister.hh LogValue.hh RankedScoreArray.hh \
- GPSCoordinate.hh
+ TFMatrix.hh RandomMersenneTwister.hh LogValue.hh RankedScoreArray.hh
 
 
 # SOURCES = all C modules, not containing main separated by space. The compiled
 #   code of these modules is stored in the project library.
 SOURCES = StdMath.cc Random.cc RandomGauss.cc Angle.cc ScalMath.cc \
- RandomMersenneTwister.cc Erf.cc LogValue.cc \
- GPSCoordinate.cc
+ RandomMersenneTwister.cc Erf.cc LogValue.cc
 
 # EMGRavl.cc UsefulFn.cc Erf.cc
 
