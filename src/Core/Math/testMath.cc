@@ -16,11 +16,13 @@
 #include "Ravl/ScalMath.hh"
 #include "Ravl/Math.hh"
 #include "Ravl/UnitTest.hh"
+#include "Ravl/Complex.hh"
 
 using namespace RavlN;
 
 int testSimple();
 int testRandom();
+int testComplex();
 int testFMatrixSimple();
 int testFMatrixValidate();
 int testFMatrixValidateNS();
@@ -32,6 +34,7 @@ int main() {
   
   RAVL_RUN_TEST(testSimple());
   RAVL_RUN_TEST(testRandom());
+  RAVL_RUN_TEST(testComplex());
   RAVL_RUN_TEST(testFMatrixSimple());
   RAVL_RUN_TEST(testFMatrixValidate());
   RAVL_RUN_TEST(testFMatrixValidateNS());
@@ -125,6 +128,18 @@ int testRandom() {
   //std::cerr <<"Values between " << min << " " << max << "\n";
   if (Random1(false) == 1.0) {
     std::cerr << "Random1(false) should never return value of 1.0\n";
+    return __LINE__;
+  }
+  return 0;
+}
+
+#include <cstdio>
+int testComplex() {
+  ComplexC x(-7.0, 24.0);
+  ComplexC y = Sqrt(x);
+  RealT diff = ComplexC(y - ComplexC(3.0, 4.0)).Mag();
+  if (diff > 1.0e-9) {
+    std::cerr << "Error in Sqrt(ComplexC) of " << diff << " \n";
     return __LINE__;
   }
   return 0;
