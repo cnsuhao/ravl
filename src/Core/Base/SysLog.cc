@@ -7,7 +7,7 @@
 //! lib=RavlCore
 //! author="Charles Galambos"
 
-#include "Ravl/OS/SysLog.hh"
+#include "Ravl/SysLog.hh"
 #include "Ravl/StrStream.hh"
 #include "Ravl/Calls.hh"
 #include "Ravl/MTLocks.hh"
