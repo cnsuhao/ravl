@@ -17,6 +17,12 @@
 #include "Ravl/Complex.hh"
 #include "Ravl/Stream.hh"
 
+#if RAVL_HAVE_CSQRT && 0
+extern "C" {
+  #include <complex.h>
+}
+#endif
+
 #if RAVL_HAVE_CSQRT
 #include <complex>
 #endif
@@ -34,7 +40,6 @@ namespace RavlN {
     return(inS);
   }
   
-  inline
   ComplexC Sqrt(const ComplexC & a) {
 #if RAVL_HAVE_CSQRT
     complex<double> csqrt(complex<double> z);

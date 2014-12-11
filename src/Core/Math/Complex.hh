@@ -18,6 +18,7 @@
 #include "Ravl/Types.hh"
 #include "Ravl/StdMath.hh"
 
+
 namespace RavlN {
   
   //! userlevel=Normal
@@ -71,17 +72,18 @@ namespace RavlN {
     { return Sqrt(Mag2()); }
     //: Magnitude
 
-    inline RealT    Arg() const
+    inline RealT Arg() const
     { return ATan2(im,re); }
     //: Angle
     
-    inline ComplexC I() const 
-    { return ComplexC(-im, re); }
-    //: Inverse
     
     inline ComplexC Conj() const
     { return ComplexC(re, -im); }
     //: Complex conjugate
+
+    inline ComplexC I() const
+    { return ComplexC(-im, re); }
+    //: Inverse
 
     //:----------
     //: Operators    
@@ -317,4 +319,6 @@ namespace RavlN {
 
 // IAPS - Image analysis program system.
 // End of include file Complex.hh 
+
+
 
