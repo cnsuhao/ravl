@@ -16,7 +16,6 @@
 //#include "Ravl/config.h"
 #include "Ravl/Complex.hh"
 #include "Ravl/Stream.hh"
-#include "ccmath/ccmath.h"
 
 #if RAVL_HAVE_CSQRT
 #include <complex>
@@ -38,11 +37,12 @@ namespace RavlN {
   inline
   ComplexC Sqrt(const ComplexC & a) {
 #if RAVL_HAVE_CSQRT
-    struct ccomplex arg;
-    arg.re = a.Re();
-    arg.im = a.Im();
-    struct ccomplex root = ::csqrt(arg);
-    return ComplexC (root.re, root.im);
+    complex<double> csqrt(complex<double> z);
+    complex<double> arg;
+    arg.real() = a.Re();
+    arg.imag() = a.Im();
+    complex<double> root = csqrt(arg);
+    return ComplexC (root.real(), root.imag());
     //: Returns one of the complex square roots of a complex number
     // The 2nd root is the -ve of the given one
 #else
