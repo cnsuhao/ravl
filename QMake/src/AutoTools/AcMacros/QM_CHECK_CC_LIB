@@ -131,6 +131,12 @@ AC_DEFUN([QM_CHECK_CC_LIB],
              trace 3 Setting LDFLAGS for library to $LIB_LDFLAGS
           fi
           eval LIB_CPPFLAGS="\$with_${fix_expan}_inc"
+          # Bodge for tetgen as we currently have no mechanism for specifying
+          # package LD/{C}C{PP}FLAGS and tetgen relies on a -D in CPPFLAGS.
+          if ( test "X$1" == Xtetgen )
+          then
+             LIB_CPPFLAGS="-DTETLIBRARY $LIB_CPPFLAGS"
+          fi
           if ( test "X$LIB_CPPFLAGS" != X )
           then
              TRACE_INDENT="     "
