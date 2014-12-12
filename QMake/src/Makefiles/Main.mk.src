@@ -1811,11 +1811,11 @@ info:
 SPACE=$(EMPTY) $(EMPTY)
 
 %.def:
-ifeq (,$(strip $(filter $(@F),$(NEEDED_DEFS))))
-	@if [ -n ""$(QMAKE_INFO) ]; then echo Ignoring missing optional $(@F); fi
-else
-	@echo Missing mandatory $(@F); exit 1
-endif
+	$(if $(strip $(filter $(@F),$(NEEDED_DEFS))), \
+              @echo Missing mandatory $(@F) ;exit 1 \
+          , \
+              $(if $(QMAKE_INFO),@echo Ignoring missing optional $(@F)) \
+          )
 
 ###########################
 # General fatal error for things we do no know how to build.
