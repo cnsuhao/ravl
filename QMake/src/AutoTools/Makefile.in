@@ -134,13 +134,14 @@ SUPPORT_SCRIPTS=$(patsubst $(SRC)/%.src,%,$(wildcard $(SRC)/Support/*.sh.src) $(
 SED_SUBSTITUTION=$(SED) \
             -e 's![@]MAKE[@]!$(MAKE)!g' \
             -e 's![@]PERL[@]!$(PERL)!g' \
-	    -e 's![@]QMAKE_CONFIGFILES[@]!$(sysconfdir)/QMake!g' \
-	    -e 's![@]QMAKE_INCLUDES[@]!$(includedir)!g' \
+            -e 's![@]QMAKE_CONFIGFILES[@]!$(sysconfdir)/QMake!g' \
+            -e 's![@]QMAKE_INCLUDES[@]!$(includedir)!g' \
+            -e 's![@]QMAKE_LIBS[@]!$(libdir)!g' \
             -e 's![@]QMAKE_MAKEFILES[@]!$(datadir)/QMake/Makefiles!g' \
-	    -e 's![@]QMAKE_PROJECTS[@]!$(datadir)/QMake/Projects!g' \
-	    -e 's![@]QMAKE_SUPPORT[@]!$(datadir)/QMake/Support!g' \
-	    -e 's![@]QMAKE_UTILS[@]!$(bindir)!g' \
-	    -e 's![@]SHELL[@]!/bin/sh!g'
+            -e 's![@]QMAKE_PROJECTS[@]!$(datadir)/QMake/Projects!g' \
+            -e 's![@]QMAKE_SUPPORT[@]!$(datadir)/QMake/Support!g' \
+            -e 's![@]QMAKE_UTILS[@]!$(bindir)!g' \
+            -e 's![@]SHELL[@]!/bin/sh!g'
 
 
 
