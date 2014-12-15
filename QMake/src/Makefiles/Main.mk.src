@@ -1225,7 +1225,7 @@ $(LOCALTMP)/Copyright20$(COPYRIGHT_YEAR): $(LOCALTMP)/.dir \
 	echo \# General Public License \(LGPL\). See the lgpl.licence file for details or >> $@ ; \
 	echo \# see http://www.gnu.org/copyleft/lesser.html >> $@ ; \
 	echo \# file-header-ends-here >> $@ ; \
-	echo >> $@ \ ;
+	echo >> $@ ; \
 	$(CHMOD) 444 $@
 
 
