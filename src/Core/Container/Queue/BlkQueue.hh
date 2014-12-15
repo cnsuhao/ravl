@@ -13,9 +13,9 @@
 //! author="George (Jiri) Matas"
 //! docentry="Ravl.API.Core.Queues"
 //! example=exQueue.cc
-//! rcsid="$Id$"
 
 #include "Ravl/Assert.hh"
+#include "Ravl/SysLog.hh"
 
 #if RAVL_HAVE_TEMPLATEREQUIREALLDEFINITIONS 
 #include "Ravl/Stream.hh"
@@ -28,6 +28,9 @@
 #endif
 
 namespace RavlN {
+
+  template <class T> class BlkQueueIterC;
+
   //: Basic Queue.
   //! userlevel=Normal
   
@@ -89,7 +92,10 @@ namespace RavlN {
     { return GetFirst();}
     //: Pop an item off the front on the queue.
     
-    void DbPrint(){ std::cerr << "queue -> "<< last <<", "<< first <<", "<< Size() <<"\n"; }
+    const T &operator[](int index);
+    //: Index queue
+
+    void DbPrint() { RavlDebug("Queue: %d -> %d   Size:%d BlkTotal:%d",last,first,Size(),blkTotal); }
     //: Debug print.
     
   protected:
@@ -105,12 +111,104 @@ namespace RavlN {
     q_Blk* firstBlk;                   
     q_Blk* lastBlk;                   
     
-    short first;
-    short last;
-    short blkSize;
+    int first;
+    int last;
+    int blkSize;
     int blkTotal;
+
+    friend class BlkQueueIterC<T>;
   };
   
+
+  template <class T>
+  class BlkQueueIterC {
+  public:
+    BlkQueueIterC()
+     : m_atBlk(0),
+       m_index(0),
+       m_last(0),
+       m_blkSize(1),
+       m_blkTotal(0)
+    {}
+    //! Default constructor
+
+    BlkQueueIterC(const BlkQueueC<T> &blkQueue)
+     : m_atBlk(blkQueue.firstBlk),
+       m_index(blkQueue.first),
+       m_last(blkQueue.last),
+       m_blkSize(blkQueue.blkSize),
+       m_blkTotal(blkQueue.blkTotal)
+    {
+      if(m_index >= m_blkSize && m_blkTotal > 0) {
+        m_atBlk = m_atBlk->link;
+        m_index = 0;
+        m_blkTotal -= m_blkSize;
+      }
+    }
+    //! Constructor.
+
+    bool IsElm() const
+    { return m_index < m_last || m_blkTotal > 0; }
+    //! Is iterator on a valid element.
+
+    operator bool() const
+    { return IsElm(); }
+    //! Is iterator on a valid element.
+
+    const T &Data() const
+    {
+      RavlAssert(m_atBlk != 0 && m_index < m_blkSize);
+      return m_atBlk->d[m_index];
+    }
+    //! Access current data element.
+
+    T &Data()
+    {
+      RavlAssert(m_atBlk != 0 && m_index < m_blkSize);
+      return m_atBlk->d[m_index];
+    }
+    //! Access current data element.
+
+    T &operator*()
+    { return Data(); }
+    //! Access current data element.
+
+    const T &operator*() const
+    { return Data(); }
+    //! Access current data element.
+
+    bool Next()
+    {
+      RavlAssert(m_atBlk != 0);
+      m_index++;
+      if(m_blkTotal > 0) {
+        if(m_index >= m_blkSize) {
+          m_atBlk = m_atBlk->link;
+          m_index = 0;
+          m_blkTotal -= m_blkSize;
+        }
+      }
+      return IsElm();
+    }
+    //! Goto next element.
+    //! Return true if left on a valid data element.
+
+    bool operator++()
+    { return Next(); }
+    //! Goto next element.
+    //! Return true if left on a valid data element.
+
+  protected:
+    typedef typename BlkQueueC<T>::q_Blk BlkT;
+
+    BlkT *m_atBlk;
+    int m_index;
+    int m_last;
+    int m_blkSize;
+    int m_blkTotal;
+  };
+
+
   //--------------------------------------------------------------------------
   
   template<class T>
@@ -215,6 +313,25 @@ namespace RavlN {
     }
     new(&firstBlk->d[first]) T(data);
   }
+
+  template<class T>
+  const T &BlkQueueC<T>::operator[](int index)
+  {
+    RavlAssert(index >= 0 && index < Size());
+    int inFirstBlk=(blkSize - first);
+    if(inFirstBlk > index) {
+      return firstBlk->d[first + index];
+    }
+    index -= inFirstBlk;
+    q_Blk *at = firstBlk->link;
+    while(index >= blkSize) {
+      index -= blkSize;
+      at = at->link;
+      RavlAssert(at != 0);
+    }
+    return at->d[index];
+  }
+
 }
 
 #endif
