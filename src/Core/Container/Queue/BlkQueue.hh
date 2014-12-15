@@ -120,6 +120,9 @@ namespace RavlN {
   };
   
 
+  //! Block queue iterator.
+  //! Note: The underling queue must not be modified while the iterator is in use.
+
   template <class T>
   class BlkQueueIterC {
   public:

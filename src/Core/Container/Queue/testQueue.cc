@@ -56,7 +56,7 @@ int testQueue()
       }
       break;
     }
-    q.DbPrint();
+    //q.DbPrint();
     int len = 0;
     for(BlkQueueIterC<int> it(q);it;++it) {
       //RavlDebug("L:%d -> %d ",len,it.Data());
