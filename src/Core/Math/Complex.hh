@@ -303,10 +303,10 @@ namespace RavlN {
 		    ATan2(a.im,a.re));
   }  
   
+  inline
   ComplexC Sqrt(const ComplexC & a) {
     RealT surd = a.Mag();
-    RealT re = Sqrt((a.Re()+surd)/2.0);
-    return ComplexC(re, a.Im()/(2.0*re));
+    return ComplexC(Sqrt((surd+a.Re())/2.0), Sqrt((surd-a.Re())/2.0));
   }
 
   //: Returns the complex square root of a complex number with +ve real part
