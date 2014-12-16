@@ -1215,7 +1215,7 @@ COPYRIGHT_YEAR := $(shell date +%y)
 # Recipe for the default copyright statement.
 $(LOCALTMP)/Copyright20$(COPYRIGHT_YEAR): $(LOCALTMP)/.dir \
                                           $(QMAKE_MAKEFILES)/Main.mk
-	@echo "--- Creating $(@F)"
+	$(if $(QMAKE_INFO), @echo "--- Creating $(@F)")
 	$(SHOWIT)if [ -f $@ ] ; then \
 	  $(CHMOD) +w $@ ; \
 	fi ; \
@@ -1268,7 +1268,7 @@ ifdef TARG_DEFS
                                       $(LOCALTMP)/libdep/%.def.tail \
                                       $(INST_LIBDEF)/4install/%.def.in \
                                       $(QMAKE_MAKEFILES)/Main.mk
-	@echo "--- Creating working $(@F)"
+	$(if $(QMAKE_INFO), @echo "--- Creating working $(@F)")
 	$(SHOWIT)if [ -f $@ ] ; then \
 	  $(CHMOD) +w $@ ; \
 	fi ; \
@@ -1310,7 +1310,7 @@ ifdef TARG_DEFS
                                                                                                                      $(LOCALTMP)/libdep/%.def.mid \
                                                                                                                      $(LOCALTMP)/libdep/%.def.tail \
                                                                                                                      $(QMAKE_MAKEFILES)/Main.mk
-	@echo "--- Creating $(@F)"
+	$(if $(QMAKE_INFO), @echo "--- Creating $(@F)")
 	$(SHOWIT)if [ -f $@ ] ; then \
 	  $(CHMOD) +w $@ ; \
 	fi ; \
@@ -1376,7 +1376,7 @@ ifdef TARG_DEFS
 
  # Recipe for the common beginning of the two .def files
   $(LOCALTMP)/libdep/%.def.top: $(LIBDEPDEF_TOP) 
-	@echo "--- Creating $(@F)"
+	$(if $(QMAKE_INFO), @echo "--- Creating $(@F)")
 	$(SHOWIT)if [ -f $@ ] ; then \
 	  $(CHMOD) +w $@ ; \
 	fi ; \
@@ -1468,7 +1468,7 @@ ifdef TARG_DEFS
 
  # Recipe for the common mid-part of the two .def files.
   $(LOCALTMP)/libdep/%.def.mid: $(LIBDEPDEF_MID) 
-	@echo "--- Creating $(@F)"
+	$(if $(QMAKE_INFO), @echo "--- Creating $(@F)")
 	$(SHOWIT)if [ -f $@ ] ; then \
 	  $(CHMOD) +w $@ ; \
 	fi ; \
@@ -1501,7 +1501,7 @@ ifdef TARG_DEFS
  # Recipe for the common ending of the two .def files.
  $(LOCALTMP)/libdep/%.def.tail: $(LOCALTMP)/libdep/.dir \
                                 $(QMAKE_MAKEFILES)/Main.mk
-	@echo "--- Creating $(@F)"
+	$(if $(QMAKE_INFO), @echo "--- Creating $(@F)")
 	$(SHOWIT)if [ -f $@ ] ; then \
 	  $(CHMOD) +w $@ ; \
 	fi ; \
@@ -1558,7 +1558,7 @@ ifdef TARG_PKGCONFIG
   endif
   
   $(INST_PKGCONFIG)/$(PLIB).pc : $(PKGCONFIGPLIBDEP)
-	@echo "--- Creating $@ "
+	$(if $(QMAKE_INFO), @echo "--- Creating $@ ")
 	$(SHOWIT)if [ -f $@ ] ; then \
 	  $(CHMOD) +w $@ ; \
 	fi ; \
@@ -1599,7 +1599,7 @@ ifdef TARG_PKGCONFIG
   endif
   
   $(INST_PKGCONFIG)/single/$(SINGLESO_NOPREFIX).pc : $(PKGCONFIGSINGLEPCDEP) 
-	@echo "--- Creating $@ "
+	$(if $(QMAKE_INFO), @echo "--- Creating $@ ")
 	$(SHOWIT)if [ -f $@ ] ; then \
 	  $(CHMOD) +w $@ ; \
 	fi ; \
@@ -1625,7 +1625,7 @@ ifdef TARG_PKGCONFIG
                                          defs.mk \
                                          $(QMAKE_MAKEFILES)/Main.mk \
                                          $(LOCALTMP)/Copyright20$(COPYRIGHT_YEAR)
-	@echo "--- Creating $(@F)"
+	$(if $(QMAKE_INFO), @echo "--- Creating $(@F)")
 	$(SHOWIT)if [ -f $@ ] ; then \
 	  $(CHMOD) +w $@ ; \
 	fi ; \
@@ -1649,7 +1649,7 @@ ifdef TARG_PKGCONFIG
  $(LOCALTMP)/lib/pkgconfig/%.mid: $(LOCALTMP)/lib/pkgconfig/.dir \
                                   defs.mk \
                                   $(QMAKE_MAKEFILES)/Main.mk
-	@echo "--- Creating $(@F)"
+	$(if $(QMAKE_INFO), @echo "--- Creating $(@F)")
 	$(SHOWIT)if [ -f $@ ] ; then \
 	  $(CHMOD) +w $@ ; \
 	fi ; \
@@ -1690,7 +1690,7 @@ ifdef TARG_PKGCONFIG
                                                     $(QMAKE_MAKEFILES)/Main.mk \
 	                                            $(LOCALTMP)/lib/pkgconfig/$(PLIB).mid \
                                                     $(LOCALTMP)/lib/pkgconfig/4install/ProForma.top
-	@echo "--- Creating $@ "
+	$(if $(QMAKE_INFO), @echo "--- Creating $@ ")
 	$(SHOWIT)if [ -f $@ ] ; then \
 	  $(CHMOD) +w $@ ; \
 	fi ; \
@@ -1734,7 +1734,7 @@ ifdef TARG_PKGCONFIG
   endif 
   
    $(ROOTDIR)/lib/pkgconfig/4install/$(SINGLESO_NOPREFIX).pc.in : $(PKGCONFIGINSTALLDEP) 
-	@echo "--- Creating $@ "
+	$(if $(QMAKE_INFO), @echo "--- Creating $@ ")
 	$(SHOWIT)if [ -f $@ ] ; then \
 	  $(CHMOD) +w $@ ; \
 	fi ; \
@@ -1760,7 +1760,7 @@ ifdef TARG_PKGCONFIG
                                                   defs.mk \
                                                   $(QMAKE_MAKEFILES)/Main.mk \
                                                   $(LOCALTMP)/Copyright20$(COPYRIGHT_YEAR)
-	@echo "--- Creating $(@F)"
+	$(if $(QMAKE_INFO), @echo "--- Creating $(@F)")
 	$(SHOWIT)if [ -f $@ ] ; then \
 	  $(CHMOD) +w $@ ; \
 	fi ; \
