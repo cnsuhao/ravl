@@ -92,7 +92,7 @@ namespace RavlN {
     { return GetFirst();}
     //: Pop an item off the front on the queue.
     
-    const T &operator[](int index);
+    const T &operator[](int index) const;
     //: Index queue
 
     void DbPrint() { RavlDebug("Queue: %d -> %d   Size:%d BlkTotal:%d",last,first,Size(),blkTotal); }
@@ -318,7 +318,7 @@ namespace RavlN {
   }
 
   template<class T>
-  const T &BlkQueueC<T>::operator[](int index)
+  const T &BlkQueueC<T>::operator[](int index) const
   {
     RavlAssert(index >= 0 && index < Size());
     int inFirstBlk=(blkSize - first);
