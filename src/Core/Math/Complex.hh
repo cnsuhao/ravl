@@ -18,6 +18,7 @@
 #include "Ravl/Types.hh"
 #include "Ravl/StdMath.hh"
 
+
 namespace RavlN {
   
   //! userlevel=Normal
@@ -71,17 +72,18 @@ namespace RavlN {
     { return Sqrt(Mag2()); }
     //: Magnitude
 
-    inline RealT    Arg() const
+    inline RealT Arg() const
     { return ATan2(im,re); }
     //: Angle
     
-    inline ComplexC I() const 
-    { return ComplexC(-im, re); }
-    //: Inverse
     
     inline ComplexC Conj() const
     { return ComplexC(re, -im); }
     //: Complex conjugate
+
+    inline ComplexC I() const
+    { return ComplexC(-im, re); }
+    //: Inverse
 
     //:----------
     //: Operators    
@@ -301,8 +303,13 @@ namespace RavlN {
 		    ATan2(a.im,a.re));
   }  
   
-  ComplexC Sqrt(const ComplexC & a);
-  //: Returns one of the complex square roots of a complex number
+  inline
+  ComplexC Sqrt(const ComplexC & a) {
+    RealT surd = a.Mag();
+    return ComplexC(Sqrt((surd+a.Re())/2.0), Sqrt((surd-a.Re())/2.0));
+  }
+
+  //: Returns the complex square root of a complex number with +ve real part
   // The 2nd root is the -ve of the given one
 
   inline
@@ -317,4 +324,6 @@ namespace RavlN {
 
 // IAPS - Image analysis program system.
 // End of include file Complex.hh 
+
+
 

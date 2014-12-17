@@ -33,6 +33,8 @@ int CheckISO8601();
 
 int main() 
 {
+  SysLogOpen("testDate",false,true,false,-1,true);
+
   cerr << "Starting DateC tests... \n";
 #if 1
   RAVL_RUN_TEST(CheckTimeMath());
@@ -252,6 +254,17 @@ int CheckISO8601()
 
   DateC dateRestored2 = DateC::FromISO8601String("undefined");
   RAVL_TEST_FALSE(dateRestored2.IsValid());
+
+  DateC testDate1 = DateC::FromISO8601String("2014-12-05T12:25:20");
+  RavlDebug("Date:%s ",testDate1.ISO8601(false).c_str());
+  DateC testDate2 = DateC::FromISO8601String("2014-12-07");
+  RavlDebug("Date:%s ",testDate2.ISO8601(false).c_str());
+  DateC testDate3 = DateC::FromISO8601String("2014-12-07T10:32:48+00:00");
+  RavlDebug("Date:%s ",testDate3.ISO8601(false).c_str());
+  DateC testDate4 = DateC::FromISO8601String("2014-12-07T10:32:48Z");
+  RavlDebug("Date:%s ",testDate4.ISO8601(false).c_str());
+  DateC testDate5 = DateC::FromISO8601String("2014-12-07T10:32:48");
+  RavlDebug("Date:%s ",testDate5.ISO8601(false).c_str());
 
   return 0;
 }

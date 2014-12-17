@@ -10,7 +10,7 @@
 //! lib=RavlCore
 //! file="Ravl/OS/Misc/exSysLog.cc"
 
-#include "Ravl/OS/SysLog.hh"
+#include "Ravl/SysLog.hh"
 #include "Ravl/Option.hh"
 
 using namespace RavlN;
