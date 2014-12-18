@@ -452,7 +452,7 @@ endif
 # Misc.
 
 BASE_INSTALL := $(INSTALLHOME)#
-INCLUDES := -I$(INST_INCLUDE)/$(ARC) -I$(INST_INCLUDE) $(INCLUDES) -I$(BASE_INSTALL)/include/$(ARC) -I$(BASE_INSTALL)/include
+INCLUDES := -I$(INST_INCLUDE)/$(ARC) -I$(INST_INCLUDE) $(INCLUDES) -I$(BASE_INSTALL)/include/$(ARC) -I$(BASE_INSTALL)/include -I@QMAKE_INCLUDES@
 
 ifdef EXTPACKAGE
  INCLUDES += -I$(ROOTDIR)\inc\$(PACKAGE)
@@ -462,12 +462,12 @@ ifdef EXTERNAL_PROJECTS
  INCLUDES += $(patsubst %,-I%/include/$(ARC),$(EXTERNAL_PROJECTS)) $(patsubst %,-I%/include,$(EXTERNAL_PROJECTS))
 endif
 
-CINCLUDES =  -I$(INST_HEADER) $(INCLUDES) -I$(BASE_INSTALL)/include/$(ARC) -I$(BASE_INSTALL)/include
+CINCLUDES =  -I$(INST_HEADER) $(INCLUDES) -I$(BASE_INSTALL)/include/$(ARC) -I$(BASE_INSTALL)/include -I@QMAKE_INCLUDES@
 
 
-TESTBINLIBS += -L$(INST_LIB) -L$(BASE_INSTALL)/lib$(PROJECT_DIR)/$(ARC)/$(BASE_VAR)$(SHARED_LIB_POSTFIX) $(LINKTESTLIBS)
-BINLIBS += -L$(INST_LIB) -L$(BASE_INSTALL)/lib$(PROJECT_DIR)/$(ARC)/$(BASE_VAR)$(SHARED_LIB_POSTFIX) $(LINKLIBS)
-LIBS += -L$(INST_LIB) -L$(BASE_INSTALL)/lib$(PROJECT_DIR)/$(ARC)/$(BASE_VAR)$(SHARED_LIB_POSTFIX) $(EXELIB)
+TESTBINLIBS += -L$(INST_LIB) -L$(BASE_INSTALL)/lib$(PROJECT_DIR)/$(ARC)/$(BASE_VAR)$(SHARED_LIB_POSTFIX) -L@QMAKE_LIBS@ $(LINKTESTLIBS)
+BINLIBS += -L$(INST_LIB) -L$(BASE_INSTALL)/lib$(PROJECT_DIR)/$(ARC)/$(BASE_VAR)$(SHARED_LIB_POSTFIX) -L@QMAKE_LIBS@ $(LINKLIBS)
+LIBS += -L$(INST_LIB) -L$(BASE_INSTALL)/lib$(PROJECT_DIR)/$(ARC)/$(BASE_VAR)$(SHARED_LIB_POSTFIX) -L@QMAKE_LIBS@ $(EXELIB)
 
 EXTERNAL_PROJECT_LIBS = $(patsubst %,-L%/lib$(PROJECT_DIR)/$(ARC)/$(VAR)$(SHARED_LIB_POSTFIX),$(EXTERNAL_PROJECTS))
 
@@ -485,13 +485,14 @@ ifeq ($(USE_LIBPATHSWITCH),Y)
  ifdef SHAREDBUILD
   ifneq ($(BASE_VAR),none)
    LDFLAGS += $(LINKER_LIBPATHSWITCH)=$(ROOTDIR)/lib$(PROJECT_DIR)/$(ARC)/$(VAR)/shared
-   LDFLAGS += $(LINKER_LIBPATHSWITCH)=$(BASE_INSTALL)/lib$(PROJECT_DIR)/$(ARC)/$(BASE_VAR)/shared
+   LDFLAGS += $(LINKER_LIBPATHSWITCH)=$(ROOTDIR)/lib$(PROJECT_DIR)/$(ARC)/$(VAR)/shared
   else
    LDFLAGS += $(LINKER_LIBPATHSWITCH)=$(ROOTDIR)/lib$(PROJECT_DIR)/$(ARC)/$(BASE_VAR)/$(VAR)/shared
   endif
   ifdef EXTERNAL_PROJECTS
    LDFLAGS += $(patsubst %,$(LINKER_LIBPATHSWITCH)=%/lib$(PROJECT_DIR)/$(ARC)/$(VAR)$(SHARED_LIB_POSTFIX),$(EXTERNAL_PROJECTS))
   endif
+  LDFLAGS += $(LINKER_LIBPATHSWITCH)=@QMAKE_LIBS@
  endif
 endif
 
@@ -1214,7 +1215,7 @@ COPYRIGHT_YEAR := $(shell date +%y)
 # Recipe for the default copyright statement.
 $(LOCALTMP)/Copyright20$(COPYRIGHT_YEAR): $(LOCALTMP)/.dir \
                                           $(QMAKE_MAKEFILES)/Main.mk
-	@echo "--- Creating $(@F)"
+	$(if $(QMAKE_INFO), @echo "--- Creating $(@F)")
 	$(SHOWIT)if [ -f $@ ] ; then \
 	  $(CHMOD) +w $@ ; \
 	fi ; \
@@ -1224,7 +1225,7 @@ $(LOCALTMP)/Copyright20$(COPYRIGHT_YEAR): $(LOCALTMP)/.dir \
 	echo \# General Public License \(LGPL\). See the lgpl.licence file for details or >> $@ ; \
 	echo \# see http://www.gnu.org/copyleft/lesser.html >> $@ ; \
 	echo \# file-header-ends-here >> $@ ; \
-	echo >> $@ \ ;
+	echo >> $@ ; \
 	$(CHMOD) 444 $@
 
 
@@ -1267,7 +1268,7 @@ ifdef TARG_DEFS
                                       $(LOCALTMP)/libdep/%.def.tail \
                                       $(INST_LIBDEF)/4install/%.def.in \
                                       $(QMAKE_MAKEFILES)/Main.mk
-	@echo "--- Creating working $(@F)"
+	$(if $(QMAKE_INFO), @echo "--- Creating working $(@F)")
 	$(SHOWIT)if [ -f $@ ] ; then \
 	  $(CHMOD) +w $@ ; \
 	fi ; \
@@ -1309,7 +1310,7 @@ ifdef TARG_DEFS
                                                                                                                      $(LOCALTMP)/libdep/%.def.mid \
                                                                                                                      $(LOCALTMP)/libdep/%.def.tail \
                                                                                                                      $(QMAKE_MAKEFILES)/Main.mk
-	@echo "--- Creating $(@F)"
+	$(if $(QMAKE_INFO), @echo "--- Creating $(@F)")
 	$(SHOWIT)if [ -f $@ ] ; then \
 	  $(CHMOD) +w $@ ; \
 	fi ; \
@@ -1375,7 +1376,7 @@ ifdef TARG_DEFS
 
  # Recipe for the common beginning of the two .def files
   $(LOCALTMP)/libdep/%.def.top: $(LIBDEPDEF_TOP) 
-	@echo "--- Creating $(@F)"
+	$(if $(QMAKE_INFO), @echo "--- Creating $(@F)")
 	$(SHOWIT)if [ -f $@ ] ; then \
 	  $(CHMOD) +w $@ ; \
 	fi ; \
@@ -1467,7 +1468,7 @@ ifdef TARG_DEFS
 
  # Recipe for the common mid-part of the two .def files.
   $(LOCALTMP)/libdep/%.def.mid: $(LIBDEPDEF_MID) 
-	@echo "--- Creating $(@F)"
+	$(if $(QMAKE_INFO), @echo "--- Creating $(@F)")
 	$(SHOWIT)if [ -f $@ ] ; then \
 	  $(CHMOD) +w $@ ; \
 	fi ; \
@@ -1500,7 +1501,7 @@ ifdef TARG_DEFS
  # Recipe for the common ending of the two .def files.
  $(LOCALTMP)/libdep/%.def.tail: $(LOCALTMP)/libdep/.dir \
                                 $(QMAKE_MAKEFILES)/Main.mk
-	@echo "--- Creating $(@F)"
+	$(if $(QMAKE_INFO), @echo "--- Creating $(@F)")
 	$(SHOWIT)if [ -f $@ ] ; then \
 	  $(CHMOD) +w $@ ; \
 	fi ; \
@@ -1557,7 +1558,7 @@ ifdef TARG_PKGCONFIG
   endif
   
   $(INST_PKGCONFIG)/$(PLIB).pc : $(PKGCONFIGPLIBDEP)
-	@echo "--- Creating $@ "
+	$(if $(QMAKE_INFO), @echo "--- Creating $@ ")
 	$(SHOWIT)if [ -f $@ ] ; then \
 	  $(CHMOD) +w $@ ; \
 	fi ; \
@@ -1598,7 +1599,7 @@ ifdef TARG_PKGCONFIG
   endif
   
   $(INST_PKGCONFIG)/single/$(SINGLESO_NOPREFIX).pc : $(PKGCONFIGSINGLEPCDEP) 
-	@echo "--- Creating $@ "
+	$(if $(QMAKE_INFO), @echo "--- Creating $@ ")
 	$(SHOWIT)if [ -f $@ ] ; then \
 	  $(CHMOD) +w $@ ; \
 	fi ; \
@@ -1624,7 +1625,7 @@ ifdef TARG_PKGCONFIG
                                          defs.mk \
                                          $(QMAKE_MAKEFILES)/Main.mk \
                                          $(LOCALTMP)/Copyright20$(COPYRIGHT_YEAR)
-	@echo "--- Creating $(@F)"
+	$(if $(QMAKE_INFO), @echo "--- Creating $(@F)")
 	$(SHOWIT)if [ -f $@ ] ; then \
 	  $(CHMOD) +w $@ ; \
 	fi ; \
@@ -1648,7 +1649,7 @@ ifdef TARG_PKGCONFIG
  $(LOCALTMP)/lib/pkgconfig/%.mid: $(LOCALTMP)/lib/pkgconfig/.dir \
                                   defs.mk \
                                   $(QMAKE_MAKEFILES)/Main.mk
-	@echo "--- Creating $(@F)"
+	$(if $(QMAKE_INFO), @echo "--- Creating $(@F)")
 	$(SHOWIT)if [ -f $@ ] ; then \
 	  $(CHMOD) +w $@ ; \
 	fi ; \
@@ -1689,7 +1690,7 @@ ifdef TARG_PKGCONFIG
                                                     $(QMAKE_MAKEFILES)/Main.mk \
 	                                            $(LOCALTMP)/lib/pkgconfig/$(PLIB).mid \
                                                     $(LOCALTMP)/lib/pkgconfig/4install/ProForma.top
-	@echo "--- Creating $@ "
+	$(if $(QMAKE_INFO), @echo "--- Creating $@ ")
 	$(SHOWIT)if [ -f $@ ] ; then \
 	  $(CHMOD) +w $@ ; \
 	fi ; \
@@ -1733,7 +1734,7 @@ ifdef TARG_PKGCONFIG
   endif 
   
    $(ROOTDIR)/lib/pkgconfig/4install/$(SINGLESO_NOPREFIX).pc.in : $(PKGCONFIGINSTALLDEP) 
-	@echo "--- Creating $@ "
+	$(if $(QMAKE_INFO), @echo "--- Creating $@ ")
 	$(SHOWIT)if [ -f $@ ] ; then \
 	  $(CHMOD) +w $@ ; \
 	fi ; \
@@ -1759,7 +1760,7 @@ ifdef TARG_PKGCONFIG
                                                   defs.mk \
                                                   $(QMAKE_MAKEFILES)/Main.mk \
                                                   $(LOCALTMP)/Copyright20$(COPYRIGHT_YEAR)
-	@echo "--- Creating $(@F)"
+	$(if $(QMAKE_INFO), @echo "--- Creating $(@F)")
 	$(SHOWIT)if [ -f $@ ] ; then \
 	  $(CHMOD) +w $@ ; \
 	fi ; \
@@ -1811,11 +1812,11 @@ info:
 SPACE=$(EMPTY) $(EMPTY)
 
 %.def:
-ifeq (,$(strip $(filter $(@F),$(NEEDED_DEFS))))
-	@if [ -n ""$(QMAKE_INFO) ]; then echo Ignoring missing optional $(@F); fi
-else
-	@echo Missing mandatory $(@F); exit 1
-endif
+	$(if $(strip $(filter $(@F),$(NEEDED_DEFS))), \
+              @echo Missing mandatory $(@F) ;exit 1 \
+          , \
+              $(if $(QMAKE_INFO),@echo Ignoring missing optional $(@F)) \
+          )
 
 ###########################
 # General fatal error for things we do no know how to build.

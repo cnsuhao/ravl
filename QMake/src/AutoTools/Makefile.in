@@ -134,13 +134,14 @@ SUPPORT_SCRIPTS=$(patsubst $(SRC)/%.src,%,$(wildcard $(SRC)/Support/*.sh.src) $(
 SED_SUBSTITUTION=$(SED) \
             -e 's![@]MAKE[@]!$(MAKE)!g' \
             -e 's![@]PERL[@]!$(PERL)!g' \
-	    -e 's![@]QMAKE_CONFIGFILES[@]!$(sysconfdir)/QMake!g' \
-	    -e 's![@]QMAKE_INCLUDES[@]!$(includedir)!g' \
+            -e 's![@]QMAKE_CONFIGFILES[@]!$(sysconfdir)/QMake!g' \
+            -e 's![@]QMAKE_INCLUDES[@]!$(includedir)!g' \
+            -e 's![@]QMAKE_LIBS[@]!$(libdir)!g' \
             -e 's![@]QMAKE_MAKEFILES[@]!$(datadir)/QMake/Makefiles!g' \
-	    -e 's![@]QMAKE_PROJECTS[@]!$(datadir)/QMake/Projects!g' \
-	    -e 's![@]QMAKE_SUPPORT[@]!$(datadir)/QMake/Support!g' \
-	    -e 's![@]QMAKE_UTILS[@]!$(bindir)!g' \
-	    -e 's![@]SHELL[@]!/bin/sh!g'
+            -e 's![@]QMAKE_PROJECTS[@]!$(datadir)/QMake/Projects!g' \
+            -e 's![@]QMAKE_SUPPORT[@]!$(datadir)/QMake/Support!g' \
+            -e 's![@]QMAKE_UTILS[@]!$(bindir)!g' \
+            -e 's![@]SHELL[@]!/bin/sh!g'
 
 
 
@@ -206,7 +207,7 @@ ProcessMakefiles:$(patsubst %,$(STAGING)/%,$(ALL_MAKEFILES))
 #   deployed directory
 #
 define MAKE_MAKEFILE
-$(STAGING)/$(1): $(SRC)/$(1).src
+$(STAGING)/$(1): $(SRC)/$(1).src @abs_top_builddir@/Config.QMake
 	$(MKDIR_P) $(STAGING)/$(dir $(1))
 	$(SED_SUBSTITUTION) $(SRC)/$(1).src > $(STAGING)/$(1)
 endef
@@ -239,7 +240,7 @@ $(STAGING)/bin/%: $(SRC)/Utils/%.cc | $(STAGING)/bin
 StagePerl: $(STAGING)/bin $(patsubst %,$(STAGING)/bin/%,$(PERL_UTILS))
 	@:
 
-$(STAGING)/bin/%.pl: $(SRC)/Utils/%.pl.src | $(STAGING)/bin
+$(STAGING)/bin/%.pl: $(SRC)/Utils/%.pl.src @abs_top_builddir@/Config.QMake | $(STAGING)/bin
 	$(SED_SUBSTITUTION) $< > $@
 
 
@@ -249,7 +250,7 @@ $(STAGING)/bin/%.pl: $(SRC)/Utils/%.pl.src | $(STAGING)/bin
 StageShScripts: $(STAGING)/bin $(patsubst %,$(STAGING)/bin/%,$(SHELL_UTILS))
 	@:
 
-$(STAGING)/bin/%: $(SRC)/Utils/%.sh.src  | $(STAGING)/bin
+$(STAGING)/bin/%: $(SRC)/Utils/%.sh.src @abs_top_builddir@/Config.QMake | $(STAGING)/bin
 	$(SED_SUBSTITUTION) $< > $@
 
 
@@ -263,16 +264,16 @@ StageSupport: $(STAGING)/Support $(patsubst %,$(STAGING)/%,$(SUPPORT_FILES) $(SU
 $(STAGING)/Support/%: $(SRC)/Support/% | $(STAGING)/Support
 	$(INSTALL_DATA) $< $@
 
-$(STAGING)/Support/%.csh: $(SRC)/Support/%.csh.src | $(STAGING)/Support
+$(STAGING)/Support/%.csh: $(SRC)/Support/%.csh.src @abs_top_builddir@/Config.QMake | $(STAGING)/Support
 	$(SED_SUBSTITUTION) $< > $@
 
-$(STAGING)/Support/%.cshrc: $(SRC)/Support/%.cshrc.src | $(STAGING)/Support
+$(STAGING)/Support/%.cshrc: $(SRC)/Support/%.cshrc.src @abs_top_builddir@/Config.QMake | $(STAGING)/Support
 	$(SED_SUBSTITUTION) $< > $@
 
-$(STAGING)/Support/%.pl: $(SRC)/Support/%.pl.src | $(STAGING)/Support
+$(STAGING)/Support/%.pl: $(SRC)/Support/%.pl.src @abs_top_builddir@/Config.QMake | $(STAGING)/Support
 	$(SED_SUBSTITUTION) $< > $@
 
-$(STAGING)/Support/%.sh: $(SRC)/Support/%.sh.src | $(STAGING)/Support
+$(STAGING)/Support/%.sh: $(SRC)/Support/%.sh.src @abs_top_builddir@/Config.QMake | $(STAGING)/Support
 	$(SED_SUBSTITUTION) $< > $@
 
 
@@ -293,16 +294,16 @@ StageAB: $(STAGING)/AutoBuild $(patsubst %,$(STAGING)/AutoBuild/%,$(AUTOBUILD_CF
 $(STAGING)/AutoBuild/%: $(SRC)/AutoBuild/% | $(STAGING)/AutoBuild
 	$(INSTALL_DATA) $< $@
 
-$(STAGING)/AutoBuild/%.csh: $(SRC)/AutoBuild/%.csh.src | $(STAGING)/AutoBuild
+$(STAGING)/AutoBuild/%.csh: $(SRC)/AutoBuild/%.csh.src @abs_top_builddir@/Config.QMake | $(STAGING)/AutoBuild
 	$(SED_SUBSTITUTION) $< > $@
 
-$(STAGING)/AutoBuild/%.cshrc: $(SRC)/AutoBuild/%.cshrc.src | $(STAGING)/AutoBuild
+$(STAGING)/AutoBuild/%.cshrc: $(SRC)/AutoBuild/%.cshrc.src @abs_top_builddir@/Config.QMake | $(STAGING)/AutoBuild
 	$(SED_SUBSTITUTION) $< > $@
 
-$(STAGING)/AutoBuild/%.pl: $(SRC)/AutoBuild/%.pl.src | $(STAGING)/AutoBuild
+$(STAGING)/AutoBuild/%.pl: $(SRC)/AutoBuild/%.pl.src @abs_top_builddir@/Config.QMake | $(STAGING)/AutoBuild
 	$(SED_SUBSTITUTION) $< > $@
 
-$(STAGING)/AutoBuild/%.sh: $(SRC)/AutoBuild/%.sh.src | $(STAGING)/AutoBuild
+$(STAGING)/AutoBuild/%.sh: $(SRC)/AutoBuild/%.sh.src @abs_top_builddir@/Config.QMake | $(STAGING)/AutoBuild
 	$(SED_SUBSTITUTION) $< > $@
 
 
@@ -312,7 +313,7 @@ $(STAGING)/AutoBuild/%.sh: $(SRC)/AutoBuild/%.sh.src | $(STAGING)/AutoBuild
 StagePkgConf: $(STAGING)/lib/pkgconfig $(STAGING)/lib/pkgconfig/QMake.pc
 	@:
 
-$(STAGING)/lib/pkgconfig/QMake.pc: @abs_top_builddir@/Targets.QMake @abs_top_builddir@/Makefile | $(STAGING)/lib/pkgconfig
+$(STAGING)/lib/pkgconfig/QMake.pc: @abs_top_builddir@/Targets.QMake @abs_top_builddir@/Makefile @abs_top_builddir@/Config.QMake | $(STAGING)/lib/pkgconfig
 	@echo prefix=$(prefix) > $@
 	@echo bindir=$(bindir) >> $@
 	@echo datarootdir=$(datarootdir) >> $@

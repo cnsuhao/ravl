@@ -14,15 +14,18 @@
 #include "Ravl/BlkQueue.hh"
 #include "Ravl/Stream.hh"
 #include "Ravl/UnitTest.hh"
+#include "Ravl/SysLog.hh"
 #include <stdlib.h>
 
 using namespace RavlN;
 
 int testQueue();
+int testQueueIter();
 
 int main() {
 
   RAVL_RUN_TEST(testQueue());
+  RAVL_RUN_TEST(testQueueIter());
 
   std::cerr << "Queue test passed ok. \n";
 
@@ -36,26 +39,41 @@ int testQueue()
   int lget = -1;
   for(int i = 0;i < 5000;i++) {
     switch(rand() % 2)
+    {
+    case 0:
+      q.InsLast(count++);
+      break;
+    case 1:
+      if(q.IsEmpty())
+        continue;
       {
-      case 0:
-        q.InsLast(count++);
-        break;
-      case 1:
-        if(q.IsEmpty())
-          continue;
-        {
-          int lval = q.GetFirst();
-          if(lval != (lget+1)) {
-            std::cerr << "Queue test failed. \n";
-            return __LINE__;
-          }
-          lget = lval;
+        int lval = q.GetFirst();
+        if(lval != (lget+1)) {
+          std::cerr << "Queue test failed. \n";
+          return __LINE__;
         }
-        break;
+        lget = lval;
       }
+      break;
+    }
+    //q.DbPrint();
+    int len = 0;
+    for(BlkQueueIterC<int> it(q);it;++it) {
+      //RavlDebug("L:%d -> %d ",len,it.Data());
+      if(q[len] != *it) return __LINE__;
+      len++;
+    }
+    //RavlDebug("Size:%d  Len:%d ",q.Size().V(),len);
+    if(q.Size() != len) return __LINE__;
   }
 
   return 0;
 }
 
-template class BlkQueueC<int>;
+int testQueueIter()
+{
+
+
+  return 0;
+}
+
