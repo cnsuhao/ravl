@@ -788,6 +788,8 @@ DynLink_LIBS
 DynLink_CFLAGS
 CUDA_LIBS
 CUDA_CFLAGS
+CXSparse_LIBS
+CXSparse_CFLAGS
 blas_LIBS
 blas_CFLAGS
 ZeroMQ_LIBS
@@ -1136,6 +1138,10 @@ with_blas_pkgconf
 with_blas
 with_blas_library
 with_blas_include
+with_CXSparse_pkgconf
+with_CXSparse
+with_CXSparse_library
+with_CXSparse_include
 with_CUDA_pkgconf
 with_CUDA
 with_CUDA_library
@@ -2188,6 +2194,19 @@ Optional Packages:
 
   --with-blas-include     Declare the location of the blas header files and
                           enable their functionality
+
+  --with-CXSparse-pkgconf Enable the CXSparse library package via pkg-config
+                          and declare the name by which the CXSparse library
+                          package is know to pkg-config
+
+  --with-CXSparse         Enable functionality that relies on the CXSparse
+                          library [default=check]
+
+  --with-CXSparse-library Declare the location of the CXSparse library and
+                          enable its functionality
+
+  --with-CXSparse-include Declare the location of the CXSparse header files
+                          and enable their functionality
 
   --with-CUDA-pkgconf     Enable the CUDA library package via pkg-config and
                           declare the name by which the CUDA library package
@@ -13998,6 +14017,899 @@ $as_echo "$as_me: WARNING: --with-blas-include and --with-blas specify different
 
 
 
+# Check whether --with-CXSparse-pkgconf was given.
+if test "${with_CXSparse_pkgconf+set}" = set; then :
+  withval=$with_CXSparse_pkgconf; case $with_CXSparse_pkgconf in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                          with_CXSparse_pkgconf=no
+                                          trace 4 --with-CXSparse-pkgconf disabling pkg-config use
+                                          ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' | 'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                          { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to configure CXSparse via pkg-config but configure is unaware of the name of the DOTpc metadata file
+See \`config.log' for more details" "$LINENO" 5; }
+                                          ;;
+                        * )               use_CXSparse=yes
+                                          trace 4 --with-CXSparse-pkgconf set to [$with_CXSparse_pkgconf]
+                                          ;;
+                       esac
+
+else
+  trace 4 No --with-CXSparse-pkgconf specified
+                       with_CXSparse_pkgconf=notset
+
+
+fi
+
+
+# Check whether --with-CXSparse was given.
+if test "${with_CXSparse+set}" = set; then :
+  withval=$with_CXSparse; case $with_CXSparse in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                          use_CXSparse=no
+                                          with_CXSparse=no
+                                          ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                          use_CXSparse=yes
+                                          with_CXSparse=yes
+                                          ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                          use_CXSparse=check
+                                          with_CXSparse=check
+                                          ;;
+                        * )               use_CXSparse=yes
+                                          ;;
+                       esac
+
+else
+  trace 4 No --with-CXSparse specified
+                       with_CXSparse=notset
+
+
+fi
+
+
+# Check whether --with-CXSparse-library was given.
+if test "${with_CXSparse_library+set}" = set; then :
+  withval=$with_CXSparse_library; case "$with_CXSparse_library" in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                          use_CXSparse=no
+                                          with_CXSparse_library=no
+                                          ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                          use_CXSparse=yes
+                                          with_CXSparse_library=yes
+                                          ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                          use_CXSparse=check
+                                          with_CXSparse_library=check
+                                          ;;
+                        * )               use_CXSparse=yes
+                                          ;;
+                       esac
+
+else
+  trace 4 No --with-CXSparse-library specified
+                       with_CXSparse_library=notset
+
+
+fi
+
+
+# Check whether --with-CXSparse-include was given.
+if test "${with_CXSparse_include+set}" = set; then :
+  withval=$with_CXSparse_include; case "$with_CXSparse_include" in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                          use_CXSparse=no
+                                          with_CXSparse_include=no
+                                          ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                          use_CXSparse=yes
+                                          with_CXSparse_include=yes
+                                          ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                          use_CXSparse=check
+                                          with_CXSparse_include=check
+                                          ;;
+                        * )               use_CXSparse=yes
+                                          ;;
+                       esac
+
+else
+  trace 4 No --with-CXSparse-include specified
+                       with_CXSparse_include=notset
+
+
+fi
+
+          # Having read the command-line options, check none are mutually
+          # exclusive or contradictory
+          #
+          # First test --with-CXSparse compatability with the rest
+          if ( test $with_CXSparse = no )
+          then
+             if ( test $with_CXSparse_pkgconf != no && test $with_CXSparse_pkgconf != notset )
+             then
+                # --with-CXSparse-pkgconf=path (is neither no or notset and cannot
+                # be yes or check as they would have errored above.
+                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to CXSparse via pkg-config but --with-CXSparse disabled it
+See \`config.log' for more details" "$LINENO" 5; }
+             fi
+
+             if ( test "$with_CXSparse_library" != no && test "$with_CXSparse_library" != notset )
+             then
+                if ( test "$with_CXSparse_library" = check )
+                then
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-CXSparse specifically disables library but --with-CXSparse-library" >&5
+$as_echo "$as_me: WARNING: --with-CXSparse specifically disables library but --with-CXSparse-library" >&2;}
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: asking to check for it; --with-CXSparse-library ignored" >&5
+$as_echo "$as_me: WARNING: asking to check for it; --with-CXSparse-library ignored" >&2;}
+                   use_CXSparse=no
+                else
+                   # --with-CXSparse-library is yes or points to the library
+                   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "--with-CXSparse-library asking to use CXSparse but --with-CXSparse disabled it
+See \`config.log' for more details" "$LINENO" 5; }
+                fi
+              fi
+
+             if ( test "$with_CXSparse_include" != no && test "$with_CXSparse_include" != notset )
+             then
+                if ( test "$with_CXSparse_include" = check )
+                then
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-CXSparse specifically disables library but --with-CXSparse-include" >&5
+$as_echo "$as_me: WARNING: --with-CXSparse specifically disables library but --with-CXSparse-include" >&2;}
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: asking to check for it; --with-CXSparse-include ignored" >&5
+$as_echo "$as_me: WARNING: asking to check for it; --with-CXSparse-include ignored" >&2;}
+                   use_CXSparse=no
+                else
+                   # --with-CXSparse-include is yes or points to the include
+                   # directory
+                   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "--with-CXSparse-include asking to use CXSparse but --with-CXSparse disabled it
+See \`config.log' for more details" "$LINENO" 5; }
+                fi
+             fi
+
+          else
+             # test --with-CXSparse != no
+
+             if ( test $with_CXSparse = check )
+             then
+                if ( test $with_CXSparse_pkgconf != no && test $with_CXSparse_pkgconf != notset )
+                then
+                   # --with-CXSparse-pkgconf must point to the metafile
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Explicitly asking for CXSparse via pkg-config but --with-CXSparse is" >&5
+$as_echo "$as_me: WARNING: Explicitly asking for CXSparse via pkg-config but --with-CXSparse is" >&2;}
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: asking to check for it; --with-CXSparse ignored." >&5
+$as_echo "$as_me: WARNING: asking to check for it; --with-CXSparse ignored." >&2;}
+                   use_CXSparse=yes
+                fi
+
+                if ( test "$with_CXSparse_library" != check && test "$with_CXSparse_library" != notset )
+                then
+                   if ( test "$with_CXSparse_library" = no )
+                   then
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Asking to check for CXSparse via --with-CXSparse but --with-CXSparse-library" >&5
+$as_echo "$as_me: WARNING: Asking to check for CXSparse via --with-CXSparse but --with-CXSparse-library" >&2;}
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: explicitly disables it; --with-CXSparse ignored." >&5
+$as_echo "$as_me: WARNING: explicitly disables it; --with-CXSparse ignored." >&2;}
+                      use_CXSparse=no
+                   else
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Explicitly asking for CXSparse via --with-CXSparse-library but --with-CXSparse" >&5
+$as_echo "$as_me: WARNING: Explicitly asking for CXSparse via --with-CXSparse-library but --with-CXSparse" >&2;}
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: asking to check for it; --with-CXSparse ignored." >&5
+$as_echo "$as_me: WARNING: asking to check for it; --with-CXSparse ignored." >&2;}
+                      use_CXSparse=yes
+                   fi
+                fi
+
+                if ( test "$with_CXSparse_include" != check && test "$with_CXSparse_include" != notset )
+                then
+                   if ( test "$with_CXSparse_include" = no )
+                   then
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Asking to check for CXSparse via --with-CXSparse but --with-CXSparse-include" >&5
+$as_echo "$as_me: WARNING: Asking to check for CXSparse via --with-CXSparse but --with-CXSparse-include" >&2;}
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: explicitly disables it; --with-CXSparse ignored." >&5
+$as_echo "$as_me: WARNING: explicitly disables it; --with-CXSparse ignored." >&2;}
+                      use_CXSparse=no
+                   else
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Explicitly asking for CXSparse via --with-CXSparse-include but --with-CXSparse" >&5
+$as_echo "$as_me: WARNING: Explicitly asking for CXSparse via --with-CXSparse-include but --with-CXSparse" >&2;}
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: asking to check for it; --with-CXSparse ignored." >&5
+$as_echo "$as_me: WARNING: asking to check for it; --with-CXSparse ignored." >&2;}
+                      use_CXSparse=yes
+                   fi
+                fi
+
+             else
+                # --with-CXSparse != no && != check
+                if ( test $with_CXSparse != notset )
+                then
+                   # --with-CXSparse = path or yes
+
+                   # We need not check --with-CXSparse-pkgconf as there is no
+                   # possible conflict (cannot be check and we take no to
+                   # be a request to disable pkg-config, rather than the
+                   # library as a whole)
+
+                   if ( test "$with_CXSparse_library" = no )
+                   then
+                      { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "--with-CXSparse-library disabling CXSparse but --with-CXSparse enabled it
+See \`config.log' for more details" "$LINENO" 5; }
+                   else
+                      if ( test "$with_CXSparse_library" = check )
+                      then
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Explicitly enabling CXSparse via --with-CXSparse but --with-CXSparse-library" >&5
+$as_echo "$as_me: WARNING: Explicitly enabling CXSparse via --with-CXSparse but --with-CXSparse-library" >&2;}
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING:  asking to check for it; --with-CXSparse-include ignored." >&5
+$as_echo "$as_me: WARNING:  asking to check for it; --with-CXSparse-include ignored." >&2;}
+                         use_CXSparse=no
+                      fi
+                   fi
+
+                   if ( test "$with_CXSparse_include" = no )
+                   then
+                      { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "--with-CXSparse-include disabling CXSparse but --with-CXSparse enabled it
+See \`config.log' for more details" "$LINENO" 5; }
+                   else
+                      if ( test "$with_CXSparse_include" = check )
+                      then
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Explicitly enabling CXSparse via --with-CXSparse but --with-CXSparse-include" >&5
+$as_echo "$as_me: WARNING: Explicitly enabling CXSparse via --with-CXSparse but --with-CXSparse-include" >&2;}
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING:  asking to check for it; --with-CXSparse-include ignored." >&5
+$as_echo "$as_me: WARNING:  asking to check for it; --with-CXSparse-include ignored." >&2;}
+                         use_CXSparse=no
+                      fi
+                   fi
+                fi
+             fi
+          fi
+
+          # Now test --with-CXSparse-pkgconf is not in conflict with the other two
+          # command-line switches.
+          if ( test $with_CXSparse_pkgconf != notset && test $with_CXSparse_pkgconf != no )
+          then
+             # --with-CXSparse-pkgconf = path (cannot be yes or check)
+             if ( test "$with_CXSparse_library" = check )
+             then
+                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-CXSparse-library asking to check for CXSparse but --with-CXSparse-pkgconf asking" >&5
+$as_echo "$as_me: WARNING: --with-CXSparse-library asking to check for CXSparse but --with-CXSparse-pkgconf asking" >&2;}
+                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: to use pkg-config, --with-CXSparse-library ignored." >&5
+$as_echo "$as_me: WARNING: to use pkg-config, --with-CXSparse-library ignored." >&2;}
+                use_CXSparse=yes
+             else
+                if ( test "$with_CXSparse_library" != no && test "$with_CXSparse_library" != notset )
+                then
+                   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "--with-CXSparse-library enabling compile check for CXSparse but --with-CXSparse-pkgconf asking to use pkg-config
+See \`config.log' for more details" "$LINENO" 5; }
+                fi
+             fi
+
+             if ( test "$with_CXSparse_include" = check )
+             then
+                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-CXSparse-include asking to check for CXSparse but --with-CXSparse-pkgconf asking" >&5
+$as_echo "$as_me: WARNING: --with-CXSparse-include asking to check for CXSparse but --with-CXSparse-pkgconf asking" >&2;}
+                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: to use pkg-config, --with-CXSparse-include ignored." >&5
+$as_echo "$as_me: WARNING: to use pkg-config, --with-CXSparse-include ignored." >&2;}
+                use_CXSparse=yes
+             else
+                if ( test "$with_CXSparse_include" != no && test "$with_CXSparse_include" != notset )
+                then
+                   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "--with-CXSparse-include enabling compile check for CXSparse but --with-CXSparse-pkgconf asking to use pkg-config
+See \`config.log' for more details" "$LINENO" 5; }
+                fi
+             fi
+          fi
+
+
+          # Check consistency between library and include switches
+          if ( test "$with_CXSparse_library" = no )
+          then
+             if ( test "$with_CXSparse_include" != no && test "$with_CXSparse_include" != notset )
+             then
+                if ( test "$with_CXSparse_include" = check )
+                then
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-CXSparse-include asking to check for CXSparse but --with-CXSparse-library has" >&5
+$as_echo "$as_me: WARNING: --with-CXSparse-include asking to check for CXSparse but --with-CXSparse-library has" >&2;}
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: explicitly disabled it; --with-CXSparse-include ignored." >&5
+$as_echo "$as_me: WARNING: explicitly disabled it; --with-CXSparse-include ignored." >&2;}
+                   use_CXSparse=no
+                else
+                   # --with-CXSparse-include = yes or path
+                   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "--with-CXSparse-include enabling CXSparse but --with-CXSparse-library disabled it.
+See \`config.log' for more details" "$LINENO" 5; }
+                fi
+             fi
+          else
+             # --with-CXSparse-library != no
+             if ( test "$with_CXSparse_library" = check )
+             then
+                if ( test "$with_CXSparse_include" = no )
+                then
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-CXSparse-library asking to check for CXSparse but --with-CXSparse-include has" >&5
+$as_echo "$as_me: WARNING: --with-CXSparse-library asking to check for CXSparse but --with-CXSparse-include has" >&2;}
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: explicitly disabled it; --with-CXSparse-library ignored." >&5
+$as_echo "$as_me: WARNING: explicitly disabled it; --with-CXSparse-library ignored." >&2;}
+                   use_CXSparse=no
+                else
+                   if ( test "$with_CXSparse_include" != check && test "$with_CXSparse_include" != notset )
+                   then
+                      # --with-CXSparse-include = yes or path
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-CXSparse-library asking to check for CXSparse but --with-CXSparse-include has" >&5
+$as_echo "$as_me: WARNING: --with-CXSparse-library asking to check for CXSparse but --with-CXSparse-include has" >&2;}
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: explicitly enabled it; --with-CXSparse-library ignored." >&5
+$as_echo "$as_me: WARNING: explicitly enabled it; --with-CXSparse-library ignored." >&2;}
+                      use_CXSparse=yes
+                   fi
+                fi
+             else
+                if ( test "$with_CXSparse_library" != notset )
+                then
+                   # --with-CXSparse-library a path or yes
+                   if ( test "$with_CXSparse_include" = no )
+                   then
+                      { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "--with-CXSparse-library enabling CXSparse but --with-CXSparse-include disabled it.
+See \`config.log' for more details" "$LINENO" 5; }
+                   else
+                      if ( test "$with_CXSparse_include" = check )
+                      then
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-CXSparse-include asking to check for CXSparse but --with-CXSparse-library has" >&5
+$as_echo "$as_me: WARNING: --with-CXSparse-include asking to check for CXSparse but --with-CXSparse-library has" >&2;}
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: explicitly enabled it; --with-CXSparse-include ignored." >&5
+$as_echo "$as_me: WARNING: explicitly enabled it; --with-CXSparse-include ignored." >&2;}
+                         use_CXSparse=yes
+                      fi
+                   fi
+                fi
+             fi
+          fi
+
+
+          # Now process --with-CXSparse to see if it is a fallback path
+          #
+          # Initialise fallback components
+          fallback_path=""
+          fallback_file=""
+          # Check for viable switch setting
+          if ( test $with_CXSparse != notset && test $with_CXSparse != no && test $with_CXSparse != check && test $with_CXSparse != yes )
+          then
+             # We have a path to use
+             if ( test -d $with_CXSparse )
+             then
+                # Parameter is a directory path
+                fallback_path=$with_CXSparse
+                trace 3 with-CXSparse provides a fallback path [$fallback_path]
+             else
+                fallback_path=`$as_dirname -- $with_CXSparse ||
+$as_expr X$with_CXSparse : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
+	 X$with_CXSparse : 'X\(//\)[^/]' \| \
+	 X$with_CXSparse : 'X\(//\)$' \| \
+	 X$with_CXSparse : 'X\(/\)' \| . 2>/dev/null ||
+$as_echo X$with_CXSparse |
+    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)[^/].*/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\).*/{
+	    s//\1/
+	    q
+	  }
+	  s/.*/./; q'`
+                if ( test -d $fallback_path  )
+                then
+                   # strip leading path
+                   fallback_file=`$EXPR "//$with_CXSparse" : '.*/\([^/]*\)'`
+                   # portable version of fallback_file=`basename $with_CXSparse`
+                   if ( test X$with_CXSparse = X$fallback_path/$fallback_file )
+                   then
+                      # Parameter is a file path
+                      trace 3 with-CXSparse provides a fallback path [$fallback_path] and a file [$fallback_file]
+                   else
+                      # Somehow dirname($x)/basename($x) != $x
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Problem processing --with-CXSparse, parameter ignored" >&5
+$as_echo "$as_me: WARNING: Problem processing --with-CXSparse, parameter ignored" >&2;}
+                      fallback_path=""
+                      fallback_file=""
+                   fi
+                else
+                   # --with-CXSparse=/path/is/not/a/dir/something
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Illegal command-line option for --with-CXSparse, parameter ignored" >&5
+$as_echo "$as_me: WARNING: Illegal command-line option for --with-CXSparse, parameter ignored" >&2;}
+                   fallback_path=""
+                   fallback_file=""
+                fi
+             fi
+          fi
+
+
+          if ( test X$use_CXSparse != Xno )
+          then
+             if ( test $with_CXSparse_pkgconf = no ||  test $with_CXSparse_pkgconf = notset )
+             then
+                # Not using pkg-config, set any paths for compile checks
+
+                # Check if --with-CXSparse-library is a specification rather than a
+                # simple switch
+                if ( test "$with_CXSparse_library" != notset && test "$with_CXSparse_library" != no && test "$with_CXSparse_library" != check && test "$with_CXSparse_library" != yes )
+                then
+                   # We have a path specification to parse
+                   #
+                   # If the specification is a straight forward link line (of
+                   # the form "-L/a/b/c -ld .. -L/w/x/y -lz" we want to split
+                   # off the last -l entries into with_CXSparse_lnklibs and include
+                   # the initial part of the link line in with_CXSparse_libpath.
+                   # If we just have directory and library paths, we need to
+                   # add the relevant linker switch, and assign the parameter
+                   # to the appropriate variable.
+                   #
+                   with_CXSparse_lnklibs=""
+                   with_CXSparse_libpath=""
+                   use_CXSparse=yes
+                   trace 6 Parsing --with-CXSparse-library setting
+                   with_CXSparse_library=`echo " $with_CXSparse_library " | $SED 's/ -L */ -L/g;s/ -l */ -l/g'`
+                   # Collapse down spaces following -L and -l entries. This is
+                   # mainly for ease of parsing but does make any user input
+                   # compatible with the form of the default values used
+                   # throughout this configure script. Downsides are that any
+                   # other -X <arg> switches provided by the user will not
+                   # parse correctly and a general issue awaiting any systems
+                   # that must have the space between the switch and its
+                   # argument. The latter issue is the bigger problem as such
+                   # a limitation will have big consequences for this script
+                   # if we ever hit such a constrained toolset.
+                   for part in $with_CXSparse_library
+                   do
+                      case $part in
+                      -L* )   # Library path specifier. Any previous library
+                              # names ought to be recorded as part of libpath
+                              # to maintain any order significance of the
+                              # supplied link command.
+                              TRACE_INDENT="     "
+                              trace 6 Appending [$part] to library path
+                              with_CXSparse_libpath="$with_CXSparse_libpath$with_CXSparse_lnklibs$part "
+                              with_CXSparse_lnklibs=""
+                              ;;
+                      -l* )   # Library specifier. Append to the linklib
+                              # variable.
+                              TRACE_INDENT="     "
+                              trace 6 Appending [$part] to library list
+                              with_CXSparse_lnklibs="$with_CXSparse_lnklibs$part "
+                              ;;
+                      -* )    # Presume linker switch. Append to libpath after
+                              # adding any existing library specs (so as to
+                              # maintain any order specific requirements).
+                              TRACE_INDENT="     "
+                              trace 6 Appending [$part] to link line
+                              with_CXSparse_libpath="$with_CXSparse_libpath$with_CXSparse_lnklibs$part "
+                              with_CXSparse_lnklibs=""
+                              ;;
+                      * )     # Non-linker format, see if we can work out
+                              # what it is
+                              if ( test -d $part )
+                              then
+                                 # We have a directory, add to libpath with
+                                 # a -L prefix having moved across any
+                                 # libraries from lnklibs to preserve ordering
+                                 # constraints
+                                 TRACE_INDENT="     "
+                                 trace 6 Adding [-L$part] to link line
+                                 with_CXSparse_libpath="$with_CXSparse_libpath${with_CXSparse_lnklibs}-L$part "
+                                 with_CXSparse_lnklibs=""
+                              else
+                                 # Not a directory, is it directory/file?
+                                 path=`$as_dirname -- $part ||
+$as_expr X$part : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
+	 X$part : 'X\(//\)[^/]' \| \
+	 X$part : 'X\(//\)$' \| \
+	 X$part : 'X\(/\)' \| . 2>/dev/null ||
+$as_echo X$part |
+    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)[^/].*/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\).*/{
+	    s//\1/
+	    q
+	  }
+	  s/.*/./; q'`
+                                 if ( test X$path != X && test $path != . )
+                                 then
+                                    # We have "something/file" does the
+                                    # "something" point to a directory?
+                                    if ( test -d $path  )
+                                    then
+                                       # We have "directory/presumed-library-name"
+                                       # Find candidate library name
+                                       file=`$EXPR "//$part" : '.*/\([^/]*\)'`
+                                       if ( test $part = $path/$file )
+                                       then
+                                          # Parameter is a file path
+                                          # Does it have a '.a' extension
+                                          lib=`$EXPR "X$file" : 'X\(.*\)\.a$'`
+                                          if ( test X$lib != X  )
+                                          then
+                                             lib=`echo $lib | $SED 's/^lib//'`
+                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-CXSparse_library pointing to a .a" >&5
+$as_echo "$as_me: WARNING: Specifying --with-CXSparse_library pointing to a .a" >&2;}
+                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: will cause problems building with shared libraries." >&5
+$as_echo "$as_me: WARNING: will cause problems building with shared libraries." >&2;}
+                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Instead we will use -l$lib" >&5
+$as_echo "$as_me: WARNING: Instead we will use -l$lib" >&2;}
+                                          else
+                                             # Does it have a '.so' extension
+                                             lib=`$EXPR "X$file" : 'X\(.*\)\.so$'`
+                                             if ( test X$lib != X )
+                                             then
+                                                lib=`echo $lib | $SED 's/^lib//'`
+                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-CXSparse_library pointing to" >&5
+$as_echo "$as_me: WARNING: Specifying --with-CXSparse_library pointing to" >&2;}
+                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: a .so will cause problems building with " >&5
+$as_echo "$as_me: WARNING: a .so will cause problems building with " >&2;}
+                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: static libraries. Instead, we will use" >&5
+$as_echo "$as_me: WARNING: static libraries. Instead, we will use" >&2;}
+                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: -l$lib" >&5
+$as_echo "$as_me: WARNING: -l$lib" >&2;}
+                                             else
+                                                # Parameter is path and name fragment
+                                                lib=`echo $file | $SED 's/^lib//'`
+                                             fi
+                                          fi
+                                          # As the user specified the library
+                                          # as a path rather than with a -L
+                                          # and a -l entry, it would be good
+                                          # to continue in the same vein.
+                                          # However, as -l/full/path is not
+                                          # supported, we have to revert to
+                                          # the seperate specifiers.
+                                          TRACE_INDENT="     "
+                                          trace 6 Adding [-L$path] to library path
+                                          with_CXSparse_libpath="$with_CXSparse_libpath$with_CXSparse_lnklibs-L$path "
+                                          with_CXSparse_lnklibs=""
+                                          TRACE_INDENT="     "
+                                          trace 6 Adding [-l$lib] to library list
+                                          with_CXSparse_lnklibs="-l$lib "
+                                       else
+                                          # Somehow dirname($x)/basename($x) != $x
+                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Problem processing --with-CXSparse-library, [$part] ignored" >&5
+$as_echo "$as_me: WARNING: Problem processing --with-CXSparse-library, [$part] ignored" >&2;}
+                                       fi
+                                    else
+                                       # Parameter is "not-a-dir-path/something"
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Illegal value for --with-CXSparse-library, [$part] ignored" >&5
+$as_echo "$as_me: WARNING: Illegal value for --with-CXSparse-library, [$part] ignored" >&2;}
+                                    fi
+                                 else
+                                    # Parameter is just "something" - assume library name
+                                    #
+                                    # Does it have a '.a' extension
+                                    lib=`$EXPR "X$part" : 'X\(.*\)\.a$'`
+                                    if ( test X$lib != X  )
+                                    then
+                                       lib=`echo $lib | $SED 's/^lib//'`
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-CXSparse_library pointing to a .a" >&5
+$as_echo "$as_me: WARNING: Specifying --with-CXSparse_library pointing to a .a" >&2;}
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: will cause problems building with shared libraries." >&5
+$as_echo "$as_me: WARNING: will cause problems building with shared libraries." >&2;}
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Instead we will use -l$lib" >&5
+$as_echo "$as_me: WARNING: Instead we will use -l$lib" >&2;}
+                                    else
+                                       # Does it have a '.so' extension
+                                       lib=`$EXPR "X$part" : 'X\(.*\)\.so$'`
+                                       if ( test X$lib != X )
+                                       then
+                                          lib=`echo $lib | $SED 's/^lib//'`
+                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-CXSparse_library pointing to" >&5
+$as_echo "$as_me: WARNING: Specifying --with-CXSparse_library pointing to" >&2;}
+                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: a .so will cause problems building with " >&5
+$as_echo "$as_me: WARNING: a .so will cause problems building with " >&2;}
+                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: static libraries. Instead, we will use" >&5
+$as_echo "$as_me: WARNING: static libraries. Instead, we will use" >&2;}
+                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: -l$lib" >&5
+$as_echo "$as_me: WARNING: -l$lib" >&2;}
+                                       else
+                                          # Parameter is name fragment
+                                          lib=`echo $part | $SED 's/^lib//'`
+                                       fi
+                                    fi
+                                    TRACE_INDENT="     "
+                                    trace 6 Adding [-l$lib] to library list
+                                    with_CXSparse_lnklibs="${with_CXSparse_lnklibs}-l$lib "
+                                 fi
+                              fi
+                              ;;
+                      esac
+                   done
+                   trace 3 Link line assembled from --with-CXSparse-library is [$with_CXSparse_libpath $with_CXSparse_lnklibs]
+                   # Now verify what we have
+                   if ( test X`$EXPR "X $with_CXSparse_libpath $with_CXSparse_lnklibs" : '.* \(-l[^ ]*\).*$'` == X )
+                   then
+                      # no -lxxx in libpath or lnklibs - use any fallback or the
+                      # default library name
+                      if ( test X$fallback_file != X )
+                      then
+                         # --with_CXSparse specified a fallback name, use that but
+                         # sanitise it first
+                         lib=`$EXPR "X$fallback_file" : 'X\(.*\)\.a$'`
+                         if ( test X$lib != X  )
+                         then
+                            # Removed an unwanted .a suffix
+                            # Now strip any leading -l or lib prefix
+                            with_CXSparse_lnklibs=-l`echo $lib | $SED 's/^-l//;s/^lib//'`
+                            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-CXSparse pointing to a .a" >&5
+$as_echo "$as_me: WARNING: Specifying --with-CXSparse pointing to a .a" >&2;}
+                            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: will cause problems building with shared libraries." >&5
+$as_echo "$as_me: WARNING: will cause problems building with shared libraries." >&2;}
+                            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Instead we will use -l$lib" >&5
+$as_echo "$as_me: WARNING: Instead we will use -l$lib" >&2;}
+                         else
+                            lib=`$EXPR "X$fallback_file" : 'X\(.*\)\.so$'`
+                            if ( test X$lib != X )
+                            then
+                               # Removed an unwanted .so suffix
+                               # Now strip any leading -l or lib prefix
+                               with_CXSparse_lnklibs=-l`echo $lib | $SED 's/^-l//;s/^lib//'`
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-CXSparse pointing to a .so" >&5
+$as_echo "$as_me: WARNING: Specifying --with-CXSparse pointing to a .so" >&2;}
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: will cause problems building with static libraries." >&5
+$as_echo "$as_me: WARNING: will cause problems building with static libraries." >&2;}
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Instead, we will use -l$lib" >&5
+$as_echo "$as_me: WARNING: Instead, we will use -l$lib" >&2;}
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: " >&5
+$as_echo "$as_me: WARNING: " >&2;}
+                            else
+                               # No suffix to strip
+                               # Strip any leading -l or lib prefix
+                               with_CXSparse_lnklibs=-l`echo $fallback_file | $SED 's/^-l//;s/^lib//'`
+                            fi
+                         fi
+                         trace 3 No library name specified by --with-CXSparse-library, using --with-CXSparse value [$with_CXSparse_lnklibs]
+                      else
+                         trace 3 No library name specified by --with-CXSparse-library, using default ["-lcxsparse"]
+                         with_CXSparse_lnklibs="-lcxsparse"
+                      fi
+
+                      if ( test X$fallback_path != X )
+                      then
+                         # --with_CXSparse specified a fallback path, are we using
+                         # it?
+                         if ( test X`$EXPR "X $with_CXSparse_libpath " : '.* \(-L[^ ]*\).*$'` == X )
+                         then
+                            # We do not have a library path; add the fallback
+                            with_CXSparse_libpath="-L$fallback_path $with_CXSparse_libpath"
+                            # It is an assumption to put it first, but we do
+                            # not know where the relevant library is in the
+                            # link specification, so we have to put it there.
+                            trace 3 No path component of --with-CXSparse-library, using --with-CXSparse to set library path for CXSparse [-L$fallback_path]
+                         else
+                            if ( test X`$EXPR "X $with_CXSparse_libpath " : ".* \(-L$fallback_path\)/* .*"` == X )
+                            then
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-CXSparse-library and --with-CXSparse specify different paths, --with-CXSparse path ignored" >&5
+$as_echo "$as_me: WARNING: --with-CXSparse-library and --with-CXSparse specify different paths, --with-CXSparse path ignored" >&2;}
+                            fi
+                         fi
+                      fi
+                   else
+                      # We already have a library specified, confirm that any
+                      # --with_CXSparse setting agreed
+                      if ( test X$fallback_file != X )
+                      then
+                         lib=`echo $fallback_file | $SED 's/^-l//;s/^lib//;s/\(.*\)\.a/\1/;s/\(.*\).so/\1/'`
+                         # strip any leading -l or lib prefix; any trailing .a
+                         # or .so suffixes
+                         if ( test X`$EXPR "X $with_CXSparse_libpath $with_CXSparse_lnklibs " : ".* \(-l$lib\) .*"` == X )
+                         then
+                            # No -l<fallback>
+                            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-CXSparse-library and --with-CXSparse specify different libraries, --with-CXSparse library setting ignored" >&5
+$as_echo "$as_me: WARNING: --with-CXSparse-library and --with-CXSparse specify different libraries, --with-CXSparse library setting ignored" >&2;}
+                         fi
+                      fi
+
+                      if ( test X$fallback_path != X )
+                      then
+                         # --with_CXSparse specified a fallback path, are we using
+                         # it?
+                         if ( test X`$EXPR "X $with_CXSparse_libpath " : '.* \(-L[^ ]*\).*$'` == X )
+                         then
+                            # We do not have any library path; add the fallback
+                            trace 3 No path specified by --with-CXSparse-library, using --with-CXSparse value [-L$fallback_path]
+                            with_CXSparse_libpath="-L$fallback_path $with_CXSparse_libpath"
+                            # It is an assumption to put it first, but we do
+                            # not know where the relevant library is in the
+                            # link specification, so we have to put it there.
+                         else
+                            if ( test X`$EXPR "X $with_CXSparse_libpath " : ".* \(-L$fallback_path\)/* .*"` == X )
+                            then
+                               # No -L entry for the fallback path.
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-CXSparse-library and --with-CXSparse specify different paths, --with-CXSparse path ignored" >&5
+$as_echo "$as_me: WARNING: --with-CXSparse-library and --with-CXSparse specify different paths, --with-CXSparse path ignored" >&2;}
+                            fi
+                         fi
+                      fi
+                   fi
+                else
+                   # --with-CXSparse-library used as a switch; employ fallback/default paths
+                   if ( test X$fallback_path != X )
+                   then
+                      trace 3 Using path component of --with-CXSparse to set library path for CXSparse [-L$fallback_path]
+                      with_CXSparse_libpath=-L$fallback_path
+                      use_CXSparse=yes
+                   else
+                      with_CXSparse_libpath=""
+                   fi
+                   if ( test X$fallback_file != X )
+                   then
+                         # --with_CXSparse specified a fallback name, use that but
+                         # sanitise it first
+                         lib=`$EXPR "X$fallback_file" : 'X\(.*\)\.a$'`
+                         if ( test X$lib != X  )
+                         then
+                            # Removed an unwanted .a suffix
+                            # Now strip any leading -l or lib prefix
+                            with_CXSparse_lnklibs=-l`echo $lib | $SED 's/^-l//;s/^lib//'`
+                            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-CXSparse pointing to a .a" >&5
+$as_echo "$as_me: WARNING: Specifying --with-CXSparse pointing to a .a" >&2;}
+                            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: will cause problems building with shared libraries." >&5
+$as_echo "$as_me: WARNING: will cause problems building with shared libraries." >&2;}
+                            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Instead we will use -l$lib" >&5
+$as_echo "$as_me: WARNING: Instead we will use -l$lib" >&2;}
+                         else
+                            lib=`$EXPR "X$fallback_file" : 'X\(.*\)\.so$'`
+                            if ( test X$lib != X )
+                            then
+                               # Removed an unwanted .so suffix
+                               # Now strip any leading -l or lib prefix
+                               with_CXSparse_lnklibs=-l`echo $lib | $SED 's/^-l//;s/^lib//'`
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-CXSparse pointing to a .so" >&5
+$as_echo "$as_me: WARNING: Specifying --with-CXSparse pointing to a .so" >&2;}
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: will cause problems building with static libraries." >&5
+$as_echo "$as_me: WARNING: will cause problems building with static libraries." >&2;}
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Instead, we will use -l$lib" >&5
+$as_echo "$as_me: WARNING: Instead, we will use -l$lib" >&2;}
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: " >&5
+$as_echo "$as_me: WARNING: " >&2;}
+                            else
+                               # No suffix to strip
+                               # Strip any leading -l or lib prefix
+                               with_CXSparse_lnklibs=-l`echo $fallback_file | $SED 's/^-l//;s/^lib//'`
+                            fi
+                         fi
+                         trace 3 Using file component of --with-CXSparse to set library name for CXSparse [$with_CXSparse_lnklibs]
+                   else
+                      trace 3 Using default library name for CXSparse ["-lcxsparse"]
+                      with_CXSparse_lnklibs="-lcxsparse"
+                   fi
+                fi
+
+
+                # Check if --with-CXSparse-include is a provided
+                if ( test "$with_CXSparse_include" != notset && test "$with_CXSparse_include" != no && test "$with_CXSparse_include" != check && test "$with_CXSparse_include" != yes )
+                then
+                   # we have a parameter rather than a switch to use
+                   with_CXSparse_inc=""
+                   use_CXSparse=yes
+                   if ( test X$fallback_path != X )
+                   then
+                      fallback_match=no
+                      # If we have a fallback path, we want to check it is
+                      # included in the -include setting and warn if not
+                   else
+                      fallback_match=yes
+                      # We have no fallback, so we never need to warn the user
+                   fi
+                   trace 6 Parsing --with-CXSparse-include setting
+                   # Strip any provided -I entries for ease of parsing.
+                   for path in `echo " $with_CXSparse_include " | $SED 's/ -I *//g'`
+                   do
+                      if ( test -d $path )
+                      then
+                         TRACE_INDENT="     "
+                         trace 6 Appending [-I$path] to set include path for CXSparse
+                         with_CXSparse_inc="$with_CXSparse_inc-I$path "
+                         if ( test $fallback_match == no && test $fallback_path == $path )
+                         then
+                            fallback_match=yes
+                         fi
+                      else
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Illegal component of --with-CXSparse-include, [$path] ignored" >&5
+$as_echo "$as_me: WARNING: Illegal component of --with-CXSparse-include, [$path] ignored" >&2;}
+                      fi
+                   done
+                   if ( test X$with_CXSparse_inc == X )
+                   then
+                      # No path from argument, any fallback?
+                      if ( test X$fallback_path != X )
+                      then
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Will use --with-CXSparse value [-I$fallback_path]" >&5
+$as_echo "$as_me: WARNING: Will use --with-CXSparse value [-I$fallback_path]" >&2;}
+                         with_CXSparse_inc=-I$fallback_path
+                      else
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Will use default system include path" >&5
+$as_echo "$as_me: WARNING: Will use default system include path" >&2;}
+                         with_CXSparse_inc=""
+                      fi
+                   else
+                      # We have valid path(es) supplied by the user, do they
+                      # encompass the fallback setting?
+                      if ( test $fallback_match != yes )
+                      then
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-CXSparse-include and --with-CXSparse specify different paths, --with-CXSparse ignored" >&5
+$as_echo "$as_me: WARNING: --with-CXSparse-include and --with-CXSparse specify different paths, --with-CXSparse ignored" >&2;}
+                      fi
+                   fi
+                else
+                   # --with-CXSparse-include is a switch setting rather than a path,
+                   # use any available fallback
+                   if ( test X$fallback_path != X )
+                   then
+                      trace 3 No path specified by --with-CXSparse-include, using --with-CXSparse value [-I$fallback_path]
+                      with_CXSparse_inc=-I$fallback_path
+                      use_CXSparse=yes
+                   else
+                      trace 3 Will use default system include path
+                      with_CXSparse_inc=""
+                   fi
+                fi
+             fi # End of: if ( test $with_CXSparse_pkgconf = no || notset
+          else
+             trace 4 Library CXSparse disabled
+          fi
+
+          KnownLibs=$KnownLibs" "CXSparse
+          if ( test X$use_CXSparse = X )
+          then
+             use_CXSparse=check
+             UnconfiguredLibs=$UnconfiguredLibs" "CXSparse
+          else
+             ConfiguredLibs=$ConfiguredLibs" "CXSparse
+          fi
+
+          with_CXSparse_tstcd='cs_di *N1, *N2, *P;
+                               P = cs_di_multiply (N1, N2);'
+                                                  with_CXSparse_prq=""
+          with_CXSparse_hdr="suitesparse/cs.h"
+          with_CXSparse_lang="C
+                             "
+          with_CXSparse_virtual="no"
+
+
+
+
+
+
 # Check whether --with-CUDA-pkgconf was given.
 if test "${with_CUDA_pkgconf+set}" = set; then :
   withval=$with_CUDA_pkgconf; case $with_CUDA_pkgconf in
@@ -25401,8 +26313,8 @@ $as_echo "$as_me: WARNING: " >&2;}
                          fi
                          trace 3 No library name specified by --with-UMFPack-library, using --with-UMFPack value [$with_UMFPack_lnklibs]
                       else
-                         trace 3 No library name specified by --with-UMFPack-library, using default ["-lumfpack -lcolamd -lcxsparse -lamd"]
-                         with_UMFPack_lnklibs="-lumfpack -lcolamd -lcxsparse -lamd"
+                         trace 3 No library name specified by --with-UMFPack-library, using default ["-lumfpack -lamd"]
+                         with_UMFPack_lnklibs="-lumfpack -lamd"
                       fi
 
                       if ( test X$fallback_path != X )
@@ -25512,8 +26424,8 @@ $as_echo "$as_me: WARNING: " >&2;}
                          fi
                          trace 3 Using file component of --with-UMFPack to set library name for UMFPack [$with_UMFPack_lnklibs]
                    else
-                      trace 3 Using default library name for UMFPack ["-lumfpack -lcolamd -lcxsparse -lamd"]
-                      with_UMFPack_lnklibs="-lumfpack -lcolamd -lcxsparse -lamd"
+                      trace 3 Using default library name for UMFPack ["-lumfpack -lamd"]
+                      with_UMFPack_lnklibs="-lumfpack -lamd"
                    fi
                 fi
 
@@ -25600,9 +26512,12 @@ $as_echo "$as_me: WARNING: --with-UMFPack-include and --with-UMFPack specify dif
              ConfiguredLibs=$ConfiguredLibs" "UMFPack
           fi
 
-          with_UMFPack_tstcd='umfpack_di_triplet_to_col ();'
-                                                  with_UMFPack_prq="blas posixThreads"
-          with_UMFPack_hdr=""
+          with_UMFPack_tstcd='int n_row, n_col, nz, *Ti, *Tj, *Ap, *Ai, status, *Map ;
+                               double *Tx, *Ax ;
+                               status = umfpack_di_triplet_to_col (n_row, n_col, nz, Ti, Tj, Tx, Ap, Ai, Ax, Map) ;
+                              '
+                                                  with_UMFPack_prq=""
+          with_UMFPack_hdr="suitesparse/umfpack.h"
           with_UMFPack_lang="C
                              "
           with_UMFPack_virtual="no"

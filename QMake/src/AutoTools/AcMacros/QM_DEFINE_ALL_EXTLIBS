@@ -162,6 +162,14 @@ AC_DEFUN([QM_DEFINE_ALL_EXTLIBS],
           dnl                 .h
           dnl                 Lang
           dnl 
+          QM_DEFINE_EXTLIB_CC([CXSparse],
+                              [cs_di *N1, *N2, *P;
+                               P = cs_di_multiply (N1, N2);],
+                              [],
+                              [-lcxsparse],
+                              [suitesparse/cs.h],
+                              [C]
+                             )
           QM_DEFINE_EXTLIB_CC([CUDA],
                               [cudaMalloc ();],
                               [],
@@ -340,10 +348,13 @@ dnl
                               [C]
                              )
           QM_DEFINE_EXTLIB_CC([UMFPack],
-                              [umfpack_di_triplet_to_col ();],
-                              [blas posixThreads],
-                              [-lumfpack -lcolamd -lcxsparse -lamd],
+                              [int n_row, n_col, nz, *Ti, *Tj, *Ap, *Ai, status, *Map ;
+                               double *Tx, *Ax ;
+                               status = umfpack_di_triplet_to_col (n_row, n_col, nz, Ti, Tj, Tx, Ap, Ai, Ax, Map) ;
+                              ],
                               [],
+                              [-lumfpack -lamd],
+                              [suitesparse/umfpack.h],
                               [C]
                              )
           dnl# Of the libraries declared here: colamd; cxsparse and amd are
