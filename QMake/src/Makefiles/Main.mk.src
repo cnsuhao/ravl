@@ -41,11 +41,13 @@ ifneq (,$(SUPPORT_ONLY))
  else
   SUPPORT_OK=no
   NOINCDEFS=1 # Tell the system to ignore the .def files.
+  REASON="platform not on SUPPORT_ONLY"
  endif
 else
  ifeq ($(ARC),$(filter $(ARC),$(DONOT_SUPPORT)))
   SUPPORT_OK=no
   NOINCDEFS=1 # Tell the system to ignore the .def files.
+  REASON="platform on DONOT_SUPPORT"
  else
   SUPPORT_OK=yes
  endif
@@ -59,6 +61,7 @@ ifeq ($(SUPPORT_OK),yes)
   SUPPORT_OK=yes
  else
   SUPPORT_OK=no
+  REASON="of insufficient RESOURCES"
  endif
 endif
 
@@ -531,11 +534,15 @@ srcfiles: $(TARG_DEFS) $(TARG_HDRS) $(LOCAL_FILES) $(LOCALHEADERS) $(SOURCES) $(
  $(TARG_HDRSYMS) $(TARG_PKGCONFIG)
 
 prebuildstep:
-ifdef PREBUILDSTEP
+ifeq (no,$(SUPPORT_OK))
+	$(if $(QMAKE_INFO),@echo Not processing directory because $(REASON))
+else
+ ifdef PREBUILDSTEP
 	@echo "--- Running prebuild step. "; \
 	$(PREBUILDSTEP)
-else
+ else
 	@true;
+ endif
 endif
 
 postbuildstep:  build_subdirs build_libs
