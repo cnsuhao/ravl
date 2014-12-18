@@ -605,30 +605,6 @@ ac_includes_default="\
 ac_subst_vars='LTLIBOBJS
 LIBOBJS
 RESOURCES
-RavlZmqOptimisation
-SerialIO_SUPPORT
-RavlXMPP
-RavlVisualHull
-RavlVoxels
-RavlVPlay
-RavlVDF
-RavlRawVidIO
-RavlLogic_LIBS
-RavlImageProc
-RavlGUI
-RavlFace_LIBS
-RavlExtImgIO
-RavlDPDisplay
-RavlDevAudio
-RavlDataServer
-RavlClassWizard
-RavlChartDetector
-RavlCameraCal
-RavlAutoPort
-RavlAAM
-Ravl3d_LIBS
-Ravl2dGUI_LIBS
-ParallelIO_SUPPORT
 USER_UNDEFSYMB
 USER_with_rpath
 USER_LIBPATHSWITCH
@@ -652,100 +628,6 @@ PROJECT_MAJOR
 SWIG
 GnuPlot
 EGREP
-Yajl_SUPPORT
-vtkWidgets_SUPPORT
-vtkVolumeRendering_SUPPORT
-vtkViews_SUPPORT
-vtkRendering_SUPPORT
-vtkQVTK_SUPPORT
-vtkParallel_SUPPORT
-vtkInfovis_SUPPORT
-vtkImaging_SUPPORT
-vtkIO_SUPPORT
-vtkHybrid_SUPPORT
-vtkGraphics_SUPPORT
-vtkGeovis_SUPPORT
-vtkGenericFiltering_SUPPORT
-vtkFiltering_SUPPORT
-vtkCommon_SUPPORT
-vtkCharts_SUPPORT
-vlfeat_SUPPORT
-UxUtil_SUPPORT
-UMFPack_SUPPORT
-tetgen_SUPPORT
-QtSql_SUPPORT
-QtNetwork_SUPPORT
-QtGui_SUPPORT
-QtCore_SUPPORT
-QGLViewer_SUPPORT
-Qt3_SUPPORT
-OpenMPI_SUPPORT
-NetServ_SUPPORT
-NetCDF_SUPPORT
-Math_SUPPORT
-GHBN_SUPPORT
-FreeType2_SUPPORT
-DynLink_SUPPORT
-CUDA_SUPPORT
-Meteor1_SUPPORT
-devVideo4Linux_SUPPORT
-SwigPython_SUPPORT
-SGIVL_SUPPORT
-NumPy_SUPPORT
-LibPython_SUPPORT
-libmpeg2_SUPPORT
-libmpeg_SUPPORT
-libmcrypt_SUPPORT
-MacOSXVideoCapture_SUPPORT
-MacOSXRunLoop_SUPPORT
-libGuppi_SUPPORT
-LibGd_SUPPORT
-uEyeSDK_SUPPORT
-libehs_SUPPORT
-dvdread_SUPPORT
-LibDirectShow_SUPPORT
-libClipStationPro_SUPPORT
-OpenGL_SUPPORT
-libffmpeg_SUPPORT
-Zlib_SUPPORT
-LibTIFF_SUPPORT
-posixThreads_SUPPORT
-LAPACK_SUPPORT
-JPEG_SUPPORT
-LibJasper_SUPPORT
-libmkl_SUPPORT
-GLUT_SUPPORT
-ZeroMQ_SUPPORT
-devVideo4Linux2_SUPPORT
-UUIdTheo_SUPPORT
-Socket_SUPPORT
-RLog_SUPPORT
-OpenSceneGraphGTK_SUPPORT
-OpenSceneGraph_SUPPORT
-libGLU_SUPPORT
-libGL_SUPPORT
-PulseAudioSimple_SUPPORT
-PulseAudio_SUPPORT
-PortAudio_SUPPORT
-libPNG_SUPPORT
-OpenCV_SUPPORT
-Loudmouth_SUPPORT
-GTKGLExt_SUPPORT
-libGTK2_SUPPORT
-LibGnome_SUPPORT
-libglade2_SUPPORT
-iksemel_SUPPORT
-glib_SUPPORT
-FFMPEGUTIL_SUPPORT
-FFMPEGSWS_SUPPORT
-FFMPEGCONT_SUPPORT
-FFMPEGCDEC_SUPPORT
-libDV_SUPPORT
-libCurl_SUPPORT
-avifile_SUPPORT
-libAudioFile_SUPPORT
-libavc1394_SUPPORT
-libdc1394_SUPPORT
 OpenGL_LIBS
 OpenGL_CFLAGS
 libffmpeg_LIBS
@@ -3533,13 +3415,6 @@ trace ()
 
 
 
-
-
-
-
-# Reset list of external libraries
-#
-echo > ./ExtPkgSupp.$$
 
 
 
@@ -32091,176 +31966,9 @@ fi
 
 
 
-# Declare the Ravl libraries that are dependant on the particular external
-# libraries
-
-libdc1394_SUPPORT=""
-BrokenLibs="$BrokenLibs libdc1394"
-echo libdc1394=@libdc1394_SUPPORT@ >> ./ExtPkgSupp.$$
-
-BrokenLibs="$BrokenLibs libavc1394"
-libavc1394_SUPPORT=""
-echo libavc1394=@libavc1394_SUPPORT@ >> ./ExtPkgSupp.$$
-libAudioFile_RavlLib=libRavlAudioFile
-
-
-avifile_SUPPORT=""
-BrokenLibs="$BrokenLibs avifile"
-echo avifile_SUPPORT=@avifile_SUPPORT@ >> ./ExtPkgSupp.$$
-libCurl_RavlLib=libRavlURLIO
-
-libDV_RavlLib=libRavlDV
-
-
-
-
-
-
-iksemel_RavlLib=libRavlXMPPIksemel
-
-libglade2_RavlLib=libRavlLibGlade
-
-LibGnome_RavlLib=libRavlGUIGnome
-
-
-
-Loudmouth_RavlLib=libRavlXMPPLoudmouth
-
-OpenCV_RavlLib=libRavlOpenCV
-
-
-PortAudio_RavlLib=libRavlPortAudio
-
-PulseAudioSimple_RavlLib=libRavlPulseAudio
-
-
-
-
-
-OpenSceneGraphGTK_RavlLib=libRavlGUIOpenSceneGraph
-
-RLog_RavlLib=libRavlRLog
-
-Socket_RavlLib=libRavlNet
-
-UUIdTheo_RavlLib=RavlUUId
-
-devVideo4Linux2_RavlLib=libRavlImgIOV4L2
-
-ZeroMQ_RavlLib=libRavlZmq
-
-# GLUT not directly used by Ravl
-
-libmkl_RavlLib=RavlIntelMKL
-
-LibJasper_RavlLib=libRavlImgIOJasper
-
-
-LAPACK_RavlLib="libRavlLapack libRavlLapackWraps"
-
-
-
-Zlib_RavlLib=libRavlZLib
-
-
-libffmpeg_RavlLib="libRavlLibFFmpeg"
-
-OpenGL_RavlLib="libRavlDPDisplay3d libRavlGUI3D"
-
-
-
-
-libClipStationPro_SUPPORT=""
-echo libClipStationPro_SUPPORT=@libClipStationPro_SUPPORT@ >> ./ExtPkgSupp.$$
-
-LibDirectShow_SUPPORT=""
-echo LibDirectShow_SUPPORT=@LibDirectShow_SUPPORT@ >> ./ExtPkgSupp.$$
-
-dvdread_SUPPORT=""
-echo dvdread_SUPPORT=@dvdread_SUPPORT@ >> ./ExtPkgSupp.$$
-
-libehs_SUPPORT=""
-echo libehs_SUPPORT=@libehs_SUPPORT@ >> ./ExtPkgSupp.$$
-
-uEyeSDK_SUPPORT=""
-echo uEyeSDK_SUPPORT=@uEyeSDK_SUPPORT@ >> ./ExtPkgSupp.$$
-
-LibGd_SUPPORT=""
-echo LibGd_SUPPORT=@LibGd_SUPPORT@ >> ./ExtPkgSupp.$$
-
-libGuppi_SUPPORT=""
-echo libGuppi_SUPPORT=@libGuppi_SUPPORT@ >> ./ExtPkgSupp.$$
-
-MacOSXRunLoop_SUPPORT=""
-echo MacOSXRunLoop_SUPPORT=@MacOSXRunLoop_SUPPORT@ >> ./ExtPkgSupp.$$
-
-MacOSXVideoCapture_SUPPORT=""
-echo MacOSXVideoCapture_SUPPORT=@MacOSXVideoCapture_SUPPORT@ >> ./ExtPkgSupp.$$
-
-libmcrypt_SUPPORT=""
-echo libmcrypt_SUPPORT=@libmcrypt_SUPPORT@ >> ./ExtPkgSupp.$$
-
-libmpeg_SUPPORT=""
-echo libmpeg_SUPPORT=@libmpeg_SUPPORT@ >> ./ExtPkgSupp.$$
-
-libmpeg2_SUPPORT=""
-echo libmpeg2_SUPPORT=@libmpeg2_SUPPORT@ >> ./ExtPkgSupp.$$
-
-LibPython_SUPPORT=""
-echo LibPython_SUPPORT=@LibPython_SUPPORT@ >> ./ExtPkgSupp.$$
-
-NumPy_SUPPORT=""
-echo NumPy_SUPPORT=@NumPy_SUPPORT@ >> ./ExtPkgSupp.$$
-
-SGIVL_SUPPORT=""
-echo SGIVL_SUPPORT=@SGIVL_SUPPORT@ >> ./ExtPkgSupp.$$
-
-SwigPython_SUPPORT=""
-echo SwigPython_SUPPORT=@SwigPython_SUPPORT@ >> ./ExtPkgSupp.$$
-
-
-devVideo4Linux_SUPPORT=""
-echo devVideo4Linux_SUPPORT=@devVideo4Linux_SUPPORT@ >> ./ExtPkgSupp.$$
-
-Meteor1_SUPPORT=""
-echo Meteor1_SUPPORT=@Meteor1_SUPPORT@ >> ./ExtPkgSupp.$$
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# Ravl cannot currently cope with the release versions of several libraries,
+# declare these to be broken (and ultimatley ignore them in the Ravl build).
+BrokenLibs="libdc1394 libavc1394 avifile"
 
 
 # If debugging, output what libraries are defined
@@ -35119,243 +34827,6 @@ trace 3 RESOURCES now "[$RESOURCES]"
 echo >> ./Config.Project.in
 echo >> ./Config.Project.in
 
-# Process Ravl libraries that depend on the presence of particular external
-# libraries. We need to process all libraries that Ravl will use, not just
-# those specifically configured by the user.
-for lib in $KnownLibs
-do
-   eval lib_enablement=\$use_${lib}
-   case $lib_enablement in
-    'blocked' | 'missing' )
-                   TRACE_INDENT="     "
-                   trace 3 ${lib} $lib_enablement
-                   ;;
-    'no' )
-                   TRACE_INDENT="     "
-                   trace 3 ${lib} discarded
-                   ;;
-    'check' | 'yes' )
-                   trace 1 Assertion: --with-${lib} should not equal ${lib_enablement} here!
-                   ;;
-    'present' )    # Allow the dependant Ravl libs to be listed out to the makefile
-                   eval liblist="\$${lib}_RavlLib"
-                   eval ${lib}_SUPPORT=\"$liblist\"
-                   trace 3 ${lib}_SUPPORT set to [$liblist]
-                   ;;
-   esac
-   echo ${lib}_SUPPORT=@${lib}_SUPPORT@ >> ./ExtPkgSupp.$$
-done
-
-
-# Apply additional requirements that affect the <Lib>_SUPPORT variables (drop
-# any libs that have unmet complex dependancies on other external libs or on
-# the current platform, etc.)
-
-# First define the names of the optional parts of Ravl that do not directly
-# relate to an external library (so do not currently have an _SUPPORT
-# variable). Initially set the variables to the name(s) of the libraries
-# that may be included; we'll strip them out if dependencies dictate..
-#
-# As XXXX_SUPPORT relates to libraries that interface to a third-party libraries
-# use the convention of XXXX_LIBS to represent a set of wholly internal Ravl
-# libraries, or XXXX on its own to indicate a single optional internal library.
-
-ParallelIO_SUPPORT=libPPDev
-Ravl2dGUI_LIBS="libRavlGUIUtil libRavlGUI2D"
-Ravl3d_LIBS="libRavl3DIO libRavl3D"
-RavlAAM="libRavlAAMGUI libRavlAAM"
-RavlAutoPort=""
-# libRavlAutoPort not currently implemented
-RavlCameraCal=libRavlCameraCal
-RavlChartDetector=libRavlChartDetector
-RavlClassWizard=libRavlClassWizard
-RavlDataServer=libRavlDataServer
-RavlDevAudio=libRavlDevAudio
-RavlDPDisplay=libRavlDPDisplay
-RavlExtImgIO=libRavlExtImgIO
-RavlFace_LIBS="libMarkupTool libRavlFace"
-RavlGUI=libRavlGUI
-RavlImageProc=libRavlImageProc
-RavlLogic_LIBS="libRavlLogicAgent libRavlLogicNLP libRavlLogic"
-RavlRawVidIO=libRavlRawVidIO
-RavlVDF=""
-# libRavlVDF not currently implemented
-RavlVPlay=libRavlVPlay
-RavlVoxels=libRavlVoxels
-RavlVisualHull=libRavlVisualHull
-RavlXMPP=libRavlXMPP
-SerialIO_SUPPORT=libRavlSerialIO
-# SerialIO is currently included regardless..
-RavlZmqOptimisation=""
-# ZmqOptimisation not currently added to the Ravl build
-
-
-
-
-echo ParallelIO_SUPPORT=@ParallelIO_SUPPORT@ >> ./ExtPkgSupp.$$
-
-echo Ravl2dGUI_LIBS=@Ravl2dGUI_LIBS@ >> ./ExtPkgSupp.$$
-
-echo Ravl3d_LIBS=@Ravl3d_LIBS@ >> ./ExtPkgSupp.$$
-
-echo RavlAAM=@RavlAAM@ >> ./ExtPkgSupp.$$
-
-echo RavlAutoPort=@RavlAutoPort@ >> ./ExtPkgSupp.$$
-
-echo RavlCameraCal=@RavlCameraCal@ >> ./ExtPkgSupp.$$
-
-echo RavlChartDetector=@RavlChartDetector@ >> ./ExtPkgSupp.$$
-
-echo RavlClassWizard=@RavlClassWizard@ >> ./ExtPkgSupp.$$
-
-echo RavlDataServer=@RavlDataServer@ >> ./ExtPkgSupp.$$
-
-echo RavlDevAudio=@RavlDevAudio@ >> ./ExtPkgSupp.$$
-
-echo RavlDPDisplay=@RavlDPDisplay@ >> ./ExtPkgSupp.$$
-
-echo RavlExtImgIO=@RavlExtImgIO@ >> ./ExtPkgSupp.$$
-
-echo RavlFace_LIBS=@RavlFace_LIBS@ >> ./ExtPkgSupp.$$
-
-echo RavlGUI=@RavlGUI@ >> ./ExtPkgSupp.$$
-
-echo RavlImageProc=@RavlImageProc@ >> ./ExtPkgSupp.$$
-
-echo RavlLogic_LIBS=@RavlLogic_LIBS@ >> ./ExtPkgSupp.$$
-
-echo RavlRawVidIO=@RavlRawVidIO@ >> ./ExtPkgSupp.$$
-
-echo RavlVDF=@RavlVDF@ >> ./ExtPkgSupp.$$
-
-echo RavlVPlay=@RavlVPlay@ >> ./ExtPkgSupp.$$
-
-echo RavlVoxels=@RavlVoxels@ >> ./ExtPkgSupp.$$
-
-echo RavlVisualHull=@RavlVisualHull@ >> ./ExtPkgSupp.$$
-
-echo RavlXMPP=@RavlXMPP@ >> ./ExtPkgSupp.$$
-
-echo SerialIO_SUPPORT=@SerialIO_SUPPORT@ >> ./ExtPkgSupp.$$
-
-echo RavlZmqOptimisation=@RavlZmqOptimisation@ >> ./ExtPkgSupp.$$
-
-
-
-# Process those libraries dependant on external libs
-
-if ( test X$use_libDV != 'Xpresent' )
-then
-   # Lack of libDV blocks 1394 AV/C functionality in Ravl
-   libavc1394_SUPPORT=""
-   trace 3 Lack of libDV blocking libavc1394
-fi
-
-if ( test X$use_libGTK2 != 'Xpresent' )
-then
-   # Lack of libGTK2 blocks lots of libraries:
-   libDV_SUPPORT=""
-     # Lack of libDV blocks 1394 AV/C functionality
-     libavc1394_SUPPORT=""
-   libglade2_SUPPORT=""
-   OpenGL_SUPPORT=""
-   OpenSceneGraphGTK_SUPPORT=""
-   LibGnome_SUPPORT=""
-   Meteor1_SUPPORT=""
-   RavlGUI=""
-      # Lack of RavlGUI blocks the following:
-         libGuppi_SUPPORT=""
-         RavlVDF=""
-         RavlVPlay=""
-         # Also indirectly blocks LibGnome, OpenGL, OpenSceneGraphGTK, Ravl2dGUI
-         # and libglade2 via dependancy but they are already disabled for their
-         # direct dependancy on GTK
-   # 2d-GUI support blocked both directly by lack of GTK2 and by lack of RavlGUI
-   Ravl2dGUI_LIBS=""
-      # RavlAAMGUI blocked by both lack of libGTK2 and 2d-GUI support
-      RavlAAM="libRavlAAM"
-      # Lack of 2d-GUI would also block RavlVDF (blocked by RavlGUI2D missing) and
-      # RavlVPlay (blocked by the absense of either of the 2d libs) if they hadn't
-      # already been blocked by RavlGUI being omitted
-   # DPDisplay Blocked by lack of GTK2 directly or indirectly by the lack of
-   # either RavlGUI2D or RavlGUI
-   RavlDPDisplay=""
-      # DPDisplay blocks the following:
-         MacOSXVideoCapture_SUPPORT=""
-         # Also blocks RavlVDF which is already blocked by missing 2d-GUI
-
-   trace 3 Lack of libGTK2 blocking Glade Gnome Meteor1 OpenGL 2dGUI etc.
-fi
-
-if ( ( test X$use_JPEG != 'Xpresent' ) && ( test X$use_LibTIFF != 'Xpresent' ) && ( test X$use_libPNG != 'Xpresent' ) )
-then
-   # Lack of any image support renders libRavlExtImgIO useless
-   RavlExtImgIO=""
-      # Lack of RavlExtImgIO blocks RavlPythonSwig2
-      SwigPython_SUPPORT=`echo " $SwigPython_SUPPORT " | $SED 's/libRavlPythonSwig2/ /'`
-   trace 3 Lack of image support blocking RavlExtImgIO and hence RavlPythonSwig2
-fi
-
-if ( test X$use_libGL != 'Xpresent' )
-then
-   # Lack of libGL blocks OpenSceneGraphGTK functionality in Ravl
-   OpenSceneGraphGTK_SUPPORT=""
-   trace 3 Lack of libGL blocking OpenSceneGraphGTK
-fi
-
-if ( test X$use_GTKGLExt != 'Xpresent' )
-then
-   # Lack of GTKGLExt blocks OpenSceneGraphGTK functionality in Ravl and will
-   # also alter, but not remove, libRavlGUI3D in its absence
-   OpenSceneGraphGTK_SUPPORT=""
-   trace 3 Lack of GTKGLExt blocking OpenSceneGraphGTK
-fi
-
-if ( test X$use_libmpeg2 != 'Xpresent' )
-then
-   # Lack of libmpeg2 blocks dvdread functionality in Ravl
-   dvdread_SUPPORT=""
-   trace 3 Lack of libmpeg2 blocking dvdread
-fi
-
-if ( test X$use_NumPy != 'Xpresent' )
-then
-   # Lack of NumPy blocks RavlPythonSwig2
-   SwigPython_SUPPORT=`echo " $SwigPython_SUPPORT " | $SED 's/libRavlPythonSwig2/ /'`
-   trace 3 Lack of NumPy blocking RavlPythonSwig2
-fi
-
-if ( test X$use_RLog != 'Xpresent' )
-then
-   # Lack of RLog blocks RavlFace libs (libRavlFace and libMarkupTool);
-   # RavlZmqOptimisation; RavlXMPP (which in turn blocks iksemel and
-   # Loudmouth support) and RavlGUIOpenSceneGraph
-   RavlFace_LIBS=""
-   RavlXMPP=""
-   iksemel_SUPPORT=""
-   Loudmouth_SUPPORT=""
-   RavlZmqOptimisation=""
-   OpenSceneGraphGTK_SUPPORT=""
-   trace 3 Lack of RLog blocking RavlFace, XMPP \(indirectly blocks iksemel and Loudmouth\) RavlGUIOpenSceneGraph and RavlZmqOptimisation
-fi
-
-if ( test X$use_Socket != 'Xpresent' )
-then
-   # Lack of Socket blocks RavlNet (which in-turn blocks libRavlPythonSwig
-   # and libRavlPythonSwig2 by dependancy)
-   Socket_SUPPORT=""
-   SwigPython_SUPPORT=""
-   trace 3 Lack of Socket blocking RavlNet \(indirectly blocks SwigPython\).
-fi
-
-if ( test X$use_ZeroMQ != 'Xpresent' )
-then
-   # Lack of ZeroMQ blocks RavlZmqOptimisation.
-   RavlZmqOptimisation=""
-   trace 3 Lack of ZeroMQ blocking RavlZmqOptimisation.
-fi
-
-
 # Process platform specific dependencies that are not directly driven by a
 # third-party library nor the programming tools in use.
 
@@ -35367,15 +34838,6 @@ fi
 if ( test  X`$EXPR X$host_os : 'X\(linux\).*'` != 'Xlinux' )
 then
    trace 3 Host OS is $host_os
-   trace 3 Disallowing all linux-only libraries
-   Meteor1_SUPPORT=""
-   ParallelIO_SUPPORT=""
-   libavc1394_SUPPORT=""
-   RavlDevAudio=""
-   devVideo4Linux_SUPPORT=""
-   devVideo4Linux2_SUPPORT=""
-   libDV_SUPPORT=""
-   uEyeSDK_SUPPORT=""
 
    case X$host_os in
    Xarm )       # Not sure what sure what this platform actually was, but
@@ -35386,9 +34848,6 @@ then
                 # no real reason why we would always kill some functionality if
                 # we are running on arm. On some particular installations maybe
                 # (due to resource considerations) but globally, no.
-                trace 3 Dropping libRavlAAM and libRavlVPlay under Arm
-                RavlAAM=""
-                RavlVPlay=""
                 trace 3 Amending compile settings for ARM
                 # Probably would not want to do this today, but we used to...
                 # unroll loops and allow strict-aliasing optimisations (drop
@@ -35396,34 +34855,7 @@ then
                 PKG_OPT_CFLAGS=`echo " $PKG_OPT_CFLAGS -funroll-loops" | $SED 's/ -fno-strict-aliasing / /'`
                 PKG_OPT_CCFLAGS=`echo " $PKG_OPT_CCFLAGS -funroll-loops" | $SED 's/ -fno-strict-aliasing / /'`
                 ;;
-   Xcygwin )    trace 3 Dropping functionality unsupported under Cygwin
-                # 3D Support disabled under Cygwin
-                   RavlCameraCal=""
-                   Ravl3d_LIBS=""
-                      # absence of libRavl3D blocks the OpenGL and OpenSceneGraphGTK support functionality
-                         OpenGL_SUPPORT=""
-                         OpenSceneGraphGTK_SUPPORT=""
-                      # also blocks RavlVoxels which in-turn blocks RavlVisualHull
-                         RavlVoxels=""
-                         RavlVisualHull=""
-
-                # Image Processing disabled under Cygwin
-                   RavlImageProc=""
-
-                # Logic Processing disabled under Cygwin
-                   RavlLogic_LIBS=""
-
-                # Applications disabled under Cygwin
-                   RavlClassWizard=""
-                   RavlDataServer=""
-                   RavlVDF=""
-                   RavlVPlay=""
-
-                # RavlNet unavailable under Cygwin
-                   Socket_SUPPORT=""
-                      # Absence of libRavlNet blocks libRavlPythonSwig & libRavlPythonSwig2 by dependancy
-                      SwigPython_SUPPORT=""
-                trace 3 Amending compile settings for Cygwin
+   Xcygwin )    trace 3 Amending compile settings for Cygwin
                 # Drop -Wall from {C}CFLAGS
                 PKG_GLOBAL_CFLAGS=`echo " $PKG_GLOBAL_CFLAGS " | $SED 's/ -Wall / /'`
                 PKG_GLOBAL_CCFLAGS=`echo " $PKG_GLOBAL_CCFLAGS " | $SED 's/ -Wall / /'`
@@ -35474,12 +34906,6 @@ then
                 # Ravl as needed or manually define the relevant switch.
    esac
 
-   if ( test X$host_os != 'Xsgi' )
-   then
-      trace 3 SGIVL is only provided on SGI
-      SGIVL_SUPPORT=""
-   fi
-
 else
    # Linux
 
@@ -35492,36 +34918,22 @@ else
                  # for these chips, but the case is needed to prevent the
                  # default actions being carried out
                  ;;
-   Xi786* )
-                 # i786 equates to Intel P4. Even Athlon XPs come back as i686
+   Xi786* )      # i786 equates to Intel P4. Even Athlon XPs come back as i686
                  # from config.guess/sub
 
                  trace 3 Enabling SSE2 support as we are on a P4.
                  RESOURCES="$RESOURCES USE_SSE2 "
                  ;;
-   Xx86_64* )
-                 # 64 bit 'x86' architecture - includes both AMD & Intel but
+   Xx86_64* )    # 64 bit 'x86' architecture - includes both AMD & Intel but
                  # not Itanium
 
                  trace 3 64-bit x86 supports SSE2
                  RESOURCES="$RESOURCES USE_SSE2 "
-
-                 trace 3 Disallowing Meteor1 on 64-bit x86 platforms
-                 Meteor1_SUPPORT=""
-
-                 # ParallelIO currently unsupported off 32-bit x86
-                 trace 3 Disallowing ParallelIO on 64-bit x86 platforms
-                 ParallelIO_SUPPORT=""
                  ;;
-   Xalpha* )
-                 # DEC/Compaq/HP Alpha kit
-
-                 trace 3 Disallowing Meteor1 on DEC/Compaq/HP Alpha platforms
-                 Meteor1_SUPPORT=""
-
-                 # ParallelIO currently unsupported off 32-bit x86
-                 trace 3 Disallowing ParallelIO on DEC/Compaq/HP Alpha platforms
-                 ParallelIO_SUPPORT=""
+   Xalpha* )     trace 3 DEC/Compaq/HP Alpha platform
+                 # Case deliberately empty as no special processing is needed
+                 # for these machines. The case is needed to differentiate
+                 # this platform from the default.
                  ;;
    XNone-at-the-moment )
                  # There's no real difference between these architectures and
@@ -35531,48 +34943,19 @@ else
                  # variations in the trace messages to allow execution path
                  # confirmation when debugging).
 
-                 trace 3 Disallowing Meteor1 on new platform
-                 Meteor1_SUPPORT=""
-
-                 # ParallelIO currently unsupported off 32-bit x86
-                 trace 3 Disallowing ParallelIO on new platform
-                 ParallelIO_SUPPORT=""
+                 trace 3 New platform
                  ;;
-    X* )
-                 # Catch-all for previously unseen platforms. Processing should
+    X* )         # Catch-all for previously unseen platforms. Processing should
                  # be exactly the same as the above case for default platforms
                  # we have seen before. (minus a slight difference in the trace
                  # messages to see which path has been taken if debugging).
 
-                 trace 3 Disallowing Meteor1 on default platforms
-                 Meteor1_SUPPORT=""
-
-                 # ParallelIO currently unsupported off 32-bit x86
-                 trace 3 Disallowing ParallelIO on default platforms
-                 ParallelIO_SUPPORT=""
+                 trace 3 Default platform
                  ;;
    esac
 
    # True for all Linuxes
-
-   trace 3 SGIVL is not supported on Linux
-   SGIVL_SUPPORT=""
 fi
-
-# Add, to Config.Project.in, the initialisation of the make variables used by
-# SingleLib.mk. These have been recorded in ExtPkgSupp.$$ as this script has
-# been running; so, sort this file and append it with a suitable heading.
-echo >> ./Config.Project.in
-echo \# Optional Ravl sub-libraries that may or may not be included in the >> ./Config.Project.in
-echo \# single library>> ./Config.Project.in
-$SORT ./ExtPkgSupp.$$ >> ./Config.Project.in
-rm ./ExtPkgSupp.$$
-echo >> ./Config.Project.in
-echo \# Ordered list of the libraries we want in libRavl.\*  >> ./Config.Project.in
-echo SINGLE_RECIPE=\$\(NumPy_SUPPORT\) \$\(avifile_SUPPORT\) libRavlMPEG2 \$\(devVideo4Linux_SUPPORT\) \$\(libffmpeg_SUPPORT\) libRavlVideoIO \$\(dvdread_SUPPORT\) \$\(libmpeg2_SUPPORT\) \$\(libavc1394_SUPPORT\) \$\(libDV_SUPPORT\) \$\(RavlRawVidIO\) \$\(RavlExtImgIO\) \$\(MacOSXVideoCapture_SUPPORT\) \$\(MacOSXRunLoop_SUPPORT\) \$\(RavlVDF\) \$\(SwigPython_SUPPORT\) \$\(RavlDPDisplay\) \$\(Meteor1_SUPPORT\) libRavlAV \$\(RavlChartDetector\) \$\(RavlAAM\) \$\(RavlFace_LIBS\) libRavlTwoWayMap \$\(RavlImageProc\) \$\(uEyeSDK_SUPPORT\) \$\(libmpeg_SUPPORT\) \$\(OpenGL_SUPPORT\) libRavlImageXMLFactory \$\(libClipStationPro_SUPPORT\) libRavlMemModules libRavlImageIO \$\(LibJasper_SUPPORT\) \$\(OpenCV_SUPPORT\) \$\(RavlVPlay\) \$\(Ravl2dGUI_LIBS\) \$\(libdc1394_SUPPORT\) libRavlVideo \$\(LibGd_SUPPORT\) \$\(devVideo4Linux2_SUPPORT\) \$\(OpenSceneGraphGTK_SUPPORT\) \$\(Ravl3d_LIBS\) \$\(RavlVoxels\) \$\(RavlVisualHull\) \$\(LibDirectShow_SUPPORT\) libRavlImage \$\(libAudioFile_SUPPORT\) \$\(RavlDevAudio\) libRavlAudioFeatures \$\(PortAudio_SUPPORT\) $\(PulseAudioSimple_SUPPORT\) libRavlAudioIO libRavlAudioUtil \$\(iksemel_SUPPORT\) \$\(Loudmouth_SUPPORT\) \$\(RavlXMPP\) \$\(RavlZmqOptimisation\) \$\(RLog_SUPPORT\) \$\(SGIVL_SUPPORT\) \$\(RavlDataServer\) libOptimisation \$\(RavlLogic_LIBS\) libRavlPatternRecIO libRavlKalmanFilter libRavlSVM libRavlGnuPlot libRavlPatternRec libRavlDataSet libRavlFileIDX libRavlOSIO  \$\(ParallelIO_SUPPORT\) \$\(SerialIO_SUPPORT\) \$\(libGuppi_SUPPORT\) libRavlPlot \$\(RavlClassWizard\) libRavlCxxDoc \$\(RavlAutoPort\) libRavlAutoPort2 libRavlSourceTools \$\(LibPython_SUPPORT\) \$\(Socket_SUPPORT\) \$\(libehs_SUPPORT\) libRavlDPMT \$\(UUIdTheo_SUPPORT\) \$\(LibGnome_SUPPORT\) \$\(libglade2_SUPPORT\) \$\(RavlGUI\) libRavlMathIO libRavlGeneticProgram libRavlGeneticOptimisation \$\(ZeroMQ_SUPPORT\) libRavlService libRavlXMLFactory \$\(libCurl_SUPPORT\) libRavlThreads libRavlHtml libRavlOS libRavlIO \$\(libmcrypt_SUPPORT\) libRavlOptimise \$\(RavlCameraCal\) \$\(libmkl_SUPPORT\) \$\(LAPACK_SUPPORT\) libRavlMath libccmath libfann libArffIO \$\(Zlib_SUPPORT\) libRavlHMM libRavlCore  >> ./Config.Project.in
-echo >> ./Config.Project.in
-echo >> ./Config.Project.in
-
 
 
 if ( test x$ResetRESOURCES == xyes )

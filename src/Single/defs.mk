@@ -7,6 +7,6 @@
 # file-header-ends-here
 
 
-USESLIBS=$(patsubst lib%,%,$(SINGLE_RECIPE))
+USESLIBS=None
 
 SINGLESO=libRavl
