@@ -72,7 +72,7 @@ the possible formats and conversions have to be allowed for at compile/link
 time.
 
 
-<h2> Writing your own stuff </h2>
+    <h2> Writing your own stuff <a name="writingyourown"/></h2>
 
 
 <h4>Simple Class IO</h4>
