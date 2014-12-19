@@ -1854,7 +1854,7 @@ $(PROJECT_OUT)/Config.Project:
 
 
 ifdef PLIB
- ifneq (,$(LIBDEPS))
+ ifeq (,$(LIBDEPS))
   # If we are in the authorative directory for a library (the directory with
   # PLIB defined but without any LIBDEPS setting) we need to determine which
   # (if any) libraries summaries the current library.
