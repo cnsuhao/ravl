@@ -25,6 +25,16 @@
 
 namespace RavlN {
 
+  static bool g_debugException = false;
+
+  //: Cause an assertion failure on throwing exceptions.
+  // Exceptions included are: ExceptionUnexpectedVersionInStreamC, ExceptionNumericalC, ExceptionOperationFailedC
+  void SetAssertOnException(bool debugException)
+  {
+    g_debugException = debugException;
+  }
+
+
   //: Constructor
   ExceptionC::ExceptionC(const char *ntext,StackTraceT stackTrace)
    : desc(ntext),
@@ -116,12 +126,20 @@ namespace RavlN {
 
   ExceptionOperationFailedC::ExceptionOperationFailedC(const char *ndesc)
     : ExceptionC(ndesc)
-  {}
+  {
+    if(g_debugException) {
+      RavlIssueError("Unexpected version in stream.");
+    }
+  }
     //: Constructor.
 
   ExceptionOperationFailedC::ExceptionOperationFailedC(const char *ntext,bool copy)
     : ExceptionC(ntext,copy)
-  {}
+  {
+    if(g_debugException) {
+      RavlIssueError("Unexpected version in stream.");
+    }
+  }
   //: Constructor.
   // if copy is true, a copy is made of string ntext.
 
@@ -143,7 +161,11 @@ namespace RavlN {
 
   ExceptionUnexpectedVersionInStreamC::ExceptionUnexpectedVersionInStreamC(const char *text)
     : ExceptionC(text)
-  {}
+  {
+    if(g_debugException) {
+      RavlIssueError("Unexpected version in stream.");
+    }
+  }
 
   // ---------------------------------------------------------
 
@@ -189,13 +211,21 @@ namespace RavlN {
   //: Constructor.
   ExceptionNumericalC::ExceptionNumericalC(const char *ndesc)
    : ExceptionC(ndesc)
-  {}
+  {
+    if(g_debugException) {
+      RavlIssueError("Unexpected version in stream.");
+    }
+  }
 
   //: Constructor.
   // if copy is true, a copy is made of string ntext.
   ExceptionNumericalC::ExceptionNumericalC(const char *ntext,bool copy)
    : ExceptionC(ntext,copy)
-  {}
+  {
+    if(g_debugException) {
+      RavlIssueError("Unexpected version in stream.");
+    }
+  }
 
   // ---------------------------------------------------------
 
@@ -227,5 +257,18 @@ namespace RavlN {
 #endif
   }
 
+
+  // ---------------------------------------------------------
+
+  ExceptionInvalidStreamC::ExceptionInvalidStreamC(const char *ntext)
+    : ExceptionC(ntext)
+  {}
+  //: Constructor
+
+  ExceptionInvalidStreamC::ExceptionInvalidStreamC(const char *ntext,bool copy)
+    : ExceptionC(ntext,copy)
+  {}
+  //: Constructor.
+  // if copy is true, make a copy of ntext.
 
 }

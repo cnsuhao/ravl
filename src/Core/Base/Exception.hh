@@ -7,7 +7,6 @@
 #ifndef RAVL_EXCEPTION_HEADER
 #define RAVL_EXCEPTION_HEADER 1
 ///////////////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! docentry="Ravl.API.Core.Error Handling"
 //! file="Ravl/Core/Base/Exception.hh"
 //! lib=RavlCore
@@ -32,10 +31,17 @@ namespace RavlN {
   //: 'stack' should be obtained with the 'backtrace()' provided on some
   //: systems. If its not supported this method will do nothing.
 
+
   enum StackTraceT {
     StackTraceOff,
     StackTraceOn
   };
+
+  void SetAssertOnException(bool debugException);
+  //: Cause an assertion failure on throwing exceptions.
+  // Exceptions included are: ExceptionUnexpectedVersionInStreamC, ExceptionNumericalC, ExceptionOperationFailedC
+
+
   //: RAVL Exception.
   // Base class for Ravl's exceptions. <P>
 
@@ -186,7 +192,9 @@ namespace RavlN {
   // a numerical reason, such as taking the Sqrt(-1) or
   // inverting a singular matrix.
 
-  class ExceptionNumericalC : public ExceptionC {
+  class ExceptionNumericalC
+    : public ExceptionC
+  {
   public:
     ExceptionNumericalC(const char *ndesc);
     //: Constructor.
@@ -218,14 +226,10 @@ namespace RavlN {
     : public ExceptionC
   {
   public:
-    ExceptionInvalidStreamC(const char *ntext)
-      : ExceptionC(ntext)
-    {}
+    ExceptionInvalidStreamC(const char *ntext);
     //: Constructor
 
-    ExceptionInvalidStreamC(const char *ntext,bool copy)
-      : ExceptionC(ntext,copy)
-    {}
+    ExceptionInvalidStreamC(const char *ntext,bool copy);
     //: Constructor.
     // if copy is true, make a copy of ntext.
   };
