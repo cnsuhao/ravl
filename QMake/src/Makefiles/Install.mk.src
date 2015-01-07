@@ -67,6 +67,18 @@ else
   OK_TO_INSTALL=NoResource
 endif
 
+# Determine where we want to install the QMake control files (.def or
+# mustlink files) for the current project
+ifdef PROJECT_NAME
+ PROJECT_QMAKE_FILE_DEST=$(QMAKE_PROJECT_DEST)/$(PROJECT_NAME)
+else
+ ifdef FALLBACK_PROJNAME
+  PROJECT_QMAKE_FILE_DEST=$(QMAKE_PROJECT_DEST)/$(FALLBACK_PROJNAME)
+ else
+  PROJECT_QMAKE_FILE_DEST=$(QMAKE_PROJECT_DEST)/MyProject
+ endif
+endif
+
 
 
 # Main Body of makefile
@@ -366,13 +378,13 @@ insDefs:
          then \
             if [ "X$(PLIB)" != X ] || [ "X$(LIBDEPS)" != X ] ;\
             then \
-               if [ ! -d $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)/libdep ] ;\
+               if [ ! -d $(ABS_DESTDIR)$(PROJECT_QMAKE_FILE_DEST)/libdep ] ;\
                then \
                   if [ X$(QMAKE_INFO) != X ] ;\
                   then \
-                     echo $(MKDIR_P) $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)/libdep ;\
+                     echo $(MKDIR_P) $(ABS_DESTDIR)$(PROJECT_QMAKE_FILE_DEST)/libdep ;\
                   fi ;\
-                  $(MKDIR_P) $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)/libdep ;\
+                  $(MKDIR_P) $(ABS_DESTDIR)$(PROJECT_QMAKE_FILE_DEST)/libdep ;\
                   RET=$$? ;\
                   if [ $$RET -ne 0 ] ;\
                   then \
@@ -389,16 +401,18 @@ insDefs:
                then \
                   echo '$(SED) -e '\''s\![@]PROJECT_LIBDIR[@]\!$(libdir)\!g'\' ;\
                   echo '         -e '\''s\![@]PROJECT_INCDIR[@]\!$(includedir)\!g'\' ;\
+                  echo '         -e '\''s\![@]PROJECT_QMAKE_FILE_DEST[@]\!$(PROJECT_QMAKE_FILE_DEST)\!g'\' ;\
                   echo "         $(INSTALLHOME)/lib/libdep/4install/$$DefName.in > $(INSTALLHOME)/lib/libdep/4install/$$DefName" ;\
                fi ;\
                $(SED) -e 's![@]PROJECT_LIBDIR[@]!$(libdir)!g' \
                       -e 's![@]PROJECT_INCDIR[@]!$(includedir)!g' \
+                      -e 's![@]PROJECT_QMAKE_FILE_DEST[@]!$(PROJECT_QMAKE_FILE_DEST)!g' \
                       $(INSTALLHOME)/lib/libdep/4install/$$DefName.in > $(INSTALLHOME)/lib/libdep/4install/$$DefName ;\
                if [ X$(QMAKE_INFO) != X ] ;\
                then \
-                  echo $(INSTALL) $(INSTALLHOME)/lib/libdep/4install/$$DefName $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)/libdep/$$DefName ;\
+                  echo $(INSTALL) $(INSTALLHOME)/lib/libdep/4install/$$DefName $(ABS_DESTDIR)$(PROJECT_QMAKE_FILE_DEST)/libdep/$$DefName ;\
                fi ;\
-               $(INSTALL) $(INSTALLHOME)/lib/libdep/4install/$$DefName $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)/libdep/$$DefName ;\
+               $(INSTALL) $(INSTALLHOME)/lib/libdep/4install/$$DefName $(ABS_DESTDIR)$(PROJECT_QMAKE_FILE_DEST)/libdep/$$DefName ;\
             fi ;\
             if [ "X$(EXTERNALLIBS)" != X ] ;\
             then \
@@ -406,9 +420,9 @@ insDefs:
                do \
                   if [ X$(QMAKE_INFO) != X ] ;\
                   then \
-                     echo $(INSTALL) $(INSTALLHOME)/lib/libdep/$$dotdef $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)/libdep/$$dotdef ;\
+                     echo $(INSTALL) $(INSTALLHOME)/lib/libdep/$$dotdef $(ABS_DESTDIR)$(PROJECT_QMAKE_FILE_DEST)/libdep/$$dotdef ;\
                   fi ;\
-                  $(INSTALL) $(INSTALLHOME)/lib/libdep/$$dotdef $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)/libdep/$$dotdef ;\
+                  $(INSTALL) $(INSTALLHOME)/lib/libdep/$$dotdef $(ABS_DESTDIR)$(PROJECT_QMAKE_FILE_DEST)/libdep/$$dotdef ;\
                done ;\
             fi ;\
          fi
@@ -439,26 +453,26 @@ uinsDefs:
                else \
                   DefName=$(PLIB).def ;\
                fi ;\
-               if [ -f $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)/libdep/$$DefName ] ; \
+               if [ -f $(ABS_DESTDIR)$(PROJECT_QMAKE_FILE_DEST)/libdep/$$DefName ] ; \
                then \
                   if [ X$(QMAKE_INFO) != X ] ;\
                   then \
-                     echo $(RM) -f $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)/libdep/$$DefName  ;\
+                     echo $(RM) -f $(ABS_DESTDIR)$(PROJECT_QMAKE_FILE_DEST)/libdep/$$DefName  ;\
                   fi ;\
-                  $(RM) -f $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)/libdep/$$DefName  ;\
+                  $(RM) -f $(ABS_DESTDIR)$(PROJECT_QMAKE_FILE_DEST)/libdep/$$DefName  ;\
                fi ;\
             fi ;\
             if [ "X$(EXTERNALLIBS)" != X ] ;\
             then \
                for dotdef in $(EXTERNALLIBS) ;\
                do \
-                  if [ -f $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)/libdep/$$dotdef ] ; \
+                  if [ -f $(ABS_DESTDIR)$(PROJECT_QMAKE_FILE_DEST)/libdep/$$dotdef ] ; \
                   then \
                      if [ X$(QMAKE_INFO) != X ] ;\
                      then \
-                        echo $(RM) -f $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)/libdep/$$dotdef  ;\
+                        echo $(RM) -f $(ABS_DESTDIR)$(PROJECT_QMAKE_FILE_DEST)/libdep/$$dotdef  ;\
                      fi ;\
-                     $(RM) -f $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)/libdep/$$dotdef  ;\
+                     $(RM) -f $(ABS_DESTDIR)$(PROJECT_QMAKE_FILE_DEST)/libdep/$$dotdef  ;\
                   fi ;\
                done ;\
             fi ;\
@@ -836,13 +850,13 @@ uinsMains:
 insMustLinks:
 	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(PLIB)" != X ] && [ "X$(MUSTLINK)" != X ] ;\
          then \
-            if [ ! -d $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)$(FALLBACK_PROJNAME)/MustLink ] ;\
+            if [ ! -d $(ABS_DESTDIR)$(PROJECT_QMAKE_FILE_DEST)/MustLink ] ;\
             then \
                if [ X$(QMAKE_INFO) != X ] ;\
                then \
-                  echo $(MKDIR_P) $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)$(FALLBACK_PROJNAME)/MustLink ;\
+                  echo $(MKDIR_P) $(ABS_DESTDIR)$(PROJECT_QMAKE_FILE_DEST)/MustLink ;\
                fi ;\
-               $(MKDIR_P) $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)$(FALLBACK_PROJNAME)/MustLink ;\
+               $(MKDIR_P) $(ABS_DESTDIR)$(PROJECT_QMAKE_FILE_DEST)/MustLink ;\
                RET=$$? ;\
                if [ $$RET -ne 0 ] ;\
                then \
@@ -851,9 +865,9 @@ insMustLinks:
             fi ;\
             if [ X$(QMAKE_INFO) != X ] ;\
             then \
-               echo $(INSTALL) $(INST_FORCEOBJS)/$(basename $(MUSTLINK))$(OBJEXT) $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)$(FALLBACK_PROJNAME)/MustLink/$(basename $(MUSTLINK))$(OBJEXT) ; \
+               echo $(INSTALL) $(INST_FORCEOBJS)/$(basename $(MUSTLINK))$(OBJEXT) $(ABS_DESTDIR)$(PROJECT_QMAKE_FILE_DEST)/MustLink/$(basename $(MUSTLINK))$(OBJEXT) ; \
             fi ;\
-            $(INSTALL) $(INST_FORCEOBJS)/$(basename $(MUSTLINK))$(OBJEXT) $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)$(FALLBACK_PROJNAME)/MustLink/$(basename $(MUSTLINK))$(OBJEXT) ; \
+            $(INSTALL) $(INST_FORCEOBJS)/$(basename $(MUSTLINK))$(OBJEXT) $(ABS_DESTDIR)$(PROJECT_QMAKE_FILE_DEST)/MustLink/$(basename $(MUSTLINK))$(OBJEXT) ; \
          fi
 #        MUSTLINK file for the current PLIB. If we have a library constructed
 #        from multiple directories, we need to install any MUSTLINK file from
@@ -867,13 +881,13 @@ insMustLinks:
 uinsMustLinks:
 	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(PLIB)" != X ] && [ "X$(MUSTLINK)" != X ] ;\
          then \
-            if [ -f $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)$(FALLBACK_PROJNAME)/MustLink/$(basename $(MUSTLINK))$(OBJEXT) ] ; \
+            if [ -f $(ABS_DESTDIR)$(PROJECT_QMAKE_FILE_DEST)/MustLink/$(basename $(MUSTLINK))$(OBJEXT) ] ; \
             then \
                if [ X$(QMAKE_INFO) != X ] ;\
                then \
-                  echo $(RM) -f $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)$(FALLBACK_PROJNAME)/MustLink/$(basename $(MUSTLINK)$(OBJEXT))  ;\
+                  echo $(RM) -f $(ABS_DESTDIR)$(PROJECT_QMAKE_FILE_DEST)/MustLink/$(basename $(MUSTLINK)$(OBJEXT))  ;\
                fi ;\
-               $(RM) -f $(ABS_DESTDIR)$(QMAKE_PROJECT_DEST)/$(PROJECT_DIR)$(FALLBACK_PROJNAME)/MustLink/$(basename $(MUSTLINK))$(OBJEXT) ;\
+               $(RM) -f $(ABS_DESTDIR)$(PROJECT_QMAKE_FILE_DEST)/MustLink/$(basename $(MUSTLINK))$(OBJEXT) ;\
             fi ;\
          fi
 #        Un-install any MUSTLINK file for the current PLIB. We check secondary
