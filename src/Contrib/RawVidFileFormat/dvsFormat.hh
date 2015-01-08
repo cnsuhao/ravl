@@ -69,7 +69,7 @@ namespace RavlImageN {
     //: Find the priority of the format. the higher the better.
     // Default is zero, this is better than the default (streams.)
     
-    virtual bool IsStream() const { return false; }
+    virtual bool IsStream() const { return true; }
     //: Test if format is a fully streamable.
     // i.e. check if you can read/write more than object object.
     // This could easly be, but the abakas doesn't use it like that.
@@ -132,7 +132,7 @@ namespace RavlImageN {
     //: Find the priority of the format. the higher the better.
     // Default is zero, this is better than the default (streams.)
     
-    virtual bool IsStream() const { return false; }
+    virtual bool IsStream() const { return true; }
     //: Test if format is a fully streamable.
     // i.e. check if you can read/write more than object object.
     // This could easly be, but the abakas doesn't use it like that.
