@@ -560,7 +560,7 @@ dnl
           dnl
           dnl To allow generation of the RESOURCES .def files, of the above,
           dnl the following .def files will need renaming:
-          dnl      LibJPEG, LibLapack, LibTIFF, zlib`
+          dnl      LibJPEG, LibLapack, LibTIFF, zlib
           
           dnl Virtual Pkgs
           QM_DEFINE_VIRTUAL_EXTLIB([libffmpeg], [FFMPEGCDEC FFMPEGCONT FFMPEGSWS FFMPEGUTIL])

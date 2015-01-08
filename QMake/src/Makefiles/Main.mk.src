@@ -1364,7 +1364,7 @@ ifdef TARG_DEFS
 	cat $(LOCALTMP)/libdep/$(*F).def.mid >> $@ 
  ifdef MUSTLINK
 	$(SHOWIT)echo >> $@ ; \
-	echo '$(REQUIRES_INDENT)  EXEML := $$(QMAKE_PROJECTS)/$(PROJECT_DIR)$(FALLBACK_PROJNAME)/MustLink/$(basename $(MUSTLINK))$(OBJEXT) $$(EXEML)' >> $@
+	echo '$(REQUIRES_INDENT)  EXEML := @PROJECT_QMAKE_FILE_DEST@/MustLink/$(basename $(MUSTLINK))$(OBJEXT) $$(EXEML)' >> $@
  endif
 	$(SHOWIT)cat $(LOCALTMP)/libdep/$(*F).def.tail >> $@ ; \
 	$(CHMOD) 444 $@
