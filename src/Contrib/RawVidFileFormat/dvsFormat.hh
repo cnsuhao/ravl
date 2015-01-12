@@ -72,8 +72,6 @@ namespace RavlImageN {
     virtual bool IsStream() const { return true; }
     //: Test if format is a fully streamable.
     // i.e. check if you can read/write more than object object.
-    // This could easly be, but the abakas doesn't use it like that.
-    // (I think.)
 
     virtual ~FileFormatDVSYPbPr422BodyC();
     
@@ -135,8 +133,6 @@ namespace RavlImageN {
     virtual bool IsStream() const { return true; }
     //: Test if format is a fully streamable.
     // i.e. check if you can read/write more than object object.
-    // This could easly be, but the abakas doesn't use it like that.
-    // (I think.)
 
     virtual ~FileFormatDVSRGBBodyC();
     
