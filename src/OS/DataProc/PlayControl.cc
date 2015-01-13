@@ -75,10 +75,10 @@ namespace RavlN {
       }
       MutexLockC lock(access);
       if(start != ((UIntT) -1))
-	ctrl.Seek(start);
+	ctrl.Seek64(start);
       else
 	start = ctrl.Start();
-      at = ctrl.Tell();
+      at = ctrl.Tell64();
     }
     if(start == ((UIntT) -1))
       start = 0;
@@ -141,7 +141,7 @@ namespace RavlN {
     if(start == ((UIntT) -1))
       start = 0;
     at = start;
-    ctrl.Seek(start);
+    ctrl.Seek64(start);
     
     
     // Sort out end of sequence.
@@ -248,7 +248,7 @@ namespace RavlN {
     // update the lastFrame.
     lastFrame = pos;
     
-    ONDEBUG(cerr << "DPPlayControlBodyC::Seek(), Seek to :" << pos << " (Comp:" << seekto << ") Tell:" << ctrl.Tell() << " Inc:" << inc << " End=" << end << " LastFrame=" << lastFrame << "\n");
+    ONDEBUG(cerr << "DPPlayControlBodyC::Seek(), Seek to :" << pos << " (Comp:" << seekto << ") Tell64:" << ctrl.Tell64() << " Inc:" << inc << " End=" << end << " LastFrame=" << lastFrame << "\n");
     if(pause) { // Make sure it gets displayed if we're paused.
       lock.Unlock();// Unlock access.
       if(sema.Count() < 1)
@@ -267,7 +267,7 @@ namespace RavlN {
     }
     pause = true; 
     
-    ONDEBUG(if(ctrl.IsValid()) cerr << "DPPlayControlBodyC::Pause(), Done. @" << ctrl.Tell() << "\n");
+    ONDEBUG(if(ctrl.IsValid()) cerr << "DPPlayControlBodyC::Pause(), Done. @" << ctrl.Tell64() << "\n");
   }
   
   //: Continue playing.
@@ -299,12 +299,12 @@ namespace RavlN {
   // This assumes the input stream is locked by the calling function.
   
   bool DPPlayControlBodyC::CheckUpdate() {
-    ONDEBUG(cerr << "-------------------------------\n@ " << at << " Mode=" << playMode <<  " Inc:" << inc << " Tell:" << ctrl.Tell() <<" End=" << end << "\n");
+    ONDEBUG(cerr << "-------------------------------\n@ " << at << " Mode=" << playMode <<  " Inc:" << inc << " Tell64:" << ctrl.Tell64() <<" End=" << end << "\n");
     bool ret = true;
 #if FORCE_AT
-    if(at != ctrl.Tell()) {
-      cerr << "WARNING: Position mismatch: At:" << at << " Actual:" << ctrl.Tell() << "\n";    
-      at = ctrl.Tell();
+    if(at != ctrl.Tell64()) {
+      cerr << "WARNING: Position mismatch: At:" << at << " Actual:" << ctrl.Tell64() << "\n";    
+      at = ctrl.Tell64();
     }
 #endif
     switch(playMode) 
@@ -370,7 +370,7 @@ namespace RavlN {
 	  if(!ctrl.DSeek(inc-1)) 
           {
 	    cerr << "DSeek failed : " << inc -1 << "\n";
-	    at = ctrl.Tell();
+	    at = ctrl.Tell64();
 	    if(at == -1)
 	      at = oldAt;
 	  }
@@ -385,7 +385,7 @@ namespace RavlN {
 	  if(!ctrl.Seek(end)) 
           { // Show last frame.
 	    cerr << "Warning: Seek to end failed. \n";
-	    at = ctrl.Tell();
+	    at = ctrl.Tell64();
 	    if(at == -1)
 	      at = oldAt + 1;
 	  } else
@@ -411,7 +411,7 @@ namespace RavlN {
 	if(!ctrl.DSeek(inc-1)) 
         {
 	  ONDEBUG(cerr << "DSeek failed : "<< at << "  Inc:" << inc-1 <<" Start@ " << start << "\n");
-	  at = ctrl.Tell();
+	  at = ctrl.Tell64();
 	  if(at == -1)
 	    at = oldAt + 1;
 	}
@@ -422,7 +422,7 @@ namespace RavlN {
 	if(start != ((UIntT) -1) && playMode < 2) {
 	  if(!ctrl.Seek(start)) {
 	    cerr << "Warning: Seek to start failed. \n";
-	    at = ctrl.Tell();
+	    at = ctrl.Tell64();
 	    if(at == -1)
 	      at = oldAt + 1;
 	  } else
@@ -446,7 +446,7 @@ namespace RavlN {
     // Check for last frame in sequence.
     if(lastFrame == end)
       at = end;
-    ONDEBUG(cerr << " Last frame :" << lastFrame << " Tell:" << ctrl.Tell() << " At:" << at << "\n");
+    ONDEBUG(cerr << " Last frame :" << lastFrame << " Tell64:" << ctrl.Tell64() << " At:" << at << "\n");
   }
 
 
