@@ -21,12 +21,12 @@ The next 4 bytes contain the version number.<br>
 The next 4 bytes contain the video buffer size.<br>
 The next 4 bytes contain the audio buffer size, which is divided by eight to get the size of each channel.<br>
 The next 4 bytes is a place holder to contain the number of frames.<br>
-The next 8 bytes is a place holder to contain the frame rate.<br>
-The next 4 bytes contains the video mode.<br>
-The next 4 bytes contains the byte format.<br>
-The next 4 bytes contains the colour mode.<br>
+The next 8 bytes is a place holder to contain the frame rate, expressed as a ratio of two 32-bit integers.<br>
+The next 1 byte contains the video mode.<br>
+The next 1 byte contains the byte format.<br>
+The next 1 byte contains the colour mode.<br>
 <br>
-That is the full header for version 1.<br>
+That is the full header for version 1.  Note therefore that the header consists of 31 bytes.<br>
 <br>
 Each frame also has a 4 byte video buffer size and a 4 byte audio buffer size appended to the front of the frame.This is to allow for future scenario's where each frame size can be different.
 </p>  

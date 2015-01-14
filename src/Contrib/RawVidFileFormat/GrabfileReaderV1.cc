@@ -197,9 +197,7 @@ BufferC<char> GrabfileReaderV1C::GetNextFrame()
   m_infile.read(reinterpret_cast<char*>(&dummy_int), 4);
  
   bool ok = m_infile.good();
-  if(!ok) {
-      exit(1);
-  }
+  RavlAlwaysAssertMsg(ok, "ERROR in GrabfileReaderV1C::GetNextFrame when reading i/p file");
   if(ok) {
       if(IdToByteFormat(byteformat) == BITS_8) {
          BufferC<char> video(m_video_buffer_size);

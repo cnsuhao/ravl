@@ -58,15 +58,15 @@ namespace RavlImageN {
     //: Setup for variant.
     // Where size in the size of the Y image.
     
-    inline UIntT CalcOffset(UIntT frameNo) const {
+    inline UInt64T CalcOffset(UIntT frameNo) const {
       RavlAssert(frameSize > 0);
-      return frameSize * frameNo; 
+      return (UInt64T)frameSize * (UInt64T)frameNo; 
     }
     //: Calculate the offset of a frame.
 
-    inline IntT CalcOffset(IntT frameNo) const  {
+    inline Int64T CalcOffset(IntT frameNo) const  {
       RavlAssert(frameSize > 0);
-      return frameSize * frameNo; 
+      return (UInt64T)frameSize * (UInt64T)frameNo; 
     }
     //: Calculate the offset of a frame.
   

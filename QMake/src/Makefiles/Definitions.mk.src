@@ -257,7 +257,16 @@ INST_ADMIN=$(LOCALTMP)$(PROJECT_DIR)
 
 # Documentation
 
-INST_DOC= $(ROOTDIR)/share/doc/$(PROJECT_NAME)$(FALLBACK_PROJNAME)
+ifdef PROJECT_NAME
+ INST_DOC= $(ROOTDIR)/share/doc/$(PROJECT_NAME)
+else
+ ifdef FALLBACK_PROJNAME
+  INST_DOC= $(ROOTDIR)/share/doc/$(FALLBACK_PROJNAME)
+ else
+  INST_DOC= $(ROOTDIR)/share/doc/MyProject
+ endif
+endif
+
 INST_HTML=$(INST_DOC)/html
 INST_DOCEXAMPLES=$(INST_DOC)/examples
 INST_EHT= $(INST_ADMIN)/CxxDoc/EHT
