@@ -76,7 +76,10 @@ namespace RavlN {
       RavlError("GnuPlot not running!");
       return false;
     }
-
+    if(data.Size() == 0) {
+      RavlWarning("No data to plot for '%s' ",dataName.c_str());
+      return false;
+    }
     // make the command
     StringC cmd;
     if (dataName.IsEmpty()) {
@@ -113,6 +116,10 @@ namespace RavlN {
       RavlError("GnuPlot not running!");
       return false;
     }
+    if(data.Size() == 0) {
+      RavlWarning("No data to plot. ");
+      return false;
+    }
 
     /*
      * Not a big fan of this but can not pipe data to GnuPlot
@@ -122,7 +129,13 @@ namespace RavlN {
     OStreamC os(tmpFile);
     StringC cmd = "plot ";
     UIntT i = 0;
+    int foundCount = 0;
     for (CollectionIterC<Tuple2C<StringC, CollectionC<Point2dC> > > hshIt(data); hshIt; hshIt++) {
+      if(hshIt.Data().Data2().Size() == 0) {
+        RavlWarning("No data to plot for '%s', skipping ",hshIt.Data().Data1().c_str());
+        continue;
+      }
+      foundCount++;
       os << "# " << hshIt->Data1() << endl;
       StringC localPlot;
       localPlot.form("\'%s\' index %d title '%s',", tmpFile.c_str(), i, hshIt->Data1().c_str());
@@ -134,6 +147,10 @@ namespace RavlN {
       }
       i++;
       os << "\n\n"; // double line important
+    }
+    if(!foundCount) {
+      RavlWarning("No data at all to plot. ");
+      return false;
     }
     cmd.del((int) cmd.Size() - 1, (int) 1);
     // send the command
