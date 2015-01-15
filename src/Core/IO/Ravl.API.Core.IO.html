@@ -1,22 +1,34 @@
-! docentry="Ravl.API.Core.IO"
-! author="Charles Galambos, Bill Christmas"
-: Input Output system
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!--! author="Charles Galambos, Bill Christmas" -->
+<!--! docentry="Ravl.API.Core.IO" -->
+<html>
+  <head>
+    <title>Input Output system</title>
+  </head>
 
-<p> There are two mechanisms for doing I/O in RAVL: via streams, and
-via the <code>Load()</code> / <code>Save()</code> functions. </p> 
+  <body>
 
-<p>The standard C++ stream mechanism (See "The C++ Programming Language" by
-B. Stroustrup) will read and write objects in a format unique to RAVL.
-The details for this mechanism and a variation that allows the
-creation of binary streams can be found in <a
-href="Ravl.API.Core.IO.Streams.html">Rav.API.Core.IO.Streams</a>. On the other hand,
-<code>Load()</code> / <code>Save()</code> mechanism is useful where
-there is a choice of file formats, or where implicit data conversion
-is needed.</p>
 
-<p> There is also a mechanism for dealing with sequences of objects, a
-description of which can be found in <a
-href="Ravl.API.OS.Sequence.html">Ravl.API.OS.Sequence</a>.</p>
+<p> The mechanisms for doing I/O in RAVL are:  </p> 
+
+    <ul>
+      <li><b>via C++ streams:</b> The standard C++ stream mechanism (See "The
+      C++ Programming Language" by B. Stroustrup) will read and write objects
+      in a format unique to RAVL.  The details for this mechanism and a
+      variation that allows the creation of binary streams can be found in <a
+      href="Ravl.API.Core.IO.Streams.html">Rav.API.Core.IO.Streams</a>. All
+      Ravl classes should contain an interface to C++ streams.</li> 
+
+      <li><b>via the <a href="#LoadSave"><code>Load()</code> /
+      <code>Save()</code></a> functions:</b> This is useful where there is a
+      choice of file formats, or where implicit data conversion is needed.
+      When outputting an object, it includes a header denoting the object
+      class. </li>
+
+      <li><b>via the <a href="Ravl.API.OS.Sequence.html">sequence mechanism</a></b>:
+      This is a mechanism for dealing with sequences of objects, such as
+      images in a video file.</li>
+    </ul>
 
 <h2> <a name="LoadSave"></a>Using the <a href=
 "../Class/RavlN.html#LoadObconst_StringC_Ref_DataT_Ref_StringC_boolCb">
@@ -72,7 +84,7 @@ the possible formats and conversions have to be allowed for at compile/link
 time.
 
 
-    <h2> Writing your own stuff <a name="writingyourown"/></h2>
+    <h2> Writing your own <code>Load/Save</code> stuff <a name="writingyourown"/></h2>
 
 
 <h4>Simple Class IO</h4>
@@ -139,3 +151,5 @@ the IO mechanism.
 
 </ol>
 
+  </body>
+</html>
