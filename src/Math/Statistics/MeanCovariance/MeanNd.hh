@@ -7,7 +7,6 @@
 #ifndef RAVL_MATHMEANND_HEADER
 #define RAVL_MATHMEANND_HEADER 1
 /////////////////////////////////////////////
-//! rcsid="$Id$"
 //! userlevel=Normal
 //! author="Radek Marik"
 //! date="26/05/1994"

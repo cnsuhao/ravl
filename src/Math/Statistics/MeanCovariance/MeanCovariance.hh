@@ -7,7 +7,6 @@
 #ifndef RAVL_MEANCOVARIANCEND_HEADER
 #define RAVL_MEANCOVARIANCEND_HEADER
 //////////////////////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! userlevel=Normal
 //! author="Radek Marik"
 //! date="01/01/1994"
@@ -33,14 +32,16 @@ namespace RavlN {
   class MeanCovarianceC {
   public:
     MeanCovarianceC()
-      : m_haveInvCov(false)
+      : m_haveInvCov(false),
+        m_cacheDet(RavlConstN::nanReal)
     {}
     // Empty constructor, creates invalid object
 
     MeanCovarianceC(const MeanCovarianceC & meanCov)
       : m(meanCov.m), 
 	cov(meanCov.cov),
-        m_haveInvCov(false)
+        m_haveInvCov(false),
+        m_cacheDet(RavlConstN::nanReal)
     {}
     // The class MeanCovarianceC is implemented as a big object using
     // a reference counter.
@@ -48,7 +49,8 @@ namespace RavlN {
     explicit MeanCovarianceC(const SizeT n)
       : m(n), 
 	cov(n),
-        m_haveInvCov(false)
+        m_haveInvCov(false),
+        m_cacheDet(RavlConstN::nanReal)
     { cov.Fill(0); }
     // Creates zero mean and zero covariance matrix representing
     // the 'n'-dimensional set containing no data points.
@@ -56,7 +58,8 @@ namespace RavlN {
     explicit MeanCovarianceC(const unsigned n)
       : m(n),
         cov(n),
-        m_haveInvCov(false)
+        m_haveInvCov(false),
+        m_cacheDet(RavlConstN::nanReal)
     { cov.Fill(0); }
     // Creates zero mean and zero covariance matrix representing
     // the 'n'-dimensional set containing no data points.
@@ -64,7 +67,8 @@ namespace RavlN {
     explicit MeanCovarianceC(const VectorC & point)
       : m(point), 
 	cov(point.Size()),
-        m_haveInvCov(false)
+        m_haveInvCov(false),
+        m_cacheDet(RavlConstN::nanReal)
     { cov.Fill(0); }
     // Creates the mean vector and zero covariance matrix representing
     // the data set containing just one data point. The vector 'point'
@@ -73,7 +77,8 @@ namespace RavlN {
     explicit MeanCovarianceC(const MeanNdC & mean)
       : m(mean), 
 	cov(mean.Mean().Size()),
-        m_haveInvCov(false)
+        m_haveInvCov(false),
+        m_cacheDet(RavlConstN::nanReal)
     { cov.Fill(0); }
     // Creates the mean vector and zero covariance matrix representing
     // the data set represented by the 'mean'. The structure 'mean'
@@ -84,7 +89,8 @@ namespace RavlN {
 		    const MatrixRSC & ncov)
       : m(n,mean), 
 	cov(ncov),
-        m_haveInvCov(false)
+        m_haveInvCov(false),
+        m_cacheDet(RavlConstN::nanReal)
     {}
     // Creates the mean vector and zero covariance matrix representing
     // the data set containing 'n' points and represented by the 'mean'
