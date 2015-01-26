@@ -82,7 +82,7 @@ AC_DEFUN([QM_SET_COMPILER_CFLAGS],
              COMPILER_DEBUG_CFLAGS=" -g "
              COMPILER_GPROF_CFLAGS=" -pg "
 
-             COMPILER_NON_OPT_CFLAGS=" -O -fno-math-errno "
+             COMPILER_NON_OPT_CFLAGS=" -fno-math-errno "
              #
              # We really treat non-optimised builds as a low optimised version.
              # We therefore need to consider the compiler version as for the
@@ -147,7 +147,7 @@ AC_DEFUN([QM_SET_COMPILER_CFLAGS],
                           COMPILER_ANSI_CFLAGS=" -ansi "
                           COMPILER_DEBUG_CFLAGS=""
                           COMPILER_GPROF_CFLAGS=""
-                          COMPILER_NON_OPT_CFLAGS=" -O1 -OPT:Olimit_opt=on "
+                          COMPILER_NON_OPT_CFLAGS=""
                           COMPILER_OPT_CFLAGS=" -O3 -OPT:condt_copy_limit=50000:Olimit=80000 "
                           COMPILER_PROF_CFLAGS=""
                           COMPILER_SHARED_CFLAGS=""
@@ -157,7 +157,7 @@ AC_DEFUN([QM_SET_COMPILER_CFLAGS],
                           COMPILER_ANSI_CFLAGS=" -ansi "
                           COMPILER_DEBUG_CFLAGS=""
                           COMPILER_GPROF_CFLAGS=" -pg "
-                          COMPILER_NON_OPT_CFLAGS=" -O "
+                          COMPILER_NON_OPT_CFLAGS=""
                           COMPILER_OPT_CFLAGS=" -O2 "
                           COMPILER_PROF_CFLAGS=" -p "
                           COMPILER_SHARED_CFLAGS=" -KPIC "
@@ -167,7 +167,7 @@ AC_DEFUN([QM_SET_COMPILER_CFLAGS],
                           COMPILER_ANSI_CFLAGS=" -ansi "
                           COMPILER_DEBUG_CFLAGS=""
                           COMPILER_GPROF_CFLAGS=""
-                          COMPILER_NON_OPT_CFLAGS=" -O "
+                          COMPILER_NON_OPT_CFLAGS=""
                           COMPILER_OPT_CFLAGS=" -O2 "
                           COMPILER_PROF_CFLAGS=""
                           COMPILER_SHARED_CFLAGS=""

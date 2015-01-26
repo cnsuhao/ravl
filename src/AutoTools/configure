@@ -8112,7 +8112,7 @@ then
              COMPILER_DEBUG_CFLAGS=" -g "
              COMPILER_GPROF_CFLAGS=" -pg "
 
-             COMPILER_NON_OPT_CFLAGS=" -O -fno-math-errno "
+             COMPILER_NON_OPT_CFLAGS=" -fno-math-errno "
              #
              # We really treat non-optimised builds as a low optimised version.
              # We therefore need to consider the compiler version as for the
@@ -8165,7 +8165,7 @@ then
                           COMPILER_ANSI_CFLAGS=" -ansi "
                           COMPILER_DEBUG_CFLAGS=""
                           COMPILER_GPROF_CFLAGS=""
-                          COMPILER_NON_OPT_CFLAGS=" -O1 -OPT:Olimit_opt=on "
+                          COMPILER_NON_OPT_CFLAGS=""
                           COMPILER_OPT_CFLAGS=" -O3 -OPT:condt_copy_limit=50000:Olimit=80000 "
                           COMPILER_PROF_CFLAGS=""
                           COMPILER_SHARED_CFLAGS=""
@@ -8175,7 +8175,7 @@ then
                           COMPILER_ANSI_CFLAGS=" -ansi "
                           COMPILER_DEBUG_CFLAGS=""
                           COMPILER_GPROF_CFLAGS=" -pg "
-                          COMPILER_NON_OPT_CFLAGS=" -O "
+                          COMPILER_NON_OPT_CFLAGS=""
                           COMPILER_OPT_CFLAGS=" -O2 "
                           COMPILER_PROF_CFLAGS=" -p "
                           COMPILER_SHARED_CFLAGS=" -KPIC "
@@ -8185,7 +8185,7 @@ then
                           COMPILER_ANSI_CFLAGS=" -ansi "
                           COMPILER_DEBUG_CFLAGS=""
                           COMPILER_GPROF_CFLAGS=""
-                          COMPILER_NON_OPT_CFLAGS=" -O "
+                          COMPILER_NON_OPT_CFLAGS=""
                           COMPILER_OPT_CFLAGS=" -O2 "
                           COMPILER_PROF_CFLAGS=""
                           COMPILER_SHARED_CFLAGS=""
@@ -8275,7 +8275,7 @@ then
              COMPILER_GPROF_CCFLAGS=" -pg "
              NVCC_GPROF_NVCCFLAGS=$COMPILER_GPROF_CCFLAGS
 
-             COMPILER_NON_OPT_CCFLAGS=" -O -fno-math-errno "
+             COMPILER_NON_OPT_CCFLAGS=" -fno-math-errno "
              #
              # We really treat non-optimised builds as a low optimised version.
              # We therefore need to consider the compiler version as for the
@@ -8288,7 +8288,7 @@ then
              # rather than _OPT_C{C}FLAGS) as it is not actually used by g++
              # if we are not performing an optimised compile.
 
-             NVCC_NON_OPT_NVCCFLAGS=" -O -Xcompiler -fno-math-errno "
+             NVCC_NON_OPT_NVCCFLAGS=" -Xcompiler -fno-math-errno "
              #
              # The CUDA compiler driver does not understand the -fno-math-errno
              # switch. This means we need to prefix it with the -Xcompiler
@@ -8366,7 +8366,7 @@ then
                           COMPILER_ANSI_CCFLAGS=" -ansi "
                           COMPILER_DEBUG_CCFLAGS=""
                           COMPILER_GPROF_CCFLAGS=""
-                          COMPILER_NON_OPT_CCFLAGS=" -O1 -OPT:Olimit_opt=on "
+                          COMPILER_NON_OPT_CCFLAGS=""
                           COMPILER_OPT_CCFLAGS=" -O3 -OPT:condt_copy_limit=50000:Olimit=80000 "
                           COMPILER_PROF_CCFLAGS=""
                           COMPILER_SHARED_CCFLAGS=""
@@ -8378,7 +8378,7 @@ then
                           COMPILER_ANSI_CCFLAGS=" -ansi "
                           COMPILER_DEBUG_CCFLAGS=""
                           COMPILER_GPROF_CCFLAGS=" -pg "
-                          COMPILER_NON_OPT_CCFLAGS=" -O "
+                          COMPILER_NON_OPT_CCFLAGS=""
                           COMPILER_OPT_CCFLAGS=" -O2 "
                           COMPILER_PROF_CCFLAGS=" -p "
                           COMPILER_SHARED_CCFLAGS=" -KPIC "
@@ -8388,7 +8388,7 @@ then
                           COMPILER_ANSI_CCFLAGS=" -ansi "
                           COMPILER_DEBUG_CCFLAGS=""
                           COMPILER_GPROF_CCFLAGS=""
-                          COMPILER_NON_OPT_CCFLAGS=" -O "
+                          COMPILER_NON_OPT_CCFLAGS=""
                           COMPILER_OPT_CCFLAGS=" -O2 "
                           COMPILER_PROF_CCFLAGS=""
                           COMPILER_SHARED_CCFLAGS=""
