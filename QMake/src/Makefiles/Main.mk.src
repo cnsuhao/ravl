@@ -308,6 +308,7 @@ ifeq ($(SUPPORT_OK),yes)
  endif
 #$(INST_DEPEND)/%.java.d
  TARG_EXE := $(patsubst %$(CEXT),$(INST_BIN)/%$(EXEEXT), $(patsubst %$(CXXEXT),$(INST_BIN)/%$(EXEEXT),$(patsubst %.mm,$(INST_BIN)/%$(EXEEXT),$(filter-out %.java,$(MAINS)))))
+ TARG_LINKS=$(patsubst $(INST_BIN)/%,$(ROOTDIR)/bin/%, $(TARG_EXE))
  TARG_PUREEXE := $(patsubst %$(CEXT),$(INST_BIN)/pure_%$(EXEEXT), $(patsubst %$(CXXEXT),$(INST_BIN)/pure_%$(EXEEXT),$(patsubst %.mm,$(INST_BIN)/pure_%$(EXEEXT),$(filter-out %.java,$(MAINS)))))
  TARG_EXEOBJS=$(patsubst %$(CEXT),$(INST_OBJS)/%$(OBJEXT),$(patsubst %$(CXXEXT),$(INST_OBJS)/%$(OBJEXT),$(filter-out %.java,$(MAINS))))
  TARG_TESTEXE := $(patsubst %$(CEXT),$(INST_TESTBIN)/%$(EXEEXT), $(patsubst %$(CXXEXT),$(INST_TESTBIN)/%$(EXEEXT),$(TESTEXES)))
@@ -433,6 +434,7 @@ else # SUPPORT_OK != yes
  TARG_PKGCONFIG=
  TARG_LIBS=
  TARG_EXE=
+ TARG_LINKS=
  TARG_EXEOBJS=
  TARG_TESTEXE =
  TARG_TESTEXEOBJS=
@@ -1098,7 +1100,7 @@ $(INST_LIB)/%$(OBJEXT) : $(INST_OBJS)/%$(OBJEXT)
 # Build executables.
 
 ifndef NOEXEBUILD
-build_exe: $(TARG_EXE) $(TARG_SCRIPT) $(TARG_JAVAEXE) prebuildstep
+build_exe: $(TARG_EXE) $(TARG_SCRIPT) $(TARG_JAVAEXE) $(TARG_LINKS) prebuildstep
 else
 build_exe:
 	@true
@@ -1141,14 +1143,23 @@ $(TARG_EXE) : $(INST_BIN)/%$(EXEEXT) : $(INST_OBJS)/%$(OBJEXT) $(EXTRAOBJS) $(TA
 	if $(CXX) $(PKG_LDFLAGS) $(LDFLAGS) $(INST_OBJS)/$*$(OBJEXT) $(EXTRAOBJS) $(BINLIBS) -o $(INST_BIN)/$(@F) ; then \
 	  $(SYNC) ; \
 	  $(CHMOD) 555 $(INST_BIN)/$(@F) ; \
-	  if [ -h $(ROOTDIR)/bin/$(@F) ] || [ -f $(ROOTDIR)/bin/$(@F) ] ; \
-          then \
-	    $(RM) $(ROOTDIR)/bin/$(@F) ; \
-	  fi ; \
-          cd $(ROOTDIR)/bin; $(LN_S) $(INST_BIN)/$(@F) $(@F) ; \
 	else \
 	  exit 1; \
 	fi
+
+
+# Create links in top level bin dir to actual binaries in $VAR/{shared}
+# Links are always re-created (via dependency on the FORCE target) even if the
+# binaries were already up to date. This is to ensure the links always point to
+# the last made target ($VAR/{shared}) even if everything else was up to date.
+$(TARG_LINKS): $(ROOTDIR)/bin/%$(EXEEXT): $(TARG_EXE) FORCE
+	$(if $(QMAKE_INFO), @echo ---- Creating link from top level bin directory to $(INST_BIN)/$(@F))
+	@if [ -h $(ROOTDIR)/bin/$(@F) ] || [ -f $(ROOTDIR)/bin/$(@F) ] ; \
+	then \
+	  $(if $(QMAKE_INFO), echo ----- Removing existing link first ;) \
+	  $(RM) $(ROOTDIR)/bin/$(@F) ; \
+	fi ; \
+	cd $(ROOTDIR)/bin; $(LN_S) $(INST_BIN)/$(@F) $(@F)
 
 
 ifndef NOEXEBUILD
@@ -1836,6 +1847,14 @@ SPACE=$(EMPTY) $(EMPTY)
           , \
               $(if $(QMAKE_INFO),@echo Ignoring missing optional $(@F)) \
           )
+
+###########################
+# FORCE target to force anything depending on it to automatically be remade
+# Target purposly has no pre-requisites and a null recipe.
+FORCE:
+	
+       # Above line should be a single tab character
+
 
 ###########################
 # General fatal error for things we do no know how to build.
