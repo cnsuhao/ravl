@@ -68,6 +68,9 @@ namespace RavlN {
     //!param: dataString - ODBC style date e.g. '2012-11-22 00:00:00'
     //!param: isLocalTimeZone - When true assumes parameters are in the local timezone.  It will convert to UTC.
 
+    static DateC FromStringFormat(const StringC &dataString,const char *format);
+    //: Interpret from a string using 'strptime' formatting.
+
     static DateC FromODBCString(const StringC &dataString, bool isLocalTimeZone = false);
     //: Generate date from odbc string.
     //!param: dataString - ODBC style date e.g. '2012-11-22 00:00:00'

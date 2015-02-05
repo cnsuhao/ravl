@@ -4,6 +4,7 @@
 
 #include "Ravl/config.h"
 #include "Ravl/SysLog.hh"
+
 #if RAVL_OS_SOLARIS
 #define _POSIX_PTHREAD_SEMANTICS 1
 #define _REENTRANT 1
@@ -49,6 +50,7 @@ extern "C" {
 #include <sys/time.h>
 #include <sys/timeb.h>
 #include <unistd.h>
+#include <string.h>
 #else
 #include <string.h>
 
@@ -156,6 +158,16 @@ namespace RavlN {
     }
 
     return DateTZC(year,month,day,hour,min,sec,usec,tzOffset);
+  }
+
+  //: Interpret from a string using 'strptime' formatting.
+  DateTZC DateTZC::FromStringFormat(const StringC &dataString,const char *format)
+  {
+    struct tm timeInfo;
+    memset(&timeInfo,0,sizeof(tm));
+    if(strptime(dataString.c_str(),format,&timeInfo) == 0)
+      return RavlN::DateTZC::InvalidTime();
+    return RavlN::DateTZC(1900 + timeInfo.tm_year,timeInfo.tm_mon+1,timeInfo.tm_mday,timeInfo.tm_hour,timeInfo.tm_min,timeInfo.tm_sec,0,timeInfo.tm_isdst);
   }
 
   //: Format as ISO8601 string

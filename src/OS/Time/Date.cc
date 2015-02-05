@@ -61,6 +61,7 @@ extern "C" {
 #include <sys/time.h>
 #include <sys/timeb.h>
 #include <unistd.h>
+#include <string.h>
 #else
 #include <string.h>
 
@@ -566,6 +567,16 @@ namespace RavlN {
     DateC ret;
     ret.Set(dateString, isLocalTimeZone);
     return ret;
+  }
+
+  //: Interpret from a string using 'strptime' formatting.
+  DateC DateC::FromStringFormat(const StringC &dataString,const char *format)
+  {
+    struct tm timeInfo;
+    memset(&timeInfo,0,sizeof(tm));
+    if(strptime(dataString.c_str(),format,&timeInfo) == 0)
+      return RavlN::DateC::InvalidTime();
+    return RavlN::DateC(1900 + timeInfo.tm_year,timeInfo.tm_mon+1,timeInfo.tm_mday,timeInfo.tm_hour,timeInfo.tm_min,timeInfo.tm_sec,0);
   }
 
   //: Set date to time string, year/month/day hour:min:sec

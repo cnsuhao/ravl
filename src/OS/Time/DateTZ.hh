@@ -53,6 +53,9 @@ namespace RavlN {
     //: Generate date from ISO8601 string.
     // Note this may not support all variants, if the string fails to parse and exception will be thrown.
 
+    static DateTZC FromStringFormat(const StringC &dataString,const char *format);
+    //: Interpret from a string using 'strptime' formatting.
+
     static DateTZC Now();
     //: Get the time now
 
