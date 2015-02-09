@@ -12,7 +12,6 @@
 //! lib=RavlIO
 //! author="Charles Galambos"
 //! date="04/07/1998"
-//! rcsid="$Id$"
 //! file="Ravl/Core/IO/BinFileIO.hh"
 //! userlevel=Default
 
@@ -20,6 +19,7 @@
 #include "Ravl/String.hh"
 #include "Ravl/TypeName.hh"
 #include "Ravl/BinStream.hh"
+#include "Ravl/DP/AttributeValueTypes.hh"
 
 namespace RavlN {
   static const UInt16T RAVLBinaryID = 0x4143; // AC Ravl Binary file id.
@@ -42,14 +42,19 @@ namespace RavlN {
   {
   public:
     DPOBinFileBodyC()
-     : version(0)
-    {}
+     : version(0),
+       m_flushAfterWrite(false)
+    {
+      RegisterAttributes();
+    }
     //: Default constructor.
 
     DPOBinFileBodyC(const StringC &nfname,bool useHeader=false)
       : out(nfname),
-        version(0)
+        version(0),
+        m_flushAfterWrite(false)
     {
+      RegisterAttributes();
 #ifdef RAVL_CHECK
       if(!out.Stream().good())
 	cerr << "DPOBinFileBodyC<DataT>::DPOBinFileBodyC<DataT>(StringC,bool), Failed to open file.\n";
@@ -70,8 +75,10 @@ namespace RavlN {
 
     inline DPOBinFileBodyC(BinOStreamC &strmout,bool useHeader=false)
       : out(strmout),
-	version(0)
+	version(0),
+	m_flushAfterWrite(false)
     {
+      RegisterAttributes();
 #ifdef RAVL_CHECK
       if(!out.Stream().good())
 	cerr << "DPOBinFileBodyC<DataT>::DPOBinFileBodyC<DataT>(OStreamC,bool), Passed bad output stream. \n";
@@ -102,6 +109,8 @@ namespace RavlN {
       }
 #endif
       out << dat;
+      if(m_flushAfterWrite)
+        out.Stream().os() << flush;
 #ifdef RAVL_CHECK
       if(!out.Stream().good())
 	cerr << "DPOBinFileBodyC<DataT>::Put(), Failed because of bad output stream. \n";
@@ -122,6 +131,8 @@ namespace RavlN {
 	  return it.Index().V();
 	}
       }
+      if(m_flushAfterWrite)
+        out.Stream().os() << flush;
       return data.Size();
     }
     //: Put an array of data to stream.
@@ -135,9 +146,40 @@ namespace RavlN {
     { sout << out.Name(); return true; }
     //: Save to std::ostream.
 
+    virtual bool GetAttr(const StringC &attrName,bool &attrValue)
+    {
+      if(attrName=="flushAfterWrite") {
+        attrValue = m_flushAfterWrite;
+        return true;
+      }
+      return DPPortBodyC::GetAttr(attrName,attrValue);
+    }
+    //: Get a stream attribute.
+    // Returns false if the attribute name is unknown.
+    // This is for handling stream attributes such as frame rate, and compression ratios.
+
+    virtual bool SetAttr(const StringC &attrName,const bool &attrValue)
+    {
+      if(attrName=="flushAfterWrite") {
+        m_flushAfterWrite = attrValue;
+        return true;
+      }
+      return DPPortBodyC::SetAttr(attrName,attrValue);
+    }
+    //: Set a stream attribute.
+    // Returns false if the attribute name is unknown.
+    // This is for handling stream attributes such as frame rate, and compression ratios.
+
+  protected:
+    void RegisterAttributes()
+    {
+      this->RegisterAttribute(AttributeTypeBoolC("flushAfterWrite","Flush output after each put ",true,true,false));
+    }
+
   private:
     BinOStreamC out;
     UInt32T version;
+    bool m_flushAfterWrite;
   };
 
   /////////////////////////////////////

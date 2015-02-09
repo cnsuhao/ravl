@@ -43,9 +43,10 @@ namespace RavlN {
 
   DPPortBodyC::DPPortBodyC(std::istream &in) 
     : DPEntityBodyC(in)
-{ in >> portId; 
- RegisterID() ; }
-  
+  {
+    in >> portId;
+    RegisterID() ;
+  }
 
   //: Destructor.
   
