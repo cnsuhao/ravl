@@ -218,11 +218,10 @@ namespace RavlN {
       }
       return buf;
     }
-
     if(b.tm_sec < 10) {
-      buf.form("%04u-%02u-%02uT%02u:%02u:%02u%c0%1f:%20u",b.tm_year + 1900,b.tm_mon+1,b.tm_mday,b.tm_hour,b.tm_min,sec,signChar,tzHour,tzMin);
+      buf.form("%04u-%02u-%02uT%02u:%02u:0%1f%c0%1u:%02u",b.tm_year + 1900,b.tm_mon+1,b.tm_mday,b.tm_hour,b.tm_min,sec,signChar,tzHour,tzMin);
     } else {
-      buf.form("%04u-%02u-%02uT%02u:%02u:%02u%c%2%f:%20u",b.tm_year + 1900,b.tm_mon+1,b.tm_mday,b.tm_hour,b.tm_min,sec,signChar,tzHour,tzMin);
+      buf.form("%04u-%02u-%02uT%02u:%02u:%0f%c%02u:%02u",b.tm_year + 1900,b.tm_mon+1,b.tm_mday,b.tm_hour,b.tm_min,sec,signChar,tzHour,tzMin);
     }
     return buf;
   }

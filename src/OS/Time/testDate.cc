@@ -35,7 +35,6 @@ int main()
 {
   SysLogOpen("testDate",false,true,false,-1,true);
 
-  cerr << "Starting DateC tests... \n";
 #if 1
   RAVL_RUN_TEST(CheckTimeMath());
   RAVL_RUN_TEST(CheckConsistant());
@@ -47,7 +46,8 @@ int main()
   RAVL_RUN_TEST(CheckDateTZ());
 #endif
   RAVL_RUN_TEST(CheckISO8601());
-  cerr << "Test passed.\n";
+
+  RavlInfo("Test passed.");
   return 0;
 }
 
@@ -265,6 +265,11 @@ int CheckISO8601()
   RavlDebug("Date:%s ",testDate4.ISO8601(false).c_str());
   DateC testDate5 = DateC::FromISO8601String("2014-12-07T10:32:48");
   RavlDebug("Date:%s ",testDate5.ISO8601(false).c_str());
+
+  DateTZC testDate6 = DateTZC::FromISO8601String("2014-09-29 18:50:31.296940+01:01");
+  RavlDebug("Date:%s ",testDate6.ISO8601().c_str());
+  DateTZC testDate7 = DateTZC::FromISO8601String("2014-09-29 18:50:31.296940+11:01");
+  RavlDebug("Date:%s ",testDate7.ISO8601().c_str());
 
   return 0;
 }
