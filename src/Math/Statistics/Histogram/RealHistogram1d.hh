@@ -29,9 +29,11 @@ namespace RavlN {
   {
   public:
     RealHistogram1dC()
+      : scale(1.0),
+        offset(0)
     {}
     //: Default constructor.
-    
+
     RealHistogram1dC(RealT min,RealT max,UIntT noOfBins);
     //: Create a histogram.
     // The bin width is therefore (max-min) / noOfBins.
