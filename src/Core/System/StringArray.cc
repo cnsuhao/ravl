@@ -45,12 +45,12 @@ namespace RavlN {
     const char *place,*eos;
     // Fill out delim table.
     for(place = rdelim;*place != 0;place++)
-      delim[(int) *place] = true;
+      delim[((unsigned char)*place)] = true;
     // Begin search of string.
     eos = &text.chars()[text.length()];
     for(place = text.chars();place != eos;) {
       // Skip spaces.
-      if(delim[(int) *place]) {
+      if(delim[((unsigned char)*place)]) {
         place++;
         if(!allowEmptyColumn)
           continue;
@@ -59,7 +59,7 @@ namespace RavlN {
       StringC work;
       bool inQuote(false);
       for(;place != eos;place++) {
-        if(delim[(int) *place] && !inQuote)
+        if(delim[(int) ((unsigned char)*place)] && !inQuote)
           break;
         switch(*place)
           {
