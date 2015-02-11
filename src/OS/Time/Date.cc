@@ -430,9 +430,13 @@ namespace RavlN {
     //2012-01-30T10:00Z
     //2012-01-30T10:00:00Z
 
+    if(dataString.IsEmpty())
+      return false;
+    if(!isdigit(work[at]))
+      return false;
     int elems = sscanf(&work[at],"%4u-%2u-%2u",&year,&month,&day);
     if(elems != 3) {
-      ONDEBUG(RavlDebug("Ran out of characters."));
+      ONDEBUG(RavlDebug("Ran out of characters in: '%s' ",work.c_str()));
       return false;
     }
     if(work.Size() <= 10) {

@@ -270,6 +270,8 @@ int CheckISO8601()
   RavlDebug("Date:%s ",testDate6.ISO8601().c_str());
   DateTZC testDate7 = DateTZC::FromISO8601String("2014-09-29 18:50:31.296940+11:01");
   RavlDebug("Date:%s ",testDate7.ISO8601().c_str());
+  DateTZC testDate8 = DateTZC::FromISO8601String("2014-09-29");
+  RavlDebug("Date:%s ",testDate8.ISO8601().c_str());
 
   return 0;
 }
