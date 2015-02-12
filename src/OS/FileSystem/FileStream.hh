@@ -43,6 +43,9 @@ namespace RavlN {
     ~FileStreamC();
     //: Destructor
     
+    bool Open(const StringC &filename,bool forRead,bool forWrite = false);
+    //: Open stream
+
     bool Seek(StreamOffsetT offset);
     //: Seek to offset in a file.
     

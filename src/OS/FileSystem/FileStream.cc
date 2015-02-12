@@ -48,18 +48,7 @@ namespace RavlN {
   FileStreamC::FileStreamC(const StringC &filename,bool forRead,bool forWrite)
     : fd(-1)
   {
-    int flags = 0;
-    if(forRead) {
-      if(forWrite)
-	flags =  O_RDWR;
-      else
-	flags =  O_RDONLY;
-    } else
-      flags = O_WRONLY | O_CREAT | O_TRUNC;
-#ifdef O_LARGEFILE
-    flags |= O_LARGEFILE;
-#endif
-    fd = open(filename.chars(),flags,0666);
+    Open(filename,forRead,forWrite);
   }
 #else
   FileStreamC::FileStreamC(const StringC &filename,bool _forRead,bool _forWrite)
@@ -67,13 +56,38 @@ namespace RavlN {
        forWrite(_forWrite),
        filename(filename)
   {
+    Open(filename,forRead,forWrite);
+  }
+#endif
+  
+  //: Open stream
+  bool FileStreamC::Open(const StringC &filename,bool forRead,bool forWrite)
+  {
+#if RAVL_HAVE_INTFILEDESCRIPTORS
+    if(fd >= 0)
+      close(fd);
+    fd = -1;
+    int flags = 0;
+    if(forRead) {
+      if(forWrite)
+        flags =  O_RDWR;
+      else
+        flags =  O_RDONLY;
+    } else
+      flags = O_WRONLY | O_CREAT | O_TRUNC;
+#ifdef O_LARGEFILE
+    flags |= O_LARGEFILE;
+#endif
+    fd = open(filename.chars(),flags,0666);
+#else
     if(forRead)
       is = IStreamC(filename);
     if(forWrite)
       os = OStreamC(filename);
-  }
 #endif
-  
+    return true;
+  }
+
   //: Destructor
   
   FileStreamC::~FileStreamC() {
