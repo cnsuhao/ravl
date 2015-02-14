@@ -750,6 +750,9 @@ namespace RavlN {
     }
     //: Create a component
 
+
+    bool FindComponentToCreate(const XMLFactoryContextC& currentContext,const StringC &name,StringC &redirect,XMLFactoryContextC &newNode,bool suppressErrors);
+
     template<class DataT>
     bool CreateComponent(const XMLFactoryContextC& currentContext,
                          const StringC &name,
@@ -758,21 +761,11 @@ namespace RavlN {
                          XMLFactoryCreateModeT createMode = XMLFACTORY_CREATE_DEFAULT
                          )
     {
-      RCWrapC<DataT> handle;
-
-      StringC redirect = currentContext.AttributeString(name);
-      if(redirect.IsEmpty()) {
-        redirect = name;
-      }
-
       XMLFactoryContextC newNode;
-      if(!currentContext.CreateContext(redirect,newNode)) {
-        if(!suppressErrors) {
-          RavlError("Failed to find child '%s' to create from path '%s' ",redirect.c_str(),currentContext.Path().c_str());
-          throw RavlN::ExceptionBadConfigC("Failed to find child");
-        }
+      StringC redirect;
+
+      if(!FindComponentToCreate(currentContext,name,redirect,newNode,suppressErrors))
         return false;
-      }
 
       if(!CreateComponent(newNode,data)) {
         if(!suppressErrors)

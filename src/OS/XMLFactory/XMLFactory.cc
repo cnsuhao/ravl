@@ -714,6 +714,34 @@ namespace RavlN {;
     throw RavlN::ExceptionBadConfigC("Failed to find component");
   }
 
+  bool XMLFactoryC::FindComponentToCreate(const XMLFactoryContextC& currentContext,const StringC &name,StringC &redirect,XMLFactoryContextC &newNode,bool suppressErrors)
+  {
+    redirect = currentContext.AttributeString(name);
+    if(redirect.IsEmpty()) {
+      redirect = name;
+      if(!currentContext.CreateContext(redirect,newNode)) {
+        if(!suppressErrors) {
+          RavlError("Failed to find child '%s' to create from path '%s' ",redirect.c_str(),currentContext.Path().c_str());
+          throw RavlN::ExceptionBadConfigC("Failed to find child");
+        }
+        return false;
+      }
+    } else {
+      XMLFactoryNodeC::RefT fnode;
+      if(!const_cast<XMLFactoryNodeC &>(currentContext.INode()).UsePath(redirect,fnode)) {
+        if(!suppressErrors) {
+          RavlError("Failed to find child '%s' to create from path '%s' ",redirect.c_str(),currentContext.Path().c_str());
+          throw RavlN::ExceptionBadConfigC("Failed to find child");
+        }
+        return false;
+      }
+
+      newNode = XMLFactoryContextC(*this,*new XMLFactoryNodeC(fnode->XMLNode(),currentContext.INode()));
+    }
+    return true;
+  }
+
+
   //! Create a component
   bool XMLFactoryC::CreateComponentInternal(const XMLFactoryNodeC &node,RavlN::RCWrapAbstractC &rawHandle) {
     StringC loadFilename = node.AttributeString("load","");
