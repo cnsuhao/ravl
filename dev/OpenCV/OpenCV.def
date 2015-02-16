@@ -1,3 +1,0 @@
-INCLUDES += -I$(OPENCV_HOME)/include
-EXELIB :=  -L$(OPENCV_HOME)/lib -lcxcore -lcv -lcvaux -lhighgui $(EXELIB)
-
