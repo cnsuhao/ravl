@@ -306,7 +306,7 @@ namespace RavlN {
   inline
   ComplexC Sqrt(const ComplexC & a) {
     RealT surd = a.Mag();
-    return ComplexC(Sqrt((surd+a.Re())/2.0), Sqrt((surd-a.Re())/2.0));
+    return ComplexC(Sqrt((surd+a.Re())/2.0), Sign(a.Im()) * Sqrt((surd-a.Re())/2.0));
   }
 
   //: Returns the complex square root of a complex number with +ve real part

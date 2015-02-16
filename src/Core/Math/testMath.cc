@@ -135,12 +135,23 @@ int testRandom() {
 
 #include <cstdio>
 int testComplex() {
-  ComplexC x(-7.0, 24.0);
-  ComplexC y = Sqrt(x);
-  RealT diff = ComplexC(y - ComplexC(3.0, 4.0)).Mag();
-  if (diff > 1.0e-9) {
-    std::cerr << "Error in Sqrt(ComplexC) of " << diff << " \n";
-    return __LINE__;
+  {
+    ComplexC x(-7.0, 24.0);
+    ComplexC y = Sqrt(x);
+    RealT diff = ComplexC(y - ComplexC(3.0, 4.0)).Mag();
+    if (diff > 1.0e-9) {
+      std::cerr << "Error in Sqrt(ComplexC) of " << diff << " \n";
+      return __LINE__;
+    }
+  }
+  {
+    ComplexC x(7.0, -24.0);
+    ComplexC y = Sqrt(x);
+    RealT diff = ComplexC(y - ComplexC(4.0, -3.0)).Mag();
+    if (diff > 1.0e-9) {
+      std::cerr << "Error in Sqrt(ComplexC) of " << diff << " \n";
+      return __LINE__;
+    }
   }
   return 0;
 }
