@@ -146,6 +146,10 @@ namespace RavlN {
       { return ((m_liFrame>=0) && !IsNan(frameRate) && (frameRate>0.0)); }
     //: Checks whether the timecode holds valid data
         
+    inline IntT FrameCount() const
+      {return m_liFrame;}
+    //: Access frame count.
+
     inline int getFrameCount() const
       {return m_liFrame;}
     //: Access frame count.
