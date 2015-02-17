@@ -57,9 +57,12 @@ bool GrabfileWriterV1C::Open(const char* const filename,
     m_outfile.write(reinterpret_cast<char*>(&dummy_int), 4);
     m_audio_buffer_size = dummy_int;
 
-   //TimeCode.
-   IntT nf = 3;
-   m_outfile.write(reinterpret_cast<char*>(&nf),4);
+    // Originaly billed as "TimeCode", this field actually gets overwritten by
+    // the frame count once frames are written. We write the original initial
+    // value out on the offchance any meaning was ever inferred.
+    IntT nf = 3;
+    m_outfile.write(reinterpret_cast<char*>(&nf),4);
+
    dummy_int = htonl(frame_rate);
   
    m_outfile.write(reinterpret_cast<char*>(&dummy_int),8);

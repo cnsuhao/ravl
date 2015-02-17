@@ -63,7 +63,9 @@ bool GrabfileReaderV1C::Open(const char* const filename)
     //Set video offsets.
     videoOffsets[0] = 0;
 
-   //code to possible deal with time codes in the future.
+   // Originally billed as "code to possibly deal with time codes in the
+   // future", this field now receives the frame count once frames are 
+   // written to the grab file.
     m_infile.read(reinterpret_cast<char*>(&dummy_int),4);
     m_frames_loaded = ntohl(dummy_int);
     RealT framerate = 0.0;
