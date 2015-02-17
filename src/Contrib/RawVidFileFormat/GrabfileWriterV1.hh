@@ -50,7 +50,7 @@ public:
 //  virtual bool PutFrame(const DVSBufferC &buffer);
   //: Write frame.
 
-  virtual bool PutFrame(BufferC<char> &fr,UIntT &te);
+  virtual bool PutFrame(BufferC<char> &fr,UIntT &fc);
   //: Write a frame.
 
   virtual bool PutFrame(SArray1dC<char> &re);

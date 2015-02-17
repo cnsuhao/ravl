@@ -136,7 +136,7 @@ void GrabfileWriterV1C::Reset(VideoModeT vmode,ByteFormatT bformat, IntT vbuf) {
 }
 
 // Write frame.
-bool GrabfileWriterV1C::PutFrame(BufferC<char> &fr,UIntT &te) {
+bool GrabfileWriterV1C::PutFrame(BufferC<char> &fr,UIntT &fc) {
 
   if(m_outfile.good()) {
     uint32_t dummy_int = 0;
@@ -149,7 +149,14 @@ bool GrabfileWriterV1C::PutFrame(BufferC<char> &fr,UIntT &te) {
     dummy_int = htonl(m_audio_buffer_size);
     m_outfile.write(reinterpret_cast<char*>(&dummy_int), 4);
 
-    m_outfile.write(fr.BufferAccess().DataStart(),fr.BufferAccess().Size());
+    if (fc != 0)
+    {  // Bodge framecount into first pixel (or first 1 1/3 pixels for 8 bit)
+       dummy_int = htonl(fc);
+       m_outfile.write(reinterpret_cast<char*>(&dummy_int), 4);
+       m_outfile.write(fr.BufferAccess().DataStart()+4,fr.BufferAccess().Size()-4);
+    }
+    else
+       m_outfile.write(fr.BufferAccess().DataStart(),fr.BufferAccess().Size());
 
     ++m_frames_written;
 
