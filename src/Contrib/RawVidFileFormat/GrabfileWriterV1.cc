@@ -48,7 +48,6 @@ bool GrabfileWriterV1C::Open(const char* const filename,
 
     // Video buffer size
     dummy_int = htonl(videobuffersize);
-
     m_outfile.write(reinterpret_cast<char*>(&dummy_int), 4);
     m_video_buffer_size = videobuffersize;
 
@@ -136,8 +135,9 @@ void GrabfileWriterV1C::Reset(VideoModeT vmode,ByteFormatT bformat, IntT vbuf) {
    m_outfile.seekp(currentpos);
 }
 
+// Write frame.
 bool GrabfileWriterV1C::PutFrame(BufferC<char> &fr,UIntT &te) {
-     // Write the frame data.
+
   if(m_outfile.good()) {
     uint32_t dummy_int = 0;
 
@@ -160,9 +160,6 @@ bool GrabfileWriterV1C::PutFrame(BufferC<char> &fr,UIntT &te) {
 // Write frame.
 bool GrabfileWriterV1C::PutFrame(SArray1dC<char> &ar)
 {
-  // Write the frame header.
-
-  // Write the frame data.
   if(m_outfile.good()) {
     uint32_t dummy_int = 0;
 
@@ -175,27 +172,24 @@ bool GrabfileWriterV1C::PutFrame(SArray1dC<char> &ar)
     m_outfile.write(reinterpret_cast<char*>(&dummy_int), 4);
     //If data is 10 bits.
     if(m_byte_format == 1) {
-
-    const char * vbuf = ar.DataStart() ;
-    unsigned int osize = m_video_buffer_size; //10bit frame size.
-    char * obuf= new char[osize] ;
-    char * start = obuf ;
-    for ( IntT vcount = 0 ; vcount < (m_video_buffer_size / 4)  ; ++ vcount )
-		{
-      *obuf++ = *vbuf++ ;
-      *obuf++ = *vbuf++ ;
-      *obuf++ = *vbuf++ ;
-      obuf ++ ;
-		}
-        m_outfile.write(start,osize);	
-
-
+      const char * vbuf = ar.DataStart() ;
+      unsigned int osize = m_video_buffer_size; //10bit frame size.
+      char * obuf= new char[osize] ;
+      char * start = obuf ;
+      for ( IntT vcount = 0 ; vcount < (m_video_buffer_size / 4)  ; ++ vcount )
+      {
+        *obuf++ = *vbuf++ ;
+        *obuf++ = *vbuf++ ;
+        *obuf++ = *vbuf++ ;
+        obuf ++ ;
+      }
+      m_outfile.write(start,osize);	
     }
     else {
-       if((int)ar.Size() < m_video_buffer_size) {
-          SArray1dC<char> temp(m_video_buffer_size - ar.Size());
-          temp.Fill('0');
-          ar.Append(temp);
+      if((int)ar.Size() < m_video_buffer_size) {
+        SArray1dC<char> temp(m_video_buffer_size - ar.Size());
+        temp.Fill('0');
+        ar.Append(temp);
       }
       m_outfile.write(ar.DataStart(),ar.Size());
       m_outfile.flush();
