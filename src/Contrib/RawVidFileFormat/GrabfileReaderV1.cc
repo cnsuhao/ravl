@@ -68,9 +68,15 @@ bool GrabfileReaderV1C::Open(const char* const filename)
    // written to the grab file.
     m_infile.read(reinterpret_cast<char*>(&dummy_int),4);
     m_frames_loaded = ntohl(dummy_int);
-    RealT framerate = 0.0;
-    m_infile.read(reinterpret_cast<char*>(&framerate),8);
-    m_frame_rate = ntohl(framerate);
+
+    m_infile.read(reinterpret_cast<char*>(&dummy_int),4);
+    m_frame_rate = ntohl(dummy_int);
+    // Original code put out 8 bytes for the frame rate (from a uint32_t - go
+    // figure!) so we now have to skip the extra 4 (writer has been fixed to
+    // put out the rate data correctly but now puts it out twice to maintain
+    // the file layout).
+    m_infile.read(reinterpret_cast<char*>(&dummy_int),4);
+
     UIntT id = m_infile.get();
     videomode = id;
 

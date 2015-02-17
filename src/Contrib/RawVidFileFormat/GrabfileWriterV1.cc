@@ -63,9 +63,12 @@ bool GrabfileWriterV1C::Open(const char* const filename,
     IntT nf = 3;
     m_outfile.write(reinterpret_cast<char*>(&nf),4);
 
-   dummy_int = htonl(frame_rate);
-  
-   m_outfile.write(reinterpret_cast<char*>(&dummy_int),8);
+    // Frame rate; originaly written as 8 bytes (from 4 bytes of data!) so we
+    // have to pad out the file (easiest method is to write the value out
+    // twice).
+    dummy_int = htonl(frame_rate);
+    m_outfile.write(reinterpret_cast<char*>(&dummy_int),4);
+    m_outfile.write(reinterpret_cast<char*>(&dummy_int),4);
  
     const uint8_t mode_id = VideoModeToId(videomode);
     m_outfile.put(mode_id);
