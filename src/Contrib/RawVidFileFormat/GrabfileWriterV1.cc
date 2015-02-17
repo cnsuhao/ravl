@@ -151,9 +151,12 @@ bool GrabfileWriterV1C::PutFrame(BufferC<char> &fr,UIntT &te) {
 
     m_outfile.write(fr.BufferAccess().DataStart(),fr.BufferAccess().Size());
 
-    }
     ++m_frames_written;
+
     return true;
+  }
+  else
+    return false;
 
 }
 
@@ -194,10 +197,13 @@ bool GrabfileWriterV1C::PutFrame(SArray1dC<char> &ar)
       m_outfile.write(ar.DataStart(),ar.Size());
       m_outfile.flush();
     }
-  }
   
-  ++m_frames_written;
-  return true;
+    ++m_frames_written;
+
+    return true;
+  }
+  else
+    return false;
 }
 
 
