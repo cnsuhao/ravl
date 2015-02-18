@@ -1,5 +1,5 @@
 // This file is part of RAVL, Recognition And Vision Library
-// Copyright (C) 2001-12, University of Surrey
+// Copyright (C) 2001-15, University of Surrey
 // This code may be redistributed under the terms of the GNU Lesser
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
@@ -55,7 +55,6 @@ bool GrabfileWriterV1C::Open(const char* const filename,
 
     // Video buffer size
     dummy_int = htonl(videobuffersize);
-
     m_outfile.write(reinterpret_cast<char*>(&dummy_int), 4);
     m_video_buffer_size = videobuffersize;
 
@@ -64,12 +63,18 @@ bool GrabfileWriterV1C::Open(const char* const filename,
     m_outfile.write(reinterpret_cast<char*>(&dummy_int), 4);
     m_audio_buffer_size = dummy_int;
 
-   //TimeCode.
-   IntT nf = 3;
-   m_outfile.write(reinterpret_cast<char*>(&nf),4);
-   dummy_int = htonl(frame_rate);
-  
-   m_outfile.write(reinterpret_cast<char*>(&dummy_int),8);
+    // Originaly billed as "TimeCode", this field actually gets overwritten by
+    // the frame count once frames are written. We write the original initial
+    // value out on the offchance any meaning was ever inferred.
+    IntT nf = 3;
+    m_outfile.write(reinterpret_cast<char*>(&nf),4);
+
+    // Frame rate; originaly written as 8 bytes (from 4 bytes of data!) so we
+    // have to pad out the file (easiest method is to write the value out
+    // twice).
+    dummy_int = htonl(frame_rate);
+    m_outfile.write(reinterpret_cast<char*>(&dummy_int),4);
+    m_outfile.write(reinterpret_cast<char*>(&dummy_int),4);
  
     const uint8_t mode_id = VideoModeToId(videomode);
     m_outfile.put(mode_id);
@@ -137,8 +142,9 @@ void GrabfileWriterV1C::Reset(VideoModeT vmode,ByteFormatT bformat, IntT vbuf) {
    m_outfile.seekp(currentpos);
 }
 
-bool GrabfileWriterV1C::PutFrame(BufferC<char> &fr,UIntT &te) {
-     // Write the frame data.
+// Write frame.
+bool GrabfileWriterV1C::PutFrame(BufferC<char> &fr,UIntT &fc) {
+
   if(m_outfile.good()) {
     uint32_t dummy_int = 0;
 
@@ -150,20 +156,27 @@ bool GrabfileWriterV1C::PutFrame(BufferC<char> &fr,UIntT &te) {
     dummy_int = htonl(m_audio_buffer_size);
     m_outfile.write(reinterpret_cast<char*>(&dummy_int), 4);
 
-    m_outfile.write(fr.BufferAccess().DataStart(),fr.BufferAccess().Size());
-
+    if (fc != 0)
+    {  // Bodge framecount into first pixel (or first 1 1/3 pixels for 8 bit)
+       dummy_int = htonl(fc);
+       m_outfile.write(reinterpret_cast<char*>(&dummy_int), 4);
+       m_outfile.write(fr.BufferAccess().DataStart()+4,fr.BufferAccess().Size()-4);
     }
+    else
+       m_outfile.write(fr.BufferAccess().DataStart(),fr.BufferAccess().Size());
+
     ++m_frames_written;
+
     return true;
+  }
+  else
+    return false;
 
 }
 
 // Write frame.
 bool GrabfileWriterV1C::PutFrame(SArray1dC<char> &ar)
 {
-  // Write the frame header.
-
-  // Write the frame data.
   if(m_outfile.good()) {
     uint32_t dummy_int = 0;
 
@@ -176,35 +189,35 @@ bool GrabfileWriterV1C::PutFrame(SArray1dC<char> &ar)
     m_outfile.write(reinterpret_cast<char*>(&dummy_int), 4);
     //If data is 10 bits.
     if(m_byte_format == 1) {
-
-    const char * vbuf = ar.DataStart() ;
-    unsigned int osize = m_video_buffer_size; //10bit frame size.
-    char * obuf= new char[osize] ;
-    char * start = obuf ;
-    for ( IntT vcount = 0 ; vcount < (m_video_buffer_size / 4)  ; ++ vcount )
-		{
-      *obuf++ = *vbuf++ ;
-      *obuf++ = *vbuf++ ;
-      *obuf++ = *vbuf++ ;
-      obuf ++ ;
-		}
-        m_outfile.write(start,osize);	
-
-
+      const char * vbuf = ar.DataStart() ;
+      unsigned int osize = m_video_buffer_size; //10bit frame size.
+      char * obuf= new char[osize] ;
+      char * start = obuf ;
+      for ( IntT vcount = 0 ; vcount < (m_video_buffer_size / 4)  ; ++ vcount )
+      {
+        *obuf++ = *vbuf++ ;
+        *obuf++ = *vbuf++ ;
+        *obuf++ = *vbuf++ ;
+        obuf ++ ;
+      }
+      m_outfile.write(start,osize);	
     }
     else {
-       if((int)ar.Size() < m_video_buffer_size) {
-          SArray1dC<char> temp(m_video_buffer_size - ar.Size());
-          temp.Fill('0');
-          ar.Append(temp);
+      if((int)ar.Size() < m_video_buffer_size) {
+        SArray1dC<char> temp(m_video_buffer_size - ar.Size());
+        temp.Fill('0');
+        ar.Append(temp);
       }
       m_outfile.write(ar.DataStart(),ar.Size());
       m_outfile.flush();
     }
-  }
   
-  ++m_frames_written;
-  return true;
+    ++m_frames_written;
+
+    return true;
+  }
+  else
+    return false;
 }
 
 
