@@ -89,6 +89,25 @@ namespace RavlBaseVectorN {
     }
   }
 
+  static void MatrixMulVectorAddF(const float *matrix,
+                               const float *vec, // Must be 'col' entries
+                               UIntT rows,
+                               UIntT cols,
+                               IntT stride,        // Stride of matrix.
+                               float *result       // Must have 'rows' entries
+                               )
+  {
+    RavlAssert(rows > 0);
+    RavlAssert(cols > 0);
+    const float *rowStart = matrix;
+    for(unsigned int i = 0;i < rows;i++,rowStart += stride) {
+      register float accum = rowStart[0]*vec[0];
+      for(unsigned int j = 1;j < cols;j++)
+        accum += rowStart[j]*vec[j];
+      result[i] += accum;
+    }
+  }
+
   static void MatrixMulVectorD(const double *matrix, 
                                const double *vec, // Must be 'col' entries
                                UIntT rows,
@@ -108,16 +127,13 @@ namespace RavlBaseVectorN {
     }
   }
   
-
-
-
-  static void MatrixTMulVectorF(const float *matrix, 
+  static void MatrixTMulVectorF(const float *matrix,
                                 const float *vec, // Must be 'col' entries
                                 UIntT rows,
-                                UIntT cols,         
+                                UIntT cols,
                                 IntT stride,        // Stride of matrix.
                                 float *result       // Must have 'rows' entries
-                                ) 
+                                )
   {
     unsigned int i = 0;
     for(;i < cols;i++)
@@ -196,6 +212,7 @@ namespace RavlBaseVectorN {
   void (*g_Real2ByteF)(unsigned char*, const float*, size_t) = &BaseReal2ByteF;
   void (*g_MatrixMulVectorD)(const double *,const double *,UIntT ,UIntT ,IntT ,double *) = &MatrixMulVectorD;
   void (*g_MatrixMulVectorF)(const float *,const float *,UIntT ,UIntT ,IntT ,float *) = &MatrixMulVectorF;
+  void (*g_MatrixMulVectorAddF)(const float *,const float *,UIntT ,UIntT ,IntT ,float *) = &MatrixMulVectorAddF;
   
   void (*g_MatrixTMulVectorD)(const double *,const double *,unsigned int ,unsigned int ,int ,double *) = &MatrixTMulVectorD;
   void (*g_MatrixTMulVectorF)(const float *,const float *,unsigned int ,unsigned int ,int ,float *) = &MatrixTMulVectorF;

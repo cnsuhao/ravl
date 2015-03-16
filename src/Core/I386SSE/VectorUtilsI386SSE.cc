@@ -370,14 +370,14 @@ namespace RavlBaseVectorN {
     }
     
   }
-  
+
   static void SSEMatrixMulVectorF(const float *matrixA,
                                   const float *vecA, // Must be 'col' entries
                                   UIntT rows,
-                                  UIntT cols,         
+                                  UIntT cols,
                                   IntT stride,        // Stride of matrix, number of elements in a row
                                   float *result       // Must have 'rows' entries
-                                  ) 
+                                  )
   {
     const float *__restrict__ matrix = matrixA;
     const float *__restrict__ vec = vecA;
@@ -394,11 +394,11 @@ namespace RavlBaseVectorN {
           accum += rowStart[j]*vec[j];
         result[i] = accum;
       }
-      return ;      
+      return ;
     }
     float * __restrict__ resultAt = result;
     const float *__restrict__ rowStart = matrix;
-    
+
     if(Is16ByteAligned(matrix) && Is16ByteAligned(vec) && ((stride % 4) == 0)) {
       // Everything is aligned
       UIntT fastCols = (cols & ~0x3);
@@ -432,16 +432,16 @@ namespace RavlBaseVectorN {
           rowAt += 4;
           vecAt += 4;
           for(;j < cols;j++) {
-            accum = _mm_add_ps(accum,_mm_mul_ss(_mm_load_ss(rowAt++),_mm_load_ss(vecAt++)));            
+            accum = _mm_add_ps(accum,_mm_mul_ss(_mm_load_ss(rowAt++),_mm_load_ss(vecAt++)));
           }
           accum = _mm_add_ps(accum,_mm_shuffle_ps(accum,accum, _MM_SHUFFLE(2,3,0,1)));
           accum = _mm_add_ps(accum,_mm_shuffle_ps(accum,accum, _MM_SHUFFLE(1,0,3,2)));
           _mm_store_ss(resultAt++,accum);
-        }     
+        }
       }
-        
+
     } else {
-      // 
+      //
       if((cols % 4) == 0) {
         //std::cerr << " B fastCols=" << fastCols << " cols=" << cols << " Rem=" << (cols % 4)  <<"\n";
         // Unaligned with no extra columns
@@ -477,10 +477,131 @@ namespace RavlBaseVectorN {
           rowAt += 4;
           vecAt += 4;
           for(;j < cols;j++) {
+            accum = _mm_add_ps(accum,_mm_mul_ss(_mm_load_ss(rowAt++),_mm_load_ss(vecAt++)));
+          }
+          accum = _mm_add_ps(accum,_mm_shuffle_ps(accum,accum, _MM_SHUFFLE(2,3,0,1)));
+          accum = _mm_add_ps(accum,_mm_shuffle_ps(accum,accum, _MM_SHUFFLE(1,0,3,2)));
+          _mm_store_ss(resultAt++, accum);
+        }
+      }
+    }
+  }
+
+  
+  static void SSEMatrixMulVectorAddF(const float *matrixA,
+                                  const float *vecA, // Must be 'col' entries
+                                  UIntT rows,
+                                  UIntT cols,         
+                                  IntT stride,        // Stride of matrix, number of elements in a row
+                                  float *result       // Must have 'rows' entries
+                                  ) 
+  {
+    const float *__restrict__ matrix = matrixA;
+    const float *__restrict__ vec = vecA;
+    if(rows == 1) {
+      *result += SSEDotProductF(matrix,vec,cols);
+      return ;
+    }
+    //std::cerr << "cols=" << cols << " Rows=" << rows << " Stride=" << stride <<"\n";
+    if(cols < 8) { // || !(Is16ByteAligned(matrix) && Is16ByteAligned(vec) && ((stride % 4) == 0))
+      const float * __restrict__  rowStart = matrix;
+      for(unsigned int i = 0;i < rows;i++,rowStart += stride) {
+        register float accum = rowStart[0]*vec[0];
+        for(unsigned int j = 1;j < cols;j++)
+          accum += rowStart[j]*vec[j];
+        result[i] += accum;
+      }
+      return ;      
+    }
+    float * __restrict__ resultAt = result;
+    const float *__restrict__ rowStart = matrix;
+    
+    if(Is16ByteAligned(matrix) && Is16ByteAligned(vec) && ((stride % 4) == 0)) {
+      // Everything is aligned
+      UIntT fastCols = (cols & ~0x3);
+      //std::cerr << " A fastCols=" << fastCols << " Rem=" << (cols % 4)  <<"\n";
+      if((cols % 4) == 0) {
+        for(unsigned int i = 0;i < rows;i++,rowStart += stride) {
+          register const float * __restrict__ rowAt = rowStart;
+          register const float * __restrict__ vecAt = vec;
+          register __m128 accum =  _mm_mul_ps(_mm_load_ps(rowAt),_mm_load_ps(vecAt));
+          for(unsigned int j = 4;j < cols;j += 4) {
+            rowAt += 4;
+            vecAt += 4;
+            accum = _mm_add_ps(accum,_mm_mul_ps(_mm_load_ps(rowAt),_mm_load_ps(vecAt)));
+          }
+          accum = _mm_add_ps(accum,_mm_shuffle_ps(accum,accum, _MM_SHUFFLE(2,3,0,1)));
+          accum = _mm_add_ps(accum,_mm_shuffle_ps(accum,accum, _MM_SHUFFLE(1,0,3,2)));
+          accum = _mm_add_ps(accum,_mm_load1_ps(resultAt));
+          _mm_store_ss(resultAt++,accum);
+        }
+      } else {
+        for(unsigned int i = 0;i < rows;i++,rowStart += stride) {
+          register const float * __restrict__ rowAt = rowStart;
+          register const float * __restrict__ vecAt = vec;
+          register __m128 accum =  _mm_mul_ps(_mm_load_ps(rowAt),_mm_load_ps(vecAt));
+          unsigned int j;
+          for(j = 4;j < fastCols;j += 4) {
+            rowAt += 4;
+            vecAt += 4;
+            accum = _mm_add_ps(accum,_mm_mul_ps(_mm_load_ps(rowAt),_mm_load_ps(vecAt)));
+          }
+          // Finish off row
+          rowAt += 4;
+          vecAt += 4;
+          for(;j < cols;j++) {
             accum = _mm_add_ps(accum,_mm_mul_ss(_mm_load_ss(rowAt++),_mm_load_ss(vecAt++)));            
           }
           accum = _mm_add_ps(accum,_mm_shuffle_ps(accum,accum, _MM_SHUFFLE(2,3,0,1)));
           accum = _mm_add_ps(accum,_mm_shuffle_ps(accum,accum, _MM_SHUFFLE(1,0,3,2)));
+          accum = _mm_add_ps(accum,_mm_load1_ps(resultAt));
+          _mm_store_ss(resultAt++,accum);
+        }     
+      }
+        
+    } else {
+      // 
+      if((cols % 4) == 0) {
+        //std::cerr << " B fastCols=" << fastCols << " cols=" << cols << " Rem=" << (cols % 4)  <<"\n";
+        // Unaligned with no extra columns
+        for(unsigned int i = 0;i < rows;i++,rowStart += stride) {
+          register const float * __restrict__  rowAt = rowStart;
+          register const float * __restrict__ vecAt = vec;
+          register __m128 accum =  _mm_mul_ps(_mm_loadu_ps(rowAt),_mm_loadu_ps(vecAt));
+          unsigned int j;
+          for(j = 4;j < cols;j += 4) {
+            rowAt += 4;
+            vecAt += 4;
+            accum = _mm_add_ps(accum,_mm_mul_ps(_mm_loadu_ps(rowAt),_mm_loadu_ps(vecAt)));
+          }
+          accum = _mm_add_ps(accum,_mm_shuffle_ps(accum,accum, _MM_SHUFFLE(2,3,0,1)));
+          accum = _mm_add_ps(accum,_mm_shuffle_ps(accum,accum, _MM_SHUFFLE(1,0,3,2)));
+          accum = _mm_add_ps(accum,_mm_load1_ps(resultAt));
+          _mm_store_ss(resultAt++, accum);
+        }
+      } else {
+        //std::cerr << " C fall back.\n";
+        // Unaligned with extra columns
+        UIntT fastCols = (cols & ~0x3);
+        for(unsigned int i = 0;i < rows;i++,rowStart += stride) {
+          register const float * __restrict__  rowAt = rowStart;
+          register const float * __restrict__  vecAt = vec;
+          register __m128 accum =  _mm_mul_ps(_mm_loadu_ps(rowAt),_mm_loadu_ps(vecAt));
+          unsigned int j;
+          for(j = 4;j < fastCols;j += 4) {
+            rowAt += 4;
+            vecAt += 4;
+            accum = _mm_add_ps(accum,_mm_mul_ps(_mm_loadu_ps(rowAt),_mm_loadu_ps(vecAt)));
+          }
+          // Finish off row
+          rowAt += 4;
+          vecAt += 4;
+          for(;j < cols;j++) {
+            accum = _mm_add_ps(accum,_mm_mul_ss(_mm_load_ss(rowAt++),_mm_load_ss(vecAt++)));            
+          }
+          accum = _mm_add_ps(accum,_mm_shuffle_ps(accum,accum, _MM_SHUFFLE(2,3,0,1)));
+          accum = _mm_add_ps(accum,_mm_shuffle_ps(accum,accum, _MM_SHUFFLE(1,0,3,2)));
+          accum = _mm_add_ps(accum,_mm_load1_ps(resultAt));
           _mm_store_ss(resultAt++, accum);
         }
       }
@@ -664,6 +785,7 @@ namespace RavlBaseVectorN {
       g_QuadProductD = &SSEQuadProductD;
       g_QuadProductF = &SSEQuadProductF;
       g_MatrixMulVectorF = &SSEMatrixMulVectorF;
+      g_MatrixMulVectorAddF = &SSEMatrixMulVectorAddF;
       g_MatrixMulVectorD = &SSEMatrixMulVectorD;
       g_Real2ByteD = &SSEReal2ByteD;
       g_ConvolveKernelF = &SSEConvolveKernelF;

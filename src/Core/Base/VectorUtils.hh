@@ -24,6 +24,7 @@ namespace RavlBaseVectorN {
   
   extern void (*g_MatrixMulVectorD)(const double *matrix,const double *vector,unsigned int rows,unsigned int cols,int stride,double *result);
   extern void (*g_MatrixMulVectorF)(const float *matrix,const float *vector,unsigned int rows,unsigned int cols,int stride,float *result);
+  extern void (*g_MatrixMulVectorAddF)(const float *matrix,const float *vector,unsigned int rows,unsigned int cols,int stride,float *result);
   extern void (*g_MatrixTMulVectorD)(const double *matrix,const double *vector,unsigned int rows,unsigned int cols,int stride,double *result);
   extern void (*g_MatrixTMulVectorF)(const float *matrix,const float *vector,unsigned int rows,unsigned int cols,int stride,float *result);
   
@@ -76,7 +77,28 @@ namespace RavlBaseVectorN {
   // |A00 A01| B0  = | A00 * B0 + A01 * B1 |
   // |A10 A11| B1    | A10 * B0 + A11 * B1 |
   // </code>
-  
+
+  inline void MatrixMulVectorAdd(const float *matrix,
+                              const float *vector,
+                              unsigned int rows,
+                              unsigned int cols,
+                              int stride,
+                              float *result
+                              )
+  { (*g_MatrixMulVectorAddF)(matrix,vector,rows,cols,stride,result); }
+  //: Perform matrix vector multiplication
+  //!param: matrix - 2d matrix, row major of size 'rows','cols'
+  //!param: vector - column vector, must have at least 'cols' elements.
+  //!param: rows - Number of rows in matrix
+  //!param: cols - Number of cols in matrix
+  //!param: stride - Stride of matrix, the number of elements in each row.
+  //!param: result - The product is added to the result vector, must have at least 'rows' elements
+  // Performs:  result += matrix * vector, C=A * B
+  // <code>
+  // | R0 | = |R0| + |A00 A01| |B0|  = |R0 + A00 * B0 + A01 * B1 |
+  // | R1 | = |R1| + |A10 A11| |B1|    |R1 + A10 * B0 + A11 * B1 |
+  // </code>
+
   inline void MatrixMulVector(const double *matrix, 
                               const double *vector, 
                               unsigned int rows,
