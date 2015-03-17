@@ -195,6 +195,12 @@ AC_DEFUN([QM_CHECK_CC_LIB],
                 fi
              done
           fi
+          # Bodge to stop caching of the QGLViewer header file status
+          # as we need to check it against multiple versions of Qt
+          if ( test "X$1" == XQt3QGLViewer  || test "X$1" == XQt4QGLViewer )
+          then
+             unset ac_cv_header_QGLViewer_qglviewer_h
+          fi
           # Did we find all the header files?
           if ( test X$found = Xtrue )
           then

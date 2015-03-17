@@ -1,0 +1,8 @@
+ifndef Qt4QGLViewer_DEF
+ Qt4QGLViewer_DEF=1
+
+ EXELIB :=  $(Qt4QGLViewer_LIBS) $(EXELIB)
+
+ INCLUDES += $(Qt4QGLViewer_CFLAGS)
+
+endif

@@ -316,21 +316,24 @@ dnl
                               [pthread.h],
                               [C]
                              )
-dnl#ToDo#          QM_DEFINE_EXTLIB_CC([QGLViewer],
-dnl#ToDo#                              [                 ],
-dnl#ToDo#                              [Qt3],
-dnl#ToDo#                              [-lqglviewer],
-dnl#ToDo#                              [],
-dnl#ToDo#                              [C]
-dnl#ToDo#                             )
-dnl
-dnl                           Name,
-dnl                           Test Code,
-dnl                           Deps,
-dnl                           -l,
-dnl                           .h
-dnl                           Lang
-dnl 
+          QM_DEFINE_EXTLIB_CC([Qt3QGLViewer],
+                              [QGLViewer V;
+                               V.show();
+                              ],
+                              [Qt3],
+                              [-lqglviewer],
+                              [QGLViewer/qglviewer.h],
+                              [C++]
+                             )
+          QM_DEFINE_EXTLIB_CC([Qt4QGLViewer],
+                              [QGLViewer V;
+                               V.setWindowTitle("ViewerTitle");
+                              ],
+                              [QtOpenGL QtGui QtXml QtCore libGLU],
+                              [-lQGLViewer],
+                              [QGLViewer/qglviewer.h],
+                              [C++]
+                             )
           QM_DEFINE_EXTLIB_CC([Socket],
                               [int ret, domain, type, protocol;
                                ret=socket (domain, type, protocol);

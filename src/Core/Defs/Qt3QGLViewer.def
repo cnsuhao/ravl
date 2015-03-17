@@ -1,0 +1,8 @@
+ifndef Qt3QGLViewer_DEF
+ Qt3QGLViewer_DEF=1
+
+ EXELIB :=  $(Qt3QGLViewer_LIBS) $(EXELIB)
+
+ INCLUDES += $(Qt3QGLViewer_CFLAGS)
+
+endif
