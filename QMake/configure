@@ -32971,19 +32971,29 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
              trace 3 Setting CPPFLAGS for library to $LIB_CPPFLAGS
           fi
           eval dependencies="\$with_${fix_expan}_prq"
+          prereqincs=""
           prereqlibs=""
           for prereqlib in $dependencies
           do
              TRACE_INDENT="     "
+             eval new_prereqinc="\$${prereqlib}_CFLAGS"
+             if ( test "X$new_prereqinc" != X )
+             then
+                trace 3 Appending $new_prereqinc to CFLAGS
+                prereqincs="$prereqincs $new_prereqinc"
+             fi
              eval new_prereqlib="\$${prereqlib}_LIBS"
-             trace 3 Appending $new_prereqlib to link line
-             prereqlibs="$prereqlibs $new_prereqlib"
+             if ( test "X$new_prereqlib" != X )
+             then
+                trace 3 Appending $new_prereqlib to link line
+                prereqlibs="$prereqlibs $new_prereqlib"
+             fi
           done
           TRACE_INDENT="     "
           preserve_LDFLAGS=$LDFLAGS
           preserve_CPPFLAGS=$CPPFLAGS
           preserve_LIBS=$LIBS
-          CPPFLAGS=$LIB_CPPFLAGS
+          CPPFLAGS="$LIB_CPPFLAGS $prereqincs"
           { $as_echo "$as_me:${as_lineno-$LINENO}: checking for external package $lib" >&5
 $as_echo_n "checking for external package $lib... " >&6; }
           { $as_echo "$as_me:${as_lineno-$LINENO}: result: " >&5
@@ -33089,7 +33099,12 @@ $as_echo "no" >&6; }
           then
              TRACE_INDENT="     "
              trace 4 Library package $lib found
-             eval "${fix_expan}_CFLAGS=\$LIB_CPPFLAGS"
+             if ( test "X$prereqincs" != X )
+             then
+                eval "${fix_expan}_CFLAGS=\"\$LIB_CPPFLAGS \$prereqincs\""
+             else
+                eval "${fix_expan}_CFLAGS=\$LIB_CPPFLAGS"
+             fi
              eval "${fix_expan}_LIBS=\$LIB_LDFLAGS"
              eval "use_${fix_expan}=present"
           else
@@ -33142,19 +33157,29 @@ ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
              trace 3 Setting CPPFLAGS for library to $LIB_CPPFLAGS
           fi
           eval dependencies="\$with_${fix_expan}_prq"
+          prereqincs=""
           prereqlibs=""
           for prereqlib in $dependencies
           do
              TRACE_INDENT="     "
+             eval new_prereqinc="\$${prereqlib}_CFLAGS"
+             if ( test "X$new_prereqinc" != X )
+             then
+                trace 3 Appending $new_prereqinc to CFLAGS
+                prereqincs="$prereqincs $new_prereqinc"
+             fi
              eval new_prereqlib="\$${prereqlib}_LIBS"
-             trace 3 Appending $new_prereqlib to link line
-             prereqlibs="$prereqlibs $new_prereqlib"
+             if ( test "X$new_prereqlib" != X )
+             then
+                trace 3 Appending $new_prereqlib to link line
+                prereqlibs="$prereqlibs $new_prereqlib"
+             fi
           done
           TRACE_INDENT="     "
           preserve_LDFLAGS=$LDFLAGS
           preserve_CPPFLAGS=$CPPFLAGS
           preserve_LIBS=$LIBS
-          CPPFLAGS=$LIB_CPPFLAGS
+          CPPFLAGS="$LIB_CPPFLAGS $prereqincs"
           { $as_echo "$as_me:${as_lineno-$LINENO}: checking for external package $lib" >&5
 $as_echo_n "checking for external package $lib... " >&6; }
           { $as_echo "$as_me:${as_lineno-$LINENO}: result: " >&5
@@ -33260,7 +33285,12 @@ $as_echo "no" >&6; }
           then
              TRACE_INDENT="     "
              trace 4 Library package $lib found
-             eval "${fix_expan}_CFLAGS=\$LIB_CPPFLAGS"
+             if ( test "X$prereqincs" != X )
+             then
+                eval "${fix_expan}_CFLAGS=\"\$LIB_CPPFLAGS \$prereqincs\""
+             else
+                eval "${fix_expan}_CFLAGS=\$LIB_CPPFLAGS"
+             fi
              eval "${fix_expan}_LIBS=\$LIB_LDFLAGS"
              eval "use_${fix_expan}=present"
           else

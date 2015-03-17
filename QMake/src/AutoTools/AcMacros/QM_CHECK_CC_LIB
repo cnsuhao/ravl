@@ -143,19 +143,29 @@ AC_DEFUN([QM_CHECK_CC_LIB],
              trace 3 Setting CPPFLAGS for library to $LIB_CPPFLAGS
           fi
           eval dependencies="\$with_${fix_expan}_prq"
+          prereqincs=""
           prereqlibs=""
           for prereqlib in $dependencies
           do
              TRACE_INDENT="     "
+             eval new_prereqinc="\$${prereqlib}_CFLAGS"
+             if ( test "X$new_prereqinc" != X )
+             then
+                trace 3 Appending $new_prereqinc to CFLAGS
+                prereqincs="$prereqincs $new_prereqinc"
+             fi
              eval new_prereqlib="\$${prereqlib}_LIBS"
-             trace 3 Appending $new_prereqlib to link line
-             prereqlibs="$prereqlibs $new_prereqlib"
+             if ( test "X$new_prereqlib" != X )
+             then
+                trace 3 Appending $new_prereqlib to link line
+                prereqlibs="$prereqlibs $new_prereqlib"
+             fi
           done
           TRACE_INDENT="     "
           preserve_LDFLAGS=$LDFLAGS
           preserve_CPPFLAGS=$CPPFLAGS
           preserve_LIBS=$LIBS
-          CPPFLAGS=$LIB_CPPFLAGS
+          CPPFLAGS="$LIB_CPPFLAGS $prereqincs"
           AC_MSG_CHECKING([for external package $1])
           AC_MSG_RESULT([])
           dnl# We use AC_MSG_CHECKING as AC_MSG_NOTICE prefixes a configure:
@@ -236,7 +246,12 @@ AC_DEFUN([QM_CHECK_CC_LIB],
           then
              TRACE_INDENT="     "
              trace 4 Library package $1 found
-             AS_VAR_SET(${fix_expan}_CFLAGS, [$LIB_CPPFLAGS])
+             if ( test "X$prereqincs" != X )
+             then
+                AS_VAR_SET(${fix_expan}_CFLAGS, ["$LIB_CPPFLAGS $prereqincs"])
+             else
+                AS_VAR_SET(${fix_expan}_CFLAGS, [$LIB_CPPFLAGS])
+             fi
              AS_VAR_SET(${fix_expan}_LIBS, [$LIB_LDFLAGS])
              AS_VAR_SET(use_${fix_expan}, [present])
           else
