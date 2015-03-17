@@ -692,8 +692,12 @@ libGLU_LIBS
 libGLU_CFLAGS
 libGL_LIBS
 libGL_CFLAGS
+QtXml_LIBS
+QtXml_CFLAGS
 QtSql_LIBS
 QtSql_CFLAGS
+QtOpenGL_LIBS
+QtOpenGL_CFLAGS
 QtNetwork_LIBS
 QtNetwork_CFLAGS
 QtGui_LIBS
@@ -996,8 +1000,12 @@ with_QtGui_pkgconf
 with_QtGui
 with_QtNetwork_pkgconf
 with_QtNetwork
+with_QtOpenGL_pkgconf
+with_QtOpenGL
 with_QtSql_pkgconf
 with_QtSql
+with_QtXml_pkgconf
+with_QtXml
 with_libGL_pkgconf
 with_libGL
 with_libGLU_pkgconf
@@ -1987,11 +1995,25 @@ Optional Packages:
   --with-QtNetwork        Enable functionality that relies on the QtNetwork
                           library [default=check]
 
+  --with-QtOpenGL-pkgconf Enable the QtOpenGL library package via pkg-config
+                          and declare the name by which the QtOpenGL library
+                          package is known to pkg-config
+
+  --with-QtOpenGL         Enable functionality that relies on the QtOpenGL
+                          library [default=check]
+
   --with-QtSql-pkgconf    Enable the QtSql library package via pkg-config and
                           declare the name by which the QtSql library package
                           is known to pkg-config
 
   --with-QtSql            Enable functionality that relies on the QtSql
+                          library [default=check]
+
+  --with-QtXml-pkgconf    Enable the QtXml library package via pkg-config and
+                          declare the name by which the QtXml library package
+                          is known to pkg-config
+
+  --with-QtXml            Enable functionality that relies on the QtXml
                           library [default=check]
 
   --with-libGL-pkgconf    Enable the libGL library package via pkg-config and
@@ -11889,6 +11911,117 @@ fi
 
 
 
+# Check whether --with-QtOpenGL-pkgconf was given.
+if test "${with_QtOpenGL_pkgconf+set}" = set; then :
+  withval=$with_QtOpenGL_pkgconf; case $with_QtOpenGL_pkgconf in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                          use_QtOpenGL=no
+                                          trace 4 --with-QtOpenGL-pkgconf disabling QtOpenGL
+                                          ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                          if test XQtOpenGL != X; then :
+  with_QtOpenGL_pkgconf=QtOpenGL
+                                                 use_QtOpenGL=yes
+                                                 trace 4 --with-QtOpenGL-pkgconf set to default [$with_QtOpenGL_pkgconf]
+
+else
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to configure QtOpenGL via pkg-config but configure is unaware of the name of the DOTpc metadata file
+See \`config.log' for more details" "$LINENO" 5; }
+
+
+fi
+                                          ;;
+                        * )               use_QtOpenGL=yes
+                                          trace 4 --with-QtOpenGL-pkgconf set to [$with_QtOpenGL_pkgconf]
+                                          ;;
+                       esac
+
+else
+  if test XQtOpenGL != X; then :
+  with_QtOpenGL_pkgconf=QtOpenGL
+                              trace 4 No --with-QtOpenGL-pkgconf specified using default [$with_QtOpenGL_pkgconf]
+
+
+fi
+
+
+fi
+
+
+# Check whether --with-QtOpenGL was given.
+if test "${with_QtOpenGL+set}" = set; then :
+  withval=$with_QtOpenGL; case $with_QtOpenGL in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                       trace 4 --with-QtOpenGL disabling QtOpenGL libraries
+                                       if test X$use_QtOpenGL = Xyes ; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to disable QtOpenGL by --with-QtOpenGL but --with-QtOpenGL-pkgconf has specifically enabled it
+See \`config.log' for more details" "$LINENO" 5; }
+
+else
+  use_QtOpenGL=no
+
+fi
+                                       ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                       trace 4 --with-QtOpenGL enabling QtOpenGL libraries
+                                       if test X$use_QtOpenGL = Xno; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to enable QtOpenGL by --with-QtOpenGL but --with-QtOpenGL-pkgconf has specifically disabled it
+See \`config.log' for more details" "$LINENO" 5; }
+
+else
+  use_QtOpenGL=yes
+
+fi
+                                       ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                       trace 4 --with-QtOpenGL checking for QtOpenGL libraries
+                                       if test X$use_QtOpenGL = Xyes; then :
+  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-QtOpenGL asking to check for the libs but --with-QtOpenGL-pkgconf has specifically enabled it" >&5
+$as_echo "$as_me: WARNING: --with-QtOpenGL asking to check for the libs but --with-QtOpenGL-pkgconf has specifically enabled it" >&2;}
+
+else
+  if test X$use_QtOpenGL = Xno; then :
+  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-QtOpenGL asking to check for the libs but --with-QtOpenGL-pkgconf has specifically disabled it" >&5
+$as_echo "$as_me: WARNING: --with-QtOpenGL asking to check for the libs but --with-QtOpenGL-pkgconf has specifically disabled it" >&2;}
+
+else
+  use_QtOpenGL=check
+
+fi
+
+
+fi
+                                       ;;
+                        * )            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-QtOpenGL set to an unknown option, setting ignored" >&5
+$as_echo "$as_me: WARNING: --with-QtOpenGL set to an unknown option, setting ignored" >&2;}
+                                       ;;
+                       esac
+
+else
+  trace 5 No --with-QtOpenGL specified
+
+fi
+
+          KnownLibs=$KnownLibs" "QtOpenGL
+          with_QtOpenGL_virtual="no"
+          if ( test X$use_QtOpenGL = X )
+          then
+             use_QtOpenGL=check
+             UnconfiguredLibs=$UnconfiguredLibs" "QtOpenGL
+          else
+             ConfiguredLibs=$ConfiguredLibs" "QtOpenGL
+          fi
+
+
+
+
+
 # Check whether --with-QtSql-pkgconf was given.
 if test "${with_QtSql_pkgconf+set}" = set; then :
   withval=$with_QtSql_pkgconf; case $with_QtSql_pkgconf in
@@ -11994,6 +12127,117 @@ fi
              UnconfiguredLibs=$UnconfiguredLibs" "QtSql
           else
              ConfiguredLibs=$ConfiguredLibs" "QtSql
+          fi
+
+
+
+
+
+# Check whether --with-QtXml-pkgconf was given.
+if test "${with_QtXml_pkgconf+set}" = set; then :
+  withval=$with_QtXml_pkgconf; case $with_QtXml_pkgconf in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                          use_QtXml=no
+                                          trace 4 --with-QtXml-pkgconf disabling QtXml
+                                          ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                          if test XQtXml != X; then :
+  with_QtXml_pkgconf=QtXml
+                                                 use_QtXml=yes
+                                                 trace 4 --with-QtXml-pkgconf set to default [$with_QtXml_pkgconf]
+
+else
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to configure QtXml via pkg-config but configure is unaware of the name of the DOTpc metadata file
+See \`config.log' for more details" "$LINENO" 5; }
+
+
+fi
+                                          ;;
+                        * )               use_QtXml=yes
+                                          trace 4 --with-QtXml-pkgconf set to [$with_QtXml_pkgconf]
+                                          ;;
+                       esac
+
+else
+  if test XQtXml != X; then :
+  with_QtXml_pkgconf=QtXml
+                              trace 4 No --with-QtXml-pkgconf specified using default [$with_QtXml_pkgconf]
+
+
+fi
+
+
+fi
+
+
+# Check whether --with-QtXml was given.
+if test "${with_QtXml+set}" = set; then :
+  withval=$with_QtXml; case $with_QtXml in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                       trace 4 --with-QtXml disabling QtXml libraries
+                                       if test X$use_QtXml = Xyes ; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to disable QtXml by --with-QtXml but --with-QtXml-pkgconf has specifically enabled it
+See \`config.log' for more details" "$LINENO" 5; }
+
+else
+  use_QtXml=no
+
+fi
+                                       ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                       trace 4 --with-QtXml enabling QtXml libraries
+                                       if test X$use_QtXml = Xno; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to enable QtXml by --with-QtXml but --with-QtXml-pkgconf has specifically disabled it
+See \`config.log' for more details" "$LINENO" 5; }
+
+else
+  use_QtXml=yes
+
+fi
+                                       ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                       trace 4 --with-QtXml checking for QtXml libraries
+                                       if test X$use_QtXml = Xyes; then :
+  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-QtXml asking to check for the libs but --with-QtXml-pkgconf has specifically enabled it" >&5
+$as_echo "$as_me: WARNING: --with-QtXml asking to check for the libs but --with-QtXml-pkgconf has specifically enabled it" >&2;}
+
+else
+  if test X$use_QtXml = Xno; then :
+  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-QtXml asking to check for the libs but --with-QtXml-pkgconf has specifically disabled it" >&5
+$as_echo "$as_me: WARNING: --with-QtXml asking to check for the libs but --with-QtXml-pkgconf has specifically disabled it" >&2;}
+
+else
+  use_QtXml=check
+
+fi
+
+
+fi
+                                       ;;
+                        * )            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-QtXml set to an unknown option, setting ignored" >&5
+$as_echo "$as_me: WARNING: --with-QtXml set to an unknown option, setting ignored" >&2;}
+                                       ;;
+                       esac
+
+else
+  trace 5 No --with-QtXml specified
+
+fi
+
+          KnownLibs=$KnownLibs" "QtXml
+          with_QtXml_virtual="no"
+          if ( test X$use_QtXml = X )
+          then
+             use_QtXml=check
+             UnconfiguredLibs=$UnconfiguredLibs" "QtXml
+          else
+             ConfiguredLibs=$ConfiguredLibs" "QtXml
           fi
 
 
