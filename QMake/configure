@@ -675,6 +675,18 @@ libGLU_LIBS
 libGLU_CFLAGS
 libGL_LIBS
 libGL_CFLAGS
+Qt5Xml_LIBS
+Qt5Xml_CFLAGS
+Qt5Sql_LIBS
+Qt5Sql_CFLAGS
+Qt5OpenGL_LIBS
+Qt5OpenGL_CFLAGS
+Qt5Network_LIBS
+Qt5Network_CFLAGS
+Qt5Gui_LIBS
+Qt5Gui_CFLAGS
+Qt5Core_LIBS
+Qt5Core_CFLAGS
 QtXml_LIBS
 QtXml_CFLAGS
 QtSql_LIBS
@@ -941,6 +953,18 @@ with_QtSql_pkgconf
 with_QtSql
 with_QtXml_pkgconf
 with_QtXml
+with_Qt5Core_pkgconf
+with_Qt5Core
+with_Qt5Gui_pkgconf
+with_Qt5Gui
+with_Qt5Network_pkgconf
+with_Qt5Network
+with_Qt5OpenGL_pkgconf
+with_Qt5OpenGL
+with_Qt5Sql_pkgconf
+with_Qt5Sql
+with_Qt5Xml_pkgconf
+with_Qt5Xml
 with_libGL_pkgconf
 with_libGL
 with_libGLU_pkgconf
@@ -1949,6 +1973,50 @@ Optional Packages:
                           is known to pkg-config
 
   --with-QtXml            Enable functionality that relies on the QtXml
+                          library [default=check]
+
+  --with-Qt5Core-pkgconf  Enable the Qt5Core library package via pkg-config
+                          and declare the name by which the Qt5Core library
+                          package is known to pkg-config
+
+  --with-Qt5Core          Enable functionality that relies on the Qt5Core
+                          library [default=check]
+
+  --with-Qt5Gui-pkgconf   Enable the Qt5Gui library package via pkg-config and
+                          declare the name by which the Qt5Gui library package
+                          is known to pkg-config
+
+  --with-Qt5Gui           Enable functionality that relies on the Qt5Gui
+                          library [default=check]
+
+  --with-Qt5Network-pkgconf
+                          Enable the Qt5Network library package via pkg-config
+                          and declare the name by which the Qt5Network library
+                          package is known to pkg-config
+
+  --with-Qt5Network       Enable functionality that relies on the Qt5Network
+                          library [default=check]
+
+  --with-Qt5OpenGL-pkgconf
+                          Enable the Qt5OpenGL library package via pkg-config
+                          and declare the name by which the Qt5OpenGL library
+                          package is known to pkg-config
+
+  --with-Qt5OpenGL        Enable functionality that relies on the Qt5OpenGL
+                          library [default=check]
+
+  --with-Qt5Sql-pkgconf   Enable the Qt5Sql library package via pkg-config and
+                          declare the name by which the Qt5Sql library package
+                          is known to pkg-config
+
+  --with-Qt5Sql           Enable functionality that relies on the Qt5Sql
+                          library [default=check]
+
+  --with-Qt5Xml-pkgconf   Enable the Qt5Xml library package via pkg-config and
+                          declare the name by which the Qt5Xml library package
+                          is known to pkg-config
+
+  --with-Qt5Xml           Enable functionality that relies on the Qt5Xml
                           library [default=check]
 
   --with-libGL-pkgconf    Enable the libGL library package via pkg-config and
@@ -11871,6 +11939,672 @@ fi
              UnconfiguredLibs=$UnconfiguredLibs" "QtXml
           else
              ConfiguredLibs=$ConfiguredLibs" "QtXml
+          fi
+
+
+
+
+
+# Check whether --with-Qt5Core-pkgconf was given.
+if test "${with_Qt5Core_pkgconf+set}" = set; then :
+  withval=$with_Qt5Core_pkgconf; case $with_Qt5Core_pkgconf in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                          use_Qt5Core=no
+                                          trace 4 --with-Qt5Core-pkgconf disabling Qt5Core
+                                          ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                          if test XQt5Core != X; then :
+  with_Qt5Core_pkgconf=Qt5Core
+                                                 use_Qt5Core=yes
+                                                 trace 4 --with-Qt5Core-pkgconf set to default [$with_Qt5Core_pkgconf]
+
+else
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to configure Qt5Core via pkg-config but configure is unaware of the name of the DOTpc metadata file
+See \`config.log' for more details" "$LINENO" 5; }
+
+
+fi
+                                          ;;
+                        * )               use_Qt5Core=yes
+                                          trace 4 --with-Qt5Core-pkgconf set to [$with_Qt5Core_pkgconf]
+                                          ;;
+                       esac
+
+else
+  if test XQt5Core != X; then :
+  with_Qt5Core_pkgconf=Qt5Core
+                              trace 4 No --with-Qt5Core-pkgconf specified using default [$with_Qt5Core_pkgconf]
+
+
+fi
+
+
+fi
+
+
+# Check whether --with-Qt5Core was given.
+if test "${with_Qt5Core+set}" = set; then :
+  withval=$with_Qt5Core; case $with_Qt5Core in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                       trace 4 --with-Qt5Core disabling Qt5Core libraries
+                                       if test X$use_Qt5Core = Xyes ; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to disable Qt5Core by --with-Qt5Core but --with-Qt5Core-pkgconf has specifically enabled it
+See \`config.log' for more details" "$LINENO" 5; }
+
+else
+  use_Qt5Core=no
+
+fi
+                                       ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                       trace 4 --with-Qt5Core enabling Qt5Core libraries
+                                       if test X$use_Qt5Core = Xno; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to enable Qt5Core by --with-Qt5Core but --with-Qt5Core-pkgconf has specifically disabled it
+See \`config.log' for more details" "$LINENO" 5; }
+
+else
+  use_Qt5Core=yes
+
+fi
+                                       ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                       trace 4 --with-Qt5Core checking for Qt5Core libraries
+                                       if test X$use_Qt5Core = Xyes; then :
+  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-Qt5Core asking to check for the libs but --with-Qt5Core-pkgconf has specifically enabled it" >&5
+$as_echo "$as_me: WARNING: --with-Qt5Core asking to check for the libs but --with-Qt5Core-pkgconf has specifically enabled it" >&2;}
+
+else
+  if test X$use_Qt5Core = Xno; then :
+  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-Qt5Core asking to check for the libs but --with-Qt5Core-pkgconf has specifically disabled it" >&5
+$as_echo "$as_me: WARNING: --with-Qt5Core asking to check for the libs but --with-Qt5Core-pkgconf has specifically disabled it" >&2;}
+
+else
+  use_Qt5Core=check
+
+fi
+
+
+fi
+                                       ;;
+                        * )            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-Qt5Core set to an unknown option, setting ignored" >&5
+$as_echo "$as_me: WARNING: --with-Qt5Core set to an unknown option, setting ignored" >&2;}
+                                       ;;
+                       esac
+
+else
+  trace 5 No --with-Qt5Core specified
+
+fi
+
+          KnownLibs=$KnownLibs" "Qt5Core
+          with_Qt5Core_virtual="no"
+          if ( test X$use_Qt5Core = X )
+          then
+             use_Qt5Core=check
+             UnconfiguredLibs=$UnconfiguredLibs" "Qt5Core
+          else
+             ConfiguredLibs=$ConfiguredLibs" "Qt5Core
+          fi
+
+
+
+
+
+# Check whether --with-Qt5Gui-pkgconf was given.
+if test "${with_Qt5Gui_pkgconf+set}" = set; then :
+  withval=$with_Qt5Gui_pkgconf; case $with_Qt5Gui_pkgconf in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                          use_Qt5Gui=no
+                                          trace 4 --with-Qt5Gui-pkgconf disabling Qt5Gui
+                                          ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                          if test XQt5Gui != X; then :
+  with_Qt5Gui_pkgconf=Qt5Gui
+                                                 use_Qt5Gui=yes
+                                                 trace 4 --with-Qt5Gui-pkgconf set to default [$with_Qt5Gui_pkgconf]
+
+else
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to configure Qt5Gui via pkg-config but configure is unaware of the name of the DOTpc metadata file
+See \`config.log' for more details" "$LINENO" 5; }
+
+
+fi
+                                          ;;
+                        * )               use_Qt5Gui=yes
+                                          trace 4 --with-Qt5Gui-pkgconf set to [$with_Qt5Gui_pkgconf]
+                                          ;;
+                       esac
+
+else
+  if test XQt5Gui != X; then :
+  with_Qt5Gui_pkgconf=Qt5Gui
+                              trace 4 No --with-Qt5Gui-pkgconf specified using default [$with_Qt5Gui_pkgconf]
+
+
+fi
+
+
+fi
+
+
+# Check whether --with-Qt5Gui was given.
+if test "${with_Qt5Gui+set}" = set; then :
+  withval=$with_Qt5Gui; case $with_Qt5Gui in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                       trace 4 --with-Qt5Gui disabling Qt5Gui libraries
+                                       if test X$use_Qt5Gui = Xyes ; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to disable Qt5Gui by --with-Qt5Gui but --with-Qt5Gui-pkgconf has specifically enabled it
+See \`config.log' for more details" "$LINENO" 5; }
+
+else
+  use_Qt5Gui=no
+
+fi
+                                       ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                       trace 4 --with-Qt5Gui enabling Qt5Gui libraries
+                                       if test X$use_Qt5Gui = Xno; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to enable Qt5Gui by --with-Qt5Gui but --with-Qt5Gui-pkgconf has specifically disabled it
+See \`config.log' for more details" "$LINENO" 5; }
+
+else
+  use_Qt5Gui=yes
+
+fi
+                                       ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                       trace 4 --with-Qt5Gui checking for Qt5Gui libraries
+                                       if test X$use_Qt5Gui = Xyes; then :
+  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-Qt5Gui asking to check for the libs but --with-Qt5Gui-pkgconf has specifically enabled it" >&5
+$as_echo "$as_me: WARNING: --with-Qt5Gui asking to check for the libs but --with-Qt5Gui-pkgconf has specifically enabled it" >&2;}
+
+else
+  if test X$use_Qt5Gui = Xno; then :
+  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-Qt5Gui asking to check for the libs but --with-Qt5Gui-pkgconf has specifically disabled it" >&5
+$as_echo "$as_me: WARNING: --with-Qt5Gui asking to check for the libs but --with-Qt5Gui-pkgconf has specifically disabled it" >&2;}
+
+else
+  use_Qt5Gui=check
+
+fi
+
+
+fi
+                                       ;;
+                        * )            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-Qt5Gui set to an unknown option, setting ignored" >&5
+$as_echo "$as_me: WARNING: --with-Qt5Gui set to an unknown option, setting ignored" >&2;}
+                                       ;;
+                       esac
+
+else
+  trace 5 No --with-Qt5Gui specified
+
+fi
+
+          KnownLibs=$KnownLibs" "Qt5Gui
+          with_Qt5Gui_virtual="no"
+          if ( test X$use_Qt5Gui = X )
+          then
+             use_Qt5Gui=check
+             UnconfiguredLibs=$UnconfiguredLibs" "Qt5Gui
+          else
+             ConfiguredLibs=$ConfiguredLibs" "Qt5Gui
+          fi
+
+
+
+
+
+# Check whether --with-Qt5Network-pkgconf was given.
+if test "${with_Qt5Network_pkgconf+set}" = set; then :
+  withval=$with_Qt5Network_pkgconf; case $with_Qt5Network_pkgconf in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                          use_Qt5Network=no
+                                          trace 4 --with-Qt5Network-pkgconf disabling Qt5Network
+                                          ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                          if test XQt5Network != X; then :
+  with_Qt5Network_pkgconf=Qt5Network
+                                                 use_Qt5Network=yes
+                                                 trace 4 --with-Qt5Network-pkgconf set to default [$with_Qt5Network_pkgconf]
+
+else
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to configure Qt5Network via pkg-config but configure is unaware of the name of the DOTpc metadata file
+See \`config.log' for more details" "$LINENO" 5; }
+
+
+fi
+                                          ;;
+                        * )               use_Qt5Network=yes
+                                          trace 4 --with-Qt5Network-pkgconf set to [$with_Qt5Network_pkgconf]
+                                          ;;
+                       esac
+
+else
+  if test XQt5Network != X; then :
+  with_Qt5Network_pkgconf=Qt5Network
+                              trace 4 No --with-Qt5Network-pkgconf specified using default [$with_Qt5Network_pkgconf]
+
+
+fi
+
+
+fi
+
+
+# Check whether --with-Qt5Network was given.
+if test "${with_Qt5Network+set}" = set; then :
+  withval=$with_Qt5Network; case $with_Qt5Network in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                       trace 4 --with-Qt5Network disabling Qt5Network libraries
+                                       if test X$use_Qt5Network = Xyes ; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to disable Qt5Network by --with-Qt5Network but --with-Qt5Network-pkgconf has specifically enabled it
+See \`config.log' for more details" "$LINENO" 5; }
+
+else
+  use_Qt5Network=no
+
+fi
+                                       ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                       trace 4 --with-Qt5Network enabling Qt5Network libraries
+                                       if test X$use_Qt5Network = Xno; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to enable Qt5Network by --with-Qt5Network but --with-Qt5Network-pkgconf has specifically disabled it
+See \`config.log' for more details" "$LINENO" 5; }
+
+else
+  use_Qt5Network=yes
+
+fi
+                                       ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                       trace 4 --with-Qt5Network checking for Qt5Network libraries
+                                       if test X$use_Qt5Network = Xyes; then :
+  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-Qt5Network asking to check for the libs but --with-Qt5Network-pkgconf has specifically enabled it" >&5
+$as_echo "$as_me: WARNING: --with-Qt5Network asking to check for the libs but --with-Qt5Network-pkgconf has specifically enabled it" >&2;}
+
+else
+  if test X$use_Qt5Network = Xno; then :
+  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-Qt5Network asking to check for the libs but --with-Qt5Network-pkgconf has specifically disabled it" >&5
+$as_echo "$as_me: WARNING: --with-Qt5Network asking to check for the libs but --with-Qt5Network-pkgconf has specifically disabled it" >&2;}
+
+else
+  use_Qt5Network=check
+
+fi
+
+
+fi
+                                       ;;
+                        * )            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-Qt5Network set to an unknown option, setting ignored" >&5
+$as_echo "$as_me: WARNING: --with-Qt5Network set to an unknown option, setting ignored" >&2;}
+                                       ;;
+                       esac
+
+else
+  trace 5 No --with-Qt5Network specified
+
+fi
+
+          KnownLibs=$KnownLibs" "Qt5Network
+          with_Qt5Network_virtual="no"
+          if ( test X$use_Qt5Network = X )
+          then
+             use_Qt5Network=check
+             UnconfiguredLibs=$UnconfiguredLibs" "Qt5Network
+          else
+             ConfiguredLibs=$ConfiguredLibs" "Qt5Network
+          fi
+
+
+
+
+
+# Check whether --with-Qt5OpenGL-pkgconf was given.
+if test "${with_Qt5OpenGL_pkgconf+set}" = set; then :
+  withval=$with_Qt5OpenGL_pkgconf; case $with_Qt5OpenGL_pkgconf in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                          use_Qt5OpenGL=no
+                                          trace 4 --with-Qt5OpenGL-pkgconf disabling Qt5OpenGL
+                                          ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                          if test XQt5OpenGL != X; then :
+  with_Qt5OpenGL_pkgconf=Qt5OpenGL
+                                                 use_Qt5OpenGL=yes
+                                                 trace 4 --with-Qt5OpenGL-pkgconf set to default [$with_Qt5OpenGL_pkgconf]
+
+else
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to configure Qt5OpenGL via pkg-config but configure is unaware of the name of the DOTpc metadata file
+See \`config.log' for more details" "$LINENO" 5; }
+
+
+fi
+                                          ;;
+                        * )               use_Qt5OpenGL=yes
+                                          trace 4 --with-Qt5OpenGL-pkgconf set to [$with_Qt5OpenGL_pkgconf]
+                                          ;;
+                       esac
+
+else
+  if test XQt5OpenGL != X; then :
+  with_Qt5OpenGL_pkgconf=Qt5OpenGL
+                              trace 4 No --with-Qt5OpenGL-pkgconf specified using default [$with_Qt5OpenGL_pkgconf]
+
+
+fi
+
+
+fi
+
+
+# Check whether --with-Qt5OpenGL was given.
+if test "${with_Qt5OpenGL+set}" = set; then :
+  withval=$with_Qt5OpenGL; case $with_Qt5OpenGL in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                       trace 4 --with-Qt5OpenGL disabling Qt5OpenGL libraries
+                                       if test X$use_Qt5OpenGL = Xyes ; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to disable Qt5OpenGL by --with-Qt5OpenGL but --with-Qt5OpenGL-pkgconf has specifically enabled it
+See \`config.log' for more details" "$LINENO" 5; }
+
+else
+  use_Qt5OpenGL=no
+
+fi
+                                       ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                       trace 4 --with-Qt5OpenGL enabling Qt5OpenGL libraries
+                                       if test X$use_Qt5OpenGL = Xno; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to enable Qt5OpenGL by --with-Qt5OpenGL but --with-Qt5OpenGL-pkgconf has specifically disabled it
+See \`config.log' for more details" "$LINENO" 5; }
+
+else
+  use_Qt5OpenGL=yes
+
+fi
+                                       ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                       trace 4 --with-Qt5OpenGL checking for Qt5OpenGL libraries
+                                       if test X$use_Qt5OpenGL = Xyes; then :
+  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-Qt5OpenGL asking to check for the libs but --with-Qt5OpenGL-pkgconf has specifically enabled it" >&5
+$as_echo "$as_me: WARNING: --with-Qt5OpenGL asking to check for the libs but --with-Qt5OpenGL-pkgconf has specifically enabled it" >&2;}
+
+else
+  if test X$use_Qt5OpenGL = Xno; then :
+  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-Qt5OpenGL asking to check for the libs but --with-Qt5OpenGL-pkgconf has specifically disabled it" >&5
+$as_echo "$as_me: WARNING: --with-Qt5OpenGL asking to check for the libs but --with-Qt5OpenGL-pkgconf has specifically disabled it" >&2;}
+
+else
+  use_Qt5OpenGL=check
+
+fi
+
+
+fi
+                                       ;;
+                        * )            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-Qt5OpenGL set to an unknown option, setting ignored" >&5
+$as_echo "$as_me: WARNING: --with-Qt5OpenGL set to an unknown option, setting ignored" >&2;}
+                                       ;;
+                       esac
+
+else
+  trace 5 No --with-Qt5OpenGL specified
+
+fi
+
+          KnownLibs=$KnownLibs" "Qt5OpenGL
+          with_Qt5OpenGL_virtual="no"
+          if ( test X$use_Qt5OpenGL = X )
+          then
+             use_Qt5OpenGL=check
+             UnconfiguredLibs=$UnconfiguredLibs" "Qt5OpenGL
+          else
+             ConfiguredLibs=$ConfiguredLibs" "Qt5OpenGL
+          fi
+
+
+
+
+
+# Check whether --with-Qt5Sql-pkgconf was given.
+if test "${with_Qt5Sql_pkgconf+set}" = set; then :
+  withval=$with_Qt5Sql_pkgconf; case $with_Qt5Sql_pkgconf in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                          use_Qt5Sql=no
+                                          trace 4 --with-Qt5Sql-pkgconf disabling Qt5Sql
+                                          ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                          if test XQt5Sql != X; then :
+  with_Qt5Sql_pkgconf=Qt5Sql
+                                                 use_Qt5Sql=yes
+                                                 trace 4 --with-Qt5Sql-pkgconf set to default [$with_Qt5Sql_pkgconf]
+
+else
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to configure Qt5Sql via pkg-config but configure is unaware of the name of the DOTpc metadata file
+See \`config.log' for more details" "$LINENO" 5; }
+
+
+fi
+                                          ;;
+                        * )               use_Qt5Sql=yes
+                                          trace 4 --with-Qt5Sql-pkgconf set to [$with_Qt5Sql_pkgconf]
+                                          ;;
+                       esac
+
+else
+  if test XQt5Sql != X; then :
+  with_Qt5Sql_pkgconf=Qt5Sql
+                              trace 4 No --with-Qt5Sql-pkgconf specified using default [$with_Qt5Sql_pkgconf]
+
+
+fi
+
+
+fi
+
+
+# Check whether --with-Qt5Sql was given.
+if test "${with_Qt5Sql+set}" = set; then :
+  withval=$with_Qt5Sql; case $with_Qt5Sql in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                       trace 4 --with-Qt5Sql disabling Qt5Sql libraries
+                                       if test X$use_Qt5Sql = Xyes ; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to disable Qt5Sql by --with-Qt5Sql but --with-Qt5Sql-pkgconf has specifically enabled it
+See \`config.log' for more details" "$LINENO" 5; }
+
+else
+  use_Qt5Sql=no
+
+fi
+                                       ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                       trace 4 --with-Qt5Sql enabling Qt5Sql libraries
+                                       if test X$use_Qt5Sql = Xno; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to enable Qt5Sql by --with-Qt5Sql but --with-Qt5Sql-pkgconf has specifically disabled it
+See \`config.log' for more details" "$LINENO" 5; }
+
+else
+  use_Qt5Sql=yes
+
+fi
+                                       ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                       trace 4 --with-Qt5Sql checking for Qt5Sql libraries
+                                       if test X$use_Qt5Sql = Xyes; then :
+  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-Qt5Sql asking to check for the libs but --with-Qt5Sql-pkgconf has specifically enabled it" >&5
+$as_echo "$as_me: WARNING: --with-Qt5Sql asking to check for the libs but --with-Qt5Sql-pkgconf has specifically enabled it" >&2;}
+
+else
+  if test X$use_Qt5Sql = Xno; then :
+  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-Qt5Sql asking to check for the libs but --with-Qt5Sql-pkgconf has specifically disabled it" >&5
+$as_echo "$as_me: WARNING: --with-Qt5Sql asking to check for the libs but --with-Qt5Sql-pkgconf has specifically disabled it" >&2;}
+
+else
+  use_Qt5Sql=check
+
+fi
+
+
+fi
+                                       ;;
+                        * )            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-Qt5Sql set to an unknown option, setting ignored" >&5
+$as_echo "$as_me: WARNING: --with-Qt5Sql set to an unknown option, setting ignored" >&2;}
+                                       ;;
+                       esac
+
+else
+  trace 5 No --with-Qt5Sql specified
+
+fi
+
+          KnownLibs=$KnownLibs" "Qt5Sql
+          with_Qt5Sql_virtual="no"
+          if ( test X$use_Qt5Sql = X )
+          then
+             use_Qt5Sql=check
+             UnconfiguredLibs=$UnconfiguredLibs" "Qt5Sql
+          else
+             ConfiguredLibs=$ConfiguredLibs" "Qt5Sql
+          fi
+
+
+
+
+
+# Check whether --with-Qt5Xml-pkgconf was given.
+if test "${with_Qt5Xml_pkgconf+set}" = set; then :
+  withval=$with_Qt5Xml_pkgconf; case $with_Qt5Xml_pkgconf in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                          use_Qt5Xml=no
+                                          trace 4 --with-Qt5Xml-pkgconf disabling Qt5Xml
+                                          ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                          if test XQt5Xml != X; then :
+  with_Qt5Xml_pkgconf=Qt5Xml
+                                                 use_Qt5Xml=yes
+                                                 trace 4 --with-Qt5Xml-pkgconf set to default [$with_Qt5Xml_pkgconf]
+
+else
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to configure Qt5Xml via pkg-config but configure is unaware of the name of the DOTpc metadata file
+See \`config.log' for more details" "$LINENO" 5; }
+
+
+fi
+                                          ;;
+                        * )               use_Qt5Xml=yes
+                                          trace 4 --with-Qt5Xml-pkgconf set to [$with_Qt5Xml_pkgconf]
+                                          ;;
+                       esac
+
+else
+  if test XQt5Xml != X; then :
+  with_Qt5Xml_pkgconf=Qt5Xml
+                              trace 4 No --with-Qt5Xml-pkgconf specified using default [$with_Qt5Xml_pkgconf]
+
+
+fi
+
+
+fi
+
+
+# Check whether --with-Qt5Xml was given.
+if test "${with_Qt5Xml+set}" = set; then :
+  withval=$with_Qt5Xml; case $with_Qt5Xml in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                       trace 4 --with-Qt5Xml disabling Qt5Xml libraries
+                                       if test X$use_Qt5Xml = Xyes ; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to disable Qt5Xml by --with-Qt5Xml but --with-Qt5Xml-pkgconf has specifically enabled it
+See \`config.log' for more details" "$LINENO" 5; }
+
+else
+  use_Qt5Xml=no
+
+fi
+                                       ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                       trace 4 --with-Qt5Xml enabling Qt5Xml libraries
+                                       if test X$use_Qt5Xml = Xno; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to enable Qt5Xml by --with-Qt5Xml but --with-Qt5Xml-pkgconf has specifically disabled it
+See \`config.log' for more details" "$LINENO" 5; }
+
+else
+  use_Qt5Xml=yes
+
+fi
+                                       ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                       trace 4 --with-Qt5Xml checking for Qt5Xml libraries
+                                       if test X$use_Qt5Xml = Xyes; then :
+  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-Qt5Xml asking to check for the libs but --with-Qt5Xml-pkgconf has specifically enabled it" >&5
+$as_echo "$as_me: WARNING: --with-Qt5Xml asking to check for the libs but --with-Qt5Xml-pkgconf has specifically enabled it" >&2;}
+
+else
+  if test X$use_Qt5Xml = Xno; then :
+  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-Qt5Xml asking to check for the libs but --with-Qt5Xml-pkgconf has specifically disabled it" >&5
+$as_echo "$as_me: WARNING: --with-Qt5Xml asking to check for the libs but --with-Qt5Xml-pkgconf has specifically disabled it" >&2;}
+
+else
+  use_Qt5Xml=check
+
+fi
+
+
+fi
+                                       ;;
+                        * )            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-Qt5Xml set to an unknown option, setting ignored" >&5
+$as_echo "$as_me: WARNING: --with-Qt5Xml set to an unknown option, setting ignored" >&2;}
+                                       ;;
+                       esac
+
+else
+  trace 5 No --with-Qt5Xml specified
+
+fi
+
+          KnownLibs=$KnownLibs" "Qt5Xml
+          with_Qt5Xml_virtual="no"
+          if ( test X$use_Qt5Xml = X )
+          then
+             use_Qt5Xml=check
+             UnconfiguredLibs=$UnconfiguredLibs" "Qt5Xml
+          else
+             ConfiguredLibs=$ConfiguredLibs" "Qt5Xml
           fi
 
 
