@@ -116,22 +116,4 @@ namespace RavlN {
     return true;
   }
 
-  //: Get 2D homography represented by state vector
-  const Matrix3dC StateVectorHomog2dBodyC::GetHomog() const
-  {
-    return P;
-  }
-
-  //: Return 3rd homogeneous coordinate of first plane
-  RealT StateVectorHomog2dBodyC::GetZH1() const
-  {
-    return zh1;
-  }
-
-  //: Return 3rd homogeneous coordinate of second plane
-  RealT StateVectorHomog2dBodyC::GetZH2() const
-  {
-    return zh2;
-  }
-
 }

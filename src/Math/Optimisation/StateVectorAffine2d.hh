@@ -48,7 +48,7 @@ namespace RavlN {
     //: Get current affine transform.
   protected:
     VectorC StateVecFromAffine2d(const Affine2dC &aff);
-    //: Generate the state vector from the affine paramiters.
+    //: Generate the state vector from the affine parameters.
     
   private:
     Affine2dC t; // Affine transform.

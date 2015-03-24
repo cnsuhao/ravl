@@ -27,7 +27,7 @@ namespace RavlN {
     Postprocess();    
   }
   
-  //: Generate the state vector from the affine paramiters.
+  //: Generate the state vector from the affine parameters.
   
   VectorC StateVectorAffine2dBodyC::StateVecFromAffine2d(const Affine2dC &aff) {
     VectorC ret(6);

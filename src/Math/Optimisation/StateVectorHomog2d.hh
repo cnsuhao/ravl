@@ -65,13 +65,16 @@ namespace RavlN {
     virtual bool Postprocess();
     //: Postprocess state vector after an adjustment to the parameters
 
-    const Matrix3dC GetHomog() const;
+    const Matrix3dC GetHomog() const
+    { return P; }
     //: Get 2D homography represented by state vector
 
-    RealT GetZH1() const;
+    RealT GetZH1() const
+    { return zh1; }
     //: Return 3rd homogeneous coordinate of first plane
 
-    RealT GetZH2() const;
+    RealT GetZH2() const
+    { return zh2; }
     //: Return 3rd homogeneous coordinate of second plane
 
   protected:
