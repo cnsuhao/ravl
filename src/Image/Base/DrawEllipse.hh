@@ -7,7 +7,6 @@
 #ifndef RAVLIMAGE_DRAWELLIPSE_HEADER
 #define RAVLIMAGE_DRAWELLIPSE_HEADER 1
 //! author="Charles Galambos"
-//! rcsid="$Id$"
 //! lib=RavlImage
 //! docentry="Ravl.API.Images.Drawing"
 //! file="Ravl/Image/Base/DrawEllipse.hh"

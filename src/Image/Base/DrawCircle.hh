@@ -7,7 +7,6 @@
 #ifndef RAVLIMAGE_DRAWCIRCLE_HEADER
 #define RAVLIMAGE_DRAWCIRCLE_HEADER 1
 ///////////////////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! author="Charles Galambos"
 //! date="8/8/2002"
 //! docentry="Ravl.API.Images.Drawing"
@@ -16,7 +15,9 @@
 //! file="Ravl/Image/Base/DrawCircle.hh"
 
 #include "Ravl/Image/Image.hh"
+#include "Ravl/Circle2d.hh"
 #include "Ravl/CircleIter.hh"
+#include "Ravl/Image/DrawPolygon.hh"
 
 namespace RavlImageN {
   
@@ -35,7 +36,25 @@ namespace RavlImageN {
     }
   }
   //: Draw a circle in an image.
-  
+
+  template<class DataT>
+  void DrawCircle(Array2dC<DataT> &dat,const DataT &value,const Point2dC &center,float radius,bool filled) {
+    if(radius < 2) { // Very small ?
+      Index2dC at = center;
+      if(dat.Frame().Contains(at))
+        dat[at] = value;
+      return ;
+    }
+    RealT step = RavlConstN::pi/(radius);
+    Polygon2dC poly;
+    Circle2dC circle(center,radius);
+    for(RealT a = 0;a < 2*RavlConstN::pi;a += step)
+      poly.InsLast(circle.Value(a));
+    // Fill in...
+    DrawPolygon(dat,value,poly,filled);
+  }
+  //: Draw a filled circle in an image from real floating point coordinates.
+
 }
 
 #endif
