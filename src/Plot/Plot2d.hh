@@ -1,12 +1,9 @@
-/*
- * Plot.hh
- *
- *  Created on: 10 Aug 2012
- *      Author: kieron
- */
-
 #ifndef RAVLN_PLOT2D_HH_
 #define RAVLN_PLOT2D_HH_
+
+//! docentry="Ravl.API.Graphics.Plotting"
+//! lib=RavlPlot
+//! author="Kieron Messer"
 
 #include "Ravl/SmartPtr.hh"
 #include "Ravl/String.hh"

@@ -7,7 +7,7 @@
 #ifndef RAVLGRAPH_GUPPICANVAS_HEADER
 #define RAVLGRAPH_GUPPICANVAS_HEADER
 //! author="Charles Galambos"
-//! docentry="Ravl.GUI.Data_Plotting.Guppi"
+//! docentry="Ravl.API.Graphics.Plotting.Guppi"
 //! rcsid="$Id$"
 //! lib=RavlGuppi
 //! file="Ravl/Contrib/Plotting/Guppi/GuppiCanvas.hh"

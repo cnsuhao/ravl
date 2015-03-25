@@ -10,7 +10,7 @@
 //! rcsid="$Id$"
 //! lib=RavlDPGraph
 //! author="Charles Galambos"
-//! docentry="Ravl.Contrib.Plotting.DPGraph"
+//! docentry="Ravl.API.Graphics.Plotting.DPGraph"
 //! file="Ravl/Contrib/Plotting/DPGraph/DPGraphWindowOPort.hh"
 
 #include "Ravl/Plot/DPGraphWindow.hh"

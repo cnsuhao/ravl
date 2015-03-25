@@ -11,6 +11,8 @@
 #include "Ravl/Plot/Plot2d.hh"
 #include "Ravl/OS/ChildOSProcess.hh"
 
+//! docentry="Ravl.API.Graphics.Plotting.GnuPlot"
+
 namespace RavlN {
   
   /*

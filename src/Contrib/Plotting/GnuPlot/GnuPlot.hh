@@ -10,7 +10,7 @@
 //! author="Kieron Messer, Bill Christmas"
 //! date=""
 //! userlevel=Normal
-//! docentry="Ravl.API.Graphics.Graph Plotting"
+//! docentry="Ravl.API.Graphics.Plotting.GnuPlot"
 //! file=""
 //! rcsid="$id$"
 //! lib=RavlGnuPlot

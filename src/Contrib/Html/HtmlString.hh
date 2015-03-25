@@ -2,7 +2,7 @@
 #define RAVL_HTMLSTRING_HEADER 1
 
 //! lib=RavlHtml
-//! docentry="Contrib.Html"
+//! docentry="Ravl.API.Contrib.Html"
 //! file="Ravl/HtmlString.hh"
 //! author="Kieron J Messer"
 

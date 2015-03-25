@@ -15,6 +15,8 @@
 #include "Ravl/Point3d.hh"
 #include "Ravl/RCHash.hh"
 
+//! docentry="Ravl.API.Graphics.Plotting.GnuPlot"
+
 namespace RavlGUIN {
 
   using RavlN::RealT;

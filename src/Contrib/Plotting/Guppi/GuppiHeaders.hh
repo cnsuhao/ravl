@@ -2,7 +2,7 @@
 // file-header-ends-here
 #ifndef RAVLPLOT_GUPPIHEADERS_HEADER
 #define RAVLPLOT_GUPPIHEADERS_HEADER 1
-//! docentry="Ravl.GUI.Data_Plotting.Guppi"
+//! docentry="Ravl.API.Graphics.Plotting.Guppi"
 //! author="Charles Galambos"
 //! rcsid="$Id$"
 //! lib=RavlGuppi

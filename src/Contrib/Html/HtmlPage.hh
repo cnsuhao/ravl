@@ -7,7 +7,7 @@
 #include "Ravl/OS/Filename.hh"
 
 //! lib=RavlHtml
-//! docentry="Contrib.Html"
+//! docentry="Ravl.API.Contrib.Html"
 //! file="Ravl/HtmlTable.hh"
 //! author="Kieron J Messer"
 

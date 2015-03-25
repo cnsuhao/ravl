@@ -1,7 +1,7 @@
 #ifndef RAVL_HTMLTABLE_HEADER
 #define RAVL_HTMLTABLE_HEADER 1
 //! lib=RavlHtml
-//! docentry="Contrib.Html"
+//! docentry="Ravl.API.Contrib.Html"
 //! file="Ravl/HtmlTable.hh"
 //! author="Kieron J Messer"
 

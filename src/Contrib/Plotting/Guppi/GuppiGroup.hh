@@ -7,7 +7,7 @@
 #ifndef RAVLGRAPH_GUPPIGROUP_HEADER
 #define RAVLGRAPH_GUPPIGROUP_HEADER 1
 //! author="Charles Galambos"
-//! docentry="Ravl.GUI.Data_Plotting.Guppi"
+//! docentry="Ravl.API.Graphics.Plotting.Guppi"
 //! rcsid="$Id$"
 //! lib=RavlGuppi
 //! file="Ravl/Contrib/Plotting/Guppi/GuppiGroup.hh"
