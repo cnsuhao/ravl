@@ -6,7 +6,7 @@
 // file-header-ends-here
 //! lib=RavlCameraCal
 //! author="Jean-Yves Guillemaut"
-//! docentry="Ravl.API.3D.Camera Calibration"
+//! docentry="Ravl.API.3D.Camera Modelling"
 //! file="Ravl/3D/CameraCal/PinholeCamera3.hh"
 #ifndef _PINHOLE_CAMERA_3_HH_
 #define _PINHOLE_CAMERA_3_HH_

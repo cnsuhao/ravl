@@ -7,7 +7,7 @@
 //! rcsid="$Id$"
 //! lib=RavlCameraCal
 //! author="Joel Mitchelson"
-//! docentry="Ravl.API.3D.Camera Calibration"
+//! docentry="Ravl.API.3D.Camera Modelling"
 //! file="Ravl/3D/CameraCal/PinholeCamera0.hh"
 #ifndef _CAMERA_CAL_PINHOLE_CAMERA_0_HH_
 #define _CAMERA_CAL_PINHOLE_CAMERA_0_HH_

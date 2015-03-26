@@ -6,6 +6,7 @@
 // file-header-ends-here
 #ifndef _CAMERA_CAL_PINHOLE_CAMERA_ARRAY_HH_
 #define _CAMERA_CAL_PINHOLE_CAMERA_ARRAY_HH_
+//! docentry="Ravl.API.3D.Camera Modelling"
 //! lib=RavlCameraCal
 
 #include "Ravl/DList.hh"

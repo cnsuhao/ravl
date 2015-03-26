@@ -6,6 +6,7 @@
 // file-header-ends-here
 #ifndef _PINHOLE_CAMERA_HH_
 #define _PINHOLE_CAMERA_HH_
+//! docentry="Ravl.API.3D.Camera Modelling"
 //! lib=RavlCameraCal
 
 #include "Ravl/RefCounter.hh"
@@ -111,11 +112,11 @@ namespace Ravl3DN
 
     template<class PixelT> 
     ImageC<PixelT> DistortImage(const ImageC<PixelT>& img, bool resize = false) const;
-    //: Return an distorted image for a simple pinhole model
+    //: Return a distorted image for a simple pinhole model
 
     template<class PixelT> 
     ImageC<PixelT> DistortImage(const ImageC<PixelT>& img, const PixelT bg, bool resize = false) const;
-    //: Return an distorted image for a simple pinhole model filling empty pixels with bg value
+    //: Return a distorted image for a simple pinhole model filling empty pixels with bg value
 
   };
     //: Transform from a camera point to a point in a simple pinhole model
@@ -234,7 +235,7 @@ namespace Ravl3DN
     {
       return Body().UndistortImage(img, bg, resize);
     }
-    //: Return an distorted image for a simple pinhole model filling empty pixels with bg value
+    //: Return a distorted image for a simple pinhole model filling empty pixels with bg value
 
     template<class PixelT> ImageC<PixelT> 
     DistortImage(const ImageC<PixelT>& img, bool resize = false) const
@@ -248,7 +249,7 @@ namespace Ravl3DN
     {
       return Body().DistortImage(img, bg, resize);
     }
-    //: Return an distorted image for a simple pinhole model filling empty pixels with bg value
+    //: Return a distorted image for a simple pinhole model filling empty pixels with bg value
 
     friend istream &operator>>(istream &strm, PinholeCameraC &obj);
     friend ostream &operator<<(ostream &out, const PinholeCameraC &obj);
