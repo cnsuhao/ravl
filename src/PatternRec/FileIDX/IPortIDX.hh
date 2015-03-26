@@ -7,6 +7,10 @@
 #ifndef RAVL_IO_IPORTIDX_HEADER
 #define RAVL_IO_IPORTIDX_HEADER 1
 
+//! docentry = "Ravl.API.Core.IO.IDX Files"
+//! author = "Charles Galambos"
+//! lib = RavlFileIDX
+
 #include "Ravl/DP/SPort.hh"
 #include "Ravl/IO/DataStreamIDX.hh"
 

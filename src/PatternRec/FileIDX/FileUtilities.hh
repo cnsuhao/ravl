@@ -7,6 +7,10 @@
 #ifndef RAVL_IO_FILEUTILITIES_HEADER
 #define RAVL_IO_FILEUTILITIES_HEADER
 
+//! docentry = "Ravl.API.Core.IO.IDX Files"
+//! author = "Charles Galambos"
+//! lib = RavlFileIDX
+
 #include "Ravl/OS/Filename.hh"
 
 namespace RavlN { namespace ION {

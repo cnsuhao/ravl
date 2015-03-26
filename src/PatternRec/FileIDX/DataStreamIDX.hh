@@ -7,6 +7,10 @@
 #ifndef RAVL_DATASTREAMIDX_HEADER
 #define RAVL_DATASTREAMIDX_HEADER 1
 
+//! docentry = "Ravl.API.Core.IO.IDX Files"
+//! author = "Charles Galambos"
+//! lib = RavlFileIDX
+
 #include "Ravl/String.hh"
 #include "Ravl/SArray1d.hh"
 #include "Ravl/TVector.hh"

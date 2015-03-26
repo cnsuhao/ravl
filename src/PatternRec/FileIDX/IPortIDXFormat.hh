@@ -7,9 +7,13 @@
 #ifndef RAVL_IDX_IPORTIDXFORMAT_HEADER
 #define RAVL_IDX_IPORTIDXFORMAT_HEADER 1
 
+//! docentry = "Ravl.API.Core.IO.IDX Files"
+//! author = "Charles Galambos"
+//! lib = RavlFileIDX
+
 #include "Ravl/DP/FileFormat.hh"
 #include "Ravl/IO/IPortIDX.hh"
-
+// 
 namespace RavlN { namespace ION {
 
   //: IDX file IO.
