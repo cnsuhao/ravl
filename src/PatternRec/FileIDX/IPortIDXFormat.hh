@@ -36,12 +36,10 @@ namespace RavlN { namespace ION {
     
     virtual RavlN::DPIPortBaseC CreateInput(RavlN::IStreamC &in,const std::type_info &obj_type) const;
     //: Create a input port for loading.
-    // This creates a plain RGB stream.
     // Will create an Invalid port if not supported.
     
     virtual RavlN::DPOPortBaseC CreateOutput(RavlN::OStreamC &out,const std::type_info &obj_type) const;
     //: Create a output port for saving.
-    // This creates a plain RGB stream.
     // Will create an Invalid port if not supported.
     
     virtual RavlN::DPIPortBaseC CreateInput(const StringC &filename,const std::type_info &obj_type) const;
@@ -69,7 +67,7 @@ namespace RavlN { namespace ION {
   
   /////////////////////////////
   //! userlevel=Advanced
-  //: Create an instance of a RGB File Format.
+  //: Create an instance of an IDX File Format.
   
   class FileFormatIPortIDXC
     : public RavlN::FileFormatBaseC

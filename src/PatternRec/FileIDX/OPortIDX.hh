@@ -20,7 +20,7 @@ namespace RavlN { namespace ION {
   using RavlN::StreamPosT;
 
   ///////////////////////////////////
-  //: Access a stream of data from PortIDX file.
+  //: Write a stream of data to an IDX file.
   // FIXME:- Detect truncation.
   
   template<typename DataT>
@@ -123,7 +123,7 @@ namespace RavlN { namespace ION {
   };
   
   //! userlevel=Normal
-  //: Load a RGB image in RGB format.
+  //: Write a stream of data to an IDX file.
   
   template<typename DataT>
   class DPOPortIDXC

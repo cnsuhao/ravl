@@ -131,7 +131,7 @@ namespace RavlN { namespace ION {
   };
   
   //! userlevel=Normal
-  //: Load a RGB image in RGB format.
+  //: Access a stream of data from an IDX file.
   
   template<typename DataT>
   class DPIPortIDXC
