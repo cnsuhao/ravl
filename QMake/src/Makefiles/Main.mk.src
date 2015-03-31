@@ -61,7 +61,7 @@ ifeq ($(SUPPORT_OK),yes)
   SUPPORT_OK=yes
  else
   SUPPORT_OK=no
-  REASON="of insufficient RESOURCES"
+  REASON="of insufficient RESOURCES (missing $(filter-out $(RESOURCES), $(REQUIRES)))"
  endif
 endif
 
