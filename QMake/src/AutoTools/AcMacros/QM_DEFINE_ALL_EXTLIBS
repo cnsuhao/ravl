@@ -65,6 +65,7 @@ AC_DEFUN([QM_DEFINE_ALL_EXTLIBS],
           QM_DEFINE_EXTLIB_PC([QtOpenGL],         [QtOpenGL])
           QM_DEFINE_EXTLIB_PC([QtSql],            [QtSql])
           QM_DEFINE_EXTLIB_PC([QtXml],            [QtXml])
+          QM_DEFINE_EXTLIB_PC([Qt3Support],       [Qt3Support])
           dnl QT 5
           QM_DEFINE_EXTLIB_PC([Qt5Core],          [Qt5Core])
           QM_DEFINE_EXTLIB_PC([Qt5Gui],           [Qt5Gui])

@@ -691,6 +691,8 @@ Qt5Gui_LIBS
 Qt5Gui_CFLAGS
 Qt5Core_LIBS
 Qt5Core_CFLAGS
+Qt3Support_LIBS
+Qt3Support_CFLAGS
 QtXml_LIBS
 QtXml_CFLAGS
 QtSql_LIBS
@@ -957,6 +959,8 @@ with_QtSql_pkgconf
 with_QtSql
 with_QtXml_pkgconf
 with_QtXml
+with_Qt3Support_pkgconf
+with_Qt3Support
 with_Qt5Core_pkgconf
 with_Qt5Core
 with_Qt5Gui_pkgconf
@@ -1985,6 +1989,14 @@ Optional Packages:
                           is known to pkg-config
 
   --with-QtXml            Enable functionality that relies on the QtXml
+                          library [default=check]
+
+  --with-Qt3Support-pkgconf
+                          Enable the Qt3Support library package via pkg-config
+                          and declare the name by which the Qt3Support library
+                          package is known to pkg-config
+
+  --with-Qt3Support       Enable functionality that relies on the Qt3Support
                           library [default=check]
 
   --with-Qt5Core-pkgconf  Enable the Qt5Core library package via pkg-config
@@ -11983,6 +11995,117 @@ fi
              UnconfiguredLibs=$UnconfiguredLibs" "QtXml
           else
              ConfiguredLibs=$ConfiguredLibs" "QtXml
+          fi
+
+
+
+
+
+# Check whether --with-Qt3Support-pkgconf was given.
+if test "${with_Qt3Support_pkgconf+set}" = set; then :
+  withval=$with_Qt3Support_pkgconf; case $with_Qt3Support_pkgconf in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                          use_Qt3Support=no
+                                          trace 4 --with-Qt3Support-pkgconf disabling Qt3Support
+                                          ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                          if test XQt3Support != X; then :
+  with_Qt3Support_pkgconf=Qt3Support
+                                                 use_Qt3Support=yes
+                                                 trace 4 --with-Qt3Support-pkgconf set to default [$with_Qt3Support_pkgconf]
+
+else
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to configure Qt3Support via pkg-config but configure is unaware of the name of the DOTpc metadata file
+See \`config.log' for more details" "$LINENO" 5; }
+
+
+fi
+                                          ;;
+                        * )               use_Qt3Support=yes
+                                          trace 4 --with-Qt3Support-pkgconf set to [$with_Qt3Support_pkgconf]
+                                          ;;
+                       esac
+
+else
+  if test XQt3Support != X; then :
+  with_Qt3Support_pkgconf=Qt3Support
+                              trace 4 No --with-Qt3Support-pkgconf specified using default [$with_Qt3Support_pkgconf]
+
+
+fi
+
+
+fi
+
+
+# Check whether --with-Qt3Support was given.
+if test "${with_Qt3Support+set}" = set; then :
+  withval=$with_Qt3Support; case $with_Qt3Support in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                       trace 4 --with-Qt3Support disabling Qt3Support libraries
+                                       if test X$use_Qt3Support = Xyes ; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to disable Qt3Support by --with-Qt3Support but --with-Qt3Support-pkgconf has specifically enabled it
+See \`config.log' for more details" "$LINENO" 5; }
+
+else
+  use_Qt3Support=no
+
+fi
+                                       ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                       trace 4 --with-Qt3Support enabling Qt3Support libraries
+                                       if test X$use_Qt3Support = Xno; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to enable Qt3Support by --with-Qt3Support but --with-Qt3Support-pkgconf has specifically disabled it
+See \`config.log' for more details" "$LINENO" 5; }
+
+else
+  use_Qt3Support=yes
+
+fi
+                                       ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                       trace 4 --with-Qt3Support checking for Qt3Support libraries
+                                       if test X$use_Qt3Support = Xyes; then :
+  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-Qt3Support asking to check for the libs but --with-Qt3Support-pkgconf has specifically enabled it" >&5
+$as_echo "$as_me: WARNING: --with-Qt3Support asking to check for the libs but --with-Qt3Support-pkgconf has specifically enabled it" >&2;}
+
+else
+  if test X$use_Qt3Support = Xno; then :
+  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-Qt3Support asking to check for the libs but --with-Qt3Support-pkgconf has specifically disabled it" >&5
+$as_echo "$as_me: WARNING: --with-Qt3Support asking to check for the libs but --with-Qt3Support-pkgconf has specifically disabled it" >&2;}
+
+else
+  use_Qt3Support=check
+
+fi
+
+
+fi
+                                       ;;
+                        * )            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-Qt3Support set to an unknown option, setting ignored" >&5
+$as_echo "$as_me: WARNING: --with-Qt3Support set to an unknown option, setting ignored" >&2;}
+                                       ;;
+                       esac
+
+else
+  trace 5 No --with-Qt3Support specified
+
+fi
+
+          KnownLibs=$KnownLibs" "Qt3Support
+          with_Qt3Support_virtual="no"
+          if ( test X$use_Qt3Support = X )
+          then
+             use_Qt3Support=check
+             UnconfiguredLibs=$UnconfiguredLibs" "Qt3Support
+          else
+             ConfiguredLibs=$ConfiguredLibs" "Qt3Support
           fi
 
 
