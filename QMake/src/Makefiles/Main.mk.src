@@ -396,10 +396,28 @@ ifeq ($(SUPPORT_OK),yes)
    # consider building PLIB and/or SINGLESO. Do we have anything to put into
    # a PLIB?
    ifneq (,$(SOURCES))
-    # Yes, if PLIB and/or SINGLESO are defined we need to build them both. The
-    # patsubst takes care of the situation when SINGLESO and/or PLIB are not
-    # defined.
-    TARG_LIBS=$(strip $(patsubst %,$(INST_LIB)/lib%$(LIBEXT),$(PLIB)) $(patsubst %,$(INST_LIB)/single/%$(LIBEXT),$(SINGLESO)))#
+    # We have objects to go into any PLIB, are we currently looking to build
+    # PLIB?
+    ifeq (0,$(LINK_PLIB))
+     # We do not want to link PLIB at the moment but we need to:
+     #   + Create the inventory for the current directory
+     #   + In authoritive directories for a PLIB (i.e. no LIBDEPS)
+     #     ensure that the PLIB is correctly listed as part (or not)
+     #     of any summary libraries.
+     #   + Create any MUSTLINK objects
+     #   + Create any SINGLESO
+     TARG_LIBS=$(strip $(if $(LOCAL_DEFBASE),$(INST_OBJS)/$(LOCAL_DEFBASE).list) \
+                       $(if $(LIBDEPS),,DeclareSummaries) \
+                       $(TARG_MUSTLINK_OBJS) \
+                       $(patsubst %,$(INST_LIB)/single/%$(LIBEXT),$(SINGLESO)) \
+                )#
+    else
+     # We want to build any PLIB and/or SINGLESO. The patsubst takes care of
+     # the situation when SINGLESO and/or PLIB are not defined. Building PLIB
+     # will automatically ensure we create the inventory  file for the current
+     # directory.
+     TARG_LIBS=$(strip $(patsubst %,$(INST_LIB)/lib%$(LIBEXT),$(PLIB)) $(patsubst %,$(INST_LIB)/single/%$(LIBEXT),$(SINGLESO)))#
+    endif
    else
     # We have nothing to go into a PLIB so just consider SINGLESO (again, the
     # patsubst takes care of the situation if we do not have SINGLESO set).
@@ -1021,9 +1039,11 @@ else
 	@$(UNTOUCH) $(INST_LIB)/$(@F) $(TARG_OBJS) $(TARG_MUSTLINK_OBJS)
  endif
 
-$(INST_OBJS)/$(LOCAL_DEFBASE).list: defs.mk $(INST_OBJS)/.dir
+$(INST_OBJS)/$(LOCAL_DEFBASE).list: defs.mk $(INST_OBJS)/.dir $(TARG_OBJS)
 	@echo "---- Updating object list"
 	@echo $(TARG_OBJS)  > $(INST_OBJS)/$(LOCAL_DEFBASE).list
+ # Dependency on objects is so the .list file can serve as a marker to if the
+ # containing library needs rebuilding (primarily for the single library).
 
  ifneq (,$(SINGLESO))
   ifneq ($(USESLIBS),None)
@@ -1066,10 +1086,11 @@ $(INST_OBJS)/$(LOCAL_DEFBASE).list: defs.mk $(INST_OBJS)/.dir
   # recipes will create any necessary symbolic links to this file.
   # SET_SINGLESO_SONAME will set the SONAME (to libXXX.so.A) if we are appending
   # a revision number to the library name (otherwise it will do nothing).
-  # Dependency is on the libraries for each requested product library (as held
-  # in SINGLE_MANIFEST) and the object lists from each of those libraries (held
-  # in SINGLE_INVENTORY).
-  $(INST_LIB)/single/$(SINGLESO)$(LIB_STAMP_EXT) : $(patsubst %,$(INST_LIB)/lib%$(LIBEXT),$(SINGLE_MANIFEST)) $(SINGLE_INVENTORY)
+  # Dependency is on the set of .list files that specify the content of then
+  # single library (SINGLE_INVENTORY). These .list files will be more recent
+  # than any existing single library if either the list of required objects
+  # itself has changed or the objects listesd therein have been updated.
+  $(INST_LIB)/single/$(SINGLESO)$(LIB_STAMP_EXT) : $(SINGLE_INVENTORY)
 	@if [ ! -d $(INST_LIB)/single ] ; \
          then \
             if [ X$(QMAKE_INFO) != X ] ; \

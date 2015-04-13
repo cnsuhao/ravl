@@ -342,7 +342,7 @@ fullclean:
 	$(SMAKECL) $(PAR_MAKE) clean VAR=check $(FULLBUILDFLAGS) TARGET=clean
 
 libbuild: 
-	$(SMAKEMD) $(PAR_MAKE) libbuild  $(FULLBUILDFLAGS) TARGET=libbuild
+	$(SMAKEMD) $(PAR_MAKE) libbuild  $(FULLBUILDFLAGS) $(if $(LINK_PLIB),LINK_PLIB=$(LINK_PLIB)) TARGET=libbuild
 
 # Build Product.
 # Proceeds as follows:
