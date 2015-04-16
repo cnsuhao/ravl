@@ -237,7 +237,7 @@ endif
 # INST_LIB in setting the UNIX paths. 
 test: src
 	@if [ ! -d $(ROOTDIR)/test/$(TEST_TARGET_VAR)$(TEST_TARGET_SHARED)$(SINGLE_POSTFIX)/bin ] ; then \
-	  $(MKDIR_P) $(ROOTDIR)/test/$(TEST_TARGET_VAR)$(TEST_TARGET_SHARED)/$(SINGLE_POSTFIX)bin; \
+	  $(MKDIR_P) $(ROOTDIR)/test/$(TEST_TARGET_VAR)$(TEST_TARGET_SHARED)/$(SINGLE_POSTFIX)/bin; \
 	fi 
 	@if [ ! -d $(ROOTDIR)/test/$(TEST_TARGET_VAR)$(TEST_TARGET_SHARED)$(SINGLE_POSTFIX)/log ] ; then \
 	  $(MKDIR_P) $(ROOTDIR)/test/$(TEST_TARGET_VAR)$(TEST_TARGET_SHARED)$(SINGLE_POSTFIX)/log; \
