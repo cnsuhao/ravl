@@ -34,9 +34,11 @@ int testDArray1dMore();
 int testDArray1dEvenMore();
 int testDArray1dFrom();
 int testDArray1dReverseIter();
+int testDArray1dAsQueue();
 
 int main()
 {
+#if 0
   RAVL_RUN_TEST(testBasic());
   RAVL_RUN_TEST(testDArray1d());
   RAVL_RUN_TEST(testDArray1dIO());
@@ -44,6 +46,8 @@ int main()
   RAVL_RUN_TEST(testDArray1dEvenMore());
   RAVL_RUN_TEST(testDArray1dFrom());
   RAVL_RUN_TEST(testDArray1dReverseIter());
+#endif
+  RAVL_RUN_TEST(testDArray1dAsQueue());
   RavlInfo("Collection test passed. ");
   return 0;
 }
@@ -369,6 +373,27 @@ int testDArray1dReverseIter()
       RAVL_TEST_EQUALS(*it,j);
     }
     RAVL_TEST_EQUALS(j,-1);
+  }
+  return 0;
+}
+
+int testDArray1dAsQueue()
+{
+  DArray1dC<int> dset;
+  int sizeTarget = 300;
+  for(int i = 0;i < sizeTarget;i++)
+    dset.Append(i);
+  for(int i = 0; i < 100000;i++) {
+    dset.Append(i);
+    RAVL_TEST_TRUE(dset.Size() == sizeTarget + 1);
+    dset.RemoveFirst();
+    RAVL_TEST_TRUE(dset.Size() == sizeTarget);
+
+    int size = 0;
+    for(RavlN::DArray1dIterC<int> it(dset);it;it++) {
+      size++;
+    }
+    RAVL_TEST_TRUE(dset.Size() == size);
   }
   return 0;
 }
