@@ -88,7 +88,7 @@ static void * DynamicLinkLibLoad(const StringC &libName) {
     if(libDepends.IsElm(libName)) {
       for(DLIterC<StringC> it(libDepends[libName]);it.IsElm();it.Next()) {
 	if(!DynamicLinkLibLoad(it.Data()))
-	  return false;
+	  return 0;
       }
     }
     

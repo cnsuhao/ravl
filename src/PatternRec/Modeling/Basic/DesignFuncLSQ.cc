@@ -166,7 +166,7 @@ namespace RavlN {
     
 #if 0 
     SampleVectorC coeffs(vin.Size());
-    //: Build a sample set of coefficents.
+    //: Build a sample set of coefficients.
     
     for(SampleIterC<VectorC> cit(in);cit;cit++)
       coeffs += func.MakeInput(*cit);
