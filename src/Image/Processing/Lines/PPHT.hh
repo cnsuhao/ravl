@@ -253,10 +253,10 @@ namespace RavlImageN {
     Array1dC<IntT> angleCount; // Number of votes in each column.
     Array1dC<RealT> tCos;      // Cos.
     Array1dC<RealT> tSin;      // Sin.
-    ImageC<ByteT> usedMap;        // Map of user pixels.
+    ImageC<ByteT> usedMap;        // Map of used pixels.
     ImageC<ByteT> pixMap;         // Pixel map.
-    ImageC<RealT> gradimg;      // Gradiant image.
-    ImageC<RealT> gradacc;      // Gradiant accuracy image.
+    ImageC<RealT> gradimg;      // Gradient image.
+    ImageC<RealT> gradacc;      // Gradient accuracy image.
     ImageC<UIntT> sobelImg;        // Image of sobel numbers.
     PCPixMappingC<Curve2dLineSegmentC> lines; // List of found lines.
     bool feedBack;                   // true= Use feedback processing.

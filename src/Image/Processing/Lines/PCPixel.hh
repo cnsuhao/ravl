@@ -65,7 +65,7 @@ namespace RavlImageN {
     
   private:
     Point2dC pnt; // Closest point on curve.
-    RealT p;      // Paramiter of closest point.
+    RealT p;      // Parameter of closest point.
   };
 }
 

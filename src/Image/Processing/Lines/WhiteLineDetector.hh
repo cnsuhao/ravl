@@ -31,7 +31,7 @@ namespace RavlImageN {
     const ByteRGBValueC darkred, red, yellow, brown;
     GaussConvolve2dC<RealT> gFilter; // Gaussian filter
     EdgeDetectorC edgeDet;
-    PPHoughTransformC pphtProc; // Progressive probablistic Hough transform
+    PPHoughTransformC pphtProc; // Progressive probabilistic Hough transform
     
     RealT maxAngle; // Max angle between edge pair to be ridge (degrees)
     RealT maxSep;   // Max separation between edge pair to be ridge (pixels)
