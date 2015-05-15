@@ -329,7 +329,7 @@ ifeq ($(SUPPORT_OK),yes)
                $(patsubst %$(CXXEXT),$(INST_DEPEND)/%.d, \
                $(patsubst %.m,$(INST_DEPEND)/%.d, \
                $(patsubst %.mm,$(INST_DEPEND)/%.d, \
-	       $(patsubst %.java,$(INST_DEPEND)/%.java.d,$(MAINS) $(TESTEXES)))))) \
+	       $(patsubst %.java,$(INST_DEPEND)/%.java.d,$(MAINS) ))))) \
                $(patsubst %$(CEXT),$(INST_DEPEND)/%.$(VAR)$(BINDEP_SHARED_INFIX)$(BINDEP_SINGLE_POSTFIX).bin.d,  \
                $(patsubst %$(CXXEXT),$(INST_DEPEND)/%.$(VAR)$(BINDEP_SHARED_INFIX)$(BINDEP_SINGLE_POSTFIX).bin.d, \
                $(patsubst %.m,$(INST_DEPEND)/%.$(VAR)$(BINDEP_SHARED_INFIX)$(BINDEP_SINGLE_POSTFIX).bin.d,  \
