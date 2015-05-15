@@ -153,9 +153,25 @@ namespace RavlImageN {
   }
   //: Rescale an image
   //!param: img - input image
-  //!param: scale - output image size is <i>divided</i> by <code>scale</code>
+  //!param: scale - output image size is input size <i>divided</i> by <code>scale</code>
   //!param: result - output image
   // If <code>result</code> is empty, the correct size is computed.
+
+
+  template <class InT, class OutT>
+  bool WarpScaleBilinear(const ImageC<InT> &img,ImageC<OutT> &result)
+  {
+    if(result.Frame().IsEmpty()) return false;
+    Vector2dC scale; // Distance between samples in the input image.
+    scale[0] = (RealT) img.Rows() / (RealT) result.Rows();
+    scale[1] = (RealT) img.Cols() / (RealT) result.Cols();
+    return WarpScaleBilinear(img, scale, result);
+  }
+  //: Rescale an image
+  //!param: img - input image
+  //!param: result - output image
+  // This version computes the scaling factor from the input and output image sizes
+
 
   //:--
   //! userlevel=Develop

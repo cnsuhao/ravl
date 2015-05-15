@@ -42,13 +42,13 @@ namespace RavlImageN {
     const RealT CWidth2;
     
     RealT Where;       // Where in the model we are.
-    RealT MaxParam;    // Maximum value of paramiter.
-    RealT MinParam;    // Minumum value of paramiter.
+    RealT MaxParam;    // Maximum value of parameter.
+    RealT MinParam;    // Minimum value of parameter.
     
     PixelMapC &Map;   // Map of pixels.
     HSetC<Index2dC> Done;  // Bins that have been checked.
-    DListC<PCIndex2dC> Ready; // Points that have been covered. in increasing paramiter value.
-    Index2dC LastSet;  // Center of last set of 4 bins.  
+    DListC<PCIndex2dC> Ready; // Points that have been covered. in increasing parameter value.
+    Index2dC LastSet;  // Centre of last set of 4 bins.
     
     ImageC<ByteT> inimg;
     
