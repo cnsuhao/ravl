@@ -25,3 +25,6 @@ EXTERNALLIBS= LibGnome.def
 USESLIBS=RavlGUI LibGnome
 
 EXAMPLES=exGnome.cc
+
+EXTRA_RULES=$(QCWD)/RootDir.mk
+

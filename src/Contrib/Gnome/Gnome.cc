@@ -13,36 +13,24 @@
 #include <libgnome/libgnome.h>
 #endif
 
-#ifndef DATADIR
-#ifndef PROJECT_OUT
-#define DATADIR ""
-#else
-#define DATADIR PROJECT_OUT"/share"
-#endif
+
+// Declare fallback null strings use by for GNOME_PROGRAM_STANDARD_PROPERTIES
+// These should all be already defined by defs.mk assuming PROJECT_OUT is set
+// or $prefix, $datadir, etc. are set or PREFIX et al were user defined.
+#ifndef PREFIX
+#define PREFIX ""
 #endif
 
-#ifndef PREFIX
-#ifndef PROJECT_OUT
-#define PREFIX ""
-#else
-#define PREFIX PROJECT_OUT
-#endif
+#ifndef DATADIR
+#define DATADIR ""
 #endif
 
 #ifndef SYSCONFDIR
-#ifndef PROJECT_OUT
 #define SYSCONFDIR ""
-#else
-#define SYSCONFDIR PROJECT_OUT"/etc"
-#endif
 #endif
 
 #ifndef LIBDIR
-#ifndef PROJECT_OUT
 #define LIBDIR ""
-#else
-#define LIBDIR PROJECT_OUT"/lib"
-#endif
 #endif
 
 namespace RavlGUIN {

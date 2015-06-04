@@ -10,12 +10,11 @@
 
 #include "Ravl/Resource.hh"
 
+// Declare fallback null string for DEFAULT_ROOT but this should have already
+// been defaulted (to PROJECT_OUT) in defs.mk if the user has not supplied a
+// definition for DEFAULT_ROOT.
 #ifndef DEFAULT_ROOT
-#ifndef PROJECT_OUT
-#define DEFAULT_ROOT ""
-#else
-#define DEFAULT_ROOT PROJECT_OUT
-#endif
+ #define DEFAULT_ROOT ""
 #endif
 
 namespace RavlN {
