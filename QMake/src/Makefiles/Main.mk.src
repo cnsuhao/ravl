@@ -527,6 +527,12 @@ else
  testbuild exebuild DeclareSummaries RemoveNonSummaries AddSummaries
 endif
 
+ ifeq ($(SUPPORT_OK),yes)
+  ifneq ($(strip $(EXTRA_RULES)),)
+   include $(EXTRA_RULES)
+  endif
+ endif
+
 all: prebuildstep srcfiles build_aux
 	@echo "Internal error: No valid build target "
 
