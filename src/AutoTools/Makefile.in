@@ -479,14 +479,12 @@ rpm: qmake
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) rpmbuild 
 
 SetRootInstalled:
-	$(SHOWIT)$(WORKING_QMAKE_BIN)/untouch -f $(SOURCEHOME)/Core/Base/Resource.cc
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Core/Base \
                 -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=$(VAR) NOEXEBUILD=1 \
                 $(if $(SHAREDBUILD),SHAREDBUILD=$(SHAREDBUILD)) \
                 $(if $(LINK_PLIB),LINK_PLIB=$(LINK_PLIB)) \
                 CCFLAGS="$(CCFLAGS) -DDEFAULT_ROOT=\\\"$(patsubst %/share,%,$(datadir))\\\"" \
                 libbuild
-	$(SHOWIT)$(WORKING_QMAKE_BIN)/untouch -f $(SOURCEHOME)/Contrib/Gnome/Gnome.cc
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Contrib/Gnome \
                 -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=$(VAR) NOEXEBUILD=1 \
                 $(if $(SHAREDBUILD),SHAREDBUILD=$(SHAREDBUILD)) \
@@ -495,13 +493,11 @@ SetRootInstalled:
                 libbuild
 
 SetRootStaged:
-	$(SHOWIT)$(WORKING_QMAKE_BIN)/untouch -f $(SOURCEHOME)/Core/Base/Resource.cc
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Core/Base \
                 -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=$(VAR) NOEXEBUILD=1 \
                 $(if $(SHAREDBUILD),SHAREDBUILD=$(SHAREDBUILD)) \
                 $(if $(LINK_PLIB),LINK_PLIB=$(LINK_PLIB)) \
                 libbuild
-	$(SHOWIT)$(WORKING_QMAKE_BIN)/untouch -f $(SOURCEHOME)/Contrib/Gnome/Gnome.cc
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Contrib/Gnome \
                 -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=$(VAR) NOEXEBUILD=1 \
                 $(if $(SHAREDBUILD),SHAREDBUILD=$(SHAREDBUILD)) \
