@@ -478,30 +478,44 @@ retestsingleoptshared:
 rpm: qmake 
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) rpmbuild 
 
+INSTALLED_PATHS= DEFAULT_ROOT=\\\"$(patsubst %/share,%,$(datadir))\\\" \
+                 PREFIX=\\\"$(prefix)\\\" \
+                 DATADIR=\\\"$(datadir)/Ravl\\\" \
+                 SYSCONFDIR=\\\"$(sysconfdir)/Ravl\\\" \
+                 LIBDIR=\\\"$(libdir)\\\"
+
 SetRootInstalled:
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Core/Base \
                 -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=$(VAR) NOEXEBUILD=1 \
                 $(if $(SHAREDBUILD),SHAREDBUILD=$(SHAREDBUILD)) \
                 $(if $(LINK_PLIB),LINK_PLIB=$(LINK_PLIB)) \
-                CCFLAGS="$(CCFLAGS) -DDEFAULT_ROOT=\\\"$(patsubst %/share,%,$(datadir))\\\"" \
+                PATH_DEFINITIONS="$(INSTALLED_PATHS)" \
                 libbuild
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Contrib/Gnome \
                 -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=$(VAR) NOEXEBUILD=1 \
                 $(if $(SHAREDBUILD),SHAREDBUILD=$(SHAREDBUILD)) \
                 $(if $(LINK_PLIB),LINK_PLIB=$(LINK_PLIB)) \
-                CCFLAGS="$(CCFLAGS) -DPREFIX=\\\"$(prefix)\\\" -DDATADIR=\\\"$(datadir)/Ravl\\\" -DSYSCONFDIR=\\\"$(sysconfdir)/Ravl\\\" -DLIBDIR=\\\"$(libdir)\\\"" \
+                PATH_DEFINITIONS="$(INSTALLED_PATHS)" \
                 libbuild
+
+STAGED_PATHS= DEFAULT_ROOT=\\\"$(PROJECT_OUT)\\\" \
+              PREFIX=\\\"$(PROJECT_OUT)\\\" \
+              DATADIR=\\\"$(PROJECT_OUT)/share\\\" \
+              SYSCONFDIR=\\\"$(PROJECT_OUT)/etc\\\" \
+              LIBDIR=\\\"$(PROJECT_OUT)/lib\\\"
 
 SetRootStaged:
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Core/Base \
                 -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=$(VAR) NOEXEBUILD=1 \
                 $(if $(SHAREDBUILD),SHAREDBUILD=$(SHAREDBUILD)) \
                 $(if $(LINK_PLIB),LINK_PLIB=$(LINK_PLIB)) \
+                PATH_DEFINITIONS="$(STAGED_PATHS)" \
                 libbuild
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Contrib/Gnome \
                 -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=$(VAR) NOEXEBUILD=1 \
                 $(if $(SHAREDBUILD),SHAREDBUILD=$(SHAREDBUILD)) \
                 $(if $(LINK_PLIB),LINK_PLIB=$(LINK_PLIB)) \
+                PATH_DEFINITIONS="$(STAGED_PATHS)" \
                 libbuild
 
 singledebug: debug
