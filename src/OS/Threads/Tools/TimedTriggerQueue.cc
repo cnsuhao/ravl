@@ -213,6 +213,7 @@ namespace RavlN
 #endif
           doneWork = true;
           ne.Invoke();
+          ne.Invalidate(); // Make sure handle is invalidated without lock held.
 #if CATCHEXCEPTIONS
         } catch(ExceptionC &ex) {
           RavlError("Caught exception in timed trigger event thread. Type:%s Message:'%s'",RavlN::TypeName(typeid(ex)),ex.Text());
