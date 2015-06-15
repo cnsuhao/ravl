@@ -56,7 +56,7 @@ CCFLAGS+= $(if $(PREFIX),-DPREFIX=\"$(PREFIX)\") \
          $(if $(SYSCONFDIR),-DSYSCONFDIR=\"$(SYSCONFDIR)\") \
          $(if $(LIBDIR), -DLIBDIR=\"$(LIBDIR)\")
 
-$(INST_OBJS)/GnomeDirs.Used: FORCE
+$(INST_OBJS)/GnomeDirs.Used: FORCE | $(INST_OBJS)/.dir
 	@echo $(PREFIX) > $(LOCALTMP)/$(@F); \
          echo $(DATADIR) >> $(LOCALTMP)/$(@F); \
          echo $(SYSCONFDIR) >> $(LOCALTMP)/$(@F); \

@@ -18,7 +18,7 @@ CFLAGS += $(if $(BUILTROOT),-DDEFAULT_ROOT=\"$(BUILTROOT)\")
 
 CCFLAGS += $(if $(BUILTROOT),-DDEFAULT_ROOT=\"$(BUILTROOT)\")
 
-$(INST_OBJS)/Root.Used: FORCE
+$(INST_OBJS)/Root.Used: FORCE | $(INST_OBJS)/.dir
 	@echo $(BUILTROOT) > $(LOCALTMP)/$(@F); \
 	 if [ -f $@ ] ; \
 	 then \
