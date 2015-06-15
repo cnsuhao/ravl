@@ -286,16 +286,14 @@ ifeq ($(STAMP_SINGLE),VER)
                  then \
                     $(RM) $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.$(SHAREDEXT).$(PROJECT_MAJOR) ; \
                  fi ; \
-                 cd $(ABS_DESTDIR)$(libdir)/debug$(libdir); $(LN_S) libRavl$(STAMP_SINGLE_EXT) libRavl.$(SHAREDEXT).$(PROJECT_MAJOR) ; \
-                 fi
+                 cd $(ABS_DESTDIR)$(libdir)/debug$(libdir); $(LN_S) libRavl$(STAMP_SINGLE_EXT) libRavl.$(SHAREDEXT).$(PROJECT_MAJOR)
 endif
 ifneq ($(STAMP_SINGLE),NO)
 	$(SHOWIT)if [ -h $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.$(SHAREDEXT) ] || [ -f $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.$(SHAREDEXT) ] ; \
                  then \
                     $(RM) $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.$(SHAREDEXT) ; \
                  fi ; \
-                 cd $(ABS_DESTDIR)$(libdir)/debug$(libdir); $(LN_S) libRavl$(STAMP_SINGLE_EXT) libRavl.$(SHAREDEXT) ; \
-                 fi
+                 cd $(ABS_DESTDIR)$(libdir)/debug$(libdir); $(LN_S) libRavl$(STAMP_SINGLE_EXT) libRavl.$(SHAREDEXT)
 endif
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=debug SHAREDBUILD=1 LINK_PLIB=0 singlesharedSetRootStaged
 #       First re-build the relevant modules that use the location of the library
