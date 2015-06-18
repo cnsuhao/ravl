@@ -1196,6 +1196,31 @@ build_test:
 	@true
 endif
 
+                                                                                                                                   
+$(TARG_TESTEXEOBJS) : $(INST_OBJS)/%.o : $(INST_OBJS)/TestRoot.Used                                                                
+                                                                                                                                   
+ifndef TEST_ROOT                                                                                                                   
+ ifndef DEFAULT_ROOT                                                                                                               
+  TEST_ROOT=$(PROJECT_OUT)                                                                                                         
+ else                                                                                                                              
+  TEST_ROOT=$(DEFAULT_ROOT)
+ endif
+endif
+
+$(INST_OBJS)/TestRoot.Used: FORCE
+	@echo $(TEST_ROOT) > $(LOCALTMP)/$(@F); \
+         if [ -f $@ ] ; \
+         then \
+           diff $(LOCALTMP)/$(@F) $@ ; \
+           if [ $$? -ne 0 ] ; \
+           then \
+             echo Updating TEST_ROOT to $(TEST_ROOT) ; \
+             cp $(LOCALTMP)/$(@F) $@ ; \
+           fi ; \
+        else \
+           cp $(LOCALTMP)/$(@F) $@ ; \
+        fi ; \
+
 
 $(TARG_TESTEXE) : $(INST_TESTBIN)/%$(EXEEXT) : $(INST_OBJS)/%$(OBJEXT) $(TARG_LIBS) $(EXTRAOBJS) $(TARG_HDRCERTS) $(INST_TESTBIN)/.dir
 	$(SHOWIT)echo "--- Linking test program $(@F)  ( $(INST_TESTBIN)/$(@F) ) " ; \

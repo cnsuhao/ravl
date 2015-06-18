@@ -15,6 +15,16 @@ using namespace RavlN;
 
 int main(int argc,char **argv) 
 {
+#ifndef TEST_ROOT
+ #ifndef PROJECT_OUT
+  #define TEST_ROOT ""
+ #else
+  #define TEST_ROOT PROJECT_OUT
+ #endif
+#endif
+
+  SetResourceRoot(TEST_ROOT);
+
   OptionC  option(argc,argv);
   StringC input = option.String("",RavlN::Resource("RAVL/testData", "testTC.tmpl"),"Input file. ");
   StringC output = option.String("",RavlN::Resource("RAVL/testData","testTC.out"),"Output file. ");
