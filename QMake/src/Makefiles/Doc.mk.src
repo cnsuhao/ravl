@@ -119,7 +119,11 @@ doc: docinit $(INST_INCLUDE)/.dir
                  $(LLP) $(QMAKE_UTILS)/CxxDoc $(PROJECT_NAME_OPT) \
                                               $(PROJECT_DESC_OPT) \
                                               $(INCLUDE_OPT) \
-                                              -p $(PROJECT_OUT)
+                                              -p $(PROJECT_OUT) \
+                                              $(if $(LOCAL_TEMPLATES), \
+                                                   -ih $(LOCAL_TEMPLATES) \
+                                               )
+
         # LLP = LD_LIBRARY_PATH setting for when building against a project
         # local QMake (as opposed to an installed copy)
 

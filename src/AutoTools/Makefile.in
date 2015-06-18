@@ -108,6 +108,7 @@ doc: qmake
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/.. \
                 -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
                 LLP="LD_LIBRARY_PATH=$(PROJECT_OUT)/lib/$(ARC)/opt/shared/single:$$LD_LIBRARY_PATH" \
+                LOCAL_TEMPLATES="$(PROJECT_OUT)/share/CxxDoc" \
                 fulldoc
 	cp $(PROJECT_OUT)/share/QMake/Support/Help.txt \
                 $(PROJECT_OUT)/share/doc/Ravl/html/Help.txt

@@ -496,7 +496,7 @@ fullshared:
         fi ; \
 
 fulldoc:
-	$(SMAKEDC) $(PAR_MAKE) doc $(FULLBUILDFLAGS)
+	$(SMAKEDC) $(PAR_MAKE) doc $(FULLBUILDFLAGS) $(if $(LOCAL_TEMPLATES),LOCAL_TEMPLATES=$(LOCAL_TEMPLATES))
 
 # Make a defs.mk file automaticly.
 
