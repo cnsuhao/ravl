@@ -1964,14 +1964,17 @@ AddSummaries:
 	$(if $(VALID_SUMMARIES), \
              $(SHOWIT)for f in $(SUMMARY_LIB) ; \
                       do \
-                        if ( test ! -d $(LOCALTMP)/$(ARC)/Single.$$f ) ; \
+                        if ( test ! -f $(LOCALTMP)/$(ARC)/Single.$$f/$(PLIB) ) ; \
                         then \
-                          if ( test -f $(LOCALTMP)/$(ARC)/Single.$$f ) ; \
+                          if ( test ! -d $(LOCALTMP)/$(ARC)/Single.$$f ) ; \
                           then \
-                            $(RM) $(LOCALTMP)/$(ARC)/Single.$$f ; \
+                            if ( test -f $(LOCALTMP)/$(ARC)/Single.$$f ) ; \
+                            then \
+                              $(RM) $(LOCALTMP)/$(ARC)/Single.$$f ; \
+                            fi ; \
+                            $(MKDIR_P) $(LOCALTMP)/$(ARC)/Single.$$f ; \
                           fi ; \
-                          $(MKDIR_P) $(LOCALTMP)/$(ARC)/Single.$$f ; \
+                          echo > $(LOCALTMP)/$(ARC)/Single.$$f/$(PLIB) ; \
                         fi ; \
-                        echo > $(LOCALTMP)/$(ARC)/Single.$$f/$(PLIB) ; \
                       done  \
          )
