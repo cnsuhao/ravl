@@ -37,6 +37,10 @@ RAVL_FLAGS=BASEINSTALL=1 FULLBUILDSRC='BASE_VAR=none' \
            CONFIGFILE=$(PROJECT_OUT)/Config.Project \
            INCLUDEDIR=$(PROJECT_OUT)/include 
 
+ifndef USE_INSTALLED_PATHS
+  USE_INSTALLED_PATHS=N
+endif
+
 # Trace commands if QMAKE_INFO is in use
 ifndef QMAKE_INFO
 SHOWIT=@
@@ -83,18 +87,27 @@ debug: qmake
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
                 -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
                 VAR=debug NOEXEBUILD=1 \
+	        $(if $(filter-out 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                     PATH_DEFINITIONS="$(INSTALLED_PATHS)" \
+                 ) \
                 libbuild
 
 debugshared: qmake
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
                 -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
                 VAR=debug SHAREDBUILD=1 NOEXEBUILD=1 \
+	        $(if $(filter-out 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                     PATH_DEFINITIONS="$(INSTALLED_PATHS)" \
+                 ) \
                 libbuild
 
 debugsharedobj: qmake
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
                 -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
                 VAR=debug SHAREDBUILD=1 NOEXEBUILD=1 LINK_PLIB=0 \
+	        $(if $(filter-out 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                     PATH_DEFINITIONS="$(INSTALLED_PATHS)" \
+                 ) \
                 libbuild
 
 dist:
@@ -127,6 +140,9 @@ doc: qmake
 fullsrc: qmake
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
                 -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) NOCHECKOUT=1 \
+	        $(if $(filter-out 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                     PATH_DEFINITIONS="$(INSTALLED_PATHS)" \
+                 ) \
                 fullsrc
 
 gprof: qmake
@@ -208,46 +224,58 @@ $(PROJECT_OUT)/lib/libdep/4install/Ravl.def: $(PROJECT_OUT)/lib/libdep/4install/
 # installed from their built location in the build tree.
 
 installdebuglib:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
-                -f $(PROJECT_OUT)/Makefile \
-                VAR=debug \
-                SetRootInstalled
+	$(if $(filter 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
+                        -f $(PROJECT_OUT)/Makefile \
+                        VAR=debug \
+                        SetRootInstalled \
+         )
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) \
                 -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk \
                 CONFIGFILE=$(PROJECT_OUT)/Config.Project \
                 VAR=debug STRIP_SWITCH=$(STRIP_SWITCH) \
                 insLibs recurse
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
-                -f $(PROJECT_OUT)/Makefile \
-                VAR=debug \
-                SetRootStaged
-#       First re-link those modules that need to be built with the location of
-#       the library reflected in the code. 
-#       Use QMake to install the libraries (this will automatically install the
+	$(if $(filter 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
+                        -f $(PROJECT_OUT)/Makefile \
+                        VAR=debug \
+                        SetRootStaged \
+         )
+#       + If we are using local (PROJECT_OUT) hard-coded paths in the built
+#       binaries (i.e. --disable-fast-install is in use) we first have to
+#       rebuild the libraries to reflect the installed location (i.e. $prefix,
+#       $datadir, etc.).
+#       + Use QMake to install the libraries (this will automatically install the
 #       libraries to the $(DESTDIR)$(libdir)/debug/$(libdir) directory.
-#       Finally re-build the relevant objects/libraries with the original path
-#       to the staging area.
+#       + Finally, if we are using local paths, we need to re-build the relevant
+#       objects and libraries with the original path to the staging area.
 
 installdebugsharedlib:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
-                -f $(PROJECT_OUT)/Makefile \
-                VAR=debug SHAREDBUILD=1 \
-                SetRootInstalled
+	$(if $(filter 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
+                        -f $(PROJECT_OUT)/Makefile \
+                        VAR=debug SHAREDBUILD=1 \
+                        SetRootInstalled \
+         )
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) \
                 -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk \
                 CONFIGFILE=$(PROJECT_OUT)/Config.Project \
                 VAR=debug SHAREDBUILD=1 STRIP_SWITCH=$(STRIP_SWITCH) \
                 insLibs recurse
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
-                -f $(PROJECT_OUT)/Makefile \
-                VAR=debug SHAREDBUILD=1 \
-                SetRootStaged
-#       First re-link those modules that need to be built with the location of
-#       the library reflected in the code. 
-#       Use QMake to install the libraries (this will automatically install the
+	$(if $(filter 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
+                        -f $(PROJECT_OUT)/Makefile \
+                        VAR=debug SHAREDBUILD=1 \
+                        SetRootStaged \
+         )
+#       + If we are using local (PROJECT_OUT) hard-coded paths in the built
+#       binaries (i.e. --disable-fast-install is in use) we first have to
+#       rebuild the libraries to reflect the installed location (i.e. $prefix,
+#       $datadir, etc.).
+#       + Use QMake to install the libraries (this will automatically install the
 #       libraries to the $(DESTDIR)$(libdir)/debug/$(libdir) directory.
-#       Finally re-build the relevant objects/libraries with the original path
-#       to the staging area.
+#       + Finally, if we are using local paths, we need to re-build the relevant
+#       objects and libraries with the original path to the staging area.
 
 installHdrs:
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) \
@@ -256,13 +284,15 @@ installHdrs:
                 insHdrs recurse
 
 installopt:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
-                -f $(PROJECT_OUT)/Makefile \
-                VAR=opt \
-                SetRootInstalled
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
-                -f $(PROJECT_OUT)/Makefile \
-                optbin
+	$(if $(filter 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
+                        -f $(PROJECT_OUT)/Makefile \
+                        VAR=opt \
+                        SetRootInstalled \
+                $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
+                       -f $(PROJECT_OUT)/Makefile \
+                       optbin \
+         )
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) \
                 -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk \
                 CONFIGFILE=$(PROJECT_OUT)/Config.Project \
@@ -278,33 +308,41 @@ installopt:
                 CONFIGFILE=$(PROJECT_OUT)/Config.Project \
                 VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) \
                 insMustLinks recurse
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
-                -f $(PROJECT_OUT)/Makefile \
-                VAR=opt \
-                SetRootStaged
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
-                -f $(PROJECT_OUT)/Makefile \
-                optbin
-#       First re-link those modules that need to be built with the location of
-#       the library reflected in the code. 
-#       Re-make the binaries to pick up the path changes
-#       Use the 'install' function of QMake to install the Ravl utility
+	$(if $(filter 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
+                        -f $(PROJECT_OUT)/Makefile \
+                        VAR=opt \
+                        SetRootStaged \
+	        $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
+                        -f $(PROJECT_OUT)/Makefile \
+                        optbin \
+         )
+#       + If we are using local (PROJECT_OUT) hard-coded paths in the built
+#       binaries (i.e. --disable-fast-install is in use) we first have to
+#       rebuild the libraries to reflect the installed location (i.e. $prefix,
+#       $datadir, etc.). We also need to re-make the executables to pick up the
+#       path changes.
+#       + Use the 'install' function of QMake to install the Ravl utility
 #       binaries; config files; data files and scripts. 
-#       Install the libraries via the QMake insLibs and the MUSTLINK files via
-#       the QMake insMustLinks target.
-#       Restore the embedded paths to point to the staged location of Ravl
-#       Rebuild the binaries to pick up the path resotoration
+#       + Install the libraries via the QMake insLibs
+#       + Install the MUSTLINK files via the QMake insMustLinks target.
+#       + Finally, if we are using local paths, we need to re-build the relevant
+#       objects and libraries with the original path to the staging area and
+#       then remake the executables to pick up the restore.
+#
 #       N.B. This recepie includes a duplication of parts of the installoptlib
 #       recepie (we can not use the XXXgeneral XXXlib form used by the shared
-#       recepies because of the need to rebuild the binaries to pick up the
-#       change in resource-root). Please remember to apply any changes to the
-#       other copy of the code as appropriate.
+#       recepies because of the possible need to rebuild the executables to pick
+#       up the change in resource-root). Please remember to apply any changes to
+#       the other copy of the code as appropriate.
 
 installoptlib:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
-                -f $(PROJECT_OUT)/Makefile \
-                VAR=opt \
-                SetRootInstalled
+	$(if $(filter 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
+                        -f $(PROJECT_OUT)/Makefile \
+                        VAR=opt \
+                        SetRootInstalled \
+         )
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) \
                 -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk \
                 CONFIGFILE=$(PROJECT_OUT)/Config.Project \
@@ -315,19 +353,26 @@ installoptlib:
                 CONFIGFILE=$(PROJECT_OUT)/Config.Project \
                 VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) \
                 insMustLinks recurse
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
-                -f $(PROJECT_OUT)/Makefile \
-                VAR=opt \
-                SetRootStaged
-#       First re-link those modules that need to be built with the location of
-#       the library reflected in the code. Install the libraries, then the
-#       MUSTLINK objects via QMake and finally re-build the relevant objects
-#       and libraries with the original path to the staging area.
-#       N.B. Parts of this recepie are duplicated in the installopt recepie (we
-#       can not use the XXXgeneral XXXlib form used by the shared recepies
-#       because of the need to rebuild the binaries to pick up the change in
-#       resource-root). Please remember to apply any changes to the other copy
-#       of the code as appropriate.
+	$(if $(filter 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
+                        -f $(PROJECT_OUT)/Makefile \
+                        VAR=opt \
+                        SetRootStaged \
+         )
+#       + If we are using local (PROJECT_OUT) hard-coded paths in the built
+#       binaries (i.e. --disable-fast-install is in use) we first have to
+#       rebuild the libraries to reflect the installed location (i.e. $prefix,
+#       $datadir, etc.).
+#       + Install the libraries via the QMake insLibs
+#       + Install the MUSTLINK files via the QMake insMustLinks target.
+#       + Finally, if we are using local paths, we need to re-build the relevant
+#       objects and libraries with the original path to the staging area.
+#
+#       N.B. Parts of this recepie are duplicated in the installopt recepie
+#       (we can not use the XXXgeneral XXXlib form used by the shared recepies
+#       because of the possible need for installopt to rebuild the executables
+#       to pick up the change in resource-root). Please remember to apply any
+#       changes to the other copy of the code as appropriate.
 
 installoptshared: installoptsharedgeneral installoptsharedlib
 
@@ -341,10 +386,12 @@ installoptsharedgeneral:
 #       binaries; config files; data files and scripts. 
 
 installoptsharedlib:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
-                -f $(PROJECT_OUT)/Makefile \
-                VAR=opt SHAREDBUILD=1 \
-                SetRootInstalled
+	$(if $(filter 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
+                        -f $(PROJECT_OUT)/Makefile \
+                        VAR=opt SHAREDBUILD=1 \
+                        SetRootInstalled \
+         )
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) \
                 -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk \
                 CONFIGFILE=$(PROJECT_OUT)/Config.Project \
@@ -355,17 +402,23 @@ installoptsharedlib:
                 CONFIGFILE=$(PROJECT_OUT)/Config.Project \
                 VAR=opt SHAREDBUILD=1 STRIP_SWITCH=$(STRIP_SWITCH) \
                 insMustLinks recurse
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
-                -f $(PROJECT_OUT)/Makefile \
-                VAR=opt SHAREDBUILD=1 \
-                SetRootStaged
-#       First re-link those modules that need to be built with the location of
-#       the library reflected in the code. Install the libraries via QMake and
-#       then the MUSTLINK objects (the MUSTLINKs are not strictly necessary
+	$(if $(filter 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
+                        -f $(PROJECT_OUT)/Makefile \
+                        VAR=opt SHAREDBUILD=1 \
+                        SetRootStaged \
+         )
+#       + If we are using local (PROJECT_OUT) hard-coded paths in the built
+#       binaries (i.e. --disable-fast-install is in use) we first have to
+#       rebuild the libraries to reflect the installed location (i.e. $prefix,
+#       $datadir, etc.).
+#       + Install the libraries via QMake
+#       + Install the MUSTLINK objects (the MUSTLINKs are not strictly necessary
 #       for the shared library, but may be needed for old client projects that
 #       have existing .def files that still include the MUSTLINKs regardless of
-#       if a build is shared or not). Finally, re-build the relevant objects
-#       and libraries with the original path to the staging area.
+#       if a build is shared or not).
+#       + Finally, if we are using local paths, we need to re-build the relevant
+#       objects and libraries with the original path to the staging area.
 
 installpkgconf: $(ABS_DESTDIR)$(libdir)/pkgconfig $(ABS_DESTDIR)$(libdir)/pkgconfig/Ravl.pc
 
@@ -389,10 +442,12 @@ $(PROJECT_OUT)/lib/pkgconfig/4install/Ravl.pc: $(PROJECT_OUT)/lib/pkgconfig/4ins
 # and $prefix, etc. Hence we only finalise the file when we perform the install. 
 
 installsingledebuglib:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
-                -f $(PROJECT_OUT)/Makefile \
-                VAR=debug LINK_PLIB=0 \
-                singleSetRootInstalled
+	$(if $(filter 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
+                        -f $(PROJECT_OUT)/Makefile \
+                        VAR=debug LINK_PLIB=0 \
+                        singleSetRootInstalled \
+         )
 	$(SHOWIT)if [ ! -d $(ABS_DESTDIR)$(libdir)/debug$(libdir) ] ;\
                  then \
                      $(MKDIR_P) $(ABS_DESTDIR)$(libdir)/debug$(libdir) ; \
@@ -400,22 +455,30 @@ installsingledebuglib:
 	$(INSTALL) $(STRIP_SWITCH) \
                    $(PROJECT_OUT)/lib/$(ARC)/debug/single/libRavl.a \
                    $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.a
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
-                -f $(PROJECT_OUT)/Makefile \
-                VAR=debug LINK_PLIB=0 \
-                singleSetRootStaged
-#       First rebuild those modules that rely on the installation path and
-#       relink their libraries. 
-#       Ensure the target dir exists and manually copy across the single library
-#       (debug libraries are installed under the same path as the non-debug
-#       version but prefixed by any $(DESTDIR) and $(libdir)/debug).
-#       Finally, we restore the local path into the object and library files.
+	$(if $(filter 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
+                        -f $(PROJECT_OUT)/Makefile \
+                        VAR=debug LINK_PLIB=0 \
+                        singleSetRootStaged \
+         )
+#       + If we are using local (PROJECT_OUT) hard-coded paths in the built
+#       binaries (i.e. --disable-fast-install is in use) we first have to
+#       rebuild the libraries to reflect the installed location (i.e. $prefix,
+#       $datadir, etc.).
+#       + Ensure the target dir exists (debug libraries are installed under the
+#       same path as the non-debug version but prefixed by any $(DESTDIR) and
+#       $(libdir)/debug).
+#       + Copy across the single library
+#       + Finally, if we are using local paths, we need to re-build the relevant
+#       objects and libraries with the original path to the staging area.
 
 installsingledebugsharedlib:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
-                -f $(PROJECT_OUT)/Makefile \
-                VAR=debug SHAREDBUILD=1 LINK_PLIB=0 \
-                singlesharedSetRootInstalled
+	$(if $(filter 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
+                        -f $(PROJECT_OUT)/Makefile \
+                        VAR=debug SHAREDBUILD=1 LINK_PLIB=0 \
+                        singlesharedSetRootInstalled \
+         )
 	$(SHOWIT)if [ ! -d $(ABS_DESTDIR)$(libdir)/debug$(libdir) ] ; \
                  then \
                      $(MKDIR_P) $(ABS_DESTDIR)$(libdir)/debug$(libdir) ; \
@@ -441,28 +504,35 @@ ifneq ($(STAMP_SINGLE),NO)
                  cd $(ABS_DESTDIR)$(libdir)/debug$(libdir); \
                  $(LN_S) libRavl$(STAMP_SINGLE_EXT) libRavl.$(SHAREDEXT)
 endif
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
-                -f $(PROJECT_OUT)/Makefile \
-                VAR=debug SHAREDBUILD=1 LINK_PLIB=0 \
-                singlesharedSetRootStaged
-#       First re-build the relevant modules that use the location of the library
-#       as an embedded path and relink the library.
-#       Ensure the target dir exists (debug libraries are installed under
-#       the same path as the non-debug version but prefixed by any $(DESTDIR)
-#       and $(libdir)/debug).
-#       Rather than call the insLibs make target, we manually install the
+	$(if $(filter 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
+                        -f $(PROJECT_OUT)/Makefile \
+                        VAR=debug SHAREDBUILD=1 LINK_PLIB=0 \
+                        singlesharedSetRootStaged \
+         )
+#       + If we are using local (PROJECT_OUT) hard-coded paths in the built
+#       binaries (i.e. --disable-fast-install is in use) we first have to
+#       rebuild the libraries to reflect the installed location (i.e. $prefix,
+#       $datadir, etc.).
+#       + Ensure the target dir exists (debug libraries are installed under the
+#       same path as the non-debug version but prefixed by any $(DESTDIR) and
+#       $(libdir)/debug).
+#       + Rather than call the insLibs make target, we manually install the
 #       library and set up the symbolic links for the less-quantified library
 #       names.
-#       Finally, we restore the local path into the object/library files.
+#       + Finally, if we are using local paths, we need to re-build the relevant
+#       objects and libraries with the original path to the staging area.
 
 installsingleopt:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
-                -f $(PROJECT_OUT)/Makefile \
-                VAR=opt LINK_PLIB=0 \
-                singleSetRootInstalled
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
-                -f $(PROJECT_OUT)/Makefile \
-                singleoptbin
+	$(if $(filter 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
+                        -f $(PROJECT_OUT)/Makefile \
+                        VAR=opt LINK_PLIB=0 \
+                        singleSetRootInstalled \
+                $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
+                        -f $(PROJECT_OUT)/Makefile \
+                        singleoptbin \
+         )
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) \
                 -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk \
                 CONFIGFILE=$(PROJECT_OUT)/Config.Project \
@@ -480,39 +550,46 @@ installsingleopt:
                 CONFIGFILE=$(PROJECT_OUT)/Config.Project \
                 VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) \
                 insMustLinks recurse
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
-                -f $(PROJECT_OUT)/Makefile \
-                VAR=opt LINK_PLIB=0 \
-                singleSetRootStaged
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
-                -f $(PROJECT_OUT)/Makefile \
-                singleoptbin
-#       First rebuild those modules that rely on the installation path and
-#       relink their libraries. 
-#       When this is complete, the binaries are rebuilt to pick up the path
-#       changes.
-#       We can then use the 'install' function of QMake to install these
+	$(if $(filter 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
+                        -f $(PROJECT_OUT)/Makefile \
+                        VAR=opt LINK_PLIB=0 \
+                        singleSetRootStaged \
+       	        $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
+                        -f $(PROJECT_OUT)/Makefile \
+                        singleoptbin \
+         )
+#       + If we are using local (PROJECT_OUT) hard-coded paths in the built
+#       binaries (i.e. --disable-fast-install is in use) we first have to
+#       rebuild the libraries to reflect the installed location (i.e. $prefix,
+#       $datadir, etc.). We also need to re-make the executables to pick up the
+#       path changes.
+#       + We can then use the 'install' function of QMake to install these
 #       binaries along with the Ravl config files; data files and scripts. We
 #       must set SHARED_LIB_POSTFIX (to /single) in order to force QMake to use
-#       the version of the binaries compiled against the single shared Ravl
-#       library rather than the more usual (for QMake) individual shared
+#       the version of the binaries compiled against the single static Ravl
+#       library rather than the more usual (for QMake) individual static
 #       libraries. 
-#       Rather than call the insLibs make target, we manually copy across the
+#       + Rather than call the insLibs make target, we manually copy across the
 #       single library having first ensured the target directory exists.
-#       We then install the MUSTLINK files.
-#       Finally, we restore the local path into the object and library files
-#       and then remake the binaries to pick up the restore.
+#       + We then install the MUSTLINK files.
+#       + Finally, if we are using local paths, we need to re-build the relevant
+#       objects and libraries with the original path to the staging area and
+#       then remake the executables to pick up the restore.
+#
 #       N.B. This recepie includes a duplication of parts of the recepie for
 #       installsingleoptlib (we can not use the XXXgeneral XXXlib form used by
-#       the shared recepies because of the need to rebuild the binaries to pick
-#       up the change in resource-root). Please remember to apply any changes
-#       to the other copy of the code as appropriate.
+#       the shared recepies because of the possible need to rebuild the
+#       executables to pick up the change in resource-root). Please remember to
+#       apply any changes to the other copy of the code as appropriate.
 
 installsingleoptlib:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
-                -f $(PROJECT_OUT)/Makefile \
-                VAR=opt LINK_PLIB=0 \
-                singleSetRootInstalled
+	$(if $(filter 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
+                        -f $(PROJECT_OUT)/Makefile \
+                        VAR=opt LINK_PLIB=0 \
+                        singleSetRootInstalled \
+         )
 	$(SHOWIT)if [ ! -d $(ABS_DESTDIR)$(libdir) ] ; \
                  then \
                     $(MKDIR_P) $(ABS_DESTDIR)$(libdir) ; \
@@ -525,20 +602,28 @@ installsingleoptlib:
                 CONFIGFILE=$(PROJECT_OUT)/Config.Project \
                 VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) \
                 insMustLinks recurse
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
-                -f $(PROJECT_OUT)/Makefile \
-                VAR=opt LINK_PLIB=0 \
-                singleSetRootStaged
-#       First rebuild those modules that rely on the installation path and
-#       relink their libraries. 
-#       Ensure the target dir exists and manually copy across the library.
-#       We then install the MUSTLINK files.
-#       Finally, we restore the local path into the object and library files.
+	$(if $(filter 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
+                        -f $(PROJECT_OUT)/Makefile \
+                        VAR=opt LINK_PLIB=0 \
+                        singleSetRootStaged \
+         )
+#       + If we are using local (PROJECT_OUT) hard-coded paths in the built
+#       binaries (i.e. --disable-fast-install is in use) we first have to
+#       rebuild the libraries to reflect the installed location (i.e. $prefix,
+#       $datadir, etc.).
+#       + Ensure the target dir exists
+#       + Copy across the library.
+#       + We then install the MUSTLINK files.
+#       + Finally, if we are using local paths, we need to re-build the relevant
+#       objects and libraries with the original path to the staging area.
+#
 #       N.B. Parts of this recepie are duplicated in the installsingleopt
 #       recepie (we can not use the XXXgeneral XXXlib form used by the shared
-#       recepies because of the need to rebuild the binaries to pick up the
-#       change in resource-root). Please remember to apply any changes to the
-#       other copy of the code as appropriate.
+#       recepies because of the possible need for installsingleopt to rebuild
+#       the executables to pick up the change in resource-root). Please
+#       remember to apply any changes to the other copy of the code as
+#       appropriate.
 
 installsingleoptshared:installsingleoptsharedgeneral installsingleoptsharedlib
 
@@ -555,10 +640,12 @@ installsingleoptsharedgeneral:
 #       individual shared libraries. 
 
 installsingleoptsharedlib:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
-                -f $(PROJECT_OUT)/Makefile \
-                VAR=opt SHAREDBUILD=1 LINK_PLIB=0 \
-                singlesharedSetRootInstalled
+	$(if $(filter 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
+                        -f $(PROJECT_OUT)/Makefile \
+                        VAR=opt SHAREDBUILD=1 LINK_PLIB=0 \
+                        singlesharedSetRootInstalled \
+         )
 	$(SHOWIT)if [ ! -d $(ABS_DESTDIR)$(libdir) ] ; \
                  then \
                     $(MKDIR_P) $(ABS_DESTDIR)$(libdir) ; \
@@ -589,21 +676,27 @@ endif
                 CONFIGFILE=$(PROJECT_OUT)/Config.Project \
                 VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) \
                 insMustLinks recurse
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
-                -f $(PROJECT_OUT)/Makefile \
-                VAR=opt SHAREDBUILD=1 LINK_PLIB=0 \
-                singlesharedSetRootStaged
-#       First rebuild those modules that rely on the installation path and
-#       relink their libraries and the single library itself. 
-#       Then ensure the target directory exists and manually copy across the
-#       single shared library. 
-#       If required, we set up the symbolic links for the less-quantified
-#       library names.
-#       We then install the MUSTLINK files. These are not strictly necessary
-#       for the shared library, but may be needed for old client projects
-#       that have existing .def files that still include the MUSTLINKs
-#       regardless of if a build is shared or not.
-#       Finally, we restore the local path into the object/library files.
+	$(if $(filter 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
+                        -f $(PROJECT_OUT)/Makefile \
+                        VAR=opt SHAREDBUILD=1 LINK_PLIB=0 \
+                        singlesharedSetRootStaged \
+         )
+#       + If we are using local (PROJECT_OUT) hard-coded paths in the built
+#       binaries (i.e. --disable-fast-install is in use) we first have to
+#       rebuild the libraries to reflect the installed location (i.e. $prefix,
+#       $datadir, etc.).
+#       + Ensure the target directory exists
+#       + Rather than call the insLibs make target, we manually install the
+#       library and set up the symbolic links for the less-quantified library
+#       names.
+#       + Install the MUSTLINK objects (the MUSTLINKs are not strictly necessary
+#       for the shared library, but may be needed for old client projects that
+#       have existing .def files that still include the MUSTLINKs regardless of
+#       if a build is shared or not).
+#       + Finally, if we are using local paths, we need to re-build the relevant
+#       objects and libraries with the original path to the staging area.
+
 
 
 installQMake:
@@ -617,28 +710,43 @@ opt: qmake
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
                 -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
                 VAR=opt NOEXEBUILD=1 \
+	        $(if $(filter-out 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                     PATH_DEFINITIONS="$(INSTALLED_PATHS)" \
+                 ) \
                 libbuild
 
 optbin: opt
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
                 -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
+	        $(if $(filter-out 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                     PATH_DEFINITIONS="$(INSTALLED_PATHS)" \
+                 ) \
                 fullopt
 
 optshared: qmake
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
                 -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
                 VAR=opt SHAREDBUILD=1 NOEXEBUILD=1 \
+	        $(if $(filter-out 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                     PATH_DEFINITIONS="$(INSTALLED_PATHS)" \
+                 ) \
                 libbuild
 
 optsharedobj: qmake
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
                 -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
                 VAR=opt SHAREDBUILD=1 NOEXEBUILD=1 LINK_PLIB=0 \
+	        $(if $(filter-out 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                     PATH_DEFINITIONS="$(INSTALLED_PATHS)" \
+                 ) \
                 libbuild
 
 optsharedbin: optshared
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
                 -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) SHAREDBUILD=1 \
+	        $(if $(filter-out 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                     PATH_DEFINITIONS="$(INSTALLED_PATHS)" \
+                 ) \
                 fullopt
 
 pkgconf: 
@@ -774,6 +882,9 @@ singledebug: debug
                 -f $(WORKING_QMAKE_DATA)/Projects/Ravl/Makefiles/SingleLib.mk \
                 CONFIGFILE=$(PROJECT_OUT)/Config.Project \
                 VAR=debug \
+	        $(if $(filter-out 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                     PATH_DEFINITIONS="$(INSTALLED_PATHS)" \
+                 ) \
                 makedirs buildstatic
 
 singledebugbin: singledebug debugbin
@@ -781,18 +892,27 @@ singledebugbin: singledebug debugbin
                 -f $(WORKING_QMAKE_DATA)/Projects/Ravl/Makefiles/Recursive.mk \
                 CONFIGFILE=$(PROJECT_OUT)/Config.Project \
                 VAR=debug SINGLELIB=1 \
+	        $(if $(filter-out 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                     PATH_DEFINITIONS="$(INSTALLED_PATHS)" \
+                 ) \
                 programs recurse
 
 singledebugshared: debugsharedobj
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Single \
                 -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
                 VAR=debug SHAREDBUILD=1 LIB_STAMP=$(STAMP_SINGLE) NOEXEBUILD=1 LINK_PLIB=0 \
+	        $(if $(filter-out 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                     PATH_DEFINITIONS="$(INSTALLED_PATHS)" \
+                 ) \
                 libbuild
 
 singledebugsharedbin:singledebugshared
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
                 -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
                 VAR=debug SHAREDBUILD=1 SUMMARIES=Ravl \
+	        $(if $(filter-out 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                     PATH_DEFINITIONS="$(INSTALLED_PATHS)" \
+                 ) \
                 exebuild
 
 singlegprof: gprof
@@ -826,6 +946,9 @@ singleopt: opt
                 -f $(WORKING_QMAKE_DATA)/Projects/Ravl/Makefiles/SingleLib.mk \
                 CONFIGFILE=$(PROJECT_OUT)/Config.Project \
                 VAR=opt \
+	        $(if $(filter-out 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                     PATH_DEFINITIONS="$(INSTALLED_PATHS)" \
+                 ) \
                 makedirs buildstatic
 
 singleoptbin: singleopt optbin
@@ -833,18 +956,27 @@ singleoptbin: singleopt optbin
                 -f $(WORKING_QMAKE_DATA)/Projects/Ravl/Makefiles/Recursive.mk \
                 CONFIGFILE=$(PROJECT_OUT)/Config.Project \
                 VAR=opt SINGLELIB=1 \
+	        $(if $(filter-out 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                     PATH_DEFINITIONS="$(INSTALLED_PATHS)" \
+                 ) \
                 programs recurse
 
 singleoptshared: optsharedobj
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Single \
                 -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
                 VAR=opt SHAREDBUILD=1 LIB_STAMP=$(STAMP_SINGLE) NOEXEBUILD=1 LINK_PLIB=0 \
+	        $(if $(filter-out 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                     PATH_DEFINITIONS="$(INSTALLED_PATHS)" \
+                 ) \
                 libbuild
 
 singleoptsharedbin: singleoptshared
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
                 -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
                 VAR=opt SHAREDBUILD=1 SUMMARIES=Ravl \
+	        $(if $(filter-out 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                     PATH_DEFINITIONS="$(INSTALLED_PATHS)" \
+                 ) \
                 exebuild
 
 singleSetRootInstalled: SetRootInstalled

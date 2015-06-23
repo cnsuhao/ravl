@@ -605,6 +605,7 @@ ac_includes_default="\
 ac_subst_vars='LTLIBOBJS
 LIBOBJS
 RESOURCES
+enable_fast_install
 USER_UNDEFSYMB
 USER_with_rpath
 USER_LIBPATHSWITCH
@@ -1148,6 +1149,7 @@ with_libffmpeg_pkgconf
 with_libffmpeg
 with_OpenGL_pkgconf
 with_OpenGL
+enable_fast_install
 '
       ac_precious_vars='build_alias
 host_alias
@@ -1804,6 +1806,15 @@ if test -n "$ac_init_help"; then
      short | recursive ) echo "Configuration of RAVL 1.1.7:";;
    esac
   cat <<\_ACEOF
+
+Optional Features:
+  --disable-option-checking  ignore unrecognized --enable/--with options
+  --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
+  --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
+  --disable-fast-install  Do not build Ravl ready for immediate install, build
+                          it so it can be run from the build directory and
+                          rebuild as required on an install
+
 
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
@@ -36963,6 +36974,17 @@ then
 fi
 
 
+# Check if the user wishes to disable fast-install
+# Check whether --enable-fast-install was given.
+if test "${enable_fast_install+set}" = set; then :
+  enableval=$enable_fast_install; trace 5 fast-install set as $enableval
+else
+  trace 5 fast-install not explicitly disabled will use it
+               enable_fast_install=yes
+
+
+fi
+
 
 
 #
@@ -37401,6 +37423,12 @@ echo \# General Ravl make settings >> ./Config.Project.in
 echo PKG_MAKEFLAGS=@PKG_MAKEFLAGS@ >> ./Config.Project.in
 echo >> ./Config.Project.in
 
+
+# Select if we build Ravl ready to install or runnable from the build area
+echo \# Specify default for embedding paths into Ravl
+
+echo USE_INSTALLED_PATHS=@enable_fast_install@ >> ./Config.Project.in
+echo >> ./Config.Project.in
 
 
 # Allow definition of RESOURCES

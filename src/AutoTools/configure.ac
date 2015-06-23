@@ -622,6 +622,18 @@ then
 fi
 
 
+# Check if the user wishes to disable fast-install
+AC_ARG_ENABLE([fast-install],
+              [AS_HELP_STRING([--disable-fast-install],
+                              [Do not build Ravl ready for immediate install, build it so it can be run from the build directory and rebuild as required on an install
+                              ]
+                             )
+              ],
+              [trace 5 fast-install set as $enableval],
+              [trace 5 fast-install not explicitly disabled will use it
+               enable_fast_install=yes
+              ]
+             )
 
 
 #
@@ -1070,6 +1082,12 @@ echo \# General Ravl make settings >> ./Config.Project.in
 echo PKG_MAKEFLAGS=@PKG_MAKEFLAGS@ >> ./Config.Project.in
 echo >> ./Config.Project.in
 
+
+# Select if we build Ravl ready to install or runnable from the build area
+echo \# Specify default for embedding paths into Ravl
+AC_SUBST([enable_fast_install])
+echo USE_INSTALLED_PATHS=@enable_fast_install@ >> ./Config.Project.in
+echo >> ./Config.Project.in
 
 
 # Allow definition of RESOURCES
