@@ -60,6 +60,18 @@ int testString() {
   }
   if ((StringC('a')+'b') != "ab") return __LINE__;
   if (('a'+StringC('b')) != "ab") return __LINE__;
+  
+  StringC five("01234");
+  while (!five.IsEmpty())
+    {
+      five.del(0,1);
+      StringC madeup;
+      for (IntT c=4; madeup.length() < five.length(); --c)
+        madeup = (char) ((int)'0'+c) + madeup;
+      //cerr << five << ' ' << madeup << endl;
+      if (five != madeup) return __LINE__;
+    }
+
   for(Int64T i = 0;i < 10;i++) {
     StringC ui(i);
     //cerr<< " '" << ui << "' " << ui.Int64Value() << "\n";
