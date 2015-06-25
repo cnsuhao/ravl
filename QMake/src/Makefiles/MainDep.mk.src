@@ -18,5 +18,10 @@ include $(QMAKE_MAKEFILES)/Main.mk
 
 -include $(TARG_DEPEND)
 
+ifndef NOEXEBUILD
+  # Include dependency files for test executables
+  -include $(patsubst $(INST_OBJS)/%$(OBJEXT),$(INST_DEPEND)/%.d,$(TARG_TESTEXEOBJS))
+endif
+
 -include $(TARG_HDRFLAG)
 

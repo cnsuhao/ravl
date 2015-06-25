@@ -12,6 +12,7 @@ ifndef QMAKE_MAKEFILES
   QMAKE_MAKEFILES=@QMAKE_MAKEFILES@
 endif
 
+# Include system config and Directories 
 include $(QMAKE_MAKEFILES)/Definitions.mk
 
 MAKEDEFS=$(PERL) -f $(QMAKE_UTILS)/mkdefs.pl
@@ -23,11 +24,6 @@ ifdef USERBUILD
 endif
 
 export TARGET
-
-# Include system config and Directories 
-
-NOVAR=1
-include $(QMAKE_MAKEFILES)/Definitions.mk
 
 ###############################################################################
 # Check for project out 
@@ -346,7 +342,7 @@ fullclean:
 	$(SMAKECL) $(PAR_MAKE) clean VAR=check $(FULLBUILDFLAGS) TARGET=clean
 
 libbuild: 
-	$(SMAKEMD) $(PAR_MAKE) libbuild  $(FULLBUILDFLAGS) TARGET=libbuild
+	$(SMAKEMD) $(PAR_MAKE) libbuild  $(FULLBUILDFLAGS) $(if $(LINK_PLIB),LINK_PLIB=$(LINK_PLIB)) TARGET=libbuild
 
 # Build Product.
 # Proceeds as follows:
@@ -500,7 +496,7 @@ fullshared:
         fi ; \
 
 fulldoc:
-	$(SMAKEDC) $(PAR_MAKE) doc $(FULLBUILDFLAGS)
+	$(SMAKEDC) $(PAR_MAKE) doc $(FULLBUILDFLAGS) $(if $(LOCAL_TEMPLATES),LOCAL_TEMPLATES=$(LOCAL_TEMPLATES))
 
 # Make a defs.mk file automaticly.
 

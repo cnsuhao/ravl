@@ -33,7 +33,13 @@ include $(PROJECT_OUT)/Targets.Project
 
 RAVL_MAKEFILE=$(WORKING_QMAKE_DATA)/Makefiles/QMake.mk
 
-RAVL_FLAGS=BASEINSTALL=1 FULLBUILDSRC='BASE_VAR=none' CONFIGFILE=$(PROJECT_OUT)/Config.Project INCLUDEDIR=$(PROJECT_OUT)/include 
+RAVL_FLAGS=BASEINSTALL=1 FULLBUILDSRC='BASE_VAR=none' \
+           CONFIGFILE=$(PROJECT_OUT)/Config.Project \
+           INCLUDEDIR=$(PROJECT_OUT)/include 
+
+ifndef USE_INSTALLED_PATHS
+  USE_INSTALLED_PATHS=N
+endif
 
 # Trace commands if QMAKE_INFO is in use
 ifndef QMAKE_INFO
@@ -68,7 +74,8 @@ endif
 # These need manual specification as they do not always appear in the
 # SOURCES/HEADERS definitions as they are included dependant on RESOURCES
 #
-DIST_ADDITIONS=src/GUI/3D/gdkgl.c src/GUI/3D/gtkglarea.c src/GUI/3D/gdkgl.h src/GUI/3D/gtkglarea.h
+DIST_ADDITIONS=src/GUI/3D/gdkgl.c src/GUI/3D/gtkglarea.c \
+               src/GUI/3D/gdkgl.h src/GUI/3D/gtkglarea.h
 
 # Builds
 
@@ -77,17 +84,47 @@ default: qmake fullsrc singleoptsharedbin pkgconf
 check: testsingleoptshared 
 
 debug: qmake
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=debug NOEXEBUILD=1 libbuild
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
+                -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
+                VAR=debug NOEXEBUILD=1 \
+	        $(if $(filter-out 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                     PATH_DEFINITIONS="$(INSTALLED_PATHS)" \
+                 ) \
+                libbuild
 
 debugshared: qmake
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=debug SHAREDBUILD=1 NOEXEBUILD=1 libbuild
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
+                -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
+                VAR=debug SHAREDBUILD=1 NOEXEBUILD=1 \
+	        $(if $(filter-out 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                     PATH_DEFINITIONS="$(INSTALLED_PATHS)" \
+                 ) \
+                libbuild
+
+debugsharedobj: qmake
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
+                -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
+                VAR=debug SHAREDBUILD=1 NOEXEBUILD=1 LINK_PLIB=0 \
+	        $(if $(filter-out 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                     PATH_DEFINITIONS="$(INSTALLED_PATHS)" \
+                 ) \
+                libbuild
 
 dist:
-	$(MAKE) -C @abs_srcdir@ -f $(WORKING_QMAKE_DATA)/Makefiles/Dist.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project DIST_ADDITIONS="$(DIST_ADDITIONS)" dist
+	$(MAKE) -C @abs_srcdir@ \
+                -f $(WORKING_QMAKE_DATA)/Makefiles/Dist.mk \
+                CONFIGFILE=$(PROJECT_OUT)/Config.Project \
+                DIST_ADDITIONS="$(DIST_ADDITIONS)" \
+                dist
 
 doc: qmake
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/.. -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) LLP="LD_LIBRARY_PATH=$(PROJECT_OUT)/lib/$(ARC)/opt/shared/single:$$LD_LIBRARY_PATH" fulldoc
-	cp $(PROJECT_OUT)/share/QMake/Support/Help.txt $(PROJECT_OUT)/share/doc/Ravl/html/Help.txt
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/.. \
+                -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
+                LLP="LD_LIBRARY_PATH=$(PROJECT_OUT)/lib/$(ARC)/opt/shared/single:$$LD_LIBRARY_PATH" \
+                LOCAL_TEMPLATES="$(PROJECT_OUT)/share/CxxDoc" \
+                fulldoc
+	cp $(PROJECT_OUT)/share/QMake/Support/Help.txt \
+                $(PROJECT_OUT)/share/doc/Ravl/html/Help.txt
 #       We currently start from above the src directory ($SOURCEHOME)/..) in
 #       order to pick up the documentation from QMake. This is because there is
 #       currently no framework to link to documentation from another project.
@@ -101,19 +138,40 @@ doc: qmake
 #       project.
 
 fullsrc: qmake
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) NOCHECKOUT=1 fullsrc
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
+                -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) NOCHECKOUT=1 \
+	        $(if $(filter-out 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                     PATH_DEFINITIONS="$(INSTALLED_PATHS)" \
+                 ) \
+                fullsrc
 
 gprof: qmake
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=gprof NOEXEBUILD=1 libbuild
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
+                -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
+                VAR=gprof NOEXEBUILD=1 \
+                libbuild
 
 gprofbin: qmake
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) fullgprof
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
+                -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
+                fullgprof
 
 gprofshared: qmake
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=gprof SHAREDBUILD=1 NOEXEBUILD=1 libbuild
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
+                -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
+                VAR=gprof SHAREDBUILD=1 NOEXEBUILD=1 \
+                libbuild
+
+gprofsharedobj: qmake
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
+                -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
+                VAR=gprof SHAREDBUILD=1 NOEXEBUILD=1 LINK_PLIB=0 \
+                libbuild
 
 gprofsharedbin: qmake
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) SHAREDBUILD=1 fullgprof
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
+                -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) SHAREDBUILD=1 \
+                fullgprof
 
 install: installQMake installProject
 
@@ -135,12 +193,19 @@ install-stripProject:
 installRavlDefs: installRavl.def installRavlMultiDefs
 
 installRavlMultiDefs:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=debug SHAREDBUILD=1 STRIP_SWITCH=$(STRIP_SWITCH) PROJECT_DIR=Ravl insDefs recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) \
+                -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk \
+                CONFIGFILE=$(PROJECT_OUT)/Config.Project \
+                VAR=debug SHAREDBUILD=1 STRIP_SWITCH=$(STRIP_SWITCH) PROJECT_DIR=Ravl \
+                insDefs recurse
 
 installRavl.def: $(ABS_DESTDIR)$(datadir)/QMake/Projects/Ravl/libdep/Ravl.def
 
-$(ABS_DESTDIR)$(datadir)/QMake/Projects/Ravl/libdep/Ravl.def: $(PROJECT_OUT)/lib/libdep/4install/Ravl.def $(ABS_DESTDIR)$(datadir)/QMake/Projects/Ravl/libdep
-	$(INSTALL) $(PROJECT_OUT)/lib/libdep/4install/Ravl.def $(ABS_DESTDIR)$(datadir)/QMake/Projects/Ravl/libdep/Ravl.def
+$(ABS_DESTDIR)$(datadir)/QMake/Projects/Ravl/libdep/Ravl.def: \
+                                          $(PROJECT_OUT)/lib/libdep/4install/Ravl.def \
+                                          $(ABS_DESTDIR)$(datadir)/QMake/Projects/Ravl/libdep
+	$(INSTALL) $(PROJECT_OUT)/lib/libdep/4install/Ravl.def \
+                   $(ABS_DESTDIR)$(datadir)/QMake/Projects/Ravl/libdep/Ravl.def
 
 $(ABS_DESTDIR)$(datadir)/QMake/Projects/Ravl/libdep:
 	$(SHOWIT)$(MKDIR_P) $(ABS_DESTDIR)$(datadir)/QMake/Projects/Ravl/libdep
@@ -148,7 +213,8 @@ $(ABS_DESTDIR)$(datadir)/QMake/Projects/Ravl/libdep:
 $(PROJECT_OUT)/lib/libdep/4install/Ravl.def: $(PROJECT_OUT)/lib/libdep/4install/Ravl.def.in
 	$(SHOWIT)$(SED) -e 's![@]PROJECT_LIBDIR[@]!$(libdir)!g' \
                         -e 's![@]PROJECT_INCDIR[@]!$(includedir)!g' \
-                        $(PROJECT_OUT)/lib/libdep/4install/Ravl.def.in > $(PROJECT_OUT)/lib/libdep/4install/Ravl.def
+                        $(PROJECT_OUT)/lib/libdep/4install/Ravl.def.in \
+                                                > $(PROJECT_OUT)/lib/libdep/4install/Ravl.def
 # The installed copy of Ravl.def needs to know the actual values for $libdir
 # and $includedir. Hence we only finalise the file when we perform the install. 
 
@@ -158,87 +224,201 @@ $(PROJECT_OUT)/lib/libdep/4install/Ravl.def: $(PROJECT_OUT)/lib/libdep/4install/
 # installed from their built location in the build tree.
 
 installdebuglib:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=debug SetRootInstalled
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=debug STRIP_SWITCH=$(STRIP_SWITCH) insLibs recurse
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=debug SetRootStaged
-#       First re-link those modules that need to be built with the location of
-#       the library reflected in the code. 
-#       Use QMake to install the libraries (this will automatically install the
+	$(if $(filter 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
+                        -f $(PROJECT_OUT)/Makefile \
+                        VAR=debug \
+                        SetRootInstalled \
+         )
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) \
+                -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk \
+                CONFIGFILE=$(PROJECT_OUT)/Config.Project \
+                VAR=debug STRIP_SWITCH=$(STRIP_SWITCH) \
+                insLibs recurse
+	$(if $(filter 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
+                        -f $(PROJECT_OUT)/Makefile \
+                        VAR=debug \
+                        SetRootStaged \
+         )
+#       + If we are using local (PROJECT_OUT) hard-coded paths in the built
+#       binaries (i.e. --disable-fast-install is in use) we first have to
+#       rebuild the libraries to reflect the installed location (i.e. $prefix,
+#       $datadir, etc.).
+#       + Use QMake to install the libraries (this will automatically install the
 #       libraries to the $(DESTDIR)$(libdir)/debug/$(libdir) directory.
-#       Finally re-build the relevant objects/libraries with the original path
-#       to the staging area.
+#       + Finally, if we are using local paths, we need to re-build the relevant
+#       objects and libraries with the original path to the staging area.
 
 installdebugsharedlib:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=debug SHAREDBUILD=1 SetRootInstalled
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=debug SHAREDBUILD=1 STRIP_SWITCH=$(STRIP_SWITCH) insLibs recurse
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=debug SHAREDBUILD=1 SetRootStaged
-#       First re-link those modules that need to be built with the location of
-#       the library reflected in the code. 
-#       Use QMake to install the libraries (this will automatically install the
+	$(if $(filter 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
+                        -f $(PROJECT_OUT)/Makefile \
+                        VAR=debug SHAREDBUILD=1 \
+                        SetRootInstalled \
+         )
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) \
+                -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk \
+                CONFIGFILE=$(PROJECT_OUT)/Config.Project \
+                VAR=debug SHAREDBUILD=1 STRIP_SWITCH=$(STRIP_SWITCH) \
+                insLibs recurse
+	$(if $(filter 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
+                        -f $(PROJECT_OUT)/Makefile \
+                        VAR=debug SHAREDBUILD=1 \
+                        SetRootStaged \
+         )
+#       + If we are using local (PROJECT_OUT) hard-coded paths in the built
+#       binaries (i.e. --disable-fast-install is in use) we first have to
+#       rebuild the libraries to reflect the installed location (i.e. $prefix,
+#       $datadir, etc.).
+#       + Use QMake to install the libraries (this will automatically install the
 #       libraries to the $(DESTDIR)$(libdir)/debug/$(libdir) directory.
-#       Finally re-build the relevant objects/libraries with the original path
-#       to the staging area.
+#       + Finally, if we are using local paths, we need to re-build the relevant
+#       objects and libraries with the original path to the staging area.
 
 installHdrs:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project insHdrs recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) \
+                -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk \
+                CONFIGFILE=$(PROJECT_OUT)/Config.Project \
+                insHdrs recurse
 
 installopt:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=opt SetRootInstalled
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile optbin
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) install recurse
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) insLibs recurse
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) insMustLinks recurse
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=opt SetRootStaged
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile optbin
-#       First re-link those modules that need to be built with the location of
-#       the library reflected in the code. 
-#       Re-make the binaries to pick up the path changes
-#       Use the 'install' function of QMake to install the Ravl utility
+	$(if $(filter 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
+                        -f $(PROJECT_OUT)/Makefile \
+                        VAR=opt \
+                        SetRootInstalled \
+                $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
+                       -f $(PROJECT_OUT)/Makefile \
+                       optbin \
+         )
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) \
+                -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk \
+                CONFIGFILE=$(PROJECT_OUT)/Config.Project \
+                VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) \
+                install recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) \
+                -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk \
+                CONFIGFILE=$(PROJECT_OUT)/Config.Project \
+                VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) \
+                insLibs recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) \
+                -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk \
+                CONFIGFILE=$(PROJECT_OUT)/Config.Project \
+                VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) \
+                insMustLinks recurse
+	$(if $(filter 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
+                        -f $(PROJECT_OUT)/Makefile \
+                        VAR=opt \
+                        SetRootStaged \
+	        $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
+                        -f $(PROJECT_OUT)/Makefile \
+                        optbin \
+         )
+#       + If we are using local (PROJECT_OUT) hard-coded paths in the built
+#       binaries (i.e. --disable-fast-install is in use) we first have to
+#       rebuild the libraries to reflect the installed location (i.e. $prefix,
+#       $datadir, etc.). We also need to re-make the executables to pick up the
+#       path changes.
+#       + Use the 'install' function of QMake to install the Ravl utility
 #       binaries; config files; data files and scripts. 
-#       Install the libraries via the QMake insLibs and the MUSTLINK files via
-#       the QMake insMustLinks target.
-#       Restore the embedded paths to point to the staged location of Ravl
-#       Rebuild the binaries to pick up the path resotoration
+#       + Install the libraries via the QMake insLibs
+#       + Install the MUSTLINK files via the QMake insMustLinks target.
+#       + Finally, if we are using local paths, we need to re-build the relevant
+#       objects and libraries with the original path to the staging area and
+#       then remake the executables to pick up the restore.
+#
 #       N.B. This recepie includes a duplication of parts of the installoptlib
 #       recepie (we can not use the XXXgeneral XXXlib form used by the shared
-#       recepies because of the need to rebuild the binaries to pick up the
-#       change in resource-root). Please remember to apply any changes to the
-#       other copy of the code as appropriate.
+#       recepies because of the possible need to rebuild the executables to pick
+#       up the change in resource-root). Please remember to apply any changes to
+#       the other copy of the code as appropriate.
 
 installoptlib:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=opt SetRootInstalled
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) insLibs recurse
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) insMustLinks recurse
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=opt SetRootStaged
-#       First re-link those modules that need to be built with the location of
-#       the library reflected in the code. Install the libraries, then the
-#       MUSTLINK objects via QMake and finally re-build the relevant objects
-#       and libraries with the original path to the staging area.
-#       N.B. Parts of this recepie are duplicated in the installopt recepie (we
-#       can not use the XXXgeneral XXXlib form used by the shared recepies
-#       because of the need to rebuild the binaries to pick up the change in
-#       resource-root). Please remember to apply any changes to the other copy
-#       of the code as appropriate.
+	$(if $(filter 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
+                        -f $(PROJECT_OUT)/Makefile \
+                        VAR=opt \
+                        SetRootInstalled \
+         )
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) \
+                -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk \
+                CONFIGFILE=$(PROJECT_OUT)/Config.Project \
+                VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) \
+                insLibs recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) \
+                -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk \
+                CONFIGFILE=$(PROJECT_OUT)/Config.Project \
+                VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) \
+                insMustLinks recurse
+	$(if $(filter 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
+                        -f $(PROJECT_OUT)/Makefile \
+                        VAR=opt \
+                        SetRootStaged \
+         )
+#       + If we are using local (PROJECT_OUT) hard-coded paths in the built
+#       binaries (i.e. --disable-fast-install is in use) we first have to
+#       rebuild the libraries to reflect the installed location (i.e. $prefix,
+#       $datadir, etc.).
+#       + Install the libraries via the QMake insLibs
+#       + Install the MUSTLINK files via the QMake insMustLinks target.
+#       + Finally, if we are using local paths, we need to re-build the relevant
+#       objects and libraries with the original path to the staging area.
+#
+#       N.B. Parts of this recepie are duplicated in the installopt recepie
+#       (we can not use the XXXgeneral XXXlib form used by the shared recepies
+#       because of the possible need for installopt to rebuild the executables
+#       to pick up the change in resource-root). Please remember to apply any
+#       changes to the other copy of the code as appropriate.
 
 installoptshared: installoptsharedgeneral installoptsharedlib
 
 installoptsharedgeneral:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt SHAREDBUILD=1 STRIP_SWITCH=$(STRIP_SWITCH) install recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) \
+                -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk \
+                CONFIGFILE=$(PROJECT_OUT)/Config.Project \
+                VAR=opt SHAREDBUILD=1 STRIP_SWITCH=$(STRIP_SWITCH) \
+                install recurse
 #       Use the 'install' function of QMake to install the Ravl utility
 #       binaries; config files; data files and scripts. 
 
 installoptsharedlib:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=opt SHAREDBUILD=1 SetRootInstalled
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt SHAREDBUILD=1 STRIP_SWITCH=$(STRIP_SWITCH) insLibs recurse
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt SHAREDBUILD=1 STRIP_SWITCH=$(STRIP_SWITCH) insMustLinks recurse
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=opt SHAREDBUILD=1 SetRootStaged
-#       First re-link those modules that need to be built with the location of
-#       the library reflected in the code. Install the libraries via QMake and
-#       then the MUSTLINK objects (the MUSTLINKs are not strictly necessary
+	$(if $(filter 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
+                        -f $(PROJECT_OUT)/Makefile \
+                        VAR=opt SHAREDBUILD=1 \
+                        SetRootInstalled \
+         )
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) \
+                -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk \
+                CONFIGFILE=$(PROJECT_OUT)/Config.Project \
+                VAR=opt SHAREDBUILD=1 STRIP_SWITCH=$(STRIP_SWITCH) \
+                insLibs recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) \
+                -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk \
+                CONFIGFILE=$(PROJECT_OUT)/Config.Project \
+                VAR=opt SHAREDBUILD=1 STRIP_SWITCH=$(STRIP_SWITCH) \
+                insMustLinks recurse
+	$(if $(filter 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
+                        -f $(PROJECT_OUT)/Makefile \
+                        VAR=opt SHAREDBUILD=1 \
+                        SetRootStaged \
+         )
+#       + If we are using local (PROJECT_OUT) hard-coded paths in the built
+#       binaries (i.e. --disable-fast-install is in use) we first have to
+#       rebuild the libraries to reflect the installed location (i.e. $prefix,
+#       $datadir, etc.).
+#       + Install the libraries via QMake
+#       + Install the MUSTLINK objects (the MUSTLINKs are not strictly necessary
 #       for the shared library, but may be needed for old client projects that
 #       have existing .def files that still include the MUSTLINKs regardless of
-#       if a build is shared or not). Finally, re-build the relevant objects
-#       and libraries with the original path to the staging area.
+#       if a build is shared or not).
+#       + Finally, if we are using local paths, we need to re-build the relevant
+#       objects and libraries with the original path to the staging area.
 
 installpkgconf: $(ABS_DESTDIR)$(libdir)/pkgconfig $(ABS_DESTDIR)$(libdir)/pkgconfig/Ravl.pc
 
@@ -246,113 +426,213 @@ $(ABS_DESTDIR)$(libdir)/pkgconfig:
 	$(SHOWIT)$(MKDIR_P) $(ABS_DESTDIR)$(libdir)/pkgconfig
 
 $(ABS_DESTDIR)$(libdir)/pkgconfig/Ravl.pc: $(PROJECT_OUT)/lib/pkgconfig/4install/Ravl.pc
-	$(INSTALL_DATA) $(PROJECT_OUT)/lib/pkgconfig/4install/Ravl.pc $(ABS_DESTDIR)$(libdir)/pkgconfig/Ravl.pc
+	$(INSTALL_DATA) $(PROJECT_OUT)/lib/pkgconfig/4install/Ravl.pc \
+                        $(ABS_DESTDIR)$(libdir)/pkgconfig/Ravl.pc
 
-$ $(PROJECT_OUT)/lib/pkgconfig/4install/Ravl.pc: $ $(PROJECT_OUT)/lib/pkgconfig/4install/Ravl.pc.in
+$(PROJECT_OUT)/lib/pkgconfig/4install/Ravl.pc: $(PROJECT_OUT)/lib/pkgconfig/4install/Ravl.pc.in
 	$(SHOWIT)$(SED) -e 's![@]PROJECT_PREFIX[@]!$(prefix)!g' \
                         -e 's![@]PROJECT_DATAROOTDIR[@]!$(datarootdir)!g' \
                         -e 's![@]PROJECT_DATADIR[@]!$(datadir)!g' \
                         -e 's![@]PROJECT_SYSCONFDIR[@]!$(sysconfdir)!g' \
                         -e 's![@]PROJECT_INCDIR[@]!$(includedir)!g' \
                         -e 's![@]PROJECT_LIBDIR[@]!$(libdir))!g' \
-                        $(PROJECT_OUT)/lib/pkgconfig/4install/Ravl.pc.in > $(PROJECT_OUT)/lib/pkgconfig/4install/Ravl.pc
+                        $(PROJECT_OUT)/lib/pkgconfig/4install/Ravl.pc.in \
+                                             > $(PROJECT_OUT)/lib/pkgconfig/4install/Ravl.pc
 # The installed copy of Ravl.pc needs to know the actual values for $libdir
 # and $prefix, etc. Hence we only finalise the file when we perform the install. 
 
 installsingledebuglib:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=debug singleSetRootInstalled
-	$(SHOWIT)if [ ! -d $(ABS_DESTDIR)$(libdir)/debug$(libdir) ] ; then $(MKDIR_P) $(ABS_DESTDIR)$(libdir)/debug$(libdir) ; fi
-	$(INSTALL) $(STRIP_SWITCH) $(PROJECT_OUT)/lib/$(ARC)/debug/single/libRavl.a $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.a
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=debug singleSetRootStaged
-#       First rebuild those modules that rely on the installation path and
-#       relink their libraries. 
-#       Ensure the target dir exists and manually copy across the single library
-#       (debug libraries are installed under the same path as the non-debug
-#       version but prefixed by any $(DESTDIR) and $(libdir)/debug).
-#       Finally, we restore the local path into the object and library files.
+	$(if $(filter 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
+                        -f $(PROJECT_OUT)/Makefile \
+                        VAR=debug LINK_PLIB=0 \
+                        singleSetRootInstalled \
+         )
+	$(SHOWIT)if [ ! -d $(ABS_DESTDIR)$(libdir)/debug$(libdir) ] ;\
+                 then \
+                     $(MKDIR_P) $(ABS_DESTDIR)$(libdir)/debug$(libdir) ; \
+                 fi
+	$(INSTALL) $(STRIP_SWITCH) \
+                   $(PROJECT_OUT)/lib/$(ARC)/debug/single/libRavl.a \
+                   $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.a
+	$(if $(filter 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
+                        -f $(PROJECT_OUT)/Makefile \
+                        VAR=debug LINK_PLIB=0 \
+                        singleSetRootStaged \
+         )
+#       + If we are using local (PROJECT_OUT) hard-coded paths in the built
+#       binaries (i.e. --disable-fast-install is in use) we first have to
+#       rebuild the libraries to reflect the installed location (i.e. $prefix,
+#       $datadir, etc.).
+#       + Ensure the target dir exists (debug libraries are installed under the
+#       same path as the non-debug version but prefixed by any $(DESTDIR) and
+#       $(libdir)/debug).
+#       + Copy across the single library
+#       + Finally, if we are using local paths, we need to re-build the relevant
+#       objects and libraries with the original path to the staging area.
 
 installsingledebugsharedlib:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=debug SHAREDBUILD=1 singlesharedSetRootInstalled
-	$(SHOWIT)if [ ! -d $(ABS_DESTDIR)$(libdir)/debug$(libdir) ] ; then $(MKDIR_P) $(ABS_DESTDIR)$(libdir)/debug$(libdir) ; fi
-	$(INSTALL) $(STRIP_SWITCH) $(PROJECT_OUT)/lib/$(ARC)/debug/shared/single/libRavl$(STAMP_SINGLE_EXT) $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl$(STAMP_SINGLE_EXT)
+	$(if $(filter 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
+                        -f $(PROJECT_OUT)/Makefile \
+                        VAR=debug SHAREDBUILD=1 LINK_PLIB=0 \
+                        singlesharedSetRootInstalled \
+         )
+	$(SHOWIT)if [ ! -d $(ABS_DESTDIR)$(libdir)/debug$(libdir) ] ; \
+                 then \
+                     $(MKDIR_P) $(ABS_DESTDIR)$(libdir)/debug$(libdir) ; \
+                 fi
+	$(INSTALL) $(STRIP_SWITCH) \
+                   $(PROJECT_OUT)/lib/$(ARC)/debug/shared/single/libRavl$(STAMP_SINGLE_EXT) \
+                   $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl$(STAMP_SINGLE_EXT)
 ifeq ($(STAMP_SINGLE),VER)
-	$(SHOWIT)if [ -h $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.$(SHAREDEXT).$(PROJECT_MAJOR) ] || [ -f $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.$(SHAREDEXT).$(PROJECT_MAJOR) ] ; \
+	$(SHOWIT)if [ -h $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.$(SHAREDEXT).$(PROJECT_MAJOR) ] || \
+                    [ -f $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.$(SHAREDEXT).$(PROJECT_MAJOR) ] ; \
                  then \
                     $(RM) $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.$(SHAREDEXT).$(PROJECT_MAJOR) ; \
                  fi ; \
-                 cd $(ABS_DESTDIR)$(libdir)/debug$(libdir); $(LN_S) libRavl$(STAMP_SINGLE_EXT) libRavl.$(SHAREDEXT).$(PROJECT_MAJOR) ; \
-                 fi
+                 cd $(ABS_DESTDIR)$(libdir)/debug$(libdir); \
+                 $(LN_S) libRavl$(STAMP_SINGLE_EXT) libRavl.$(SHAREDEXT).$(PROJECT_MAJOR)
 endif
 ifneq ($(STAMP_SINGLE),NO)
-	$(SHOWIT)if [ -h $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.$(SHAREDEXT) ] || [ -f $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.$(SHAREDEXT) ] ; \
+	$(SHOWIT)if [ -h $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.$(SHAREDEXT) ] || \
+                    [ -f $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.$(SHAREDEXT) ] ; \
                  then \
                     $(RM) $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.$(SHAREDEXT) ; \
                  fi ; \
-                 cd $(ABS_DESTDIR)$(libdir)/debug$(libdir); $(LN_S) libRavl$(STAMP_SINGLE_EXT) libRavl.$(SHAREDEXT) ; \
-                 fi
+                 cd $(ABS_DESTDIR)$(libdir)/debug$(libdir); \
+                 $(LN_S) libRavl$(STAMP_SINGLE_EXT) libRavl.$(SHAREDEXT)
 endif
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=debug SHAREDBUILD=1 singlesharedSetRootStaged
-#       First re-build the relevant modules that use the location of the library
-#       as an embedded path and relink the library.
-#       Ensure the target dir exists (debug libraries are installed under
-#       the same path as the non-debug version but prefixed by any $(DESTDIR)
-#       and $(libdir)/debug).
-#       Rather than call the insLibs make target, we manually install the
+	$(if $(filter 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
+                        -f $(PROJECT_OUT)/Makefile \
+                        VAR=debug SHAREDBUILD=1 LINK_PLIB=0 \
+                        singlesharedSetRootStaged \
+         )
+#       + If we are using local (PROJECT_OUT) hard-coded paths in the built
+#       binaries (i.e. --disable-fast-install is in use) we first have to
+#       rebuild the libraries to reflect the installed location (i.e. $prefix,
+#       $datadir, etc.).
+#       + Ensure the target dir exists (debug libraries are installed under the
+#       same path as the non-debug version but prefixed by any $(DESTDIR) and
+#       $(libdir)/debug).
+#       + Rather than call the insLibs make target, we manually install the
 #       library and set up the symbolic links for the less-quantified library
 #       names.
-#       Finally, we restore the local path into the object/library files.
+#       + Finally, if we are using local paths, we need to re-build the relevant
+#       objects and libraries with the original path to the staging area.
 
 installsingleopt:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=opt singleSetRootInstalled
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile singleoptbin
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt SHARED_LIB_POSTFIX=/single STRIP_SWITCH=$(STRIP_SWITCH) install recurse
-	$(SHOWIT)if [ ! -d $(ABS_DESTDIR)$(libdir) ] ; then $(MKDIR_P) $(ABS_DESTDIR)$(libdir) ; fi
-	$(INSTALL) $(STRIP_SWITCH) $(PROJECT_OUT)/lib/$(ARC)/opt/single/libRavl.a $(ABS_DESTDIR)$(libdir)/libRavl.a
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) insMustLinks recurse
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=opt singleSetRootStaged
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile singleoptbin
-#       First rebuild those modules that rely on the installation path and
-#       relink their libraries. 
-#       When this is complete, the binaries are rebuilt to pick up the path
-#       changes.
-#       We can then use the 'install' function of QMake to install these
+	$(if $(filter 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
+                        -f $(PROJECT_OUT)/Makefile \
+                        VAR=opt LINK_PLIB=0 \
+                        singleSetRootInstalled \
+                $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
+                        -f $(PROJECT_OUT)/Makefile \
+                        singleoptbin \
+         )
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) \
+                -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk \
+                CONFIGFILE=$(PROJECT_OUT)/Config.Project \
+                VAR=opt SHARED_LIB_POSTFIX=/single STRIP_SWITCH=$(STRIP_SWITCH) \
+                install recurse
+	$(SHOWIT)if [ ! -d $(ABS_DESTDIR)$(libdir) ] ; \
+                 then \
+                    $(MKDIR_P) $(ABS_DESTDIR)$(libdir) ; \
+                 fi
+	$(INSTALL) $(STRIP_SWITCH) \
+                   $(PROJECT_OUT)/lib/$(ARC)/opt/single/libRavl.a \
+                   $(ABS_DESTDIR)$(libdir)/libRavl.a
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) \
+                -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk \
+                CONFIGFILE=$(PROJECT_OUT)/Config.Project \
+                VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) \
+                insMustLinks recurse
+	$(if $(filter 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
+                        -f $(PROJECT_OUT)/Makefile \
+                        VAR=opt LINK_PLIB=0 \
+                        singleSetRootStaged \
+       	        $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
+                        -f $(PROJECT_OUT)/Makefile \
+                        singleoptbin \
+         )
+#       + If we are using local (PROJECT_OUT) hard-coded paths in the built
+#       binaries (i.e. --disable-fast-install is in use) we first have to
+#       rebuild the libraries to reflect the installed location (i.e. $prefix,
+#       $datadir, etc.). We also need to re-make the executables to pick up the
+#       path changes.
+#       + We can then use the 'install' function of QMake to install these
 #       binaries along with the Ravl config files; data files and scripts. We
 #       must set SHARED_LIB_POSTFIX (to /single) in order to force QMake to use
-#       the version of the binaries compiled against the single shared Ravl
-#       library rather than the more usual (for QMake) individual shared
+#       the version of the binaries compiled against the single static Ravl
+#       library rather than the more usual (for QMake) individual static
 #       libraries. 
-#       Rather than call the insLibs make target, we manually copy across the
+#       + Rather than call the insLibs make target, we manually copy across the
 #       single library having first ensured the target directory exists.
-#       We then install the MUSTLINK files.
-#       Finally, we restore the local path into the object and library files
-#       and then remake the binaries to pick up the restore.
+#       + We then install the MUSTLINK files.
+#       + Finally, if we are using local paths, we need to re-build the relevant
+#       objects and libraries with the original path to the staging area and
+#       then remake the executables to pick up the restore.
+#
 #       N.B. This recepie includes a duplication of parts of the recepie for
 #       installsingleoptlib (we can not use the XXXgeneral XXXlib form used by
-#       the shared recepies because of the need to rebuild the binaries to pick
-#       up the change in resource-root). Please remember to apply any changes
-#       to the other copy of the code as appropriate.
+#       the shared recepies because of the possible need to rebuild the
+#       executables to pick up the change in resource-root). Please remember to
+#       apply any changes to the other copy of the code as appropriate.
 
 installsingleoptlib:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=opt singleSetRootInstalled
-	$(SHOWIT)if [ ! -d $(ABS_DESTDIR)$(libdir) ] ; then $(MKDIR_P) $(ABS_DESTDIR)$(libdir) ; fi
-	$(INSTALL) $(STRIP_SWITCH) $(PROJECT_OUT)/lib/$(ARC)/opt/single/libRavl.a $(ABS_DESTDIR)$(libdir)/libRavl.a
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) insMustLinks recurse
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=opt singleSetRootStaged
-#       First rebuild those modules that rely on the installation path and
-#       relink their libraries. 
-#       Ensure the target dir exists and manually copy across the library.
-#       We then install the MUSTLINK files.
-#       Finally, we restore the local path into the object and library files.
+	$(if $(filter 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
+                        -f $(PROJECT_OUT)/Makefile \
+                        VAR=opt LINK_PLIB=0 \
+                        singleSetRootInstalled \
+         )
+	$(SHOWIT)if [ ! -d $(ABS_DESTDIR)$(libdir) ] ; \
+                 then \
+                    $(MKDIR_P) $(ABS_DESTDIR)$(libdir) ; \
+                 fi
+	$(INSTALL) $(STRIP_SWITCH) \
+                   $(PROJECT_OUT)/lib/$(ARC)/opt/single/libRavl.a \
+                   $(ABS_DESTDIR)$(libdir)/libRavl.a
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) \
+                -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk \
+                CONFIGFILE=$(PROJECT_OUT)/Config.Project \
+                VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) \
+                insMustLinks recurse
+	$(if $(filter 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
+                        -f $(PROJECT_OUT)/Makefile \
+                        VAR=opt LINK_PLIB=0 \
+                        singleSetRootStaged \
+         )
+#       + If we are using local (PROJECT_OUT) hard-coded paths in the built
+#       binaries (i.e. --disable-fast-install is in use) we first have to
+#       rebuild the libraries to reflect the installed location (i.e. $prefix,
+#       $datadir, etc.).
+#       + Ensure the target dir exists
+#       + Copy across the library.
+#       + We then install the MUSTLINK files.
+#       + Finally, if we are using local paths, we need to re-build the relevant
+#       objects and libraries with the original path to the staging area.
+#
 #       N.B. Parts of this recepie are duplicated in the installsingleopt
 #       recepie (we can not use the XXXgeneral XXXlib form used by the shared
-#       recepies because of the need to rebuild the binaries to pick up the
-#       change in resource-root). Please remember to apply any changes to the
-#       other copy of the code as appropriate.
+#       recepies because of the possible need for installsingleopt to rebuild
+#       the executables to pick up the change in resource-root). Please
+#       remember to apply any changes to the other copy of the code as
+#       appropriate.
 
 installsingleoptshared:installsingleoptsharedgeneral installsingleoptsharedlib
 
 installsingleoptsharedgeneral:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt SUMMARIES=Ravl SHAREDBUILD=1 STRIP_SWITCH=$(STRIP_SWITCH) install recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) \
+                -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk \
+                CONFIGFILE=$(PROJECT_OUT)/Config.Project \
+                VAR=opt SUMMARIES=Ravl SHAREDBUILD=1 STRIP_SWITCH=$(STRIP_SWITCH) \
+                install recurse
 #       Use the 'install' function of QMake to install the Ravl utility
 #       binaries; config files; data files and scripts. Setting SUMMARIES to
 #       Ravl forces QMake to use the version of the binaries compiled against
@@ -360,71 +640,139 @@ installsingleoptsharedgeneral:
 #       individual shared libraries. 
 
 installsingleoptsharedlib:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=opt SHAREDBUILD=1 singlesharedSetRootInstalled
-	$(SHOWIT)if [ ! -d $(ABS_DESTDIR)$(libdir) ] ; then $(MKDIR_P) $(ABS_DESTDIR)$(libdir) ; fi
-	$(INSTALL) $(STRIP_SWITCH) $(PROJECT_OUT)/lib/$(ARC)/opt/shared/single/libRavl$(STAMP_SINGLE_EXT) $(ABS_DESTDIR)$(libdir)/libRavl$(STAMP_SINGLE_EXT)
+	$(if $(filter 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
+                        -f $(PROJECT_OUT)/Makefile \
+                        VAR=opt SHAREDBUILD=1 LINK_PLIB=0 \
+                        singlesharedSetRootInstalled \
+         )
+	$(SHOWIT)if [ ! -d $(ABS_DESTDIR)$(libdir) ] ; \
+                 then \
+                    $(MKDIR_P) $(ABS_DESTDIR)$(libdir) ; \
+                 fi
+	$(INSTALL) $(STRIP_SWITCH) \
+                   $(PROJECT_OUT)/lib/$(ARC)/opt/shared/single/libRavl$(STAMP_SINGLE_EXT) \
+                   $(ABS_DESTDIR)$(libdir)/libRavl$(STAMP_SINGLE_EXT)
 ifeq ($(STAMP_SINGLE),VER)
-	$(SHOWIT)if [ -h $(ABS_DESTDIR)$(libdir)/libRavl.$(SHAREDEXT).$(PROJECT_MAJOR) ] || [ -f $(ABS_DESTDIR)$(libdir)/libRavl.$(SHAREDEXT).$(PROJECT_MAJOR) ] ; \
+	$(SHOWIT)if [ -h $(ABS_DESTDIR)$(libdir)/libRavl.$(SHAREDEXT).$(PROJECT_MAJOR) ] || \
+                    [ -f $(ABS_DESTDIR)$(libdir)/libRavl.$(SHAREDEXT).$(PROJECT_MAJOR) ] ; \
                  then \
                     $(RM) $(ABS_DESTDIR)$(libdir)/libRavl.$(SHAREDEXT).$(PROJECT_MAJOR) ; \
                  fi ; \
-                 cd $(ABS_DESTDIR)$(libdir); $(LN_S) libRavl$(STAMP_SINGLE_EXT) libRavl.$(SHAREDEXT).$(PROJECT_MAJOR)
+                 cd $(ABS_DESTDIR)$(libdir); \
+                 $(LN_S) libRavl$(STAMP_SINGLE_EXT) libRavl.$(SHAREDEXT).$(PROJECT_MAJOR)
 endif
 ifneq ($(STAMP_SINGLE),NO)
-	$(SHOWIT)if [ -h $(ABS_DESTDIR)$(libdir)/libRavl.$(SHAREDEXT) ] || [ -f $(ABS_DESTDIR)$(libdir)/libRavl.$(SHAREDEXT) ] ; \
+	$(SHOWIT)if [ -h $(ABS_DESTDIR)$(libdir)/libRavl.$(SHAREDEXT) ] || \
+                    [ -f $(ABS_DESTDIR)$(libdir)/libRavl.$(SHAREDEXT) ] ; \
                  then \
                     $(RM) $(ABS_DESTDIR)$(libdir)/libRavl.$(SHAREDEXT) ; \
                  fi ; \
-                 cd $(ABS_DESTDIR)$(libdir); $(LN_S) libRavl$(STAMP_SINGLE_EXT) libRavl.$(SHAREDEXT)
+                 cd $(ABS_DESTDIR)$(libdir); \
+                 $(LN_S) libRavl$(STAMP_SINGLE_EXT) libRavl.$(SHAREDEXT)
 endif
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) insMustLinks recurse
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f $(PROJECT_OUT)/Makefile VAR=opt SHAREDBUILD=1 singlesharedSetRootStaged
-#       First rebuild those modules that rely on the installation path and
-#       relink their libraries and the single library itself. 
-#       Then ensure the target directory exists and manually copy across the
-#       single shared library. 
-#       If required, we set up the symbolic links for the less-quantified
-#       library names.
-#       We then install the MUSTLINK files. These are not strictly necessary
-#       for the shared library, but may be needed for old client projects
-#       that have existing .def files that still include the MUSTLINKs
-#       regardless of if a build is shared or not.
-#       Finally, we restore the local path into the object/library files.
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) \
+                -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk \
+                CONFIGFILE=$(PROJECT_OUT)/Config.Project \
+                VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) \
+                insMustLinks recurse
+	$(if $(filter 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) \
+                        -f $(PROJECT_OUT)/Makefile \
+                        VAR=opt SHAREDBUILD=1 LINK_PLIB=0 \
+                        singlesharedSetRootStaged \
+         )
+#       + If we are using local (PROJECT_OUT) hard-coded paths in the built
+#       binaries (i.e. --disable-fast-install is in use) we first have to
+#       rebuild the libraries to reflect the installed location (i.e. $prefix,
+#       $datadir, etc.).
+#       + Ensure the target directory exists
+#       + Rather than call the insLibs make target, we manually install the
+#       library and set up the symbolic links for the less-quantified library
+#       names.
+#       + Install the MUSTLINK objects (the MUSTLINKs are not strictly necessary
+#       for the shared library, but may be needed for old client projects that
+#       have existing .def files that still include the MUSTLINKs regardless of
+#       if a build is shared or not).
+#       + Finally, if we are using local paths, we need to re-build the relevant
+#       objects and libraries with the original path to the staging area.
+
 
 
 installQMake:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -f @abs_builddir@/QMake/Makefile STAGING=@abs_builddir@/QMake STRIP_SWITCH=$(STRIP_SWITCH) install
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) \
+                -f @abs_builddir@/QMake/Makefile \
+                STAGING=@abs_builddir@/QMake \
+                STRIP_SWITCH=$(STRIP_SWITCH) \
+                install
 
 opt: qmake
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=opt NOEXEBUILD=1 libbuild
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
+                -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
+                VAR=opt NOEXEBUILD=1 \
+	        $(if $(filter-out 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                     PATH_DEFINITIONS="$(INSTALLED_PATHS)" \
+                 ) \
+                libbuild
 
 optbin: opt
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) fullopt
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
+                -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
+	        $(if $(filter-out 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                     PATH_DEFINITIONS="$(INSTALLED_PATHS)" \
+                 ) \
+                fullopt
 
 optshared: qmake
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=opt SHAREDBUILD=1 NOEXEBUILD=1 libbuild
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
+                -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
+                VAR=opt SHAREDBUILD=1 NOEXEBUILD=1 \
+	        $(if $(filter-out 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                     PATH_DEFINITIONS="$(INSTALLED_PATHS)" \
+                 ) \
+                libbuild
+
+optsharedobj: qmake
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
+                -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
+                VAR=opt SHAREDBUILD=1 NOEXEBUILD=1 LINK_PLIB=0 \
+	        $(if $(filter-out 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                     PATH_DEFINITIONS="$(INSTALLED_PATHS)" \
+                 ) \
+                libbuild
 
 optsharedbin: optshared
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) SHAREDBUILD=1 fullopt
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
+                -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) SHAREDBUILD=1 \
+	        $(if $(filter-out 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                     PATH_DEFINITIONS="$(INSTALLED_PATHS)" \
+                 ) \
+                fullopt
 
 pkgconf: 
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Single -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) NOCHECKOUT=1 MAKEPKGCONFIG=1 fullsrc
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Single \
+                -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) NOCHECKOUT=1 MAKEPKGCONFIG=1 \
+                fullsrc
 
 qmake: @NeededQMake@
 #       Will equate to "LocalQMake QMake" unless we already have an installed
 #       QMake when only a new copy for installation (QMake) will be needed.
 
 QMake:
-	$(MAKE) -f @abs_builddir@/QMake/Makefile STAGING=@abs_builddir@/QMake
+	$(MAKE) -f @abs_builddir@/QMake/Makefile \
+                STAGING=@abs_builddir@/QMake
 #       Stage, under @abs_builddir@/QMake, a version of QMake ready for a
 #       standard install (one that will run when the makefiles are installed
 #       under $(datadir)/QMake/Makefiles).
 
 LocalQMake: 
 	$(MAKE) -f @abs_builddir@/QMake/Makefile \
-                   prefix=@abs_builddir@ STAGING=@abs_builddir@/transient/QMake
-	$(MAKE) -f @abs_builddir@/QMake/Makefile  prefix=@abs_builddir@ \
-                   STAGING=@abs_builddir@/transient/QMake install
+                prefix=@abs_builddir@ \
+                STAGING=@abs_builddir@/transient/QMake
+	$(MAKE) -f @abs_builddir@/QMake/Makefile \
+                prefix=@abs_builddir@ \
+                STAGING=@abs_builddir@/transient/QMake \
+                install
 #       Install a copy of QMake under the Ravl build directory in a form that
 #       will run from that directory.
 #       To achieve this, we have to build QMake into a staging directory and
@@ -436,16 +784,28 @@ recheck: retest
 retest: retestsingleoptshared 
 
 retestgprof:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=gprof TEST_TARGET=gprof retest
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
+                -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
+                VAR=gprof TEST_TARGET=gprof \
+                retest
 
 retestgprofshared:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=gprof SHAREDBUILD=1 TEST_TARGET=gprofshared retest
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
+                -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
+                VAR=gprof SHAREDBUILD=1 TEST_TARGET=gprofshared \
+                retest
 
 retestopt:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=opt TEST_TARGET=opt retest
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
+                -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
+                VAR=opt TEST_TARGET=opt \
+                retest
 
 retestoptshared:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=opt SHAREDBUILD=1 TEST_TARGET=optshared retest
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
+                -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
+                VAR=opt SHAREDBUILD=1 TEST_TARGET=optshared \
+                retest
 
 retestsinglegprof:
 	@cd $(PROJECT_OUT)/test/gprof/single/bin; ls > ../TestExes
@@ -454,7 +814,10 @@ retestsinglegprof:
            $(PROJECT_OUT)/bin/utils/gprof/single/bin/Validate -v $(PROJECT_OUT)/test/gprof/single
 	
 retestsinglegprofshared:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=gprof SHAREDBUILD=1 SUMMARIES=Ravl TEST_TARGET=optshared retest
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
+                -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
+                VAR=gprof SHAREDBUILD=1 SUMMARIES=Ravl TEST_TARGET=optshared \
+                retest
 	
 retestsingleopt:
 	@cd $(PROJECT_OUT)/test/opt/single/bin; ls > ../TestExes
@@ -463,96 +826,220 @@ retestsingleopt:
            $(PROJECT_OUT)/bin/utils/opt/single/bin/Validate -v $(PROJECT_OUT)/test/opt/single
 	
 retestsingleoptshared:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=opt SHAREDBUILD=1 SUMMARIES=Ravl TEST_TARGET=optshared retest
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
+                -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
+                VAR=opt SHAREDBUILD=1 SUMMARIES=Ravl TEST_TARGET=optshared \
+                retest
 	
 #JFi:Only start of RPM process implemented. Should automate everything or drop.
 rpm: qmake 
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) rpmbuild 
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
+                -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
+                rpmbuild 
+
+INSTALLED_PATHS= DEFAULT_ROOT=\\\"$(patsubst %/share,%,$(datadir))\\\" \
+                 PREFIX=\\\"$(prefix)\\\" \
+                 DATADIR=\\\"$(datadir)/Ravl\\\" \
+                 SYSCONFDIR=\\\"$(sysconfdir)/Ravl\\\" \
+                 LIBDIR=\\\"$(libdir)\\\"
 
 SetRootInstalled:
-	$(SHOWIT)$(WORKING_QMAKE_BIN)/untouch -f $(SOURCEHOME)/Core/Base/Resource.cc
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Core/Base -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
-                CCFLAGS="$(CCFLAGS) -DDEFAULT_ROOT=\\\"$(patsubst %/share,%,$(datadir))\\\"" NOEXEBUILD=1 libbuild
-	$(SHOWIT)$(WORKING_QMAKE_BIN)/untouch -f $(SOURCEHOME)/Contrib/Gnome/Gnome.cc
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Contrib/Gnome -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
-                CCFLAGS="$(CCFLAGS) -DPREFIX=\\\"$(prefix)\\\" -DDATADIR=\\\"$(datadir)/Ravl\\\" -DSYSCONFDIR=\\\"$(sysconfdir)/Ravl\\\" -DLIBDIR=\\\"$(libdir)\\\"" \
-                NOEXEBUILD=1 libbuild
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Core/Base \
+                -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=$(VAR) NOEXEBUILD=1 \
+                $(if $(SHAREDBUILD),SHAREDBUILD=$(SHAREDBUILD)) \
+                $(if $(LINK_PLIB),LINK_PLIB=$(LINK_PLIB)) \
+                PATH_DEFINITIONS="$(INSTALLED_PATHS)" \
+                libbuild
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Contrib/Gnome \
+                -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=$(VAR) NOEXEBUILD=1 \
+                $(if $(SHAREDBUILD),SHAREDBUILD=$(SHAREDBUILD)) \
+                $(if $(LINK_PLIB),LINK_PLIB=$(LINK_PLIB)) \
+                PATH_DEFINITIONS="$(INSTALLED_PATHS)" \
+                libbuild
+
+STAGED_PATHS= DEFAULT_ROOT=\\\"$(PROJECT_OUT)\\\" \
+              PREFIX=\\\"$(PROJECT_OUT)\\\" \
+              DATADIR=\\\"$(PROJECT_OUT)/share\\\" \
+              SYSCONFDIR=\\\"$(PROJECT_OUT)/etc\\\" \
+              LIBDIR=\\\"$(PROJECT_OUT)/lib\\\"
 
 SetRootStaged:
-	$(SHOWIT)$(WORKING_QMAKE_BIN)/untouch -f $(SOURCEHOME)/Core/Base/Resource.cc
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Core/Base -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) NOEXEBUILD=1 libbuild
-	$(SHOWIT)$(WORKING_QMAKE_BIN)/untouch -f $(SOURCEHOME)/Contrib/Gnome/Gnome.cc
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Contrib/Gnome -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) NOEXEBUILD=1 libbuild
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Core/Base \
+                -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=$(VAR) NOEXEBUILD=1 \
+                $(if $(SHAREDBUILD),SHAREDBUILD=$(SHAREDBUILD)) \
+                $(if $(LINK_PLIB),LINK_PLIB=$(LINK_PLIB)) \
+                PATH_DEFINITIONS="$(STAGED_PATHS)" \
+                libbuild
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Contrib/Gnome \
+                -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=$(VAR) NOEXEBUILD=1 \
+                $(if $(SHAREDBUILD),SHAREDBUILD=$(SHAREDBUILD)) \
+                $(if $(LINK_PLIB),LINK_PLIB=$(LINK_PLIB)) \
+                PATH_DEFINITIONS="$(STAGED_PATHS)" \
+                libbuild
 
 singledebug: debug
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Projects/Ravl/Makefiles/SingleLib.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=debug makedirs buildstatic
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
+                -f $(WORKING_QMAKE_DATA)/Projects/Ravl/Makefiles/SingleLib.mk \
+                CONFIGFILE=$(PROJECT_OUT)/Config.Project \
+                VAR=debug \
+	        $(if $(filter-out 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                     PATH_DEFINITIONS="$(INSTALLED_PATHS)" \
+                 ) \
+                makedirs buildstatic
 
 singledebugbin: singledebug debugbin
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Projects/Ravl/Makefiles/Recursive.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=debug SINGLELIB=1 programs recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
+                -f $(WORKING_QMAKE_DATA)/Projects/Ravl/Makefiles/Recursive.mk \
+                CONFIGFILE=$(PROJECT_OUT)/Config.Project \
+                VAR=debug SINGLELIB=1 \
+	        $(if $(filter-out 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                     PATH_DEFINITIONS="$(INSTALLED_PATHS)" \
+                 ) \
+                programs recurse
 
-singledebugshared: debugshared
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Single -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=debug SHAREDBUILD=1 LIB_STAMP=$(STAMP_SINGLE) NOEXEBUILD=1 libbuild
+singledebugshared: debugsharedobj
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Single \
+                -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
+                VAR=debug SHAREDBUILD=1 LIB_STAMP=$(STAMP_SINGLE) NOEXEBUILD=1 LINK_PLIB=0 \
+	        $(if $(filter-out 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                     PATH_DEFINITIONS="$(INSTALLED_PATHS)" \
+                 ) \
+                libbuild
 
 singledebugsharedbin:singledebugshared
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=debug SHAREDBUILD=1 SUMMARIES=Ravl exebuild
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
+                -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
+                VAR=debug SHAREDBUILD=1 SUMMARIES=Ravl \
+	        $(if $(filter-out 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                     PATH_DEFINITIONS="$(INSTALLED_PATHS)" \
+                 ) \
+                exebuild
 
 singlegprof: gprof
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Projects/Ravl/Makefiles/SingleLib.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=gprof makedirs buildstatic
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
+                -f $(WORKING_QMAKE_DATA)/Projects/Ravl/Makefiles/SingleLib.mk \
+                CONFIGFILE=$(PROJECT_OUT)/Config.Project \
+                VAR=gprof \
+                makedirs buildstatic
 
 singlegprofbin: singlegprof gprofbin
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Projects/Ravl/Makefiles/Recursive.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=gprof SINGLELIB=1 programs recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
+                -f $(WORKING_QMAKE_DATA)/Projects/Ravl/Makefiles/Recursive.mk \
+                CONFIGFILE=$(PROJECT_OUT)/Config.Project \
+                VAR=gprof SINGLELIB=1 \
+                programs recurse
 
-singlegprofshared: gprofshared
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Single -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=gprof SHAREDBUILD=1 LIB_STAMP=$(STAMP_SINGLE) NOEXEBUILD=1 libbuild
+singlegprofshared: gprofsharedobj
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Single \
+                -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
+                VAR=gprof SHAREDBUILD=1 LIB_STAMP=$(STAMP_SINGLE) NOEXEBUILD=1 LINK_PLIB=0 \
+                libbuild
 
 singlegprofsharedbin: singlegprofshared
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=gprof SHAREDBUILD=1 SUMMARIES=Ravl exebuild
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
+                -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
+                VAR=gprof SHAREDBUILD=1 SUMMARIES=Ravl \
+                exebuild
 
 singleopt: opt
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Projects/Ravl/Makefiles/SingleLib.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt makedirs buildstatic
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
+                -f $(WORKING_QMAKE_DATA)/Projects/Ravl/Makefiles/SingleLib.mk \
+                CONFIGFILE=$(PROJECT_OUT)/Config.Project \
+                VAR=opt \
+	        $(if $(filter-out 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                     PATH_DEFINITIONS="$(INSTALLED_PATHS)" \
+                 ) \
+                makedirs buildstatic
 
 singleoptbin: singleopt optbin
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Projects/Ravl/Makefiles/Recursive.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt SINGLELIB=1 programs recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
+                -f $(WORKING_QMAKE_DATA)/Projects/Ravl/Makefiles/Recursive.mk \
+                CONFIGFILE=$(PROJECT_OUT)/Config.Project \
+                VAR=opt SINGLELIB=1 \
+	        $(if $(filter-out 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                     PATH_DEFINITIONS="$(INSTALLED_PATHS)" \
+                 ) \
+                programs recurse
 
-singleoptshared: optshared
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Single -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=opt SHAREDBUILD=1 LIB_STAMP=$(STAMP_SINGLE) NOEXEBUILD=1 libbuild
+singleoptshared: optsharedobj
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Single \
+                -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
+                VAR=opt SHAREDBUILD=1 LIB_STAMP=$(STAMP_SINGLE) NOEXEBUILD=1 LINK_PLIB=0 \
+	        $(if $(filter-out 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                     PATH_DEFINITIONS="$(INSTALLED_PATHS)" \
+                 ) \
+                libbuild
 
 singleoptsharedbin: singleoptshared
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=opt SHAREDBUILD=1 SUMMARIES=Ravl exebuild
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
+                -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
+                VAR=opt SHAREDBUILD=1 SUMMARIES=Ravl \
+	        $(if $(filter-out 0 N NO No n no,$(USE_INSTALLED_PATHS)), \
+                     PATH_DEFINITIONS="$(INSTALLED_PATHS)" \
+                 ) \
+                exebuild
 
 singleSetRootInstalled: SetRootInstalled
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Projects/Ravl/Makefiles/SingleLib.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project makedirs buildstatic
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
+                -f $(WORKING_QMAKE_DATA)/Projects/Ravl/Makefiles/SingleLib.mk \
+                CONFIGFILE=$(PROJECT_OUT)/Config.Project \
+                makedirs buildstatic
 
 singleSetRootStaged: SetRootStaged
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Projects/Ravl/Makefiles/SingleLib.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project makedirs buildstatic
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
+                -f $(WORKING_QMAKE_DATA)/Projects/Ravl/Makefiles/SingleLib.mk \
+                CONFIGFILE=$(PROJECT_OUT)/Config.Project \
+                makedirs buildstatic
 
 singlesharedSetRootInstalled: SetRootInstalled
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Single -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) LIB_STAMP=$(STAMP_SINGLE) NOEXEBUILD=1 libbuild
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Single \
+                -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
+                LIB_STAMP=$(STAMP_SINGLE) LINK_PLIB=0 NOEXEBUILD=1 \
+                libbuild
 
 singlesharedSetRootStaged: SetRootStaged
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Single -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) LIB_STAMP=$(STAMP_SINGLE) NOEXEBUILD=1 libbuild
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Single \
+                -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
+                LIB_STAMP=$(STAMP_SINGLE) LINK_PLIB=0 NOEXEBUILD=1 \
+                libbuild
 
 test: testsingleoptshared 
 
 testgprof:
 	@$(RM) -f $(PROJECT_OUT)/test/gprof/bin/*
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=gprof TEST_TARGET=gprof test
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
+                -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
+                VAR=gprof TEST_TARGET=gprof \
+                test
 
 testgprofshared:
 	@$(RM) -f $(PROJECT_OUT)/test/gprof/shared/bin/*
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=gprof SHAREDBUILD=1 TEST_TARGET=gprofshared test
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
+                -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
+                VAR=gprof SHAREDBUILD=1 TEST_TARGET=gprofshared \
+                test
 
 testopt:
 	@$(RM) -f $(PROJECT_OUT)/test/opt/bin/*
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=opt TEST_TARGET=opt test
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
+                -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
+                VAR=opt TEST_TARGET=opt \
+                test
 
 testoptshared:
 	@$(RM) -f $(PROJECT_OUT)/test/opt/shared/bin/*
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=opt SHAREDBUILD=1 TEST_TARGET=optshared test
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
+                -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
+                VAR=opt SHAREDBUILD=1 TEST_TARGET=optshared \
+                test
 
 testsinglegprof:
 	@$(RM) -f $(PROJECT_OUT)/test/gprof/single/bin/*
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Projects/Ravl/Makefiles/Recursive.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=gprof SINGLELIB=1 test recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
+                -f $(WORKING_QMAKE_DATA)/Projects/Ravl/Makefiles/Recursive.mk \
+                CONFIGFILE=$(PROJECT_OUT)/Config.Project \
+                VAR=gprof SINGLELIB=1 \
+                test recurse
 	@cd $(PROJECT_OUT)/test/gprof/single/bin; ls > ../TestExes
 	cd $(PROJECT_OUT)/test/gprof/single && \
            PATH=$(PROJECT_OUT)/test/gprof/single/bin:$(PROJECT_OUT)/bin/utils/gprof/single/bin:$$PATH \
@@ -560,11 +1047,18 @@ testsinglegprof:
 
 testsinglegprofshared:
 	@$(RM) -f $(PROJECT_OUT)/test/gprof/shared/single.Ravl/bin/*
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=gprof SHAREDBUILD=1 SUMMARIES=Ravl TEST_TARGET=optshared test
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
+                -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
+                VAR=gprof SHAREDBUILD=1 SUMMARIES=Ravl TEST_TARGET=optshared \
+                test
 
 testsingleopt:
 	@$(RM) -f $(PROJECT_OUT)/test/opt/single/bin/*
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Projects/Ravl/Makefiles/Recursive.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt SINGLELIB=1 test recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
+                -f $(WORKING_QMAKE_DATA)/Projects/Ravl/Makefiles/Recursive.mk \
+                CONFIGFILE=$(PROJECT_OUT)/Config.Project \
+                VAR=opt SINGLELIB=1 \
+                test recurse
 	@cd $(PROJECT_OUT)/test/opt/single/bin; ls > ../TestExes
 	cd $(PROJECT_OUT)/test/opt/single && \
            PATH=$(PROJECT_OUT)/test/opt/single/bin:$(PROJECT_OUT)/bin/utils/opt/single/bin:$$PATH \
@@ -572,41 +1066,76 @@ testsingleopt:
 	
 testsingleoptshared:
 	@$(RM) -f $(PROJECT_OUT)/test/opt/shared/single.Ravl/bin/*
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=opt SHAREDBUILD=1 SUMMARIES=Ravl TEST_TARGET=optshared test
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
+                -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
+                VAR=opt SHAREDBUILD=1 SUMMARIES=Ravl TEST_TARGET=optshared \
+                test
 
-uninstall: uninstallQMake uninstallsingleoptshared uninstallHdrs uninstallMustLinks uninstallpkgconf uninstallRavlDefs
+uninstall: uninstallQMake uninstallsingleoptshared uninstallHdrs \
+           uninstallMustLinks uninstallpkgconf uninstallRavlDefs
 
 uninstalldebuglib:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=debug uinsLibs recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) \
+                -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk \
+                CONFIGFILE=$(PROJECT_OUT)/Config.Project \
+                VAR=debug \
+                uinsLibs recurse
 
 uninstalldebugsharedlib:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=debug SHAREDBUILD=1 uinsLibs recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) \
+                -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk \
+                CONFIGFILE=$(PROJECT_OUT)/Config.Project \
+                VAR=debug SHAREDBUILD=1 \
+                uinsLibs recurse
 
 uninstallHdrs:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project uinsHdrs recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) \
+                -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk \
+                CONFIGFILE=$(PROJECT_OUT)/Config.Project \
+                uinsHdrs recurse
 
 uninstallMustLinks:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) uinsMustLinks recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) \
+                -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk \
+                CONFIGFILE=$(PROJECT_OUT)/Config.Project \
+                VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) \
+                uinsMustLinks recurse
 
 uninstallopt: uninstalloptgeneral uninstalloptlib
 
 uninstalloptgeneral:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt uninstall recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) \
+                -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk \
+                CONFIGFILE=$(PROJECT_OUT)/Config.Project \
+                VAR=opt \
+                uninstall recurse
 #       Seperate versions of the uninstall generals exist to allow for differing
 #       manifests dependant on VAR, SHAREDBUILD, etc.
 
 uninstalloptlib:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) uinsLibs recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) \
+                -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk \
+                CONFIGFILE=$(PROJECT_OUT)/Config.Project \
+                VAR=opt STRIP_SWITCH=$(STRIP_SWITCH) \
+                uinsLibs recurse
 
 uninstalloptshared: uninstalloptsharedgeneral uninstalloptsharedlib
 
 uninstalloptsharedgeneral:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt SHAREDBUILD=1 uninstall recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) \
+                -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk \
+                CONFIGFILE=$(PROJECT_OUT)/Config.Project \
+                VAR=opt SHAREDBUILD=1 \
+                uninstall recurse
 #       Seperate versions of the uninstall generals exist to allow for differing
 #       manifests dependant on VAR, SHAREDBUILD, etc.
 
 uninstalloptsharedlib:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt SHAREDBUILD=1 STRIP_SWITCH=$(STRIP_SWITCH) uinsLibs recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) \
+                -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk \
+                CONFIGFILE=$(PROJECT_OUT)/Config.Project \
+                VAR=opt SHAREDBUILD=1 STRIP_SWITCH=$(STRIP_SWITCH) \
+                uinsLibs recurse
 
 uninstallpkgconf: 
 	@if [ -f $(ABS_DESTDIR)$(libdir)/pkgconfig/Ravl.pc ] ; \
@@ -624,12 +1153,18 @@ uninstallpkgconf:
          fi
 
 uninstallQMake:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -f @abs_builddir@/QMake/Makefile uninstall
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) \
+                -f @abs_builddir@/QMake/Makefile \
+                uninstall
 
 uninstallRavlDefs: uninstallRavlMultiDefs uninstallRavl.def
 
 uninstallRavlMultiDefs:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=debug SHAREDBUILD=1 STRIP_SWITCH=$(STRIP_SWITCH) PROJECT_DIR=Ravl uinsDefs recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) \
+                -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk \
+                CONFIGFILE=$(PROJECT_OUT)/Config.Project \
+                VAR=debug SHAREDBUILD=1 STRIP_SWITCH=$(STRIP_SWITCH) PROJECT_DIR=Ravl \
+                uinsDefs recurse
 
 uninstallRavl.def:
 	@if [ -f $(ABS_DESTDIR)$(datadir)/QMake/Projects/Ravl/libdep/Ravl.def ] ; \
@@ -662,7 +1197,8 @@ uninstallsingledebuglib:
          fi
 
 uninstallsingledebugsharedlib:
-	@if [ -h $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl$(STAMP_SINGLE_EXT) ] || [ -f $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl$(STAMP_SINGLE_EXT) ] ; \
+	@if [ -h $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl$(STAMP_SINGLE_EXT) ] || \
+            [ -f $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl$(STAMP_SINGLE_EXT) ] ; \
          then \
             if [ X$(QMAKE_INFO) != X ] ;\
             then \
@@ -676,7 +1212,8 @@ uninstallsingledebugsharedlib:
             fi ;\
          fi
 ifeq ($(STAMP_SINGLE),VER)
-	@if [ -h $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.$(SHAREDEXT).$(PROJECT_MAJOR) ] || [ -f $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.$(SHAREDEXT).$(PROJECT_MAJOR) ] ; \
+	@if [ -h $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.$(SHAREDEXT).$(PROJECT_MAJOR) ] || \
+            [ -f $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.$(SHAREDEXT).$(PROJECT_MAJOR) ] ; \
          then \
             if [ X$(QMAKE_INFO) != X ] ;\
             then \
@@ -691,7 +1228,8 @@ ifeq ($(STAMP_SINGLE),VER)
          fi
 endif
 ifneq ($(STAMP_SINGLE),NO)
-	@if [ -h $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.$(SHAREDEXT) ] || [ -f $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.$(SHAREDEXT) ] ; \
+	@if [ -h $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.$(SHAREDEXT) ] || \
+            [ -f $(ABS_DESTDIR)$(libdir)/debug$(libdir)/libRavl.$(SHAREDEXT) ] ; \
          then \
             if [ X$(QMAKE_INFO) != X ] ;\
             then \
@@ -712,7 +1250,11 @@ endif
 uninstallsingleopt:uninstallsingleoptgeneral uninstallsingleoptlib
 
 uninstallsingleoptgeneral: 
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt uninstall recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) \
+                -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk \
+                CONFIGFILE=$(PROJECT_OUT)/Config.Project \
+                VAR=opt \
+                uninstall recurse
 #       Seperate versions of the uninstall generals exist to allow for differing
 #       manifests dependant on VAR, SHAREDBUILD, etc.
 
@@ -734,12 +1276,17 @@ uninstallsingleoptlib:
 uninstallsingleoptshared: uninstallsingleoptsharedgeneral  uninstallsingleoptsharedlib
 
 uninstallsingleoptsharedgeneral:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt SHARED_LIB_POSTFIX=/shared/single SHAREDBUILD=1 uninstall recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) \
+                -f $(WORKING_QMAKE_DATA)/Makefiles/Install.mk \
+                CONFIGFILE=$(PROJECT_OUT)/Config.Project \
+                VAR=opt SHARED_LIB_POSTFIX=/shared/single SHAREDBUILD=1 \
+                uninstall recurse
 #       Seperate versions of the uninstall generals exist to allow for differing
 #       manifests dependant on VAR, SHAREDBUILD, etc.
 
 uninstallsingleoptsharedlib:
-	@if [ -h $(ABS_DESTDIR)$(libdir)/libRavl$(STAMP_SINGLE_EXT) ] || [ -f $(ABS_DESTDIR)$(libdir)/libRavl$(STAMP_SINGLE_EXT) ] ; \
+	@if [ -h $(ABS_DESTDIR)$(libdir)/libRavl$(STAMP_SINGLE_EXT) ] || \
+            [ -f $(ABS_DESTDIR)$(libdir)/libRavl$(STAMP_SINGLE_EXT) ] ; \
          then \
             if [ X$(QMAKE_INFO) != X ] ;\
             then \
@@ -753,7 +1300,8 @@ uninstallsingleoptsharedlib:
             fi ;\
          fi
 ifeq ($(STAMP_SINGLE),VER)
-	@if [ -h $(ABS_DESTDIR)$(libdir)/libRavl.$(SHAREDEXT).$(PROJECT_MAJOR) ] || [ -f $(ABS_DESTDIR)$(libdir)/libRavl.$(SHAREDEXT).$(PROJECT_MAJOR) ] ; \
+	@if [ -h $(ABS_DESTDIR)$(libdir)/libRavl.$(SHAREDEXT).$(PROJECT_MAJOR) ] || \
+            [ -f $(ABS_DESTDIR)$(libdir)/libRavl.$(SHAREDEXT).$(PROJECT_MAJOR) ] ; \
          then \
             if [ X$(QMAKE_INFO) != X ] ;\
             then \
@@ -768,7 +1316,8 @@ ifeq ($(STAMP_SINGLE),VER)
          fi
 endif
 ifneq ($(STAMP_SINGLE),NO)
-	@if [ -h $(ABS_DESTDIR)$(libdir)/libRavl.$(SHAREDEXT) ] || [ -f $(ABS_DESTDIR)$(libdir)/libRavl.$(SHAREDEXT) ] ; \
+	@if [ -h $(ABS_DESTDIR)$(libdir)/libRavl.$(SHAREDEXT) ] || \
+            [ -f $(ABS_DESTDIR)$(libdir)/libRavl.$(SHAREDEXT) ] ; \
          then \
             if [ X$(QMAKE_INFO) != X ] ;\
             then \
@@ -789,23 +1338,25 @@ endif
 
 
 .DEFAULT: qmake
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) $@
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) \
+                -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) \
+                $@
 
 #JFi:ToDo Targets for clean ctags distclean distcheck html install-check
 #                     install-html install-pdf installdirs mostlyclean
 #                     maintainter-clean pdf tags
 
 
-.PHONY: check debug debugshared default dist doc fullsrc \
- gprof gprofbin gprofshared gprofsharedbin install install-strip \
- install-stripProject installdebuglib installdebugsharedlib installHdrs \
- installopt installoptlib installoptshared installoptsharedgeneral \
+.PHONY: check debug debugshared debugsharedobj default dist doc fullsrc \
+ gprof gprofbin gprofshared gprofsharedobj gprofsharedbin install \
+ install-strip install-stripProject installdebuglib installdebugsharedlib \
+ installHdrs installopt installoptlib installoptshared installoptsharedgeneral \
  installoptsharedlib installProject installpkgconf installQMake \
  installRavlDefs installRavlMultiDefs installsingledebuglib \
  installsingledebugsharedlib installsingleopt installsingleoptlib \
  installsingleoptshared installsingleoptsharedgeneral \
- installsingleoptsharedlib LocalQMake opt optbin optshared optsharedbin \
- pkgconf qmake QMake recheck retest retestgprof retestgprofshared \
+ installsingleoptsharedlib LocalQMake opt optbin optshared optsharedobj \
+ optsharedbin pkgconf qmake QMake recheck retest retestgprof retestgprofshared \
  retestopt retestoptshared retestsinglegprof retestsinglegprofshared \
  retestsingleopt retestsingleoptshared rpm SetRootInstalled SetRootStaged \
  singledebug singledebugbin singledebugshared singledebugsharedbin singlegprof \

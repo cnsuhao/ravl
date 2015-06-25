@@ -13,6 +13,7 @@
 //! userlevel=Develop
 
 #include "Ravl/String.hh"
+#include "Ravl/Resource.hh"
 #include "Ravl/Image/Image.hh"
 #include "Ravl/Array2dIter.hh"
 #include "Ravl/Array2dIter2.hh"
@@ -52,6 +53,16 @@ template class ImageC<int>; // Make sure all functions are compiled.
 
 int main()
 {
+#ifndef TEST_ROOT
+ #ifndef PROJECT_OUT
+  #define TEST_ROOT ""
+ #else
+  #define TEST_ROOT PROJECT_OUT
+ #endif
+#endif
+
+  SetResourceRoot(TEST_ROOT);
+
   std::cerr << "Testing basic image ops. \n";
   int lineno;
 #if 1
