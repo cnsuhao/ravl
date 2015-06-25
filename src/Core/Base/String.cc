@@ -112,7 +112,7 @@ namespace RavlN {
     while (to != e) 
       *to++ = *from++;
 #else
-    memcpy(to,from,n);
+    memmove(to,from,n);
 #endif
   }
   
@@ -125,7 +125,7 @@ namespace RavlN {
 	*to++ = *from++;
       *to = 0;
 #else
-      memcpy(to,from,n);
+      memmove(to,from,n);
       to[n] = 0;
 #endif
     } else

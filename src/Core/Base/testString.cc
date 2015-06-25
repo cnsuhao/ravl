@@ -61,15 +61,15 @@ int testString() {
   if ((StringC('a')+'b') != "ab") return __LINE__;
   if (('a'+StringC('b')) != "ab") return __LINE__;
   
-  StringC five("01234");
+  StringC five("01234"); // test to check we can delete 1st char of string
   while (!five.IsEmpty())
     {
-      five.del(0,1);
-      StringC madeup;
+      StringC madeup; // constructed to match what "five" should be
       for (IntT c=4; madeup.length() < five.length(); --c)
         madeup = (char) ((int)'0'+c) + madeup;
       //cerr << five << ' ' << madeup << endl;
       if (five != madeup) return __LINE__;
+      five.del(0,1); 
     }
 
   for(Int64T i = 0;i < 10;i++) {
