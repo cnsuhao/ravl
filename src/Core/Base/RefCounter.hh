@@ -69,7 +69,12 @@ namespace RavlN {
     //: Default binary save.
 
     UIntT References() const
-    { return ravl_atomic_read(&counter); }
+    {
+#if QMAKE_PARANOID
+      RavlAssert(ravl_atomic_read(&counter) >= 0);
+#endif
+      return ravl_atomic_read(&counter);
+    }
     //: Access count of handles open to this object.
     
     RCBodyC &Copy() const;
@@ -179,9 +184,10 @@ namespace RavlN {
     { out << *body; return true; }
     //: Save body to stream.
     
-    const RCHandleC<BodyT> &operator=(const RCHandleC<BodyT> &oth) { 
-      if(oth.body != 0)
-        oth.body->IncRefCounter();
+    void SetPtr(const BodyT *ptr)
+    {
+      if(ptr != 0)
+        ptr->IncRefCounter();
       if(body != 0) {
         if(body->DecRefCounter()) {
 #if QMAKE_PARANOID
@@ -190,9 +196,12 @@ namespace RavlN {
           delete body;
         }
       }
-      body = oth.body;
-      return *this;
+      body = const_cast<BodyT *>(ptr);
     }
+    //: Assign to pointer.
+
+    const RCHandleC<BodyT> &operator=(const RCHandleC<BodyT> &oth)
+    { SetPtr(oth.body); return *this; }
     //: Assign handle.
 
     RCHandleC<BodyT> DeepCopy(UIntT levels = ((UIntT) -1)) const
