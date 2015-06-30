@@ -1150,9 +1150,9 @@ then
                    trace 5 Changing _LIBS from:
                    TRACE_INDENT="     "
                    trace 5 $setting
-                   setting=`echo $setting | $SED 's/-L *\(@<:@^ @:>@@<:@^ @:>@*\)/\$(LINKER_LIBPATHSWITCH)\=\1 -L\1/g'`
+                   setting=`echo $setting | $SED 's/-L *\(@<:@^ @:>@@<:@^ @:>@*\)/\$(LINKER_LIBPATHSWITCH)\1 -L\1/g'`
 dnl                # The sed command is actually:
-dnl                #    's/-L *\([^ ][^ ]*\)\$(LINKER_LIBPATHSWITCH)\=\1 -L\1/g'
+dnl                #    's/-L *\([^ ][^ ]*\)\$(LINKER_LIBPATHSWITCH)\1 -L\1/g'
 dnl                # the square brackets having been substituted to prevent
 dnl                # m4 removing them. 
                    # The sed command looks for:

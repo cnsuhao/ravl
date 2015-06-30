@@ -37629,7 +37629,7 @@ then
                    trace 5 Changing _LIBS from:
                    TRACE_INDENT="     "
                    trace 5 $setting
-                   setting=`echo $setting | $SED 's/-L *\([^ ][^ ]*\)/\$(LINKER_LIBPATHSWITCH)\=\1 -L\1/g'`
+                   setting=`echo $setting | $SED 's/-L *\([^ ][^ ]*\)/\$(LINKER_LIBPATHSWITCH)\1 -L\1/g'`
                    # The sed command looks for:
                    #
                    #        -L<optional spaces><something><space>
