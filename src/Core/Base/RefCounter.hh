@@ -59,7 +59,11 @@ namespace RavlN {
 
     ~RCBodyC();
     //: Destructor.
-    
+
+    const RCBodyC &operator=(const RCBodyC &other)
+    { return *this; }
+    //: Make sure reference counter isn't over written by assigment.
+
     bool Save(std::ostream &strm) const
     { return true; }
     //: Default text save.
