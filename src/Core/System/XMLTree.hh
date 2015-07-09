@@ -407,7 +407,11 @@ namespace RavlN {
 
   
   inline StringC XMLTreeBodyC::Content() const
-  { return Children().First().Data()["."]; } 
+  {
+    if(Children().IsEmpty())
+      return StringC();
+    return Children().First().Data()["."];
+  }
 
 
 }

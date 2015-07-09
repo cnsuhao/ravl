@@ -68,6 +68,7 @@
                 <ul>
                   <li><a href="#AUXFILES">AUXFILES,AUXDIR</A>
                   <li><a href="#EXTRA_DIST_DIRS">EXTRA_DIST_DIRS</A>
+                  <li><a href="#EXTRA_RULES">EXTRA_RULES</A>
                   <li><a href="#PREBUILDSTEP">PREBUILDSTEP</A>
                   <li><a href="#POSTBUILDSTEP">POSTBUILDSTEP</A>
                 </ul>
@@ -675,6 +676,19 @@ EXTRA_DIST_DIRS setting. For example: </p><code><PRE>
 subdirectories (but not in Unprocessed or Unwanted), and that the three
 directories: Processed, Unprocessed and Used are included in any distribution
 file.</p>
+</DD>
+
+<LI><DT><A NAME="EXTRA_RULES"></A><B>EXTRA_RULES</B></DT>
+<DD><p>Specificies the name of a file containing additional make rules to be
+used for the current directory. The file should reside in the current source
+directory.</p>
+<p>The defs.mk file is processed very early in the QMake process. This may mean
+that not all make variables that may be required for custom rules will be
+defined at that point. This may prevent additional make rules from being
+successfully declared in the defs.mk file itself. To combat this, the
+EXTRA_RULES setting allows the user to specify additional make rules in a
+seperate file. QMake will then include this file at an appropriate point (when
+all variables are declared) and thus the additional rules will take effect.</p>
 </DD>
 
 <LI><DT><A NAME="PREBUILDSTEP"></A><B>PREBUILDSTEP</B></DT>

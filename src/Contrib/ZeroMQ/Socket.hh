@@ -117,16 +117,16 @@ namespace RavlN {
       void SetRouterMandatory(bool enable);
 
       //! Send a message
-      bool Send(const MessageC &msg,BlockT block = ZSB_BLOCK);
+      bool Send(const MessageC &msg,BlockT block = ZSB_BLOCK,int *errValue = 0);
 
       //! Send a message
-      bool Send(const MessageC::RefT &msg,BlockT block = ZSB_BLOCK);
+      bool Send(const MessageC::RefT &msg,BlockT block = ZSB_BLOCK,int *errValue = 0);
 
       //! Receive a message.
       bool Recieve(MessageC::RefT &msg,BlockT block = ZSB_BLOCK);
 
       //! Send a message
-      bool Send(const SArray1dC<char> &msg,BlockT block = ZSB_BLOCK);
+      bool Send(const SArray1dC<char> &msg,BlockT block = ZSB_BLOCK,int *errValue = 0);
 
       //! Receive a message.
       bool Recieve(SArray1dC<char> &msg,BlockT block = ZSB_BLOCK);

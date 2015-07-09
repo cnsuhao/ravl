@@ -74,7 +74,7 @@ AC_DEFUN([QM_SET_LINKER_LDFLAGS],
              LINKER_SPECIFIC_LDLIBFLAGS=
              LINKER_SHARED_LDLIBFLAGS=" -shared "
 
-             LINKER_LIBPATHSWITCH=" -Wl,-rpath#"
+             LINKER_LIBPATHSWITCH=" -Wl,-rpath=#"
              LINKER_SET_SONAME=" -Wl,-soname=#"
              LINKER_UNDEFSYMB=" -u#"
           else
@@ -98,17 +98,32 @@ AC_DEFUN([QM_SET_LINKER_LDFLAGS],
                           # sic, this is an assumption on what compiler is in use
                           LINKER_SPECIFIC_LDLIBFLAGS=
                           LINKER_SHARED_LDLIBFLAGS=" -shared "
-                          LINKER_LIBPATHSWITCH=" -Wl,-rpath#"
+                          LINKER_LIBPATHSWITCH=" -Wl,-rpath=#"
                           LINKER_SET_SONAME=" -Wl,-soname=#"
                           # the above 2 entries make an assumption on the compiler
                           LINKER_UNDEFSYMB=" -u #"
-                         ;;
+                          ;;
+              Xdarwin*  ) trace 3 Setting LDFLAGS we have previously used on OSX
+                          # Above settings for a GNU linker will be in use for
+                          # all "big cat" versions of OSX (as that was what the
+                          # toolset was). 
+                          # This case is only really for post big cat versions
+                          # of OSX and then, LINKER_LIBPATHSWITCH is the only
+                          # variance from the GNU linker settings
+                          LINKER_SPECIFIC_LDFLAGS=
+                          LINKER_SHARED_LDFLAGS=" -rdynamic "
+                          LINKER_SPECIFIC_LDLIBFLAGS=
+                          LINKER_SHARED_LDLIBFLAGS=" -shared "
+                          LINKER_LIBPATHSWITCH=" -Wl,-rpath,#"
+                          LINKER_SET_SONAME=" -Wl,-soname=#"
+                          LINKER_UNDEFSYMB=" -u#"
+                          ;;
               Xirix*    ) trace 3 Setting LDFLAGS we have previously used under Irix
                           LINKER_SPECIFIC_LDFLAGS=" -n32 -Wl,-woff 84 "
                           LINKER_SHARED_LDFLAGS=
                           LINKER_SPECIFIC_LDLIBFLAGS=
                           LINKER_SHARED_LDLIBFLAGS=" -shared "
-                          LINKER_LIBPATHSWITCH=" -Wl,-rpath#"
+                          LINKER_LIBPATHSWITCH=" -Wl,-rpath=#"
                           LINKER_SET_SONAME=" -Wl,-soname#"
                           LINKER_UNDEFSYMB=" -u#"
                           ;;
@@ -127,7 +142,7 @@ AC_DEFUN([QM_SET_LINKER_LDFLAGS],
                           LINKER_SHARED_LDFLAGS=" -rdynamic "
                           LINKER_SPECIFIC_LDLIBFLAGS=
                           LINKER_SHARED_LDLIBFLAGS=" -shared "
-                          LINKER_LIBPATHSWITCH=" -Wl,-rpath#"
+                          LINKER_LIBPATHSWITCH=" -Wl,-rpath=#"
                           LINKER_SET_SONAME=" -Wl,-soname=#"
                           LINKER_UNDEFSYMB=" -u#"
                           ;;

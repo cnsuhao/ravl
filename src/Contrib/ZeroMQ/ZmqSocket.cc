@@ -461,7 +461,7 @@ namespace RavlN {
     }
 
     //! Send a message
-    bool SocketC::Send(const SArray1dC<char> &msg,BlockT block) {
+    bool SocketC::Send(const SArray1dC<char> &msg,BlockT block,int *errValue) {
       zmq_msg_t zmsg;
       if(m_verbose) {
         StringC tmp(msg.ReferenceElm(),msg.Size(),msg.Size());
@@ -481,6 +481,8 @@ namespace RavlN {
 #endif
       {
         int anErrno = zmq_errno();
+        if(errValue != 0)
+          *errValue = anErrno;
         if(block == ZSB_NOBLOCK && (anErrno == EAGAIN || anErrno == EINTR))
           return false;
         RavlError("Send failed : %s   flags=%x errno=%d ",zmq_strerror (anErrno),flags,anErrno);
@@ -555,16 +557,16 @@ namespace RavlN {
     }
 
     //! Send a message
-    bool SocketC::Send(const MessageC::RefT &msg,BlockT block)
+    bool SocketC::Send(const MessageC::RefT &msg,BlockT block,int *errValue)
     {
       RavlAssert(msg.IsValid());
       if(!msg.IsValid())
         return true;
-      return Send(*msg,block);
+      return Send(*msg,block,errValue);
     }
 
     //! Send a message
-    bool SocketC::Send(const MessageC &msg,BlockT block)
+    bool SocketC::Send(const MessageC &msg,BlockT block,int *errValue)
     {
       RavlAssert(m_socket != 0);
       size_t elems = msg.Parts().size();
@@ -592,17 +594,15 @@ namespace RavlN {
 #endif
         {
           int anErrno = zmq_errno();
+          if(errValue != 0)
+            *errValue = anErrno;
           zmq_msg_close(&zmsg);
           if(i == 0 && block == ZSB_NOBLOCK && (anErrno == EAGAIN || anErrno == EINTR))
             return false;
           if(anErrno == EHOSTUNREACH)
             return false;
           RavlError("Send failed : %s   flags=%x errno=%d in %s ",zmq_strerror (anErrno),flags,anErrno,Name().c_str());
-#if 0
-          throw ExceptionOperationFailedC("Send failed. ");
-#else
           return false;
-#endif
         }
         if((ret = zmq_msg_close(&zmsg)) != 0) {
           int anErrno = zmq_errno();

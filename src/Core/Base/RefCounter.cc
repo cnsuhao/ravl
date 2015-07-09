@@ -146,6 +146,9 @@ namespace RavlN {
 
   RCBodyC::~RCBodyC() {
     RavlAssert(ravl_atomic_read(&counter) == 0);
+#if RAVL_CHECK
+    ravl_atomic_set(&counter,-100);
+#endif
   }
 
 

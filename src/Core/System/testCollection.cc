@@ -38,7 +38,6 @@ int testDArray1dAsQueue();
 
 int main()
 {
-#if 0
   RAVL_RUN_TEST(testBasic());
   RAVL_RUN_TEST(testDArray1d());
   RAVL_RUN_TEST(testDArray1dIO());
@@ -46,7 +45,6 @@ int main()
   RAVL_RUN_TEST(testDArray1dEvenMore());
   RAVL_RUN_TEST(testDArray1dFrom());
   RAVL_RUN_TEST(testDArray1dReverseIter());
-#endif
   RAVL_RUN_TEST(testDArray1dAsQueue());
   RavlInfo("Collection test passed. ");
   return 0;

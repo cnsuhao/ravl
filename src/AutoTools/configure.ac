@@ -1150,9 +1150,9 @@ then
                    trace 5 Changing _LIBS from:
                    TRACE_INDENT="     "
                    trace 5 $setting
-                   setting=`echo $setting | $SED 's/-L *\(@<:@^ @:>@@<:@^ @:>@*\)/\$(LINKER_LIBPATHSWITCH)\=\1 -L\1/g'`
+                   setting=`echo $setting | $SED 's/-L *\(@<:@^ @:>@@<:@^ @:>@*\)/\$(LINKER_LIBPATHSWITCH)\1 -L\1/g'`
 dnl                # The sed command is actually:
-dnl                #    's/-L *\([^ ][^ ]*\)\$(LINKER_LIBPATHSWITCH)\=\1 -L\1/g'
+dnl                #    's/-L *\([^ ][^ ]*\)\$(LINKER_LIBPATHSWITCH)\1 -L\1/g'
 dnl                # the square brackets having been substituted to prevent
 dnl                # m4 removing them. 
                    # The sed command looks for:
@@ -1216,9 +1216,9 @@ then
                    if (test $with_rpath = Y)
                    then
                      # Add in new rpath setting
-                     new_setting=`echo "$setting" | $SED 's/-L *\(@<:@^ @:>@@<:@^ @:>@*\)/\$(LINKER_LIBPATHSWITCH)\=\1 -L\1/g'`
+                     new_setting=`echo "$setting" | $SED 's/-L *\(@<:@^ @:>@@<:@^ @:>@*\)/\$(LINKER_LIBPATHSWITCH)\1 -L\1/g'`
 #dnl                 # The sed command is actually:
-#dnl                 #    's/-L *\([^ ][^ ]*\)\$(LINKER_LIBPATHSWITCH)\=\1 -L\1/g'
+#dnl                 #    's/-L *\([^ ][^ ]*\)\$(LINKER_LIBPATHSWITCH)\1 -L\1/g'
 #dnl                 # the square brackets having been substituted to prevent
 #dnl                 # m4 removing them. 
                      # The sed command looks for:
@@ -1228,20 +1228,20 @@ then
                      # if this pattern is found, each and every occurrence is
                      # replaced by the following:
                      #
-                     #       $(LINKER_LIBPATHSWITCH)=<something> -L<something>
+                     #       $(LINKER_LIBPATHSWITCH)<something> -L<something>
                      #
                      # <something> being the substring found in the original
                      # fragment.
                    else
                      # Strip existing setting
-                     new_setting=`echo "$setting" | $SED 's/\$(LINKER_LIBPATHSWITCH)\=@<:@^ @:>@@<:@^ @:>@* //g'`
+                     new_setting=`echo "$setting" | $SED 's/\$(LINKER_LIBPATHSWITCH)@<:@^ @:>@@<:@^ @:>@* //g'`
 #dnl                 # The sed command is actually:
-#dnl                 #    's/\$(LINKER_LIBPATHSWITCH)\=[^ ][^ ]* //g'
+#dnl                 #    's/\$(LINKER_LIBPATHSWITCH)[^ ][^ ]* //g'
 #dnl                 # the square brackets having been substituted to prevent
 #dnl                 # m4 removing them. 
                      # The sed command looks for and deletes:
                      #
-                     #        $(LINKER_LIBPATHSWITCH)=<something><space> 
+                     #        $(LINKER_LIBPATHSWITCH)<something><space> 
                      #
                    fi
                    if ( test "$setting" != "$new_setting" )

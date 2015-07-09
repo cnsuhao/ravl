@@ -146,8 +146,11 @@ namespace RavlN {
       const SArray1dC<char> &arr = Parts()[part];
       if(arr.Size() == 0)
         return "";
-      if(arr.Size() < maxLen)
-        return StringC(arr.Size(),&(arr[0]));
+      if(arr.Size() < maxLen) {
+        StringC ret(arr.Size(),&(arr[0]));
+        ret += (char) 0;
+        return ret;
+      }
       StringC ret(maxLen,&arr[0]);
       ret += (char) 0;
       return ret;
