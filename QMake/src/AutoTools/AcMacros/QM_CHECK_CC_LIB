@@ -244,6 +244,8 @@ AC_DEFUN([QM_CHECK_CC_LIB],
                    AC_MSG_RESULT([no])
                 fi
              done
+             # Reset IFS in case of null lib_sets
+             IFS=$liveIFS
           fi
           CPPFLAGS=$preserve_CPPFLAGS
           LDFLAGS=$preserve_LDFLAGS

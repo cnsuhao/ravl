@@ -36546,6 +36546,8 @@ $as_echo "yes" >&6; }
 $as_echo "no" >&6; }
                 fi
              done
+             # Reset IFS in case of null lib_sets
+             IFS=$liveIFS
           fi
           CPPFLAGS=$preserve_CPPFLAGS
           LDFLAGS=$preserve_LDFLAGS
@@ -36738,6 +36740,8 @@ $as_echo "yes" >&6; }
 $as_echo "no" >&6; }
                 fi
              done
+             # Reset IFS in case of null lib_sets
+             IFS=$liveIFS
           fi
           CPPFLAGS=$preserve_CPPFLAGS
           LDFLAGS=$preserve_LDFLAGS
