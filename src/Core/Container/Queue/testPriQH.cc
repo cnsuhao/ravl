@@ -59,7 +59,7 @@ int testSimple()
   RAVL_TEST_EQUALS(Queue.Size(),2);
   RAVL_TEST_EQUALS(2,Queue.Top());
   Queue.DelTop();
-  RAVL_TEST_EQUALS(1,Queue.Top());
+  RAVL_TEST_EQUALS(3,Queue.Top());
 
   return 0;
 }
