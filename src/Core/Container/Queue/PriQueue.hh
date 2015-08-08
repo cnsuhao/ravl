@@ -177,7 +177,7 @@ namespace RavlN {
       return ;
     }
     // Need do any shifting at all ?
-    if(arr[i/2-1].Data1() < dat.Data1()) {
+    if(arr[i/2-1].Data1() <= dat.Data1()) {
       arr.Add(dat); // No, just add on end.
       return ;
     }
