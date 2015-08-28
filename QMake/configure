@@ -34768,7 +34768,7 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
                 eval testwith="\$with_${lib}_tstcd"
                 eval prereq=\$with_${lib}_prq
                 eval lnklibs=\$with_${lib}_lnklibs
-                eval loc=\$with_${lib}_libpath
+                eval libpath=\$with_${lib}_libpath
                 eval hdr=\$with_${lib}_hdr
                 eval inc=\$with_${lib}_inc
                 eval pkgconf=\$with_${lib}_pkgconf
@@ -34780,7 +34780,7 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
                        trace 3 "$lib:Virtual:$prereq:$lib_enablement"
 
 else
-  trace 3 "$lib:$testwith:$prereq:$lnklibs:$loc:$hdr:$inc:$pkgconf:$lib_enablement"
+  trace 3 "$lib:$testwith:$prereq:$lnklibs:$libpath:$hdr:$inc:$pkgconf:$lib_enablement"
 
 
 fi
@@ -35004,7 +35004,7 @@ See \`config.log' for more details" "$LINENO" 5; }
                    eval testwith="\$with_${lib}_tstcd"
                    eval prereq=\$with_${lib}_prq
                    eval lnklibs=\$with_${lib}_lnklibs
-                   eval loc=\$with_${lib}_libpath
+                   eval libpath=\$with_${lib}_libpath
                    eval hdr=\$with_${lib}_hdr
                    eval inc=\$with_${lib}_inc
                    eval pkgconf=\$with_${lib}_pkgconf
@@ -35016,7 +35016,7 @@ See \`config.log' for more details" "$LINENO" 5; }
                           trace 3 "$lib:Virtual:$prereq:$lib_enablement"
 
 else
-  trace 3 "$lib:$testwith:$prereq:$lnklibs:$loc:$hdr:$inc:$pkgconf:$lib_enablement"
+  trace 3 "$lib:$testwith:$prereq:$lnklibs:$libpath:$hdr:$inc:$pkgconf:$lib_enablement"
 
 
 fi
@@ -35134,12 +35134,12 @@ fi
                   eval testwith="\$with_${lib}_tstcd"
                   eval prereq="\$with_${lib}_prq"
                   eval lnklibs=\$with_${lib}_lnklibs
-                  eval loc=\$with_${lib}_libpath
+                  eval libpath=\$with_${lib}_libpath
                   eval hdr=\$with_${lib}_hdr
                   eval inc=\$with_${lib}_inc
                   eval lib_enablement=\$use_${lib}
                   TRACE_INDENT="     "
-                  trace 3 "$lib:$testwith:$prereq:$lnklibs:$loc:$hdr:$pkgconf:$inc:$lib_enablement"
+                  trace 3 "$lib:$testwith:$prereq:$lnklibs:$libpath:$hdr:$pkgconf:$inc:$lib_enablement"
                fi
             else
                eval virtual=\$with_${lib}_virtual
@@ -36394,7 +36394,7 @@ See \`config.log' for more details" "$LINENO" 5; }
                    eval testwith="\$with_${lib}_tstcd"
                    eval prereq=\$with_${lib}_prq
                    eval lnklibs=\$with_${lib}_lnklibs
-                   eval loc=\$with_${lib}_libpath
+                   eval libpath=\$with_${lib}_libpath
                    eval hdr=\$with_${lib}_hdr
                    eval inc=\$with_${lib}_inc
                    eval pkgconf=\$with_${lib}_pkgconf
@@ -36406,7 +36406,7 @@ See \`config.log' for more details" "$LINENO" 5; }
                           trace 3 "$lib:Virtual:$prereq:$lib_enablement"
 
 else
-  trace 3 "$lib:$testwith:$prereq:$lnklibs:$loc:$hdr:$inc:$pkgconf:$lib_enablement"
+  trace 3 "$lib:$testwith:$prereq:$lnklibs:$libpath:$hdr:$inc:$pkgconf:$lib_enablement"
 
 
 fi
