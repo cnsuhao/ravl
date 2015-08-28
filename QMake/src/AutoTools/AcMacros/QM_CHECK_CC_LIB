@@ -217,11 +217,11 @@ AC_DEFUN([QM_CHECK_CC_LIB],
              # Change IFS to split on the set seperator (|) and loop over the
              # library sets specified...
 
-             liveIFS=$IFS
+             save_ifs="$IFS"
              IFS="|"
              for try_libs in $lib_sets
              do
-                IFS=$liveIFS
+                IFS="$save_ifs"
                 # Reset IFS as soon as possible. The for should have the
                 # possible sets already cached so we do not need to reset IFS
                 # back to the pipe symbol on any further iteration through the
@@ -245,7 +245,7 @@ AC_DEFUN([QM_CHECK_CC_LIB],
                 fi
              done
              # Reset IFS in case of null lib_sets
-             IFS=$liveIFS
+             IFS="$save_ifs"
           fi
           CPPFLAGS=$preserve_CPPFLAGS
           LDFLAGS=$preserve_LDFLAGS
