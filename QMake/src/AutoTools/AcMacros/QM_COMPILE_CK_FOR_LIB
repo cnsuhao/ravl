@@ -199,7 +199,7 @@ AC_DEFUN([QM_COMPILE_CK_FOR_LIB],
             # Original implementation used a single function name for the test
             # code and appended (); to it. Check if we have someone using the old
             # standard and process appropriately
-            if ( test -z "`echo "$test_code" | awk '{ print @S|@2 }'`" )
+            if ( test -z "`echo "$test_code" | $AWK '{ print @S|@2 }'`" )
             then
                # test code is a single item, is it a function call or just a
                # function name?
