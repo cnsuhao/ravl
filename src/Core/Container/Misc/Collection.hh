@@ -222,6 +222,22 @@ namespace RavlN {
     { return data[0]; }
     //: Access first element in the collection.
     
+    DataT *begin()
+    { return data.begin(); }
+    //: Access start.
+
+    DataT *end()
+    { return begin() + n; }
+    //: Access end
+
+    const DataT *begin() const
+    { return data.begin(); }
+    //: Access start.
+
+    const DataT *end() const
+    { return begin() + n; }
+    //: Access end
+
   protected:
     SArray1dC<DataT> data;
     SizeT n;
@@ -446,6 +462,37 @@ namespace RavlN {
     { return Body().First(); }
     //: Access first element in the collection.
     
+    template<typename FuncT>
+    void ForEach(FuncT func) {
+      for(int i = 0;i < (int) Size();i++)
+        func((*this)[i]);
+    }
+    //: Apply to each element in the array
+
+    template<typename FuncT>
+    void ForEach(FuncT func) const {
+      for(int i = 0;i < (int) Size();i++)
+        func((*this)[i]);
+    }
+    //: Apply to each element in the array
+
+    DataT *begin()
+    { return Body().begin(); }
+    //: Access start.
+
+    DataT *end()
+    { return Body().end(); }
+    //: Access end
+
+    const DataT *begin() const
+    { return Body().beign(); }
+    //: Access start.
+
+    const DataT *end() const
+    { return Body().end(); }
+    //: Access end
+
+
     typedef CollectionIterC<DataT> IteratorT;
     //: Type of iterator.
 

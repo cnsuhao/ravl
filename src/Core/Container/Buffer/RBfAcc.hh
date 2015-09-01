@@ -271,6 +271,37 @@ namespace RavlN {
     //: Copy slice into this array.
     // slice must have the same length as this buffer. <br>
     // Implementation can be found in Slice1d.hh
+
+    template<typename FuncT>
+    void ForEach(FuncT func) {
+      for(int i = range.Min();i <= range.Max();i++)
+        func((*this)[i]);
+    }
+    //: Apply to each element in the array
+
+    template<typename FuncT>
+    void ForEach(FuncT func) const {
+      for(int i = range.Min();i <= range.Max();i++)
+        func((*this)[i]);
+    }
+    //: Apply to each element in the array
+
+    DataT *begin()
+    { return DataStart(); }
+    //: Access start.
+
+    DataT *end()
+    { return ReferenceElm() + (range.Max().V()+1); }
+    //: Access end
+
+    const DataT *begin() const
+    { return DataStart(); }
+    //: Access start.
+
+    const DataT *end() const
+    { return ReferenceElm() + (range.Max().V()+1); }
+    //: Access end
+
   protected:
     
     // Copy
