@@ -485,7 +485,7 @@ namespace RavlN {
     //: Access end
 
     const DataT *begin() const
-    { return Body().beign(); }
+    { return Body().begin(); }
     //: Access start.
 
     const DataT *end() const
