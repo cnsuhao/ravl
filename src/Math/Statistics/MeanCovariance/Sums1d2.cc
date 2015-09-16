@@ -13,7 +13,16 @@
 #include "Ravl/BinStream.hh"
 
 namespace RavlN {
-  
+
+  Sums1d2C Sums1d2C::CreateFromMeanVariance(int n,RealT mean,RealT variance,bool useSampleStatistics)
+  {
+    RealT rn = n;
+    RealT sum = mean * rn;
+    return Sums1d2C(n,sum,variance * (rn -(useSampleStatistics ? 1.0 : 0)) + Sqr(sum)/rn);
+  }
+
+  //: Create a Sums1d2C from mean variance.
+
   ostream& operator<<(ostream &s,const Sums1d2C &mv) {
     s << mv.Size() << " " << mv.Sum() << " " << mv.Sum2();
     return s;
