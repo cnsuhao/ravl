@@ -40,6 +40,9 @@ namespace RavlN {
     {}
     //: Constructor from sum elements.
     
+    static Sums1d2C CreateFromMeanVariance(int n,RealT mean,RealT variance,bool useSampleStatistics = true);
+    //: Create a Sums1d2C from mean variance.
+
     void Reset()
     { n = 0; sum = 0; sum2 = 0; }
     //: Reset all counters.

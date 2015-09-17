@@ -30,6 +30,7 @@ using namespace RavlN;
 
 int testMean();
 int testMeanVar();
+int testSums1d2();
 int testFMean();
 int testFMeanCovar();
 int testMeanCovar();
@@ -45,35 +46,14 @@ template FMeanCovarianceC<2>;
 #endif
 
 int main() {
-  int ln;
-  if((ln = testMean()) != 0) {
-    cerr << "testMean, failed. Line:" << ln << "\n";
-    return 1;
-  }
-  if((ln = testMeanVar()) != 0) {
-    cerr << "testMeanVar, failed. Line:" << ln << "\n";
-    return 1;
-  }
-  if((ln = testFMean()) != 0) {
-    cerr << "testMeanVar, failed. Line:" << ln << "\n";
-    return 1;
-  }
-  if((ln = testFMeanCovar()) != 0) {
-    cerr << "testMeanVar, failed. Line:" << ln << "\n";
-    return 1;
-  }
-  if((ln = testMeanCovar()) != 0) {
-    cerr << "testMeanCovar, failed. Line:" << ln << "\n";
-    return 1;
-  }
-  if((ln = testMeanCovar2d()) != 0) {
-    cerr << "testMeanVar, failed. Line:" << ln << "\n";
-    return 1;
-  }
-  if((ln = testStatNormalQ()) != 0) {
-    cerr << "testMeanVar, failed. Line:" << ln << "\n";
-    return 1;
-  }
+  RAVL_RUN_TEST(testMean());
+  RAVL_RUN_TEST(testMeanVar());
+  RAVL_RUN_TEST(testSums1d2());
+  RAVL_RUN_TEST(testFMean());
+  RAVL_RUN_TEST(testFMeanCovar());
+  RAVL_RUN_TEST(testMeanCovar());
+  RAVL_RUN_TEST(testMeanCovar2d());
+  RAVL_RUN_TEST(testStatNormalQ());
   cerr << "Test passed ok.\n";
   return 0;
 }
@@ -139,6 +119,17 @@ int testMeanVar() {
   if(Abs(norm2sig.ProbabilityOfHigherValue(1000)) > 0.0001) return __LINE__;
   if(Abs(norm2sig.ProbabilityOfHigherValue(-1000) - 1.0) > 0.0001) return __LINE__;
   
+  return 0;
+}
+
+int testSums1d2()
+{
+  {
+    Sums1d2C sum = Sums1d2C::CreateFromMeanVariance(10,5.0,2.0);
+    RAVL_TEST_ALMOST_EQUALS(sum.Mean(),5.0,1e-8);
+    RAVL_TEST_ALMOST_EQUALS(sum.Variance(),2.0,1e-8);
+  }
+
 
   {
     // Check sums work ok.
