@@ -556,7 +556,9 @@ namespace RavlN {
 #endif
     }
     if(!bestFormat.IsValid()) {
-      RavlError("CreateInput(StreamC), Can't load stream in format '%s' for type '%s',  stream name '%s' buff:%s ",format.c_str(),TypeName(obj_type),in.Name().c_str(),TypeName(typeid(in.is())));
+      std::istream &istrm = in.is(); // Use via reference to avoid clang warnings.
+      RavlError("CreateInput(StreamC), Can't load stream in format '%s' for type '%s',  stream name '%s' buff:%s ",
+          format.c_str(),TypeName(obj_type),in.Name().c_str(),TypeName(typeid(istrm)));
       if(verbose ONDEBUG(|| 1)) 
         RavlWarning("CreateInput(StreamC), Can't identify format. ");
       return DPIPortBaseC();
@@ -651,10 +653,11 @@ namespace RavlN {
     
     DPOPortBaseC outp = minForm.CreateOutput(to,*bestout);
     if(!outp.IsValid()) {
+      DPEntityBodyC &minFormBody = static_cast<DPEntityC &>(minForm).Body(); // Avoid clang warnings.
       RavlError("Internal error: Failed to open output stream in format '%s' (%s) type '%s' ",
           minForm.Name().c_str(),
           minForm.Description().c_str(),
-          TypeName(typeid(static_cast<DPEntityC &>(minForm).Body())));
+          TypeName(typeid(minFormBody)));
       RavlAssert(0);
       return DPOPortBaseC();
     }
