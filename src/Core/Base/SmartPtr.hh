@@ -126,6 +126,11 @@ namespace RavlN {
     DataT *get()
     { return this->body; }
     //: Boost compatibility. Get Ptr.
+
+    const std::type_info &TypeInfo() const
+    { return typeid(this->body); }
+    //: Get the type info of the value pointed to.
+    // This  can be used to avoid clang warnings 'typeid(*ptr)' would cause.
   };
   
   //!userlevel=Develop

@@ -111,6 +111,11 @@ namespace RavlN {
     UIntT Hash() const 
     { return StdHash(reinterpret_cast<const void *>(BodyPtr())); }
     //: Compute hash value for handle.
+
+    const std::type_info &TypeInfo() const
+    { return typeid(this->body); }
+    //: Get the type info of the value pointed to.
+    // This  can be used to avoid clang warnings 'typeid(*ptr)' would cause.
   };
   
   // ------------------------------------------------
