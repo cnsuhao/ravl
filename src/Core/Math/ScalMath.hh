@@ -12,7 +12,6 @@
 //! userlevel=Normal
 //! author="Radek Marik"
 //! docentry="Ravl.API.Math"
-//! rcsid="$Id$"
 //! date="02/11/1995"
 
 #include "Ravl/StdMath.hh"
@@ -37,7 +36,8 @@ namespace RavlN {
   
   //! userlevel=Normal
   
-  inline RealT Factorial(UIntT n) {
+  inline RealT Factorial(UIntT n)
+  {
     if(n < ((UIntT) RavlPreComputedFactorialSize))
       return RavlPreComputedFactorial[n];
     RealT fac = RavlPreComputedFactorial[RavlPreComputedFactorialSize-1];
@@ -48,7 +48,7 @@ namespace RavlN {
   }
   //: Returns the factorial of the integer 'n'. 
   
-  RealT DoubleFactorial(IntT n);
+  RealT DoubleFactorial(IntT n)  RAVL_GNUEXT(__attribute__ ((const)));
   //: Double Factorial, returns n!!
   // Product of: <br>
   //  n.(n-2) ...  5 . 3 . 1 for n > 0 is odd <br>
@@ -63,10 +63,10 @@ namespace RavlN {
   }
   //: Returns the binomial coefficient (n over k) as a real number.
   
-  RealT HypersphereSurfaceArea(IntT n,RealT r);
+  RealT HypersphereSurfaceArea(IntT n,RealT r)  RAVL_GNUEXT(__attribute__ ((const)));
   //: Compute the surface area of a hyper sphere in n dimensions with radius r
   
-  RealT HypersphereVolume(IntT n,RealT r);
+  RealT HypersphereVolume(IntT n,RealT r)  RAVL_GNUEXT(__attribute__ ((const)));
   //: Compute the volume of a hyper sphere in n dimensions with radius r
 }
 #endif

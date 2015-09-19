@@ -140,7 +140,7 @@ namespace RavlN {
   { return pow(x,y); }
   //: Returns 'x' raised to the power 'y'.
 
-  RealT Pow(RealT x, IntT y);
+  RealT Pow(RealT x, IntT y) RAVL_GNUEXT(__attribute__ ((const)));
   //: Returns 'x' raised to the power 'y' where y is an integer..
 
   inline RealT Exp(RealT r){

@@ -54,6 +54,8 @@
   #define RAVL_COMPILER_VISUALCPPNET (!defined(__GNUC__) && defined(WIN32) && (_MSC_VER >= 1300)) /* Visual C++ .NET*/
   #define RAVL_COMPILER_VISUALCPP6 (!defined(__GNUC__) && defined(WIN32) && !RAVL_COMPILER_VISUALCPPNET) /* Visual C++ 6 */
 
+  #define RAVL_GNUEXT(x) x /* Support GNU extensions */
+
   #define RAVL_CPU_IX86    defined(__i386__)      /* 386 base variant. */
   #define RAVL_CPU_X86_64 (defined (__x86_64__) || defined(__LP64__))
   #define RAVL_CPU_SPARC   defined(__sparc)       /* sun sparc based system. */
@@ -90,6 +92,8 @@
   #define RAVL_COMPILER_GCC3      0
   #define RAVL_COMPILER_GCC4      0
   #define RAVL_COMPILER_MIPSPRO   0
+
+  #define RAVL_GNUEXT(x) // No support for GNU extensions
 
   #if (!defined(__GNUC__) && defined(WIN32))
     #define RAVL_COMPILER_VISUALCPP 1 /* Visual C++ */
