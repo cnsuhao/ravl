@@ -257,6 +257,8 @@ namespace RavlN {
     { return BodyPtr() != data.BodyPtr(); }
     //: Are these handles to different objects ?
     
+    using RCHandleVC<BodyT>::BodyTypeInfo;
+
   protected:
     BodyT &Body()
     { return RCHandleVC<BodyT>::Body(); }
