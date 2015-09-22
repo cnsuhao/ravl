@@ -612,10 +612,10 @@ int testUUId() {
 }
 
 int testResource() {
-  SetResourceRoot(StringC(PROJECT_OUT));
+  SetResourceRoot(PROJECT_OUT);
   if (ResourceRoot() != PROJECT_OUT)
     return __LINE__;
-  SetResourceRoot(StringC(getenv("PROJECT_OUT")));
+  SetResourceRoot(getenv("PROJECT_OUT"));
   if (ResourceRoot() != getenv("PROJECT_OUT"))
     return __LINE__;
   return 0;

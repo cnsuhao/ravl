@@ -24,12 +24,14 @@
         <ul>
           <li>ensure that the <code>PROJECT_OUT</code> variable is available to the compiler, as is the case with QMake); </li>
           <li>set the resource root like this:<pre>
-        SetResourceRoot(StringC(PROJECT_OUT));</pre></li>
+        SetResourceRoot(PROJECT_OUT);</pre></li>
         </ul>
  </li>
 
       <li>If you want the root to take the value of the <code>$PROJECT_OUT</code> at run time, use this:<pre>
-        SetResourceRoot(StringC(getenv("PROJECT_OUT"))");</pre></li>
+        SetResourceRoot(getenv("PROJECT_OUT"));</pre></li>
+      <li>You can of course set it to something else entirely:<pre>
+        SetResourceRoot("/tmp")</pre></li>
     </ul>
 
 
