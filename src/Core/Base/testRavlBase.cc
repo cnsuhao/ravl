@@ -32,6 +32,7 @@
 #include "Ravl/UnitTest.hh"
 #include "Ravl/SysLog.hh"
 #include "Ravl/StrStream.hh"
+#include "Ravl/Resource.hh"
 
 using namespace RavlN;
 
@@ -63,6 +64,7 @@ int testRCWrap();
 int testFloat16();
 int testQuickSort();
 int testUUId();
+int testResource();
 
 template class RCHandleC<TestBodyC>;
 template class RCWrapC<IntT>;
@@ -100,6 +102,7 @@ int main()
   RAVL_RUN_TEST(testFloat16());
   RAVL_RUN_TEST(testQuickSort());
   RAVL_RUN_TEST(testUUId());
+  RAVL_RUN_TEST(testResource());
 #endif
   std::cout << "Test completed ok. \n";
   return 0;
@@ -604,6 +607,16 @@ int testUUId() {
   if(!RavlN::TestBinStreamIO(v1,v3))
     return __LINE__;
   if(v1 != v3)
+    return __LINE__;
+  return 0;
+}
+
+int testResource() {
+  SetResourceRoot(StringC(PROJECT_OUT));
+  if (ResourceRoot() != PROJECT_OUT)
+    return __LINE__;
+  SetResourceRoot(StringC(getenv("PROJECT_OUT")));
+  if (ResourceRoot() != getenv("PROJECT_OUT"))
     return __LINE__;
   return 0;
 }
