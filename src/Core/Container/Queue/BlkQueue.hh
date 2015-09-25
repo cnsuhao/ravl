@@ -201,6 +201,15 @@ namespace RavlN {
     //! Goto next element.
     //! Return true if left on a valid data element.
 
+    bool operator++(int)
+    { return Next(); }
+    //! Goto next element.
+    //! Return true if left on a valid data element.
+
+    bool operator==(const BlkQueueIterC<T> &other) const
+    { return m_atBlk == other.m_atBlk && m_index == other.m_index; }
+    //! Does the iterator point to the same element as another?
+
   protected:
     typedef typename BlkQueueC<T>::q_Blk BlkT;
 

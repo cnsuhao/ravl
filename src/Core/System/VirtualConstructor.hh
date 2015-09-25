@@ -7,7 +7,6 @@
 #ifndef RAVL_VIRTUALCONSTRUCTOR_HEADER
 #define RAVL_VIRTUALCONSTRUCTOR_HEADER 1
 ///////////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! author="Charles Galambos"
 //! docentry="Ravl.API.Core.Misc"
 //! lib=RavlCore

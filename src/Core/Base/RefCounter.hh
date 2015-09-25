@@ -275,7 +275,7 @@ namespace RavlN {
     // Use for working with SmartPtrC's.
 
     const std::type_info &BodyTypeInfo() const
-    { return typeid(this->body); }
+    { return typeid(*(this->body)); }
     //: Get the type info of the value pointed to.
     // This  can be used to avoid clang warnings when using methods to provide data to typeid()
 
