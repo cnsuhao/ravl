@@ -37,10 +37,19 @@ namespace RavlN {
   template <class T>
   class BlkQueueC {
   public:
+    BlkQueueC(int blkSize = 20);
+    //: Construct empty queue.
+
+    BlkQueueC(const BlkQueueC<T> &other);
+    //: Copy constructor
     
-    inline BlkQueueC(int blkSize = 20);
     ~BlkQueueC();
+    //: Destructor
     
+    const BlkQueueC<T>& operator=(const BlkQueueC<T> &other);
+    //: Assignment to another queue.
+    //: This creates a new copy.
+
     inline T GetFirst();
     //: Get the first element in the queue.
     
@@ -97,14 +106,15 @@ namespace RavlN {
 
     void DbPrint() { RavlDebug("Queue: %d -> %d   Size:%d BlkTotal:%d",last,first,Size(),blkTotal); }
     //: Debug print.
-    
+
+
   protected:
     inline void Init();
     inline void FixFirst();
     //! userlevel=Develop
-    struct q_Blk {q_Blk* link; T d[1];};
+    struct q_Blk {q_Blk* link; T d[0];};
     q_Blk * AllocBlk()
-    {return (q_Blk*) new char[sizeof(q_Blk) + sizeof(T)*(blkSize-1)];}
+    {return (q_Blk*) new char[sizeof(q_Blk) + sizeof(T)*(blkSize)];}
     void FirstBlk();
     void DelBlk();
     
@@ -233,11 +243,28 @@ namespace RavlN {
   }
   
   template<class T>
-  inline 
   BlkQueueC<T>::BlkQueueC(int size)
     : blkSize(size) 
   { Init(); }
-  
+
+  template<class T>
+  BlkQueueC<T>::BlkQueueC(const BlkQueueC<T> &other)
+    : blkSize(other.blkSize)
+  {
+    Init();
+    for(BlkQueueIterC<T> it(other);it;it.Next())
+      InsLast(*it);
+  }
+
+  template<class T>
+  const BlkQueueC<T>& BlkQueueC<T>::operator=(const BlkQueueC<T> &other)
+  {
+    Empty();
+    for(BlkQueueIterC<T> it(other);it;it.Next())
+      InsLast(*it);
+    return *this;
+  }
+
   template <class T>
   void BlkQueueC<T>::DelBlk() {
     q_Blk * next = firstBlk->link;
@@ -254,7 +281,7 @@ namespace RavlN {
   }
   
   template<class T> 
-  inline void    BlkQueueC<T>::Empty() {
+  inline void BlkQueueC<T>::Empty() {
     while(!IsEmpty())
       DelFirst();
   }
