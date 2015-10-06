@@ -249,7 +249,7 @@ namespace RavlN {
       if(!oport.IsValid()) {
         RavlAssert(0);
         throw ExceptionErrorCastC("DPTypeInfoInstBodyC::Put(), 1",
-                                  typeid(port.OutputType()),
+                                  port.OutputType(),
                                   typeid(DataT));
       }
       RCWrapC<DataT> wo(obj,false);
@@ -275,7 +275,7 @@ namespace RavlN {
       if(!iport.IsValid()) {
         RavlAssert(0);
         throw ExceptionErrorCastC("DPTypeInfoInstBodyC::Get(), ",
-                                  typeid(port.InputType()),
+                                  port.InputType(),
                                   typeid(DataT));
       }
       return RCWrapC<DataT>(iport.Get());
@@ -292,14 +292,14 @@ namespace RavlN {
       if(!tiport.IsValid()) {
         RavlAssert(0);
         throw ExceptionErrorCastC("DPTypeInfoInstBodyC::Get(), ",
-                                  typeid(iport.InputType()),
+                                  iport.InputType(),
                                   typeid(DataT));
       }
       DPOPortC<DataT> toport(oport);
       if(!toport.IsValid()) {
         RavlAssert(0);
         throw ExceptionErrorCastC("DPTypeInfoInstBodyC::Put(), 1",
-                                  typeid(oport.OutputType()),
+                                  oport.OutputType(),
                                   typeid(DataT));
       }
       UIntT ret = 0;
@@ -329,7 +329,7 @@ namespace RavlN {
       if(!iport.IsValid()) {
         RavlAssert(0);
         throw ExceptionErrorCastC("DPTypeInfoInstBodyC::GetAndWrite(), ",
-                                  typeid(port.InputType()),
+                                  port.InputType(),
                                   typeid(DataT));
       }
       // Check stream is valid before doing anything.
@@ -349,7 +349,7 @@ namespace RavlN {
       {
         RavlAssert(0);
         throw ExceptionErrorCastC("DPTypeInfoInstBodyC::GetAndWriteArray(), ",
-                                  typeid(port.InputType()),
+                                  port.InputType(),
                                   typeid(DataT));
       }
 
@@ -358,7 +358,7 @@ namespace RavlN {
 
       if (!strm.Stream())
       {
-        cerr << "DPTypeInfoInstBodyC<DataT>::GetAndWriteArray stream fail" << endl;
+        std::cerr << "DPTypeInfoInstBodyC<DataT>::GetAndWriteArray stream fail" << std::endl;
         return 0;
       }
 
@@ -379,7 +379,7 @@ namespace RavlN {
       if(!oport.IsValid()) {
         RavlAssert(0);
         throw ExceptionErrorCastC("DPTypeInfoInstBodyC::ReadAndPut(), ",
-                                  typeid(port.OutputType()),
+                                  port.OutputType(),
                                   typeid(DataT));
       }
       // Check stream is valid before doing anything.
@@ -398,7 +398,7 @@ namespace RavlN {
       {
         RavlAssert(0);
         throw ExceptionErrorCastC("DPTypeInfoInstBodyC::ReadAndPutArray(), ",
-                                  typeid(port.OutputType()),
+                                  port.OutputType(),
                                   typeid(DataT));
       }
 

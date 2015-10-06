@@ -12,6 +12,7 @@
 #include "Ravl/Threads/RWLock.hh"
 #include "Ravl/Stream.hh"
 #include "Ravl/OS/Date.hh"
+#include "Ravl/SysLog.hh"
 
 #if defined(VISUAL_CPP)
 #include <time.h>
@@ -403,8 +404,8 @@ namespace RavlN
   //: Print an error.
   
   void RWLockC::Error(const char *msg,int ret) {
-    std::cerr << msg << " (errno=" << errno << ") Return=" << ret << " \n";
-    RavlAssert(0); // Abort so we can get a stack trace.
+    RavlError("RWLock, %s errno=%d Return=%d ",msg,errno,ret);
+    RavlAlwaysAssert(0); // Abort so we can get a stack trace.
   }
 
   std::ostream &operator<<(std::ostream &strm,const RWLockC &vertex) {

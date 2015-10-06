@@ -56,7 +56,10 @@ namespace RavlN {
     // FIXME :- Use RTTI to check copy is full.
 
     const std::type_info &BodyType() const
-    { return typeid(Body()); }
+    {
+      const RCBodyVC &body = Body();
+      return typeid(body); // Use via reference to avoid warnings from clang.
+    }
     //: Type of object held.
     
     void Dump(std::ostream &out) const;

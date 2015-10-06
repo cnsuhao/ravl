@@ -14,25 +14,27 @@
     <h2>Default behaviour of the resource root</h2>
 
     <p>The default for the root of the resource directory is the root of the installation (and is therefore likely to be a read-only location).  More precisely, it is the value of <code>PROJECT_OUT</code> when <i>the functions below</i> were compiled.  In practice therefore the default could have one of two values, depending on whether you are using the functions from an existing Ravl library or a Ravl library you have explicitly compiled yourself.  In the former case it will have a value corresponding to the root of the library; in the latter case, <code>PROJECT_OUT</code>, if set.  In either case, there is no trailing separator.  If for any reason <code>PROJECT_OUT</code> was not set when the functions were compiled, its value will be an empty string.
+    </p>
 
-    <h2>Modifying the default behaviour</h2>
+    <h2>Modifying the default behaviour of the resource root</h2>
 
     <p>If these functions are used in code in a library, the above default behaviour may be not what you want.</p>
     <ul>
-      <li>If you simply want to extend the path of the above behaviour, set the resource root like this:<pre>
-        SetResourceRoot(ResourceRoot() + "/share/data/");</pre></li>
-
-      <li>If you want the root to take the value of <code>PROJECT_OUT</code> when the code that <i>uses</i> these functions is compiled (e.g. when modifying the data that is installed with the library code), then 
+      <li>If you want the root to take the value of <code>PROJECT_OUT</code> when the code that <i>uses</i> these functions is compiled (e.g. when accessing the data that is installed with the library code), then 
         <ul>
           <li>ensure that the <code>PROJECT_OUT</code> variable is available to the compiler, as is the case with QMake); </li>
           <li>set the resource root like this:<pre>
-        SetResourceRoot(StringC(PROJECT_OUT) + "/share/data/");</pre></li>
+        SetResourceRoot(PROJECT_OUT);</pre></li>
         </ul>
  </li>
 
       <li>If you want the root to take the value of the <code>$PROJECT_OUT</code> at run time, use this:<pre>
-        SetResourceRoot(StringC(getenv("PROJECT_OUT"))+"/share/data/");</pre></li>
+        SetResourceRoot(getenv("PROJECT_OUT"));</pre></li>
+      <li>You can of course set it to something else entirely:<pre>
+        SetResourceRoot("/tmp")</pre></li>
     </ul>
+
+
   </body>
 </html>
 

@@ -111,6 +111,11 @@ namespace RavlN {
     UIntT Hash() const 
     { return StdHash(reinterpret_cast<const void *>(BodyPtr())); }
     //: Compute hash value for handle.
+
+    const std::type_info &TypeInfo() const
+    { return RCLayerC<DataT>::BodyTypeInfo(); }
+    //: Get type of object we're pointing to.
+
   };
   
   // ------------------------------------------------

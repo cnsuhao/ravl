@@ -237,6 +237,37 @@ namespace RavlN {
     bool operator==(const SizeBufferAccessC<DataT> &ba) const
     { return (this->buff == ba.buff) && (this->sz == ba.sz); }
     //: Are two accesses the same ?
+
+    template<typename FuncT>
+    void ForEach(FuncT func) {
+      for(SizeT i = 0;i < sz;i++)
+        func((*this)[i]);
+    }
+    //: Apply to each element in the array
+
+    template<typename FuncT>
+    void ForEach(FuncT func) const {
+      for(SizeT i = 0;i < sz;i++)
+        func((*this)[i]);
+    }
+    //: Apply to each element in the array
+
+    DataT *begin()
+    { return DataStart(); }
+    //: Access start.
+
+    DataT *end()
+    { return DataStart() + sz; }
+    //: Access end
+
+    const DataT *begin() const
+    { return DataStart(); }
+    //: Access start.
+
+    const DataT *end() const
+    { return DataStart() + sz; }
+    //: Access end
+
   protected:
     
     // Copy

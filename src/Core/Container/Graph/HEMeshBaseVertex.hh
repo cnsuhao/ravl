@@ -144,11 +144,11 @@ namespace RavlN {
     { return *body; }
     //: Access body.
     
-    const HEMeshBaseVertexBodyC *BodyPtr(const HEMeshBaseVertexC &handle)
+    static const HEMeshBaseVertexBodyC *BodyPtr(const HEMeshBaseVertexC &handle)
     { return handle.body; }
     //: Access handle ptr.
     
-    HEMeshBaseVertexBodyC *BodyPtr(HEMeshBaseVertexC &handle)
+    static HEMeshBaseVertexBodyC *BodyPtr(HEMeshBaseVertexC &handle)
     { return handle.body; }
     //: Access handle ptr.
     
