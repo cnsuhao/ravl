@@ -681,6 +681,8 @@ blas_LIBS
 blas_CFLAGS
 ZeroMQ_LIBS
 ZeroMQ_CFLAGS
+Xmu_LIBS
+Xmu_CFLAGS
 x11_LIBS
 x11_CFLAGS
 UUIdTheo_LIBS
@@ -1055,6 +1057,8 @@ with_UUIdTheo_pkgconf
 with_UUIdTheo
 with_x11_pkgconf
 with_x11
+with_Xmu_pkgconf
+with_Xmu
 with_ZeroMQ_pkgconf
 with_ZeroMQ
 with_blas_pkgconf
@@ -2180,6 +2184,13 @@ Optional Packages:
                           known to pkg-config
 
   --with-x11              Enable functionality that relies on the x11 library
+                          [default=check]
+
+  --with-Xmu-pkgconf      Enable the Xmu library package via pkg-config and
+                          declare the name by which the Xmu library package is
+                          known to pkg-config
+
+  --with-Xmu              Enable functionality that relies on the Xmu library
                           [default=check]
 
   --with-ZeroMQ-pkgconf   Enable the ZeroMQ library package via pkg-config and
@@ -14053,6 +14064,117 @@ fi
              UnconfiguredLibs=$UnconfiguredLibs" "x11
           else
              ConfiguredLibs=$ConfiguredLibs" "x11
+          fi
+
+
+
+
+
+# Check whether --with-Xmu-pkgconf was given.
+if test "${with_Xmu_pkgconf+set}" = set; then :
+  withval=$with_Xmu_pkgconf; case $with_Xmu_pkgconf in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                          use_Xmu=no
+                                          trace 4 --with-Xmu-pkgconf disabling Xmu
+                                          ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                          if test Xxmu != X; then :
+  with_Xmu_pkgconf=xmu
+                                                 use_Xmu=yes
+                                                 trace 4 --with-Xmu-pkgconf set to default [$with_Xmu_pkgconf]
+
+else
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to configure Xmu via pkg-config but configure is unaware of the name of the DOTpc metadata file
+See \`config.log' for more details" "$LINENO" 5; }
+
+
+fi
+                                          ;;
+                        * )               use_Xmu=yes
+                                          trace 4 --with-Xmu-pkgconf set to [$with_Xmu_pkgconf]
+                                          ;;
+                       esac
+
+else
+  if test Xxmu != X; then :
+  with_Xmu_pkgconf=xmu
+                              trace 4 No --with-Xmu-pkgconf specified using default [$with_Xmu_pkgconf]
+
+
+fi
+
+
+fi
+
+
+# Check whether --with-Xmu was given.
+if test "${with_Xmu+set}" = set; then :
+  withval=$with_Xmu; case $with_Xmu in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                       trace 4 --with-Xmu disabling Xmu libraries
+                                       if test X$use_Xmu = Xyes ; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to disable Xmu by --with-Xmu but --with-Xmu-pkgconf has specifically enabled it
+See \`config.log' for more details" "$LINENO" 5; }
+
+else
+  use_Xmu=no
+
+fi
+                                       ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                       trace 4 --with-Xmu enabling Xmu libraries
+                                       if test X$use_Xmu = Xno; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to enable Xmu by --with-Xmu but --with-Xmu-pkgconf has specifically disabled it
+See \`config.log' for more details" "$LINENO" 5; }
+
+else
+  use_Xmu=yes
+
+fi
+                                       ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                       trace 4 --with-Xmu checking for Xmu libraries
+                                       if test X$use_Xmu = Xyes; then :
+  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-Xmu asking to check for the libs but --with-Xmu-pkgconf has specifically enabled it" >&5
+$as_echo "$as_me: WARNING: --with-Xmu asking to check for the libs but --with-Xmu-pkgconf has specifically enabled it" >&2;}
+
+else
+  if test X$use_Xmu = Xno; then :
+  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-Xmu asking to check for the libs but --with-Xmu-pkgconf has specifically disabled it" >&5
+$as_echo "$as_me: WARNING: --with-Xmu asking to check for the libs but --with-Xmu-pkgconf has specifically disabled it" >&2;}
+
+else
+  use_Xmu=check
+
+fi
+
+
+fi
+                                       ;;
+                        * )            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-Xmu set to an unknown option, setting ignored" >&5
+$as_echo "$as_me: WARNING: --with-Xmu set to an unknown option, setting ignored" >&2;}
+                                       ;;
+                       esac
+
+else
+  trace 5 No --with-Xmu specified
+
+fi
+
+          KnownLibs=$KnownLibs" "Xmu
+          with_Xmu_virtual="no"
+          if ( test X$use_Xmu = X )
+          then
+             use_Xmu=check
+             UnconfiguredLibs=$UnconfiguredLibs" "Xmu
+          else
+             ConfiguredLibs=$ConfiguredLibs" "Xmu
           fi
 
 
