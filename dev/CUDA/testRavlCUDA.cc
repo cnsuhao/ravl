@@ -75,7 +75,7 @@ int testCArray1d()
     aLargeArray.SetZero(cstrm);
     aLargeArray.Fill(0.1,cstrm);
     RavlN::SArray1dC<float> tmp(aLargeArray.Size());
-    aLargeArray.Get(tmp);
+    aLargeArray.Get(tmp,cstrm);
     for(unsigned i = 0;i < tmp.Size();i++) {
       if(RavlN::Abs(tmp[i] - 0.1) > 1e-8) {
         RavlDebug("%u -> %u : %f ",j,i,tmp[i]);

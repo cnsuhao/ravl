@@ -82,6 +82,7 @@ AC_DEFUN([QM_DEFINE_ALL_EXTLIBS],
           QM_DEFINE_EXTLIB_PC([devVideo4Linux2],  [libv4l2])
           QM_DEFINE_EXTLIB_PC([UUIdTheo],         [uuid])
           QM_DEFINE_EXTLIB_PC([x11],              [x11])
+          QM_DEFINE_EXTLIB_PC([Xmu],              [xmu])
           QM_DEFINE_EXTLIB_PC([ZeroMQ],           [libzmq])
           dnl
           dnl If we ever move to automatically creating the .def file, the
