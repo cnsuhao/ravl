@@ -131,8 +131,12 @@ namespace RavlN {
     RCHandleC(const RCHandleC<BodyT> &oth)
       : body(oth.body)
     { 
-      if(body != 0)
-	body->IncRefCounter(); 
+      if(body != 0) {
+#if QMAKE_PARANOID
+        RavlAssert(oth.body->References() > 0);
+#endif
+	body->IncRefCounter();
+      }
     }
     //: Copy Constructor.
     // Creates a new reference to 'oth'
@@ -205,7 +209,13 @@ namespace RavlN {
     //: Assign to pointer.
 
     const RCHandleC<BodyT> &operator=(const RCHandleC<BodyT> &oth)
-    { SetPtr(oth.body); return *this; }
+    {
+#if QMAKE_PARANOID
+      if(oth.IsValid()) { RavlAssert(oth.BodyPtr()->References() > 0); }
+#endif
+      SetPtr(oth.body);
+      return *this;
+    }
     //: Assign handle.
 
     RCHandleC<BodyT> DeepCopy(UIntT levels = ((UIntT) -1)) const
