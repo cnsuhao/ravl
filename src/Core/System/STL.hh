@@ -136,9 +136,9 @@ namespace RavlN {
 
   template<typename DataT>
   std::ostream &operator<<(std::ostream &strm,const std::vector<DataT> &value) {
-    strm << value.size() << " ";
+    strm << value.size();
     for(unsigned i = 0;i < value.size();i++)
-      strm << value[i];
+      strm  << " " << value[i];
     return strm;
   }
   //: Helpers for some RAVL templates.
