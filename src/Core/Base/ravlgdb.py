@@ -71,7 +71,7 @@ def build_pretty_printer():
          #pp.add_printer('RavlN::RCHandleC', '^RavlN::RCHandleC<.*>$', RAVLRCHandlePrinter)
          return pp
      
-print "Loading RAVL pretty printer."
+print("Loading RAVL pretty printer.");
 
 gdb.printing.register_pretty_printer(
          gdb.current_objfile(),

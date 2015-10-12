@@ -1,5 +1,5 @@
 dnl This file is part of QMake, Quick Make System
-dnl Copyright (C) 2011-3, University of Surrey
+dnl Copyright (C) 2011-5, University of Surrey
 dnl This code may be redistributed under the terms of the GNU General
 dnl Public License (GPL). See the gpl.licence file for details or
 dnl see http://www.gnu.org/copyleft/gpl.html
@@ -127,7 +127,7 @@ dnl
 dnl   The following are all interim variables used within this macro:
 dnl
 dnl    change_made; current_prereqs; existing; h; hdr; inc; lib; 
-dnl    lib_enablement; lnklibs; loc; path; pkgconf; prereq; prql;
+dnl    lib_enablement; lnklibs; libpath; path; pkgconf; prereq; prql;
 dnl    prql_enablement; testwith; to_add; virtual
 dnl
 AC_DEFUN([QM_PROCESS_EXTLIBS],
@@ -146,7 +146,7 @@ AC_DEFUN([QM_PROCESS_EXTLIBS],
                 eval testwith="\$with_${lib}_tstcd"
                 eval prereq=\$with_${lib}_prq
                 eval lnklibs=\$with_${lib}_lnklibs
-                eval loc=\$with_${lib}_libpath
+                eval libpath=\$with_${lib}_libpath
                 eval hdr=\$with_${lib}_hdr
                 eval inc=\$with_${lib}_inc
                 eval pkgconf=\$with_${lib}_pkgconf
@@ -157,7 +157,7 @@ AC_DEFUN([QM_PROCESS_EXTLIBS],
                       [# Virtual package
                        trace 3 "$lib:Virtual:$prereq:$lib_enablement"
                       ],
-                      [trace 3 "$lib:$testwith:$prereq:$lnklibs:$loc:$hdr:$inc:$pkgconf:$lib_enablement"
+                      [trace 3 "$lib:$testwith:$prereq:$lnklibs:$libpath:$hdr:$inc:$pkgconf:$lib_enablement"
                       ]
                      )
              done
@@ -362,7 +362,7 @@ AC_DEFUN([QM_PROCESS_EXTLIBS],
                    eval testwith="\$with_${lib}_tstcd"
                    eval prereq=\$with_${lib}_prq
                    eval lnklibs=\$with_${lib}_lnklibs
-                   eval loc=\$with_${lib}_libpath
+                   eval libpath=\$with_${lib}_libpath
                    eval hdr=\$with_${lib}_hdr
                    eval inc=\$with_${lib}_inc
                    eval pkgconf=\$with_${lib}_pkgconf
@@ -373,7 +373,7 @@ AC_DEFUN([QM_PROCESS_EXTLIBS],
                          [# Virtual package
                           trace 3 "$lib:Virtual:$prereq:$lib_enablement"
                          ],
-                         [trace 3 "$lib:$testwith:$prereq:$lnklibs:$loc:$hdr:$inc:$pkgconf:$lib_enablement"
+                         [trace 3 "$lib:$testwith:$prereq:$lnklibs:$libpath:$hdr:$inc:$pkgconf:$lib_enablement"
                          ]
                         )
                 fi
@@ -462,12 +462,12 @@ AC_DEFUN([QM_PROCESS_EXTLIBS],
                   eval testwith="\$with_${lib}_tstcd"
                   eval prereq="\$with_${lib}_prq"
                   eval lnklibs=\$with_${lib}_lnklibs
-                  eval loc=\$with_${lib}_libpath
+                  eval libpath=\$with_${lib}_libpath
                   eval hdr=\$with_${lib}_hdr
                   eval inc=\$with_${lib}_inc
                   eval lib_enablement=\$use_${lib}
                   TRACE_INDENT="     "
-                  trace 3 "$lib:$testwith:$prereq:$lnklibs:$loc:$hdr:$pkgconf:$inc:$lib_enablement"
+                  trace 3 "$lib:$testwith:$prereq:$lnklibs:$libpath:$hdr:$pkgconf:$inc:$lib_enablement"
                fi
             else
                eval virtual=\$with_${lib}_virtual
@@ -1095,7 +1095,7 @@ AC_DEFUN([QM_PROCESS_EXTLIBS],
                    eval testwith="\$with_${lib}_tstcd"
                    eval prereq=\$with_${lib}_prq
                    eval lnklibs=\$with_${lib}_lnklibs
-                   eval loc=\$with_${lib}_libpath
+                   eval libpath=\$with_${lib}_libpath
                    eval hdr=\$with_${lib}_hdr
                    eval inc=\$with_${lib}_inc
                    eval pkgconf=\$with_${lib}_pkgconf
@@ -1106,7 +1106,7 @@ AC_DEFUN([QM_PROCESS_EXTLIBS],
                          [# Virtual package
                           trace 3 "$lib:Virtual:$prereq:$lib_enablement"
                          ],
-                         [trace 3 "$lib:$testwith:$prereq:$lnklibs:$loc:$hdr:$inc:$pkgconf:$lib_enablement"
+                         [trace 3 "$lib:$testwith:$prereq:$lnklibs:$libpath:$hdr:$inc:$pkgconf:$lib_enablement"
                          ]
                         )
                 fi
