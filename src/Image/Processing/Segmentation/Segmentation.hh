@@ -240,7 +240,7 @@ namespace RavlImageN {
     // The labels in the U and V channels are in the range 0 to 'max'.
   };
 
-  //: Merge simlar components smaller than 'thrSize'.
+  //: Merge similar components smaller than 'thrSize'.
   
   template<class PixelT,class CmpT>
   UIntT SegmentationBodyC::MergeComponents(ImageC<PixelT> &dat,

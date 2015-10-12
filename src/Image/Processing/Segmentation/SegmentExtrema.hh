@@ -226,7 +226,7 @@ namespace RavlImageN {
   // and, secondly, it is closed under monotonic transformation of image intensities.
   // This class is an implementation of an efficient (near linear complexity) and practically
   // fast detection algorithm
-  // for an affinely-invariant stable subset of extremal regions, the maximally stable extremal
+  // for an affine-invariant stable subset of extremal regions, the maximally stable extremal
   // regions.</p>
 
   // <p> The concept can be explained informally as follows. Imagine all possible thresholdings
