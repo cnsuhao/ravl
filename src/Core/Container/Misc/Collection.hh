@@ -477,19 +477,31 @@ namespace RavlN {
     //: Apply to each element in the array
 
     DataT *begin()
-    { return Body().begin(); }
+    {
+      if(!this->IsValid()) return 0;
+      return Body().begin();
+    }
     //: Access start.
 
     DataT *end()
-    { return Body().end(); }
+    {
+      if(!this->IsValid()) return 0;
+      return Body().end();
+    }
     //: Access end
 
     const DataT *begin() const
-    { return Body().begin(); }
+    {
+      if(!this->IsValid()) return 0;
+      return Body().begin();
+    }
     //: Access start.
 
     const DataT *end() const
-    { return Body().end(); }
+    {
+      if(!this->IsValid()) return 0;
+      return Body().end();
+    }
     //: Access end
 
 
