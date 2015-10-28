@@ -20,6 +20,8 @@ namespace RavlImageN {
     InitStdImageCnv3();
     InitStdImageCnv4();
     InitStdImageCnv5();
+    InitStdImageCnv6();
+    InitStdImageCnv7();
     InitPNMFormat();
     InitYUVFormat();
     InitImgIOInt();
