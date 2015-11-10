@@ -105,11 +105,11 @@ AC_DEFUN([QM_DEFINE_ALL_EXTLIBS],
           dnl    linked to. Usually this is just a single call to a function
           dnl    declared by the external library. However, some libraries need
           dnl    a little more set up - such as any library where we need to
-          dnl    test for a C++ class; or the Math library where some compilers 
+          dnl    test for a C++ class; or the Math library where some compilers
           dnl    perform extra prototype checking on those functions.
           dnl  3 Space separated list of dependancies of the library. Specify
           dnl    the QMake name of the library - e.g. for dependancies on Zlib
-          dnl    specify Zlib not -lz or z. 
+          dnl    specify Zlib not -lz or z.
           dnl    *** N.B. ***
           dnl         Dependancies on libraries reliant on pkg-config for their
           dnl         location are not supported. I.E. if library A depends on
@@ -122,7 +122,7 @@ AC_DEFUN([QM_DEFINE_ALL_EXTLIBS],
           dnl    may be a set of alternative lists seperated by a pipe symbol.
           dnl    For example, the Socket library package uses the setting
           dnl    " | -lsocket | -lsocket -lnsl " as the socket() function may
-          dnl    be available in the default libraries (no additional library 
+          dnl    be available in the default libraries (no additional library
           dnl    is required - hence the leading " | " setting, i.e. a null
           dnl    list); in the socket library itself; or in a socket library
           dnl    that also depends on libnsl.
@@ -152,7 +152,7 @@ AC_DEFUN([QM_DEFINE_ALL_EXTLIBS],
           dnl# testing for more Fortran functionality/configurataion here than
           dnl# we currently do. The problem with performing that testing is that
           dnl# the required autotools macros would mandate a Fortran compiler be
-          dnl# present even when LAPACK support is omitted. 
+          dnl# present even when LAPACK support is omitted.
           dnl# An example of the type of extra testing we should be performing
           dnl# comes from the fact that, dependant on the toolset in use,
           dnl# Fortran functions may be upper or lowercase; with or without a
@@ -198,7 +198,7 @@ AC_DEFUN([QM_DEFINE_ALL_EXTLIBS],
                               [],
                               [C]
                              )
-          QM_DEFINE_EXTLIB_CC([GLUT],        
+          QM_DEFINE_EXTLIB_CC([GLUT],
                               [int *pargc;
                                char **argv;
                                glutInit(pargc, argv);
@@ -349,7 +349,7 @@ dnl
                               [char * switches;
                                tetgenio * in;
                                tetgenio * out;
-                               tetgenio * bgmesh; 
+                               tetgenio * bgmesh;
                                tetrahedralize (switches, in, out, bgmesh);
                               ],
                               [],
@@ -602,16 +602,16 @@ dnl
           dnl#                Name,          Fn,                 Deps,   -l,           .h
           dnl#
           dnl#  ..._EXTLIB_CC([dvdread],     [TBA],              [],     [-ldvdread],  [])
-          dnl#                 Existing .def file is DVDRead.def       
+          dnl#                 Existing .def file is DVDRead.def
           dnl#  ..._EXTLIB_xC([libClipStationPro], [],           [],     [-ldvsoem],   [])
-          dnl#                 Existing .def file is ClipStationPro.def       
-          dnl#                 Also need to consider libDVSDevice and libDVS 
+          dnl#                 Existing .def file is ClipStationPro.def
+          dnl#                 Also need to consider libDVSDevice and libDVS
           dnl#                 RESOURCES that have no .def and the libdvsoem
           dnl#                 resource that goes with the DVS_SDK.def file.
           dnl#  ..._EXTLIB_xC([LibGd],       [],                 [],     [-lgd],       [])
           dnl#  ..._EXTLIB_xC([libmcrypt],   [],                 [],     [-lmcrypt],   [])
           dnl#  ..._EXTLIB_xC([libmpeg2],    [],                 [],     [-lmpeg2],    [])
-          dnl#                 Existing .def file is LibMPEG2.def       
+          dnl#                 Existing .def file is LibMPEG2.def
           dnl#  ..._EXTLIB_xC([LibPython],   [],                 [],     [],           [])
           dnl#     May have to use:
           dnl#       PYTHON_VERSION = $(shell python -c "import distutils.sysconfig; print distutils.sysconfig.get_config_var('VERSION')")
@@ -628,13 +628,13 @@ dnl
           dnl#                Name,          Fn,                 Deps,   -l,           .h
           dnl#
           dnl#  ..._EXTLIB_xC([libehs],      [],                 [],     [-lpme -lehs], [])
-          dnl#                 Existing .def file is EHS.def       
+          dnl#                 Existing .def file is EHS.def
           dnl#  ..._EXTLIB_xC([libGuppi],    [],                 [],     [-lguppitank `gnome-config libguppi --libs`], [])
-          dnl#                 Existing .def file is Guppi.def       
+          dnl#                 Existing .def file is Guppi.def
           dnl#  ..._EXTLIB_xC([libmpeg],     [],                 [],     [-lmpeg],     [])
-          dnl#                 Existing .def file is LibMPEG.def       
+          dnl#                 Existing .def file is LibMPEG.def
           dnl#  ..._EXTLIB_xC([uEyeSDK],     [],                 [],     [-lueye_api], [])
-          dnl#                 Existing .def file is uEye.def       
+          dnl#                 Existing .def file is uEye.def
           dnl#  
           dnl#
           dnl# OS Specific
@@ -646,7 +646,7 @@ dnl
           dnl#
           dnl#
           dnl#   Mac OSX Support:
-          dnl#     Currently global MacOSX REQUIRES flag, no MacOSX prefix on .def name. 
+          dnl#     Currently global MacOSX REQUIRES flag, no MacOSX prefix on .def name.
           dnl#
           dnl#                Name,          Fn,                 Deps,   -l,           .h
           dnl#
