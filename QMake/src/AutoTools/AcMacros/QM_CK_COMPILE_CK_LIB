@@ -183,13 +183,13 @@ AC_DEFUN([QM_CK_COMPILE_CK_LIB],
                         dnl# runtime, AC_LANG_xx must take a literal parameter.
                         AS_CASE(["$test_lang"],
                                 ["C"],             [AC_LANG_PUSH([C])
-                                                  QM_CHECK_CC_LIB([$lib],[$failure])
-                                                  AC_LANG_POP([C])
-                                                 ],
+                                                    QM_CHECK_CC_LIB([$lib],[$failure])
+                                                    AC_LANG_POP([C])
+                                                   ],
                                 ["C++"],           [AC_LANG_PUSH([C++])
-                                                  QM_CHECK_CC_LIB([$lib],[$failure])
-                                                  AC_LANG_POP([C++])
-                                                 ],
+                                                    QM_CHECK_CC_LIB([$lib],[$failure])
+                                                    AC_LANG_POP([C++])
+                                                   ],
 dnl
 dnl                     Disable non-C or C++ languages as QMake as a whole
 dnl                     cannot currently cope with them. The support that is
@@ -201,26 +201,34 @@ dnl                     macros/configuration files. The QM_CHECK_CC_LIB macro
 dnl                     also only supports C-like synatax for include file 
 dnl                     processing.
 dnl
+dnl                     Enabling a language here has the effect of requiring
+dnl                     full support for that language, even if the product
+dnl                     has no direct requirement for that language. In other
+dnl                     words, if any of the languages enabled here do not
+dnl                     have an available compiler, configure will completely
+dnl                     fail rather than only fail those elements associated
+dnl                     with the unsupported language.
+dnl
 dnl                             ["Fortran"],       [AC_LANG_PUSH([Fortran])
-dnl                                               QM_CHECK_CC_LIB([$lib],[$failure])
-dnl                                               AC_LANG_POP([Fortran])
-dnl                                              ],
+dnl                                                 QM_CHECK_CC_LIB([$lib],[$failure])
+dnl                                                 AC_LANG_POP([Fortran])
+dnl                                                ],
 dnl                             ["Fortran 77"],    [AC_LANG_PUSH([Fortran 77])
-dnl                                               QM_CHECK_CC_LIB([$lib],[$failure])
-dnl                                               AC_LANG_POP([Fortran 77])
-dnl                                              ],
+dnl                                                 QM_CHECK_CC_LIB([$lib],[$failure])
+dnl                                                 AC_LANG_POP([Fortran 77])
+dnl                                                ],
 dnl                             ["Erlang"],        [AC_LANG_PUSH([Erlang])
-dnl                                               QM_CHECK_CC_LIB([$lib],[$failure])
-dnl                                               AC_LANG_POP([Erlang])
-dnl                                              ],
+dnl                                                 QM_CHECK_CC_LIB([$lib],[$failure])
+dnl                                                 AC_LANG_POP([Erlang])
+dnl                                                ],
 dnl                             ["Objective C"],   [AC_LANG_PUSH([Objective C])
-dnl                                               QM_CHECK_CC_LIB([$lib],[$failure])
-dnl                                               AC_LANG_POP([Objective C])
-dnl                                              ],
+dnl                                                 QM_CHECK_CC_LIB([$lib],[$failure])
+dnl                                                 AC_LANG_POP([Objective C])
+dnl                                                ],
 dnl                             ["Objective C++"], [AC_LANG_PUSH([Objective C++])
-dnl                                               QM_CHECK_CC_LIB([$lib],[$failure])
-dnl                                               AC_LANG_POP([Objective C++])
-dnl                                              ],
+dnl                                                 QM_CHECK_CC_LIB([$lib],[$failure])
+dnl                                                 AC_LANG_POP([Objective C++])
+dnl                                                ],
 dnl
                                 [AC_MSG_WARN([Unrecognised language @<:@$test_lang@:>@ for package $1])
                                  AC_MSG_WARN([Unable to check for presence of package])
