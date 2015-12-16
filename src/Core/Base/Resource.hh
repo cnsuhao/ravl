@@ -27,7 +27,7 @@ namespace RavlN {
   
   StringC Resource(const char *Module,const char *Name);
   //: Get location of resource.
-  // The default location is composed of <code>ResourceRoot() + "/share/" + module + '/' + name</code>.  Use <a href="RavlN.SetResourceLookupFuncObResourceLookupFuncTCb.html"><code>SetResourceLookupFunc()</code></a> for a different method.<br>
+  // The default location is composed of <code>ResourceRoot() + "/share/" + module + '/' + Name</code>.  Use <a href="RavlN.SetResourceLookupFuncObResourceLookupFuncTCb.html"><code>SetResourceLookupFunc()</code></a> for a different method.<br>
   // Leading '/'s in <code>Module</code> or <code>Name</code> are ignored.
   
   //!userlevel=Advanced
