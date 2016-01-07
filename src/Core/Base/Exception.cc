@@ -110,6 +110,9 @@ namespace RavlN {
     strm << " From:" << from.name() << std::endl;
     strm << "   To:" << to.name() << std::endl;
     strm << " Desc:" << desc << std::endl << std::endl;
+#if RAVL_HAVE_BACKTRACE
+    DisplayStackTrace(out,m_stackTrace,m_stackTraceDepth);
+#endif
   }
 
   // ---------------------------------------------------------
