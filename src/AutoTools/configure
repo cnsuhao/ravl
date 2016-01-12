@@ -48031,45 +48031,70 @@ do
                    TRACE_INDENT="     "
                    trace 3 Checking settings for virtual library $lib
                    cflags=""
+                   expandedcflags=""
                    libs=""
+                   expandedlibs=""
                    eval prereqs=\$with_${lib}_prq
                    for p in $prereqs
                    do
-                     cflags="$cflags @${p}_CFLAGS@"
-                     libs="$libs @${p}_LIBS@"
+                     eval prereqcflags=\$${p}_CFLAGS
+                     if ( test "X$prereqcflags" != X )
+                     then
+                       cflags="$cflags @${p}_CFLAGS@"
+                       expandedcflags="$expandedcflags $prereqcflags"
+                     fi
+                     eval prereqlibs=\$${p}_LIBS
+                     if ( test "X$prereqlibs" != X )
+                     then
+                       libs="$libs @${p}_LIBS@"
+                       expandedlibs="$expandedlibs $prereqlibs"
+                     fi
                    done
                    need_newline=no
-                   eval original_cflags=\$${lib}_CFLAGS
-                   if ( test "$original_cflags" != "$cflags" )
+                   if ( test x`$EXPR " $UnconfiguredLibs " : ".* \($lib\) .*"` == "x$lib" )
                    then
-                     TRACE_INDENT="     "
-                     trace 5 Changing CFLAGS from:
-                     TRACE_INDENT="     "
-                     trace 5 $original_cflags
-                     TRACE_INDENT="     "
-                     trace 5 to:
-                     TRACE_INDENT="     "
-                     trace 5 $cflags
-                     echo ${lib}_CFLAGS=$cflags >> Config.Project.in
-                     need_newline=yes
-                   fi
-                   eval original_libs=\$${lib}_LIBS
-                   if ( test "$original_libs" != "$libs" )
-                   then
-                     TRACE_INDENT="     "
-                     trace 5 Changing LIBS from:
-                     TRACE_INDENT="     "
-                     trace 5 $original_libs
-                     TRACE_INDENT="     "
-                     trace 5 to:
-                     TRACE_INDENT="     "
-                     trace 5 $libs
-                     echo ${lib}_LIBS=$libs >> Config.Project.in
-                     need_newline=yes
-                   fi
-                   if ( test $need_newline == yes )
-                   then
-                     echo >> ./Config.Project.in
+                     # We have not directly configured this package, but may
+                     # have impliciltly changed its settings. See if we need
+                     # to output the new settings...
+                     original_cflags=`cat $QMAKE_CFG | $SED -n "s/^${lib}_CFLAGS=\(.*\)/\1/p"`
+                     if ( test "X$original_cflags" != "X$expandedcflags" )
+                     then
+                       TRACE_INDENT="     "
+                       trace 5 Changing CFLAGS from:
+                       TRACE_INDENT="     "
+                       trace 5 $original_cflags
+                       TRACE_INDENT="     "
+                       trace 5 to:
+                       TRACE_INDENT="     "
+                       trace 5 $expandedcflags
+                       echo ${lib}_CFLAGS=$cflags >> Config.Project.in
+                       need_newline=yes
+                     fi
+                     original_libs=`cat $QMAKE_CFG | $SED -n "s/^${lib}_LIBS=\(.*\)/\1/p"`
+                     if ( test "X$original_libs" != "X$expandedlibs" )
+                     then
+                       TRACE_INDENT="     "
+                       trace 5 Changing LIBS from:
+                       TRACE_INDENT="     "
+                       trace 5 $original_libs
+                       TRACE_INDENT="     "
+                       trace 5 to:
+                       TRACE_INDENT="     "
+                       trace 5 $expandedlibs
+                       echo ${lib}_LIBS=$libs >> Config.Project.in
+                       need_newline=yes
+                     fi
+                     if ( test $need_newline == yes )
+                     then
+                       echo >> ./Config.Project.in
+                     fi
+                   else
+                     # All configured packages have their settings output
+                     # below. We just need to make sure the latest settings
+                     # are copied across from the dependants of the virtual
+                     # package
+                     eval ${lib}_CFLAGS=\$expandedcflags
+                     eval ${lib}_LIBS=\$expandedlibs
                    fi
                    ;;
     esac
