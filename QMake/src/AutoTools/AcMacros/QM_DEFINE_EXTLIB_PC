@@ -1,5 +1,5 @@
 dnl This file is part of QMake, Quick Make System
-dnl Copyright (C) 2011, University of Surrey
+dnl Copyright (C) 2011-16, University of Surrey
 dnl This code may be redistributed under the terms of the GNU General
 dnl Public License (GPL). See the gpl.licence file for details or
 dnl see http://www.gnu.org/copyleft/gpl.html
@@ -46,15 +46,48 @@ dnl                                  and header files when the specific
 dnl                                  command-line switches are not used
 dnl                                  (ideal if both file types reside in the
 dnl                                  same directory).
+dnl       with_<lib>_check           Flag specifying the type of test needed
+dnl                                  to check for the existance of the
+dnl                                  external library:
+dnl                                    compile      - test for the external
+dnl                                                   library involves a test
+dnl                                                   compilation to see if
+dnl                                                   the library is available.
+dnl                                    pkgconfig    - test for the external
+dnl                                                   library using pkg-config.
+dnl                                    virtual      - external library is a
+dnl                                                   virtual set of libraries
+dnl                                                   that is implicitly
+dnl                                                   available if all of the
+dnl                                                   precursor libraries are
+dnl                                                   available.
+dnl                                  Initialised by this macro (or the
+dnl                                  relevant macro from QM_DEFINE_EXTLIB_CC
+dnl                                  or QM_DEFINE_VIRTUAL_EXTLIB for those
+dnl                                  packages not normally checked for via
+dnl                                  pkg-config).
+dnl                                  For any test-type, if the user provides
+dnl                                  a --with-<lib>-pkgconf setting, this will
+dnl                                  automatically force the test-type to be
+dnl                                  pkgconfig.
 dnl       with_<Lib>_pkgconf         Value of similarly named cmd-line switch
 dnl                                  Specifies what name pkg-config will know
 dnl                                  the library as. This variable receives
 dnl                                  the default if the cmd-line switch isn't 
 dnl                                  used but the library is declared as
 dnl                                  using pkg-config.
-dnl       with_<Lib>_virtual         Flag specifying if the library in
-dnl                                  question is a virtual package set.
-dnl                                  Initialised to no in this macro.
+dnl       with_<lib>_virtual         Depreciated variable
+dnl                                  * DO NOT USE IN CALLING/SUBSEQUENT CODE *
+dnl                                  This variable has been superseded by the
+dnl                                  with_<lib>_check variable (see above).
+dnl                                  This variable is only provided to deliver
+dnl                                  interim support for older code. It will
+dnl                                  cease to function in future versions of 
+dnl                                  QMake. If you are currently using this
+dnl                                  variable in your code, please re-write to
+dnl                                  test with_<lib>_check=virtual instead.
+dnl                                  Formerly, this variable indicated that
+dnl                                  the package <lib> was a virtual package.
 dnl       use_<Lib>                  Flag specifying useage of library,
 dnl                                  primed initially by --with-<Lib> or
 dnl                                  as part of a dependancy check. 
@@ -87,7 +120,9 @@ dnl                                  the external libraries known to the
 dnl                                  configure script.
 dnl
 AC_DEFUN([QM_DEFINE_EXTLIB_PC],
-         [AC_ARG_WITH([$1-pkgconf],
+         [with_$1_check=pkgconfig
+          with_$1_virtual=no
+          AC_ARG_WITH([$1-pkgconf],
                       [AS_HELP_STRING([--with-$1-pkgconf],
                                       [Enable the $1 library package via pkg-config and declare the name by which the $1 library package is known to pkg-config]
                                      )
@@ -161,7 +196,6 @@ AC_DEFUN([QM_DEFINE_EXTLIB_PC],
                       [trace 5 No --with-$1 specified]
                      )
           KnownLibs=$KnownLibs" "$1
-          with_$1_virtual="no"
           if ( test X$use_$1 = X )
           then
              use_$1=check

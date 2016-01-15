@@ -17,7 +17,7 @@ dnl (the 4th item) is used to prime the default for --docdir hence the value
 dnl used here.
 
 # This file is part of RAVL, Recognition And Vision Library
-# Copyright (C) 2011-14, University of Surrey
+# Copyright (C) 2011-16, University of Surrey
 # This code may be redistributed under the terms of the GNU General
 # Public License (GPL). See the gpl.licence file for details or
 # see http://www.gnu.org/copyleft/gpl.html
@@ -434,23 +434,27 @@ then
    trace 3 Defined libraries
    for lib in $KnownLibs
    do
-      eval testwith="\$with_${lib}_tstcd"
-      eval prereq=\$with_${lib}_prq
-      eval lnklibs=\$with_${lib}_lnklibs
-      eval loc=\$with_${lib}_libpath
-      eval hdr=\$with_${lib}_hdr
-      eval inc=\$with_${lib}_inc
-      eval pkgconf=\$with_${lib}_pkgconf
       eval lib_enablement=\$use_${lib} 
       TRACE_INDENT="     "
-      eval virtual=\$with_${lib}_virtual
-      AS_IF([test X$virtual = Xyes],
-            [# Virtual package
-             trace 3 "$lib:Virtual:$prereq:$lib_enablement"
-            ],
-            [trace 3 "$lib:$testwith:$prereq:$lnklibs:$loc:$hdr:$inc:$pkgconf:$lib_enablement"
-            ]
-           )
+      eval check=\$with_${lib}_check
+      case $check in
+         'virtual' )   eval prereq=\$with_${lib}_prq
+                       trace 3 "$lib:$check:$prereq:$lib_enablement"
+                       ;;
+         'pkgconfig' ) eval pkgconf=\$with_${lib}_pkgconf
+                       trace 3 "$lib:$check:$pkgconf:$lib_enablement"
+                       ;;
+         'compile' )   eval testwith="\$with_${lib}_tstcd"
+                       eval prereq=\$with_${lib}_prq
+                       eval lnklibs=\$with_${lib}_lnklibs
+                       eval libpath=\$with_${lib}_libpath
+                       eval hdr=\$with_${lib}_hdr
+                       eval inc=\$with_${lib}_inc
+                       trace 3 "$lib:$check:$testwith:$prereq:$lnklibs:$libpath:$hdr:$inc:$lib_enablement"
+                       ;;
+         * )           trace 1 "Assert - Unrecognised test-type for $lib"
+                       ;;
+      esac
    done
 fi
 
@@ -525,23 +529,27 @@ then
    trace 3 Defaulted libraries
    for lib in $KnownLibs
    do
-      eval testwith="\$with_${lib}_tstcd"
-      eval prereq=\$with_${lib}_prq
-      eval lnklibs=\$with_${lib}_lnklibs
-      eval loc=\$with_${lib}_libpath
-      eval hdr=\$with_${lib}_hdr
-      eval inc=\$with_${lib}_inc
-      eval pkgconf=\$with_${lib}_pkgconf
       eval lib_enablement=\$use_${lib} 
       TRACE_INDENT="     "
-      eval virtual=\$with_${lib}_virtual
-      AS_IF([test X$virtual = Xyes],
-            [# Virtual package
-             trace 3 "$lib:Virtual:$prereq:$lib_enablement"
-            ],
-            [trace 3 "$lib:$testwith:$prereq:$lnklibs:$loc:$hdr:$inc:$pkgconf:$lib_enablement"
-            ]
-           )
+      eval check=\$with_${lib}_check
+      case $check in
+         'virtual' )   eval prereq=\$with_${lib}_prq
+                       trace 3 "$lib:$check:$prereq:$lib_enablement"
+                       ;;
+         'pkgconfig' ) eval pkgconf=\$with_${lib}_pkgconf
+                       trace 3 "$lib:$check:$pkgconf:$lib_enablement"
+                       ;;
+         'compile' )   eval testwith="\$with_${lib}_tstcd"
+                       eval prereq=\$with_${lib}_prq
+                       eval lnklibs=\$with_${lib}_lnklibs
+                       eval libpath=\$with_${lib}_libpath
+                       eval hdr=\$with_${lib}_hdr
+                       eval inc=\$with_${lib}_inc
+                       trace 3 "$lib:$check:$testwith:$prereq:$lnklibs:$libpath:$hdr:$inc:$lib_enablement"
+                       ;;
+         * )           trace 1 "Assert - Unrecognised test-type for $lib"
+                       ;;
+      esac
    done
 fi
 
@@ -1126,8 +1134,8 @@ then
     # Virtual libraries pick up their configuration from their real
     # counterparts. We therefore only need to massage the _LIBS setting here
     # for non-virtual libraries.
-    eval virtual=\$with_${lib}_virtual
-    if ( test x$virtual != xyes )
+    eval check=\$with_${lib}_check
+    if ( test x$check != xvirtual )
     then
       eval lib_enablement=\$use_${lib}
       case $lib_enablement in
@@ -1191,8 +1199,8 @@ then
     # Virtual libraries pick up their configuration from their real
     # counterparts. We therefore only need to massage the _LIBS setting here
     # for non-virtual libraries.
-    eval virtual=\$with_${lib}_virtual
-    if ( test x$virtual != xyes )
+    eval check=\$with_${lib}_check
+    if ( test x$check != xvirtual )
     then
       eval lib_enablement=\$use_${lib}
       case $lib_enablement in
@@ -1265,8 +1273,8 @@ fi
 # libraries
 for lib in $KnownLibs
 do
-  eval virtual=\$with_${lib}_virtual
-  if ( test x$virtual = xyes )
+  eval check=\$with_${lib}_check
+  if ( test x$check = xvirtual )
   then
     eval lib_enablement=\$use_${lib}
     case $lib_enablement in

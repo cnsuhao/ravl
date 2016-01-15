@@ -3296,7 +3296,7 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
 # This file is part of QMake, Quick Make System
-# Copyright (C) 2011-14, University of Surrey
+# Copyright (C) 2011-16, University of Surrey
 # This code may be redistributed under the terms of the GNU General
 # Public License (GPL). See the gpl.licence file for details or
 # see http://www.gnu.org/copyleft/gpl.html
@@ -8585,6 +8585,8 @@ See \`config.log' for more details" "$LINENO" 5; }
 # Define all external libs known to QMake
 #
 
+                                                                                                                                  with_libdc1394_check=pkgconfig
+          with_libdc1394_virtual=no
 
 # Check whether --with-libdc1394-pkgconf was given.
 if test "${with_libdc1394_pkgconf+set}" = set; then :
@@ -8684,7 +8686,6 @@ else
 fi
 
           KnownLibs=$KnownLibs" "libdc1394
-          with_libdc1394_virtual="no"
           if ( test X$use_libdc1394 = X )
           then
              use_libdc1394=check
@@ -8696,6 +8697,8 @@ fi
 
 
 
+          with_libavc1394_check=pkgconfig
+          with_libavc1394_virtual=no
 
 # Check whether --with-libavc1394-pkgconf was given.
 if test "${with_libavc1394_pkgconf+set}" = set; then :
@@ -8795,7 +8798,6 @@ else
 fi
 
           KnownLibs=$KnownLibs" "libavc1394
-          with_libavc1394_virtual="no"
           if ( test X$use_libavc1394 = X )
           then
              use_libavc1394=check
@@ -8807,6 +8809,8 @@ fi
 
 
 
+          with_libAudioFile_check=pkgconfig
+          with_libAudioFile_virtual=no
 
 # Check whether --with-libAudioFile-pkgconf was given.
 if test "${with_libAudioFile_pkgconf+set}" = set; then :
@@ -8906,7 +8910,6 @@ else
 fi
 
           KnownLibs=$KnownLibs" "libAudioFile
-          with_libAudioFile_virtual="no"
           if ( test X$use_libAudioFile = X )
           then
              use_libAudioFile=check
@@ -8918,6 +8921,8 @@ fi
 
 
 
+          with_avifile_check=pkgconfig
+          with_avifile_virtual=no
 
 # Check whether --with-avifile-pkgconf was given.
 if test "${with_avifile_pkgconf+set}" = set; then :
@@ -9017,7 +9022,6 @@ else
 fi
 
           KnownLibs=$KnownLibs" "avifile
-          with_avifile_virtual="no"
           if ( test X$use_avifile = X )
           then
              use_avifile=check
@@ -9029,6 +9033,8 @@ fi
 
 
 
+          with_libCurl_check=pkgconfig
+          with_libCurl_virtual=no
 
 # Check whether --with-libCurl-pkgconf was given.
 if test "${with_libCurl_pkgconf+set}" = set; then :
@@ -9128,7 +9134,6 @@ else
 fi
 
           KnownLibs=$KnownLibs" "libCurl
-          with_libCurl_virtual="no"
           if ( test X$use_libCurl = X )
           then
              use_libCurl=check
@@ -9140,6 +9145,8 @@ fi
 
 
 
+          with_libDV_check=pkgconfig
+          with_libDV_virtual=no
 
 # Check whether --with-libDV-pkgconf was given.
 if test "${with_libDV_pkgconf+set}" = set; then :
@@ -9239,7 +9246,6 @@ else
 fi
 
           KnownLibs=$KnownLibs" "libDV
-          with_libDV_virtual="no"
           if ( test X$use_libDV = X )
           then
              use_libDV=check
@@ -9251,6 +9257,8 @@ fi
 
 
 
+          with_FFMPEGCDEC_check=pkgconfig
+          with_FFMPEGCDEC_virtual=no
 
 # Check whether --with-FFMPEGCDEC-pkgconf was given.
 if test "${with_FFMPEGCDEC_pkgconf+set}" = set; then :
@@ -9350,7 +9358,6 @@ else
 fi
 
           KnownLibs=$KnownLibs" "FFMPEGCDEC
-          with_FFMPEGCDEC_virtual="no"
           if ( test X$use_FFMPEGCDEC = X )
           then
              use_FFMPEGCDEC=check
@@ -9362,6 +9369,8 @@ fi
 
 
 
+          with_FFMPEGCONT_check=pkgconfig
+          with_FFMPEGCONT_virtual=no
 
 # Check whether --with-FFMPEGCONT-pkgconf was given.
 if test "${with_FFMPEGCONT_pkgconf+set}" = set; then :
@@ -9461,7 +9470,6 @@ else
 fi
 
           KnownLibs=$KnownLibs" "FFMPEGCONT
-          with_FFMPEGCONT_virtual="no"
           if ( test X$use_FFMPEGCONT = X )
           then
              use_FFMPEGCONT=check
@@ -9473,6 +9481,8 @@ fi
 
 
 
+          with_FFMPEGSWS_check=pkgconfig
+          with_FFMPEGSWS_virtual=no
 
 # Check whether --with-FFMPEGSWS-pkgconf was given.
 if test "${with_FFMPEGSWS_pkgconf+set}" = set; then :
@@ -9572,7 +9582,6 @@ else
 fi
 
           KnownLibs=$KnownLibs" "FFMPEGSWS
-          with_FFMPEGSWS_virtual="no"
           if ( test X$use_FFMPEGSWS = X )
           then
              use_FFMPEGSWS=check
@@ -9584,6 +9593,8 @@ fi
 
 
 
+          with_FFMPEGUTIL_check=pkgconfig
+          with_FFMPEGUTIL_virtual=no
 
 # Check whether --with-FFMPEGUTIL-pkgconf was given.
 if test "${with_FFMPEGUTIL_pkgconf+set}" = set; then :
@@ -9683,7 +9694,6 @@ else
 fi
 
           KnownLibs=$KnownLibs" "FFMPEGUTIL
-          with_FFMPEGUTIL_virtual="no"
           if ( test X$use_FFMPEGUTIL = X )
           then
              use_FFMPEGUTIL=check
@@ -9695,6 +9705,8 @@ fi
 
 
 
+          with_FreeType2_check=pkgconfig
+          with_FreeType2_virtual=no
 
 # Check whether --with-FreeType2-pkgconf was given.
 if test "${with_FreeType2_pkgconf+set}" = set; then :
@@ -9794,7 +9806,6 @@ else
 fi
 
           KnownLibs=$KnownLibs" "FreeType2
-          with_FreeType2_virtual="no"
           if ( test X$use_FreeType2 = X )
           then
              use_FreeType2=check
@@ -9806,6 +9817,8 @@ fi
 
 
 
+          with_iksemel_check=pkgconfig
+          with_iksemel_virtual=no
 
 # Check whether --with-iksemel-pkgconf was given.
 if test "${with_iksemel_pkgconf+set}" = set; then :
@@ -9905,7 +9918,6 @@ else
 fi
 
           KnownLibs=$KnownLibs" "iksemel
-          with_iksemel_virtual="no"
           if ( test X$use_iksemel = X )
           then
              use_iksemel=check
@@ -9917,6 +9929,8 @@ fi
 
 
 
+          with_libglade2_check=pkgconfig
+          with_libglade2_virtual=no
 
 # Check whether --with-libglade2-pkgconf was given.
 if test "${with_libglade2_pkgconf+set}" = set; then :
@@ -10016,7 +10030,6 @@ else
 fi
 
           KnownLibs=$KnownLibs" "libglade2
-          with_libglade2_virtual="no"
           if ( test X$use_libglade2 = X )
           then
              use_libglade2=check
@@ -10028,6 +10041,8 @@ fi
 
 
 
+          with_glib_check=pkgconfig
+          with_glib_virtual=no
 
 # Check whether --with-glib-pkgconf was given.
 if test "${with_glib_pkgconf+set}" = set; then :
@@ -10127,7 +10142,6 @@ else
 fi
 
           KnownLibs=$KnownLibs" "glib
-          with_glib_virtual="no"
           if ( test X$use_glib = X )
           then
              use_glib=check
@@ -10139,6 +10153,8 @@ fi
 
 
 
+          with_gthread_check=pkgconfig
+          with_gthread_virtual=no
 
 # Check whether --with-gthread-pkgconf was given.
 if test "${with_gthread_pkgconf+set}" = set; then :
@@ -10238,7 +10254,6 @@ else
 fi
 
           KnownLibs=$KnownLibs" "gthread
-          with_gthread_virtual="no"
           if ( test X$use_gthread = X )
           then
              use_gthread=check
@@ -10250,6 +10265,8 @@ fi
 
 
 
+          with_LibGnome_check=pkgconfig
+          with_LibGnome_virtual=no
 
 # Check whether --with-LibGnome-pkgconf was given.
 if test "${with_LibGnome_pkgconf+set}" = set; then :
@@ -10349,7 +10366,6 @@ else
 fi
 
           KnownLibs=$KnownLibs" "LibGnome
-          with_LibGnome_virtual="no"
           if ( test X$use_LibGnome = X )
           then
              use_LibGnome=check
@@ -10361,6 +10377,8 @@ fi
 
 
 
+          with_libGTK2_check=pkgconfig
+          with_libGTK2_virtual=no
 
 # Check whether --with-libGTK2-pkgconf was given.
 if test "${with_libGTK2_pkgconf+set}" = set; then :
@@ -10460,7 +10478,6 @@ else
 fi
 
           KnownLibs=$KnownLibs" "libGTK2
-          with_libGTK2_virtual="no"
           if ( test X$use_libGTK2 = X )
           then
              use_libGTK2=check
@@ -10472,6 +10489,8 @@ fi
 
 
 
+          with_GTKGLExt_check=pkgconfig
+          with_GTKGLExt_virtual=no
 
 # Check whether --with-GTKGLExt-pkgconf was given.
 if test "${with_GTKGLExt_pkgconf+set}" = set; then :
@@ -10571,7 +10590,6 @@ else
 fi
 
           KnownLibs=$KnownLibs" "GTKGLExt
-          with_GTKGLExt_virtual="no"
           if ( test X$use_GTKGLExt = X )
           then
              use_GTKGLExt=check
@@ -10583,6 +10601,8 @@ fi
 
 
 
+          with_Loudmouth_check=pkgconfig
+          with_Loudmouth_virtual=no
 
 # Check whether --with-Loudmouth-pkgconf was given.
 if test "${with_Loudmouth_pkgconf+set}" = set; then :
@@ -10682,7 +10702,6 @@ else
 fi
 
           KnownLibs=$KnownLibs" "Loudmouth
-          with_Loudmouth_virtual="no"
           if ( test X$use_Loudmouth = X )
           then
              use_Loudmouth=check
@@ -10694,6 +10713,8 @@ fi
 
 
 
+          with_OpenCV_check=pkgconfig
+          with_OpenCV_virtual=no
 
 # Check whether --with-OpenCV-pkgconf was given.
 if test "${with_OpenCV_pkgconf+set}" = set; then :
@@ -10793,7 +10814,6 @@ else
 fi
 
           KnownLibs=$KnownLibs" "OpenCV
-          with_OpenCV_virtual="no"
           if ( test X$use_OpenCV = X )
           then
              use_OpenCV=check
@@ -10805,6 +10825,8 @@ fi
 
 
 
+          with_libPNG_check=pkgconfig
+          with_libPNG_virtual=no
 
 # Check whether --with-libPNG-pkgconf was given.
 if test "${with_libPNG_pkgconf+set}" = set; then :
@@ -10904,7 +10926,6 @@ else
 fi
 
           KnownLibs=$KnownLibs" "libPNG
-          with_libPNG_virtual="no"
           if ( test X$use_libPNG = X )
           then
              use_libPNG=check
@@ -10916,6 +10937,8 @@ fi
 
 
 
+          with_PortAudio_check=pkgconfig
+          with_PortAudio_virtual=no
 
 # Check whether --with-PortAudio-pkgconf was given.
 if test "${with_PortAudio_pkgconf+set}" = set; then :
@@ -11015,7 +11038,6 @@ else
 fi
 
           KnownLibs=$KnownLibs" "PortAudio
-          with_PortAudio_virtual="no"
           if ( test X$use_PortAudio = X )
           then
              use_PortAudio=check
@@ -11027,6 +11049,8 @@ fi
 
 
 
+          with_PulseAudio_check=pkgconfig
+          with_PulseAudio_virtual=no
 
 # Check whether --with-PulseAudio-pkgconf was given.
 if test "${with_PulseAudio_pkgconf+set}" = set; then :
@@ -11126,7 +11150,6 @@ else
 fi
 
           KnownLibs=$KnownLibs" "PulseAudio
-          with_PulseAudio_virtual="no"
           if ( test X$use_PulseAudio = X )
           then
              use_PulseAudio=check
@@ -11138,6 +11161,8 @@ fi
 
 
 
+          with_PulseAudioSimple_check=pkgconfig
+          with_PulseAudioSimple_virtual=no
 
 # Check whether --with-PulseAudioSimple-pkgconf was given.
 if test "${with_PulseAudioSimple_pkgconf+set}" = set; then :
@@ -11237,7 +11262,6 @@ else
 fi
 
           KnownLibs=$KnownLibs" "PulseAudioSimple
-          with_PulseAudioSimple_virtual="no"
           if ( test X$use_PulseAudioSimple = X )
           then
              use_PulseAudioSimple=check
@@ -11249,6 +11273,8 @@ fi
 
 
 
+                    with_Qt3_check=pkgconfig
+          with_Qt3_virtual=no
 
 # Check whether --with-Qt3-pkgconf was given.
 if test "${with_Qt3_pkgconf+set}" = set; then :
@@ -11348,7 +11374,6 @@ else
 fi
 
           KnownLibs=$KnownLibs" "Qt3
-          with_Qt3_virtual="no"
           if ( test X$use_Qt3 = X )
           then
              use_Qt3=check
@@ -11360,6 +11385,8 @@ fi
 
 
 
+                    with_QtCore_check=pkgconfig
+          with_QtCore_virtual=no
 
 # Check whether --with-QtCore-pkgconf was given.
 if test "${with_QtCore_pkgconf+set}" = set; then :
@@ -11459,7 +11486,6 @@ else
 fi
 
           KnownLibs=$KnownLibs" "QtCore
-          with_QtCore_virtual="no"
           if ( test X$use_QtCore = X )
           then
              use_QtCore=check
@@ -11471,6 +11497,8 @@ fi
 
 
 
+          with_QtGui_check=pkgconfig
+          with_QtGui_virtual=no
 
 # Check whether --with-QtGui-pkgconf was given.
 if test "${with_QtGui_pkgconf+set}" = set; then :
@@ -11570,7 +11598,6 @@ else
 fi
 
           KnownLibs=$KnownLibs" "QtGui
-          with_QtGui_virtual="no"
           if ( test X$use_QtGui = X )
           then
              use_QtGui=check
@@ -11582,6 +11609,8 @@ fi
 
 
 
+          with_QtNetwork_check=pkgconfig
+          with_QtNetwork_virtual=no
 
 # Check whether --with-QtNetwork-pkgconf was given.
 if test "${with_QtNetwork_pkgconf+set}" = set; then :
@@ -11681,7 +11710,6 @@ else
 fi
 
           KnownLibs=$KnownLibs" "QtNetwork
-          with_QtNetwork_virtual="no"
           if ( test X$use_QtNetwork = X )
           then
              use_QtNetwork=check
@@ -11693,6 +11721,8 @@ fi
 
 
 
+          with_QtOpenGL_check=pkgconfig
+          with_QtOpenGL_virtual=no
 
 # Check whether --with-QtOpenGL-pkgconf was given.
 if test "${with_QtOpenGL_pkgconf+set}" = set; then :
@@ -11792,7 +11822,6 @@ else
 fi
 
           KnownLibs=$KnownLibs" "QtOpenGL
-          with_QtOpenGL_virtual="no"
           if ( test X$use_QtOpenGL = X )
           then
              use_QtOpenGL=check
@@ -11804,6 +11833,8 @@ fi
 
 
 
+          with_QtSql_check=pkgconfig
+          with_QtSql_virtual=no
 
 # Check whether --with-QtSql-pkgconf was given.
 if test "${with_QtSql_pkgconf+set}" = set; then :
@@ -11903,7 +11934,6 @@ else
 fi
 
           KnownLibs=$KnownLibs" "QtSql
-          with_QtSql_virtual="no"
           if ( test X$use_QtSql = X )
           then
              use_QtSql=check
@@ -11915,6 +11945,8 @@ fi
 
 
 
+          with_QtXml_check=pkgconfig
+          with_QtXml_virtual=no
 
 # Check whether --with-QtXml-pkgconf was given.
 if test "${with_QtXml_pkgconf+set}" = set; then :
@@ -12014,7 +12046,6 @@ else
 fi
 
           KnownLibs=$KnownLibs" "QtXml
-          with_QtXml_virtual="no"
           if ( test X$use_QtXml = X )
           then
              use_QtXml=check
@@ -12026,6 +12057,8 @@ fi
 
 
 
+          with_Qt3Support_check=pkgconfig
+          with_Qt3Support_virtual=no
 
 # Check whether --with-Qt3Support-pkgconf was given.
 if test "${with_Qt3Support_pkgconf+set}" = set; then :
@@ -12125,7 +12158,6 @@ else
 fi
 
           KnownLibs=$KnownLibs" "Qt3Support
-          with_Qt3Support_virtual="no"
           if ( test X$use_Qt3Support = X )
           then
              use_Qt3Support=check
@@ -12137,6 +12169,8 @@ fi
 
 
 
+                    with_Qt5Core_check=pkgconfig
+          with_Qt5Core_virtual=no
 
 # Check whether --with-Qt5Core-pkgconf was given.
 if test "${with_Qt5Core_pkgconf+set}" = set; then :
@@ -12236,7 +12270,6 @@ else
 fi
 
           KnownLibs=$KnownLibs" "Qt5Core
-          with_Qt5Core_virtual="no"
           if ( test X$use_Qt5Core = X )
           then
              use_Qt5Core=check
@@ -12248,6 +12281,8 @@ fi
 
 
 
+          with_Qt5Gui_check=pkgconfig
+          with_Qt5Gui_virtual=no
 
 # Check whether --with-Qt5Gui-pkgconf was given.
 if test "${with_Qt5Gui_pkgconf+set}" = set; then :
@@ -12347,7 +12382,6 @@ else
 fi
 
           KnownLibs=$KnownLibs" "Qt5Gui
-          with_Qt5Gui_virtual="no"
           if ( test X$use_Qt5Gui = X )
           then
              use_Qt5Gui=check
@@ -12359,6 +12393,8 @@ fi
 
 
 
+          with_Qt5Network_check=pkgconfig
+          with_Qt5Network_virtual=no
 
 # Check whether --with-Qt5Network-pkgconf was given.
 if test "${with_Qt5Network_pkgconf+set}" = set; then :
@@ -12458,7 +12494,6 @@ else
 fi
 
           KnownLibs=$KnownLibs" "Qt5Network
-          with_Qt5Network_virtual="no"
           if ( test X$use_Qt5Network = X )
           then
              use_Qt5Network=check
@@ -12470,6 +12505,8 @@ fi
 
 
 
+          with_Qt5OpenGL_check=pkgconfig
+          with_Qt5OpenGL_virtual=no
 
 # Check whether --with-Qt5OpenGL-pkgconf was given.
 if test "${with_Qt5OpenGL_pkgconf+set}" = set; then :
@@ -12569,7 +12606,6 @@ else
 fi
 
           KnownLibs=$KnownLibs" "Qt5OpenGL
-          with_Qt5OpenGL_virtual="no"
           if ( test X$use_Qt5OpenGL = X )
           then
              use_Qt5OpenGL=check
@@ -12581,6 +12617,8 @@ fi
 
 
 
+          with_Qt5Sql_check=pkgconfig
+          with_Qt5Sql_virtual=no
 
 # Check whether --with-Qt5Sql-pkgconf was given.
 if test "${with_Qt5Sql_pkgconf+set}" = set; then :
@@ -12680,7 +12718,6 @@ else
 fi
 
           KnownLibs=$KnownLibs" "Qt5Sql
-          with_Qt5Sql_virtual="no"
           if ( test X$use_Qt5Sql = X )
           then
              use_Qt5Sql=check
@@ -12692,6 +12729,8 @@ fi
 
 
 
+          with_Qt5Xml_check=pkgconfig
+          with_Qt5Xml_virtual=no
 
 # Check whether --with-Qt5Xml-pkgconf was given.
 if test "${with_Qt5Xml_pkgconf+set}" = set; then :
@@ -12791,7 +12830,6 @@ else
 fi
 
           KnownLibs=$KnownLibs" "Qt5Xml
-          with_Qt5Xml_virtual="no"
           if ( test X$use_Qt5Xml = X )
           then
              use_Qt5Xml=check
@@ -12803,6 +12841,8 @@ fi
 
 
 
+                    with_libGL_check=pkgconfig
+          with_libGL_virtual=no
 
 # Check whether --with-libGL-pkgconf was given.
 if test "${with_libGL_pkgconf+set}" = set; then :
@@ -12902,7 +12942,6 @@ else
 fi
 
           KnownLibs=$KnownLibs" "libGL
-          with_libGL_virtual="no"
           if ( test X$use_libGL = X )
           then
              use_libGL=check
@@ -12914,6 +12953,8 @@ fi
 
 
 
+          with_libGLU_check=pkgconfig
+          with_libGLU_virtual=no
 
 # Check whether --with-libGLU-pkgconf was given.
 if test "${with_libGLU_pkgconf+set}" = set; then :
@@ -13013,7 +13054,6 @@ else
 fi
 
           KnownLibs=$KnownLibs" "libGLU
-          with_libGLU_virtual="no"
           if ( test X$use_libGLU = X )
           then
              use_libGLU=check
@@ -13025,6 +13065,8 @@ fi
 
 
 
+          with_OpenSceneGraph_check=pkgconfig
+          with_OpenSceneGraph_virtual=no
 
 # Check whether --with-OpenSceneGraph-pkgconf was given.
 if test "${with_OpenSceneGraph_pkgconf+set}" = set; then :
@@ -13124,7 +13166,6 @@ else
 fi
 
           KnownLibs=$KnownLibs" "OpenSceneGraph
-          with_OpenSceneGraph_virtual="no"
           if ( test X$use_OpenSceneGraph = X )
           then
              use_OpenSceneGraph=check
@@ -13136,6 +13177,8 @@ fi
 
 
 
+          with_OpenSceneGraphGTK_check=pkgconfig
+          with_OpenSceneGraphGTK_virtual=no
 
 # Check whether --with-OpenSceneGraphGTK-pkgconf was given.
 if test "${with_OpenSceneGraphGTK_pkgconf+set}" = set; then :
@@ -13235,7 +13278,6 @@ else
 fi
 
           KnownLibs=$KnownLibs" "OpenSceneGraphGTK
-          with_OpenSceneGraphGTK_virtual="no"
           if ( test X$use_OpenSceneGraphGTK = X )
           then
              use_OpenSceneGraphGTK=check
@@ -13247,6 +13289,8 @@ fi
 
 
 
+          with_RLog_check=pkgconfig
+          with_RLog_virtual=no
 
 # Check whether --with-RLog-pkgconf was given.
 if test "${with_RLog_pkgconf+set}" = set; then :
@@ -13346,7 +13390,6 @@ else
 fi
 
           KnownLibs=$KnownLibs" "RLog
-          with_RLog_virtual="no"
           if ( test X$use_RLog = X )
           then
              use_RLog=check
@@ -13358,6 +13401,8 @@ fi
 
 
 
+          with_devVideo4Linux2_check=pkgconfig
+          with_devVideo4Linux2_virtual=no
 
 # Check whether --with-devVideo4Linux2-pkgconf was given.
 if test "${with_devVideo4Linux2_pkgconf+set}" = set; then :
@@ -13457,7 +13502,6 @@ else
 fi
 
           KnownLibs=$KnownLibs" "devVideo4Linux2
-          with_devVideo4Linux2_virtual="no"
           if ( test X$use_devVideo4Linux2 = X )
           then
              use_devVideo4Linux2=check
@@ -13469,6 +13513,8 @@ fi
 
 
 
+          with_UUIdTheo_check=pkgconfig
+          with_UUIdTheo_virtual=no
 
 # Check whether --with-UUIdTheo-pkgconf was given.
 if test "${with_UUIdTheo_pkgconf+set}" = set; then :
@@ -13568,7 +13614,6 @@ else
 fi
 
           KnownLibs=$KnownLibs" "UUIdTheo
-          with_UUIdTheo_virtual="no"
           if ( test X$use_UUIdTheo = X )
           then
              use_UUIdTheo=check
@@ -13580,6 +13625,8 @@ fi
 
 
 
+          with_x11_check=pkgconfig
+          with_x11_virtual=no
 
 # Check whether --with-x11-pkgconf was given.
 if test "${with_x11_pkgconf+set}" = set; then :
@@ -13679,7 +13726,6 @@ else
 fi
 
           KnownLibs=$KnownLibs" "x11
-          with_x11_virtual="no"
           if ( test X$use_x11 = X )
           then
              use_x11=check
@@ -13691,6 +13737,8 @@ fi
 
 
 
+          with_Xmu_check=pkgconfig
+          with_Xmu_virtual=no
 
 # Check whether --with-Xmu-pkgconf was given.
 if test "${with_Xmu_pkgconf+set}" = set; then :
@@ -13790,7 +13838,6 @@ else
 fi
 
           KnownLibs=$KnownLibs" "Xmu
-          with_Xmu_virtual="no"
           if ( test X$use_Xmu = X )
           then
              use_Xmu=check
@@ -13802,6 +13849,8 @@ fi
 
 
 
+          with_ZeroMQ_check=pkgconfig
+          with_ZeroMQ_virtual=no
 
 # Check whether --with-ZeroMQ-pkgconf was given.
 if test "${with_ZeroMQ_pkgconf+set}" = set; then :
@@ -13901,7 +13950,6 @@ else
 fi
 
           KnownLibs=$KnownLibs" "ZeroMQ
-          with_ZeroMQ_virtual="no"
           if ( test X$use_ZeroMQ = X )
           then
              use_ZeroMQ=check
@@ -13914,6 +13962,8 @@ fi
 
 
 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          with_blas_check=compile
+          with_blas_virtual=no
 
 # Check whether --with-blas-pkgconf was given.
 if test "${with_blas_pkgconf+set}" = set; then :
@@ -13929,6 +13979,9 @@ as_fn_error $? "Asking to configure blas via pkg-config but configure is unaware
 See \`config.log' for more details" "$LINENO" 5; }
                                           ;;
                         * )               use_blas=yes
+                                          # As user has requested use of
+                                          # pkg-config, force the test-type
+                                          with_blas_check=pkgconfig
                                           trace 4 --with-blas-pkgconf set to [$with_blas_pkgconf]
                                           ;;
                        esac
@@ -14800,12 +14853,13 @@ $as_echo "$as_me: WARNING: --with-blas-include and --with-blas specify different
           with_blas_hdr=""
           with_blas_lang="C
                              "
-          with_blas_virtual="no"
 
 
 
 
 
+                                                                                                                                                                                                                                                                                                  with_CXSparse_check=compile
+          with_CXSparse_virtual=no
 
 # Check whether --with-CXSparse-pkgconf was given.
 if test "${with_CXSparse_pkgconf+set}" = set; then :
@@ -14821,6 +14875,9 @@ as_fn_error $? "Asking to configure CXSparse via pkg-config but configure is una
 See \`config.log' for more details" "$LINENO" 5; }
                                           ;;
                         * )               use_CXSparse=yes
+                                          # As user has requested use of
+                                          # pkg-config, force the test-type
+                                          with_CXSparse_check=pkgconfig
                                           trace 4 --with-CXSparse-pkgconf set to [$with_CXSparse_pkgconf]
                                           ;;
                        esac
@@ -15693,12 +15750,13 @@ $as_echo "$as_me: WARNING: --with-CXSparse-include and --with-CXSparse specify d
           with_CXSparse_hdr="suitesparse/cs.h"
           with_CXSparse_lang="C
                              "
-          with_CXSparse_virtual="no"
 
 
 
 
 
+          with_CUDA_check=compile
+          with_CUDA_virtual=no
 
 # Check whether --with-CUDA-pkgconf was given.
 if test "${with_CUDA_pkgconf+set}" = set; then :
@@ -15714,6 +15772,9 @@ as_fn_error $? "Asking to configure CUDA via pkg-config but configure is unaware
 See \`config.log' for more details" "$LINENO" 5; }
                                           ;;
                         * )               use_CUDA=yes
+                                          # As user has requested use of
+                                          # pkg-config, force the test-type
+                                          with_CUDA_check=pkgconfig
                                           trace 4 --with-CUDA-pkgconf set to [$with_CUDA_pkgconf]
                                           ;;
                        esac
@@ -16585,12 +16646,13 @@ $as_echo "$as_me: WARNING: --with-CUDA-include and --with-CUDA specify different
           with_CUDA_hdr="cuda.h"
           with_CUDA_lang="C
                              "
-          with_CUDA_virtual="no"
 
 
 
 
 
+          with_DynLink_check=compile
+          with_DynLink_virtual=no
 
 # Check whether --with-DynLink-pkgconf was given.
 if test "${with_DynLink_pkgconf+set}" = set; then :
@@ -16606,6 +16668,9 @@ as_fn_error $? "Asking to configure DynLink via pkg-config but configure is unaw
 See \`config.log' for more details" "$LINENO" 5; }
                                           ;;
                         * )               use_DynLink=yes
+                                          # As user has requested use of
+                                          # pkg-config, force the test-type
+                                          with_DynLink_check=pkgconfig
                                           trace 4 --with-DynLink-pkgconf set to [$with_DynLink_pkgconf]
                                           ;;
                        esac
@@ -17477,12 +17542,13 @@ $as_echo "$as_me: WARNING: --with-DynLink-include and --with-DynLink specify dif
           with_DynLink_hdr=""
           with_DynLink_lang="C
                              "
-          with_DynLink_virtual="no"
 
 
 
 
 
+          with_GLUT_check=compile
+          with_GLUT_virtual=no
 
 # Check whether --with-GLUT-pkgconf was given.
 if test "${with_GLUT_pkgconf+set}" = set; then :
@@ -17498,6 +17564,9 @@ as_fn_error $? "Asking to configure GLUT via pkg-config but configure is unaware
 See \`config.log' for more details" "$LINENO" 5; }
                                           ;;
                         * )               use_GLUT=yes
+                                          # As user has requested use of
+                                          # pkg-config, force the test-type
+                                          with_GLUT_check=pkgconfig
                                           trace 4 --with-GLUT-pkgconf set to [$with_GLUT_pkgconf]
                                           ;;
                        esac
@@ -18372,12 +18441,13 @@ $as_echo "$as_me: WARNING: --with-GLUT-include and --with-GLUT specify different
           with_GLUT_hdr="GL/glut.h"
           with_GLUT_lang="C
                              "
-          with_GLUT_virtual="no"
 
 
 
 
 
+          with_libmkl_check=compile
+          with_libmkl_virtual=no
 
 # Check whether --with-libmkl-pkgconf was given.
 if test "${with_libmkl_pkgconf+set}" = set; then :
@@ -18393,6 +18463,9 @@ as_fn_error $? "Asking to configure libmkl via pkg-config but configure is unawa
 See \`config.log' for more details" "$LINENO" 5; }
                                           ;;
                         * )               use_libmkl=yes
+                                          # As user has requested use of
+                                          # pkg-config, force the test-type
+                                          with_libmkl_check=pkgconfig
                                           trace 4 --with-libmkl-pkgconf set to [$with_libmkl_pkgconf]
                                           ;;
                        esac
@@ -19267,12 +19340,13 @@ $as_echo "$as_me: WARNING: --with-libmkl-include and --with-libmkl specify diffe
           with_libmkl_hdr="mkl_dfti.h"
           with_libmkl_lang="C
                              "
-          with_libmkl_virtual="no"
 
 
 
 
 
+          with_LibJasper_check=compile
+          with_LibJasper_virtual=no
 
 # Check whether --with-LibJasper-pkgconf was given.
 if test "${with_LibJasper_pkgconf+set}" = set; then :
@@ -19288,6 +19362,9 @@ as_fn_error $? "Asking to configure LibJasper via pkg-config but configure is un
 See \`config.log' for more details" "$LINENO" 5; }
                                           ;;
                         * )               use_LibJasper=yes
+                                          # As user has requested use of
+                                          # pkg-config, force the test-type
+                                          with_LibJasper_check=pkgconfig
                                           trace 4 --with-LibJasper-pkgconf set to [$with_LibJasper_pkgconf]
                                           ;;
                        esac
@@ -20159,12 +20236,13 @@ $as_echo "$as_me: WARNING: --with-LibJasper-include and --with-LibJasper specify
           with_LibJasper_hdr="jasper/jasper.h"
           with_LibJasper_lang="C
                              "
-          with_LibJasper_virtual="no"
 
 
 
 
 
+          with_JPEG_check=compile
+          with_JPEG_virtual=no
 
 # Check whether --with-JPEG-pkgconf was given.
 if test "${with_JPEG_pkgconf+set}" = set; then :
@@ -20180,6 +20258,9 @@ as_fn_error $? "Asking to configure JPEG via pkg-config but configure is unaware
 See \`config.log' for more details" "$LINENO" 5; }
                                           ;;
                         * )               use_JPEG=yes
+                                          # As user has requested use of
+                                          # pkg-config, force the test-type
+                                          with_JPEG_check=pkgconfig
                                           trace 4 --with-JPEG-pkgconf set to [$with_JPEG_pkgconf]
                                           ;;
                        esac
@@ -21054,12 +21135,13 @@ $as_echo "$as_me: WARNING: --with-JPEG-include and --with-JPEG specify different
           with_JPEG_hdr="stdio.h jpeglib.h"
           with_JPEG_lang="C
                              "
-          with_JPEG_virtual="no"
 
 
 
 
 
+                                                                                                              with_LAPACK_check=compile
+          with_LAPACK_virtual=no
 
 # Check whether --with-LAPACK-pkgconf was given.
 if test "${with_LAPACK_pkgconf+set}" = set; then :
@@ -21075,6 +21157,9 @@ as_fn_error $? "Asking to configure LAPACK via pkg-config but configure is unawa
 See \`config.log' for more details" "$LINENO" 5; }
                                           ;;
                         * )               use_LAPACK=yes
+                                          # As user has requested use of
+                                          # pkg-config, force the test-type
+                                          with_LAPACK_check=pkgconfig
                                           trace 4 --with-LAPACK-pkgconf set to [$with_LAPACK_pkgconf]
                                           ;;
                        esac
@@ -21946,12 +22031,13 @@ $as_echo "$as_me: WARNING: --with-LAPACK-include and --with-LAPACK specify diffe
           with_LAPACK_hdr=""
           with_LAPACK_lang="C
                              "
-          with_LAPACK_virtual="no"
 
 
 
 
 
+                                                                                                                                                      with_Math_check=compile
+          with_Math_virtual=no
 
 # Check whether --with-Math-pkgconf was given.
 if test "${with_Math_pkgconf+set}" = set; then :
@@ -21967,6 +22053,9 @@ as_fn_error $? "Asking to configure Math via pkg-config but configure is unaware
 See \`config.log' for more details" "$LINENO" 5; }
                                           ;;
                         * )               use_Math=yes
+                                          # As user has requested use of
+                                          # pkg-config, force the test-type
+                                          with_Math_check=pkgconfig
                                           trace 4 --with-Math-pkgconf set to [$with_Math_pkgconf]
                                           ;;
                        esac
@@ -22840,12 +22929,13 @@ $as_echo "$as_me: WARNING: --with-Math-include and --with-Math specify different
           with_Math_hdr="math.h"
           with_Math_lang="C
                              "
-          with_Math_virtual="no"
 
 
 
 
 
+          with_posixThreads_check=compile
+          with_posixThreads_virtual=no
 
 # Check whether --with-posixThreads-pkgconf was given.
 if test "${with_posixThreads_pkgconf+set}" = set; then :
@@ -22861,6 +22951,9 @@ as_fn_error $? "Asking to configure posixThreads via pkg-config but configure is
 See \`config.log' for more details" "$LINENO" 5; }
                                           ;;
                         * )               use_posixThreads=yes
+                                          # As user has requested use of
+                                          # pkg-config, force the test-type
+                                          with_posixThreads_check=pkgconfig
                                           trace 4 --with-posixThreads-pkgconf set to [$with_posixThreads_pkgconf]
                                           ;;
                        esac
@@ -23732,12 +23825,13 @@ $as_echo "$as_me: WARNING: --with-posixThreads-include and --with-posixThreads s
           with_posixThreads_hdr="pthread.h"
           with_posixThreads_lang="C
                              "
-          with_posixThreads_virtual="no"
 
 
 
 
 
+          with_Qt3QGLViewer_check=compile
+          with_Qt3QGLViewer_virtual=no
 
 # Check whether --with-Qt3QGLViewer-pkgconf was given.
 if test "${with_Qt3QGLViewer_pkgconf+set}" = set; then :
@@ -23753,6 +23847,9 @@ as_fn_error $? "Asking to configure Qt3QGLViewer via pkg-config but configure is
 See \`config.log' for more details" "$LINENO" 5; }
                                           ;;
                         * )               use_Qt3QGLViewer=yes
+                                          # As user has requested use of
+                                          # pkg-config, force the test-type
+                                          with_Qt3QGLViewer_check=pkgconfig
                                           trace 4 --with-Qt3QGLViewer-pkgconf set to [$with_Qt3QGLViewer_pkgconf]
                                           ;;
                        esac
@@ -24626,12 +24723,13 @@ $as_echo "$as_me: WARNING: --with-Qt3QGLViewer-include and --with-Qt3QGLViewer s
           with_Qt3QGLViewer_hdr="QGLViewer/qglviewer.h"
           with_Qt3QGLViewer_lang="C++
                              "
-          with_Qt3QGLViewer_virtual="no"
 
 
 
 
 
+          with_Qt4QGLViewer_check=compile
+          with_Qt4QGLViewer_virtual=no
 
 # Check whether --with-Qt4QGLViewer-pkgconf was given.
 if test "${with_Qt4QGLViewer_pkgconf+set}" = set; then :
@@ -24647,6 +24745,9 @@ as_fn_error $? "Asking to configure Qt4QGLViewer via pkg-config but configure is
 See \`config.log' for more details" "$LINENO" 5; }
                                           ;;
                         * )               use_Qt4QGLViewer=yes
+                                          # As user has requested use of
+                                          # pkg-config, force the test-type
+                                          with_Qt4QGLViewer_check=pkgconfig
                                           trace 4 --with-Qt4QGLViewer-pkgconf set to [$with_Qt4QGLViewer_pkgconf]
                                           ;;
                        esac
@@ -25520,12 +25621,13 @@ $as_echo "$as_me: WARNING: --with-Qt4QGLViewer-include and --with-Qt4QGLViewer s
           with_Qt4QGLViewer_hdr="QGLViewer/qglviewer.h"
           with_Qt4QGLViewer_lang="C++
                              "
-          with_Qt4QGLViewer_virtual="no"
 
 
 
 
 
+          with_Socket_check=compile
+          with_Socket_virtual=no
 
 # Check whether --with-Socket-pkgconf was given.
 if test "${with_Socket_pkgconf+set}" = set; then :
@@ -25541,6 +25643,9 @@ as_fn_error $? "Asking to configure Socket via pkg-config but configure is unawa
 See \`config.log' for more details" "$LINENO" 5; }
                                           ;;
                         * )               use_Socket=yes
+                                          # As user has requested use of
+                                          # pkg-config, force the test-type
+                                          with_Socket_check=pkgconfig
                                           trace 4 --with-Socket-pkgconf set to [$with_Socket_pkgconf]
                                           ;;
                        esac
@@ -26414,12 +26519,13 @@ $as_echo "$as_me: WARNING: --with-Socket-include and --with-Socket specify diffe
           with_Socket_hdr="sys/socket.h"
           with_Socket_lang="C
                              "
-          with_Socket_virtual="no"
 
 
 
 
 
+          with_tetgen_check=compile
+          with_tetgen_virtual=no
 
 # Check whether --with-tetgen-pkgconf was given.
 if test "${with_tetgen_pkgconf+set}" = set; then :
@@ -26435,6 +26541,9 @@ as_fn_error $? "Asking to configure tetgen via pkg-config but configure is unawa
 See \`config.log' for more details" "$LINENO" 5; }
                                           ;;
                         * )               use_tetgen=yes
+                                          # As user has requested use of
+                                          # pkg-config, force the test-type
+                                          with_tetgen_check=pkgconfig
                                           trace 4 --with-tetgen-pkgconf set to [$with_tetgen_pkgconf]
                                           ;;
                        esac
@@ -27311,12 +27420,13 @@ $as_echo "$as_me: WARNING: --with-tetgen-include and --with-tetgen specify diffe
           with_tetgen_hdr="tetgen.h"
           with_tetgen_lang="C++
                              "
-          with_tetgen_virtual="no"
 
 
 
 
 
+          with_LibTIFF_check=compile
+          with_LibTIFF_virtual=no
 
 # Check whether --with-LibTIFF-pkgconf was given.
 if test "${with_LibTIFF_pkgconf+set}" = set; then :
@@ -27332,6 +27442,9 @@ as_fn_error $? "Asking to configure LibTIFF via pkg-config but configure is unaw
 See \`config.log' for more details" "$LINENO" 5; }
                                           ;;
                         * )               use_LibTIFF=yes
+                                          # As user has requested use of
+                                          # pkg-config, force the test-type
+                                          with_LibTIFF_check=pkgconfig
                                           trace 4 --with-LibTIFF-pkgconf set to [$with_LibTIFF_pkgconf]
                                           ;;
                        esac
@@ -28203,12 +28316,13 @@ $as_echo "$as_me: WARNING: --with-LibTIFF-include and --with-LibTIFF specify dif
           with_LibTIFF_hdr=""
           with_LibTIFF_lang="C
                              "
-          with_LibTIFF_virtual="no"
 
 
 
 
 
+          with_UMFPack_check=compile
+          with_UMFPack_virtual=no
 
 # Check whether --with-UMFPack-pkgconf was given.
 if test "${with_UMFPack_pkgconf+set}" = set; then :
@@ -28224,6 +28338,9 @@ as_fn_error $? "Asking to configure UMFPack via pkg-config but configure is unaw
 See \`config.log' for more details" "$LINENO" 5; }
                                           ;;
                         * )               use_UMFPack=yes
+                                          # As user has requested use of
+                                          # pkg-config, force the test-type
+                                          with_UMFPack_check=pkgconfig
                                           trace 4 --with-UMFPack-pkgconf set to [$with_UMFPack_pkgconf]
                                           ;;
                        esac
@@ -29098,13 +29215,14 @@ $as_echo "$as_me: WARNING: --with-UMFPack-include and --with-UMFPack specify dif
           with_UMFPack_hdr="suitesparse/umfpack.h"
           with_UMFPack_lang="C
                              "
-          with_UMFPack_virtual="no"
 
 
 
 
 
 
+          with_vlfeat_check=compile
+          with_vlfeat_virtual=no
 
 # Check whether --with-vlfeat-pkgconf was given.
 if test "${with_vlfeat_pkgconf+set}" = set; then :
@@ -29120,6 +29238,9 @@ as_fn_error $? "Asking to configure vlfeat via pkg-config but configure is unawa
 See \`config.log' for more details" "$LINENO" 5; }
                                           ;;
                         * )               use_vlfeat=yes
+                                          # As user has requested use of
+                                          # pkg-config, force the test-type
+                                          with_vlfeat_check=pkgconfig
                                           trace 4 --with-vlfeat-pkgconf set to [$with_vlfeat_pkgconf]
                                           ;;
                        esac
@@ -29993,13 +30114,14 @@ $as_echo "$as_me: WARNING: --with-vlfeat-include and --with-vlfeat specify diffe
           with_vlfeat_hdr="sift.h"
           with_vlfeat_lang="C
                              "
-          with_vlfeat_virtual="no"
 
 
 
 
 
 
+          with_vtkCommon_check=compile
+          with_vtkCommon_virtual=no
 
 # Check whether --with-vtkCommon-pkgconf was given.
 if test "${with_vtkCommon_pkgconf+set}" = set; then :
@@ -30015,6 +30137,9 @@ as_fn_error $? "Asking to configure vtkCommon via pkg-config but configure is un
 See \`config.log' for more details" "$LINENO" 5; }
                                           ;;
                         * )               use_vtkCommon=yes
+                                          # As user has requested use of
+                                          # pkg-config, force the test-type
+                                          with_vtkCommon_check=pkgconfig
                                           trace 4 --with-vtkCommon-pkgconf set to [$with_vtkCommon_pkgconf]
                                           ;;
                        esac
@@ -30886,12 +31011,13 @@ $as_echo "$as_me: WARNING: --with-vtkCommon-include and --with-vtkCommon specify
           with_vtkCommon_hdr="vtkPoints.h"
           with_vtkCommon_lang="C++
                              "
-          with_vtkCommon_virtual="no"
 
 
 
 
 
+          with_vtkFiltering_check=compile
+          with_vtkFiltering_virtual=no
 
 # Check whether --with-vtkFiltering-pkgconf was given.
 if test "${with_vtkFiltering_pkgconf+set}" = set; then :
@@ -30907,6 +31033,9 @@ as_fn_error $? "Asking to configure vtkFiltering via pkg-config but configure is
 See \`config.log' for more details" "$LINENO" 5; }
                                           ;;
                         * )               use_vtkFiltering=yes
+                                          # As user has requested use of
+                                          # pkg-config, force the test-type
+                                          with_vtkFiltering_check=pkgconfig
                                           trace 4 --with-vtkFiltering-pkgconf set to [$with_vtkFiltering_pkgconf]
                                           ;;
                        esac
@@ -31778,13 +31907,14 @@ $as_echo "$as_me: WARNING: --with-vtkFiltering-include and --with-vtkFiltering s
           with_vtkFiltering_hdr="vtkCellArray.h"
           with_vtkFiltering_lang="C++
                              "
-          with_vtkFiltering_virtual="no"
 
 
 
 
 
 
+          with_vtkGraphics_check=compile
+          with_vtkGraphics_virtual=no
 
 # Check whether --with-vtkGraphics-pkgconf was given.
 if test "${with_vtkGraphics_pkgconf+set}" = set; then :
@@ -31800,6 +31930,9 @@ as_fn_error $? "Asking to configure vtkGraphics via pkg-config but configure is 
 See \`config.log' for more details" "$LINENO" 5; }
                                           ;;
                         * )               use_vtkGraphics=yes
+                                          # As user has requested use of
+                                          # pkg-config, force the test-type
+                                          with_vtkGraphics_check=pkgconfig
                                           trace 4 --with-vtkGraphics-pkgconf set to [$with_vtkGraphics_pkgconf]
                                           ;;
                        esac
@@ -32671,13 +32804,14 @@ $as_echo "$as_me: WARNING: --with-vtkGraphics-include and --with-vtkGraphics spe
           with_vtkGraphics_hdr="vtkDecimatePro.h"
           with_vtkGraphics_lang="C++
                              "
-          with_vtkGraphics_virtual="no"
 
 
 
 
 
 
+          with_Yajl_check=compile
+          with_Yajl_virtual=no
 
 # Check whether --with-Yajl-pkgconf was given.
 if test "${with_Yajl_pkgconf+set}" = set; then :
@@ -32693,6 +32827,9 @@ as_fn_error $? "Asking to configure Yajl via pkg-config but configure is unaware
 See \`config.log' for more details" "$LINENO" 5; }
                                           ;;
                         * )               use_Yajl=yes
+                                          # As user has requested use of
+                                          # pkg-config, force the test-type
+                                          with_Yajl_check=pkgconfig
                                           trace 4 --with-Yajl-pkgconf set to [$with_Yajl_pkgconf]
                                           ;;
                        esac
@@ -33569,12 +33706,13 @@ $as_echo "$as_me: WARNING: --with-Yajl-include and --with-Yajl specify different
           with_Yajl_hdr="yajl/yajl_parse.h"
           with_Yajl_lang="C
                              "
-          with_Yajl_virtual="no"
 
 
 
 
 
+          with_Zlib_check=compile
+          with_Zlib_virtual=no
 
 # Check whether --with-Zlib-pkgconf was given.
 if test "${with_Zlib_pkgconf+set}" = set; then :
@@ -33590,6 +33728,9 @@ as_fn_error $? "Asking to configure Zlib via pkg-config but configure is unaware
 See \`config.log' for more details" "$LINENO" 5; }
                                           ;;
                         * )               use_Zlib=yes
+                                          # As user has requested use of
+                                          # pkg-config, force the test-type
+                                          with_Zlib_check=pkgconfig
                                           trace 4 --with-Zlib-pkgconf set to [$with_Zlib_pkgconf]
                                           ;;
                        esac
@@ -34461,13 +34602,14 @@ $as_echo "$as_me: WARNING: --with-Zlib-include and --with-Zlib specify different
           with_Zlib_hdr=""
           with_Zlib_lang="C
                              "
-          with_Zlib_virtual="no"
 
 
 
 
 
 
+                    with_libffmpeg_check=virtual
+          with_libffmpeg_virtual=yes
 
 # Check whether --with-libffmpeg-pkgconf was given.
 if test "${with_libffmpeg_pkgconf+set}" = set; then :
@@ -34483,6 +34625,10 @@ as_fn_error $? "Asking to configure libffmpeg via pkg-config but configure is un
 See \`config.log' for more details" "$LINENO" 5; }
                                   ;;
                         * )       use_libffmpeg=yes
+                                  # As user has requested use of pkg-config,
+                                  # force the test-type
+                                  with_libffmpeg_check=pkgconfig
+                                  with_libffmpeg_virtual=no
                                   trace 4 --with-libffmpeg-pkgconf set to [$with_libffmpeg_pkgconf]
                                   ;;
                        esac
@@ -34554,7 +34700,6 @@ fi
 
           KnownLibs=$KnownLibs" "libffmpeg
           with_libffmpeg_prq="FFMPEGCDEC FFMPEGCONT FFMPEGSWS FFMPEGUTIL"
-          with_libffmpeg_virtual="yes"
           if ( test X$use_libffmpeg = X )
           then
              use_libffmpeg=check
@@ -34566,6 +34711,8 @@ fi
 
 
 
+          with_OpenGL_check=virtual
+          with_OpenGL_virtual=yes
 
 # Check whether --with-OpenGL-pkgconf was given.
 if test "${with_OpenGL_pkgconf+set}" = set; then :
@@ -34581,6 +34728,10 @@ as_fn_error $? "Asking to configure OpenGL via pkg-config but configure is unawa
 See \`config.log' for more details" "$LINENO" 5; }
                                   ;;
                         * )       use_OpenGL=yes
+                                  # As user has requested use of pkg-config,
+                                  # force the test-type
+                                  with_OpenGL_check=pkgconfig
+                                  with_OpenGL_virtual=no
                                   trace 4 --with-OpenGL-pkgconf set to [$with_OpenGL_pkgconf]
                                   ;;
                        esac
@@ -34652,7 +34803,6 @@ fi
 
           KnownLibs=$KnownLibs" "OpenGL
           with_OpenGL_prq="libGL libGLU"
-          with_OpenGL_virtual="yes"
           if ( test X$use_OpenGL = X )
           then
              use_OpenGL=check
@@ -34887,25 +35037,27 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
              trace 3 Declared libraries
              for lib in $LibsToProcess
              do
-                eval testwith="\$with_${lib}_tstcd"
-                eval prereq=\$with_${lib}_prq
-                eval lnklibs=\$with_${lib}_lnklibs
-                eval libpath=\$with_${lib}_libpath
-                eval hdr=\$with_${lib}_hdr
-                eval inc=\$with_${lib}_inc
-                eval pkgconf=\$with_${lib}_pkgconf
                 eval lib_enablement=\$use_${lib}
                 TRACE_INDENT="     "
-                eval virtual=\$with_${lib}_virtual
-                if test X$virtual = Xyes; then :
-  # Virtual package
-                       trace 3 "$lib:Virtual:$prereq:$lib_enablement"
-
-else
-  trace 3 "$lib:$testwith:$prereq:$lnklibs:$libpath:$hdr:$inc:$pkgconf:$lib_enablement"
-
-
-fi
+                eval check=\$with_${lib}_check
+                case $check in
+                   'virtual' )   eval prereq=\$with_${lib}_prq
+                                 trace 3 "$lib:$check:$prereq:$lib_enablement"
+                                 ;;
+                   'pkgconfig' ) eval pkgconf=\$with_${lib}_pkgconf
+                                 trace 3 "$lib:$check:$pkgconf:$lib_enablement"
+                                 ;;
+                   'compile' )   eval testwith="\$with_${lib}_tstcd"
+                                 eval prereq=\$with_${lib}_prq
+                                 eval lnklibs=\$with_${lib}_lnklibs
+                                 eval libpath=\$with_${lib}_libpath
+                                 eval hdr=\$with_${lib}_hdr
+                                 eval inc=\$with_${lib}_inc
+                                 trace 3 "$lib:$check:$testwith:$prereq:$lnklibs:$libpath:$hdr:$inc:$lib_enablement"
+                                 ;;
+                   * )           trace 1 "Assert - Unrecognised test-type for $lib"
+                                 ;;
+                esac
              done
           fi
 
@@ -34955,8 +35107,8 @@ See \`config.log' for more details" "$LINENO" 5; }
           do
              TRACE_INDENT="     "
              trace 6 Processing $lib
-             eval pkgconf=\$with_${lib}_pkgconf
-             if ( test x$pkgconf != x -a x$pkgconf != xnotset )
+             eval check=\$with_${lib}_check
+             if ( test x$check = xpkgconfig )
              then
                 TRACE_INDENT="          "
                 trace 6 Use of pkg-config identified
@@ -35123,25 +35275,27 @@ See \`config.log' for more details" "$LINENO" 5; }
 
                 if ( test X$DBG != X && test $DBG -ge 3 )
                 then
-                   eval testwith="\$with_${lib}_tstcd"
-                   eval prereq=\$with_${lib}_prq
-                   eval lnklibs=\$with_${lib}_lnklibs
-                   eval libpath=\$with_${lib}_libpath
-                   eval hdr=\$with_${lib}_hdr
-                   eval inc=\$with_${lib}_inc
-                   eval pkgconf=\$with_${lib}_pkgconf
                    eval lib_enablement=\$use_${lib}
                    TRACE_INDENT="          "
-                   eval virtual=\$with_${lib}_virtual
-                   if test X$virtual = Xyes; then :
-  # Virtual package
-                          trace 3 "$lib:Virtual:$prereq:$lib_enablement"
-
-else
-  trace 3 "$lib:$testwith:$prereq:$lnklibs:$libpath:$hdr:$inc:$pkgconf:$lib_enablement"
-
-
-fi
+                   eval check=\$with_${lib}_check
+                   case $check in
+                      'virtual' )   eval prereq=\$with_${lib}_prq
+                                    trace 3 "$lib:$check:$prereq:$lib_enablement"
+                                    ;;
+                      'pkgconfig' ) eval pkgconf=\$with_${lib}_pkgconf
+                                    trace 3 "$lib:$check:$pkgconf:$lib_enablement"
+                                    ;;
+                      'compile' )   eval testwith="\$with_${lib}_tstcd"
+                                    eval prereq=\$with_${lib}_prq
+                                    eval lnklibs=\$with_${lib}_lnklibs
+                                    eval libpath=\$with_${lib}_libpath
+                                    eval hdr=\$with_${lib}_hdr
+                                    eval inc=\$with_${lib}_inc
+                                    trace 3 "$lib:$check:$testwith:$prereq:$lnklibs:$libpath:$hdr:$inc:$lib_enablement"
+                                    ;;
+                      * )           trace 1 "Assert - Unusual test-type for $lib"
+                                    ;;
+                   esac
                 fi
              done
           done
@@ -35166,10 +35320,11 @@ fi
           trace 2 Test availability of pkg-config specified libraries and virtual packages
           for lib in $LibsToProcess
           do
-            eval lib_enablement=\$use_${lib}
-            eval pkgconf=\$with_${lib}_pkgconf
-            if ( test x$pkgconf != x -a x$pkgconf != xnotset )
+            eval check=\$with_${lib}_check
+            if ( test x$check = xpkgconfig )
             then
+               eval lib_enablement=\$use_${lib}
+               eval pkgconf=\$with_${lib}_pkgconf
                case $lib_enablement in
                   'check' )    { $as_echo "$as_me:${as_lineno-$LINENO}: checking pkg-config for $lib" >&5
 $as_echo_n "checking pkg-config for $lib... " >&6; }
@@ -35251,26 +35406,17 @@ fi
                                ;;
                esac
                LeftToDo=`echo " $LeftToDo " | $SED "s/ $lib / /"`
-               if ( test X$DBG != X && test $DBG -ge 3 )
-               then
-                  eval testwith="\$with_${lib}_tstcd"
-                  eval prereq="\$with_${lib}_prq"
-                  eval lnklibs=\$with_${lib}_lnklibs
-                  eval libpath=\$with_${lib}_libpath
-                  eval hdr=\$with_${lib}_hdr
-                  eval inc=\$with_${lib}_inc
-                  eval lib_enablement=\$use_${lib}
-                  TRACE_INDENT="     "
-                  trace 3 "$lib:$testwith:$prereq:$lnklibs:$libpath:$hdr:$pkgconf:$inc:$lib_enablement"
-               fi
+               eval lib_enablement=\$use_${lib}
+               TRACE_INDENT="     "
+               trace 3 "$lib:pkgconfig:$pkgconf:$lib_enablement"
             else
-               eval virtual=\$with_${lib}_virtual
-               if ( test X$virtual == Xyes )
+               if ( test X$check = Xvirtual )
                then
                   # Virtual package
                   eval lib_enablement=\$use_${lib}
                   case $lib_enablement in
                      'check' | 'needed' | 'yes' )
+                                  lib_enablement=present
                                   eval "use_${lib}=present"
                                   # Assume present if wanted (as something
                                   # virtual can hardly be missing) but note
@@ -35285,8 +35431,13 @@ fi
                   esac
                   eval prereq="\$with_${lib}_prq"
                   TRACE_INDENT="     "
-                  trace 3 $lib:Virtual:$prereq:$lib_enablement
+                  trace 3 $lib:virtual:$prereq:$lib_enablement
                   LeftToDo=`echo " $LeftToDo " | $SED "s/ $lib / /"`
+                else
+                  if ( test X$check != Xcompile )
+                  then
+                    trace 1 "Assert - Unrecognised check type ($check) for $lib"
+                  fi
                fi
             fi
           done
@@ -36513,25 +36664,27 @@ See \`config.log' for more details" "$LINENO" 5; }
                 esac
                 if ( test X$DBG != X && test $DBG -ge 3 )
                 then
-                   eval testwith="\$with_${lib}_tstcd"
-                   eval prereq=\$with_${lib}_prq
-                   eval lnklibs=\$with_${lib}_lnklibs
-                   eval libpath=\$with_${lib}_libpath
-                   eval hdr=\$with_${lib}_hdr
-                   eval inc=\$with_${lib}_inc
-                   eval pkgconf=\$with_${lib}_pkgconf
                    eval lib_enablement=\$use_${lib}
                    TRACE_INDENT="          "
-                   eval virtual=\$with_${lib}_virtual
-                   if test X$virtual = Xyes; then :
-  # Virtual package
-                          trace 3 "$lib:Virtual:$prereq:$lib_enablement"
-
-else
-  trace 3 "$lib:$testwith:$prereq:$lnklibs:$libpath:$hdr:$inc:$pkgconf:$lib_enablement"
-
-
-fi
+                   eval check=\$with_${lib}_check
+                   case $check in
+                      'virtual' )   eval prereq=\$with_${lib}_prq
+                                    trace 3 "$lib:$check:$prereq:$lib_enablement"
+                                    ;;
+                      'pkgconfig' ) eval pkgconf=\$with_${lib}_pkgconf
+                                    trace 3 "$lib:$check:$pkgconf:$lib_enablement"
+                                    ;;
+                      'compile' )   eval testwith="\$with_${lib}_tstcd"
+                                    eval prereq=\$with_${lib}_prq
+                                    eval lnklibs=\$with_${lib}_lnklibs
+                                    eval libpath=\$with_${lib}_libpath
+                                    eval hdr=\$with_${lib}_hdr
+                                    eval inc=\$with_${lib}_inc
+                                    trace 3 "$lib:$check:$testwith:$prereq:$lnklibs:$libpath:$hdr:$inc:$lib_enablement"
+                                    ;;
+                      * )           trace 1 "Assert - Incorrect test-type for $lib"
+                                    ;;
+                   esac
                 fi
              done
           done
@@ -36965,8 +37118,8 @@ do
                    RESOURCES="$RESOURCES $lib"
                    # Put the placeholders into Config.QMake.in so we record the
                    # flags associated with the libraries that we can use
-                   eval virtual=\$with_${lib}_virtual
-                   if ( test x$virtual = xyes )
+                   eval check=\$with_${lib}_check
+                   if ( test x$check = xvirtual )
                    then
                       cflags=""
                       libs=""
