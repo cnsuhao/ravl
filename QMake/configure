@@ -45720,19 +45720,19 @@ See \`config.log' for more details" "$LINENO" 5; }
              for lib in $LeftToDo
              do
                  trace 5 Seeing if we can do the compilation check for $lib
-          lib=$lib
+          test_lib=$lib
 
-          eval lib_enablement=\$use_${lib}
+          eval test_enablement=\$use_${test_lib}
 
 
-          if test "$lib_enablement" == check -o  "$lib_enablement" == needed -o  "$lib_enablement" == yes; then :
+          if test "$test_enablement" == check -o  "$test_enablement" == needed -o  "$test_enablement" == yes; then :
   # We need to check if this lib exists
-                 eval prereqs="\$with_${lib}_prq"
+                 eval prereqs="\$with_${test_lib}_prq"
                  process_now=yes
                  if ( test "x$prereqs" != x )
                  then
                     TRACE_INDENT="     "
-                    trace 4 Checking we know the status of all the pre-requisites of $lib [$prereqs]
+                    trace 4 Checking we know the status of all the pre-requisites of $test_lib [$prereqs]
                     for prq in $prereqs
                     do
                        eval prq_state=\$use_${prq}
@@ -45740,94 +45740,94 @@ See \`config.log' for more details" "$LINENO" 5; }
                           present )     TRACE_INDENT="          "
                                         trace 6 $prq is present
                                         ;;
-                          no )          case $lib_enablement in
+                          no )          case $test_enablement in
                                            check )  TRACE_INDENT="          "
-                                                    trace 6 $prq is disabled, disabling $lib
-                                                    eval use_${lib}=blocked
-                                                    LeftToDo=`echo " $LeftToDo " | $SED "s/ $lib / /"`
-                                                    RecentlyProcessed="$RecentlyProcessed $lib"
+                                                    trace 6 $prq is disabled, disabling $test_lib
+                                                    eval use_${test_lib}=blocked
+                                                    LeftToDo=`echo " $LeftToDo " | $SED "s/ $test_lib / /"`
+                                                    RecentlyProcessed="$RecentlyProcessed $test_lib"
                                                     process_now=no
                                                     break
                                                     ;;
                                            needed ) { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Library $lib is a pre-requisite of a selected library but is unavailable due to a disabled pre-requisite
+as_fn_error $? "Library $test_lib is a pre-requisite of a selected library but is unavailable due to a disabled pre-requisite
 See \`config.log' for more details" "$LINENO" 5; }
                                                     ;;
                                            yes )    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Required library $lib is unavailable due to a disabled pre-requisite
+as_fn_error $? "Required library $test_lib is unavailable due to a disabled pre-requisite
 See \`config.log' for more details" "$LINENO" 5; }
                                                     ;;
                                         esac
                                         ;;
-                          missing )     case $lib_enablement in
+                          missing )     case $test_enablement in
                                            check )  TRACE_INDENT="          "
-                                                    trace 6 $prq is not available, disabling $lib
-                                                    eval use_${lib}=blocked
-                                                    LeftToDo=`echo " $LeftToDo " | $SED "s/ $lib / /"`
-                                                    RecentlyProcessed="$RecentlyProcessed $lib"
+                                                    trace 6 $prq is not available, disabling $test_lib
+                                                    eval use_${test_lib}=blocked
+                                                    LeftToDo=`echo " $LeftToDo " | $SED "s/ $test_lib / /"`
+                                                    RecentlyProcessed="$RecentlyProcessed $test_lib"
                                                     process_now=no
                                                     break
                                                     ;;
                                            needed ) { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Library $lib is a pre-requisite of a selected library but is unavailable due to a missing pre-requisite
+as_fn_error $? "Library $test_lib is a pre-requisite of a selected library but is unavailable due to a missing pre-requisite
 See \`config.log' for more details" "$LINENO" 5; }
                                                     ;;
                                            yes )    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Required library $lib is unavailable due to a missing pre-requisite
+as_fn_error $? "Required library $test_lib is unavailable due to a missing pre-requisite
 See \`config.log' for more details" "$LINENO" 5; }
                                                     ;;
                                         esac
                                         ;;
-                          blocked )     case $lib_enablement in
+                          blocked )     case $test_enablement in
                                            check )  TRACE_INDENT="          "
-                                                    trace 6 $prq is blocked, disabling $lib
-                                                    eval use_${lib}=blocked
-                                                    LeftToDo=`echo " $LeftToDo " | $SED "s/ $lib / /"`
-                                                    RecentlyProcessed="$RecentlyProcessed $lib"
+                                                    trace 6 $prq is blocked, disabling $test_lib
+                                                    eval use_${test_lib}=blocked
+                                                    LeftToDo=`echo " $LeftToDo " | $SED "s/ $test_lib / /"`
+                                                    RecentlyProcessed="$RecentlyProcessed $test_lib"
                                                     process_now=no
                                                     break
                                                     ;;
                                            needed ) { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Library $lib is a pre-requisite of a selected library but is unavailable due to a missing pre-requisite
+as_fn_error $? "Library $test_lib is a pre-requisite of a selected library but is unavailable due to a missing pre-requisite
 See \`config.log' for more details" "$LINENO" 5; }
                                                     ;;
                                            yes )    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Required library $lib is unavailable due to a missing pre-requisite
+as_fn_error $? "Required library $test_lib is unavailable due to a missing pre-requisite
 See \`config.log' for more details" "$LINENO" 5; }
                                                     ;;
                                         esac
                                         ;;
                           check | needed | yes )
                                         TRACE_INDENT="          "
-                                        trace 6 $prq has not yet been checked, cannot check $lib at the moment
+                                        trace 6 $prq has not yet been checked, cannot check $test_lib at the moment
                                         process_now=no
                                         # Do not break in case we can
                                         # mark the library as blocked
                                         # by dint of another pre-req.
                                         ;;
-                          * )           case $lib_enablement in
+                          * )           case $test_enablement in
                                            check )  TRACE_INDENT="          "
-                                                    trace 1 Assert - unrecognised state for prerequisite $prq, disabling $lib
-                                                    eval use_${lib}=blocked
-                                                    LeftToDo=`echo " $LeftToDo " | $SED "s/ $lib / /"`
-                                                    RecentlyProcessed="$RecentlyProcessed $lib"
+                                                    trace 1 Assert - unrecognised state for prerequisite $prq, disabling $test_lib
+                                                    eval use_${test_lib}=blocked
+                                                    LeftToDo=`echo " $LeftToDo " | $SED "s/ $test_lib / /"`
+                                                    RecentlyProcessed="$RecentlyProcessed $test_lib"
                                                     process_now=no
                                                     break
                                                     ;;
                                            needed ) { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Library $lib is a prerequisite of a selected library but is unavailable due to a indeterminate pre-requisite state
+as_fn_error $? "Library $test_lib is a prerequisite of a selected library but is unavailable due to a indeterminate pre-requisite state
 See \`config.log' for more details" "$LINENO" 5; }
                                                     ;;
                                            yes )    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Required library $lib is unavailable due to a indeterminate pre-requisite state
+as_fn_error $? "Required library $test_lib is unavailable due to a indeterminate pre-requisite state
 See \`config.log' for more details" "$LINENO" 5; }
                                                     ;;
                                         esac
@@ -45836,18 +45836,18 @@ See \`config.log' for more details" "$LINENO" 5; }
                     done
                  fi
                  if test "x$process_now" != xno; then :
-  case $lib_enablement in #(
+  case $test_enablement in #(
   check) :
     failure="" ;; #(
   needed) :
-    failure="Library $lib is unavailable and a prerequisite of a selected library" ;; #(
+    failure="Library $test_lib is unavailable and a prerequisite of a selected library" ;; #(
   yes) :
-    failure="Required library $lib is unavailable" ;; #(
+    failure="Required library $test_lib is unavailable" ;; #(
   *) :
     trace 1 "Assert - Should never fall through here"
                                 ;;
 esac
-                        eval test_lang="\$with_${lib}_lang"
+                        eval test_lang="\$with_${test_lib}_lang"
                         test_lang=`echo $test_lang`
                         # Set test_lang from $with_$Lib_lang and strip external spaces
 
@@ -45860,7 +45860,7 @@ ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $
 ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
-          fix_expan=$lib
+          fix_expan=$test_lib
 
           eval LIB_LDFLAGS="\$with_${fix_expan}_libpath"
           if ( test "X$LIB_LDFLAGS" != X )
@@ -45871,7 +45871,7 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
           eval LIB_CPPFLAGS="\$with_${fix_expan}_inc"
           # Bodge for tetgen as we currently have no mechanism for specifying
           # package LD/{C}C{PP}FLAGS and tetgen relies on a -D in CPPFLAGS.
-          if ( test "X$lib" == Xtetgen )
+          if ( test "X$test_lib" == Xtetgen )
           then
              LIB_CPPFLAGS="-DTETLIBRARY $LIB_CPPFLAGS"
           fi
@@ -45904,8 +45904,8 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
           preserve_CPPFLAGS=$CPPFLAGS
           preserve_LIBS=$LIBS
           CPPFLAGS="$LIB_CPPFLAGS $prereqincs"
-          { $as_echo "$as_me:${as_lineno-$LINENO}: checking for external package $lib" >&5
-$as_echo_n "checking for external package $lib... " >&6; }
+          { $as_echo "$as_me:${as_lineno-$LINENO}: checking for external package $test_lib" >&5
+$as_echo_n "checking for external package $test_lib... " >&6; }
           { $as_echo "$as_me:${as_lineno-$LINENO}: result: " >&5
 $as_echo "" >&6; }
                                         eval hdr_lst="\$with_${fix_expan}_hdr"
@@ -45940,7 +45940,7 @@ fi
           fi
           # Bodge to stop caching of the QGLViewer header file status
           # as we need to check it against multiple versions of Qt
-          if ( test "X$lib" == XQt3QGLViewer  || test "X$lib" == XQt4QGLViewer )
+          if ( test "X$test_lib" == XQt3QGLViewer  || test "X$test_lib" == XQt4QGLViewer )
           then
              unset ac_cv_header_QGLViewer_qglviewer_h
           fi
@@ -46016,7 +46016,7 @@ $as_echo "no" >&6; }
           if ( test X$found = Xtrue )
           then
              TRACE_INDENT="     "
-             trace 4 Library package $lib found
+             trace 4 Library package $test_lib found
              if ( test "X$prereqincs" != X )
              then
                 eval "${fix_expan}_CFLAGS=\"\$LIB_CPPFLAGS \$prereqincs\""
@@ -46027,7 +46027,7 @@ $as_echo "no" >&6; }
              eval "use_${fix_expan}=present"
           else
              TRACE_INDENT="     "
-             trace 3 Library package $lib not found
+             trace 3 Library package $test_lib not found
              eval "use_${fix_expan}=missing"
              if ( test "X$failure" != X )
              then
@@ -46054,7 +46054,7 @@ ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ex
 ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 
 
-          fix_expan=$lib
+          fix_expan=$test_lib
 
           eval LIB_LDFLAGS="\$with_${fix_expan}_libpath"
           if ( test "X$LIB_LDFLAGS" != X )
@@ -46065,7 +46065,7 @@ ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
           eval LIB_CPPFLAGS="\$with_${fix_expan}_inc"
           # Bodge for tetgen as we currently have no mechanism for specifying
           # package LD/{C}C{PP}FLAGS and tetgen relies on a -D in CPPFLAGS.
-          if ( test "X$lib" == Xtetgen )
+          if ( test "X$test_lib" == Xtetgen )
           then
              LIB_CPPFLAGS="-DTETLIBRARY $LIB_CPPFLAGS"
           fi
@@ -46098,8 +46098,8 @@ ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
           preserve_CPPFLAGS=$CPPFLAGS
           preserve_LIBS=$LIBS
           CPPFLAGS="$LIB_CPPFLAGS $prereqincs"
-          { $as_echo "$as_me:${as_lineno-$LINENO}: checking for external package $lib" >&5
-$as_echo_n "checking for external package $lib... " >&6; }
+          { $as_echo "$as_me:${as_lineno-$LINENO}: checking for external package $test_lib" >&5
+$as_echo_n "checking for external package $test_lib... " >&6; }
           { $as_echo "$as_me:${as_lineno-$LINENO}: result: " >&5
 $as_echo "" >&6; }
                                         eval hdr_lst="\$with_${fix_expan}_hdr"
@@ -46134,7 +46134,7 @@ fi
           fi
           # Bodge to stop caching of the QGLViewer header file status
           # as we need to check it against multiple versions of Qt
-          if ( test "X$lib" == XQt3QGLViewer  || test "X$lib" == XQt4QGLViewer )
+          if ( test "X$test_lib" == XQt3QGLViewer  || test "X$test_lib" == XQt4QGLViewer )
           then
              unset ac_cv_header_QGLViewer_qglviewer_h
           fi
@@ -46210,7 +46210,7 @@ $as_echo "no" >&6; }
           if ( test X$found = Xtrue )
           then
              TRACE_INDENT="     "
-             trace 4 Library package $lib found
+             trace 4 Library package $test_lib found
              if ( test "X$prereqincs" != X )
              then
                 eval "${fix_expan}_CFLAGS=\"\$LIB_CPPFLAGS \$prereqincs\""
@@ -46221,7 +46221,7 @@ $as_echo "no" >&6; }
              eval "use_${fix_expan}=present"
           else
              TRACE_INDENT="     "
-             trace 3 Library package $lib not found
+             trace 3 Library package $test_lib not found
              eval "use_${fix_expan}=missing"
              if ( test "X$failure" != X )
              then
@@ -46248,26 +46248,26 @@ $as_echo "$as_me: WARNING: Unable to check for presence of package" >&2;}
 
                                 ;;
 esac
-                        LeftToDo=`echo " $LeftToDo " | $SED "s/ $lib / /"`
-                        RecentlyProcessed="$RecentlyProcessed $lib"
+                        LeftToDo=`echo " $LeftToDo " | $SED "s/ $test_lib / /"`
+                        RecentlyProcessed="$RecentlyProcessed $test_lib"
 
 
 fi
 else
                   # We do not need to check for existance of this library; trace why
-                 case $lib_enablement in
+                 case $test_enablement in
                     'no' )      TRACE_INDENT="     "
-                                trace 6 $lib is disabled, not checking for existance
+                                trace 6 $test_lib is disabled, not checking for existance
                                 ;;
                     'blocked' ) TRACE_INDENT="     "
-                                trace 6 $lib is blocked by a pre-requisite
+                                trace 6 $test_lib is blocked by a pre-requisite
                                 ;;
                     * )         TRACE_INDENT="     "
-                                trace 1 "Assert - curious lib_enablement"
+                                trace 1 "Assert - curious test_enablement"
                                 ;;
                  esac
-                 LeftToDo=`echo " $LeftToDo " | $SED "s/ $lib / /"`
-                 RecentlyProcessed="$RecentlyProcessed $lib"
+                 LeftToDo=`echo " $LeftToDo " | $SED "s/ $test_lib / /"`
+                 RecentlyProcessed="$RecentlyProcessed $test_lib"
 
 
 fi
