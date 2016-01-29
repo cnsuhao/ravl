@@ -580,8 +580,22 @@ dnl
           dnl      LibJPEG, LibLapack, LibTIFF, zlib
           
           dnl Virtual Pkgs
+          dnl
+          dnl These packages merely depend on the existance of all of their
+          dnl pre-requisites.
+          dnl
+          dnl The parameters are:
+          dnl
+          dnl  1 QMake name for library. The name used for RESOURCES and also
+          dnl    for LIB_CFLAGS, LIB_LIBS, etc. used in Config.XX and the .def
+          dnl    files.
+          dnl  2 Space separated list of dependancies of the library. Specify
+          dnl    the QMake name of the library - e.g. for dependancies on Zlib
+          dnl    specify Zlib not -lz or z.
+          dnl
+          dnl                      Name         Pre-requisites
           QM_DEFINE_VIRTUAL_EXTLIB([libffmpeg], [FFMPEGCDEC FFMPEGCONT FFMPEGSWS FFMPEGUTIL])
-          QM_DEFINE_VIRTUAL_EXTLIB([OpenGL], [libGL libGLU])
+          QM_DEFINE_VIRTUAL_EXTLIB([OpenGL],    [libGL libGLU])
           dnl 
           dnl LibFFmpeg.def will need renaming before we can use automatic
           dnl .def file creation
