@@ -33,12 +33,28 @@ dnl   the OpenCV package will have variables named with_OpenCV_prq;
 dnl   use_OpenCV; etc. Similarly, libGTK2 has variables use_libGTK2;
 dnl   with_libGTK2_prq; etc.
 dnl
+dnl       CDC_HDR                } { Receives the type of header file layout
+dnl       FMT_HDR                } { in use for the particular sub-package of
+dnl       SWS_HDR                } { FFMPEG. Will be set to old; new; either
+dnl       UTIL_HDR               } { or notfound dependant on the available
+dnl                                { versions of the sub-packages. If all 4
+dnl                                { packages are available, a consistent
+dnl                                { grouping will be preferred (either all
+dnl                                { old or all new), with the new layout
+dnl                                { being preferred if either is available
+dnl                                { for all 4.
 dnl       DBG                        Variable that holds the current trace
 dnl                                  level as requested by the user. Requires
 dnl                                  the inclusion of the debug function
 dnl                                  "trace" in any code calling this macro.
 dnl                                  A suitable trace function is defined in
 dnl                                  the QMake AcMacros/QM_Debug_fn file.
+dnl       FFMPEG_HDR_FMT             Receives the consistent layout, if it
+dnl                                  exists, of the individual FFMPEG header
+dnl                                  files. If a set of 4 consistent hdr sets
+dnl                                  is not present, this variable will be
+dnl                                  set to broken and the libffmpeg virtual
+dnl                                  package will be disabled.
 dnl       LeftToDo                   List of the external libs that remain to
 dnl                                  be processed. As the compilation check
 dnl                                  packages should be processed last, this
@@ -87,13 +103,39 @@ dnl                                  initially primed from the command line
 dnl                                  settings, this will be updated to
 dnl                                  reflect the availability of the library
 dnl                                  <lib>
+dnl       with_<lib>_check           Flag specifying the type of test needed
+dnl                                  to check for the existance of the
+dnl                                  external library:
+dnl                                    bespoke      - test for the external
+dnl                                                   library has been written
+dnl                                                   in bespoke code located
+dnl                                                   towards the start of the
+dnl                                                   macro QM_PROCESS_EXTLIBS.
+dnl                                    compile      - test for the external
+dnl                                                   library involves a test
+dnl                                                   compilation to see if
+dnl                                                   the library is available.
+dnl                                    pkgconfig    - test for the external
+dnl                                                   library using pkg-config.
+dnl                                    virtual      - external library is a
+dnl                                                   virtual set of libraries
+dnl                                                   that is implicitly
+dnl                                                   available if all of the
+dnl                                                   precursor libraries are
+dnl                                                   available.
+dnl                                  Initialised by the QM_DEFINE_EXTLIB_CC or
+dnl                                  QM_DEFINE_EXTLIB_GENERIC macros.
+dnl                                  For any test-type, if the user provides
+dnl                                  a --with-<lib>-pkgconf setting, this will
+dnl                                  automatically force the test-type to be
+dnl                                  pkgconfig.
 dnl       with_<lib>_prq             Holds the list of prerequisite libraries
 dnl                                  that external library <lib> is dependant
 dnl                                  on.
 dnl
 dnl   The following are all interim variables used within this macro:
 dnl
-dnl       prereq; result; test_lib; test_enablement
+dnl       h; path; prereq; result; test_lib; test_enablement
 dnl
 AC_DEFUN([QM_CK_BESPOKE_CK_LIB],
          [trace 5 Seeing if we can do the bespoke check for $1
@@ -144,6 +186,532 @@ dnl library be available, the code must also set the variables ${test_lib}_CFLAG
 dnl (to the value of CFLAGS needed to compile with the library package) and
 dnl ${test_lib}_LIBS (to the linker options & library specifications needed to
 dnl link against the library package).
+
+                'libffmpeg' )
+                           # libffmpeg is a virtual package to include all
+                           # of the FFMPEG/libAV packages. As such, it is a
+                           # special case as besides setting up the virtual
+                           # package, we also need to ensure a consistent
+                           # set of dependant packages (all of a compatible
+                           # version).
+                           #
+                           # By the time we reach here, we already know that
+                           # a version of all of the FFMPEG/libAV packages
+                           # exist. We now need to ensure version consistency
+                           # across the dependencies.
+                           #
+                           # At one point in its development; 25/2/8, FFMPEG
+                           # changed the location of its header files. Sadly,
+                           # this was not done with an accompanying revision
+                           # bump. At best, revisioning seems to be:
+                           #
+                           #      Old layout   Could be either   New Layout
+                           # libavcodec
+                           #        51.50.0        51.50.1        51.51.0
+                           # libavformat
+                           #        52.6.0         52.7.0         52.8.0
+                           # libavutil
+                           #        49.5.0         49.6.0         49.7.0
+                           # libswscale
+                           #      no guarentee      0.5.0          0.5.1
+                           #
+                           # We therefore need to manually identify which
+                           # header layout we have. The old layout saw the
+                           # header files located under a single directory
+                           # (/usr/include/ffmpeg directory), newer revisions
+                           # put the headers in component specific dirs.
+                           #
+                           # In order to allow any client (of QMake) to use
+                           # the individual sub-packages we need to be able to
+                           # flag that the client should utilise the correct
+                           # pathname for the relevant headers. We do this by
+                           # checking to see whether we have the old or new
+                           # layout of the header files for each of the sub
+                           # packages. We then add the FFMPEG_OLD_HDR flag to
+                           # the CFLAGS for those sub-packages using the old
+                           # header layout.
+                           #
+                           # For clients that use all for four sub-packages
+                           # as a single entity we also need to check for
+                           # consistency across the packages.
+                           #
+                           # First look for the codec header files...
+                           CDC_HDR=notfound
+                           if ( test $use_FFMPEGCDEC = 'present' )
+                           then
+                              trace 5 Processing FFMPEGCDEC_CFLAGS @<:@$FFMPEGCDEC_CFLAGS@:>@ to determine header layout
+                              for h in $FFMPEGCDEC_CFLAGS
+                              do
+                                 # for each part of the CFLAGS, look for a
+                                 # -Ipath entry and extract the path
+                                 path=`echo $h | $SED -n 's/-I\([[^ ]]*\).*/\1/p'`
+                                 if ( test -n "$path" )
+                                 then
+                                    TRACE_INDENT="     "
+                                    trace 5 Looking for headers under $path
+                                    if ( test -f $path/libavcodec/avcodec.h )
+                                    then
+                                       # This is the newer location
+                                       TRACE_INDENT="          "
+                                       trace 5 New layout found
+                                       if ( test $CDC_HDR = notfound )
+                                       then
+                                          CDC_HDR=new
+                                       else
+                                          if ( test $CDC_HDR = old )
+                                          then
+                                             CDC_HDR=either
+                                          fi
+                                       fi
+                                    else
+                                       if ( test -f $path/avcodec.h )
+                                       then
+                                          TRACE_INDENT="          "
+                                          trace 5 Old layout found
+                                          if ( test $CDC_HDR = notfound )
+                                          then
+                                             CDC_HDR=old
+                                          else
+                                             if ( test $CDC_HDR = new )
+                                             then
+                                                CDC_HDR=either
+                                             fi
+                                          fi
+                                       else
+                                          TRACE_INDENT="          "
+                                          trace 5 No match found
+                                       fi
+                                    fi
+                                 else
+                                    TRACE_INDENT="     "
+                                    trace 6 Discarding $h component of CFLAGS
+                                 fi
+                              done
+
+                              if ( test $CDC_HDR = notfound )
+                              then
+                                 # Headers are not in a directory specified
+                                 # by CFLAGS check the default locations for,
+                                 # firstly, the new layout; then the old.
+                                 TRACE_INDENT="     "
+                                 trace 5 Headers not found using CFLAGS now checking standard dirs
+                                 AC_CHECK_HEADER([libavcodec/avcodec.h],
+                                                 [AC_CHECK_HEADER([avcodec.h],
+                                                                  [CDC_HDR=either],
+                                                                  [CDC_HDR=new],
+                                                                  [AC_INCLUDES_DEFAULT]
+                                                                 )
+                                                 ],
+                                                 [AC_CHECK_HEADER([avcodec.h],
+                                                                  [CDC_HDR=old],
+                                                                  [CDC_HDR=notfound],
+                                                                  [AC_INCLUDES_DEFAULT]
+                                                                 )
+                                                 ],
+                                                 [AC_INCLUDES_DEFAULT]
+                                                )
+                              fi
+                              trace 4 FFMPEGCDEC headers are $CDC_HDR
+                           fi
+
+                           # Now look for the container...
+                           FMT_HDR=notfound
+                           if ( test $use_FFMPEGCONT = 'present' )
+                           then
+                              trace 5 Processing FFMPEGCONT_CFLAGS @<:@$FFMPEGCONT_CFLAGS@:>@ to determine header layout
+                              for h in $FFMPEGCONT_CFLAGS
+                              do
+                                 # for each part of the CFLAGS, look for a
+                                 # -Ipath entry and extract the path
+                                 path=`echo $h | $SED -n 's/-I\([[^ ]]*\).*/\1/p'`
+                                 if ( test -n "$path" )
+                                 then
+                                    TRACE_INDENT="     "
+                                    trace 5 Looking for headers under $path
+                                    if ( test -f $path/libavformat/avformat.h )
+                                    then
+                                       # This is the newer location
+                                       TRACE_INDENT="          "
+                                       trace 5 New layout found
+                                       if ( test $FMT_HDR = notfound )
+                                       then
+                                          FMT_HDR=new
+                                       else
+                                          if ( test $FMT_HDR = old )
+                                          then
+                                             FMT_HDR=either
+                                          fi
+                                       fi
+                                    else
+                                       if ( test -f $path/avformat.h )
+                                       then
+                                          TRACE_INDENT="          "
+                                          trace 5 Old layout found
+                                          if ( test $FMT_HDR = notfound )
+                                          then
+                                             FMT_HDR=old
+                                          else
+                                             if ( test $FMT_HDR = new )
+                                             then
+                                                FMT_HDR=either
+                                             fi
+                                          fi
+                                       else
+                                          TRACE_INDENT="          "
+                                          trace 5 No match found
+                                       fi
+                                    fi
+                                 else
+                                    TRACE_INDENT="     "
+                                    trace 6 Discarding $h component of CFLAGS
+                                 fi
+                              done
+
+                              if ( test $FMT_HDR = notfound )
+                              then
+                                 # Headers are not in a directory specified
+                                 # by CFLAGS check the default locations for,
+                                 # firstly, the new layout; then the old.
+                                 TRACE_INDENT="     "
+                                 trace 5 Headers not found using CFLAGS now checking standard dirs
+                                 AC_CHECK_HEADER([libavformat/avformat.h],
+                                                 [AC_CHECK_HEADER([avformat.h],
+                                                                  [FMT_HDR=either],
+                                                                  [FMT_HDR=new],
+                                                                  [AC_INCLUDES_DEFAULT]
+                                                                 )
+                                                 ],
+                                                 [AC_CHECK_HEADER([avformat.h],
+                                                                  [FMT_HDR=old],
+                                                                  [FMT_HDR=notfound],
+                                                                  [AC_INCLUDES_DEFAULT]
+                                                                 )
+                                                 ],
+                                                 [AC_INCLUDES_DEFAULT]
+                                                )
+                              fi
+                              trace 4 FFMPEGCONT headers are $FMT_HDR
+                           fi
+
+                           # Turn our attention to the utilities...
+                           UTIL_HDR=notfound
+                           if ( test $use_FFMPEGUTIL = 'present' )
+                           then
+                              trace 5 Processing FFMPEGUTIL_CFLAGS @<:@$FFMPEGUTIL_CFLAGS@:>@ to determine header layout
+                              for h in $FFMPEGUTIL_CFLAGS
+                              do
+                                 # for each part of the CFLAGS, look for a
+                                 # -Ipath entry and extract the path
+                                 path=`echo $h | $SED -n 's/-I\([[^ ]]*\).*/\1/p'`
+                                 if ( test -n "$path" )
+                                 then
+                                    TRACE_INDENT="     "
+                                    trace 5 Looking for headers under $path
+                                    if ( test -f $path/libavutil/avutil.h )
+                                    then
+                                       # This is the newer location
+                                       TRACE_INDENT="          "
+                                       trace 5 New layout found
+                                       if ( test $UTIL_HDR = notfound )
+                                       then
+                                          UTIL_HDR=new
+                                       else
+                                          if ( test $UTIL_HDR = old )
+                                          then
+                                             UTIL_HDR=either
+                                          fi
+                                       fi
+                                    else
+                                       if ( test -f $path/avutil.h )
+                                       then
+                                          TRACE_INDENT="          "
+                                          trace 5 Old layout found
+                                          if ( test $UTIL_HDR = notnound )
+                                          then
+                                             UTIL_HDR=old
+                                          else
+                                             if ( test $UTIL_HDR = new )
+                                             then
+                                                UTIL_HDR=either
+                                             fi
+                                          fi
+                                       else
+                                          TRACE_INDENT="          "
+                                          trace 5 No match found
+                                       fi
+                                    fi
+                                 else
+                                    TRACE_INDENT="     "
+                                    trace 6 Discarding $h component of CFLAGS
+                                 fi
+                              done
+
+                              if ( test $UTIL_HDR = notfound )
+                              then
+                                 # Headers are not in a directory specified
+                                 # by CFLAGS check the default locations for,
+                                 # firstly, the new layout; then the old.
+                                 TRACE_INDENT="     "
+                                 trace 5 Headers not found using CFLAGS now checking standard dirs
+                                 AC_CHECK_HEADER([libavutil/avutil.h],
+                                                 [AC_CHECK_HEADER([avutil.h],
+                                                                  [UTIL_HDR=either],
+                                                                  [UTIL_HDR=new],
+                                                                  [AC_INCLUDES_DEFAULT]
+                                                                 )
+                                                 ],
+                                                 [AC_CHECK_HEADER([avutil.h],
+                                                                  [UTIL_HDR=old],
+                                                                  [UTIL_HDR=notfound],
+                                                                  [AC_INCLUDES_DEFAULT]
+                                                                 )
+                                                 ],
+                                                 [AC_INCLUDES_DEFAULT]
+                                                )
+                              fi
+                              trace 4 FFMPEGUTIL headers are $UTIL_HDR
+                           fi
+
+                           # Finally, continue on to the s/w Scaling...
+                           SWS_HDR=notfound
+                           if ( test $use_FFMPEGSWS = 'present' )
+                           then
+                              trace 5 Processing FFMPEGCDEC_CFLAGS @<:@$FFMPEGCDEC_CFLAGS@:>@ to determine header layout
+                              for h in $FFMPEGSWS_CFLAGS
+                              do
+                                 # for each part of the CFLAGS, look for a
+                                 # -Ipath entry and extract the path
+                                 path=`echo $h | $SED -n 's/-I\([[^ ]]*\).*/\1/p'`
+                                 if ( test -n "$path" )
+                                 then
+                                    TRACE_INDENT="     "
+                                    trace 5 Looking for headers under $path
+                                    if ( test -f $path/libswscale/swscale.h )
+                                    then
+                                       # This is the newer location
+                                       TRACE_INDENT="          "
+                                       trace 5 New layout found
+                                       if ( test $SWS_HDR = notfound )
+                                       then
+                                          SWS_HDR=new
+                                       else
+                                          if ( test $SWS_HDR = old )
+                                          then
+                                             SWS_HDR=either
+                                          fi
+                                       fi
+                                    else
+                                       if ( test -f $path/swscale.h )
+                                       then
+                                          TRACE_INDENT="          "
+                                          trace 5 Old layout found
+                                          if ( test $SWS_HDR = notfound )
+                                          then
+                                             SWS_HDR=old
+                                          else
+                                             if ( test $SWS_HDR = new )
+                                             then
+                                                SWS_HDR=either
+                                             fi
+                                          fi
+                                       else
+                                          TRACE_INDENT="          "
+                                          trace 5 No match found
+                                       fi
+                                    fi
+                                 else
+                                    TRACE_INDENT="     "
+                                    trace 6 Discarding $h component of CFLAGS
+                                 fi
+                              done
+
+                              if ( test $SWS_HDR = notfound )
+                              then
+                                 # Headers are not in a directory specified
+                                 # by CFLAGS check the default locations for,
+                                 # firstly, the new layout; then the old.
+                                 TRACE_INDENT="     "
+                                 trace 5 Headers not found using CFLAGS now checking standard dirs
+                                 AC_CHECK_HEADER([libswscale/swscale.h],
+                                                 [AC_CHECK_HEADER([swscale.h],
+                                                                  [SWS_HDR=either],
+                                                                  [SWS_HDR=new],
+                                                                  [AC_INCLUDES_DEFAULT]
+                                                                 )
+                                                 ],
+                                                 [AC_CHECK_HEADER([swscale.h],
+                                                                  [SWS_HDR=old],
+                                                                  [SWS_HDR=notfound],
+                                                                  [AC_INCLUDES_DEFAULT]
+                                                                 )
+                                                 ],
+                                                 [AC_INCLUDES_DEFAULT]
+                                                )
+                              fi
+                              trace 4 FFMPEGSWS headers are $SWS_HDR
+                           fi
+
+                           # We should now know the header revision type for
+                           # each of the sub-packages. We now have to check
+                           # for a consistent set of either all old-layout
+                           # header files or all new-layout files.
+                           #
+                           FFMPEG_HDR_FMT=notfound
+
+                           # Ensure the codec and container are in step
+                           if ( test $CDC_HDR = either )
+                           then
+                              FFMPEG_HDR_FMT=$FMT_HDR
+                           else
+                              if ( test $FMT_HDR = either )
+                              then
+                                 FFMPEG_HDR_FMT=$CDC_FMT
+                              else
+                                 if ( test $CDC_HDR != $FMT_HDR )
+                                 then
+                                    FFMPEG_HDR_FMT=broken
+                                    trace 5 FFMPEG Headers are inconsistent as the codec and container are different layouts
+                                 else
+                                    FFMPEG_HDR_FMT=$FMT_HDR
+                                 fi
+                              fi
+                           fi
+
+                           # Check UTIL matches the other headers
+                           if ( test $FFMPEG_HDR_FMT = either )
+                           then
+                              FFMPEG_HDR_FMT = $UTIL_HDR
+                           else
+                              if ( test $FFMPEG_HDR_FMT != $UTIL_HDR )
+                              then
+                                 if ( test $UTIL_HDR != either )
+                                 then
+                                    trace 5 FFMPEG Headers are inconsistent as the utils headers differ from the codec and container layout
+                                    FFMPEG_HDR_FMT=broken
+                                 fi
+                              fi
+                           fi
+
+                           # Check SWS matches the other headers
+                           if ( test $FFMPEG_HDR_FMT = either )
+                           then
+                              FFMPEG_HDR_FMT = $SWS_HDR
+                           else
+                              if ( test $FFMPEG_HDR_FMT != $SWS_HDR )
+                              then
+                                 if ( test $SWS_HDR != either )
+                                 then
+                                    trace 5 FFMPEG Headers are inconsistent as the swscaling headers differ the other components
+                                    FFMPEG_HDR_FMT=broken
+                                 fi
+                              fi
+                           fi
+
+                           # If either format is acceptable, force use of the
+                           # newer layout
+                           if ( test $FFMPEG_HDR_FMT = either )
+                           then
+                              FFMPEG_HDR_FMT = new
+                              if ( test $use_libffmpeg != no )
+                              then
+                                 use_libffmpeg=present
+                              fi
+                           else
+                              if ( test $FFMPEG_HDR_FMT = broken )
+                              then
+                                 if ( test $use_libffmpeg = yes )
+                                 then
+                                    AC_MSG_FAILURE([Required library libffmpeg has inconsistent headers])
+                                 else
+                                    if ( test $use_libffmpeg != no )
+                                    then
+                                       trace 4 Inconsistent FFMPEG headers block libffmpeg
+                                       use_libffmpeg=blocked
+                                    fi
+                                 fi
+                              else
+                                 if ( test $FFMPEG_HDR_FMT = notfound )
+                                 then
+                                    # We only actually hit this code if none
+                                    # of the sub-packages' header files are
+                                    # found during our layout revision checks.
+                                    # If one or more are found but some are
+                                    # missing, the variable $FFMPEG_HDR_FMT
+                                    # will be set to 'Broken'.
+                                    if ( test $use_libffmpeg = yes )
+                                    then
+                                       AC_MSG_FAILURE([Required library libffmpeg has missing headers])
+                                    else
+                                       if ( test $use_libffmpeg != no )
+                                       then
+                                          trace 4 Missing FFMPEG headers block libffmpeg
+                                          use_libffmpeg=blocked
+                                       fi
+                                    fi
+                                 else
+                                    if ( test $use_libffmpeg != no )
+                                    then
+                                       use_libffmpeg=present
+                                    fi
+                                 fi
+                              fi
+                           fi
+                           #
+                           trace 3 FFMPEG header analysis
+                           TRACE_INDENT="     "
+                           trace 3 Codec:$CDC_HDR
+                           TRACE_INDENT="     "
+                           trace 3 Container:$FMT_HDR
+                           TRACE_INDENT="     "
+                           trace 3 Utils:$UTIL_HDR
+                           TRACE_INDENT="     "
+                           trace 3 s/w scaling:$SWS_HDR
+                           TRACE_INDENT="     "
+                           trace 3 Overall:$FFMPEG_HDR_FMT
+                           #
+                           # Now look to add -DFFMPEG_OLD_HDR if appropriate.
+                           #
+                           # First fold any sub-packages, that have both
+                           # layout revisions, to use the layout common
+                           # between the remaining sub-packages. We will
+                           # only do this if we have all four sub-packages
+                           # and they agree on the layout to use. If all
+                           # sub-packages are present in both forms,
+                           # FFMPEG_HDR_FMT will already have been set to
+                           # prefer the new layout.
+                           if ( test $FFMPEG_HDR_FMT != notfound -a $FFMPEG_HDR_FMT = broken )
+                           then
+                              # Force all sub-packages to the common layout
+                              CDC_HDR=$FFMPEG_HDR_FMT
+                              FMT_HDR=$FFMPEG_HDR_FMT
+                              UTIL_HDR=$FFMPEG_HDR_FMT
+                              SWS_HDR=$FFMPEG_HDR_FMT
+                           fi
+                           # Now actually append to CFLAGS if using the old layout
+                           if ( test $CDC_HDR = old )
+                           then
+                              FFMPEGCDEC_CFLAGS=$FFMPEGCDEC_CFLAGS" -DFFMPEG_OLD_HDR "
+                           fi
+                           if ( test $FMT_HDR = old )
+                           then
+                              FFMPEGCONT_CFLAGS=$FFMPEGCONT_CFLAGS" -DFFMPEG_OLD_HDR "
+                           fi
+                           if ( test $UTIL_HDR = old )
+                           then
+                              FFMPEGUTIL_CFLAGS=$FFMPEGUTIL_CFLAGS" -DFFMPEG_OLD_HDR "
+                           fi
+                           if ( test $SWS_HDR = old )
+                           then
+                              FFMPEGSWS_CFLAGS=$FFMPEGSWS_CFLAGS" -DFFMPEG_OLD_HDR "
+                           fi
+                           # If libffmpeg is available, flag it as a virtual
+                           # package to ensure it is correctly written to the
+                           # configure files
+                           if ( test $use_libffmpeg = present)
+                           then
+                              with_libffmpeg_check=virtual
+                           fi
+                           ;;
 
                        * ) AC_MSG_FAILURE([Configure is unaware of how to check for library $test_lib])
                            ;;

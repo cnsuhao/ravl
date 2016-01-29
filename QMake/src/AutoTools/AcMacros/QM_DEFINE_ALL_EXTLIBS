@@ -594,11 +594,7 @@ dnl
           dnl    specify Zlib not -lz or z.
           dnl
           dnl                      Name         Pre-requisites
-          QM_DEFINE_VIRTUAL_EXTLIB([libffmpeg], [FFMPEGCDEC FFMPEGCONT FFMPEGSWS FFMPEGUTIL])
           QM_DEFINE_VIRTUAL_EXTLIB([OpenGL],    [libGL libGLU])
-          dnl 
-          dnl LibFFmpeg.def will need renaming before we can use automatic
-          dnl .def file creation
 
 
           dnl Pkgs needing Bespoke Checks
@@ -686,9 +682,12 @@ dnl
           dnl These parameters mirror those of the definition macro for a
           dnl regular (non-bespoke) virtual package.
           dnl
-          dnl                       Name,       Pre-requisites
+          dnl                      Name,        Pre-requisites
           dnl
-          dnl QM_DEFINE_EXTLIB_BESPOKE([Name],    [PreReqA PreReqB])
+          QM_DEFINE_EXTLIB_BESPOKE([libffmpeg], [FFMPEGCDEC FFMPEGCONT FFMPEGSWS FFMPEGUTIL])
+          dnl
+          dnl LibFFmpeg.def will need renaming before we can use automatic
+          dnl .def file creation
 
 
           dnl#JFi:Develop code to prime these by ./configure

@@ -629,10 +629,10 @@ PROJECT_MAJOR
 SWIG
 GnuPlot
 EGREP
-OpenGL_LIBS
-OpenGL_CFLAGS
 libffmpeg_LIBS
 libffmpeg_CFLAGS
+OpenGL_LIBS
+OpenGL_CFLAGS
 Zlib_LIBS
 Zlib_CFLAGS
 Yajl_LIBS
@@ -1153,10 +1153,10 @@ with_Zlib_pkgconf
 with_Zlib
 with_Zlib_library
 with_Zlib_include
-with_libffmpeg_pkgconf
-with_libffmpeg
 with_OpenGL_pkgconf
 with_OpenGL
+with_libffmpeg_pkgconf
+with_libffmpeg
 enable_fast_install
 '
       ac_precious_vars='build_alias
@@ -2520,19 +2520,19 @@ Optional Packages:
   --with-Zlib-include     Declare the location of the Zlib header files and
                           enable their functionality
 
+  --with-OpenGL-pkgconf   Enable the OpenGL library package via pkg-config and
+                          declare the name by which the OpenGL library package
+                          is known to pkg-config
+
+  --with-OpenGL           Enable functionality that relies on the OpenGL
+                          library [default=check]
+
   --with-libffmpeg-pkgconf
                           Enable the libffmpeg library package via pkg-config
                           and declare the name by which the libffmpeg library
                           package is known to pkg-config
 
   --with-libffmpeg        Enable functionality that relies on the libffmpeg
-                          library [default=check]
-
-  --with-OpenGL-pkgconf   Enable the OpenGL library package via pkg-config and
-                          declare the name by which the OpenGL library package
-                          is known to pkg-config
-
-  --with-OpenGL           Enable functionality that relies on the OpenGL
                           library [default=check]
 
 
@@ -44454,234 +44454,6 @@ $as_echo "$as_me: WARNING: --with-Zlib-include and --with-Zlib specify different
 
 
 
-          with_libffmpeg_check=virtual
-          if ( test Xvirtual = Xvirtual )
-          then
-             with_libffmpeg_virtual=yes
-          else
-             with_libffmpeg_virtual=no
-          fi
-
-          fallback_file=""
-          fallback_path=""
-
-
-# Check whether --with-libffmpeg-pkgconf was given.
-if test "${with_libffmpeg_pkgconf+set}" = set; then :
-  withval=$with_libffmpeg_pkgconf; case $with_libffmpeg_pkgconf in
-                        'n' | 'N' | 'no' | 'No' | 'NO' )
-                                 trace 4 --with-libffmpeg-pkgconf disabling libffmpeg
-                                 with_libffmpeg_pkgconf=no
-                                 use_libffmpeg=no
-                                 ;;
-                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
-                                 if ( test X != X )
-                                 then
-                                    trace 4 Asking for libffmpeg via --with-libffmpeg-pkgconf default value [$with_libffmpeg_pkgconf]
-                                    with_libffmpeg_pkgconf=
-                                    with_libffmpeg_check=pkgconfig
-                                    with_libffmpeg_virtual=no
-                                    use_libffmpeg=yes
-                                 else
-                                    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Asking to enable libffmpeg via pkg-config but configure is unaware of the name of the DOTpc metadata file
-See \`config.log' for more details" "$LINENO" 5; }
-                                 fi
-                                 ;;
-                        'c' |'C' | 'ck' | 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
-                                 if ( test X != X )
-                                 then
-                                    trace 4 Will check for libffmpeg using --with-libffmpeg-pkgconf default value [$with_libffmpeg_pkgconf]
-                                    with_libffmpeg_pkgconf=
-                                    with_libffmpeg_check=pkgconfig
-                                    with_libffmpeg_virtual=no
-                                    use_libffmpeg=check
-                                 else
-                                    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Asking to check for libffmpeg via pkg-config but configure is unaware of the name of the DOTpc metadata file
-See \`config.log' for more details" "$LINENO" 5; }
-                                 fi
-                                 ;;
-                        * )
-                                 trace 4 Asking for libffmpeg --with-libffmpeg-pkgconf set to [$with_libffmpeg_pkgconf]
-                                 with_libffmpeg_check=pkgconfig
-                                 with_libffmpeg_virtual=no
-                                 use_libffmpeg=yes
-                                 ;;
-                       esac
-
-else
-  if ( test X != X )
-                       then
-                          trace 4 No --with-libffmpeg-pkgconf specified using default [$with_libffmpeg_pkgconf]
-                          with_libffmpeg_pkgconf=
-                          with_libffmpeg_check=pkgconfig
-                          with_libffmpeg_virtual=no
-                       else
-                          trace 4 No --with-libffmpeg-pkgconf specified and no default value
-                       fi
-
-
-fi
-
-
-# Check whether --with-libffmpeg was given.
-if test "${with_libffmpeg+set}" = set; then :
-  withval=$with_libffmpeg; case $with_libffmpeg in
-                        'n' | 'N' | 'no' | 'No' | 'NO' )
-                                 trace 4 --with-libffmpeg disabling libffmpeg libraries
-                                 if ( test X$use_libffmpeg = Xyes )
-                                 then
-                                    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Asking to disable libffmpeg by --with-libffmpeg but --with-libffmpeg-pkgconf has specifically enabled it
-See \`config.log' for more details" "$LINENO" 5; }
-                                 else
-                                    if ( test X$use_libffmpeg = Xcheck )
-                                    then
-                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Disabling libffmpeg via --with-libffmpeg despite --with-libffmpeg-pkconfig having asked to check for it" >&5
-$as_echo "$as_me: WARNING: Disabling libffmpeg via --with-libffmpeg despite --with-libffmpeg-pkconfig having asked to check for it" >&2;}
-                                    fi
-                                    use_libffmpeg=no
-                                 fi
-                                 with_libffmpeg=no
-                                 ;;
-                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
-                                 trace 4 --with-libffmpeg enabling libffmpeg libraries
-                                 if ( test X$use_libffmpeg = Xno )
-                                 then
-                                    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Asking to enable libffmpeg by --with-libffmpeg but --with-libffmpeg-pkgconf has specifically disabled it
-See \`config.log' for more details" "$LINENO" 5; }
-                                 else
-                                    if ( test X$use_libffmpeg = Xcheck )
-                                    then
-                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Enabling libffmpeg via --with-libffmpeg despite --with-libffmpeg-pkconfig having asked to check for it" >&5
-$as_echo "$as_me: WARNING: Enabling libffmpeg via --with-libffmpeg despite --with-libffmpeg-pkconfig having asked to check for it" >&2;}
-                                    fi
-                                    use_libffmpeg=yes
-                                 fi
-                                 with_libffmpeg=yes
-                                 ;;
-                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
-                                 trace 4 --with-libffmpeg checking for libffmpeg libraries
-                                 if (test X$use_libffmpeg = Xyes )
-                                 then
-                                    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-libffmpeg asking to check for the libs but --with-libffmpeg-pkgconf has specifically enabled it" >&5
-$as_echo "$as_me: WARNING: --with-libffmpeg asking to check for the libs but --with-libffmpeg-pkgconf has specifically enabled it" >&2;}
-                                 else
-                                    if ( test X$use_libffmpeg = Xno )
-                                    then
-                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-libffmpeg asking to check for the libs but --with-libffmpeg-pkgconf has specifically disabled it" >&5
-$as_echo "$as_me: WARNING: --with-libffmpeg asking to check for the libs but --with-libffmpeg-pkgconf has specifically disabled it" >&2;}
-                                    else
-                                       use_libffmpeg=check
-                                    fi
-                                 fi
-                                 with_libffmpeg=check
-                                 ;;
-                        * )      # --with-<lib> is not being used as a simple
-                                 # yes/no/check switch - see if this is
-                                 # providing an extra piece of information
-                                 if ( test -d $with_libffmpeg )
-                                 then
-                                    # Parameter is a directory path
-                                    fallback_path=$with_libffmpeg
-                                    fallback_file=""
-                                    trace 3 with-libffmpeg provides a fallback path [$fallback_path]
-                                    use_libffmpeg=yes
-                                    with_libffmpeg=yes
-                                 else
-                                    fallback_path=`$as_dirname -- $with_libffmpeg ||
-$as_expr X$with_libffmpeg : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
-	 X$with_libffmpeg : 'X\(//\)[^/]' \| \
-	 X$with_libffmpeg : 'X\(//\)$' \| \
-	 X$with_libffmpeg : 'X\(/\)' \| . 2>/dev/null ||
-$as_echo X$with_libffmpeg |
-    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{
-	    s//\1/
-	    q
-	  }
-	  /^X\(\/\/\)[^/].*/{
-	    s//\1/
-	    q
-	  }
-	  /^X\(\/\/\)$/{
-	    s//\1/
-	    q
-	  }
-	  /^X\(\/\).*/{
-	    s//\1/
-	    q
-	  }
-	  s/.*/./; q'`
-                                    if ( test -d $fallback_path  )
-                                    then
-                                       # strip leading path
-                                       fallback_file=`$EXPR "//$with_libffmpeg" : '.*/\([^/]*\)'`
-                                       # portable version of fallback_file=`basename $with_libffmpeg`
-                                       if ( test X$with_libffmpeg = X$fallback_path/$fallback_file )
-                                       then
-                                          # Parameter is a file path
-                                          trace 3 with-libffmpeg provides a fallback path [$fallback_path] and a file [$fallback_file]
-                                          use_libffmpeg=yes
-                                          with_libffmpeg=yes
-                                       else
-                                          # Somehow dirname($x)/basename($x) != $x
-                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Problem processing --with-libffmpeg, parameter ignored" >&5
-$as_echo "$as_me: WARNING: Problem processing --with-libffmpeg, parameter ignored" >&2;}
-                                          fallback_path=""
-                                          fallback_file=""
-                                       fi
-                                    else
-                                       # --with-libffmpeg=/path/is/not/a/dir/something
-                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Illegal command-line option for --with-libffmpeg, parameter ignored" >&5
-$as_echo "$as_me: WARNING: Illegal command-line option for --with-libffmpeg, parameter ignored" >&2;}
-                                       fallback_path=""
-                                       fallback_file=""
-                                    fi
-                                 fi
-                                 ;;
-                       esac
-
-else
-  trace 5 No --with-libffmpeg specified
-
-fi
-
-
-
-
-          with_libffmpeg_prq="FFMPEGCDEC FFMPEGCONT FFMPEGSWS FFMPEGUTIL"
-
-          if ( test "$fallback_path/$fallback_file" != / )
-          then
-             # Do not currently support --with_<lib> specifying a .pc path
-             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-libffmpeg set to an unknown option, setting ignored" >&5
-$as_echo "$as_me: WARNING: --with-libffmpeg set to an unknown option, setting ignored" >&2;}
-          fi
-
-
-
-
-
-          KnownLibs=$KnownLibs" "libffmpeg
-          if ( test X$use_libffmpeg = X )
-          then
-             use_libffmpeg=check
-             UnconfiguredLibs=$UnconfiguredLibs" "libffmpeg
-          else
-             ConfiguredLibs=$ConfiguredLibs" "libffmpeg
-          fi
-
-
-
-
-
-
           with_OpenGL_check=virtual
           if ( test Xvirtual = Xvirtual )
           then
@@ -44906,6 +44678,226 @@ $as_echo "$as_me: WARNING: --with-OpenGL set to an unknown option, setting ignor
           fi
 
 
+
+
+
+
+
+
+          with_libffmpeg_check=bespoke
+          if ( test Xbespoke = Xvirtual )
+          then
+             with_libffmpeg_virtual=yes
+          else
+             with_libffmpeg_virtual=no
+          fi
+
+          fallback_file=""
+          fallback_path=""
+
+
+# Check whether --with-libffmpeg-pkgconf was given.
+if test "${with_libffmpeg_pkgconf+set}" = set; then :
+  withval=$with_libffmpeg_pkgconf; case $with_libffmpeg_pkgconf in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                 trace 4 --with-libffmpeg-pkgconf disabling libffmpeg
+                                 with_libffmpeg_pkgconf=no
+                                 use_libffmpeg=no
+                                 ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                 if ( test X != X )
+                                 then
+                                    trace 4 Asking for libffmpeg via --with-libffmpeg-pkgconf default value [$with_libffmpeg_pkgconf]
+                                    with_libffmpeg_pkgconf=
+                                    with_libffmpeg_check=pkgconfig
+                                    with_libffmpeg_virtual=no
+                                    use_libffmpeg=yes
+                                 else
+                                    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to enable libffmpeg via pkg-config but configure is unaware of the name of the DOTpc metadata file
+See \`config.log' for more details" "$LINENO" 5; }
+                                 fi
+                                 ;;
+                        'c' |'C' | 'ck' | 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                 if ( test X != X )
+                                 then
+                                    trace 4 Will check for libffmpeg using --with-libffmpeg-pkgconf default value [$with_libffmpeg_pkgconf]
+                                    with_libffmpeg_pkgconf=
+                                    with_libffmpeg_check=pkgconfig
+                                    with_libffmpeg_virtual=no
+                                    use_libffmpeg=check
+                                 else
+                                    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to check for libffmpeg via pkg-config but configure is unaware of the name of the DOTpc metadata file
+See \`config.log' for more details" "$LINENO" 5; }
+                                 fi
+                                 ;;
+                        * )
+                                 trace 4 Asking for libffmpeg --with-libffmpeg-pkgconf set to [$with_libffmpeg_pkgconf]
+                                 with_libffmpeg_check=pkgconfig
+                                 with_libffmpeg_virtual=no
+                                 use_libffmpeg=yes
+                                 ;;
+                       esac
+
+else
+  if ( test X != X )
+                       then
+                          trace 4 No --with-libffmpeg-pkgconf specified using default [$with_libffmpeg_pkgconf]
+                          with_libffmpeg_pkgconf=
+                          with_libffmpeg_check=pkgconfig
+                          with_libffmpeg_virtual=no
+                       else
+                          trace 4 No --with-libffmpeg-pkgconf specified and no default value
+                       fi
+
+
+fi
+
+
+# Check whether --with-libffmpeg was given.
+if test "${with_libffmpeg+set}" = set; then :
+  withval=$with_libffmpeg; case $with_libffmpeg in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                 trace 4 --with-libffmpeg disabling libffmpeg libraries
+                                 if ( test X$use_libffmpeg = Xyes )
+                                 then
+                                    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to disable libffmpeg by --with-libffmpeg but --with-libffmpeg-pkgconf has specifically enabled it
+See \`config.log' for more details" "$LINENO" 5; }
+                                 else
+                                    if ( test X$use_libffmpeg = Xcheck )
+                                    then
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Disabling libffmpeg via --with-libffmpeg despite --with-libffmpeg-pkconfig having asked to check for it" >&5
+$as_echo "$as_me: WARNING: Disabling libffmpeg via --with-libffmpeg despite --with-libffmpeg-pkconfig having asked to check for it" >&2;}
+                                    fi
+                                    use_libffmpeg=no
+                                 fi
+                                 with_libffmpeg=no
+                                 ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                 trace 4 --with-libffmpeg enabling libffmpeg libraries
+                                 if ( test X$use_libffmpeg = Xno )
+                                 then
+                                    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to enable libffmpeg by --with-libffmpeg but --with-libffmpeg-pkgconf has specifically disabled it
+See \`config.log' for more details" "$LINENO" 5; }
+                                 else
+                                    if ( test X$use_libffmpeg = Xcheck )
+                                    then
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Enabling libffmpeg via --with-libffmpeg despite --with-libffmpeg-pkconfig having asked to check for it" >&5
+$as_echo "$as_me: WARNING: Enabling libffmpeg via --with-libffmpeg despite --with-libffmpeg-pkconfig having asked to check for it" >&2;}
+                                    fi
+                                    use_libffmpeg=yes
+                                 fi
+                                 with_libffmpeg=yes
+                                 ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                 trace 4 --with-libffmpeg checking for libffmpeg libraries
+                                 if (test X$use_libffmpeg = Xyes )
+                                 then
+                                    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-libffmpeg asking to check for the libs but --with-libffmpeg-pkgconf has specifically enabled it" >&5
+$as_echo "$as_me: WARNING: --with-libffmpeg asking to check for the libs but --with-libffmpeg-pkgconf has specifically enabled it" >&2;}
+                                 else
+                                    if ( test X$use_libffmpeg = Xno )
+                                    then
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-libffmpeg asking to check for the libs but --with-libffmpeg-pkgconf has specifically disabled it" >&5
+$as_echo "$as_me: WARNING: --with-libffmpeg asking to check for the libs but --with-libffmpeg-pkgconf has specifically disabled it" >&2;}
+                                    else
+                                       use_libffmpeg=check
+                                    fi
+                                 fi
+                                 with_libffmpeg=check
+                                 ;;
+                        * )      # --with-<lib> is not being used as a simple
+                                 # yes/no/check switch - see if this is
+                                 # providing an extra piece of information
+                                 if ( test -d $with_libffmpeg )
+                                 then
+                                    # Parameter is a directory path
+                                    fallback_path=$with_libffmpeg
+                                    fallback_file=""
+                                    trace 3 with-libffmpeg provides a fallback path [$fallback_path]
+                                    use_libffmpeg=yes
+                                    with_libffmpeg=yes
+                                 else
+                                    fallback_path=`$as_dirname -- $with_libffmpeg ||
+$as_expr X$with_libffmpeg : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
+	 X$with_libffmpeg : 'X\(//\)[^/]' \| \
+	 X$with_libffmpeg : 'X\(//\)$' \| \
+	 X$with_libffmpeg : 'X\(/\)' \| . 2>/dev/null ||
+$as_echo X$with_libffmpeg |
+    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)[^/].*/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\).*/{
+	    s//\1/
+	    q
+	  }
+	  s/.*/./; q'`
+                                    if ( test -d $fallback_path  )
+                                    then
+                                       # strip leading path
+                                       fallback_file=`$EXPR "//$with_libffmpeg" : '.*/\([^/]*\)'`
+                                       # portable version of fallback_file=`basename $with_libffmpeg`
+                                       if ( test X$with_libffmpeg = X$fallback_path/$fallback_file )
+                                       then
+                                          # Parameter is a file path
+                                          trace 3 with-libffmpeg provides a fallback path [$fallback_path] and a file [$fallback_file]
+                                          use_libffmpeg=yes
+                                          with_libffmpeg=yes
+                                       else
+                                          # Somehow dirname($x)/basename($x) != $x
+                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Problem processing --with-libffmpeg, parameter ignored" >&5
+$as_echo "$as_me: WARNING: Problem processing --with-libffmpeg, parameter ignored" >&2;}
+                                          fallback_path=""
+                                          fallback_file=""
+                                       fi
+                                    else
+                                       # --with-libffmpeg=/path/is/not/a/dir/something
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Illegal command-line option for --with-libffmpeg, parameter ignored" >&5
+$as_echo "$as_me: WARNING: Illegal command-line option for --with-libffmpeg, parameter ignored" >&2;}
+                                       fallback_path=""
+                                       fallback_file=""
+                                    fi
+                                 fi
+                                 ;;
+                       esac
+
+else
+  trace 5 No --with-libffmpeg specified
+
+fi
+
+
+
+
+          with_libffmpeg_prq="FFMPEGCDEC FFMPEGCONT FFMPEGSWS FFMPEGUTIL"
+
+
+
+
+          KnownLibs=$KnownLibs" "libffmpeg
+          if ( test X$use_libffmpeg = X )
+          then
+             use_libffmpeg=check
+             UnconfiguredLibs=$UnconfiguredLibs" "libffmpeg
+          else
+             ConfiguredLibs=$ConfiguredLibs" "libffmpeg
+          fi
 
 
 
@@ -45666,576 +45658,6 @@ fi
             fi
           done
 
-          # FFMPEG virtual package is a special case:
-          #
-          # At one point in its development; 25/2/8, FFMPEG changed the
-          # location of its header files. Unfortunately, this was not done
-          # with an accompanying revision bump. At best, revisioning seems
-          # to be:
-          #
-          # sub-package    Old layout     Could be either     New Layout
-          # libavcodec       51.50.0           51.50.1          51.51.0
-          # libavformat      52.6.0            52.7.0           52.8.0
-          # libavutil        49.5.0            49.6.0           49.7.0
-          # libswscale    no guarentee          0.5.0            0.5.1
-          #
-          # We therefore need to manually identify which header layout we
-          # have. The old layout saw the header files located under a single
-          # /usr/include/ffmpeg directory, newer revisions put the headers
-          # in component specific dirs.
-          #
-          # In order to allow any client (of QMake) to use the individual
-          # FFMPEG sub-packages we need to be able to flag that the client
-          # should utilise the correct pathname for the relevant headers. We
-          # do this by checking to see whether we have the old or new layout
-          # of the header files for each FFMPEG sub-packages. We then add the
-          # FFMPEG_OLD_HDR flag to the CFLAGS for those sub-packages using
-          # the former header layout.
-          #
-          # For clients that use all for four sub-packages as a single entity
-          # we also need to check for consistency across the packages.
-          #
-          # First look for the codec header files...
-          CDC_HDR=notfound
-          if ( test $use_FFMPEGCDEC = 'present' )
-          then
-             trace 5 Processing FFMPEGCDEC_CFLAGS [$FFMPEGCDEC_CFLAGS] to determine header layout
-             for h in $FFMPEGCDEC_CFLAGS
-             do
-                # for each part of the CFLAGS, look for a -Ipath entry and extract the path
-                path=`echo $h | $SED -n 's/-I\([^ ]*\).*/\1/p'`
-                if ( test -n "$path" )
-                then
-                   TRACE_INDENT="     "
-                   trace 5 Looking for headers under $path
-                   if ( test -f $path/libavcodec/avcodec.h )
-                   then
-                      # This is the newer location
-                      TRACE_INDENT="          "
-                      trace 5 New layout found
-                      if ( test $CDC_HDR = notfound )
-                      then
-                         CDC_HDR=new
-                      else
-                         if ( test $CDC_HDR = old )
-                         then
-                            CDC_HDR=either
-                         fi
-                      fi
-                   else
-                      if ( test -f $path/avcodec.h )
-                      then
-                         TRACE_INDENT="          "
-                         trace 5 Old layout found
-                         if ( test $CDC_HDR = notfound )
-                         then
-                            CDC_HDR=old
-                         else
-                            if ( test $CDC_HDR = new )
-                            then
-                               CDC_HDR=either
-                            fi
-                         fi
-                      else
-                         TRACE_INDENT="          "
-                         trace 5 No match found
-                      fi
-                   fi
-                else
-                   TRACE_INDENT="     "
-                   trace 6 Discarding $h component of CFLAGS
-                fi
-             done
-
-             if ( test $CDC_HDR = notfound )
-             then
-                # Headers are not in a directory specified by CFLAGS
-                # check the default locations for, firstly, the new
-                # layout; then the old.
-                TRACE_INDENT="     "
-                trace 5 Headers not found using CFLAGS now checking standard dirs
-                ac_fn_c_check_header_compile "$LINENO" "libavcodec/avcodec.h" "ac_cv_header_libavcodec_avcodec_h" "$ac_includes_default
-
-"
-if test "x$ac_cv_header_libavcodec_avcodec_h" = xyes; then :
-  ac_fn_c_check_header_compile "$LINENO" "avcodec.h" "ac_cv_header_avcodec_h" "$ac_includes_default
-
-"
-if test "x$ac_cv_header_avcodec_h" = xyes; then :
-  CDC_HDR=either
-else
-  CDC_HDR=new
-fi
-
-
-
-else
-  ac_fn_c_check_header_compile "$LINENO" "avcodec.h" "ac_cv_header_avcodec_h" "$ac_includes_default
-
-"
-if test "x$ac_cv_header_avcodec_h" = xyes; then :
-  CDC_HDR=old
-else
-  CDC_HDR=notfound
-fi
-
-
-
-fi
-
-
-             fi
-             trace 4 FFMPEGCDEC headers are $CDC_HDR
-          fi
-
-          # Now look for the container...
-          FMT_HDR=notfound
-          if ( test $use_FFMPEGCONT = 'present' )
-          then
-             trace 5 Processing FFMPEGCONT_CFLAGS [$FFMPEGCONT_CFLAGS] to determine header layout
-             for h in $FFMPEGCONT_CFLAGS
-             do
-                # for each part of the CFLAGS, look for a -Ipath entry and extract the path
-                path=`echo $h | $SED -n 's/-I\([^ ]*\).*/\1/p'`
-                if ( test -n "$path" )
-                then
-                   TRACE_INDENT="     "
-                   trace 5 Looking for headers under $path
-                   if ( test -f $path/libavformat/avformat.h )
-                   then
-                      # This is the newer location
-                      TRACE_INDENT="          "
-                      trace 5 New layout found
-                      if ( test $FMT_HDR = notfound )
-                      then
-                         FMT_HDR=new
-                      else
-                         if ( test $FMT_HDR = old )
-                         then
-                            FMT_HDR=either
-                         fi
-                      fi
-                   else
-                      if ( test -f $path/avformat.h )
-                      then
-                         TRACE_INDENT="          "
-                         trace 5 Old layout found
-                         if ( test $FMT_HDR = notfound )
-                         then
-                            FMT_HDR=old
-                         else
-                            if ( test $FMT_HDR = new )
-                            then
-                               FMT_HDR=either
-                            fi
-                         fi
-                      else
-                         TRACE_INDENT="          "
-                         trace 5 No match found
-                      fi
-                   fi
-                else
-                   TRACE_INDENT="     "
-                   trace 6 Discarding $h component of CFLAGS
-                fi
-             done
-
-             if ( test $FMT_HDR = notfound )
-             then
-                # Headers are not in a directory specified by CFLAGS
-                # check the default locations for, firstly, the new
-                # layout; then the old.
-                TRACE_INDENT="     "
-                trace 5 Headers not found using CFLAGS now checking standard dirs
-                ac_fn_c_check_header_compile "$LINENO" "libavformat/avformat.h" "ac_cv_header_libavformat_avformat_h" "$ac_includes_default
-
-"
-if test "x$ac_cv_header_libavformat_avformat_h" = xyes; then :
-  ac_fn_c_check_header_compile "$LINENO" "avformat.h" "ac_cv_header_avformat_h" "$ac_includes_default
-
-"
-if test "x$ac_cv_header_avformat_h" = xyes; then :
-  FMT_HDR=either
-else
-  FMT_HDR=new
-fi
-
-
-
-else
-  ac_fn_c_check_header_compile "$LINENO" "avformat.h" "ac_cv_header_avformat_h" "$ac_includes_default
-
-"
-if test "x$ac_cv_header_avformat_h" = xyes; then :
-  FMT_HDR=old
-else
-  FMT_HDR=notfound
-fi
-
-
-
-fi
-
-
-             fi
-             trace 4 FFMPEGCONT headers are $FMT_HDR
-          fi
-
-          # Turn our attention to the utilities...
-          UTIL_HDR=notfound
-          if ( test $use_FFMPEGUTIL = 'present' )
-          then
-             trace 5 Processing FFMPEGUTIL_CFLAGS [$FFMPEGUTIL_CFLAGS] to determine header layout
-             for h in $FFMPEGUTIL_CFLAGS
-             do
-                # for each part of the CFLAGS, look for a -Ipath entry and extract the path
-                path=`echo $h | $SED -n 's/-I\([^ ]*\).*/\1/p'`
-                if ( test -n "$path" )
-                then
-                   TRACE_INDENT="     "
-                   trace 5 Looking for headers under $path
-                   if ( test -f $path/libavutil/avutil.h )
-                   then
-                      # This is the newer location
-                      TRACE_INDENT="          "
-                      trace 5 New layout found
-                      if ( test $UTIL_HDR = notfound )
-                      then
-                         UTIL_HDR=new
-                      else
-                         if ( test $UTIL_HDR = old )
-                         then
-                            UTIL_HDR=either
-                         fi
-                      fi
-                   else
-                      if ( test -f $path/avutil.h )
-                      then
-                         TRACE_INDENT="          "
-                         trace 5 Old layout found
-                         if ( test $UTIL_HDR = notnound )
-                         then
-                            UTIL_HDR=old
-                         else
-                            if ( test $UTIL_HDR = new )
-                            then
-                               UTIL_HDR=either
-                            fi
-                         fi
-                      else
-                         TRACE_INDENT="          "
-                         trace 5 No match found
-                      fi
-                   fi
-                else
-                   TRACE_INDENT="     "
-                   trace 6 Discarding $h component of CFLAGS
-                fi
-             done
-
-             if ( test $UTIL_HDR = notfound )
-             then
-                # Headers are not in a directory specified by CFLAGS
-                # check the default locations for, firstly, the new
-                # layout; then the old.
-                TRACE_INDENT="     "
-                trace 5 Headers not found using CFLAGS now checking standard dirs
-                ac_fn_c_check_header_compile "$LINENO" "libavutil/avutil.h" "ac_cv_header_libavutil_avutil_h" "$ac_includes_default
-
-"
-if test "x$ac_cv_header_libavutil_avutil_h" = xyes; then :
-  ac_fn_c_check_header_compile "$LINENO" "avutil.h" "ac_cv_header_avutil_h" "$ac_includes_default
-
-"
-if test "x$ac_cv_header_avutil_h" = xyes; then :
-  UTIL_HDR=either
-else
-  UTIL_HDR=new
-fi
-
-
-
-else
-  ac_fn_c_check_header_compile "$LINENO" "avutil.h" "ac_cv_header_avutil_h" "$ac_includes_default
-
-"
-if test "x$ac_cv_header_avutil_h" = xyes; then :
-  UTIL_HDR=old
-else
-  UTIL_HDR=notfound
-fi
-
-
-
-fi
-
-
-             fi
-             trace 4 FFMPEGUTIL headers are $UTIL_HDR
-          fi
-
-          # Finally, continue on to the s/w Scaling...
-          SWS_HDR=notfound
-          if ( test $use_FFMPEGSWS = 'present' )
-          then
-             trace 5 Processing FFMPEGCDEC_CFLAGS [$FFMPEGCDEC_CFLAGS] to determine header layout
-             for h in $FFMPEGSWS_CFLAGS
-             do
-                # for each part of the CFLAGS, look for a -Ipath entry and extract the path
-                path=`echo $h | $SED -n 's/-I\([^ ]*\).*/\1/p'`
-                if ( test -n "$path" )
-                then
-                   TRACE_INDENT="     "
-                   trace 5 Looking for headers under $path
-                   if ( test -f $path/libswscale/swscale.h )
-                   then
-                      # This is the newer location
-                      TRACE_INDENT="          "
-                      trace 5 New layout found
-                      if ( test $SWS_HDR = notfound )
-                      then
-                         SWS_HDR=new
-                      else
-                         if ( test $SWS_HDR = old )
-                         then
-                            SWS_HDR=either
-                         fi
-                      fi
-                   else
-                      if ( test -f $path/swscale.h )
-                      then
-                         TRACE_INDENT="          "
-                         trace 5 Old layout found
-                         if ( test $SWS_HDR = notfound )
-                         then
-                            SWS_HDR=old
-                         else
-                            if ( test $SWS_HDR = new )
-                            then
-                               SWS_HDR=either
-                            fi
-                         fi
-                      else
-                         TRACE_INDENT="          "
-                         trace 5 No match found
-                      fi
-                   fi
-                else
-                   TRACE_INDENT="     "
-                   trace 6 Discarding $h component of CFLAGS
-                fi
-             done
-
-             if ( test $SWS_HDR = notfound )
-             then
-                # Headers are not in a directory specified by CFLAGS
-                # check the default locations for, firstly, the new
-                # layout; then the old.
-                TRACE_INDENT="     "
-                trace 5 Headers not found using CFLAGS now checking standard dirs
-                ac_fn_c_check_header_compile "$LINENO" "libswscale/swscale.h" "ac_cv_header_libswscale_swscale_h" "$ac_includes_default
-
-"
-if test "x$ac_cv_header_libswscale_swscale_h" = xyes; then :
-  ac_fn_c_check_header_compile "$LINENO" "swscale.h" "ac_cv_header_swscale_h" "$ac_includes_default
-
-"
-if test "x$ac_cv_header_swscale_h" = xyes; then :
-  SWS_HDR=either
-else
-  SWS_HDR=new
-fi
-
-
-
-else
-  ac_fn_c_check_header_compile "$LINENO" "swscale.h" "ac_cv_header_swscale_h" "$ac_includes_default
-
-"
-if test "x$ac_cv_header_swscale_h" = xyes; then :
-  SWS_HDR=old
-else
-  SWS_HDR=notfound
-fi
-
-
-
-fi
-
-
-             fi
-             trace 4 FFMPEGSWS headers are $SWS_HDR
-          fi
-
-          FFMPEG_HDR_FMT=notfound
-          if ( test $use_FFMPEGCDEC = 'present' -a $use_FFMPEGCONT = 'present' -a $use_FFMPEGSWS = 'present' -a $use_FFMPEGUTIL = 'present' )
-          then
-             # If we have all four sub-packages we may be able to enable the
-             # virtual libffmpeg package that encompasses the complete FFMPEG
-             # suite. To do this, we will need a consistent set of either all
-             # old or all new layout headers.
-
-             # Ensure the codec and container are in step
-             if ( test $CDC_HDR = either )
-             then
-                FFMPEG_HDR_FMT=$FMT_HDR
-             else
-                if ( test $FMT_HDR = either )
-                then
-                   FFMPEG_HDR_FMT=$CDC_FMT
-                else
-                   if ( test $CDC_HDR != $FMT_HDR )
-                   then
-                      FFMPEG_HDR_FMT=broken
-                      trace 5 FFMPEG Headers are inconsistent as the codec and container are different layouts
-                   else
-                      FFMPEG_HDR_FMT=$FMT_HDR
-                   fi
-                fi
-             fi
-
-             # Check UTIL matches the other headers
-             if ( test $FFMPEG_HDR_FMT = either )
-             then
-                FFMPEG_HDR_FMT = $UTIL_HDR
-             else
-                if ( test $FFMPEG_HDR_FMT != $UTIL_HDR )
-                then
-                   if ( test $UTIL_HDR != either )
-                   then
-                      trace 5 FFMPEG Headers are inconsistent as the utils headers differ from the codec and container layout
-                      FFMPEG_HDR_FMT=broken
-                   fi
-                fi
-             fi
-
-             # Check SWS matches the other headers
-             if ( test $FFMPEG_HDR_FMT = either )
-             then
-                FFMPEG_HDR_FMT = $SWS_HDR
-             else
-                if ( test $FFMPEG_HDR_FMT != $SWS_HDR )
-                then
-                   if ( test $SWS_HDR != either )
-                   then
-                      trace 5 FFMPEG Headers are inconsistent as the swscaling headers differ the other components
-                      FFMPEG_HDR_FMT=broken
-                   fi
-                fi
-             fi
-
-             # If either format is acceptable, force use of the newer layout
-             if ( test $FFMPEG_HDR_FMT = either )
-             then
-                FFMPEG_HDR_FMT = new
-                if ( test $use_libffmpeg != no )
-                then
-                   use_libffmpeg=present
-                fi
-             else
-                if ( test $FFMPEG_HDR_FMT = broken )
-                then
-                   if ( test $use_libffmpeg = yes )
-                   then
-                      { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Required library libffmpeg has inconsistent headers
-See \`config.log' for more details" "$LINENO" 5; }
-                   else
-                      if ( test $use_libffmpeg != no )
-                      then
-                         trace 4 Inconsistent FFMPEG headers block libffmpeg
-                         use_libffmpeg=blocked
-                      fi
-                   fi
-                else
-                   if ( test $FFMPEG_HDR_FMT = notfound )
-                   then
-                      # We only actually hit this code if none of the
-                      # sub-packages' header files are found. If one or more
-                      # are found but some are missing, $FFMPEG_HDR_FMT will
-                      # be set to 'Broken'.
-                      if ( test $use_libffmpeg = yes )
-                      then
-                         { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Required library libffmpeg has missing headers
-See \`config.log' for more details" "$LINENO" 5; }
-                      else
-                         if ( test $use_libffmpeg != no )
-                         then
-                            trace 4 Missing FFMPEG headers block libffmpeg
-                            use_libffmpeg=blocked
-                         fi
-                      fi
-                   else
-                      if ( test $use_libffmpeg != no )
-                      then
-                         use_libffmpeg=present
-                      fi
-                   fi
-                fi
-             fi
-          else
-             if ( test $use_libffmpeg = yes )
-             then
-                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Required library libffmpeg is unavailable
-See \`config.log' for more details" "$LINENO" 5; }
-             else
-                trace 4  We do not have all four FFMPEG sub-pacakges so libffmpeg is blocked
-                use_libffmpeg=blocked
-             fi
-          fi
-          #
-          trace 3 FFMPEG header analysis
-          TRACE_INDENT="     "
-          trace 3 Codec:$CDC_HDR
-          TRACE_INDENT="     "
-          trace 3 Container:$FMT_HDR
-          TRACE_INDENT="     "
-          trace 3 Utils:$UTIL_HDR
-          TRACE_INDENT="     "
-          trace 3 s/w scaling:$SWS_HDR
-          TRACE_INDENT="     "
-          trace 3 Overall:$FFMPEG_HDR_FMT
-          #
-          # Now look to add -DFFMPEG_OLD_HDR if appropriate.
-          #
-          # First fold any sub-packages, that have both layout revisions, to
-          # use the layout common between the remaining sub-packages. We will
-          # only do this if we have all four sub-packages and they agree on
-          # the layout to use. If all sub-packages are present in both forms,
-          # FFMPEG_HDR_FMT will already have been set to prefer the new
-          # layout.
-          if ( test $FFMPEG_HDR_FMT != notfound -a $FFMPEG_HDR_FMT = broken )
-          then
-             # Force all sub-packages to the common layout
-             CDC_HDR=$FFMPEG_HDR_FMT
-             FMT_HDR=$FFMPEG_HDR_FMT
-             UTIL_HDR=$FFMPEG_HDR_FMT
-             SWS_HDR=$FFMPEG_HDR_FMT
-          fi
-          # Now actually append to CFLAGS if using the old layout
-          if ( test $CDC_HDR = old )
-          then
-             FFMPEGCDEC_CFLAGS=$FFMPEGCDEC_CFLAGS" -DFFMPEG_OLD_HDR "
-          fi
-          if ( test $FMT_HDR = old )
-          then
-             FFMPEGCONT_CFLAGS=$FFMPEGCONT_CFLAGS" -DFFMPEG_OLD_HDR "
-          fi
-          if ( test $UTIL_HDR = old )
-          then
-             FFMPEGUTIL_CFLAGS=$FFMPEGUTIL_CFLAGS" -DFFMPEG_OLD_HDR "
-          fi
-          if ( test $SWS_HDR = old )
-          then
-             FFMPEGSWS_CFLAGS=$FFMPEGSWS_CFLAGS" -DFFMPEG_OLD_HDR "
-          fi
-          # As libffmpeg is a virtual package, its CFLAGS get set later as a
-          # concatenation of the constitutent packages.
 
           # Sanitise LeftToDo (drop duplicated and lead/trailing spaces)
           LeftToDo=`echo " $LeftToDo " | $SED "s/  */ /g;s/^ //;s/ $//"`
@@ -46958,6 +46380,598 @@ See \`config.log' for more details" "$LINENO" 5; }
 
                 # Action the appropriate bespoke code
                 case $test_lib in
+
+                'libffmpeg' )
+                           # libffmpeg is a virtual package to include all
+                           # of the FFMPEG/libAV packages. As such, it is a
+                           # special case as besides setting up the virtual
+                           # package, we also need to ensure a consistent
+                           # set of dependant packages (all of a compatible
+                           # version).
+                           #
+                           # By the time we reach here, we already know that
+                           # a version of all of the FFMPEG/libAV packages
+                           # exist. We now need to ensure version consistency
+                           # across the dependencies.
+                           #
+                           # At one point in its development; 25/2/8, FFMPEG
+                           # changed the location of its header files. Sadly,
+                           # this was not done with an accompanying revision
+                           # bump. At best, revisioning seems to be:
+                           #
+                           #      Old layout   Could be either   New Layout
+                           # libavcodec
+                           #        51.50.0        51.50.1        51.51.0
+                           # libavformat
+                           #        52.6.0         52.7.0         52.8.0
+                           # libavutil
+                           #        49.5.0         49.6.0         49.7.0
+                           # libswscale
+                           #      no guarentee      0.5.0          0.5.1
+                           #
+                           # We therefore need to manually identify which
+                           # header layout we have. The old layout saw the
+                           # header files located under a single directory
+                           # (/usr/include/ffmpeg directory), newer revisions
+                           # put the headers in component specific dirs.
+                           #
+                           # In order to allow any client (of QMake) to use
+                           # the individual sub-packages we need to be able to
+                           # flag that the client should utilise the correct
+                           # pathname for the relevant headers. We do this by
+                           # checking to see whether we have the old or new
+                           # layout of the header files for each of the sub
+                           # packages. We then add the FFMPEG_OLD_HDR flag to
+                           # the CFLAGS for those sub-packages using the old
+                           # header layout.
+                           #
+                           # For clients that use all for four sub-packages
+                           # as a single entity we also need to check for
+                           # consistency across the packages.
+                           #
+                           # First look for the codec header files...
+                           CDC_HDR=notfound
+                           if ( test $use_FFMPEGCDEC = 'present' )
+                           then
+                              trace 5 Processing FFMPEGCDEC_CFLAGS [$FFMPEGCDEC_CFLAGS] to determine header layout
+                              for h in $FFMPEGCDEC_CFLAGS
+                              do
+                                 # for each part of the CFLAGS, look for a
+                                 # -Ipath entry and extract the path
+                                 path=`echo $h | $SED -n 's/-I\([^ ]*\).*/\1/p'`
+                                 if ( test -n "$path" )
+                                 then
+                                    TRACE_INDENT="     "
+                                    trace 5 Looking for headers under $path
+                                    if ( test -f $path/libavcodec/avcodec.h )
+                                    then
+                                       # This is the newer location
+                                       TRACE_INDENT="          "
+                                       trace 5 New layout found
+                                       if ( test $CDC_HDR = notfound )
+                                       then
+                                          CDC_HDR=new
+                                       else
+                                          if ( test $CDC_HDR = old )
+                                          then
+                                             CDC_HDR=either
+                                          fi
+                                       fi
+                                    else
+                                       if ( test -f $path/avcodec.h )
+                                       then
+                                          TRACE_INDENT="          "
+                                          trace 5 Old layout found
+                                          if ( test $CDC_HDR = notfound )
+                                          then
+                                             CDC_HDR=old
+                                          else
+                                             if ( test $CDC_HDR = new )
+                                             then
+                                                CDC_HDR=either
+                                             fi
+                                          fi
+                                       else
+                                          TRACE_INDENT="          "
+                                          trace 5 No match found
+                                       fi
+                                    fi
+                                 else
+                                    TRACE_INDENT="     "
+                                    trace 6 Discarding $h component of CFLAGS
+                                 fi
+                              done
+
+                              if ( test $CDC_HDR = notfound )
+                              then
+                                 # Headers are not in a directory specified
+                                 # by CFLAGS check the default locations for,
+                                 # firstly, the new layout; then the old.
+                                 TRACE_INDENT="     "
+                                 trace 5 Headers not found using CFLAGS now checking standard dirs
+                                 ac_fn_c_check_header_compile "$LINENO" "libavcodec/avcodec.h" "ac_cv_header_libavcodec_avcodec_h" "$ac_includes_default
+
+"
+if test "x$ac_cv_header_libavcodec_avcodec_h" = xyes; then :
+  ac_fn_c_check_header_compile "$LINENO" "avcodec.h" "ac_cv_header_avcodec_h" "$ac_includes_default
+
+"
+if test "x$ac_cv_header_avcodec_h" = xyes; then :
+  CDC_HDR=either
+else
+  CDC_HDR=new
+fi
+
+
+
+else
+  ac_fn_c_check_header_compile "$LINENO" "avcodec.h" "ac_cv_header_avcodec_h" "$ac_includes_default
+
+"
+if test "x$ac_cv_header_avcodec_h" = xyes; then :
+  CDC_HDR=old
+else
+  CDC_HDR=notfound
+fi
+
+
+
+fi
+
+
+                              fi
+                              trace 4 FFMPEGCDEC headers are $CDC_HDR
+                           fi
+
+                           # Now look for the container...
+                           FMT_HDR=notfound
+                           if ( test $use_FFMPEGCONT = 'present' )
+                           then
+                              trace 5 Processing FFMPEGCONT_CFLAGS [$FFMPEGCONT_CFLAGS] to determine header layout
+                              for h in $FFMPEGCONT_CFLAGS
+                              do
+                                 # for each part of the CFLAGS, look for a
+                                 # -Ipath entry and extract the path
+                                 path=`echo $h | $SED -n 's/-I\([^ ]*\).*/\1/p'`
+                                 if ( test -n "$path" )
+                                 then
+                                    TRACE_INDENT="     "
+                                    trace 5 Looking for headers under $path
+                                    if ( test -f $path/libavformat/avformat.h )
+                                    then
+                                       # This is the newer location
+                                       TRACE_INDENT="          "
+                                       trace 5 New layout found
+                                       if ( test $FMT_HDR = notfound )
+                                       then
+                                          FMT_HDR=new
+                                       else
+                                          if ( test $FMT_HDR = old )
+                                          then
+                                             FMT_HDR=either
+                                          fi
+                                       fi
+                                    else
+                                       if ( test -f $path/avformat.h )
+                                       then
+                                          TRACE_INDENT="          "
+                                          trace 5 Old layout found
+                                          if ( test $FMT_HDR = notfound )
+                                          then
+                                             FMT_HDR=old
+                                          else
+                                             if ( test $FMT_HDR = new )
+                                             then
+                                                FMT_HDR=either
+                                             fi
+                                          fi
+                                       else
+                                          TRACE_INDENT="          "
+                                          trace 5 No match found
+                                       fi
+                                    fi
+                                 else
+                                    TRACE_INDENT="     "
+                                    trace 6 Discarding $h component of CFLAGS
+                                 fi
+                              done
+
+                              if ( test $FMT_HDR = notfound )
+                              then
+                                 # Headers are not in a directory specified
+                                 # by CFLAGS check the default locations for,
+                                 # firstly, the new layout; then the old.
+                                 TRACE_INDENT="     "
+                                 trace 5 Headers not found using CFLAGS now checking standard dirs
+                                 ac_fn_c_check_header_compile "$LINENO" "libavformat/avformat.h" "ac_cv_header_libavformat_avformat_h" "$ac_includes_default
+
+"
+if test "x$ac_cv_header_libavformat_avformat_h" = xyes; then :
+  ac_fn_c_check_header_compile "$LINENO" "avformat.h" "ac_cv_header_avformat_h" "$ac_includes_default
+
+"
+if test "x$ac_cv_header_avformat_h" = xyes; then :
+  FMT_HDR=either
+else
+  FMT_HDR=new
+fi
+
+
+
+else
+  ac_fn_c_check_header_compile "$LINENO" "avformat.h" "ac_cv_header_avformat_h" "$ac_includes_default
+
+"
+if test "x$ac_cv_header_avformat_h" = xyes; then :
+  FMT_HDR=old
+else
+  FMT_HDR=notfound
+fi
+
+
+
+fi
+
+
+                              fi
+                              trace 4 FFMPEGCONT headers are $FMT_HDR
+                           fi
+
+                           # Turn our attention to the utilities...
+                           UTIL_HDR=notfound
+                           if ( test $use_FFMPEGUTIL = 'present' )
+                           then
+                              trace 5 Processing FFMPEGUTIL_CFLAGS [$FFMPEGUTIL_CFLAGS] to determine header layout
+                              for h in $FFMPEGUTIL_CFLAGS
+                              do
+                                 # for each part of the CFLAGS, look for a
+                                 # -Ipath entry and extract the path
+                                 path=`echo $h | $SED -n 's/-I\([^ ]*\).*/\1/p'`
+                                 if ( test -n "$path" )
+                                 then
+                                    TRACE_INDENT="     "
+                                    trace 5 Looking for headers under $path
+                                    if ( test -f $path/libavutil/avutil.h )
+                                    then
+                                       # This is the newer location
+                                       TRACE_INDENT="          "
+                                       trace 5 New layout found
+                                       if ( test $UTIL_HDR = notfound )
+                                       then
+                                          UTIL_HDR=new
+                                       else
+                                          if ( test $UTIL_HDR = old )
+                                          then
+                                             UTIL_HDR=either
+                                          fi
+                                       fi
+                                    else
+                                       if ( test -f $path/avutil.h )
+                                       then
+                                          TRACE_INDENT="          "
+                                          trace 5 Old layout found
+                                          if ( test $UTIL_HDR = notnound )
+                                          then
+                                             UTIL_HDR=old
+                                          else
+                                             if ( test $UTIL_HDR = new )
+                                             then
+                                                UTIL_HDR=either
+                                             fi
+                                          fi
+                                       else
+                                          TRACE_INDENT="          "
+                                          trace 5 No match found
+                                       fi
+                                    fi
+                                 else
+                                    TRACE_INDENT="     "
+                                    trace 6 Discarding $h component of CFLAGS
+                                 fi
+                              done
+
+                              if ( test $UTIL_HDR = notfound )
+                              then
+                                 # Headers are not in a directory specified
+                                 # by CFLAGS check the default locations for,
+                                 # firstly, the new layout; then the old.
+                                 TRACE_INDENT="     "
+                                 trace 5 Headers not found using CFLAGS now checking standard dirs
+                                 ac_fn_c_check_header_compile "$LINENO" "libavutil/avutil.h" "ac_cv_header_libavutil_avutil_h" "$ac_includes_default
+
+"
+if test "x$ac_cv_header_libavutil_avutil_h" = xyes; then :
+  ac_fn_c_check_header_compile "$LINENO" "avutil.h" "ac_cv_header_avutil_h" "$ac_includes_default
+
+"
+if test "x$ac_cv_header_avutil_h" = xyes; then :
+  UTIL_HDR=either
+else
+  UTIL_HDR=new
+fi
+
+
+
+else
+  ac_fn_c_check_header_compile "$LINENO" "avutil.h" "ac_cv_header_avutil_h" "$ac_includes_default
+
+"
+if test "x$ac_cv_header_avutil_h" = xyes; then :
+  UTIL_HDR=old
+else
+  UTIL_HDR=notfound
+fi
+
+
+
+fi
+
+
+                              fi
+                              trace 4 FFMPEGUTIL headers are $UTIL_HDR
+                           fi
+
+                           # Finally, continue on to the s/w Scaling...
+                           SWS_HDR=notfound
+                           if ( test $use_FFMPEGSWS = 'present' )
+                           then
+                              trace 5 Processing FFMPEGCDEC_CFLAGS [$FFMPEGCDEC_CFLAGS] to determine header layout
+                              for h in $FFMPEGSWS_CFLAGS
+                              do
+                                 # for each part of the CFLAGS, look for a
+                                 # -Ipath entry and extract the path
+                                 path=`echo $h | $SED -n 's/-I\([^ ]*\).*/\1/p'`
+                                 if ( test -n "$path" )
+                                 then
+                                    TRACE_INDENT="     "
+                                    trace 5 Looking for headers under $path
+                                    if ( test -f $path/libswscale/swscale.h )
+                                    then
+                                       # This is the newer location
+                                       TRACE_INDENT="          "
+                                       trace 5 New layout found
+                                       if ( test $SWS_HDR = notfound )
+                                       then
+                                          SWS_HDR=new
+                                       else
+                                          if ( test $SWS_HDR = old )
+                                          then
+                                             SWS_HDR=either
+                                          fi
+                                       fi
+                                    else
+                                       if ( test -f $path/swscale.h )
+                                       then
+                                          TRACE_INDENT="          "
+                                          trace 5 Old layout found
+                                          if ( test $SWS_HDR = notfound )
+                                          then
+                                             SWS_HDR=old
+                                          else
+                                             if ( test $SWS_HDR = new )
+                                             then
+                                                SWS_HDR=either
+                                             fi
+                                          fi
+                                       else
+                                          TRACE_INDENT="          "
+                                          trace 5 No match found
+                                       fi
+                                    fi
+                                 else
+                                    TRACE_INDENT="     "
+                                    trace 6 Discarding $h component of CFLAGS
+                                 fi
+                              done
+
+                              if ( test $SWS_HDR = notfound )
+                              then
+                                 # Headers are not in a directory specified
+                                 # by CFLAGS check the default locations for,
+                                 # firstly, the new layout; then the old.
+                                 TRACE_INDENT="     "
+                                 trace 5 Headers not found using CFLAGS now checking standard dirs
+                                 ac_fn_c_check_header_compile "$LINENO" "libswscale/swscale.h" "ac_cv_header_libswscale_swscale_h" "$ac_includes_default
+
+"
+if test "x$ac_cv_header_libswscale_swscale_h" = xyes; then :
+  ac_fn_c_check_header_compile "$LINENO" "swscale.h" "ac_cv_header_swscale_h" "$ac_includes_default
+
+"
+if test "x$ac_cv_header_swscale_h" = xyes; then :
+  SWS_HDR=either
+else
+  SWS_HDR=new
+fi
+
+
+
+else
+  ac_fn_c_check_header_compile "$LINENO" "swscale.h" "ac_cv_header_swscale_h" "$ac_includes_default
+
+"
+if test "x$ac_cv_header_swscale_h" = xyes; then :
+  SWS_HDR=old
+else
+  SWS_HDR=notfound
+fi
+
+
+
+fi
+
+
+                              fi
+                              trace 4 FFMPEGSWS headers are $SWS_HDR
+                           fi
+
+                           # We should now know the header revision type for
+                           # each of the sub-packages. We now have to check
+                           # for a consistent set of either all old-layout
+                           # header files or all new-layout files.
+                           #
+                           FFMPEG_HDR_FMT=notfound
+
+                           # Ensure the codec and container are in step
+                           if ( test $CDC_HDR = either )
+                           then
+                              FFMPEG_HDR_FMT=$FMT_HDR
+                           else
+                              if ( test $FMT_HDR = either )
+                              then
+                                 FFMPEG_HDR_FMT=$CDC_FMT
+                              else
+                                 if ( test $CDC_HDR != $FMT_HDR )
+                                 then
+                                    FFMPEG_HDR_FMT=broken
+                                    trace 5 FFMPEG Headers are inconsistent as the codec and container are different layouts
+                                 else
+                                    FFMPEG_HDR_FMT=$FMT_HDR
+                                 fi
+                              fi
+                           fi
+
+                           # Check UTIL matches the other headers
+                           if ( test $FFMPEG_HDR_FMT = either )
+                           then
+                              FFMPEG_HDR_FMT = $UTIL_HDR
+                           else
+                              if ( test $FFMPEG_HDR_FMT != $UTIL_HDR )
+                              then
+                                 if ( test $UTIL_HDR != either )
+                                 then
+                                    trace 5 FFMPEG Headers are inconsistent as the utils headers differ from the codec and container layout
+                                    FFMPEG_HDR_FMT=broken
+                                 fi
+                              fi
+                           fi
+
+                           # Check SWS matches the other headers
+                           if ( test $FFMPEG_HDR_FMT = either )
+                           then
+                              FFMPEG_HDR_FMT = $SWS_HDR
+                           else
+                              if ( test $FFMPEG_HDR_FMT != $SWS_HDR )
+                              then
+                                 if ( test $SWS_HDR != either )
+                                 then
+                                    trace 5 FFMPEG Headers are inconsistent as the swscaling headers differ the other components
+                                    FFMPEG_HDR_FMT=broken
+                                 fi
+                              fi
+                           fi
+
+                           # If either format is acceptable, force use of the
+                           # newer layout
+                           if ( test $FFMPEG_HDR_FMT = either )
+                           then
+                              FFMPEG_HDR_FMT = new
+                              if ( test $use_libffmpeg != no )
+                              then
+                                 use_libffmpeg=present
+                              fi
+                           else
+                              if ( test $FFMPEG_HDR_FMT = broken )
+                              then
+                                 if ( test $use_libffmpeg = yes )
+                                 then
+                                    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Required library libffmpeg has inconsistent headers
+See \`config.log' for more details" "$LINENO" 5; }
+                                 else
+                                    if ( test $use_libffmpeg != no )
+                                    then
+                                       trace 4 Inconsistent FFMPEG headers block libffmpeg
+                                       use_libffmpeg=blocked
+                                    fi
+                                 fi
+                              else
+                                 if ( test $FFMPEG_HDR_FMT = notfound )
+                                 then
+                                    # We only actually hit this code if none
+                                    # of the sub-packages' header files are
+                                    # found during our layout revision checks.
+                                    # If one or more are found but some are
+                                    # missing, the variable $FFMPEG_HDR_FMT
+                                    # will be set to 'Broken'.
+                                    if ( test $use_libffmpeg = yes )
+                                    then
+                                       { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Required library libffmpeg has missing headers
+See \`config.log' for more details" "$LINENO" 5; }
+                                    else
+                                       if ( test $use_libffmpeg != no )
+                                       then
+                                          trace 4 Missing FFMPEG headers block libffmpeg
+                                          use_libffmpeg=blocked
+                                       fi
+                                    fi
+                                 else
+                                    if ( test $use_libffmpeg != no )
+                                    then
+                                       use_libffmpeg=present
+                                    fi
+                                 fi
+                              fi
+                           fi
+                           #
+                           trace 3 FFMPEG header analysis
+                           TRACE_INDENT="     "
+                           trace 3 Codec:$CDC_HDR
+                           TRACE_INDENT="     "
+                           trace 3 Container:$FMT_HDR
+                           TRACE_INDENT="     "
+                           trace 3 Utils:$UTIL_HDR
+                           TRACE_INDENT="     "
+                           trace 3 s/w scaling:$SWS_HDR
+                           TRACE_INDENT="     "
+                           trace 3 Overall:$FFMPEG_HDR_FMT
+                           #
+                           # Now look to add -DFFMPEG_OLD_HDR if appropriate.
+                           #
+                           # First fold any sub-packages, that have both
+                           # layout revisions, to use the layout common
+                           # between the remaining sub-packages. We will
+                           # only do this if we have all four sub-packages
+                           # and they agree on the layout to use. If all
+                           # sub-packages are present in both forms,
+                           # FFMPEG_HDR_FMT will already have been set to
+                           # prefer the new layout.
+                           if ( test $FFMPEG_HDR_FMT != notfound -a $FFMPEG_HDR_FMT = broken )
+                           then
+                              # Force all sub-packages to the common layout
+                              CDC_HDR=$FFMPEG_HDR_FMT
+                              FMT_HDR=$FFMPEG_HDR_FMT
+                              UTIL_HDR=$FFMPEG_HDR_FMT
+                              SWS_HDR=$FFMPEG_HDR_FMT
+                           fi
+                           # Now actually append to CFLAGS if using the old layout
+                           if ( test $CDC_HDR = old )
+                           then
+                              FFMPEGCDEC_CFLAGS=$FFMPEGCDEC_CFLAGS" -DFFMPEG_OLD_HDR "
+                           fi
+                           if ( test $FMT_HDR = old )
+                           then
+                              FFMPEGCONT_CFLAGS=$FFMPEGCONT_CFLAGS" -DFFMPEG_OLD_HDR "
+                           fi
+                           if ( test $UTIL_HDR = old )
+                           then
+                              FFMPEGUTIL_CFLAGS=$FFMPEGUTIL_CFLAGS" -DFFMPEG_OLD_HDR "
+                           fi
+                           if ( test $SWS_HDR = old )
+                           then
+                              FFMPEGSWS_CFLAGS=$FFMPEGSWS_CFLAGS" -DFFMPEG_OLD_HDR "
+                           fi
+                           # If libffmpeg is available, flag it as a virtual
+                           # package to ensure it is correctly written to the
+                           # configure files
+                           if ( test $use_libffmpeg = present)
+                           then
+                              with_libffmpeg_check=virtual
+                           fi
+                           ;;
 
                        * ) { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
