@@ -32064,8 +32064,8 @@ $as_echo "$as_me: WARNING: " >&2;}
                          fi
                          trace 3 No library name specified by --with-Qt3QGLViewer-library, using --with-Qt3QGLViewer value [$with_Qt3QGLViewer_lnklibs]
                       else
-                         trace 3 No library name specified by --with-Qt3QGLViewer-library, using default ["-lqglviewer"]
-                         with_Qt3QGLViewer_lnklibs="-lqglviewer"
+                         trace 3 No library name specified by --with-Qt3QGLViewer-library, using default ["-lqglviewer-qt3 | -lqglviewer"]
+                         with_Qt3QGLViewer_lnklibs="-lqglviewer-qt3 | -lqglviewer"
                       fi
 
                       if ( test X$fallback_path != X )
@@ -32175,8 +32175,8 @@ $as_echo "$as_me: WARNING: " >&2;}
                          fi
                          trace 3 Using file component of --with-Qt3QGLViewer to set library name for Qt3QGLViewer [$with_Qt3QGLViewer_lnklibs]
                    else
-                      trace 3 Using default library name for Qt3QGLViewer ["-lqglviewer"]
-                      with_Qt3QGLViewer_lnklibs="-lqglviewer"
+                      trace 3 Using default library name for Qt3QGLViewer ["-lqglviewer-qt3 | -lqglviewer"]
+                      with_Qt3QGLViewer_lnklibs="-lqglviewer-qt3 | -lqglviewer"
                    fi
                 fi
 
@@ -33136,8 +33136,8 @@ $as_echo "$as_me: WARNING: " >&2;}
                          fi
                          trace 3 No library name specified by --with-Qt4QGLViewer-library, using --with-Qt4QGLViewer value [$with_Qt4QGLViewer_lnklibs]
                       else
-                         trace 3 No library name specified by --with-Qt4QGLViewer-library, using default ["-lQGLViewer"]
-                         with_Qt4QGLViewer_lnklibs="-lQGLViewer"
+                         trace 3 No library name specified by --with-Qt4QGLViewer-library, using default ["-lQGLViewer-qt4 | -lQGLViewer"]
+                         with_Qt4QGLViewer_lnklibs="-lQGLViewer-qt4 | -lQGLViewer"
                       fi
 
                       if ( test X$fallback_path != X )
@@ -33247,8 +33247,8 @@ $as_echo "$as_me: WARNING: " >&2;}
                          fi
                          trace 3 Using file component of --with-Qt4QGLViewer to set library name for Qt4QGLViewer [$with_Qt4QGLViewer_lnklibs]
                    else
-                      trace 3 Using default library name for Qt4QGLViewer ["-lQGLViewer"]
-                      with_Qt4QGLViewer_lnklibs="-lQGLViewer"
+                      trace 3 Using default library name for Qt4QGLViewer ["-lQGLViewer-qt4 | -lQGLViewer"]
+                      with_Qt4QGLViewer_lnklibs="-lQGLViewer-qt4 | -lQGLViewer"
                    fi
                 fi
 

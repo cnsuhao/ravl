@@ -323,7 +323,7 @@ dnl
                                V.show();
                               ],
                               [Qt3],
-                              [-lqglviewer],
+                              [-lqglviewer-qt3 | -lqglviewer],
                               [QGLViewer/qglviewer.h],
                               [C++]
                              )
@@ -332,7 +332,7 @@ dnl
                                V.setWindowTitle("ViewerTitle");
                               ],
                               [QtOpenGL QtGui QtXml QtCore libGLU],
-                              [-lQGLViewer],
+                              [-lQGLViewer-qt4 | -lQGLViewer],
                               [QGLViewer/qglviewer.h],
                               [C++]
                              )
