@@ -51,6 +51,10 @@ dnl           that requires a compilation check as so-doing will over-ride
 dnl           the compilation check in favour of using the pkg-config with
 dnl           that default file.
 dnl       p3: Type of test needed for the external library:
+dnl               bespoke      - test for the external library has been
+dnl                              written in bespoke code located within
+dnl                              the appropriate section of the macro
+dnl                              QM_CK_BESPOKE_CK_LIB.
 dnl               compile      - test for the external library involves
 dnl                              a test compilation to see if the library
 dnl                              is available.
@@ -93,6 +97,12 @@ dnl                                  file types reside in the same directory).
 dnl       with_<lib>_check           Flag specifying the type of test needed
 dnl                                  to check for the existance of the
 dnl                                  external library:
+dnl                                    bespoke      - test for the external
+dnl                                                   library has been written
+dnl                                                   in bespoke code located
+dnl                                                   within the appropriate
+dnl                                                   section of the macro
+dnl                                                   QM_CK_BESPOKE_CK_LIB.
 dnl                                    compile      - test for the external
 dnl                                                   library involves a test
 dnl                                                   compilation to see if

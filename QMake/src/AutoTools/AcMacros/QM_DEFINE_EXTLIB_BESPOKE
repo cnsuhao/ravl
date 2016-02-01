@@ -1,0 +1,61 @@
+dnl This file is part of QMake, Quick Make System
+dnl Copyright (C) 2015-16, University of Surrey
+dnl This code may be redistributed under the terms of the GNU General
+dnl Public License (GPL). See the gpl.licence file for details or
+dnl see http://www.gnu.org/copyleft/gpl.html
+dnl
+dnl file-header-ends-here
+
+
+dnl QM_DEFINE_EXTLIB_BESPOKE
+dnl
+dnl Macro to define an external library that requires bespoke code to check
+dnl for its availability.
+dnl
+dnl This macro causes the declaration of the --with-<lib>-pkgconfig and the
+dnl --with-<lib> command-line switches. For a bespoke-check library package,
+dnl the --with-<lib>-pkgconf switch allows the user to over-ride the bespoke
+dnl check and employ a pkg-config file (either one supplied with the package
+dnl or by writing their own pkg-config metafile if one is unavailable for
+dnl the package. The --with-<lib> switch allows the user to disable or
+dnl specifically request the package.
+dnl
+dnl This macro is intended for those bespoke packages that are tested for by
+dnl pkg-config or are virtual packages. For those bespoke packages that will
+dnl require a compilation test, please use the QM_DEFINE_EXTLIB_BESPOKE_CC
+dnl version of this macro as this will additionally declate the appropriate
+dnl --with-<lib>-library and --with-<lib>-include switches as well as allowing
+dnl the definition of the library to preform the link against.
+dnl
+dnl Macro parameters are:
+dnl       p1: QMake name for the library. This is used for naming the
+dnl           cmd-line switch (LIB => --with-LIB, --with-LIB-pkgconf). It
+dnl           should be the name any package expects the RESOURCES string to
+dnl           take to enable the library's functionality. It will also be the
+dnl           name used for the LIB_CFLAGS and LIB_LIBS used in the relevant
+dnl           .def file and Config.Project.
+dnl       p2: Prerequisites (if any) that the bespoke-check library depends
+dnl           upon.
+dnl
+dnl Global variables used:
+dnl
+dnl   All variables listed with a <lib> in their name are created with the
+dnl   <lib> being replaced by the QMake name of the package (the name passed
+dnl   into this macro as the first parameter). For example,the OpenCV package
+dnl   will have variables named use_OpenCV; with_OpenCV; etc.
+dnl
+dnl       with_<lib>_prq             Space separated list of pre-requisites
+dnl                                  of the library.
+dnl
+dnl
+AC_DEFUN([QM_DEFINE_EXTLIB_BESPOKE],
+         [
+          QM_RESOURCE_BASIC_SWITCHES([$1],[],[bespoke])
+
+          with_$1_prq="$2"
+
+          QM_FINISH_DEFINE([$1])
+         ]
+        )
+
+

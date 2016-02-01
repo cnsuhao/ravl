@@ -27,6 +27,7 @@ dnl Include standard QMake autoconf macros
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_CHOOSE_GETCWD])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_CHOOSE_RPATH])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_CK_COMPILE_CK_LIB])
+m4_include([../../QMake/src/AutoTools/AcMacros/QM_CK_BESPOKE_CK_LIB])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_CK_PREREQ_STATE])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_CHECK_CC_LIB])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_Debug_Fn])
@@ -34,6 +35,8 @@ m4_include([../../QMake/src/AutoTools/AcMacros/QM_DEFINE_ALL_EXTLIBS])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_DEFINE_EXTLIB_CC])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_DEFINE_EXTLIB_PC])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_DEFINE_VIRTUAL_EXTLIB])
+m4_include([../../QMake/src/AutoTools/AcMacros/QM_DEFINE_EXTLIB_BESPOKE])
+m4_include([../../QMake/src/AutoTools/AcMacros/QM_DEFINE_EXTLIB_BESPOKE_CC])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_RESOURCE_BASIC_SWITCHES])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_RESOURCE_CC_SWITCHES])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_FINISH_DEFINE])
@@ -442,7 +445,8 @@ then
       TRACE_INDENT="     "
       eval check=\$with_${lib}_check
       case $check in
-         'virtual' )   eval prereq=\$with_${lib}_prq
+         'bespoke' | 'virtual'  )
+                       eval prereq=\$with_${lib}_prq
                        trace 3 "$lib:$check:$prereq:$lib_enablement"
                        ;;
          'pkgconfig' ) eval pkgconf=\$with_${lib}_pkgconf
@@ -537,7 +541,8 @@ then
       TRACE_INDENT="     "
       eval check=\$with_${lib}_check
       case $check in
-         'virtual' )   eval prereq=\$with_${lib}_prq
+         'bespoke' | 'virtual' )
+                       eval prereq=\$with_${lib}_prq
                        trace 3 "$lib:$check:$prereq:$lib_enablement"
                        ;;
          'pkgconfig' ) eval pkgconf=\$with_${lib}_pkgconf

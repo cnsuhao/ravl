@@ -1,5 +1,5 @@
 dnl This file is part of QMake, Quick Make System
-dnl Copyright (C) 2013, University of Surrey
+dnl Copyright (C) 2013-16, University of Surrey
 dnl This code may be redistributed under the terms of the GNU General
 dnl Public License (GPL). See the gpl.licence file for details or
 dnl see http://www.gnu.org/copyleft/gpl.html
@@ -585,8 +585,98 @@ dnl
           dnl 
           dnl LibFFmpeg.def will need renaming before we can use automatic
           dnl .def file creation
-          
-          
+
+
+          dnl Pkgs needing Bespoke Checks
+          dnl
+          dnl All packages declared here need to have their bespoke check
+          dnl added to the case statement in the QM_CK_BESPOKE_CK_LIB macro.
+          dnl
+          dnl There are two forms of bespoke poackage, those that will require
+          dnl a compilation check to determine if they exist and those that do
+          dnl not (usually virtual packages that require some extra testing
+          dnl over and above the mere existance of their pre-requisites). Both
+          dnl forms are processed by the same (QM_CK_BESPOKE_CK_LIB) macro but
+          dnl each form has its own definition (to cause the appropriate
+          dnl command-line swithces to be defined).
+          dnl
+          dnl Those packages that require a compilation check as well as a
+          dnl bespoke check are declared using the QM_DEFINE_EXTLIB_BESPOKE_CC
+          dnl macro, the parameters of which are:
+          dnl
+          dnl  1 QMake name for library. The name used for RESOURCES and also
+          dnl    for LIB_CFLAGS, LIB_LIBS, etc. used in Config.XX and the .def
+          dnl    files.
+          dnl  2 Fragment of code to verify that the library can be successfully
+          dnl    linked to. Usually this is just a single call to a function
+          dnl    declared by the external library. However, some libraries need
+          dnl    a little more set up - such as any library where we need to
+          dnl    test for a C++ class; or the Math library where some compilers
+          dnl    perform extra prototype checking on those functions.
+          dnl  3 Space separated list of dependancies of the library. Specify
+          dnl    the QMake name of the library - e.g. for dependancies on Zlib
+          dnl    specify Zlib not -lz or z.
+          dnl    *** N.B. ***
+          dnl         Dependancies on libraries reliant on pkg-config for their
+          dnl         location are not supported. I.E. if library A depends on
+          dnl         library B, library B must be specified here as a manual
+          dnl         check if library A is also specified as a manual check.
+          dnl         JFi:ToDo:Fix this limitation
+          dnl  4 Link line entry for the library (in -lXXXX form) needed to
+          dnl    compile against the library package <Lib>. For library
+          dnl    packages that vary the names of the libraries required, this
+          dnl    may be a set of alternative lists seperated by a pipe symbol.
+          dnl    For example, the Socket library package uses the setting
+          dnl    " | -lsocket | -lsocket -lnsl " as the socket() function may
+          dnl    be available in the default libraries (no additional library
+          dnl    is required - hence the leading " | " setting, i.e. a null
+          dnl    list); in the socket library itself; or in a socket library
+          dnl    that also depends on libnsl.
+          dnl  5 Name(s) of header files needed to use the library (only really
+          dnl    need to provide one for a specimin test unless it is know that
+          dnl    sub-sets of the header files are regularly seen in the wild).
+          dnl    If specifying multiple headers, provide a space seperated list.
+          dnl  6 Language in which the test code is written. This is usually the
+          dnl    same language as the API for the external library. Currently
+          dnl    only C and C++ are supported languages for this setting.
+          dnl
+          dnl These are the same parameters as applied to the definition of a
+          dnl regular compilation-check package.
+          dnl
+          dnl                           Name,
+          dnl                           Test Code,
+          dnl                           Deps,
+          dnl                           -l,
+          dnl                           .h
+          dnl                           Lang
+          dnl
+          dnl QM_DEFINE_EXTLIB_BESPOKE_CC([Name],
+          dnl                             [Test Code;],
+          dnl                             [PreReqA PreReqB],
+          dnl                             [-lLibName],
+          dnl                             [Header.h],
+          dnl                             [C]
+          dnl                            )
+          dnl
+          dnl The second form of bespoke packages (those that do not require a
+          dnl compilation check) are declared via the QM_DEFINE_EXTLIB_BESPOKE
+          dnl macro; the parameters of which are:
+          dnl
+          dnl  1 QMake name for library. The name used for RESOURCES and also
+          dnl    for LIB_CFLAGS, LIB_LIBS, etc. used in Config.XX and the .def
+          dnl    files.
+          dnl  2 Space separated list of dependancies of the library. Specify
+          dnl    the QMake name of the library - e.g. for dependancies on Zlib
+          dnl    specify Zlib not -lz or z.
+          dnl
+          dnl These parameters mirror those of the definition macro for a
+          dnl regular (non-bespoke) virtual package.
+          dnl
+          dnl                       Name,       Pre-requisites
+          dnl
+          dnl QM_DEFINE_EXTLIB_BESPOKE([Name],    [PreReqA PreReqB])
+
+
           dnl#JFi:Develop code to prime these by ./configure
           dnl#
           dnl# Developer notes:

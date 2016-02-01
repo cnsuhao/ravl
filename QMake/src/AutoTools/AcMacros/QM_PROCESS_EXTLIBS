@@ -12,14 +12,15 @@ dnl QM_PROCESS_EXTLIBS
 dnl
 dnl Macro to check if the declared external library packages exist on the
 dnl system. This will check for libraries specified via pkg-configure
-dnl directly and for libraries requiring a compilation check by calling the
-dnl QM_COMPILE_CK_LIB macro. 
+dnl directly and also process virtual packages (packages that exist as a
+dnl RESOURCE name dependant on several other packages to provide a short-cut
+dnl for including all of the dependant libraries). This macro will also
+dnl organise the check of those libraries requiring a compilation check (by
+dnl calling the QM_CK_COMPILE_CK_LIB macro) and those requiring bespoke code
+dnl to check for their existance (via the QM_CK_BESPOKE_CK_LIB macro).
 dnl
-dnl All libraries to be checked for must have previously been declared via
-dnl either the QM_DEFINE_EXTLIB_PC (for libraries that support pkg-config);
-dnl QM_DEFINE_EXTIB_CC (libraries that will require a compilation test) or
-dnl via QM_DEFINE_VIRTUAL_EXTLIB (for virtual libraries that are really just
-dnl a super-set of other, already declared, external libraries).
+dnl All of the libraries to be checked for by this macro must have previously
+dnl been declared via one of the appropiate QM_DEFINE_... macros.
 dnl
 dnl This macro also checks for consistency over the header layout employed by
 dnl any FFMPEG libraries and appends the appropriate CFLAG (-DFFMPEG_OLD_HDR) 
@@ -81,6 +82,12 @@ dnl                                  to "          " for the second, etc.
 dnl       with_<lib>_check           Flag specifying the type of test needed
 dnl                                  to check for the existance of the
 dnl                                  external library:
+dnl                                    bespoke      - test for the external
+dnl                                                   library has been written
+dnl                                                   in bespoke code located
+dnl                                                   within the appropriate
+dnl                                                   section of the macro
+dnl                                                   QM_CK_BESPOKE_CK_LIB.
 dnl                                    compile      - test for the external
 dnl                                                   library involves a test
 dnl                                                   compilation to see if
@@ -171,7 +178,8 @@ AC_DEFUN([QM_PROCESS_EXTLIBS],
                 TRACE_INDENT="     "
                 eval check=\$with_${lib}_check
                 case $check in
-                   'virtual' )   eval prereq=\$with_${lib}_prq
+                   'bespoke' | 'virtual' )
+                                 eval prereq=\$with_${lib}_prq
                                  trace 3 "$lib:$check:$prereq:$lib_enablement"
                                  ;;
                    'pkgconfig' ) eval pkgconf=\$with_${lib}_pkgconf 
@@ -391,7 +399,8 @@ AC_DEFUN([QM_PROCESS_EXTLIBS],
                    TRACE_INDENT="          "
                    eval check=\$with_${lib}_check
                    case $check in
-                      'virtual' )   eval prereq=\$with_${lib}_prq
+                      'bespoke' | 'virtual' )
+                                    eval prereq=\$with_${lib}_prq
                                     trace 3 "$lib:$check:$prereq:$lib_enablement"
                                     ;;
                       'pkgconfig' ) eval pkgconf=\$with_${lib}_pkgconf
@@ -414,20 +423,17 @@ AC_DEFUN([QM_PROCESS_EXTLIBS],
 
 
 
-          # Check for all helper libraries being used.
+          # Now start to check for availability of libraries ...
+ 
+          # Maintain a list of the libraries we have left to check..
           #
           LeftToDo="$LibsToProcess"
-          #
-          # First see if each of the libraries exist and error out if the
-          # missing libs were specified as needed (either from the cmd-line
-          # or from dependencies)
-          #
-          # Test for the pkg-config specified libraries and virtual packages
-          # before testing for those specified for a compilation test. This
-          # allows the later compilation test to use a pkg-config library (or
-          # a virtual package) as a pre-requisite. Processing the pkg-config
-          # files first allows the use of a pkg-config file to overrule the
-          # default settings for a compile-test library or a virtual package.
+
+          # First test for the pkg-config specified libraries and virtual
+          # packages. Testing these before testing for those specified for
+          # testing via a compilation test or via bespoke code allows the
+          # latter to use a pkg-config library or virtual package as a
+          # pre-requisite.
           #
           trace 2 Test availability of pkg-config specified libraries and virtual packages
           for lib in $LibsToProcess
@@ -518,7 +524,7 @@ AC_DEFUN([QM_PROCESS_EXTLIBS],
                   trace 3 $lib:virtual:$prereq:$lib_enablement
                   LeftToDo=`echo " $LeftToDo " | $SED "s/ $lib / /"`
                 else
-                  if ( test X$check != Xcompile )
+                  if ( test X$check != Xcompile && test X$check != Xbespoke )
                   then
                     trace 1 "Assert - Unrecognised check type ($check) for $lib"
                   fi
@@ -1033,19 +1039,65 @@ AC_DEFUN([QM_PROCESS_EXTLIBS],
 
 
           # Finally, we can now test the availability of the libraries that
-          # need a compilation check. This list is all the LibsToProcess minus
-          # the pkg-config specified packages and the virtual packages, in
-          # fact, just what we've been paring LeftToDo down to.
+          # need a compilation check or bespoke code to assess their
+          # availability.
           #
-          trace 2 Test availability of compilation-check external libraries
+          trace 2 Test availability of compilation-check or bespoke external libraries
 
+          # These checks need to take into account packages requireing other
+          # packages that are not currently assessed as to their availability.
+          # To achieve this, we belay checking any library that does not
+          # currently have all of its pre-requisites available. We therefore
+          # have to iterate over the list of the remaining libraries to check
+          # until we either have no more to process or until we have not
+          # updated the status of any package on the current iteration.
+          #
           RecentlyProcessed="Force first iteration (if someting in LeftToDo)"
           while ( test "x$RecentlyProcessed" != x -a "x$LeftToDo" != x )
           do
              RecentlyProcessed=""
              for lib in $LeftToDo
              do
-                 QM_CK_COMPILE_CK_LIB([$lib])
+                eval check=\$with_${lib}_check
+                case $check in
+                   'compile' )   QM_CK_COMPILE_CK_LIB([$lib])
+                                 ;;
+                   'bespoke' )   QM_CK_BESPOKE_CK_LIB([$lib])
+                                 ;;
+                   'pkgconfig' | 'virtual' )
+                                 # Should have already processed all virtual
+                                 # and pkg-config packages. Generate suitable
+                                 # error
+                                 eval lib_enablement=\$use_${lib}
+                                 case $lib_enablement in
+                                    'yes' )      AC_MSG_FAILURE([Should not be assessing the availability of required $check library $lib at this point])
+                                                 ;;
+                                    'needed' )   AC_MSG_FAILURE([Should not be assessing the availability of prerequisite $check library $lib at this point])
+                                                 ;;
+                                    * )          AC_MSG_WARN([Should not be assessing the availability of $check library $lib at this point])
+                                                 AC_MSG_WARN([Will disable $lib])
+                                                 eval use_${lib}=missing
+                                                 LeftToDo=`echo " $LeftToDo " | $SED "s/ $lib / /"`
+                                                 RecentlyProcessed="$RecentlyProcessed $lib"
+                                                 ;;
+                                 esac
+                                 ;;
+                   * )           # Unrecognised test type, raise suitable error
+                                 eval lib_enablement=\$use_${lib}
+                                 case $lib_enablement in
+                                    'yes'    )   AC_MSG_FAILURE([Cannot determine test required for requested library $lib])
+                                                 ;;
+                                    'needed' )   AC_MSG_FAILURE([Cannot determine test required for prerequisite library $lib])
+                                                 ;;
+                                    * )          AC_MSG_WARN([Cannot determine test required for library $lib])
+                                                 AC_MSG_WARN([Will disable $lib])
+                                                 eval use_${lib}=missing
+                                                 LeftToDo=`echo " $LeftToDo " | $SED "s/ $lib / /"`
+                                                 RecentlyProcessed="$RecentlyProcessed $lib"
+                                                 ;;
+                                 esac
+                                 ;;
+                esac
              done
           done
 
@@ -1125,7 +1177,8 @@ AC_DEFUN([QM_PROCESS_EXTLIBS],
                    TRACE_INDENT="          "
                    eval check=\$with_${lib}_check
                    case $check in
-                      'virtual' )   eval prereq=\$with_${lib}_prq
+                      'bespoke' | 'virtual' )
+                                    eval prereq=\$with_${lib}_prq
                                     trace 3 "$lib:$check:$prereq:$lib_enablement"
                                     ;;
                       'pkgconfig' ) eval pkgconf=\$with_${lib}_pkgconf

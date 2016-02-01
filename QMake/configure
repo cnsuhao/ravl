@@ -3330,6 +3330,10 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
 
+
+
+
+
 # Trace debug function
 #
 # Set DBG=<level> in the environment for extra output messages. Arguments to
@@ -3365,6 +3369,18 @@ trace ()
    fi
    TRACE_INDENT=""
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -44521,6 +44537,8 @@ $as_echo "$as_me: WARNING: --with-OpenGL set to an unknown option, setting ignor
 
 
 
+
+
 # Now determine which external libraries are actually available
 #
 LibsToProcess=$KnownLibs
@@ -44741,7 +44759,8 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
                 TRACE_INDENT="     "
                 eval check=\$with_${lib}_check
                 case $check in
-                   'virtual' )   eval prereq=\$with_${lib}_prq
+                   'bespoke' | 'virtual' )
+                                 eval prereq=\$with_${lib}_prq
                                  trace 3 "$lib:$check:$prereq:$lib_enablement"
                                  ;;
                    'pkgconfig' ) eval pkgconf=\$with_${lib}_pkgconf
@@ -44979,7 +44998,8 @@ See \`config.log' for more details" "$LINENO" 5; }
                    TRACE_INDENT="          "
                    eval check=\$with_${lib}_check
                    case $check in
-                      'virtual' )   eval prereq=\$with_${lib}_prq
+                      'bespoke' | 'virtual' )
+                                    eval prereq=\$with_${lib}_prq
                                     trace 3 "$lib:$check:$prereq:$lib_enablement"
                                     ;;
                       'pkgconfig' ) eval pkgconf=\$with_${lib}_pkgconf
@@ -45002,20 +45022,17 @@ See \`config.log' for more details" "$LINENO" 5; }
 
 
 
-          # Check for all helper libraries being used.
+          # Now start to check for availability of libraries ...
+
+          # Maintain a list of the libraries we have left to check..
           #
           LeftToDo="$LibsToProcess"
-          #
-          # First see if each of the libraries exist and error out if the
-          # missing libs were specified as needed (either from the cmd-line
-          # or from dependencies)
-          #
-          # Test for the pkg-config specified libraries and virtual packages
-          # before testing for those specified for a compilation test. This
-          # allows the later compilation test to use a pkg-config library (or
-          # a virtual package) as a pre-requisite. Processing the pkg-config
-          # files first allows the use of a pkg-config file to overrule the
-          # default settings for a compile-test library or a virtual package.
+
+          # First test for the pkg-config specified libraries and virtual
+          # packages. Testing these before testing for those specified for
+          # testing via a compilation test or via bespoke code allows the
+          # latter to use a pkg-config library or virtual package as a
+          # pre-requisite.
           #
           trace 2 Test availability of pkg-config specified libraries and virtual packages
           for lib in $LibsToProcess
@@ -45134,7 +45151,7 @@ fi
                   trace 3 $lib:virtual:$prereq:$lib_enablement
                   LeftToDo=`echo " $LeftToDo " | $SED "s/ $lib / /"`
                 else
-                  if ( test X$check != Xcompile )
+                  if ( test X$check != Xcompile && test X$check != Xbespoke )
                   then
                     trace 1 "Assert - Unrecognised check type ($check) for $lib"
                   fi
@@ -45718,19 +45735,28 @@ See \`config.log' for more details" "$LINENO" 5; }
 
 
           # Finally, we can now test the availability of the libraries that
-          # need a compilation check. This list is all the LibsToProcess minus
-          # the pkg-config specified packages and the virtual packages, in
-          # fact, just what we've been paring LeftToDo down to.
+          # need a compilation check or bespoke code to assess their
+          # availability.
           #
-          trace 2 Test availability of compilation-check external libraries
+          trace 2 Test availability of compilation-check or bespoke external libraries
 
+          # These checks need to take into account packages requireing other
+          # packages that are not currently assessed as to their availability.
+          # To achieve this, we belay checking any library that does not
+          # currently have all of its pre-requisites available. We therefore
+          # have to iterate over the list of the remaining libraries to check
+          # until we either have no more to process or until we have not
+          # updated the status of any package on the current iteration.
+          #
           RecentlyProcessed="Force first iteration (if someting in LeftToDo)"
           while ( test "x$RecentlyProcessed" != x -a "x$LeftToDo" != x )
           do
              RecentlyProcessed=""
              for lib in $LeftToDo
              do
-                 trace 5 Seeing if we can do the compilation check for $lib
+                eval check=\$with_${lib}_check
+                case $check in
+                   'compile' )   trace 5 Seeing if we can do the compilation check for $lib
           test_lib=$lib
 
           eval test_enablement=\$use_${test_lib}
@@ -46294,6 +46320,257 @@ fi
           LeftToDo=`echo " $LeftToDo " | $SED "s/  */ /g;s/^ //;s/ $//"`
 
 
+                                 ;;
+                   'bespoke' )   trace 5 Seeing if we can do the bespoke check for $lib
+          test_lib=$lib
+
+          eval test_enablement=\$use_${test_lib}
+
+          if ( test "$test_enablement" == check -o  "$test_enablement" == needed -o  "$test_enablement" == yes )
+          then
+             # We need to check if this lib exists
+             #
+             # First check the state of the pre-requisites of the library
+             trace 5 Checking the status of the prerequisites of $lib
+          dependant=$lib
+
+          eval dependant_state="\$use_${dependant}"
+          eval prereqs="\$with_${dependant}_prq"
+          process_now=yes
+          if ( test "x$prereqs" != x )
+          then
+             TRACE_INDENT="     "
+             trace 4 Checking we know the status of all the pre-requisites of $dependant [$prereqs]
+             for prq in $prereqs
+             do
+                eval prq_state=\$use_${prq}
+                case "$prq_state" in
+                   present )     TRACE_INDENT="          "
+                                 trace 6 $prq is present
+                                 ;;
+                   no )          case $dependant_state in
+                                    check )  TRACE_INDENT="          "
+                                             trace 6 $prq is disabled, disabling $dependant
+                                             eval use_${dependant}=blocked
+                                             LeftToDo=`echo " $LeftToDo " | $SED "s/ $dependant / /"`
+                                             RecentlyProcessed="$RecentlyProcessed $dependant"
+                                             process_now=no
+                                             break
+                                             ;;
+                                    needed ) { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Library $dependant is a pre-requisite of a selected library but is unavailable due to a disabled pre-requisite
+See \`config.log' for more details" "$LINENO" 5; }
+                                             ;;
+                                    yes )    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Required library $dependant is unavailable due to a disabled pre-requisite
+See \`config.log' for more details" "$LINENO" 5; }
+                                             ;;
+                                 esac
+                                 ;;
+                   missing )     case $dependant_state in
+                                    check )  TRACE_INDENT="          "
+                                             trace 6 $prq is not available, disabling $dependant
+                                             eval use_${dependant}=blocked
+                                             LeftToDo=`echo " $LeftToDo " | $SED "s/ $dependant / /"`
+                                             RecentlyProcessed="$RecentlyProcessed $dependant"
+                                             process_now=no
+                                             break
+                                             ;;
+                                    needed ) { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Library $dependant is a pre-requisite of a selected library but is unavailable due to a missing pre-requisite
+See \`config.log' for more details" "$LINENO" 5; }
+                                             ;;
+                                    yes )    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Required library $dependant is unavailable due to a missing pre-requisite
+See \`config.log' for more details" "$LINENO" 5; }
+                                             ;;
+                                 esac
+                                 ;;
+                   blocked )     case $dependant_state in
+                                    check )  TRACE_INDENT="          "
+                                             trace 6 $prq is blocked, disabling $dependant
+                                             eval use_${dependant}=blocked
+                                             LeftToDo=`echo " $LeftToDo " | $SED "s/ $dependant / /"`
+                                             RecentlyProcessed="$RecentlyProcessed $dependant"
+                                             process_now=no
+                                             break
+                                             ;;
+                                    needed ) { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Library $dependant is a pre-requisite of a selected library but is unavailable due to a missing pre-requisite
+See \`config.log' for more details" "$LINENO" 5; }
+                                             ;;
+                                    yes )    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Required library $dependant is unavailable due to a missing pre-requisite
+See \`config.log' for more details" "$LINENO" 5; }
+                                             ;;
+                                 esac
+                                 ;;
+                   check | needed | yes )
+                                 TRACE_INDENT="          "
+                                 trace 6 $prq has not yet been checked, cannot check $dependant at the moment
+                                 process_now=no
+                                 # Do not break in case we can
+                                 # mark the library as blocked
+                                 # by dint of another pre-req.
+                                 ;;
+                   * )           case $dependant_state in
+                                    check )  TRACE_INDENT="          "
+                                             trace 1 Assert - unrecognised state for prerequisite $prq, disabling $dependant
+                                             eval use_${dependant}=blocked
+                                             LeftToDo=`echo " $LeftToDo " | $SED "s/ $dependant / /"`
+                                             RecentlyProcessed="$RecentlyProcessed $dependant"
+                                             process_now=no
+                                             break
+                                             ;;
+                                    needed ) { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Library $dependant is a prerequisite of a selected library but is unavailable due to a indeterminate pre-requisite state
+See \`config.log' for more details" "$LINENO" 5; }
+                                             ;;
+                                    yes )    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Required library $dependant is unavailable due to a indeterminate pre-requisite state
+See \`config.log' for more details" "$LINENO" 5; }
+                                             ;;
+                                 esac
+                                 ;;
+                esac
+             done
+          fi
+
+
+             if ( test "x$process_now" != xno )
+             then
+                # Pre-requisites are in place, we can test now...
+
+                # Action the appropriate bespoke code
+                case $test_lib in
+
+                       * ) { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Configure is unaware of how to check for library $test_lib
+See \`config.log' for more details" "$LINENO" 5; }
+                           ;;
+                esac
+
+                # Generate any required errors
+                eval result=\$use_${test_lib}
+                if ( test x$result != xpresent )
+                then
+                   if ( test x$result = xmissing )
+                   then
+                      case $test_enablement in
+                         'check' )     # No error required
+                                       ;;
+                         'needed' )    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Library $test_lib is not available and a prerequisite of a selected library
+See \`config.log' for more details" "$LINENO" 5; }
+                                       ;;
+                         'yes' )       { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Required library $test_lib is not available
+See \`config.log' for more details" "$LINENO" 5; }
+                                       ;;
+                      esac
+                   else
+                      trace 1 Assert - Unexpected setting for library $test_lib
+                   fi
+                fi
+
+                eval prereq="\$with_${test_lib}_prq"
+                TRACE_INDENT="     "
+                trace 3 $lib:bespoke:$prereq:$result
+
+                # Library now fully considered, drop it from the to do list
+                LeftToDo=`echo " $LeftToDo " | $SED "s/ $test_lib / /"`
+                RecentlyProcessed="$RecentlyProcessed $test_lib"
+
+             fi
+          else
+             # test_enablement != check|needed|yes
+             # => We do not need to check for existance of this library
+             #
+             # Trace why
+             case $test_enablement in
+                'no' )      TRACE_INDENT="     "
+                            trace 6 $test_lib is disabled, not checking for existance
+                            ;;
+                'blocked' ) TRACE_INDENT="     "
+                            trace 6 $test_lib is blocked by a pre-requisite
+                            ;;
+                * )         TRACE_INDENT="     "
+                            trace 1 "Assert - curious test_enablement"
+                            ;;
+             esac
+
+             # No longer need to process library
+             LeftToDo=`echo " $LeftToDo " | $SED "s/ $test_lib / /"`
+             RecentlyProcessed="$RecentlyProcessed $test_lib"
+          fi
+
+          # Strip unnecessary spaces from LeftToDo
+          LeftToDo=`echo " $LeftToDo " | $SED "s/  */ /g;s/^ //;s/ $//"`
+
+
+
+                                 ;;
+                   'pkgconfig' | 'virtual' )
+                                 # Should have already processed all virtual
+                                 # and pkg-config packages. Generate suitable
+                                 # error
+                                 eval lib_enablement=\$use_${lib}
+                                 case $lib_enablement in
+                                    'yes' )      { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Should not be assessing the availability of required $check library $lib at this point
+See \`config.log' for more details" "$LINENO" 5; }
+                                                 ;;
+                                    'needed' )   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Should not be assessing the availability of prerequisite $check library $lib at this point
+See \`config.log' for more details" "$LINENO" 5; }
+                                                 ;;
+                                    * )          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Should not be assessing the availability of $check library $lib at this point" >&5
+$as_echo "$as_me: WARNING: Should not be assessing the availability of $check library $lib at this point" >&2;}
+                                                 { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Will disable $lib" >&5
+$as_echo "$as_me: WARNING: Will disable $lib" >&2;}
+                                                 eval use_${lib}=missing
+                                                 LeftToDo=`echo " $LeftToDo " | $SED "s/ $lib / /"`
+                                                 RecentlyProcessed="$RecentlyProcessed $lib"
+                                                 ;;
+                                 esac
+                                 ;;
+                   * )           # Unrecognised test type, raise suitable error
+                                 eval lib_enablement=\$use_${lib}
+                                 case $lib_enablement in
+                                    'yes'    )   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Cannot determine test required for requested library $lib
+See \`config.log' for more details" "$LINENO" 5; }
+                                                 ;;
+                                    'needed' )   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Cannot determine test required for prerequisite library $lib
+See \`config.log' for more details" "$LINENO" 5; }
+                                                 ;;
+                                    * )          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Cannot determine test required for library $lib" >&5
+$as_echo "$as_me: WARNING: Cannot determine test required for library $lib" >&2;}
+                                                 { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Will disable $lib" >&5
+$as_echo "$as_me: WARNING: Will disable $lib" >&2;}
+                                                 eval use_${lib}=missing
+                                                 LeftToDo=`echo " $LeftToDo " | $SED "s/ $lib / /"`
+                                                 RecentlyProcessed="$RecentlyProcessed $lib"
+                                                 ;;
+                                 esac
+                                 ;;
+                esac
              done
           done
 
@@ -46376,7 +46653,8 @@ See \`config.log' for more details" "$LINENO" 5; }
                    TRACE_INDENT="          "
                    eval check=\$with_${lib}_check
                    case $check in
-                      'virtual' )   eval prereq=\$with_${lib}_prq
+                      'bespoke' | 'virtual' )
+                                    eval prereq=\$with_${lib}_prq
                                     trace 3 "$lib:$check:$prereq:$lib_enablement"
                                     ;;
                       'pkgconfig' ) eval pkgconf=\$with_${lib}_pkgconf

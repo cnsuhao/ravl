@@ -1,0 +1,207 @@
+dnl This file is part of QMake, Quick Make System
+dnl Copyright (C) 2015-16, University of Surrey
+dnl This code may be redistributed under the terms of the GNU General
+dnl Public License (GPL). See the gpl.licence file for details or
+dnl see http://www.gnu.org/copyleft/gpl.html
+dnl
+dnl file-header-ends-here
+
+
+dnl QM_CK_BESPOKE_CK_LIB
+dnl
+dnl Macro to attempt to check if the specified external library package exists
+dnl on the system. This macro is for libraries specified as requiring a
+dnl bespoke check rather than being specified via pkg-config or requiring a
+dnl standard compilation check. The bespoke code should be provided as a
+dnl case block in the appropriate case statement in this macro.
+dnl
+dnl All libraries to be checked must have previously been declared via either
+dnl the QM_DEFINE_EXTIB_BESPOKE or the QM_DEFINE_EXTIB_BESPOKE_CC macro. Any
+dnl package that is quantified as being either present or absent will be
+dnl removed from the global variable LeftToDo At the same time, a quantified
+dnl package will be added to the list held by the RecentlyProcessed variable.
+dnl
+dnl Macro parameters are:
+dnl       p1: QMake name for the external package to be tested
+dnl
+dnl Global variables used:
+dnl
+dnl   All variables listed with a <lib> in their name exist for each library
+dnl   that has been declared (via a QM_DEFINE_EXTLIB_[CP]C) with the <lib>
+dnl   being replaced by the RESOURCE name of the package. For example,
+dnl   the OpenCV package will have variables named with_OpenCV_prq;
+dnl   use_OpenCV; etc. Similarly, libGTK2 has variables use_libGTK2;
+dnl   with_libGTK2_prq; etc.
+dnl
+dnl       DBG                        Variable that holds the current trace
+dnl                                  level as requested by the user. Requires
+dnl                                  the inclusion of the debug function
+dnl                                  "trace" in any code calling this macro.
+dnl                                  A suitable trace function is defined in
+dnl                                  the QMake AcMacros/QM_Debug_fn file.
+dnl       LeftToDo                   List of the external libs that remain to
+dnl                                  be processed. As the compilation check
+dnl                                  packages should be processed last, this
+dnl                                  variable is analogous to the list of
+dnl                                  compile check libs that remain to be
+dnl                                  tested. This macro deletes <lib> from
+dnl                                  this list if it can determine if <lib>
+dnl                                  is available for use.
+dnl       RecentlyProcessed          Keeps track of the recently located libs.
+dnl                                  This macro adds <lib> to this list if it
+dnl                                  can determine whether or not the package
+dnl                                  is available.
+dnl       SED                        Standard substitution variable pointing
+dnl                                  to the UNIX sed command.
+dnl       TRACE_INDENT               Variable used for indenting trace debug
+dnl                                  messages (when DBG is set). The current
+dnl                                  convention in this script is to employ
+dnl                                  an indent of 5 spaces per level of
+dnl                                  nesting in the code i.e. set the var to
+dnl                                  "     " for the first for loop, set it
+dnl                                  to "          " for the second, etc.
+dnl       <lib>_CFLAGS               Substitution variable (variable that is
+dnl                                  output to the configuration file for the
+dnl                                  (QMake) client project (i.e. to the
+dnl                                  Config.Project file) that receives the
+dnl                                  CFLAGS required when compiling with the
+dnl                                  external library. This macros does not
+dnl                                  set this variable, merely declare it for
+dnl                                  substitution out to the configuration
+dnl                                  file.
+dnl       <lib>_LIBS                 Substitution variable that receives the
+dnl                                  link line settings needed to link with
+dnl                                  the <lib> package. This info is supplied
+dnl                                  as on the link line itself  i.e. library
+dnl                                  names are specified in -lX form and the
+dnl                                  setting may include -Lpath entries. This
+dnl                                  macros does not set this variable,
+dnl                                  merely declare it for substitution out
+dnl                                  to the configuration file.
+dnl       process_now                Indicates if we should process the
+dnl                                  library now or delay checking for its
+dnl                                  existance (usually to allow us to find a
+dnl                                  pre-requisite first).
+dnl       use_<lib>                  Flag specifying useage of library,
+dnl                                  initially primed from the command line
+dnl                                  settings, this will be updated to
+dnl                                  reflect the availability of the library
+dnl                                  <lib>
+dnl       with_<lib>_prq             Holds the list of prerequisite libraries
+dnl                                  that external library <lib> is dependant
+dnl                                  on.
+dnl
+dnl   The following are all interim variables used within this macro:
+dnl
+dnl       prereq; result; test_lib; test_enablement
+dnl
+AC_DEFUN([QM_CK_BESPOKE_CK_LIB],
+         [trace 5 Seeing if we can do the bespoke check for $1
+          test_lib=$1
+          dnl Use intermediate variable to circumvent any issues over macro
+          dnl substitution when we need to use {$test_lib} in the code
+
+          eval test_enablement=\$use_${test_lib}
+
+          if ( test "$test_enablement" == check -o  "$test_enablement" == needed -o  "$test_enablement" == yes )
+          then
+             # We need to check if this lib exists
+             #
+             # First check the state of the pre-requisites of the library
+             QM_CK_PREREQ_STATE([$1])
+             if ( test "x$process_now" != xno )
+             then
+                # Pre-requisites are in place, we can test now...
+
+                # Action the appropriate bespoke code
+                case $test_lib in
+dnl Insert bespoke library checks in this case statement following the pattern:
+dnl                'PkgName' )
+dnl                        AC_MSG_CHECKING(for $test_lib)
+dnl                        AC_LANG_PUSH([C]) # if test requires compilation
+dnl                                          # of C code (can use C++)
+dnl                        .........
+dnl                        AC_LANG_POP([C]) # Balance any AC_LANG_PUSH used
+dnl                                         # above (C++ if appropriate)
+dnl                        if ( test $found = yes )
+dnl                        then
+dnl                           AC_MSG_RESULT([yes])
+dnl                           eval use_${test_lib}=present
+dnl                           eval ${test_lib}_CFLAGS= # As determined
+dnl                           eval ${test_lib}_LIBS=   # "      "
+dnl                        else
+dnl                           AC_MSG_RESULT([no])
+dnl                           eval use_${test_lib}=missing
+dnl                           # The output of any suitable errors is handled
+dnl                           # below
+dnl                        fi
+dnl                        ;;
+dnl with the ...... representing the checking code.
+dnl
+dnl The code supplied must set use_${test_lib} to present (if the external library
+dnl is available) or missing (if the library is not avilable). Should the
+dnl library be available, the code must also set the variables ${test_lib}_CFLAGS
+dnl (to the value of CFLAGS needed to compile with the library package) and
+dnl ${test_lib}_LIBS (to the linker options & library specifications needed to
+dnl link against the library package).
+
+                       * ) AC_MSG_FAILURE([Configure is unaware of how to check for library $test_lib])
+                           ;;
+                esac
+
+                # Generate any required errors
+                eval result=\$use_${test_lib}
+                if ( test x$result != xpresent )
+                then
+                   if ( test x$result = xmissing )
+                   then
+                      case $test_enablement in
+                         'check' )     # No error required
+                                       ;;
+                         'needed' )    AC_MSG_FAILURE([Library $test_lib is not available and a prerequisite of a selected library])
+                                       ;;
+                         'yes' )       AC_MSG_FAILURE([Required library $test_lib is not available])
+                                       ;;
+                      esac
+                   else
+                      trace 1 Assert - Unexpected setting for library $test_lib
+                   fi
+                fi
+
+                eval prereq="\$with_${test_lib}_prq"
+                TRACE_INDENT="     "
+                trace 3 $lib:bespoke:$prereq:$result
+
+                # Library now fully considered, drop it from the to do list
+                LeftToDo=`echo " $LeftToDo " | $SED "s/ $test_lib / /"`
+                RecentlyProcessed="$RecentlyProcessed $test_lib"
+
+             fi dnl End of process_now code
+
+          else
+             # test_enablement != check|needed|yes
+             # => We do not need to check for existance of this library
+             #
+             # Trace why
+             case $test_enablement in
+                'no' )      TRACE_INDENT="     "
+                            trace 6 $test_lib is disabled, not checking for existance
+                            ;;
+                'blocked' ) TRACE_INDENT="     "
+                            trace 6 $test_lib is blocked by a pre-requisite
+                            ;;
+                * )         TRACE_INDENT="     "
+                            trace 1 "Assert - curious test_enablement"
+                            ;;
+             esac
+
+             # No longer need to process library
+             LeftToDo=`echo " $LeftToDo " | $SED "s/ $test_lib / /"`
+             RecentlyProcessed="$RecentlyProcessed $test_lib"
+          fi
+
+          # Strip unnecessary spaces from LeftToDo
+          LeftToDo=`echo " $LeftToDo " | $SED "s/  */ /g;s/^ //;s/ $//"`
+
+         ]
+        )
