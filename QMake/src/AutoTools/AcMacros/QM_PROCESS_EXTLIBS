@@ -93,9 +93,6 @@ dnl                                                   that is implicitly
 dnl                                                   available if all of the
 dnl                                                   precursor libraries are
 dnl                                                   available.
-dnl                                  Initialised by one of the relevant
-dnl                                  QM_DEFINE_EXTLIB_CC; QM_DEFINE_EXTLIB_PC
-dnl                                  or QM_DEFINE_VIRTUAL_EXTLIB macros.
 dnl                                  For any test-type, if the user provides
 dnl                                  a --with-<lib>-pkgconf setting, this will
 dnl                                  automatically force the test-type to be

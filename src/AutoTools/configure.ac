@@ -10,7 +10,7 @@ dnl#JFi:ToDo-Extend --with-${lib}-pkgconf to specify path for known .pc
 # Initialisation
 AC_PREREQ([2.65])
 
-AC_INIT([RAVL], [1.1.7], [ravl-devel@lists.sourceforge.net], [Ravl], [http://www.ee.surrey.ac.uk/CVSSP/Ravl])
+AC_INIT([RAVL], [1.1.8], [ravl-devel@lists.sourceforge.net], [Ravl], [http://www.ee.surrey.ac.uk/CVSSP/Ravl])
 dnl QMake doesn't use PACKAGE_TARNAME, it uses a hard-coded RAVL to set the 
 dnl name of the dist archive/dir. However, the tarname parameter to AC_INIT
 dnl (the 4th item) is used to prime the default for --docdir hence the value
@@ -33,6 +33,8 @@ m4_include([../../QMake/src/AutoTools/AcMacros/QM_DEFINE_ALL_EXTLIBS])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_DEFINE_EXTLIB_CC])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_DEFINE_EXTLIB_PC])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_DEFINE_VIRTUAL_EXTLIB])
+m4_include([../../QMake/src/AutoTools/AcMacros/QM_RESOURCE_BASIC_SWITCHES])
+m4_include([../../QMake/src/AutoTools/AcMacros/QM_FINISH_DEFINE])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_LOCATE_KEY_TOOLS])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_LOCATE_LD])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_LOCATE_MAKE])
@@ -1339,8 +1341,8 @@ do
 done
 
 
-# Now set RESOURCES and output each external library's <Lib>_CFLAGS and 
-# <Lib>_LIBS definition to Config.Project for those libraries the user has
+# Now set RESOURCES and output each external library's <lib>_CFLAGS and 
+# <lib>_LIBS definition to Config.Project for those libraries the user has
 # configured
 #
 echo >> ./Config.Project.in

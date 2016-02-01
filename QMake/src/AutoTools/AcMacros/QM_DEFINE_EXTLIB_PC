@@ -13,14 +13,7 @@ dnl file-header-ends-here
 dnl QM_DEFINE_EXTLIB_PC
 dnl
 dnl Macro to define all helper libs that rely on pkg-config to see if they
-dnl exist. This macro will declare the --with-<lib> command-line switch and
-dnl create the simple --help text. The command-line switch will support a
-dnl Yes/No (upper, lower and sentence case accepted; plus Y,N) to explicitly 
-dnl en/dis-able use of the library; or 'check' (C, Ck, or Check etc.) to ask
-dnl to utilise the library if it is available (the default option). The macro
-dnl will go on to declare the --with-<lib>-pkgconf switch that explicitly
-dnl sets the pkg-config control file to use to check for the helper library.
-dnl This switch should be set to the full path of the control file.
+dnl exist.
 dnl
 dnl Macro parameters are:
 dnl       p1: QMake name for library. This is used for naming the cmd-line
@@ -28,183 +21,44 @@ dnl           switch (LIB => --with-LIB, --with-LIB-pkgconf). It should be
 dnl           the name QMake expects the RESOURCES string to take to enable
 dnl           the library's functionality. It will also be the name used
 dnl           for the LIB_CFLAGS and LIB_LIBS used in the relevant .def
-dnl           file and Config.Project. 
+dnl           file and Config.Project.
 dnl       p2: Default name by which pkg-config knows the library.
 dnl
 dnl Global variables used:
 dnl
 dnl   All variables listed with a <lib> in their name are created with the
 dnl   <lib> being replaced by the QMake name of the package (the name passed
-dnl   into this macro as the first parameter). For example,the OpenCV package 
-dnl   will have variables named with_OpenCV; with_OpenCV; etc.
+dnl   into this macro as the first parameter). For example,the OpenCV package
+dnl   will have variables named use_OpenCV; with_OpenCV; etc.
 dnl
-dnl       with_<Lib>                 Value of similarly named cmd-line switch
-dnl                                  Enables (actually requires) the use of
-dnl                                  the particular library. Can also be used
-dnl                                  to specify the location of the library
-dnl                                  and header files when the specific
-dnl                                  command-line switches are not used
-dnl                                  (ideal if both file types reside in the
-dnl                                  same directory).
-dnl       with_<lib>_check           Flag specifying the type of test needed
-dnl                                  to check for the existance of the
-dnl                                  external library:
-dnl                                    compile      - test for the external
-dnl                                                   library involves a test
-dnl                                                   compilation to see if
-dnl                                                   the library is available.
-dnl                                    pkgconfig    - test for the external
-dnl                                                   library using pkg-config.
-dnl                                    virtual      - external library is a
-dnl                                                   virtual set of libraries
-dnl                                                   that is implicitly
-dnl                                                   available if all of the
-dnl                                                   precursor libraries are
-dnl                                                   available.
-dnl                                  Initialised by this macro (or the
-dnl                                  relevant macro from QM_DEFINE_EXTLIB_CC
-dnl                                  or QM_DEFINE_VIRTUAL_EXTLIB for those
-dnl                                  packages not normally checked for via
-dnl                                  pkg-config).
-dnl                                  For any test-type, if the user provides
-dnl                                  a --with-<lib>-pkgconf setting, this will
-dnl                                  automatically force the test-type to be
-dnl                                  pkgconfig.
-dnl       with_<Lib>_pkgconf         Value of similarly named cmd-line switch
-dnl                                  Specifies what name pkg-config will know
-dnl                                  the library as. This variable receives
-dnl                                  the default if the cmd-line switch isn't 
-dnl                                  used but the library is declared as
-dnl                                  using pkg-config.
-dnl       with_<lib>_virtual         Depreciated variable
-dnl                                  * DO NOT USE IN CALLING/SUBSEQUENT CODE *
-dnl                                  This variable has been superseded by the
-dnl                                  with_<lib>_check variable (see above).
-dnl                                  This variable is only provided to deliver
-dnl                                  interim support for older code. It will
-dnl                                  cease to function in future versions of 
-dnl                                  QMake. If you are currently using this
-dnl                                  variable in your code, please re-write to
-dnl                                  test with_<lib>_check=virtual instead.
-dnl                                  Formerly, this variable indicated that
-dnl                                  the package <lib> was a virtual package.
-dnl       use_<Lib>                  Flag specifying useage of library,
-dnl                                  primed initially by --with-<Lib> or
-dnl                                  as part of a dependancy check. 
-dnl       <lib>_CFLAGS               Substitution variable (variable that is
-dnl                                  output to the configuration file for the
-dnl                                  (QMake) client project (i.e. to the
-dnl                                  Config.Project file) that receives the
-dnl                                  CFLAGS required when compiling with the
-dnl                                  external library. This macros does not
-dnl                                  set this variable, merely declare it for
-dnl                                  substitution out to the configuration
-dnl                                  file.
-dnl       <lib>_LIBS                 Substitution variable that receives the
-dnl                                  link line settings needed to link with
-dnl                                  the <lib> package. This info is supplied
-dnl                                  as on the link line itself  i.e. library
-dnl                                  names are specified in -lX form and the
-dnl                                  setting may include -Lpath entries. This
-dnl                                  macros does not set this variable,
-dnl                                  merely declare it for substitution out
-dnl                                  to the configuration file.
-dnl       KnownLibs                  Appended with the QMake name for the
-dnl                                  library to maintain a list of all the
-dnl                                  external libraries known to the script.
-dnl       ConfiguredLibs             Appended with the QMake name for the
-dnl                                  library only if the user supplied a
-dnl                                  command-line option for the library.
-dnl                                  This variable maintains a list of all
-dnl                                  the external libraries known to the
-dnl                                  configure script.
+dnl       fallback_file              This variable holds any file component
+dnl                                  supplied via the --with-<lib> switch for
+dnl                                  possible use if required to provide name
+dnl                                  details for one of the other command-line
+dnl                                  options. At present, this functionality
+dnl                                  is not supported for pkg-config packages;
+dnl                                  any such setting will be ignored and a
+dnl                                  warning message will be issued.
+dnl       fallback_path              This variable holds any directory path
+dnl                                  component supplied via the --with-<lib>
+dnl                                  switch for possible use if required to
+dnl                                  provide name details for one of the
+dnl                                  other command-line options. At present,
+dnl                                  this functionality is not supported for
+dnl                                  pkg-config packages; any such setting
+dnl                                  will be ignored and a warning message
+dnl                                  will be issued.
 dnl
 AC_DEFUN([QM_DEFINE_EXTLIB_PC],
-         [with_$1_check=pkgconfig
-          with_$1_virtual=no
-          AC_ARG_WITH([$1-pkgconf],
-                      [AS_HELP_STRING([--with-$1-pkgconf],
-                                      [Enable the $1 library package via pkg-config and declare the name by which the $1 library package is known to pkg-config]
-                                     )
-                      ],
-                      [case $with_$1_pkgconf in
-                        'n' | 'N' | 'no' | 'No' | 'NO' )
-                                          use_$1=no
-                                          trace 4 --with-$1-pkgconf disabling $1
-                                          ;;
-                        'y' |'Y' | 'yes' | 'Yes' | 'YES' ) 
-                                          AS_IF([test X$2 != X],
-                                                [with_$1_pkgconf=$2
-                                                 use_$1=yes
-                                                 trace 4 --with-$1-pkgconf set to default @<:@$with_$1_pkgconf@:>@
-                                                ],
-                                                [AC_MSG_FAILURE([Asking to configure $1 via pkg-config but configure is unaware of the name of the DOTpc metadata file])
-                                                ]
-                                               )
-                                          ;;
-                        * )               use_$1=yes
-                                          trace 4 --with-$1-pkgconf set to @<:@$with_$1_pkgconf@:>@
-                                          ;;
-                       esac
-                      ],
-                      [AS_IF([test X$2 != X],
-                             [with_$1_pkgconf=$2
-                              trace 4 No --with-$1-pkgconf specified using default @<:@$with_$1_pkgconf@:>@
-                             ]
-                            )
-                      ]
-                     )
-          AC_ARG_WITH([$1],
-                      [AS_HELP_STRING([--with-$1],
-                                      [Enable functionality that relies on the $1 library @<:@default=check@:>@]
-                                     )
-                      ],
-                      [case $with_$1 in
-                        'n' | 'N' | 'no' | 'No' | 'NO' ) 
-                                       trace 4 --with-$1 disabling $1 libraries
-                                       AS_IF([test X$use_$1 = Xyes ],
-                                             [AC_MSG_FAILURE([Asking to disable $1 by --with-$1 but --with-$1-pkgconf has specifically enabled it])
-                                             ],
-                                             [use_$1=no]
-                                            )
-                                       ;;
-                        'y' |'Y' | 'yes' | 'Yes' | 'YES' ) 
-                                       trace 4 --with-$1 enabling $1 libraries
-                                       AS_IF([test X$use_$1 = Xno],
-                                             [AC_MSG_FAILURE([Asking to enable $1 by --with-$1 but --with-$1-pkgconf has specifically disabled it])
-                                             ],
-                                             [use_$1=yes]
-                                            )
-                                       ;;
-                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
-                                       trace 4 --with-$1 checking for $1 libraries
-                                       AS_IF([test X$use_$1 = Xyes],
-                                             [AC_MSG_WARN([--with-$1 asking to check for the libs but --with-$1-pkgconf has specifically enabled it])
-                                             ],
-                                             [AS_IF([test X$use_$1 = Xno],
-                                                    [AC_MSG_WARN([--with-$1 asking to check for the libs but --with-$1-pkgconf has specifically disabled it])
-                                                    ],
-                                                    [use_$1=check]
-                                                   )
-                                             ]
-                                            )
-                                       ;;
-                        * )            AC_MSG_WARN([--with-$1 set to an unknown option, setting ignored])
-                                       ;;
-                       esac
-                      ],
-                      [trace 5 No --with-$1 specified]
-                     )
-          KnownLibs=$KnownLibs" "$1
-          if ( test X$use_$1 = X )
+         [
+          QM_RESOURCE_BASIC_SWITCHES([$1],[$2],[pkgconfig])
+          if ( test "$fallback_path/$fallback_file" != / )
           then
-             use_$1=check
-             UnconfiguredLibs=$UnconfiguredLibs" "$1
-          else
-             ConfiguredLibs=$ConfiguredLibs" "$1
+             # Do not currently support --with_<lib> specifying a .pc path
+             AC_MSG_WARN([--with-$1 set to an unknown option, setting ignored])
           fi
-          AC_SUBST([$1_CFLAGS])
-          AC_SUBST([$1_LIBS])
+
+          QM_FINISH_DEFINE([$1])
          ]
         )
 

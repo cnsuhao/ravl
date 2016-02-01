@@ -3,7 +3,7 @@
 
 AC_PREREQ([2.65])
 
-AC_INIT([QMake], [1.6.0], [quickmake-support@lists.sourceforge.net], [QMake], [http://www.ee.surrey.ac.uk/CVSSP/Ravl/RavlDoc/share/doc/Ravl/Auto/Develop/Tree/Ravl.QMake.html])
+AC_INIT([QMake], [1.7.0], [quickmake-support@lists.sourceforge.net], [QMake], [http://www.ee.surrey.ac.uk/CVSSP/Ravl/RavlDoc/share/doc/Ravl/Auto/Develop/Tree/Ravl.QMake.html])
 
 # This file is part of QMake, Quick Make System
 # Copyright (C) 2011-16, University of Surrey
@@ -21,6 +21,8 @@ m4_include([./AcMacros/QM_DEFINE_ALL_EXTLIBS])
 m4_include([./AcMacros/QM_DEFINE_EXTLIB_CC])
 m4_include([./AcMacros/QM_DEFINE_EXTLIB_PC])
 m4_include([./AcMacros/QM_DEFINE_VIRTUAL_EXTLIB])
+m4_include([./AcMacros/QM_RESOURCE_BASIC_SWITCHES])
+m4_include([./AcMacros/QM_FINISH_DEFINE])
 m4_include([./AcMacros/QM_LOCATE_KEY_TOOLS])
 m4_include([./AcMacros/QM_LOCATE_LD])
 m4_include([./AcMacros/QM_LOCATE_MAKE])
