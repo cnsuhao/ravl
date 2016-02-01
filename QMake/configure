@@ -3417,6 +3417,12 @@ trace ()
 
 
 
+
+
+
+
+
+
 #     This section of code is inspired by LT_PATH_LD from libtool
 #
        # libtool.m4 - Configure libtool for the host system. -*-Autoconf-*-
@@ -19607,8 +19613,6 @@ fi
 
 
 
-          # Now define/process the switches associated with a compilation
-          # check external package.
 
 
 # Check whether --with-blas-library was given.
@@ -20452,6 +20456,8 @@ $as_echo "$as_me: WARNING: --with-blas-include and --with-blas specify different
              trace 4 Library blas disabled
           fi
 
+
+
           with_blas_tstcd='sgemm_ ();'
                                                   with_blas_prq=""
           with_blas_hdr=""
@@ -20677,8 +20683,6 @@ fi
 
 
 
-          # Now define/process the switches associated with a compilation
-          # check external package.
 
 
 # Check whether --with-CXSparse-library was given.
@@ -21522,6 +21526,8 @@ $as_echo "$as_me: WARNING: --with-CXSparse-include and --with-CXSparse specify d
              trace 4 Library CXSparse disabled
           fi
 
+
+
           with_CXSparse_tstcd='cs_di *N1, *N2, *P;
                                P = cs_di_multiply (N1, N2);'
                                                   with_CXSparse_prq=""
@@ -21748,8 +21754,6 @@ fi
 
 
 
-          # Now define/process the switches associated with a compilation
-          # check external package.
 
 
 # Check whether --with-CUDA-library was given.
@@ -22593,6 +22597,8 @@ $as_echo "$as_me: WARNING: --with-CUDA-include and --with-CUDA specify different
              trace 4 Library CUDA disabled
           fi
 
+
+
           with_CUDA_tstcd='cudaMalloc ();'
                                                   with_CUDA_prq=""
           with_CUDA_hdr="cuda.h"
@@ -22818,8 +22824,6 @@ fi
 
 
 
-          # Now define/process the switches associated with a compilation
-          # check external package.
 
 
 # Check whether --with-DynLink-library was given.
@@ -23663,6 +23667,8 @@ $as_echo "$as_me: WARNING: --with-DynLink-include and --with-DynLink specify dif
              trace 4 Library DynLink disabled
           fi
 
+
+
           with_DynLink_tstcd='dlopen ();'
                                                   with_DynLink_prq=""
           with_DynLink_hdr=""
@@ -23888,8 +23894,6 @@ fi
 
 
 
-          # Now define/process the switches associated with a compilation
-          # check external package.
 
 
 # Check whether --with-GLUT-library was given.
@@ -24733,6 +24737,8 @@ $as_echo "$as_me: WARNING: --with-GLUT-include and --with-GLUT specify different
              trace 4 Library GLUT disabled
           fi
 
+
+
           with_GLUT_tstcd='int *pargc;
                                char **argv;
                                glutInit(pargc, argv);
@@ -24961,8 +24967,6 @@ fi
 
 
 
-          # Now define/process the switches associated with a compilation
-          # check external package.
 
 
 # Check whether --with-libmkl-library was given.
@@ -25806,6 +25810,8 @@ $as_echo "$as_me: WARNING: --with-libmkl-include and --with-libmkl specify diffe
              trace 4 Library libmkl disabled
           fi
 
+
+
           with_libmkl_tstcd='DFTI_DESCRIPTOR_HANDLE * pHandle;
                                MKL_LONG dimension, length;
                                DftiCreateDescriptor(pHandle,DFTI_DOUBLE,DFTI_COMPLEX,dimension,length);
@@ -26034,8 +26040,6 @@ fi
 
 
 
-          # Now define/process the switches associated with a compilation
-          # check external package.
 
 
 # Check whether --with-LibJasper-library was given.
@@ -26879,6 +26883,8 @@ $as_echo "$as_me: WARNING: --with-LibJasper-include and --with-LibJasper specify
              trace 4 Library LibJasper disabled
           fi
 
+
+
           with_LibJasper_tstcd='jas_init ();'
                                                   with_LibJasper_prq=""
           with_LibJasper_hdr="jasper/jasper.h"
@@ -27104,8 +27110,6 @@ fi
 
 
 
-          # Now define/process the switches associated with a compilation
-          # check external package.
 
 
 # Check whether --with-JPEG-library was given.
@@ -27949,6 +27953,8 @@ $as_echo "$as_me: WARNING: --with-JPEG-include and --with-JPEG specify different
              trace 4 Library JPEG disabled
           fi
 
+
+
           with_JPEG_tstcd='j_decompress_ptr cinfo;
                                boolean require_image;
                                jpeg_read_header (cinfo, require_image);
@@ -28177,8 +28183,6 @@ fi
 
 
 
-          # Now define/process the switches associated with a compilation
-          # check external package.
 
 
 # Check whether --with-LAPACK-library was given.
@@ -29022,6 +29026,8 @@ $as_echo "$as_me: WARNING: --with-LAPACK-include and --with-LAPACK specify diffe
              trace 4 Library LAPACK disabled
           fi
 
+
+
           with_LAPACK_tstcd='dgetri_ ();'
                                                   with_LAPACK_prq="blas"
           with_LAPACK_hdr=""
@@ -29247,8 +29253,6 @@ fi
 
 
 
-          # Now define/process the switches associated with a compilation
-          # check external package.
 
 
 # Check whether --with-Math-library was given.
@@ -30092,6 +30096,8 @@ $as_echo "$as_me: WARNING: --with-Math-include and --with-Math specify different
              trace 4 Library Math disabled
           fi
 
+
+
           with_Math_tstcd='double d;
                                d=cos(d);
                               '
@@ -30319,8 +30325,6 @@ fi
 
 
 
-          # Now define/process the switches associated with a compilation
-          # check external package.
 
 
 # Check whether --with-posixThreads-library was given.
@@ -31164,6 +31168,8 @@ $as_echo "$as_me: WARNING: --with-posixThreads-include and --with-posixThreads s
              trace 4 Library posixThreads disabled
           fi
 
+
+
           with_posixThreads_tstcd='pthread_self ();'
                                                   with_posixThreads_prq=""
           with_posixThreads_hdr="pthread.h"
@@ -31389,8 +31395,6 @@ fi
 
 
 
-          # Now define/process the switches associated with a compilation
-          # check external package.
 
 
 # Check whether --with-Qt3QGLViewer-library was given.
@@ -32234,6 +32238,8 @@ $as_echo "$as_me: WARNING: --with-Qt3QGLViewer-include and --with-Qt3QGLViewer s
              trace 4 Library Qt3QGLViewer disabled
           fi
 
+
+
           with_Qt3QGLViewer_tstcd='QGLViewer V;
                                V.show();
                               '
@@ -32461,8 +32467,6 @@ fi
 
 
 
-          # Now define/process the switches associated with a compilation
-          # check external package.
 
 
 # Check whether --with-Qt4QGLViewer-library was given.
@@ -33306,6 +33310,8 @@ $as_echo "$as_me: WARNING: --with-Qt4QGLViewer-include and --with-Qt4QGLViewer s
              trace 4 Library Qt4QGLViewer disabled
           fi
 
+
+
           with_Qt4QGLViewer_tstcd='QGLViewer V;
                                V.setWindowTitle("ViewerTitle");
                               '
@@ -33533,8 +33539,6 @@ fi
 
 
 
-          # Now define/process the switches associated with a compilation
-          # check external package.
 
 
 # Check whether --with-Socket-library was given.
@@ -34378,6 +34382,8 @@ $as_echo "$as_me: WARNING: --with-Socket-include and --with-Socket specify diffe
              trace 4 Library Socket disabled
           fi
 
+
+
           with_Socket_tstcd='int ret, domain, type, protocol;
                                ret=socket (domain, type, protocol);
                               '
@@ -34605,8 +34611,6 @@ fi
 
 
 
-          # Now define/process the switches associated with a compilation
-          # check external package.
 
 
 # Check whether --with-tetgen-library was given.
@@ -35450,6 +35454,8 @@ $as_echo "$as_me: WARNING: --with-tetgen-include and --with-tetgen specify diffe
              trace 4 Library tetgen disabled
           fi
 
+
+
           with_tetgen_tstcd='char * switches;
                                tetgenio * in;
                                tetgenio * out;
@@ -35680,8 +35686,6 @@ fi
 
 
 
-          # Now define/process the switches associated with a compilation
-          # check external package.
 
 
 # Check whether --with-LibTIFF-library was given.
@@ -36525,6 +36529,8 @@ $as_echo "$as_me: WARNING: --with-LibTIFF-include and --with-LibTIFF specify dif
              trace 4 Library LibTIFF disabled
           fi
 
+
+
           with_LibTIFF_tstcd='TIFFGetVersion ();'
                                                   with_LibTIFF_prq="Zlib"
           with_LibTIFF_hdr=""
@@ -36750,8 +36756,6 @@ fi
 
 
 
-          # Now define/process the switches associated with a compilation
-          # check external package.
 
 
 # Check whether --with-UMFPack-library was given.
@@ -37595,6 +37599,8 @@ $as_echo "$as_me: WARNING: --with-UMFPack-include and --with-UMFPack specify dif
              trace 4 Library UMFPack disabled
           fi
 
+
+
           with_UMFPack_tstcd='int n_row, n_col, nz, *Ti, *Tj, *Ap, *Ai, status, *Map ;
                                double *Tx, *Ax ;
                                status = umfpack_di_triplet_to_col (n_row, n_col, nz, Ti, Tj, Tx, Ap, Ai, Ax, Map) ;
@@ -37824,8 +37830,6 @@ fi
 
 
 
-          # Now define/process the switches associated with a compilation
-          # check external package.
 
 
 # Check whether --with-vlfeat-library was given.
@@ -38669,6 +38673,8 @@ $as_echo "$as_me: WARNING: --with-vlfeat-include and --with-vlfeat specify diffe
              trace 4 Library vlfeat disabled
           fi
 
+
+
           with_vlfeat_tstcd='VlSiftFilt *Dummy;
                                vl_sift_detect (Dummy);
                               '
@@ -38897,8 +38903,6 @@ fi
 
 
 
-          # Now define/process the switches associated with a compilation
-          # check external package.
 
 
 # Check whether --with-vtkCommon-library was given.
@@ -39742,6 +39746,8 @@ $as_echo "$as_me: WARNING: --with-vtkCommon-include and --with-vtkCommon specify
              trace 4 Library vtkCommon disabled
           fi
 
+
+
           with_vtkCommon_tstcd='vtkPoints *vertices = vtkPoints::New();'
                                                   with_vtkCommon_prq="Math DynLink"
           with_vtkCommon_hdr="vtkPoints.h"
@@ -39967,8 +39973,6 @@ fi
 
 
 
-          # Now define/process the switches associated with a compilation
-          # check external package.
 
 
 # Check whether --with-vtkFiltering-library was given.
@@ -40812,6 +40816,8 @@ $as_echo "$as_me: WARNING: --with-vtkFiltering-include and --with-vtkFiltering s
              trace 4 Library vtkFiltering disabled
           fi
 
+
+
           with_vtkFiltering_tstcd='vtkCellArray *faces = vtkCellArray::New();'
                                                   with_vtkFiltering_prq="vtkCommon"
           with_vtkFiltering_hdr="vtkCellArray.h"
@@ -41038,8 +41044,6 @@ fi
 
 
 
-          # Now define/process the switches associated with a compilation
-          # check external package.
 
 
 # Check whether --with-vtkGraphics-library was given.
@@ -41883,6 +41887,8 @@ $as_echo "$as_me: WARNING: --with-vtkGraphics-include and --with-vtkGraphics spe
              trace 4 Library vtkGraphics disabled
           fi
 
+
+
           with_vtkGraphics_tstcd='vtkDecimatePro *decimatePro = vtkDecimatePro::New();'
                                                   with_vtkGraphics_prq="vtkFiltering"
           with_vtkGraphics_hdr="vtkDecimatePro.h"
@@ -42109,8 +42115,6 @@ fi
 
 
 
-          # Now define/process the switches associated with a compilation
-          # check external package.
 
 
 # Check whether --with-Yajl-library was given.
@@ -42954,6 +42958,8 @@ $as_echo "$as_me: WARNING: --with-Yajl-include and --with-Yajl specify different
              trace 4 Library Yajl disabled
           fi
 
+
+
           with_Yajl_tstcd='yajl_status ret;
                                yajl_handle h;
                                const unsigned char * txt;
@@ -43184,8 +43190,6 @@ fi
 
 
 
-          # Now define/process the switches associated with a compilation
-          # check external package.
 
 
 # Check whether --with-Zlib-library was given.
@@ -44028,6 +44032,8 @@ $as_echo "$as_me: WARNING: --with-Zlib-include and --with-Zlib specify different
           else
              trace 4 Library Zlib disabled
           fi
+
+
 
           with_Zlib_tstcd='zlibCompileFlags ();'
                                                   with_Zlib_prq=""
