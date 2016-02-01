@@ -3402,6 +3402,11 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
 
+
+
+
+
+
 # Trace debug function
 #
 # Set DBG=<level> in the environment for extra output messages. Arguments to
@@ -46232,114 +46237,122 @@ See \`config.log' for more details" "$LINENO" 5; }
 
           if test "$test_enablement" == check -o  "$test_enablement" == needed -o  "$test_enablement" == yes; then :
   # We need to check if this lib exists
-                 eval prereqs="\$with_${test_lib}_prq"
-                 process_now=yes
-                 if ( test "x$prereqs" != x )
-                 then
-                    TRACE_INDENT="     "
-                    trace 4 Checking we know the status of all the pre-requisites of $test_lib [$prereqs]
-                    for prq in $prereqs
-                    do
-                       eval prq_state=\$use_${prq}
-                       case "$prq_state" in
-                          present )     TRACE_INDENT="          "
-                                        trace 6 $prq is present
-                                        ;;
-                          no )          case $test_enablement in
-                                           check )  TRACE_INDENT="          "
-                                                    trace 6 $prq is disabled, disabling $test_lib
-                                                    eval use_${test_lib}=blocked
-                                                    LeftToDo=`echo " $LeftToDo " | $SED "s/ $test_lib / /"`
-                                                    RecentlyProcessed="$RecentlyProcessed $test_lib"
-                                                    process_now=no
-                                                    break
-                                                    ;;
-                                           needed ) { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+                 #
+                 # First check the state of the pre-requisites of the library
+                 trace 5 Checking the status of the prerequisites of $lib
+          dependant=$lib
+
+          eval dependant_state="\$use_${dependant}"
+          eval prereqs="\$with_${dependant}_prq"
+          process_now=yes
+          if ( test "x$prereqs" != x )
+          then
+             TRACE_INDENT="     "
+             trace 4 Checking we know the status of all the pre-requisites of $dependant [$prereqs]
+             for prq in $prereqs
+             do
+                eval prq_state=\$use_${prq}
+                case "$prq_state" in
+                   present )     TRACE_INDENT="          "
+                                 trace 6 $prq is present
+                                 ;;
+                   no )          case $dependant_state in
+                                    check )  TRACE_INDENT="          "
+                                             trace 6 $prq is disabled, disabling $dependant
+                                             eval use_${dependant}=blocked
+                                             LeftToDo=`echo " $LeftToDo " | $SED "s/ $dependant / /"`
+                                             RecentlyProcessed="$RecentlyProcessed $dependant"
+                                             process_now=no
+                                             break
+                                             ;;
+                                    needed ) { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Library $test_lib is a pre-requisite of a selected library but is unavailable due to a disabled pre-requisite
+as_fn_error $? "Library $dependant is a pre-requisite of a selected library but is unavailable due to a disabled pre-requisite
 See \`config.log' for more details" "$LINENO" 5; }
-                                                    ;;
-                                           yes )    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+                                             ;;
+                                    yes )    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Required library $test_lib is unavailable due to a disabled pre-requisite
+as_fn_error $? "Required library $dependant is unavailable due to a disabled pre-requisite
 See \`config.log' for more details" "$LINENO" 5; }
-                                                    ;;
-                                        esac
-                                        ;;
-                          missing )     case $test_enablement in
-                                           check )  TRACE_INDENT="          "
-                                                    trace 6 $prq is not available, disabling $test_lib
-                                                    eval use_${test_lib}=blocked
-                                                    LeftToDo=`echo " $LeftToDo " | $SED "s/ $test_lib / /"`
-                                                    RecentlyProcessed="$RecentlyProcessed $test_lib"
-                                                    process_now=no
-                                                    break
-                                                    ;;
-                                           needed ) { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+                                             ;;
+                                 esac
+                                 ;;
+                   missing )     case $dependant_state in
+                                    check )  TRACE_INDENT="          "
+                                             trace 6 $prq is not available, disabling $dependant
+                                             eval use_${dependant}=blocked
+                                             LeftToDo=`echo " $LeftToDo " | $SED "s/ $dependant / /"`
+                                             RecentlyProcessed="$RecentlyProcessed $dependant"
+                                             process_now=no
+                                             break
+                                             ;;
+                                    needed ) { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Library $test_lib is a pre-requisite of a selected library but is unavailable due to a missing pre-requisite
+as_fn_error $? "Library $dependant is a pre-requisite of a selected library but is unavailable due to a missing pre-requisite
 See \`config.log' for more details" "$LINENO" 5; }
-                                                    ;;
-                                           yes )    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+                                             ;;
+                                    yes )    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Required library $test_lib is unavailable due to a missing pre-requisite
+as_fn_error $? "Required library $dependant is unavailable due to a missing pre-requisite
 See \`config.log' for more details" "$LINENO" 5; }
-                                                    ;;
-                                        esac
-                                        ;;
-                          blocked )     case $test_enablement in
-                                           check )  TRACE_INDENT="          "
-                                                    trace 6 $prq is blocked, disabling $test_lib
-                                                    eval use_${test_lib}=blocked
-                                                    LeftToDo=`echo " $LeftToDo " | $SED "s/ $test_lib / /"`
-                                                    RecentlyProcessed="$RecentlyProcessed $test_lib"
-                                                    process_now=no
-                                                    break
-                                                    ;;
-                                           needed ) { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+                                             ;;
+                                 esac
+                                 ;;
+                   blocked )     case $dependant_state in
+                                    check )  TRACE_INDENT="          "
+                                             trace 6 $prq is blocked, disabling $dependant
+                                             eval use_${dependant}=blocked
+                                             LeftToDo=`echo " $LeftToDo " | $SED "s/ $dependant / /"`
+                                             RecentlyProcessed="$RecentlyProcessed $dependant"
+                                             process_now=no
+                                             break
+                                             ;;
+                                    needed ) { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Library $test_lib is a pre-requisite of a selected library but is unavailable due to a missing pre-requisite
+as_fn_error $? "Library $dependant is a pre-requisite of a selected library but is unavailable due to a missing pre-requisite
 See \`config.log' for more details" "$LINENO" 5; }
-                                                    ;;
-                                           yes )    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+                                             ;;
+                                    yes )    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Required library $test_lib is unavailable due to a missing pre-requisite
+as_fn_error $? "Required library $dependant is unavailable due to a missing pre-requisite
 See \`config.log' for more details" "$LINENO" 5; }
-                                                    ;;
-                                        esac
-                                        ;;
-                          check | needed | yes )
-                                        TRACE_INDENT="          "
-                                        trace 6 $prq has not yet been checked, cannot check $test_lib at the moment
-                                        process_now=no
-                                        # Do not break in case we can
-                                        # mark the library as blocked
-                                        # by dint of another pre-req.
-                                        ;;
-                          * )           case $test_enablement in
-                                           check )  TRACE_INDENT="          "
-                                                    trace 1 Assert - unrecognised state for prerequisite $prq, disabling $test_lib
-                                                    eval use_${test_lib}=blocked
-                                                    LeftToDo=`echo " $LeftToDo " | $SED "s/ $test_lib / /"`
-                                                    RecentlyProcessed="$RecentlyProcessed $test_lib"
-                                                    process_now=no
-                                                    break
-                                                    ;;
-                                           needed ) { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+                                             ;;
+                                 esac
+                                 ;;
+                   check | needed | yes )
+                                 TRACE_INDENT="          "
+                                 trace 6 $prq has not yet been checked, cannot check $dependant at the moment
+                                 process_now=no
+                                 # Do not break in case we can
+                                 # mark the library as blocked
+                                 # by dint of another pre-req.
+                                 ;;
+                   * )           case $dependant_state in
+                                    check )  TRACE_INDENT="          "
+                                             trace 1 Assert - unrecognised state for prerequisite $prq, disabling $dependant
+                                             eval use_${dependant}=blocked
+                                             LeftToDo=`echo " $LeftToDo " | $SED "s/ $dependant / /"`
+                                             RecentlyProcessed="$RecentlyProcessed $dependant"
+                                             process_now=no
+                                             break
+                                             ;;
+                                    needed ) { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Library $test_lib is a prerequisite of a selected library but is unavailable due to a indeterminate pre-requisite state
+as_fn_error $? "Library $dependant is a prerequisite of a selected library but is unavailable due to a indeterminate pre-requisite state
 See \`config.log' for more details" "$LINENO" 5; }
-                                                    ;;
-                                           yes )    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+                                             ;;
+                                    yes )    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Required library $test_lib is unavailable due to a indeterminate pre-requisite state
+as_fn_error $? "Required library $dependant is unavailable due to a indeterminate pre-requisite state
 See \`config.log' for more details" "$LINENO" 5; }
-                                                    ;;
-                                        esac
-                                        ;;
-                       esac
-                    done
-                 fi
+                                             ;;
+                                 esac
+                                 ;;
+                esac
+             done
+          fi
+
+
                  if test "x$process_now" != xno; then :
   case $test_enablement in #(
   check) :

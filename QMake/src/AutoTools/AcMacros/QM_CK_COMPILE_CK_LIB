@@ -50,6 +50,10 @@ dnl       RecentlyProcessed          Keeps track of the recently located libs.
 dnl                                  This macro adds <lib> to this list if it
 dnl                                  can determine whether or not the package
 dnl                                  is available.
+dnl       process_now                Indicates if we should process the
+dnl                                  library now or delay checking for its
+dnl                                  existance (usually to allow us to find a
+dnl                                  pre-requisite first).
 dnl       SED                        Standard substitution variable pointing
 dnl                                  to the UNIX sed command.
 dnl       TRACE_INDENT               Variable used for indenting trace debug
@@ -59,9 +63,6 @@ dnl                                  an indent of 5 spaces per level of
 dnl                                  nesting in the code i.e. set the var to
 dnl                                  "     " for the first for loop, set it
 dnl                                  to "          " for the second, etc.
-dnl       with_<lib>_prq             Holds the list of prerequisite libraries
-dnl                                  that external library <lib> is dependant
-dnl                                  on. 
 dnl       use_<lib>                  Flag specifying useage of library, 
 dnl                                  initially primed from the command line
 dnl                                  settings, this will be updated to
@@ -83,90 +84,9 @@ AC_DEFUN([QM_CK_COMPILE_CK_LIB],
 
           AS_IF([test "$test_enablement" == check -o  "$test_enablement" == needed -o  "$test_enablement" == yes],
                 [# We need to check if this lib exists
-                 eval prereqs="\$with_${test_lib}_prq"
-                 process_now=yes
-                 if ( test "x$prereqs" != x )
-                 then
-                    TRACE_INDENT="     "
-                    trace 4 Checking we know the status of all the pre-requisites of $test_lib @<:@$prereqs@:>@
-                    for prq in $prereqs
-                    do
-                       eval prq_state=\$use_${prq}
-                       case "$prq_state" in
-                          present )     TRACE_INDENT="          "
-                                        trace 6 $prq is present
-                                        ;;
-                          no )          case $test_enablement in
-                                           check )  TRACE_INDENT="          "
-                                                    trace 6 $prq is disabled, disabling $test_lib
-                                                    eval use_${test_lib}=blocked
-                                                    LeftToDo=`echo " $LeftToDo " | $SED "s/ $test_lib / /"`
-                                                    RecentlyProcessed="$RecentlyProcessed $test_lib"
-                                                    process_now=no
-                                                    break
-                                                    ;;
-                                           needed ) AC_MSG_FAILURE([Library $test_lib is a pre-requisite of a selected library but is unavailable due to a disabled pre-requisite])
-                                                    ;;
-                                           yes )    AC_MSG_FAILURE([Required library $test_lib is unavailable due to a disabled pre-requisite])
-                                                    ;;
-                                        esac
-                                        ;;
-                          missing )     case $test_enablement in
-                                           check )  TRACE_INDENT="          "
-                                                    trace 6 $prq is not available, disabling $test_lib
-                                                    eval use_${test_lib}=blocked
-                                                    LeftToDo=`echo " $LeftToDo " | $SED "s/ $test_lib / /"`
-                                                    RecentlyProcessed="$RecentlyProcessed $test_lib"
-                                                    process_now=no
-                                                    break
-                                                    ;;
-                                           needed ) AC_MSG_FAILURE([Library $test_lib is a pre-requisite of a selected library but is unavailable due to a missing pre-requisite])
-                                                    ;;
-                                           yes )    AC_MSG_FAILURE([Required library $test_lib is unavailable due to a missing pre-requisite])
-                                                    ;;
-                                        esac
-                                        ;;
-                          blocked )     case $test_enablement in
-                                           check )  TRACE_INDENT="          "
-                                                    trace 6 $prq is blocked, disabling $test_lib
-                                                    eval use_${test_lib}=blocked
-                                                    LeftToDo=`echo " $LeftToDo " | $SED "s/ $test_lib / /"`
-                                                    RecentlyProcessed="$RecentlyProcessed $test_lib"
-                                                    process_now=no
-                                                    break
-                                                    ;;
-                                           needed ) AC_MSG_FAILURE([Library $test_lib is a pre-requisite of a selected library but is unavailable due to a missing pre-requisite])
-                                                    ;;
-                                           yes )    AC_MSG_FAILURE([Required library $test_lib is unavailable due to a missing pre-requisite])
-                                                    ;;
-                                        esac
-                                        ;;
-                          check | needed | yes )
-                                        TRACE_INDENT="          "
-                                        trace 6 $prq has not yet been checked, cannot check $test_lib at the moment
-                                        process_now=no
-                                        # Do not break in case we can
-                                        # mark the library as blocked
-                                        # by dint of another pre-req.
-                                        ;;
-                          * )           case $test_enablement in
-                                           check )  TRACE_INDENT="          "
-                                                    trace 1 Assert - unrecognised state for prerequisite $prq, disabling $test_lib
-                                                    eval use_${test_lib}=blocked
-                                                    LeftToDo=`echo " $LeftToDo " | $SED "s/ $test_lib / /"`
-                                                    RecentlyProcessed="$RecentlyProcessed $test_lib"
-                                                    process_now=no
-                                                    break
-                                                    ;;
-                                           needed ) AC_MSG_FAILURE([Library $test_lib is a prerequisite of a selected library but is unavailable due to a indeterminate pre-requisite state])
-                                                    ;;
-                                           yes )    AC_MSG_FAILURE([Required library $test_lib is unavailable due to a indeterminate pre-requisite state])
-                                                    ;;
-                                        esac
-                                        ;;
-                       esac
-                    done
-                 fi
+                 #
+                 # First check the state of the pre-requisites of the library
+                 QM_CK_PREREQ_STATE([$1])
                  AS_IF([test "x$process_now" != xno],
                        [AS_CASE([$test_enablement],
                                 [check],  [failure=""],
