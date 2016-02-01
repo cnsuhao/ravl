@@ -318,24 +318,6 @@ dnl
                               [pthread.h],
                               [C]
                              )
-          QM_DEFINE_EXTLIB_CC([Qt3QGLViewer],
-                              [QGLViewer V;
-                               V.show();
-                              ],
-                              [Qt3],
-                              [-lqglviewer-qt3 | -lqglviewer],
-                              [QGLViewer/qglviewer.h],
-                              [C++]
-                             )
-          QM_DEFINE_EXTLIB_CC([Qt4QGLViewer],
-                              [QGLViewer V;
-                               V.setWindowTitle("ViewerTitle");
-                              ],
-                              [QtOpenGL QtGui QtXml QtCore libGLU],
-                              [-lQGLViewer-qt4 | -lQGLViewer],
-                              [QGLViewer/qglviewer.h],
-                              [C++]
-                             )
           QM_DEFINE_EXTLIB_CC([Socket],
                               [int ret, domain, type, protocol;
                                ret=socket (domain, type, protocol);
@@ -653,20 +635,45 @@ dnl
           dnl These are the same parameters as applied to the definition of a
           dnl regular compilation-check package.
           dnl
-          dnl                           Name,
-          dnl                           Test Code,
-          dnl                           Deps,
-          dnl                           -l,
-          dnl                           .h
-          dnl                           Lang
+          dnl                         Name,
+          dnl                         Test Code,
+          dnl                         Deps,
+          dnl                         -l,
+          dnl                         .h
+          dnl                         Lang
           dnl
-          dnl QM_DEFINE_EXTLIB_BESPOKE_CC([Name],
-          dnl                             [Test Code;],
-          dnl                             [PreReqA PreReqB],
-          dnl                             [-lLibName],
-          dnl                             [Header.h],
-          dnl                             [C]
-          dnl                            )
+          QM_DEFINE_EXTLIB_BESPOKE_CC([Qt3QGLViewer],
+                                      [QGLViewer V;
+                                       V.show();
+                                      ],
+                                      [Qt3],
+                                      [-lqglviewer-qt3 | -lqglviewer],
+                                      [QGLViewer/qglviewer.h],
+                                      [C++]
+                                     )
+                                  dnl Warning, the use of a C++ test program is
+                                  dnl hard-coded into QM_CK_BESPOKE_CK_LIB (so
+                                  dnl as to restrict the generation of unneeded
+                                  dnl code). If you alter this test to use a 
+                                  dnl different language, you will need to alter
+                                  dnl the appropriate AC_LANG_PUSH/POP in the
+                                  dnl QM_CK_BESPOKE_CK_LIB macro.
+          QM_DEFINE_EXTLIB_BESPOKE_CC([Qt4QGLViewer],
+                                      [QGLViewer V;
+                                       V.setWindowTitle("ViewerTitle");
+                                      ],
+                                      [QtOpenGL QtGui QtXml QtCore libGLU],
+                                      [-lQGLViewer-qt4 | -lQGLViewer],
+                                      [QGLViewer/qglviewer.h],
+                                      [C++]
+                                     )
+                                  dnl Warning, the use of a C++ test program is
+                                  dnl hard-coded into QM_CK_BESPOKE_CK_LIB (so
+                                  dnl as to restrict the generation of unneeded
+                                  dnl code). If you alter this test to use a 
+                                  dnl different language, you will need to alter
+                                  dnl the appropriate AC_LANG_PUSH/POP in the
+                                  dnl QM_CK_BESPOKE_CK_LIB macro.
           dnl
           dnl The second form of bespoke packages (those that do not require a
           dnl compilation check) are declared via the QM_DEFINE_EXTLIB_BESPOKE

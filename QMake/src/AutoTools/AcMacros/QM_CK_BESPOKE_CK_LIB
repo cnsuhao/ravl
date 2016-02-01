@@ -713,6 +713,34 @@ dnl link against the library package).
                            fi
                            ;;
 
+                'Qt3QGLViewer' | 'Qt4QGLViewer' )
+                           # The Qt QGLViewer packages are basic compilation
+                           # tests but we need to reset the cache variable
+                           # maintinaed by autoconf to record the qglviewer.h
+                           # header file (since this file name is shared
+                           # between the Qt 3 and 4 versions, we do not want
+                           # the second package using the cached value from
+                           # the first incarnation).
+                           AC_LANG_PUSH([C++])
+                                  dnl Both packages employ a C++ test program;
+                                  dnl we could check with_<lib>_lang here but
+                                  dnl that would require generation of code
+                                  dnl that is un-needed (as we have to generate
+                                  dnl execution paths for all possible languages
+                                  dnl if we do not know the language in use at
+                                  dnl autoconf time). Hence, we hard-code the
+                                  dnl test language, which will obviously need
+                                  dnl a manual change if the author changes the
+                                  dnl QM_DEFINE_EXTLIB_BESPOKE_CC definition.
+                           QM_CHECK_CC_LIB([$test_lib],[])
+                                  dnl Null second parameter prevents generation
+                                  dnl of any error which we will generate below
+                                  dnl if necessary.
+                           AC_LANG_POP([C++])
+                           # Reset the header file cache variable
+                           unset ac_cv_header_QGLViewer_qglviewer_h
+                           ;;
+
                        * ) AC_MSG_FAILURE([Configure is unaware of how to check for library $test_lib])
                            ;;
                 esac
