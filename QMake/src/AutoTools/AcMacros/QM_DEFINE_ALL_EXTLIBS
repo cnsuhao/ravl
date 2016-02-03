@@ -184,13 +184,6 @@ AC_DEFUN([QM_DEFINE_ALL_EXTLIBS],
                               [suitesparse/cs.h],
                               [C]
                              )
-          QM_DEFINE_EXTLIB_CC([CUDA],
-                              [cudaMalloc ();],
-                              [],
-                              [-lcuda -lcudart],
-                              [cuda.h],
-                              [C]
-                             )
           QM_DEFINE_EXTLIB_CC([DynLink],
                               [dlopen ();],
                               [],
@@ -630,6 +623,13 @@ dnl
           dnl                         .h
           dnl                         Lang
           dnl
+          QM_DEFINE_EXTLIB_BESPOKE_CC([CUDA],
+                                      [cudaMalloc ();],
+                                      [],
+                                      [-lcuda -lcudart],
+                                      [cuda.h],
+                                      [C]
+                             )
           QM_DEFINE_EXTLIB_BESPOKE_CC([Qt3QGLViewer],
                                       [QGLViewer V;
                                        V.show();

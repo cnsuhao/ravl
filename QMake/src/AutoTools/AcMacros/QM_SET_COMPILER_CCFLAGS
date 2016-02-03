@@ -1,5 +1,5 @@
 dnl This file is part of QMake, Quick Make System
-dnl Copyright (C) 2011-14, University of Surrey
+dnl Copyright (C) 2011-16, University of Surrey
 dnl This code may be redistributed under the terms of the GNU General
 dnl Public License (GPL). See the gpl.licence file for details or
 dnl see http://www.gnu.org/copyleft/gpl.html
@@ -88,6 +88,7 @@ AC_DEFUN([QM_SET_COMPILER_CCFLAGS],
           if ( test x$GXX = xyes )
           then
              trace 3 We have a GNU C++ Compiler
+              # Or something masquerading as one (e.g. CLang)
 
              COMPILER_ANSI_CCFLAGS=" -ansi "
              NVCC_ANSI_NVCCFLAGS=" -Xcompiler -ansi "

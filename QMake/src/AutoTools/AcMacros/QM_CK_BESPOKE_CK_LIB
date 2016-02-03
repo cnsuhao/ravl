@@ -43,6 +43,11 @@ dnl                                { grouping will be preferred (either all
 dnl                                { old or all new), with the new layout
 dnl                                { being preferred if either is available
 dnl                                { for all 4.
+dnl       CONFIGURE_NVCCFLAGS        Initialised here to hold any NVCCFLAGS
+dnl                                  that the user may have set in their
+dnl                                  environment. This variable is only
+dnl                                  initialised if the CUDA compiler is
+dnl                                  actually located (or user-specified).
 dnl       DBG                        Variable that holds the current trace
 dnl                                  level as requested by the user. Requires
 dnl                                  the inclusion of the debug function
@@ -55,6 +60,11 @@ dnl                                  files. If a set of 4 consistent hdr sets
 dnl                                  is not present, this variable will be
 dnl                                  set to broken and the libffmpeg virtual
 dnl                                  package will be disabled.
+dnl       GXX                        Variable indicates if our C++ compile is
+dnl                                  the GNU compiler (or GNU-compatible).
+dnl       InheritCFG                 Specifies if we should use the QMAKE_CFG
+dnl                                  file to bootstrap our configuration
+dnl                                  settings.
 dnl       LeftToDo                   List of the external libs that remain to
 dnl                                  be processed. As the compilation check
 dnl                                  packages should be processed last, this
@@ -63,6 +73,22 @@ dnl                                  compile check libs that remain to be
 dnl                                  tested. This macro deletes <lib> from
 dnl                                  this list if it can determine if <lib>
 dnl                                  is available for use.
+dnl       NVCC                       Holds the path to the CUDA compiler
+dnl                                  driver. Can initially be primed by the
+dnl                                  user to force the use of a particular
+dnl                                  program. May be updated by the
+dnl                                  configure script to include extra
+dnl                                  global compiler options.
+dnl       NVCCFLAGS                  More an environment variable than a
+dnl                                  script variable. Allows the user to
+dnl                                  provide a set of compiler flags for the
+dnl                                  nVidia compiler driver (or flags to be
+dnl                                  used for the regular compiler while
+dnl                                  building CUDA source code).
+dnl       QMAKE_CFG                  Holds the location of the configuration
+dnl                                  file for the copy of QMake that is in
+dnl                                  use. Originally primed by calling the
+dnl                                  QM_LOCATE_QMAKE macro.
 dnl       RecentlyProcessed          Keeps track of the recently located libs.
 dnl                                  This macro adds <lib> to this list if it
 dnl                                  can determine whether or not the package
@@ -76,6 +102,9 @@ dnl                                  an indent of 5 spaces per level of
 dnl                                  nesting in the code i.e. set the var to
 dnl                                  "     " for the first for loop, set it
 dnl                                  to "          " for the second, etc.
+dnl       USER_NVCC                  Records any user-specified setting for
+dnl                                  the NVCC variable which specifies the
+dnl                                  CUDA compiler driver program.
 dnl       <lib>_CFLAGS               Substitution variable (variable that is
 dnl                                  output to the configuration file for the
 dnl                                  (QMake) client project (i.e. to the
@@ -711,6 +740,80 @@ dnl link against the library package).
                            then
                               with_libffmpeg_check=virtual
                            fi
+                           ;;
+
+                'CUDA' )
+                           # The CUDA packages itself requires a  basic
+                           # compilation test but we need to test for the
+                           # presence of a suitable C++ compiler and the
+                           # nVidia compiler driver program (NVCC).
+                           AC_LANG_PUSH([C])
+                                  dnl We could check with_<lib>_lang here but
+                                  dnl that would require generation of code
+                                  dnl that is un-needed (as we have to generate
+                                  dnl execution paths for all possible languages
+                                  dnl if we do not know the language in use at
+                                  dnl autoconf time). Hence, we hard-code the
+                                  dnl test language, which will obviously need
+                                  dnl a manual change if the author changes the
+                                  dnl QM_DEFINE_EXTLIB_BESPOKE_CC definition.
+                           QM_CHECK_CC_LIB([$test_lib],[])
+                                  dnl Null second parameter prevents generation
+                                  dnl of any error which we will generate below
+                                  dnl if necessary.
+                           AC_LANG_POP([C])
+
+                           if ( test "x$USER_NVCC" = x )
+                           then
+                              # User has not specified a CUDA compiler to use, do we have
+                              # an existing setting?
+                              if ( test "x$InheritCFG" = xyes )
+                              then
+                                 NVCC=`cat $QMAKE_CFG | $SED  -n 's/^NVCC=\(.*\)/\1/p'`
+                              fi
+                              if ( test "x$NVCC" = x )
+                              then
+                                 # We still do not have a setting, attempt to find one
+                                 AC_PATH_PROG([NVCC],[nvcc],[missing])
+                              fi
+                           fi
+                           if ( test "x$NVCC" = xmissing )
+                           then
+                              # We have to re-set NVCC to null if we did not
+                              # find the compiler driver (as the value of NVCC
+                              # will get written to the Config.xx file; hence
+                              # it needs to be null if we did not find nvcc).
+                              NVCC=""
+                           else
+                              CONFIGURE_NVCCFLAGS=$NVCCFLAGS
+                              # Record any supplied NVCCFLAGS
+                           fi
+
+                           # CUDA is a special case as it requires not only the
+                           # appropriate libraries but also the NVidia compiler
+                           # driver (nvcc) and that the C++ compiler be the GNU
+                           # version.  We test the compilers here...
+                           if ( test x$NVCC = x || test ! -x $NVCC || test x$GXX != xyes )
+                           then
+                              case $use_CUDA in
+                                 'check' )   use_CUDA=blocked
+                                             trace 6 Disabling CUDA owing to missing compiler pre-requisites
+                                             ;;
+                                 'needed' )  AC_MSG_FAILURE([CUDA prerequisites not met and CUDA is required for a selected RESOURCE])
+                                             ;;
+                                 'yes' )     AC_MSG_FAILURE([CUDA prerequisites not met])
+                                             ;;
+                                 'no' )      trace 6 CUDA compiler prerequisites not met but we do not require CUDA anyway
+                                             ;;
+                                 'blocked' ) trace 6 CUDA compiler prerequisites not met but CUDA is already blocked
+                                             ;;
+                                 * )         trace 1 "Assert - Should not fall through here"
+                                             ;;
+                              esac
+                           else
+                              trace 5 CUDA compiler requirements appear to be satisfied.
+                           fi
+
                            ;;
 
                 'Qt3QGLViewer' | 'Qt4QGLViewer' )
