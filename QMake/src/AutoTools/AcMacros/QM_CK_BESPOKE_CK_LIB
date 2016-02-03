@@ -741,6 +741,37 @@ dnl link against the library package).
                            unset ac_cv_header_QGLViewer_qglviewer_h
                            ;;
 
+                'tetgen' )
+                           # Certain versions of TetGen rely on a pre-processor
+                           # -DTETLIBRARY flag. Ensure we have that.
+                           existing=`echo "X $with_tetgen_inc " | $SED -n 's/.* -DTETLIBRARY .*/yes/p'`
+                           if ( test X$existing != Xyes )
+                           then
+                              with_tetgen_inc="$with_tetgen_inc -DTETLIBRARY"
+                           fi
+                           # By rights, this should be implemented on CPPFLAGS
+                           # but as QMake does not currently support a
+                           # mechanism for processing these flags for a package
+                           # we are stuck with using CFLAGS until such time as
+                           # the requisite development is undertaken.
+                           AC_LANG_PUSH([C++])
+                                  dnl This package employs a C++ test program;
+                                  dnl we could check with_<lib>_lang here but
+                                  dnl that would require generation of code
+                                  dnl that is un-needed (as we have to generate
+                                  dnl execution paths for all possible languages
+                                  dnl if we do not know the language in use at
+                                  dnl autoconf time). Hence, we hard-code the
+                                  dnl test language, which will obviously need
+                                  dnl a manual change if the author changes the
+                                  dnl QM_DEFINE_EXTLIB_BESPOKE_CC definition.
+                           QM_CHECK_CC_LIB([$test_lib],[])
+                                  dnl Null second parameter prevents generation
+                                  dnl of any error which we will generate below
+                                  dnl if necessary.
+                           AC_LANG_POP([C++])
+                           ;;
+
                        * ) AC_MSG_FAILURE([Configure is unaware of how to check for library $test_lib])
                            ;;
                 esac

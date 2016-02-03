@@ -631,6 +631,8 @@ GnuPlot
 EGREP
 libffmpeg_LIBS
 libffmpeg_CFLAGS
+tetgen_LIBS
+tetgen_CFLAGS
 Qt4QGLViewer_LIBS
 Qt4QGLViewer_CFLAGS
 Qt3QGLViewer_LIBS
@@ -653,8 +655,6 @@ UMFPack_LIBS
 UMFPack_CFLAGS
 LibTIFF_LIBS
 LibTIFF_CFLAGS
-tetgen_LIBS
-tetgen_CFLAGS
 Socket_LIBS
 Socket_CFLAGS
 posixThreads_LIBS
@@ -1109,10 +1109,6 @@ with_Socket_pkgconf
 with_Socket
 with_Socket_library
 with_Socket_include
-with_tetgen_pkgconf
-with_tetgen
-with_tetgen_library
-with_tetgen_include
 with_LibTIFF_pkgconf
 with_LibTIFF
 with_LibTIFF_library
@@ -1155,6 +1151,10 @@ with_Qt4QGLViewer_pkgconf
 with_Qt4QGLViewer
 with_Qt4QGLViewer_library
 with_Qt4QGLViewer_include
+with_tetgen_pkgconf
+with_tetgen
+with_tetgen_library
+with_tetgen_include
 with_libffmpeg_pkgconf
 with_libffmpeg
 enable_fast_install
@@ -2362,19 +2362,6 @@ Optional Packages:
   --with-Socket-include   Declare the location of the Socket header files and
                           enable their functionality
 
-  --with-tetgen-pkgconf   Enable the tetgen library package via pkg-config and
-                          declare the name by which the tetgen library package
-                          is known to pkg-config
-
-  --with-tetgen           Enable functionality that relies on the tetgen
-                          library [default=check]
-
-  --with-tetgen-library   Declare the location of the tetgen library and
-                          enable its functionality
-
-  --with-tetgen-include   Declare the location of the tetgen header files and
-                          enable their functionality
-
   --with-LibTIFF-pkgconf  Enable the LibTIFF library package via pkg-config
                           and declare the name by which the LibTIFF library
                           package is known to pkg-config
@@ -2526,6 +2513,19 @@ Optional Packages:
   --with-Qt4QGLViewer-include
                           Declare the location of the Qt4QGLViewer header
                           files and enable their functionality
+
+  --with-tetgen-pkgconf   Enable the tetgen library package via pkg-config and
+                          declare the name by which the tetgen library package
+                          is known to pkg-config
+
+  --with-tetgen           Enable functionality that relies on the tetgen
+                          library [default=check]
+
+  --with-tetgen-library   Declare the location of the tetgen library and
+                          enable its functionality
+
+  --with-tetgen-include   Declare the location of the tetgen header files and
+                          enable their functionality
 
   --with-libffmpeg-pkgconf
                           Enable the libffmpeg library package via pkg-config
@@ -32660,1081 +32660,6 @@ $as_echo "$as_me: WARNING: --with-Socket-include and --with-Socket specify diffe
 
 
 
-          with_tetgen_check=compile
-          if ( test Xcompile = Xvirtual )
-          then
-             with_tetgen_virtual=yes
-          else
-             with_tetgen_virtual=no
-          fi
-
-          fallback_file=""
-          fallback_path=""
-
-
-# Check whether --with-tetgen-pkgconf was given.
-if test "${with_tetgen_pkgconf+set}" = set; then :
-  withval=$with_tetgen_pkgconf; case $with_tetgen_pkgconf in
-                        'n' | 'N' | 'no' | 'No' | 'NO' )
-                                 trace 4 --with-tetgen-pkgconf disabling tetgen
-                                 with_tetgen_pkgconf=no
-                                 use_tetgen=no
-                                 ;;
-                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
-                                 if ( test X != X )
-                                 then
-                                    trace 4 Asking for tetgen via --with-tetgen-pkgconf default value [$with_tetgen_pkgconf]
-                                    with_tetgen_pkgconf=
-                                    with_tetgen_check=pkgconfig
-                                    with_tetgen_virtual=no
-                                    use_tetgen=yes
-                                 else
-                                    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Asking to enable tetgen via pkg-config but configure is unaware of the name of the DOTpc metadata file
-See \`config.log' for more details" "$LINENO" 5; }
-                                 fi
-                                 ;;
-                        'c' |'C' | 'ck' | 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
-                                 if ( test X != X )
-                                 then
-                                    trace 4 Will check for tetgen using --with-tetgen-pkgconf default value [$with_tetgen_pkgconf]
-                                    with_tetgen_pkgconf=
-                                    with_tetgen_check=pkgconfig
-                                    with_tetgen_virtual=no
-                                    use_tetgen=check
-                                 else
-                                    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Asking to check for tetgen via pkg-config but configure is unaware of the name of the DOTpc metadata file
-See \`config.log' for more details" "$LINENO" 5; }
-                                 fi
-                                 ;;
-                        * )
-                                 trace 4 Asking for tetgen --with-tetgen-pkgconf set to [$with_tetgen_pkgconf]
-                                 with_tetgen_check=pkgconfig
-                                 with_tetgen_virtual=no
-                                 use_tetgen=yes
-                                 ;;
-                       esac
-
-else
-  if ( test X != X )
-                       then
-                          trace 4 No --with-tetgen-pkgconf specified using default [$with_tetgen_pkgconf]
-                          with_tetgen_pkgconf=
-                          with_tetgen_check=pkgconfig
-                          with_tetgen_virtual=no
-                       else
-                          trace 4 No --with-tetgen-pkgconf specified and no default value
-                       fi
-
-
-fi
-
-
-# Check whether --with-tetgen was given.
-if test "${with_tetgen+set}" = set; then :
-  withval=$with_tetgen; case $with_tetgen in
-                        'n' | 'N' | 'no' | 'No' | 'NO' )
-                                 trace 4 --with-tetgen disabling tetgen libraries
-                                 if ( test X$use_tetgen = Xyes )
-                                 then
-                                    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Asking to disable tetgen by --with-tetgen but --with-tetgen-pkgconf has specifically enabled it
-See \`config.log' for more details" "$LINENO" 5; }
-                                 else
-                                    if ( test X$use_tetgen = Xcheck )
-                                    then
-                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Disabling tetgen via --with-tetgen despite --with-tetgen-pkconfig having asked to check for it" >&5
-$as_echo "$as_me: WARNING: Disabling tetgen via --with-tetgen despite --with-tetgen-pkconfig having asked to check for it" >&2;}
-                                    fi
-                                    use_tetgen=no
-                                 fi
-                                 with_tetgen=no
-                                 ;;
-                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
-                                 trace 4 --with-tetgen enabling tetgen libraries
-                                 if ( test X$use_tetgen = Xno )
-                                 then
-                                    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Asking to enable tetgen by --with-tetgen but --with-tetgen-pkgconf has specifically disabled it
-See \`config.log' for more details" "$LINENO" 5; }
-                                 else
-                                    if ( test X$use_tetgen = Xcheck )
-                                    then
-                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Enabling tetgen via --with-tetgen despite --with-tetgen-pkconfig having asked to check for it" >&5
-$as_echo "$as_me: WARNING: Enabling tetgen via --with-tetgen despite --with-tetgen-pkconfig having asked to check for it" >&2;}
-                                    fi
-                                    use_tetgen=yes
-                                 fi
-                                 with_tetgen=yes
-                                 ;;
-                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
-                                 trace 4 --with-tetgen checking for tetgen libraries
-                                 if (test X$use_tetgen = Xyes )
-                                 then
-                                    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-tetgen asking to check for the libs but --with-tetgen-pkgconf has specifically enabled it" >&5
-$as_echo "$as_me: WARNING: --with-tetgen asking to check for the libs but --with-tetgen-pkgconf has specifically enabled it" >&2;}
-                                 else
-                                    if ( test X$use_tetgen = Xno )
-                                    then
-                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-tetgen asking to check for the libs but --with-tetgen-pkgconf has specifically disabled it" >&5
-$as_echo "$as_me: WARNING: --with-tetgen asking to check for the libs but --with-tetgen-pkgconf has specifically disabled it" >&2;}
-                                    else
-                                       use_tetgen=check
-                                    fi
-                                 fi
-                                 with_tetgen=check
-                                 ;;
-                        * )      # --with-<lib> is not being used as a simple
-                                 # yes/no/check switch - see if this is
-                                 # providing an extra piece of information
-                                 if ( test -d $with_tetgen )
-                                 then
-                                    # Parameter is a directory path
-                                    fallback_path=$with_tetgen
-                                    fallback_file=""
-                                    trace 3 with-tetgen provides a fallback path [$fallback_path]
-                                    use_tetgen=yes
-                                    with_tetgen=yes
-                                 else
-                                    fallback_path=`$as_dirname -- $with_tetgen ||
-$as_expr X$with_tetgen : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
-	 X$with_tetgen : 'X\(//\)[^/]' \| \
-	 X$with_tetgen : 'X\(//\)$' \| \
-	 X$with_tetgen : 'X\(/\)' \| . 2>/dev/null ||
-$as_echo X$with_tetgen |
-    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{
-	    s//\1/
-	    q
-	  }
-	  /^X\(\/\/\)[^/].*/{
-	    s//\1/
-	    q
-	  }
-	  /^X\(\/\/\)$/{
-	    s//\1/
-	    q
-	  }
-	  /^X\(\/\).*/{
-	    s//\1/
-	    q
-	  }
-	  s/.*/./; q'`
-                                    if ( test -d $fallback_path  )
-                                    then
-                                       # strip leading path
-                                       fallback_file=`$EXPR "//$with_tetgen" : '.*/\([^/]*\)'`
-                                       # portable version of fallback_file=`basename $with_tetgen`
-                                       if ( test X$with_tetgen = X$fallback_path/$fallback_file )
-                                       then
-                                          # Parameter is a file path
-                                          trace 3 with-tetgen provides a fallback path [$fallback_path] and a file [$fallback_file]
-                                          use_tetgen=yes
-                                          with_tetgen=yes
-                                       else
-                                          # Somehow dirname($x)/basename($x) != $x
-                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Problem processing --with-tetgen, parameter ignored" >&5
-$as_echo "$as_me: WARNING: Problem processing --with-tetgen, parameter ignored" >&2;}
-                                          fallback_path=""
-                                          fallback_file=""
-                                       fi
-                                    else
-                                       # --with-tetgen=/path/is/not/a/dir/something
-                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Illegal command-line option for --with-tetgen, parameter ignored" >&5
-$as_echo "$as_me: WARNING: Illegal command-line option for --with-tetgen, parameter ignored" >&2;}
-                                       fallback_path=""
-                                       fallback_file=""
-                                    fi
-                                 fi
-                                 ;;
-                       esac
-
-else
-  trace 5 No --with-tetgen specified
-
-fi
-
-
-
-
-
-
-# Check whether --with-tetgen-library was given.
-if test "${with_tetgen_library+set}" = set; then :
-  withval=$with_tetgen_library; case "$with_tetgen_library" in
-                          'n' | 'N' | 'no' | 'No' | 'NO' )
-                                 trace 4 --with-tetgen-library disabling tetgen libraries
-                                 if ( test X$use_tetgen = Xyes )
-                                 then
-                                    if ( test X$with_tetgen_check = Xpkgconfig )
-                                    then
-                                       # Either --with-<lib>-pkgconf is in use
-                                       # or --with-<lib> specifies a .pc file
-                                       { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Asking to disable tetgen via --with-tetgen-library but another configuration option has specifically asked to use pkg-config
-See \`config.log' for more details" "$LINENO" 5; }
-                                    else
-                                       { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Asking to disable tetgen via --with-tetgen-library but --with-tetgen has specifically enabled it
-See \`config.log' for more details" "$LINENO" 5; }
-                                    fi
-                                 else
-                                    if ( test X$use_tetgen = Xcheck )
-                                    then
-                                       # Can only be here if --with-<lib>
-                                       # is set to check
-                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Disabling tetgen via --with-tetgen-library despite --with-tetgen having asked to check for it" >&5
-$as_echo "$as_me: WARNING: Disabling tetgen via --with-tetgen-library despite --with-tetgen having asked to check for it" >&2;}
-                                    fi
-                                 fi
-                                 use_tetgen=no
-                                 with_tetgen_library=no
-                                 ;;
-                          'y' |'Y' | 'yes' | 'Yes' | 'YES' )
-                                 if ( test X$use_tetgen = Xyes )
-                                 then
-                                    if ( test X$with_tetgen_check = Xpkgconfig )
-                                    then
-                                       # Either --with-<lib>-pkgconf is in use
-                                       # or --with-<lib> specifies a .pc file
-                                       { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Asking to enable tetgen via --with-tetgen-library but another configuration option  has specifically asked to use pkg-config
-See \`config.log' for more details" "$LINENO" 5; }
-                                    fi
-                                 else
-                                    if ( test X$use_tetgen = Xno )
-                                    then
-                                       if ( test X$with_tetgen_pkgconf = Xno )
-                                       then
-                                          { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Asking to enable tetgen via --with-tetgen-library but --with-tetgen-pkgconf has specifically disabled it
-See \`config.log' for more details" "$LINENO" 5; }
-                                       else
-                                          { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Asking to enable tetgen via --with-tetgen-library but --with-tetgen has specifically disabled it
-See \`config.log' for more details" "$LINENO" 5; }
-                                       fi
-                                    else
-                                       if ( test X$use_tetgen = Xcheck )
-                                       then
-                                          # Can only be here if --with-<lib>
-                                          # is set to check
-                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Enabling tetgen via --with-tetgen-library despite --with-tetgen having asked to check for it" >&5
-$as_echo "$as_me: WARNING: Enabling tetgen via --with-tetgen-library despite --with-tetgen having asked to check for it" >&2;}
-                                       fi
-                                    fi
-                                 fi
-                                 use_tetgen=yes
-                                 with_tetgen_library=yes
-                                 ;;
-                          'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
-                                 if ( test X$use_tetgen = Xyes )
-                                 then
-                                    if ( test X$with_tetgen_check = Xpkgconfig )
-                                    then
-                                       # Either --with-<lib>-pkgconf is in use
-                                       # or --with-<lib> specifies a .pc file
-                                       { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Asking to check for tetgen via --with-tetgen-library but another configuration option has specifically asked to use pkg-config
-See \`config.log' for more details" "$LINENO" 5; }
-                                    else
-                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Asking to check for tetgen via --with-tetgen-library but --with-tetgen has specifically enabled it" >&5
-$as_echo "$as_me: WARNING: Asking to check for tetgen via --with-tetgen-library but --with-tetgen has specifically enabled it" >&2;}
-                                    fi
-                                 else
-                                    if ( test X$use_tetgen = Xno )
-                                    then
-                                       if ( test X$with_tetgen_pkgconf = Xno )
-                                       then
-                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Asking to check for tetgen via --with-tetgen-library but --with-tetgen-pkgconf has specifically disabled it" >&5
-$as_echo "$as_me: WARNING: Asking to check for tetgen via --with-tetgen-library but --with-tetgen-pkgconf has specifically disabled it" >&2;}
-                                       else
-                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Asking to check for tetgen via --with-tetgen-library but --with-tetgen has specifically disabled it" >&5
-$as_echo "$as_me: WARNING: Asking to check for tetgen via --with-tetgen-library but --with-tetgen has specifically disabled it" >&2;}
-                                       fi
-                                    else
-                                       if ( test X$use_tetgen = Xcheck )
-                                       then
-                                          # Can only be here if --with-<lib>
-                                          # is set to check (which probvides
-                                          # no conflict).
-                                          with_tetgen_library=check
-                                       else
-                                          # No user setting from with-<lib>
-                                          # or --with-<lib>-pkgconf
-                                          use_tetgen=check
-                                          # This is the only condition where
-                                          # we need to be updating use_<lib>
-                                       fi
-                                    fi
-                                 fi
-                                 with_tetgen_library=check
-                                 ;;
-                          * )
-                                 if ( test X$use_tetgen = Xyes )
-                                 then
-                                    if ( test X$with_tetgen_check = Xpkgconfig )
-                                    then
-                                       # Either --with-<lib>-pkgconf is in use
-                                       # or --with-<lib> specifies a .pc file
-                                       { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Asking to link with a specific library via --with-tetgen-library but another configuration option has specifically asked to use pkg-config
-See \`config.log' for more details" "$LINENO" 5; }
-                                    fi
-                                 else
-                                    if ( test X$use_tetgen = Xno )
-                                    then
-                                       if ( test X$with_tetgen_pkgconf = Xno )
-                                       then
-                                          { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Asking to link with a specific library via --with-tetgen-library but --with-tetgen-pkgconf has specifically disabled the package
-See \`config.log' for more details" "$LINENO" 5; }
-                                       else
-                                          { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Asking to link with a specific library via --with-tetgen-library but --with-tetgen has specifically disabled the package
-See \`config.log' for more details" "$LINENO" 5; }
-                                       fi
-                                    else
-                                       if ( test X$use_tetgen = Xcheck )
-                                       then
-                                          # Can only be here if --with-<lib>
-                                          # is set to check
-                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Asking to link with a specific library via --with-tetgen-library despite --with-tetgen having asked to check for the package" >&5
-$as_echo "$as_me: WARNING: Asking to link with a specific library via --with-tetgen-library despite --with-tetgen having asked to check for the package" >&2;}
-                                       fi
-                                    fi
-                                 fi
-                                 use_tetgen=yes
-                                 ;;
-                       esac
-
-else
-  trace 4 No --with-tetgen-library specified
-                       with_tetgen_library=notset
-
-
-fi
-
-
-
-# Check whether --with-tetgen-include was given.
-if test "${with_tetgen_include+set}" = set; then :
-  withval=$with_tetgen_include; case "$with_tetgen_include" in
-                          'n' | 'N' | 'no' | 'No' | 'NO' )
-                                 trace 4 --with-tetgen-include disabling tetgen libraries
-                                 if ( test X$use_tetgen = Xyes )
-                                 then
-                                    if ( test X$with_tetgen_check = Xpkgconfig )
-                                    then
-                                       # Either --with-<lib>-pkgconf is in use
-                                       # or --with-<lib> specifies a .pc file
-                                       { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Asking to disable tetgen via --with-tetgen-include but another configuration option has specifically asked to use pkg-config
-See \`config.log' for more details" "$LINENO" 5; }
-                                    else
-                                       # As use_<lib>=yes, the only possible
-                                       # values for --with-<lib>-library are:
-                                       # notset; yes; check or a path. So, we
-                                       # can check for the conflicting setting
-                                       # of yes or any path by determining the
-                                       # setting is not check or notset.
-                                       if ( test X$with_tetgen_library != Xnotset && test X$with_tetgen_library != Xcheck )
-                                       then
-                                          { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Asking to disable tetgen via --with-tetgen-include but --with-tetgen-library has specifically enabled it
-See \`config.log' for more details" "$LINENO" 5; }
-                                       else
-                                          { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Asking to disable tetgen via --with-tetgen-include but --with-tetgen has specifically enabled it
-See \`config.log' for more details" "$LINENO" 5; }
-                                       fi
-                                    fi
-                                 else
-                                    if ( test X$use_tetgen = Xcheck )
-                                    then
-                                       # Can never be here because of
-                                       # --with-<lib>-pkgconf
-                                       if ( test X$with_tetgen_library = Xcheck )
-                                       then
-                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Disabling tetgen via --with-tetgen-include despite --with-tetgen-library having asked to check for it" >&5
-$as_echo "$as_me: WARNING: Disabling tetgen via --with-tetgen-include despite --with-tetgen-library having asked to check for it" >&2;}
-                                       else
-                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Disabling tetgen via --with-tetgen-include despite --with-tetgen having asked to check for it" >&5
-$as_echo "$as_me: WARNING: Disabling tetgen via --with-tetgen-include despite --with-tetgen having asked to check for it" >&2;}
-                                       fi
-                                    fi
-                                 fi
-                                 use_tetgen=no
-                                 with_tetgen_include=no
-                                 ;;
-                          'y' |'Y' | 'yes' | 'Yes' | 'YES' )
-                                 if ( test X$use_tetgen = Xyes )
-                                 then
-                                    if ( test X$with_tetgen_check = Xpkgconfig )
-                                    then
-                                       # Either --with-<lib>-pkgconf is in use
-                                       # or --with-<lib> specifies a .pc file
-                                       { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Asking to enable tetgen via --with-tetgen-include but another configuration option  has specifically asked to use pkg-config
-See \`config.log' for more details" "$LINENO" 5; }
-                                    fi
-                                 else
-                                    if ( test X$use_tetgen = Xno )
-                                    then
-                                       if ( test X$with_tetgen_pkgconf = Xno )
-                                       then
-                                          { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Asking to enable tetgen via --with-tetgen-include but --with-tetgen-pkgconf has specifically disabled it
-See \`config.log' for more details" "$LINENO" 5; }
-                                       else
-                                          if ( test X$with_tetgen_library = Xno )
-                                          then
-                                             { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Asking to enable tetgen via --with-tetgen-include but --with-tetgen-library has specifically disabled it
-See \`config.log' for more details" "$LINENO" 5; }
-                                          else
-                                             { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Asking to enable tetgen via --with-tetgen-include but --with-tetgen has specifically disabled it
-See \`config.log' for more details" "$LINENO" 5; }
-                                          fi
-                                       fi
-                                    else
-                                       if ( test X$use_tetgen = Xcheck )
-                                       then
-                                          # Can never be here because of
-                                          # --with-<lib>-pkgconf
-                                          if ( test X$with_tetgen_library = Xcheck )
-                                          then
-                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Enabling tetgen via --with-tetgen-include despite --with-tetgen-library having asked to check for it" >&5
-$as_echo "$as_me: WARNING: Enabling tetgen via --with-tetgen-include despite --with-tetgen-library having asked to check for it" >&2;}
-                                          else
-                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Enabling tetgen via --with-tetgen-include despite --with-tetgen having asked to check for it" >&5
-$as_echo "$as_me: WARNING: Enabling tetgen via --with-tetgen-include despite --with-tetgen having asked to check for it" >&2;}
-                                          fi
-                                       fi
-                                    fi
-                                 fi
-                                 use_tetgen=yes
-                                 with_tetgen_include=yes
-                                 ;;
-                          'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
-                                 if ( test X$use_tetgen = Xyes )
-                                 then
-                                    if ( test X$with_tetgen_check = Xpkgconfig )
-                                    then
-                                       # Either --with-<lib>-pkgconf is in use
-                                       # or --with-<lib> specifies a .pc file
-                                       { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Asking to check for tetgen via --with-tetgen-include but another configuration option has specifically asked to use pkg-config
-See \`config.log' for more details" "$LINENO" 5; }
-                                    else
-                                       # As use_<lib>=yes, the only possible
-                                       # values for --with-<lib>-library are:
-                                       # notset; yes; check or a path. So, we
-                                       # can check for the conflicting setting
-                                       # of yes or any path by determining the
-                                       # setting is not check or notset.
-                                       if ( test X$with_tetgen_library != Xcheck && test X$with_tetgen_library != Xnotset )
-                                       then
-                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Asking to check for tetgen via --with-tetgen-include but --with-tetgen-library has specifically enabled it" >&5
-$as_echo "$as_me: WARNING: Asking to check for tetgen via --with-tetgen-include but --with-tetgen-library has specifically enabled it" >&2;}
-                                       else
-                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Asking to check for tetgen via --with-tetgen-include but --with-tetgen has specifically enabled it" >&5
-$as_echo "$as_me: WARNING: Asking to check for tetgen via --with-tetgen-include but --with-tetgen has specifically enabled it" >&2;}
-                                       fi
-                                    fi
-                                 else
-                                    if ( test X$use_tetgen = Xno )
-                                    then
-                                       if ( test X$with_tetgen_pkgconf = Xno )
-                                       then
-                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Asking to check for tetgen via --with-tetgen-include but --with-tetgen-pkgconf has specifically disabled it" >&5
-$as_echo "$as_me: WARNING: Asking to check for tetgen via --with-tetgen-include but --with-tetgen-pkgconf has specifically disabled it" >&2;}
-                                       else
-                                          if ( test X$with_tetgen_library = Xno )
-                                          then
-                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Asking to check for tetgen via --with-tetgen-include but --with-tetgen-library has specifically disabled it" >&5
-$as_echo "$as_me: WARNING: Asking to check for tetgen via --with-tetgen-include but --with-tetgen-library has specifically disabled it" >&2;}
-                                          else
-                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Asking to check for tetgen via --with-tetgen-include but --with-tetgen has specifically disabled it" >&5
-$as_echo "$as_me: WARNING: Asking to check for tetgen via --with-tetgen-include but --with-tetgen has specifically disabled it" >&2;}
-                                          fi
-                                       fi
-                                    else
-                                       if ( test X$use_tetgen = Xcheck )
-                                       then
-                                          # Can never be here because of
-                                          # --with-<lib>-pkgconf so we do not
-                                          # need to check for any incompatable
-                                          # settings
-                                          with_tetgen_include=check
-                                       else
-                                          # No other user setting
-                                          use_tetgen=check
-                                          # This is the only condition where
-                                          # we need to be updating use_<lib>
-                                       fi
-                                    fi
-                                 fi
-                                 with_tetgen_include=check
-                                 ;;
-                          * )
-                                 if ( test X$use_tetgen = Xyes )
-                                 then
-                                    if ( test X$with_tetgen_check = Xpkgconfig )
-                                    then
-                                       # Either --with-<lib>-pkgconf is in use
-                                       # or --with-<lib> specifies a .pc file
-                                       { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Asking to use specific header files for tetgen via --with-tetgen-include but another configuration option has specifically asked to use pkg-config
-See \`config.log' for more details" "$LINENO" 5; }
-                                    fi
-                                 else
-                                    if ( test X$use_tetgen = Xno )
-                                    then
-                                       if ( test X$with_tetgen_pkgconf = Xno )
-                                       then
-                                          { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Asking to use specific header files for tetgen via --with-tetgen-include but --with-tetgen-pkgconf has specifically disabled the package
-See \`config.log' for more details" "$LINENO" 5; }
-                                       else
-                                          if ( test X$with_tetgen_library = Xno )
-                                          then
-                                             { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Asking to use specific header files for tetgen via --with-tetgen-include but --with-tetgen-library has specifically disabled the package
-See \`config.log' for more details" "$LINENO" 5; }
-                                          else
-                                             { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Asking to use specific header files for tetgen via --with-tetgen-include but --with-tetgen has specifically disabled the package
-See \`config.log' for more details" "$LINENO" 5; }
-                                          fi
-                                       fi
-                                    else
-                                       if ( test X$use_tetgen = Xcheck )
-                                       then
-                                          # Can never be here because of
-                                          # --with-<lib>-pkgconf
-                                          if ( test X$with_tetgen_library = Xcheck )
-                                          then
-                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Asking to use specific header files for tetgen via --with-tetgen-include despite --with-tetgen-library having asked to check for the package" >&5
-$as_echo "$as_me: WARNING: Asking to use specific header files for tetgen via --with-tetgen-include despite --with-tetgen-library having asked to check for the package" >&2;}
-                                          else
-                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Asking to use specific header files for tetgen via --with-tetgen-include despite --with-tetgen having asked to check for the package" >&5
-$as_echo "$as_me: WARNING: Asking to use specific header files for tetgen via --with-tetgen-include despite --with-tetgen having asked to check for the package" >&2;}
-                                          fi
-                                       fi
-                                    fi
-                                 fi
-                                 use_tetgen=yes
-                                 ;;
-                       esac
-
-else
-  trace 4 No --with-tetgen-include specified
-                       with_tetgen_include=notset
-
-
-fi
-
-
-          if ( test X$use_tetgen != Xno )
-          then
-             # Package is not disabled, need to determine what to test with
-
-             if ( test "X$with_tetgen_check" != "Xpkgconfig" )
-             then
-                # Not using pkg-config, set any paths for compile checks
-
-                # Check if --with-tetgen-library is a specification rather than a
-                # simple switch
-                if ( test "$with_tetgen_library" != notset && test "$with_tetgen_library" != no && test "$with_tetgen_library" != check && test "$with_tetgen_library" != yes )
-                then
-                   # We have a path specification to parse
-                   #
-                   # If the specification is a straight forward link line (of
-                   # the form "-L/a/b/c -ld .. -L/w/x/y -lz" we want to split
-                   # off the last -l entries into with_tetgen_lnklibs and include
-                   # the initial part of the link line in with_tetgen_libpath.
-                   # If we just have directory and library paths, we need to
-                   # add the relevant linker switch, and assign the parameter
-                   # to the appropriate variable.
-                   #
-                   with_tetgen_lnklibs=""
-                   with_tetgen_libpath=""
-                   use_tetgen=yes
-                   trace 6 Parsing --with-tetgen-library setting
-                   with_tetgen_library=`echo " $with_tetgen_library " | $SED 's/ -L */ -L/g;s/ -l */ -l/g'`
-                   # Collapse down spaces following -L and -l entries. This is
-                   # mainly for ease of parsing but does make any user input
-                   # compatible with the form of the default values used
-                   # throughout this configure script. Downsides are that any
-                   # other -X <arg> switches provided by the user will not
-                   # parse correctly and a general issue awaiting any systems
-                   # that must have the space between the switch and its
-                   # argument. The latter issue is the bigger problem as such
-                   # a limitation will have big consequences for this script
-                   # if we ever hit such a constrained toolset.
-                   for part in $with_tetgen_library
-                   do
-                      case $part in
-                      -L* )   # Library path specifier. Any previous library
-                              # names ought to be recorded as part of libpath
-                              # to maintain any order significance of the
-                              # supplied link command.
-                              TRACE_INDENT="     "
-                              trace 6 Appending [$part] to library path
-                              with_tetgen_libpath="$with_tetgen_libpath$with_tetgen_lnklibs$part "
-                              with_tetgen_lnklibs=""
-                              ;;
-                      -l* )   # Library specifier. Append to the linklib
-                              # variable.
-                              TRACE_INDENT="     "
-                              trace 6 Appending [$part] to library list
-                              with_tetgen_lnklibs="$with_tetgen_lnklibs$part "
-                              ;;
-                      -* )    # Presume linker switch. Append to libpath after
-                              # adding any existing library specs (so as to
-                              # maintain any order specific requirements).
-                              TRACE_INDENT="     "
-                              trace 6 Appending [$part] to link line
-                              with_tetgen_libpath="$with_tetgen_libpath$with_tetgen_lnklibs$part "
-                              with_tetgen_lnklibs=""
-                              ;;
-                      * )     # Non-linker format, see if we can work out
-                              # what it is
-                              if ( test -d $part )
-                              then
-                                 # We have a directory, add to libpath with
-                                 # a -L prefix having moved across any
-                                 # libraries from lnklibs to preserve ordering
-                                 # constraints
-                                 TRACE_INDENT="     "
-                                 trace 6 Adding [-L$part] to link line
-                                 with_tetgen_libpath="$with_tetgen_libpath${with_tetgen_lnklibs}-L$part "
-                                 with_tetgen_lnklibs=""
-                              else
-                                 # Not a directory, is it directory/file?
-                                 path=`$as_dirname -- $part ||
-$as_expr X$part : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
-	 X$part : 'X\(//\)[^/]' \| \
-	 X$part : 'X\(//\)$' \| \
-	 X$part : 'X\(/\)' \| . 2>/dev/null ||
-$as_echo X$part |
-    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{
-	    s//\1/
-	    q
-	  }
-	  /^X\(\/\/\)[^/].*/{
-	    s//\1/
-	    q
-	  }
-	  /^X\(\/\/\)$/{
-	    s//\1/
-	    q
-	  }
-	  /^X\(\/\).*/{
-	    s//\1/
-	    q
-	  }
-	  s/.*/./; q'`
-                                 if ( test X$path != X && test $path != . )
-                                 then
-                                    # We have "something/file" does the
-                                    # "something" point to a directory?
-                                    if ( test -d $path  )
-                                    then
-                                       # We have "directory/presumed-library-name"
-                                       # Find candidate library name
-                                       file=`$EXPR "//$part" : '.*/\([^/]*\)'`
-                                       if ( test $part = $path/$file )
-                                       then
-                                          # Parameter is a file path
-                                          # Does it have a '.a' extension
-                                          lib=`$EXPR "X$file" : 'X\(.*\)\.a$'`
-                                          if ( test X$lib != X  )
-                                          then
-                                             lib=`echo $lib | $SED 's/^lib//'`
-                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-tetgen_library pointing to a .a" >&5
-$as_echo "$as_me: WARNING: Specifying --with-tetgen_library pointing to a .a" >&2;}
-                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: will cause problems building with shared libraries." >&5
-$as_echo "$as_me: WARNING: will cause problems building with shared libraries." >&2;}
-                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Instead we will use -l$lib" >&5
-$as_echo "$as_me: WARNING: Instead we will use -l$lib" >&2;}
-                                          else
-                                             # Does it have a '.so' extension
-                                             lib=`$EXPR "X$file" : 'X\(.*\)\.so$'`
-                                             if ( test X$lib != X )
-                                             then
-                                                lib=`echo $lib | $SED 's/^lib//'`
-                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-tetgen_library pointing to" >&5
-$as_echo "$as_me: WARNING: Specifying --with-tetgen_library pointing to" >&2;}
-                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: a .so will cause problems building with " >&5
-$as_echo "$as_me: WARNING: a .so will cause problems building with " >&2;}
-                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: static libraries. Instead, we will use" >&5
-$as_echo "$as_me: WARNING: static libraries. Instead, we will use" >&2;}
-                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: -l$lib" >&5
-$as_echo "$as_me: WARNING: -l$lib" >&2;}
-                                             else
-                                                # Parameter is path and name fragment
-                                                lib=`echo $file | $SED 's/^lib//'`
-                                             fi
-                                          fi
-                                          # As the user specified the library
-                                          # as a path rather than with a -L
-                                          # and a -l entry, it would be good
-                                          # to continue in the same vein.
-                                          # However, as -l/full/path is not
-                                          # supported, we have to revert to
-                                          # the seperate specifiers.
-                                          TRACE_INDENT="     "
-                                          trace 6 Adding [-L$path] to library path
-                                          with_tetgen_libpath="$with_tetgen_libpath$with_tetgen_lnklibs-L$path "
-                                          with_tetgen_lnklibs=""
-                                          TRACE_INDENT="     "
-                                          trace 6 Adding [-l$lib] to library list
-                                          with_tetgen_lnklibs="-l$lib "
-                                       else
-                                          # Somehow dirname($x)/basename($x) != $x
-                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Problem processing --with-tetgen-library, [$part] ignored" >&5
-$as_echo "$as_me: WARNING: Problem processing --with-tetgen-library, [$part] ignored" >&2;}
-                                       fi
-                                    else
-                                       # Parameter is "not-a-dir-path/something"
-                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Illegal value for --with-tetgen-library, [$part] ignored" >&5
-$as_echo "$as_me: WARNING: Illegal value for --with-tetgen-library, [$part] ignored" >&2;}
-                                    fi
-                                 else
-                                    # Parameter is just "something" - assume library name
-                                    #
-                                    # Does it have a '.a' extension
-                                    lib=`$EXPR "X$part" : 'X\(.*\)\.a$'`
-                                    if ( test X$lib != X  )
-                                    then
-                                       lib=`echo $lib | $SED 's/^lib//'`
-                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-tetgen_library pointing to a .a" >&5
-$as_echo "$as_me: WARNING: Specifying --with-tetgen_library pointing to a .a" >&2;}
-                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: will cause problems building with shared libraries." >&5
-$as_echo "$as_me: WARNING: will cause problems building with shared libraries." >&2;}
-                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Instead we will use -l$lib" >&5
-$as_echo "$as_me: WARNING: Instead we will use -l$lib" >&2;}
-                                    else
-                                       # Does it have a '.so' extension
-                                       lib=`$EXPR "X$part" : 'X\(.*\)\.so$'`
-                                       if ( test X$lib != X )
-                                       then
-                                          lib=`echo $lib | $SED 's/^lib//'`
-                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-tetgen_library pointing to" >&5
-$as_echo "$as_me: WARNING: Specifying --with-tetgen_library pointing to" >&2;}
-                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: a .so will cause problems building with " >&5
-$as_echo "$as_me: WARNING: a .so will cause problems building with " >&2;}
-                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: static libraries. Instead, we will use" >&5
-$as_echo "$as_me: WARNING: static libraries. Instead, we will use" >&2;}
-                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: -l$lib" >&5
-$as_echo "$as_me: WARNING: -l$lib" >&2;}
-                                       else
-                                          # Parameter is name fragment
-                                          lib=`echo $part | $SED 's/^lib//'`
-                                       fi
-                                    fi
-                                    TRACE_INDENT="     "
-                                    trace 6 Adding [-l$lib] to library list
-                                    with_tetgen_lnklibs="${with_tetgen_lnklibs}-l$lib "
-                                 fi
-                              fi
-                              ;;
-                      esac
-                   done
-                   trace 3 Link line assembled from --with-tetgen-library is [$with_tetgen_libpath $with_tetgen_lnklibs]
-                   # Now verify what we have
-                   if ( test X`$EXPR "X $with_tetgen_libpath $with_tetgen_lnklibs" : '.* \(-l[^ ]*\).*$'` == X )
-                   then
-                      # no -lxxx in libpath or lnklibs - use any fallback or the
-                      # default library name
-                      if ( test X$fallback_file != X )
-                      then
-                         # --with_tetgen specified a fallback name, use that but
-                         # sanitise it first
-                         lib=`$EXPR "X$fallback_file" : 'X\(.*\)\.a$'`
-                         if ( test X$lib != X  )
-                         then
-                            # Removed an unwanted .a suffix
-                            # Now strip any leading -l or lib prefix
-                            with_tetgen_lnklibs=-l`echo $lib | $SED 's/^-l//;s/^lib//'`
-                            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-tetgen pointing to a .a" >&5
-$as_echo "$as_me: WARNING: Specifying --with-tetgen pointing to a .a" >&2;}
-                            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: will cause problems building with shared libraries." >&5
-$as_echo "$as_me: WARNING: will cause problems building with shared libraries." >&2;}
-                            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Instead we will use -l$lib" >&5
-$as_echo "$as_me: WARNING: Instead we will use -l$lib" >&2;}
-                         else
-                            lib=`$EXPR "X$fallback_file" : 'X\(.*\)\.so$'`
-                            if ( test X$lib != X )
-                            then
-                               # Removed an unwanted .so suffix
-                               # Now strip any leading -l or lib prefix
-                               with_tetgen_lnklibs=-l`echo $lib | $SED 's/^-l//;s/^lib//'`
-                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-tetgen pointing to a .so" >&5
-$as_echo "$as_me: WARNING: Specifying --with-tetgen pointing to a .so" >&2;}
-                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: will cause problems building with static libraries." >&5
-$as_echo "$as_me: WARNING: will cause problems building with static libraries." >&2;}
-                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Instead, we will use -l$lib" >&5
-$as_echo "$as_me: WARNING: Instead, we will use -l$lib" >&2;}
-                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: " >&5
-$as_echo "$as_me: WARNING: " >&2;}
-                            else
-                               # No suffix to strip
-                               # Strip any leading -l or lib prefix
-                               with_tetgen_lnklibs=-l`echo $fallback_file | $SED 's/^-l//;s/^lib//'`
-                            fi
-                         fi
-                         trace 3 No library name specified by --with-tetgen-library, using --with-tetgen value [$with_tetgen_lnklibs]
-                      else
-                         trace 3 No library name specified by --with-tetgen-library, using default ["-ltet"]
-                         with_tetgen_lnklibs="-ltet"
-                      fi
-
-                      if ( test X$fallback_path != X )
-                      then
-                         # --with_tetgen specified a fallback path, are we using
-                         # it?
-                         if ( test X`$EXPR "X $with_tetgen_libpath " : '.* \(-L[^ ]*\).*$'` == X )
-                         then
-                            # We do not have a library path; add the fallback
-                            with_tetgen_libpath="-L$fallback_path $with_tetgen_libpath"
-                            # It is an assumption to put it first, but we do
-                            # not know where the relevant library is in the
-                            # link specification, so we have to put it there.
-                            trace 3 No path component of --with-tetgen-library, using --with-tetgen to set library path for tetgen [-L$fallback_path]
-                         else
-                            if ( test X`$EXPR "X $with_tetgen_libpath " : ".* \(-L$fallback_path\)/* .*"` == X )
-                            then
-                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-tetgen-library and --with-tetgen specify different paths, --with-tetgen path ignored" >&5
-$as_echo "$as_me: WARNING: --with-tetgen-library and --with-tetgen specify different paths, --with-tetgen path ignored" >&2;}
-                            fi
-                         fi
-                      fi
-                   else
-                      # We already have a library specified, confirm that any
-                      # --with_tetgen setting agreed
-                      if ( test X$fallback_file != X )
-                      then
-                         lib=`echo $fallback_file | $SED 's/^-l//;s/^lib//;s/\(.*\)\.a/\1/;s/\(.*\).so/\1/'`
-                         # strip any leading -l or lib prefix; any trailing .a
-                         # or .so suffixes
-                         if ( test X`$EXPR "X $with_tetgen_libpath $with_tetgen_lnklibs " : ".* \(-l$lib\) .*"` == X )
-                         then
-                            # No -l<fallback>
-                            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-tetgen-library and --with-tetgen specify different libraries, --with-tetgen library setting ignored" >&5
-$as_echo "$as_me: WARNING: --with-tetgen-library and --with-tetgen specify different libraries, --with-tetgen library setting ignored" >&2;}
-                         fi
-                      fi
-
-                      if ( test X$fallback_path != X )
-                      then
-                         # --with_tetgen specified a fallback path, are we using
-                         # it?
-                         if ( test X`$EXPR "X $with_tetgen_libpath " : '.* \(-L[^ ]*\).*$'` == X )
-                         then
-                            # We do not have any library path; add the fallback
-                            trace 3 No path specified by --with-tetgen-library, using --with-tetgen value [-L$fallback_path]
-                            with_tetgen_libpath="-L$fallback_path $with_tetgen_libpath"
-                            # It is an assumption to put it first, but we do
-                            # not know where the relevant library is in the
-                            # link specification, so we have to put it there.
-                         else
-                            if ( test X`$EXPR "X $with_tetgen_libpath " : ".* \(-L$fallback_path\)/* .*"` == X )
-                            then
-                               # No -L entry for the fallback path.
-                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-tetgen-library and --with-tetgen specify different paths, --with-tetgen path ignored" >&5
-$as_echo "$as_me: WARNING: --with-tetgen-library and --with-tetgen specify different paths, --with-tetgen path ignored" >&2;}
-                            fi
-                         fi
-                      fi
-                   fi
-                else
-                   # --with-tetgen-library used as a switch; employ fallback/default paths
-                   if ( test X$fallback_path != X )
-                   then
-                      trace 3 Using path component of --with-tetgen to set library path for tetgen [-L$fallback_path]
-                      with_tetgen_libpath=-L$fallback_path
-                      use_tetgen=yes
-                   else
-                      with_tetgen_libpath=""
-                   fi
-                   if ( test X$fallback_file != X )
-                   then
-                         # --with_tetgen specified a fallback name, use that but
-                         # sanitise it first
-                         lib=`$EXPR "X$fallback_file" : 'X\(.*\)\.a$'`
-                         if ( test X$lib != X  )
-                         then
-                            # Removed an unwanted .a suffix
-                            # Now strip any leading -l or lib prefix
-                            with_tetgen_lnklibs=-l`echo $lib | $SED 's/^-l//;s/^lib//'`
-                            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-tetgen pointing to a .a" >&5
-$as_echo "$as_me: WARNING: Specifying --with-tetgen pointing to a .a" >&2;}
-                            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: will cause problems building with shared libraries." >&5
-$as_echo "$as_me: WARNING: will cause problems building with shared libraries." >&2;}
-                            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Instead we will use -l$lib" >&5
-$as_echo "$as_me: WARNING: Instead we will use -l$lib" >&2;}
-                         else
-                            lib=`$EXPR "X$fallback_file" : 'X\(.*\)\.so$'`
-                            if ( test X$lib != X )
-                            then
-                               # Removed an unwanted .so suffix
-                               # Now strip any leading -l or lib prefix
-                               with_tetgen_lnklibs=-l`echo $lib | $SED 's/^-l//;s/^lib//'`
-                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-tetgen pointing to a .so" >&5
-$as_echo "$as_me: WARNING: Specifying --with-tetgen pointing to a .so" >&2;}
-                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: will cause problems building with static libraries." >&5
-$as_echo "$as_me: WARNING: will cause problems building with static libraries." >&2;}
-                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Instead, we will use -l$lib" >&5
-$as_echo "$as_me: WARNING: Instead, we will use -l$lib" >&2;}
-                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: " >&5
-$as_echo "$as_me: WARNING: " >&2;}
-                            else
-                               # No suffix to strip
-                               # Strip any leading -l or lib prefix
-                               with_tetgen_lnklibs=-l`echo $fallback_file | $SED 's/^-l//;s/^lib//'`
-                            fi
-                         fi
-                         trace 3 Using file component of --with-tetgen to set library name for tetgen [$with_tetgen_lnklibs]
-                   else
-                      trace 3 Using default library name for tetgen ["-ltet"]
-                      with_tetgen_lnklibs="-ltet"
-                   fi
-                fi
-
-
-                # Check if --with-tetgen-include is a path parameter
-                if ( test "$with_tetgen_include" != notset && test "$with_tetgen_include" != no && test "$with_tetgen_include" != check && test "$with_tetgen_include" != yes )
-                then
-                   # we have a parameter rather than a switch to use
-                   with_tetgen_inc=""
-                   use_tetgen=yes
-                   if ( test X$fallback_path != X )
-                   then
-                      fallback_match=no
-                      # If we have a fallback path, we want to check it is
-                      # included in the -include setting and warn if not
-                   else
-                      fallback_match=yes
-                      # We have no fallback, so we never need to warn the user
-                   fi
-                   trace 6 Parsing --with-tetgen-include setting
-                   # Strip any provided -I entries for ease of parsing.
-                   for path in `echo " $with_tetgen_include " | $SED 's/ -I *//g'`
-                   do
-                      if ( test -d $path )
-                      then
-                         TRACE_INDENT="     "
-                         trace 6 Appending [-I$path] to set include path for tetgen
-                         with_tetgen_inc="$with_tetgen_inc-I$path "
-                         if ( test $fallback_match == no && test $fallback_path == $path )
-                         then
-                            fallback_match=yes
-                         fi
-                      else
-                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Illegal component of --with-tetgen-include, [$path] ignored" >&5
-$as_echo "$as_me: WARNING: Illegal component of --with-tetgen-include, [$path] ignored" >&2;}
-                      fi
-                   done
-                   if ( test X$with_tetgen_inc == X )
-                   then
-                      # No path from argument, any fallback?
-                      if ( test X$fallback_path != X )
-                      then
-                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Will use --with-tetgen value [-I$fallback_path]" >&5
-$as_echo "$as_me: WARNING: Will use --with-tetgen value [-I$fallback_path]" >&2;}
-                         with_tetgen_inc=-I$fallback_path
-                      else
-                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Will use default system include path" >&5
-$as_echo "$as_me: WARNING: Will use default system include path" >&2;}
-                         with_tetgen_inc=""
-                      fi
-                   else
-                      # We have valid path(es) supplied by the user, do they
-                      # encompass the fallback setting?
-                      if ( test $fallback_match != yes )
-                      then
-                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-tetgen-include and --with-tetgen specify different paths, --with-tetgen ignored" >&5
-$as_echo "$as_me: WARNING: --with-tetgen-include and --with-tetgen specify different paths, --with-tetgen ignored" >&2;}
-                      fi
-                   fi
-                else
-                   # --with-tetgen-include is a switch setting rather than a path,
-                   # use any available fallback
-                   if ( test X$fallback_path != X )
-                   then
-                      trace 3 No path specified by --with-tetgen-include, using --with-tetgen value [-I$fallback_path]
-                      with_tetgen_inc=-I$fallback_path
-                      use_tetgen=yes
-                   else
-                      trace 3 Will use default system include path
-                      with_tetgen_inc=""
-                   fi
-                fi
-             fi # End of: if ( test $with_tetgen_check !- pkgconfig
-          else
-             trace 4 Library tetgen disabled
-          fi
-
-
-
-          with_tetgen_tstcd='char * switches;
-                               tetgenio * in;
-                               tetgenio * out;
-                               tetgenio * bgmesh;
-                               tetrahedralize (switches, in, out, bgmesh);
-                              '
-                                                  with_tetgen_prq=""
-          with_tetgen_hdr="tetgen.h"
-          with_tetgen_lang="C++
-                             "
-
-
-
-
-
-          KnownLibs=$KnownLibs" "tetgen
-          if ( test X$use_tetgen = X )
-          then
-             use_tetgen=check
-             UnconfiguredLibs=$UnconfiguredLibs" "tetgen
-          else
-             ConfiguredLibs=$ConfiguredLibs" "tetgen
-          fi
-
-
-
-
-
-
           with_LibTIFF_check=compile
           if ( test Xcompile = Xvirtual )
           then
@@ -44684,6 +43609,1081 @@ $as_echo "$as_me: WARNING: --with-Qt4QGLViewer-include and --with-Qt4QGLViewer s
 
 
 
+          with_tetgen_check=bespoke
+          if ( test Xbespoke = Xvirtual )
+          then
+             with_tetgen_virtual=yes
+          else
+             with_tetgen_virtual=no
+          fi
+
+          fallback_file=""
+          fallback_path=""
+
+
+# Check whether --with-tetgen-pkgconf was given.
+if test "${with_tetgen_pkgconf+set}" = set; then :
+  withval=$with_tetgen_pkgconf; case $with_tetgen_pkgconf in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                 trace 4 --with-tetgen-pkgconf disabling tetgen
+                                 with_tetgen_pkgconf=no
+                                 use_tetgen=no
+                                 ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                 if ( test X != X )
+                                 then
+                                    trace 4 Asking for tetgen via --with-tetgen-pkgconf default value [$with_tetgen_pkgconf]
+                                    with_tetgen_pkgconf=
+                                    with_tetgen_check=pkgconfig
+                                    with_tetgen_virtual=no
+                                    use_tetgen=yes
+                                 else
+                                    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to enable tetgen via pkg-config but configure is unaware of the name of the DOTpc metadata file
+See \`config.log' for more details" "$LINENO" 5; }
+                                 fi
+                                 ;;
+                        'c' |'C' | 'ck' | 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                 if ( test X != X )
+                                 then
+                                    trace 4 Will check for tetgen using --with-tetgen-pkgconf default value [$with_tetgen_pkgconf]
+                                    with_tetgen_pkgconf=
+                                    with_tetgen_check=pkgconfig
+                                    with_tetgen_virtual=no
+                                    use_tetgen=check
+                                 else
+                                    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to check for tetgen via pkg-config but configure is unaware of the name of the DOTpc metadata file
+See \`config.log' for more details" "$LINENO" 5; }
+                                 fi
+                                 ;;
+                        * )
+                                 trace 4 Asking for tetgen --with-tetgen-pkgconf set to [$with_tetgen_pkgconf]
+                                 with_tetgen_check=pkgconfig
+                                 with_tetgen_virtual=no
+                                 use_tetgen=yes
+                                 ;;
+                       esac
+
+else
+  if ( test X != X )
+                       then
+                          trace 4 No --with-tetgen-pkgconf specified using default [$with_tetgen_pkgconf]
+                          with_tetgen_pkgconf=
+                          with_tetgen_check=pkgconfig
+                          with_tetgen_virtual=no
+                       else
+                          trace 4 No --with-tetgen-pkgconf specified and no default value
+                       fi
+
+
+fi
+
+
+# Check whether --with-tetgen was given.
+if test "${with_tetgen+set}" = set; then :
+  withval=$with_tetgen; case $with_tetgen in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                 trace 4 --with-tetgen disabling tetgen libraries
+                                 if ( test X$use_tetgen = Xyes )
+                                 then
+                                    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to disable tetgen by --with-tetgen but --with-tetgen-pkgconf has specifically enabled it
+See \`config.log' for more details" "$LINENO" 5; }
+                                 else
+                                    if ( test X$use_tetgen = Xcheck )
+                                    then
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Disabling tetgen via --with-tetgen despite --with-tetgen-pkconfig having asked to check for it" >&5
+$as_echo "$as_me: WARNING: Disabling tetgen via --with-tetgen despite --with-tetgen-pkconfig having asked to check for it" >&2;}
+                                    fi
+                                    use_tetgen=no
+                                 fi
+                                 with_tetgen=no
+                                 ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                 trace 4 --with-tetgen enabling tetgen libraries
+                                 if ( test X$use_tetgen = Xno )
+                                 then
+                                    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to enable tetgen by --with-tetgen but --with-tetgen-pkgconf has specifically disabled it
+See \`config.log' for more details" "$LINENO" 5; }
+                                 else
+                                    if ( test X$use_tetgen = Xcheck )
+                                    then
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Enabling tetgen via --with-tetgen despite --with-tetgen-pkconfig having asked to check for it" >&5
+$as_echo "$as_me: WARNING: Enabling tetgen via --with-tetgen despite --with-tetgen-pkconfig having asked to check for it" >&2;}
+                                    fi
+                                    use_tetgen=yes
+                                 fi
+                                 with_tetgen=yes
+                                 ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                 trace 4 --with-tetgen checking for tetgen libraries
+                                 if (test X$use_tetgen = Xyes )
+                                 then
+                                    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-tetgen asking to check for the libs but --with-tetgen-pkgconf has specifically enabled it" >&5
+$as_echo "$as_me: WARNING: --with-tetgen asking to check for the libs but --with-tetgen-pkgconf has specifically enabled it" >&2;}
+                                 else
+                                    if ( test X$use_tetgen = Xno )
+                                    then
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-tetgen asking to check for the libs but --with-tetgen-pkgconf has specifically disabled it" >&5
+$as_echo "$as_me: WARNING: --with-tetgen asking to check for the libs but --with-tetgen-pkgconf has specifically disabled it" >&2;}
+                                    else
+                                       use_tetgen=check
+                                    fi
+                                 fi
+                                 with_tetgen=check
+                                 ;;
+                        * )      # --with-<lib> is not being used as a simple
+                                 # yes/no/check switch - see if this is
+                                 # providing an extra piece of information
+                                 if ( test -d $with_tetgen )
+                                 then
+                                    # Parameter is a directory path
+                                    fallback_path=$with_tetgen
+                                    fallback_file=""
+                                    trace 3 with-tetgen provides a fallback path [$fallback_path]
+                                    use_tetgen=yes
+                                    with_tetgen=yes
+                                 else
+                                    fallback_path=`$as_dirname -- $with_tetgen ||
+$as_expr X$with_tetgen : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
+	 X$with_tetgen : 'X\(//\)[^/]' \| \
+	 X$with_tetgen : 'X\(//\)$' \| \
+	 X$with_tetgen : 'X\(/\)' \| . 2>/dev/null ||
+$as_echo X$with_tetgen |
+    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)[^/].*/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\).*/{
+	    s//\1/
+	    q
+	  }
+	  s/.*/./; q'`
+                                    if ( test -d $fallback_path  )
+                                    then
+                                       # strip leading path
+                                       fallback_file=`$EXPR "//$with_tetgen" : '.*/\([^/]*\)'`
+                                       # portable version of fallback_file=`basename $with_tetgen`
+                                       if ( test X$with_tetgen = X$fallback_path/$fallback_file )
+                                       then
+                                          # Parameter is a file path
+                                          trace 3 with-tetgen provides a fallback path [$fallback_path] and a file [$fallback_file]
+                                          use_tetgen=yes
+                                          with_tetgen=yes
+                                       else
+                                          # Somehow dirname($x)/basename($x) != $x
+                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Problem processing --with-tetgen, parameter ignored" >&5
+$as_echo "$as_me: WARNING: Problem processing --with-tetgen, parameter ignored" >&2;}
+                                          fallback_path=""
+                                          fallback_file=""
+                                       fi
+                                    else
+                                       # --with-tetgen=/path/is/not/a/dir/something
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Illegal command-line option for --with-tetgen, parameter ignored" >&5
+$as_echo "$as_me: WARNING: Illegal command-line option for --with-tetgen, parameter ignored" >&2;}
+                                       fallback_path=""
+                                       fallback_file=""
+                                    fi
+                                 fi
+                                 ;;
+                       esac
+
+else
+  trace 5 No --with-tetgen specified
+
+fi
+
+
+
+
+
+
+# Check whether --with-tetgen-library was given.
+if test "${with_tetgen_library+set}" = set; then :
+  withval=$with_tetgen_library; case "$with_tetgen_library" in
+                          'n' | 'N' | 'no' | 'No' | 'NO' )
+                                 trace 4 --with-tetgen-library disabling tetgen libraries
+                                 if ( test X$use_tetgen = Xyes )
+                                 then
+                                    if ( test X$with_tetgen_check = Xpkgconfig )
+                                    then
+                                       # Either --with-<lib>-pkgconf is in use
+                                       # or --with-<lib> specifies a .pc file
+                                       { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to disable tetgen via --with-tetgen-library but another configuration option has specifically asked to use pkg-config
+See \`config.log' for more details" "$LINENO" 5; }
+                                    else
+                                       { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to disable tetgen via --with-tetgen-library but --with-tetgen has specifically enabled it
+See \`config.log' for more details" "$LINENO" 5; }
+                                    fi
+                                 else
+                                    if ( test X$use_tetgen = Xcheck )
+                                    then
+                                       # Can only be here if --with-<lib>
+                                       # is set to check
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Disabling tetgen via --with-tetgen-library despite --with-tetgen having asked to check for it" >&5
+$as_echo "$as_me: WARNING: Disabling tetgen via --with-tetgen-library despite --with-tetgen having asked to check for it" >&2;}
+                                    fi
+                                 fi
+                                 use_tetgen=no
+                                 with_tetgen_library=no
+                                 ;;
+                          'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                 if ( test X$use_tetgen = Xyes )
+                                 then
+                                    if ( test X$with_tetgen_check = Xpkgconfig )
+                                    then
+                                       # Either --with-<lib>-pkgconf is in use
+                                       # or --with-<lib> specifies a .pc file
+                                       { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to enable tetgen via --with-tetgen-library but another configuration option  has specifically asked to use pkg-config
+See \`config.log' for more details" "$LINENO" 5; }
+                                    fi
+                                 else
+                                    if ( test X$use_tetgen = Xno )
+                                    then
+                                       if ( test X$with_tetgen_pkgconf = Xno )
+                                       then
+                                          { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to enable tetgen via --with-tetgen-library but --with-tetgen-pkgconf has specifically disabled it
+See \`config.log' for more details" "$LINENO" 5; }
+                                       else
+                                          { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to enable tetgen via --with-tetgen-library but --with-tetgen has specifically disabled it
+See \`config.log' for more details" "$LINENO" 5; }
+                                       fi
+                                    else
+                                       if ( test X$use_tetgen = Xcheck )
+                                       then
+                                          # Can only be here if --with-<lib>
+                                          # is set to check
+                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Enabling tetgen via --with-tetgen-library despite --with-tetgen having asked to check for it" >&5
+$as_echo "$as_me: WARNING: Enabling tetgen via --with-tetgen-library despite --with-tetgen having asked to check for it" >&2;}
+                                       fi
+                                    fi
+                                 fi
+                                 use_tetgen=yes
+                                 with_tetgen_library=yes
+                                 ;;
+                          'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                 if ( test X$use_tetgen = Xyes )
+                                 then
+                                    if ( test X$with_tetgen_check = Xpkgconfig )
+                                    then
+                                       # Either --with-<lib>-pkgconf is in use
+                                       # or --with-<lib> specifies a .pc file
+                                       { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to check for tetgen via --with-tetgen-library but another configuration option has specifically asked to use pkg-config
+See \`config.log' for more details" "$LINENO" 5; }
+                                    else
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Asking to check for tetgen via --with-tetgen-library but --with-tetgen has specifically enabled it" >&5
+$as_echo "$as_me: WARNING: Asking to check for tetgen via --with-tetgen-library but --with-tetgen has specifically enabled it" >&2;}
+                                    fi
+                                 else
+                                    if ( test X$use_tetgen = Xno )
+                                    then
+                                       if ( test X$with_tetgen_pkgconf = Xno )
+                                       then
+                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Asking to check for tetgen via --with-tetgen-library but --with-tetgen-pkgconf has specifically disabled it" >&5
+$as_echo "$as_me: WARNING: Asking to check for tetgen via --with-tetgen-library but --with-tetgen-pkgconf has specifically disabled it" >&2;}
+                                       else
+                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Asking to check for tetgen via --with-tetgen-library but --with-tetgen has specifically disabled it" >&5
+$as_echo "$as_me: WARNING: Asking to check for tetgen via --with-tetgen-library but --with-tetgen has specifically disabled it" >&2;}
+                                       fi
+                                    else
+                                       if ( test X$use_tetgen = Xcheck )
+                                       then
+                                          # Can only be here if --with-<lib>
+                                          # is set to check (which probvides
+                                          # no conflict).
+                                          with_tetgen_library=check
+                                       else
+                                          # No user setting from with-<lib>
+                                          # or --with-<lib>-pkgconf
+                                          use_tetgen=check
+                                          # This is the only condition where
+                                          # we need to be updating use_<lib>
+                                       fi
+                                    fi
+                                 fi
+                                 with_tetgen_library=check
+                                 ;;
+                          * )
+                                 if ( test X$use_tetgen = Xyes )
+                                 then
+                                    if ( test X$with_tetgen_check = Xpkgconfig )
+                                    then
+                                       # Either --with-<lib>-pkgconf is in use
+                                       # or --with-<lib> specifies a .pc file
+                                       { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to link with a specific library via --with-tetgen-library but another configuration option has specifically asked to use pkg-config
+See \`config.log' for more details" "$LINENO" 5; }
+                                    fi
+                                 else
+                                    if ( test X$use_tetgen = Xno )
+                                    then
+                                       if ( test X$with_tetgen_pkgconf = Xno )
+                                       then
+                                          { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to link with a specific library via --with-tetgen-library but --with-tetgen-pkgconf has specifically disabled the package
+See \`config.log' for more details" "$LINENO" 5; }
+                                       else
+                                          { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to link with a specific library via --with-tetgen-library but --with-tetgen has specifically disabled the package
+See \`config.log' for more details" "$LINENO" 5; }
+                                       fi
+                                    else
+                                       if ( test X$use_tetgen = Xcheck )
+                                       then
+                                          # Can only be here if --with-<lib>
+                                          # is set to check
+                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Asking to link with a specific library via --with-tetgen-library despite --with-tetgen having asked to check for the package" >&5
+$as_echo "$as_me: WARNING: Asking to link with a specific library via --with-tetgen-library despite --with-tetgen having asked to check for the package" >&2;}
+                                       fi
+                                    fi
+                                 fi
+                                 use_tetgen=yes
+                                 ;;
+                       esac
+
+else
+  trace 4 No --with-tetgen-library specified
+                       with_tetgen_library=notset
+
+
+fi
+
+
+
+# Check whether --with-tetgen-include was given.
+if test "${with_tetgen_include+set}" = set; then :
+  withval=$with_tetgen_include; case "$with_tetgen_include" in
+                          'n' | 'N' | 'no' | 'No' | 'NO' )
+                                 trace 4 --with-tetgen-include disabling tetgen libraries
+                                 if ( test X$use_tetgen = Xyes )
+                                 then
+                                    if ( test X$with_tetgen_check = Xpkgconfig )
+                                    then
+                                       # Either --with-<lib>-pkgconf is in use
+                                       # or --with-<lib> specifies a .pc file
+                                       { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to disable tetgen via --with-tetgen-include but another configuration option has specifically asked to use pkg-config
+See \`config.log' for more details" "$LINENO" 5; }
+                                    else
+                                       # As use_<lib>=yes, the only possible
+                                       # values for --with-<lib>-library are:
+                                       # notset; yes; check or a path. So, we
+                                       # can check for the conflicting setting
+                                       # of yes or any path by determining the
+                                       # setting is not check or notset.
+                                       if ( test X$with_tetgen_library != Xnotset && test X$with_tetgen_library != Xcheck )
+                                       then
+                                          { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to disable tetgen via --with-tetgen-include but --with-tetgen-library has specifically enabled it
+See \`config.log' for more details" "$LINENO" 5; }
+                                       else
+                                          { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to disable tetgen via --with-tetgen-include but --with-tetgen has specifically enabled it
+See \`config.log' for more details" "$LINENO" 5; }
+                                       fi
+                                    fi
+                                 else
+                                    if ( test X$use_tetgen = Xcheck )
+                                    then
+                                       # Can never be here because of
+                                       # --with-<lib>-pkgconf
+                                       if ( test X$with_tetgen_library = Xcheck )
+                                       then
+                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Disabling tetgen via --with-tetgen-include despite --with-tetgen-library having asked to check for it" >&5
+$as_echo "$as_me: WARNING: Disabling tetgen via --with-tetgen-include despite --with-tetgen-library having asked to check for it" >&2;}
+                                       else
+                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Disabling tetgen via --with-tetgen-include despite --with-tetgen having asked to check for it" >&5
+$as_echo "$as_me: WARNING: Disabling tetgen via --with-tetgen-include despite --with-tetgen having asked to check for it" >&2;}
+                                       fi
+                                    fi
+                                 fi
+                                 use_tetgen=no
+                                 with_tetgen_include=no
+                                 ;;
+                          'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                 if ( test X$use_tetgen = Xyes )
+                                 then
+                                    if ( test X$with_tetgen_check = Xpkgconfig )
+                                    then
+                                       # Either --with-<lib>-pkgconf is in use
+                                       # or --with-<lib> specifies a .pc file
+                                       { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to enable tetgen via --with-tetgen-include but another configuration option  has specifically asked to use pkg-config
+See \`config.log' for more details" "$LINENO" 5; }
+                                    fi
+                                 else
+                                    if ( test X$use_tetgen = Xno )
+                                    then
+                                       if ( test X$with_tetgen_pkgconf = Xno )
+                                       then
+                                          { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to enable tetgen via --with-tetgen-include but --with-tetgen-pkgconf has specifically disabled it
+See \`config.log' for more details" "$LINENO" 5; }
+                                       else
+                                          if ( test X$with_tetgen_library = Xno )
+                                          then
+                                             { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to enable tetgen via --with-tetgen-include but --with-tetgen-library has specifically disabled it
+See \`config.log' for more details" "$LINENO" 5; }
+                                          else
+                                             { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to enable tetgen via --with-tetgen-include but --with-tetgen has specifically disabled it
+See \`config.log' for more details" "$LINENO" 5; }
+                                          fi
+                                       fi
+                                    else
+                                       if ( test X$use_tetgen = Xcheck )
+                                       then
+                                          # Can never be here because of
+                                          # --with-<lib>-pkgconf
+                                          if ( test X$with_tetgen_library = Xcheck )
+                                          then
+                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Enabling tetgen via --with-tetgen-include despite --with-tetgen-library having asked to check for it" >&5
+$as_echo "$as_me: WARNING: Enabling tetgen via --with-tetgen-include despite --with-tetgen-library having asked to check for it" >&2;}
+                                          else
+                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Enabling tetgen via --with-tetgen-include despite --with-tetgen having asked to check for it" >&5
+$as_echo "$as_me: WARNING: Enabling tetgen via --with-tetgen-include despite --with-tetgen having asked to check for it" >&2;}
+                                          fi
+                                       fi
+                                    fi
+                                 fi
+                                 use_tetgen=yes
+                                 with_tetgen_include=yes
+                                 ;;
+                          'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                 if ( test X$use_tetgen = Xyes )
+                                 then
+                                    if ( test X$with_tetgen_check = Xpkgconfig )
+                                    then
+                                       # Either --with-<lib>-pkgconf is in use
+                                       # or --with-<lib> specifies a .pc file
+                                       { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to check for tetgen via --with-tetgen-include but another configuration option has specifically asked to use pkg-config
+See \`config.log' for more details" "$LINENO" 5; }
+                                    else
+                                       # As use_<lib>=yes, the only possible
+                                       # values for --with-<lib>-library are:
+                                       # notset; yes; check or a path. So, we
+                                       # can check for the conflicting setting
+                                       # of yes or any path by determining the
+                                       # setting is not check or notset.
+                                       if ( test X$with_tetgen_library != Xcheck && test X$with_tetgen_library != Xnotset )
+                                       then
+                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Asking to check for tetgen via --with-tetgen-include but --with-tetgen-library has specifically enabled it" >&5
+$as_echo "$as_me: WARNING: Asking to check for tetgen via --with-tetgen-include but --with-tetgen-library has specifically enabled it" >&2;}
+                                       else
+                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Asking to check for tetgen via --with-tetgen-include but --with-tetgen has specifically enabled it" >&5
+$as_echo "$as_me: WARNING: Asking to check for tetgen via --with-tetgen-include but --with-tetgen has specifically enabled it" >&2;}
+                                       fi
+                                    fi
+                                 else
+                                    if ( test X$use_tetgen = Xno )
+                                    then
+                                       if ( test X$with_tetgen_pkgconf = Xno )
+                                       then
+                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Asking to check for tetgen via --with-tetgen-include but --with-tetgen-pkgconf has specifically disabled it" >&5
+$as_echo "$as_me: WARNING: Asking to check for tetgen via --with-tetgen-include but --with-tetgen-pkgconf has specifically disabled it" >&2;}
+                                       else
+                                          if ( test X$with_tetgen_library = Xno )
+                                          then
+                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Asking to check for tetgen via --with-tetgen-include but --with-tetgen-library has specifically disabled it" >&5
+$as_echo "$as_me: WARNING: Asking to check for tetgen via --with-tetgen-include but --with-tetgen-library has specifically disabled it" >&2;}
+                                          else
+                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Asking to check for tetgen via --with-tetgen-include but --with-tetgen has specifically disabled it" >&5
+$as_echo "$as_me: WARNING: Asking to check for tetgen via --with-tetgen-include but --with-tetgen has specifically disabled it" >&2;}
+                                          fi
+                                       fi
+                                    else
+                                       if ( test X$use_tetgen = Xcheck )
+                                       then
+                                          # Can never be here because of
+                                          # --with-<lib>-pkgconf so we do not
+                                          # need to check for any incompatable
+                                          # settings
+                                          with_tetgen_include=check
+                                       else
+                                          # No other user setting
+                                          use_tetgen=check
+                                          # This is the only condition where
+                                          # we need to be updating use_<lib>
+                                       fi
+                                    fi
+                                 fi
+                                 with_tetgen_include=check
+                                 ;;
+                          * )
+                                 if ( test X$use_tetgen = Xyes )
+                                 then
+                                    if ( test X$with_tetgen_check = Xpkgconfig )
+                                    then
+                                       # Either --with-<lib>-pkgconf is in use
+                                       # or --with-<lib> specifies a .pc file
+                                       { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to use specific header files for tetgen via --with-tetgen-include but another configuration option has specifically asked to use pkg-config
+See \`config.log' for more details" "$LINENO" 5; }
+                                    fi
+                                 else
+                                    if ( test X$use_tetgen = Xno )
+                                    then
+                                       if ( test X$with_tetgen_pkgconf = Xno )
+                                       then
+                                          { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to use specific header files for tetgen via --with-tetgen-include but --with-tetgen-pkgconf has specifically disabled the package
+See \`config.log' for more details" "$LINENO" 5; }
+                                       else
+                                          if ( test X$with_tetgen_library = Xno )
+                                          then
+                                             { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to use specific header files for tetgen via --with-tetgen-include but --with-tetgen-library has specifically disabled the package
+See \`config.log' for more details" "$LINENO" 5; }
+                                          else
+                                             { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to use specific header files for tetgen via --with-tetgen-include but --with-tetgen has specifically disabled the package
+See \`config.log' for more details" "$LINENO" 5; }
+                                          fi
+                                       fi
+                                    else
+                                       if ( test X$use_tetgen = Xcheck )
+                                       then
+                                          # Can never be here because of
+                                          # --with-<lib>-pkgconf
+                                          if ( test X$with_tetgen_library = Xcheck )
+                                          then
+                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Asking to use specific header files for tetgen via --with-tetgen-include despite --with-tetgen-library having asked to check for the package" >&5
+$as_echo "$as_me: WARNING: Asking to use specific header files for tetgen via --with-tetgen-include despite --with-tetgen-library having asked to check for the package" >&2;}
+                                          else
+                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Asking to use specific header files for tetgen via --with-tetgen-include despite --with-tetgen having asked to check for the package" >&5
+$as_echo "$as_me: WARNING: Asking to use specific header files for tetgen via --with-tetgen-include despite --with-tetgen having asked to check for the package" >&2;}
+                                          fi
+                                       fi
+                                    fi
+                                 fi
+                                 use_tetgen=yes
+                                 ;;
+                       esac
+
+else
+  trace 4 No --with-tetgen-include specified
+                       with_tetgen_include=notset
+
+
+fi
+
+
+          if ( test X$use_tetgen != Xno )
+          then
+             # Package is not disabled, need to determine what to test with
+
+             if ( test "X$with_tetgen_check" != "Xpkgconfig" )
+             then
+                # Not using pkg-config, set any paths for compile checks
+
+                # Check if --with-tetgen-library is a specification rather than a
+                # simple switch
+                if ( test "$with_tetgen_library" != notset && test "$with_tetgen_library" != no && test "$with_tetgen_library" != check && test "$with_tetgen_library" != yes )
+                then
+                   # We have a path specification to parse
+                   #
+                   # If the specification is a straight forward link line (of
+                   # the form "-L/a/b/c -ld .. -L/w/x/y -lz" we want to split
+                   # off the last -l entries into with_tetgen_lnklibs and include
+                   # the initial part of the link line in with_tetgen_libpath.
+                   # If we just have directory and library paths, we need to
+                   # add the relevant linker switch, and assign the parameter
+                   # to the appropriate variable.
+                   #
+                   with_tetgen_lnklibs=""
+                   with_tetgen_libpath=""
+                   use_tetgen=yes
+                   trace 6 Parsing --with-tetgen-library setting
+                   with_tetgen_library=`echo " $with_tetgen_library " | $SED 's/ -L */ -L/g;s/ -l */ -l/g'`
+                   # Collapse down spaces following -L and -l entries. This is
+                   # mainly for ease of parsing but does make any user input
+                   # compatible with the form of the default values used
+                   # throughout this configure script. Downsides are that any
+                   # other -X <arg> switches provided by the user will not
+                   # parse correctly and a general issue awaiting any systems
+                   # that must have the space between the switch and its
+                   # argument. The latter issue is the bigger problem as such
+                   # a limitation will have big consequences for this script
+                   # if we ever hit such a constrained toolset.
+                   for part in $with_tetgen_library
+                   do
+                      case $part in
+                      -L* )   # Library path specifier. Any previous library
+                              # names ought to be recorded as part of libpath
+                              # to maintain any order significance of the
+                              # supplied link command.
+                              TRACE_INDENT="     "
+                              trace 6 Appending [$part] to library path
+                              with_tetgen_libpath="$with_tetgen_libpath$with_tetgen_lnklibs$part "
+                              with_tetgen_lnklibs=""
+                              ;;
+                      -l* )   # Library specifier. Append to the linklib
+                              # variable.
+                              TRACE_INDENT="     "
+                              trace 6 Appending [$part] to library list
+                              with_tetgen_lnklibs="$with_tetgen_lnklibs$part "
+                              ;;
+                      -* )    # Presume linker switch. Append to libpath after
+                              # adding any existing library specs (so as to
+                              # maintain any order specific requirements).
+                              TRACE_INDENT="     "
+                              trace 6 Appending [$part] to link line
+                              with_tetgen_libpath="$with_tetgen_libpath$with_tetgen_lnklibs$part "
+                              with_tetgen_lnklibs=""
+                              ;;
+                      * )     # Non-linker format, see if we can work out
+                              # what it is
+                              if ( test -d $part )
+                              then
+                                 # We have a directory, add to libpath with
+                                 # a -L prefix having moved across any
+                                 # libraries from lnklibs to preserve ordering
+                                 # constraints
+                                 TRACE_INDENT="     "
+                                 trace 6 Adding [-L$part] to link line
+                                 with_tetgen_libpath="$with_tetgen_libpath${with_tetgen_lnklibs}-L$part "
+                                 with_tetgen_lnklibs=""
+                              else
+                                 # Not a directory, is it directory/file?
+                                 path=`$as_dirname -- $part ||
+$as_expr X$part : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
+	 X$part : 'X\(//\)[^/]' \| \
+	 X$part : 'X\(//\)$' \| \
+	 X$part : 'X\(/\)' \| . 2>/dev/null ||
+$as_echo X$part |
+    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)[^/].*/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\).*/{
+	    s//\1/
+	    q
+	  }
+	  s/.*/./; q'`
+                                 if ( test X$path != X && test $path != . )
+                                 then
+                                    # We have "something/file" does the
+                                    # "something" point to a directory?
+                                    if ( test -d $path  )
+                                    then
+                                       # We have "directory/presumed-library-name"
+                                       # Find candidate library name
+                                       file=`$EXPR "//$part" : '.*/\([^/]*\)'`
+                                       if ( test $part = $path/$file )
+                                       then
+                                          # Parameter is a file path
+                                          # Does it have a '.a' extension
+                                          lib=`$EXPR "X$file" : 'X\(.*\)\.a$'`
+                                          if ( test X$lib != X  )
+                                          then
+                                             lib=`echo $lib | $SED 's/^lib//'`
+                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-tetgen_library pointing to a .a" >&5
+$as_echo "$as_me: WARNING: Specifying --with-tetgen_library pointing to a .a" >&2;}
+                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: will cause problems building with shared libraries." >&5
+$as_echo "$as_me: WARNING: will cause problems building with shared libraries." >&2;}
+                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Instead we will use -l$lib" >&5
+$as_echo "$as_me: WARNING: Instead we will use -l$lib" >&2;}
+                                          else
+                                             # Does it have a '.so' extension
+                                             lib=`$EXPR "X$file" : 'X\(.*\)\.so$'`
+                                             if ( test X$lib != X )
+                                             then
+                                                lib=`echo $lib | $SED 's/^lib//'`
+                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-tetgen_library pointing to" >&5
+$as_echo "$as_me: WARNING: Specifying --with-tetgen_library pointing to" >&2;}
+                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: a .so will cause problems building with " >&5
+$as_echo "$as_me: WARNING: a .so will cause problems building with " >&2;}
+                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: static libraries. Instead, we will use" >&5
+$as_echo "$as_me: WARNING: static libraries. Instead, we will use" >&2;}
+                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: -l$lib" >&5
+$as_echo "$as_me: WARNING: -l$lib" >&2;}
+                                             else
+                                                # Parameter is path and name fragment
+                                                lib=`echo $file | $SED 's/^lib//'`
+                                             fi
+                                          fi
+                                          # As the user specified the library
+                                          # as a path rather than with a -L
+                                          # and a -l entry, it would be good
+                                          # to continue in the same vein.
+                                          # However, as -l/full/path is not
+                                          # supported, we have to revert to
+                                          # the seperate specifiers.
+                                          TRACE_INDENT="     "
+                                          trace 6 Adding [-L$path] to library path
+                                          with_tetgen_libpath="$with_tetgen_libpath$with_tetgen_lnklibs-L$path "
+                                          with_tetgen_lnklibs=""
+                                          TRACE_INDENT="     "
+                                          trace 6 Adding [-l$lib] to library list
+                                          with_tetgen_lnklibs="-l$lib "
+                                       else
+                                          # Somehow dirname($x)/basename($x) != $x
+                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Problem processing --with-tetgen-library, [$part] ignored" >&5
+$as_echo "$as_me: WARNING: Problem processing --with-tetgen-library, [$part] ignored" >&2;}
+                                       fi
+                                    else
+                                       # Parameter is "not-a-dir-path/something"
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Illegal value for --with-tetgen-library, [$part] ignored" >&5
+$as_echo "$as_me: WARNING: Illegal value for --with-tetgen-library, [$part] ignored" >&2;}
+                                    fi
+                                 else
+                                    # Parameter is just "something" - assume library name
+                                    #
+                                    # Does it have a '.a' extension
+                                    lib=`$EXPR "X$part" : 'X\(.*\)\.a$'`
+                                    if ( test X$lib != X  )
+                                    then
+                                       lib=`echo $lib | $SED 's/^lib//'`
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-tetgen_library pointing to a .a" >&5
+$as_echo "$as_me: WARNING: Specifying --with-tetgen_library pointing to a .a" >&2;}
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: will cause problems building with shared libraries." >&5
+$as_echo "$as_me: WARNING: will cause problems building with shared libraries." >&2;}
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Instead we will use -l$lib" >&5
+$as_echo "$as_me: WARNING: Instead we will use -l$lib" >&2;}
+                                    else
+                                       # Does it have a '.so' extension
+                                       lib=`$EXPR "X$part" : 'X\(.*\)\.so$'`
+                                       if ( test X$lib != X )
+                                       then
+                                          lib=`echo $lib | $SED 's/^lib//'`
+                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-tetgen_library pointing to" >&5
+$as_echo "$as_me: WARNING: Specifying --with-tetgen_library pointing to" >&2;}
+                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: a .so will cause problems building with " >&5
+$as_echo "$as_me: WARNING: a .so will cause problems building with " >&2;}
+                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: static libraries. Instead, we will use" >&5
+$as_echo "$as_me: WARNING: static libraries. Instead, we will use" >&2;}
+                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: -l$lib" >&5
+$as_echo "$as_me: WARNING: -l$lib" >&2;}
+                                       else
+                                          # Parameter is name fragment
+                                          lib=`echo $part | $SED 's/^lib//'`
+                                       fi
+                                    fi
+                                    TRACE_INDENT="     "
+                                    trace 6 Adding [-l$lib] to library list
+                                    with_tetgen_lnklibs="${with_tetgen_lnklibs}-l$lib "
+                                 fi
+                              fi
+                              ;;
+                      esac
+                   done
+                   trace 3 Link line assembled from --with-tetgen-library is [$with_tetgen_libpath $with_tetgen_lnklibs]
+                   # Now verify what we have
+                   if ( test X`$EXPR "X $with_tetgen_libpath $with_tetgen_lnklibs" : '.* \(-l[^ ]*\).*$'` == X )
+                   then
+                      # no -lxxx in libpath or lnklibs - use any fallback or the
+                      # default library name
+                      if ( test X$fallback_file != X )
+                      then
+                         # --with_tetgen specified a fallback name, use that but
+                         # sanitise it first
+                         lib=`$EXPR "X$fallback_file" : 'X\(.*\)\.a$'`
+                         if ( test X$lib != X  )
+                         then
+                            # Removed an unwanted .a suffix
+                            # Now strip any leading -l or lib prefix
+                            with_tetgen_lnklibs=-l`echo $lib | $SED 's/^-l//;s/^lib//'`
+                            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-tetgen pointing to a .a" >&5
+$as_echo "$as_me: WARNING: Specifying --with-tetgen pointing to a .a" >&2;}
+                            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: will cause problems building with shared libraries." >&5
+$as_echo "$as_me: WARNING: will cause problems building with shared libraries." >&2;}
+                            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Instead we will use -l$lib" >&5
+$as_echo "$as_me: WARNING: Instead we will use -l$lib" >&2;}
+                         else
+                            lib=`$EXPR "X$fallback_file" : 'X\(.*\)\.so$'`
+                            if ( test X$lib != X )
+                            then
+                               # Removed an unwanted .so suffix
+                               # Now strip any leading -l or lib prefix
+                               with_tetgen_lnklibs=-l`echo $lib | $SED 's/^-l//;s/^lib//'`
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-tetgen pointing to a .so" >&5
+$as_echo "$as_me: WARNING: Specifying --with-tetgen pointing to a .so" >&2;}
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: will cause problems building with static libraries." >&5
+$as_echo "$as_me: WARNING: will cause problems building with static libraries." >&2;}
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Instead, we will use -l$lib" >&5
+$as_echo "$as_me: WARNING: Instead, we will use -l$lib" >&2;}
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: " >&5
+$as_echo "$as_me: WARNING: " >&2;}
+                            else
+                               # No suffix to strip
+                               # Strip any leading -l or lib prefix
+                               with_tetgen_lnklibs=-l`echo $fallback_file | $SED 's/^-l//;s/^lib//'`
+                            fi
+                         fi
+                         trace 3 No library name specified by --with-tetgen-library, using --with-tetgen value [$with_tetgen_lnklibs]
+                      else
+                         trace 3 No library name specified by --with-tetgen-library, using default ["-ltet"]
+                         with_tetgen_lnklibs="-ltet"
+                      fi
+
+                      if ( test X$fallback_path != X )
+                      then
+                         # --with_tetgen specified a fallback path, are we using
+                         # it?
+                         if ( test X`$EXPR "X $with_tetgen_libpath " : '.* \(-L[^ ]*\).*$'` == X )
+                         then
+                            # We do not have a library path; add the fallback
+                            with_tetgen_libpath="-L$fallback_path $with_tetgen_libpath"
+                            # It is an assumption to put it first, but we do
+                            # not know where the relevant library is in the
+                            # link specification, so we have to put it there.
+                            trace 3 No path component of --with-tetgen-library, using --with-tetgen to set library path for tetgen [-L$fallback_path]
+                         else
+                            if ( test X`$EXPR "X $with_tetgen_libpath " : ".* \(-L$fallback_path\)/* .*"` == X )
+                            then
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-tetgen-library and --with-tetgen specify different paths, --with-tetgen path ignored" >&5
+$as_echo "$as_me: WARNING: --with-tetgen-library and --with-tetgen specify different paths, --with-tetgen path ignored" >&2;}
+                            fi
+                         fi
+                      fi
+                   else
+                      # We already have a library specified, confirm that any
+                      # --with_tetgen setting agreed
+                      if ( test X$fallback_file != X )
+                      then
+                         lib=`echo $fallback_file | $SED 's/^-l//;s/^lib//;s/\(.*\)\.a/\1/;s/\(.*\).so/\1/'`
+                         # strip any leading -l or lib prefix; any trailing .a
+                         # or .so suffixes
+                         if ( test X`$EXPR "X $with_tetgen_libpath $with_tetgen_lnklibs " : ".* \(-l$lib\) .*"` == X )
+                         then
+                            # No -l<fallback>
+                            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-tetgen-library and --with-tetgen specify different libraries, --with-tetgen library setting ignored" >&5
+$as_echo "$as_me: WARNING: --with-tetgen-library and --with-tetgen specify different libraries, --with-tetgen library setting ignored" >&2;}
+                         fi
+                      fi
+
+                      if ( test X$fallback_path != X )
+                      then
+                         # --with_tetgen specified a fallback path, are we using
+                         # it?
+                         if ( test X`$EXPR "X $with_tetgen_libpath " : '.* \(-L[^ ]*\).*$'` == X )
+                         then
+                            # We do not have any library path; add the fallback
+                            trace 3 No path specified by --with-tetgen-library, using --with-tetgen value [-L$fallback_path]
+                            with_tetgen_libpath="-L$fallback_path $with_tetgen_libpath"
+                            # It is an assumption to put it first, but we do
+                            # not know where the relevant library is in the
+                            # link specification, so we have to put it there.
+                         else
+                            if ( test X`$EXPR "X $with_tetgen_libpath " : ".* \(-L$fallback_path\)/* .*"` == X )
+                            then
+                               # No -L entry for the fallback path.
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-tetgen-library and --with-tetgen specify different paths, --with-tetgen path ignored" >&5
+$as_echo "$as_me: WARNING: --with-tetgen-library and --with-tetgen specify different paths, --with-tetgen path ignored" >&2;}
+                            fi
+                         fi
+                      fi
+                   fi
+                else
+                   # --with-tetgen-library used as a switch; employ fallback/default paths
+                   if ( test X$fallback_path != X )
+                   then
+                      trace 3 Using path component of --with-tetgen to set library path for tetgen [-L$fallback_path]
+                      with_tetgen_libpath=-L$fallback_path
+                      use_tetgen=yes
+                   else
+                      with_tetgen_libpath=""
+                   fi
+                   if ( test X$fallback_file != X )
+                   then
+                         # --with_tetgen specified a fallback name, use that but
+                         # sanitise it first
+                         lib=`$EXPR "X$fallback_file" : 'X\(.*\)\.a$'`
+                         if ( test X$lib != X  )
+                         then
+                            # Removed an unwanted .a suffix
+                            # Now strip any leading -l or lib prefix
+                            with_tetgen_lnklibs=-l`echo $lib | $SED 's/^-l//;s/^lib//'`
+                            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-tetgen pointing to a .a" >&5
+$as_echo "$as_me: WARNING: Specifying --with-tetgen pointing to a .a" >&2;}
+                            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: will cause problems building with shared libraries." >&5
+$as_echo "$as_me: WARNING: will cause problems building with shared libraries." >&2;}
+                            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Instead we will use -l$lib" >&5
+$as_echo "$as_me: WARNING: Instead we will use -l$lib" >&2;}
+                         else
+                            lib=`$EXPR "X$fallback_file" : 'X\(.*\)\.so$'`
+                            if ( test X$lib != X )
+                            then
+                               # Removed an unwanted .so suffix
+                               # Now strip any leading -l or lib prefix
+                               with_tetgen_lnklibs=-l`echo $lib | $SED 's/^-l//;s/^lib//'`
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-tetgen pointing to a .so" >&5
+$as_echo "$as_me: WARNING: Specifying --with-tetgen pointing to a .so" >&2;}
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: will cause problems building with static libraries." >&5
+$as_echo "$as_me: WARNING: will cause problems building with static libraries." >&2;}
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Instead, we will use -l$lib" >&5
+$as_echo "$as_me: WARNING: Instead, we will use -l$lib" >&2;}
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: " >&5
+$as_echo "$as_me: WARNING: " >&2;}
+                            else
+                               # No suffix to strip
+                               # Strip any leading -l or lib prefix
+                               with_tetgen_lnklibs=-l`echo $fallback_file | $SED 's/^-l//;s/^lib//'`
+                            fi
+                         fi
+                         trace 3 Using file component of --with-tetgen to set library name for tetgen [$with_tetgen_lnklibs]
+                   else
+                      trace 3 Using default library name for tetgen ["-ltet"]
+                      with_tetgen_lnklibs="-ltet"
+                   fi
+                fi
+
+
+                # Check if --with-tetgen-include is a path parameter
+                if ( test "$with_tetgen_include" != notset && test "$with_tetgen_include" != no && test "$with_tetgen_include" != check && test "$with_tetgen_include" != yes )
+                then
+                   # we have a parameter rather than a switch to use
+                   with_tetgen_inc=""
+                   use_tetgen=yes
+                   if ( test X$fallback_path != X )
+                   then
+                      fallback_match=no
+                      # If we have a fallback path, we want to check it is
+                      # included in the -include setting and warn if not
+                   else
+                      fallback_match=yes
+                      # We have no fallback, so we never need to warn the user
+                   fi
+                   trace 6 Parsing --with-tetgen-include setting
+                   # Strip any provided -I entries for ease of parsing.
+                   for path in `echo " $with_tetgen_include " | $SED 's/ -I *//g'`
+                   do
+                      if ( test -d $path )
+                      then
+                         TRACE_INDENT="     "
+                         trace 6 Appending [-I$path] to set include path for tetgen
+                         with_tetgen_inc="$with_tetgen_inc-I$path "
+                         if ( test $fallback_match == no && test $fallback_path == $path )
+                         then
+                            fallback_match=yes
+                         fi
+                      else
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Illegal component of --with-tetgen-include, [$path] ignored" >&5
+$as_echo "$as_me: WARNING: Illegal component of --with-tetgen-include, [$path] ignored" >&2;}
+                      fi
+                   done
+                   if ( test X$with_tetgen_inc == X )
+                   then
+                      # No path from argument, any fallback?
+                      if ( test X$fallback_path != X )
+                      then
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Will use --with-tetgen value [-I$fallback_path]" >&5
+$as_echo "$as_me: WARNING: Will use --with-tetgen value [-I$fallback_path]" >&2;}
+                         with_tetgen_inc=-I$fallback_path
+                      else
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Will use default system include path" >&5
+$as_echo "$as_me: WARNING: Will use default system include path" >&2;}
+                         with_tetgen_inc=""
+                      fi
+                   else
+                      # We have valid path(es) supplied by the user, do they
+                      # encompass the fallback setting?
+                      if ( test $fallback_match != yes )
+                      then
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-tetgen-include and --with-tetgen specify different paths, --with-tetgen ignored" >&5
+$as_echo "$as_me: WARNING: --with-tetgen-include and --with-tetgen specify different paths, --with-tetgen ignored" >&2;}
+                      fi
+                   fi
+                else
+                   # --with-tetgen-include is a switch setting rather than a path,
+                   # use any available fallback
+                   if ( test X$fallback_path != X )
+                   then
+                      trace 3 No path specified by --with-tetgen-include, using --with-tetgen value [-I$fallback_path]
+                      with_tetgen_inc=-I$fallback_path
+                      use_tetgen=yes
+                   else
+                      trace 3 Will use default system include path
+                      with_tetgen_inc=""
+                   fi
+                fi
+             fi # End of: if ( test $with_tetgen_check !- pkgconfig
+          else
+             trace 4 Library tetgen disabled
+          fi
+
+
+
+          with_tetgen_tstcd='char * switches;
+                                       tetgenio * in;
+                                       tetgenio * out;
+                                       tetgenio * bgmesh;
+                                       tetrahedralize (switches, in, out, bgmesh);
+                                      '
+                                                  with_tetgen_prq=""
+          with_tetgen_hdr="tetgen.h"
+          with_tetgen_lang="C++
+                                     "
+
+
+
+
+
+          KnownLibs=$KnownLibs" "tetgen
+          if ( test X$use_tetgen = X )
+          then
+             use_tetgen=check
+             UnconfiguredLibs=$UnconfiguredLibs" "tetgen
+          else
+             ConfiguredLibs=$ConfiguredLibs" "tetgen
+          fi
+
+
+
+
+
+
           with_libffmpeg_check=bespoke
           if ( test Xbespoke = Xvirtual )
           then
@@ -45844,12 +45844,6 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
              trace 3 Setting LDFLAGS for library to $LIB_LDFLAGS
           fi
           eval LIB_CPPFLAGS="\$with_${fix_expan}_inc"
-          # Bodge for tetgen as we currently have no mechanism for specifying
-          # package LD/{C}C{PP}FLAGS and tetgen relies on a -D in CPPFLAGS.
-          if ( test "X$test_lib" == Xtetgen )
-          then
-             LIB_CPPFLAGS="-DTETLIBRARY $LIB_CPPFLAGS"
-          fi
           if ( test "X$LIB_CPPFLAGS" != X )
           then
              TRACE_INDENT="     "
@@ -46033,12 +46027,6 @@ ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
              trace 3 Setting LDFLAGS for library to $LIB_LDFLAGS
           fi
           eval LIB_CPPFLAGS="\$with_${fix_expan}_inc"
-          # Bodge for tetgen as we currently have no mechanism for specifying
-          # package LD/{C}C{PP}FLAGS and tetgen relies on a -D in CPPFLAGS.
-          if ( test "X$test_lib" == Xtetgen )
-          then
-             LIB_CPPFLAGS="-DTETLIBRARY $LIB_CPPFLAGS"
-          fi
           if ( test "X$LIB_CPPFLAGS" != X )
           then
              TRACE_INDENT="     "
@@ -46988,12 +46976,6 @@ ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
              trace 3 Setting LDFLAGS for library to $LIB_LDFLAGS
           fi
           eval LIB_CPPFLAGS="\$with_${fix_expan}_inc"
-          # Bodge for tetgen as we currently have no mechanism for specifying
-          # package LD/{C}C{PP}FLAGS and tetgen relies on a -D in CPPFLAGS.
-          if ( test "X$test_lib" == Xtetgen )
-          then
-             LIB_CPPFLAGS="-DTETLIBRARY $LIB_CPPFLAGS"
-          fi
           if ( test "X$LIB_CPPFLAGS" != X )
           then
              TRACE_INDENT="     "
@@ -47161,6 +47143,202 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
                            # Reset the header file cache variable
                            unset ac_cv_header_QGLViewer_qglviewer_h
+                           ;;
+
+                'tetgen' )
+                           # Certain versions of TetGen rely on a pre-processor
+                           # -DTETLIBRARY flag. Ensure we have that.
+                           existing=`echo "X $with_tetgen_inc " | $SED -n 's/.* -DTETLIBRARY .*/yes/p'`
+                           if ( test X$existing != Xyes )
+                           then
+                              with_tetgen_inc="$with_tetgen_inc -DTETLIBRARY"
+                           fi
+                           # By rights, this should be implemented on CPPFLAGS
+                           # but as QMake does not currently support a
+                           # mechanism for processing these flags for a package
+                           # we are stuck with using CFLAGS until such time as
+                           # the requisite development is undertaken.
+                           ac_ext=cpp
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
+
+
+          fix_expan=$test_lib
+
+          eval LIB_LDFLAGS="\$with_${fix_expan}_libpath"
+          if ( test "X$LIB_LDFLAGS" != X )
+          then
+             TRACE_INDENT="     "
+             trace 3 Setting LDFLAGS for library to $LIB_LDFLAGS
+          fi
+          eval LIB_CPPFLAGS="\$with_${fix_expan}_inc"
+          if ( test "X$LIB_CPPFLAGS" != X )
+          then
+             TRACE_INDENT="     "
+             trace 3 Setting CPPFLAGS for library to $LIB_CPPFLAGS
+          fi
+          eval dependencies="\$with_${fix_expan}_prq"
+          prereqincs=""
+          prereqlibs=""
+          for prereqlib in $dependencies
+          do
+             TRACE_INDENT="     "
+             eval new_prereqinc="\$${prereqlib}_CFLAGS"
+             if ( test "X$new_prereqinc" != X )
+             then
+                trace 3 Appending $new_prereqinc to CFLAGS
+                prereqincs="$prereqincs $new_prereqinc"
+             fi
+             eval new_prereqlib="\$${prereqlib}_LIBS"
+             if ( test "X$new_prereqlib" != X )
+             then
+                trace 3 Appending $new_prereqlib to link line
+                prereqlibs="$prereqlibs $new_prereqlib"
+             fi
+          done
+          TRACE_INDENT="     "
+          preserve_LDFLAGS=$LDFLAGS
+          preserve_CPPFLAGS=$CPPFLAGS
+          preserve_LIBS=$LIBS
+          CPPFLAGS="$LIB_CPPFLAGS $prereqincs"
+          { $as_echo "$as_me:${as_lineno-$LINENO}: checking for external package $test_lib" >&5
+$as_echo_n "checking for external package $test_lib... " >&6; }
+          { $as_echo "$as_me:${as_lineno-$LINENO}: result: " >&5
+$as_echo "" >&6; }
+                                        eval hdr_lst="\$with_${fix_expan}_hdr"
+          preamble=""
+          found=true
+          if ( test X"$hdr_lst" != X )
+          then
+             for hf in $hdr_lst
+             do
+                if ( test X$found = Xtrue )
+                then
+                   as_ac_Header=`$as_echo "ac_cv_header_$hf" | $as_tr_sh`
+ac_fn_cxx_check_header_compile "$LINENO" "$hf" "$as_ac_Header" "$ac_includes_default
+
+"
+if eval test \"x\$"$as_ac_Header"\" = x"yes"; then :
+  found=true
+else
+  found=false
+fi
+
+
+                   if ( test X$found = Xtrue )
+                   then
+                      preamble=$preamble'
+#include <'$hf'>'
+                      # N.B. Above line split is to embed a newline into the
+                      # preamble variable
+                   fi
+                fi
+             done
+          fi
+
+          # Did we find all the header files?
+          if ( test X$found = Xtrue )
+          then
+             # We did: perform the link test...
+
+             eval test_code="\$with_${fix_expan}_tstcd"
+
+             eval lib_sets=\"\$with_${fix_expan}_lnklibs\"
+
+             # with_<Lib>_lnklibs is either a single set of libraries we need
+             # to attempt to link with or, possibly, a | seperated list of
+             # multiple sets libraries we need to try.
+             #
+             # Change IFS to split on the set seperator (|) and loop over the
+             # library sets specified...
+
+             save_ifs="$IFS"
+             IFS="|"
+             for try_libs in $lib_sets
+             do
+                IFS="$save_ifs"
+                # Reset IFS as soon as possible. The for should have the
+                # possible sets already cached so we do not need to reset IFS
+                # back to the pipe symbol on any further iteration through the
+                # loop.
+
+                LIBS="$LIB_LDFLAGS $try_libs $prereqlibs"
+                { $as_echo "$as_me:${as_lineno-$LINENO}: checking ability to link against [$LIBS]" >&5
+$as_echo_n "checking ability to link against [$LIBS]... " >&6; }
+                cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+$preamble
+int
+main ()
+{
+$test_code
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_cxx_try_link "$LINENO"; then :
+  found=true
+else
+  found=false
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+
+                if ( test X$found = Xtrue )
+                then
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+                   LIB_LDFLAGS=$LIBS
+                   # Set LIB_LDFLAGS to the LDFLAGS we were successful with
+                   break
+                   # We accept the first set of libs that compile, hence we
+                   # break out of the loop to not consider any remaining
+                   # library sets
+                else
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+                fi
+             done
+             # Reset IFS in case of null lib_sets
+             IFS="$save_ifs"
+          fi
+          CPPFLAGS=$preserve_CPPFLAGS
+          LDFLAGS=$preserve_LDFLAGS
+          LIBS=$preserve_LIBS
+          if ( test X$found = Xtrue )
+          then
+             TRACE_INDENT="     "
+             trace 4 Library package $test_lib found
+             if ( test "X$prereqincs" != X )
+             then
+                eval "${fix_expan}_CFLAGS=\"\$LIB_CPPFLAGS \$prereqincs\""
+             else
+                eval "${fix_expan}_CFLAGS=\$LIB_CPPFLAGS"
+             fi
+             eval "${fix_expan}_LIBS=\$LIB_LDFLAGS"
+             eval "use_${fix_expan}=present"
+          else
+             TRACE_INDENT="     "
+             trace 3 Library package $test_lib not found
+             eval "use_${fix_expan}=missing"
+             if ( test "X" != X )
+             then
+                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "
+See \`config.log' for more details" "$LINENO" 5; }
+             fi
+          fi
+
+
+                                                                                                                                 ac_ext=c
+ac_cpp='$CPP $CPPFLAGS'
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
+
                            ;;
 
                        * ) { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5

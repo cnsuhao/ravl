@@ -327,18 +327,6 @@ dnl
                               [sys/socket.h],
                               [C]
                              )
-          QM_DEFINE_EXTLIB_CC([tetgen],
-                              [char * switches;
-                               tetgenio * in;
-                               tetgenio * out;
-                               tetgenio * bgmesh;
-                               tetrahedralize (switches, in, out, bgmesh);
-                              ],
-                              [],
-                              [-ltet],
-                              [tetgen.h],
-                              [C++]
-                             )
           QM_DEFINE_EXTLIB_CC([LibTIFF],
                               [TIFFGetVersion ();],
                               [Zlib],
@@ -665,6 +653,25 @@ dnl
                                       [QtOpenGL QtGui QtXml QtCore libGLU],
                                       [-lQGLViewer-qt4 | -lQGLViewer],
                                       [QGLViewer/qglviewer.h],
+                                      [C++]
+                                     )
+                                  dnl Warning, the use of a C++ test program is
+                                  dnl hard-coded into QM_CK_BESPOKE_CK_LIB (so
+                                  dnl as to restrict the generation of unneeded
+                                  dnl code). If you alter this test to use a 
+                                  dnl different language, you will need to alter
+                                  dnl the appropriate AC_LANG_PUSH/POP in the
+                                  dnl QM_CK_BESPOKE_CK_LIB macro.
+          QM_DEFINE_EXTLIB_BESPOKE_CC([tetgen],
+                                      [char * switches;
+                                       tetgenio * in;
+                                       tetgenio * out;
+                                       tetgenio * bgmesh;
+                                       tetrahedralize (switches, in, out, bgmesh);
+                                      ],
+                                      [],
+                                      [-ltet],
+                                      [tetgen.h],
                                       [C++]
                                      )
                                   dnl Warning, the use of a C++ test program is
