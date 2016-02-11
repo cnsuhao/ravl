@@ -71,7 +71,7 @@ dnl                                  <lib>
 dnl
 dnl   The following are all interim variables used within this macro:
 dnl
-dnl     failure; test_lib; test_enablement; prereqs; prq; prq_state; process_now
+dnl     failure; test_lib; test_enablement; process_now
 dnl
 AC_DEFUN([QM_CK_COMPILE_CK_LIB],
          [trace 5 Seeing if we can do the compilation check for $1
