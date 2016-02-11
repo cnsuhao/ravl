@@ -47,6 +47,7 @@ dnl                                  that the user has configured on the
 dnl                                  command line ($ConfiguredLibs).
 dnl       PKG_CONFIG                 Standard substitution variable pointing
 dnl                                  to the pkg-configure utility
+dnl       RecentlyProcessed          Keeps track of the recently located libs.
 dnl       SED                        Standard substitution variable pointing
 dnl                                  to the UNIX sed command.
 dnl       TRACE_INDENT               Variable used for indenting trace debug
