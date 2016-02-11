@@ -1,0 +1,301 @@
+dnl This file is part of QMake, Quick Make System
+dnl Copyright (C) 2011-16, University of Surrey
+dnl This code may be redistributed under the terms of the GNU General
+dnl Public License (GPL). See the gpl.licence file for details or
+dnl see http://www.gnu.org/copyleft/gpl.html
+dnl
+dnl file-header-ends-here
+
+
+dnl QM_RESOURCE_BASIC_SWITCHES
+dnl
+dnl
+dnl Macro to define and process all of the command-line switches associated
+dnl with a particular external RESOURCE.
+dnl
+dnl This macro will declare the --with-<lib>-pkgconf switch that allows the
+dnl user to explicitly set the pkg-config control file to use to check for
+dnl the external library. The user should set this switch to the name or
+dnl full path of the pkgconfig control file for the library.
+dnl
+dnl This macro will also declare the --with-<lib> command-line switch that
+dnl allows the user to select whether or not the external library should be
+dnl employed. This command-line switch will support a Yes/No (upper, lower
+dnl and sentence case accepted; plus Y,N) to explicitly en/dis-able use of
+dnl the library; or 'check' (C, Ck, or Check etc.) to ask to utilise the
+dnl library if it is available (the default option). For RESOURCEs that
+dnl require a compilation check to test their existance, the --with-<lib>
+dnl switch will also accept a setting of either <directory-path> or
+dnl <directory-path>/<filename>. In this mode, <directory-path> will be
+dnl taken to be the location of both the packages header files and the
+dnl package library files. The optional <filename> component will be taken
+dnl to be the name of the library file to be compiled with. This allows
+dnl the user to specify this information using one switch when the library
+dnl and include files redisde in the same directory. However, as the files
+dnl are usually not co-located, this feature is of less pratical value.
+dnl
+dnl In creating the command-line swtiches, the associated text for --help
+dnl is also declared here.
+dnl
+dnl Macro parameters are:
+dnl       p1: QMake name for library. This is used for naming the cmd-line
+dnl           switch (LIB => --with-LIB, --with-LIB-pkgconf). It should be
+dnl           the name QMake expects the RESOURCES string to take to enable
+dnl           the library's functionality. It will also be the name used
+dnl           for the LIB_CFLAGS and LIB_LIBS used in the relevant .def
+dnl           file and Config.Project.
+dnl       p2: Optional default name by which pkg-config knows the library.
+dnl           If there is no default name for a pkg-config file supply an
+dnl           empty string. Do not supply a default value for a package
+dnl           that requires a compilation check as so-doing will over-ride
+dnl           the compilation check in favour of using the pkg-config with
+dnl           that default file.
+dnl       p3: Type of test needed for the external library:
+dnl               bespoke      - test for the external library has been
+dnl                              written in bespoke code located within
+dnl                              the appropriate section of the macro
+dnl                              QM_CK_BESPOKE_CK_LIB.
+dnl               compile      - test for the external library involves
+dnl                              a test compilation to see if the library
+dnl                              is available.
+dnl               pkgconfig    - test for the external library using
+dnl                              pkg-config.
+dnl               virtual      - external library is a virtual set of
+dnl                              libraries that is implicitly available
+dnl                              if all of the precursor libraries are
+dnl                              available.
+dnl
+dnl Global variables used:
+dnl
+dnl   All variables listed with a <lib> in their name are created with the
+dnl   <lib> being replaced by the QMake name of the package (the name passed
+dnl   into this macro as the first parameter). For example,the OpenCV package
+dnl   will have variables named with_OpenCV; with_OpenCV; etc.
+dnl
+dnl       fallback_file              Initiallised in this macro, this variable
+dnl                                  is used for extracting any file component
+dnl                                  from the --with-<lib> switch for possible
+dnl                                  use if required to provide name details
+dnl                                  for one of the other cmd-line options.
+dnl       fallback_path              Initiallised in this macro, this variable
+dnl                                  is used for extracting any directory path
+dnl                                  component from the --with-<lib> switch
+dnl                                  for possible use if required to provide
+dnl                                  a directory path for one of the other
+dnl                                  cmd-line options.
+dnl       use_<lib>                  Flag specifying useage of library,
+dnl                                  primed initially by --with-<lib> or
+dnl                                  as part of a dependancy check.
+dnl       with_<lib>                 Value of similarly named cmd-line switch
+dnl                                  Enables (actually requires) the use of
+dnl                                  the particular library. For compilation
+dnl                                  check libraries, this switch can also be
+dnl                                  used to specify the name and location of
+dnl                                  the package library and the location of
+dnl                                  the package header files (ideal if both
+dnl                                  file types reside in the same directory).
+dnl       with_<lib>_check           Flag specifying the type of test needed
+dnl                                  to check for the existance of the
+dnl                                  external library:
+dnl                                    bespoke      - test for the external
+dnl                                                   library has been written
+dnl                                                   in bespoke code located
+dnl                                                   within the appropriate
+dnl                                                   section of the macro
+dnl                                                   QM_CK_BESPOKE_CK_LIB.
+dnl                                    compile      - test for the external
+dnl                                                   library involves a test
+dnl                                                   compilation to see if
+dnl                                                   the library is available.
+dnl                                    pkgconfig    - test for the external
+dnl                                                   library using pkg-config.
+dnl                                    virtual      - external library is a
+dnl                                                   virtual set of libraries
+dnl                                                   that is implicitly
+dnl                                                   available if all of the
+dnl                                                   precursor libraries are
+dnl                                                   available.
+dnl                                  For any test-type, if the user provides
+dnl                                  a --with-<lib>-pkgconf setting, this will
+dnl                                  automatically force the test-type to be
+dnl                                  pkgconfig.
+dnl       with_<lib>_pkgconf         Value of similarly named cmd-line switch
+dnl                                  Specifies what name pkg-config will know
+dnl                                  the library as. This variable receives
+dnl                                  the default if the cmd-line switch isn't
+dnl                                  used but the library is declared as
+dnl                                  using pkg-config.
+dnl       with_<lib>_virtual         Depreciated variable
+dnl                                  * DO NOT USE IN CALLING/SUBSEQUENT CODE *
+dnl                                  This variable has been superseded by the
+dnl                                  with_<lib>_check variable (see above).
+dnl                                  This variable is only provided to deliver
+dnl                                  interim support for older code. It will
+dnl                                  cease to function in future versions of 
+dnl                                  QMake. If you are currently using this
+dnl                                  variable in your code, please re-write to
+dnl                                  test with_<lib>_check=virtual instead.
+dnl                                  Formerly, this variable indicated that
+dnl                                  the package <lib> was a virtual package.
+dnl
+AC_DEFUN([QM_RESOURCE_BASIC_SWITCHES],
+         [
+          with_$1_check=$3
+          if ( test X$3 = Xvirtual )
+          then
+             with_$1_virtual=yes
+          else
+             with_$1_virtual=no
+          fi
+
+          fallback_file=""
+          fallback_path=""
+
+          AC_ARG_WITH([$1-pkgconf],
+                      [AS_HELP_STRING([--with-$1-pkgconf],
+                                      [Enable the $1 library package via pkg-config and declare the name by which the $1 library package is known to pkg-config]
+                                     )
+                      ],
+                      [case $with_$1_pkgconf in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                 trace 4 --with-$1-pkgconf disabling $1
+                                 with_$1_pkgconf=no
+                                 use_$1=no
+                                 ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                 if ( test X$2 != X )
+                                 then
+                                    trace 4 Asking for $1 via --with-$1-pkgconf default value @<:@$with_$1_pkgconf@:>@
+                                    with_$1_pkgconf=$2
+                                    with_$1_check=pkgconfig
+                                    with_$1_virtual=no
+                                    use_$1=yes
+                                 else
+                                    AC_MSG_FAILURE([Asking to enable $1 via pkg-config but configure is unaware of the name of the DOTpc metadata file])
+                                 fi
+                                 ;;
+                        'c' |'C' | 'ck' | 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                 if ( test X$2 != X )
+                                 then
+                                    trace 4 Will check for $1 using --with-$1-pkgconf default value @<:@$with_$1_pkgconf@:>@
+                                    with_$1_pkgconf=$2
+                                    with_$1_check=pkgconfig
+                                    with_$1_virtual=no
+                                    use_$1=check
+                                 else
+                                    AC_MSG_FAILURE([Asking to check for $1 via pkg-config but configure is unaware of the name of the DOTpc metadata file])
+                                 fi
+                                 ;;
+                        * )
+                                 trace 4 Asking for $1 --with-$1-pkgconf set to @<:@$with_$1_pkgconf@:>@
+                                 with_$1_check=pkgconfig
+                                 with_$1_virtual=no
+                                 use_$1=yes
+                                 ;;
+                       esac
+                      ],
+                      [if ( test X$2 != X )
+                       then
+                          trace 4 No --with-$1-pkgconf specified using default @<:@$with_$1_pkgconf@:>@
+                          with_$1_pkgconf=$2
+                          with_$1_check=pkgconfig
+                          with_$1_virtual=no
+                       else
+                          trace 4 No --with-$1-pkgconf specified and no default value
+                       fi
+                      ]
+                     )
+          AC_ARG_WITH([$1],
+                      [AS_HELP_STRING([--with-$1],
+                                      [Enable functionality that relies on the $1 library @<:@default=check@:>@]
+                                     )
+                      ],
+                      [case $with_$1 in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                 trace 4 --with-$1 disabling $1 libraries
+                                 if ( test X$use_$1 = Xyes )
+                                 then
+                                    AC_MSG_FAILURE([Asking to disable $1 by --with-$1 but --with-$1-pkgconf has specifically enabled it])
+                                 else
+                                    if ( test X$use_$1 = Xcheck )
+                                    then
+                                       AC_MSG_WARN([Disabling $1 via --with-$1 despite --with-$1-pkconfig having asked to check for it])
+                                    fi
+                                    use_$1=no
+                                 fi
+                                 with_$1=no
+                                 ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                 trace 4 --with-$1 enabling $1 libraries
+                                 if ( test X$use_$1 = Xno )
+                                 then
+                                    AC_MSG_FAILURE([Asking to enable $1 by --with-$1 but --with-$1-pkgconf has specifically disabled it])
+                                 else
+                                    if ( test X$use_$1 = Xcheck )
+                                    then
+                                       AC_MSG_WARN([Enabling $1 via --with-$1 despite --with-$1-pkconfig having asked to check for it])
+                                    fi
+                                    use_$1=yes
+                                 fi
+                                 with_$1=yes
+                                 ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                 trace 4 --with-$1 checking for $1 libraries
+                                 if (test X$use_$1 = Xyes )
+                                 then
+                                    AC_MSG_WARN([--with-$1 asking to check for the libs but --with-$1-pkgconf has specifically enabled it])
+                                 else
+                                    if ( test X$use_$1 = Xno )
+                                    then
+                                       AC_MSG_WARN([--with-$1 asking to check for the libs but --with-$1-pkgconf has specifically disabled it])
+                                    else
+                                       use_$1=check
+                                    fi
+                                 fi
+                                 with_$1=check
+                                 ;;
+                        * )      # --with-<lib> is not being used as a simple
+                                 # yes/no/check switch - see if this is
+                                 # providing an extra piece of information
+                                 if ( test -d $with_$1 )
+                                 then
+                                    # Parameter is a directory path
+                                    fallback_path=$with_$1
+                                    fallback_file=""
+                                    trace 3 with-$1 provides a fallback path @<:@$fallback_path@:>@
+                                    use_$1=yes
+                                    with_$1=yes
+                                 else
+                                    fallback_path=`AS_DIRNAME([$with_$1])`
+                                    if ( test -d $fallback_path  )
+                                    then
+                                       # strip leading path
+                                       fallback_file=`$EXPR "//$with_$1" : '.*/\(@<:@^/@:>@*\)'`
+                                       # portable version of fallback_file=`basename $with_$1`
+                                       if ( test X$with_$1 = X$fallback_path/$fallback_file )
+                                       then
+                                          # Parameter is a file path
+                                          trace 3 with-$1 provides a fallback path @<:@$fallback_path@:>@ and a file @<:@$fallback_file@:>@
+                                          use_$1=yes
+                                          with_$1=yes
+                                       else
+                                          # Somehow dirname($x)/basename($x) != $x
+                                          AC_MSG_WARN([Problem processing --with-$1, parameter ignored])
+                                          fallback_path=""
+                                          fallback_file=""
+                                       fi
+                                    else
+                                       # --with-$1=/path/is/not/a/dir/something
+                                       AC_MSG_WARN([Illegal command-line option for --with-$1, parameter ignored])
+                                       fallback_path=""
+                                       fallback_file=""
+                                    fi
+                                 fi
+                                 ;;
+                       esac
+                      ],
+                      [trace 5 No --with-$1 specified]
+                     )
+         ]
+        )
+

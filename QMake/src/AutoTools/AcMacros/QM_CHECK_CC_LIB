@@ -131,12 +131,6 @@ AC_DEFUN([QM_CHECK_CC_LIB],
              trace 3 Setting LDFLAGS for library to $LIB_LDFLAGS
           fi
           eval LIB_CPPFLAGS="\$with_${fix_expan}_inc"
-          # Bodge for tetgen as we currently have no mechanism for specifying
-          # package LD/{C}C{PP}FLAGS and tetgen relies on a -D in CPPFLAGS.
-          if ( test "X$1" == Xtetgen )
-          then
-             LIB_CPPFLAGS="-DTETLIBRARY $LIB_CPPFLAGS"
-          fi
           if ( test "X$LIB_CPPFLAGS" != X )
           then
              TRACE_INDENT="     "
@@ -195,12 +189,7 @@ AC_DEFUN([QM_CHECK_CC_LIB],
                 fi
              done
           fi
-          # Bodge to stop caching of the QGLViewer header file status
-          # as we need to check it against multiple versions of Qt
-          if ( test "X$1" == XQt3QGLViewer  || test "X$1" == XQt4QGLViewer )
-          then
-             unset ac_cv_header_QGLViewer_qglviewer_h
-          fi
+
           # Did we find all the header files?
           if ( test X$found = Xtrue )
           then

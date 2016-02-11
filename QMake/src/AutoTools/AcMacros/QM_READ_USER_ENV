@@ -259,6 +259,10 @@ AC_DEFUN([QM_READ_USER_ENV],
           then
              # User has supplied their own setting, record this
              USER_NVCC=$NVCC
+             # As NVCC is a QMake RESOURCE, we need to flag that the user has
+             # actually configured the setting (so we will check all the CUDA
+             # packages)
+             use_NVCC=check
           fi
 
           AC_ARG_VAR([PAGER],[Path to the utility for interactive pagewise file browsing])

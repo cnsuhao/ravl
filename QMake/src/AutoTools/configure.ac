@@ -3,10 +3,10 @@
 
 AC_PREREQ([2.65])
 
-AC_INIT([QMake], [1.6.0], [quickmake-support@lists.sourceforge.net], [QMake], [http://www.ee.surrey.ac.uk/CVSSP/Ravl/RavlDoc/share/doc/Ravl/Auto/Develop/Tree/Ravl.QMake.html])
+AC_INIT([QMake], [1.7.0], [quickmake-support@lists.sourceforge.net], [QMake], [http://www.ee.surrey.ac.uk/CVSSP/Ravl/RavlDoc/share/doc/Ravl/Auto/Develop/Tree/Ravl.QMake.html])
 
 # This file is part of QMake, Quick Make System
-# Copyright (C) 2011-14, University of Surrey
+# Copyright (C) 2011-16, University of Surrey
 # This code may be redistributed under the terms of the GNU General
 # Public License (GPL). See the gpl.licence file for details or
 # see http://www.gnu.org/copyleft/gpl.html
@@ -15,12 +15,19 @@ dnl Include standard QMake autoconf macros
 m4_include([./AcMacros/QM_CHOOSE_GETCWD])
 m4_include([./AcMacros/QM_CHOOSE_RPATH])
 m4_include([./AcMacros/QM_CK_COMPILE_CK_LIB])
+m4_include([./AcMacros/QM_CK_BESPOKE_CK_LIB])
+m4_include([./AcMacros/QM_CK_PREREQ_STATE])
 m4_include([./AcMacros/QM_CHECK_CC_LIB])
 m4_include([./AcMacros/QM_Debug_Fn])
 m4_include([./AcMacros/QM_DEFINE_ALL_EXTLIBS])
 m4_include([./AcMacros/QM_DEFINE_EXTLIB_CC])
 m4_include([./AcMacros/QM_DEFINE_EXTLIB_PC])
 m4_include([./AcMacros/QM_DEFINE_VIRTUAL_EXTLIB])
+m4_include([./AcMacros/QM_DEFINE_EXTLIB_BESPOKE])
+m4_include([./AcMacros/QM_DEFINE_EXTLIB_BESPOKE_CC])
+m4_include([./AcMacros/QM_RESOURCE_BASIC_SWITCHES])
+m4_include([./AcMacros/QM_RESOURCE_CC_SWITCHES])
+m4_include([./AcMacros/QM_FINISH_DEFINE])
 m4_include([./AcMacros/QM_LOCATE_KEY_TOOLS])
 m4_include([./AcMacros/QM_LOCATE_LD])
 m4_include([./AcMacros/QM_LOCATE_MAKE])
@@ -317,16 +324,15 @@ echo LINKER_SET_SONAME=@LINKER_SET_SONAME@ >> ./Config.QMake.in
 echo LINKER_UNDEFSYMB=@LINKER_UNDEFSYMB@ >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo >> ./Config.QMake.in
-if ( test x$use_CUDA = xpresent )
+if ( test x$use_NVCC = xpresent )
 then
    echo \# CUDA compiler settings >> ./Config.QMake.in
    echo >> ./Config.QMake.in
    echo \# User specified at configure time >> ./Config.QMake.in
    echo QMAKE_NVCCFLAGS=@CONFIGURE_NVCCFLAGS@ >> ./Config.QMake.in
-   dnl Declare variable for output as that has not already been done
-   AC_SUBST([CONFIGURE_NVCCFLAGS])
    echo >> ./Config.QMake.in
    echo \# Settings determined for current combination of C++ and CUDA compilers >> ./Config.QMake.in
+   echo QMAKE_NVCC_TARGS=@DEFAULT_NVCC_TARGS@ >> ./Config.QMake.in
    echo NVCC_ANSI_NVCCFLAGS=@NVCC_ANSI_NVCCFLAGS@ >> ./Config.QMake.in
    echo NVCC_DEBUG_NVCCFLAGS=@NVCC_DEBUG_NVCCFLAGS@ >> ./Config.QMake.in
    echo NVCC_GPROF_NVCCFLAGS=@NVCC_GPROF_NVCCFLAGS@ >> ./Config.QMake.in
@@ -337,6 +343,9 @@ then
    echo NVCC_SPECIFIC_NVCCFLAGS=@NVCC_SPECIFIC_NVCCFLAGS@ >> ./Config.QMake.in
    echo >> ./Config.QMake.in
    echo >> ./Config.QMake.in
+   dnl Declare variables for output that have not already been declared
+   AC_SUBST([CONFIGURE_NVCCFLAGS])
+   AC_SUBST([DEFAULT_NVCC_TARGS])
 fi
 echo \# Flags for the archiver >> ./Config.QMake.in
 echo \# >> ./Config.QMake.in
@@ -415,25 +424,77 @@ dnl                   # m4 removing them.
                    RESOURCES="$RESOURCES $lib"
                    # Put the placeholders into Config.QMake.in so we record the
                    # flags associated with the libraries that we can use
-                   eval virtual=\$with_${lib}_virtual
-                   if ( test x$virtual = xyes )
+                   dnl If we ever extend the configure program to support
+                   dnl Fortran, this section of code will need to output the
+                   dnl requisite Fortran variables.
+
+                   eval check=\$with_${lib}_check
+                   if ( test x$check = xvirtual )
                    then
+                      # For virtual packages, we need to output the settings
+                      # associated with the pre-requisites. If we have a virtual
+                      # package that the user has configured via pkg-config,
+                      # this script will have already changed the check type so
+                      # we do not need to consider that here.
+                      #
+                      # Start with empty definitions
                       cflags=""
+                      ccflags=""
                       libs=""
                       eval prereqs=\$with_${lib}_prq
+                      # For each pre-requisite of the package
                       for p in $prereqs
                       do
-                         cflags="$cflags @${p}_CFLAGS@"
-                         libs="$libs @${p}_LIBS@"
+                         # If any C flags exist for the pre-requisite package
+                         # include those
+                         eval prereqcflags=\$${p}_CFLAGS
+                         if ( test "X$prereqcflags" != X )
+                         then
+                            cflags="$cflags @${p}_CFLAGS@"
+                         fi
+                         # Include any C++ flags from the pre-requisite
+                         eval prereqccflags=\$${p}_CCFLAGS
+                         if ( test "X$prereqccflags" != X )
+                         then
+                            ccflags="$ccflags @${p}_CCFLAGS@"
+                         fi
+                         # Include any library flags from the pre-requisite
+                         eval prereqlibs=\$${p}_LIBS
+                         if ( test "X$prereqlibs" != X )
+                         then
+                            libs="$libs @${p}_LIBS@"
+                         fi
                       done
-                      echo ${lib}_CFLAGS=$cflags >> Config.QMake.in
-                      echo ${lib}_LIBS=$libs >> Config.QMake.in
-                      echo >> ./Config.QMake.in
                    else
-                      echo ${lib}_CFLAGS=@${lib}_CFLAGS@ >> Config.QMake.in
-                      echo ${lib}_LIBS=@${lib}_LIBS@ >> Config.QMake.in
-                      echo >> ./Config.QMake.in
+                      # Always output a CFLAGS setting even if it is null
+                      # <lib>_CFLAGS will already be declared as a substitution
+                      # variable
+                      cflags="@${lib}_CFLAGS@"
+                      # If any C++ flags exist for the package, ensure that
+                      # they output too.
+                      eval ccflags=\$${lib}_CCFLAGS
+                      if ( test "X$ccflags" != X )
+                      then
+                         ccflags="@${lib}_CCFLAGS@"
+                      fi
+                      # Always output a LIBS setting
+                      # <lib>_LIBS will already be declared as a substitution
+                      # variable
+                      libs="@${lib}_LIBS@"
                    fi
+                   # Now actually output the flags
+                   #
+                   # Always output a CFLAGS setting
+                   echo ${lib}_CFLAGS=$cflags >> Config.QMake.in
+                   # If any C++ flags exist for the package, ensure that
+                   # they output too.
+                   if ( test "X$ccflags" != X )
+                   then
+                      echo ${lib}_CCFLAGS=$ccflags >> Config.QMake.in
+                   fi
+                   # Always output a LIBS setting
+                   echo ${lib}_LIBS=$libs >> Config.QMake.in
+                   echo >> ./Config.QMake.in
                    ;;
    esac
 done

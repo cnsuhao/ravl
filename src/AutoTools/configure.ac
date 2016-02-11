@@ -10,14 +10,14 @@ dnl#JFi:ToDo-Extend --with-${lib}-pkgconf to specify path for known .pc
 # Initialisation
 AC_PREREQ([2.65])
 
-AC_INIT([RAVL], [1.1.7], [ravl-devel@lists.sourceforge.net], [Ravl], [http://www.ee.surrey.ac.uk/CVSSP/Ravl])
+AC_INIT([RAVL], [1.1.8], [ravl-devel@lists.sourceforge.net], [Ravl], [http://www.ee.surrey.ac.uk/CVSSP/Ravl])
 dnl QMake doesn't use PACKAGE_TARNAME, it uses a hard-coded RAVL to set the 
 dnl name of the dist archive/dir. However, the tarname parameter to AC_INIT
 dnl (the 4th item) is used to prime the default for --docdir hence the value
 dnl used here.
 
 # This file is part of RAVL, Recognition And Vision Library
-# Copyright (C) 2011-14, University of Surrey
+# Copyright (C) 2011-16, University of Surrey
 # This code may be redistributed under the terms of the GNU General
 # Public License (GPL). See the gpl.licence file for details or
 # see http://www.gnu.org/copyleft/gpl.html
@@ -27,12 +27,19 @@ dnl Include standard QMake autoconf macros
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_CHOOSE_GETCWD])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_CHOOSE_RPATH])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_CK_COMPILE_CK_LIB])
+m4_include([../../QMake/src/AutoTools/AcMacros/QM_CK_BESPOKE_CK_LIB])
+m4_include([../../QMake/src/AutoTools/AcMacros/QM_CK_PREREQ_STATE])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_CHECK_CC_LIB])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_Debug_Fn])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_DEFINE_ALL_EXTLIBS])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_DEFINE_EXTLIB_CC])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_DEFINE_EXTLIB_PC])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_DEFINE_VIRTUAL_EXTLIB])
+m4_include([../../QMake/src/AutoTools/AcMacros/QM_DEFINE_EXTLIB_BESPOKE])
+m4_include([../../QMake/src/AutoTools/AcMacros/QM_DEFINE_EXTLIB_BESPOKE_CC])
+m4_include([../../QMake/src/AutoTools/AcMacros/QM_RESOURCE_BASIC_SWITCHES])
+m4_include([../../QMake/src/AutoTools/AcMacros/QM_RESOURCE_CC_SWITCHES])
+m4_include([../../QMake/src/AutoTools/AcMacros/QM_FINISH_DEFINE])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_LOCATE_KEY_TOOLS])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_LOCATE_LD])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_LOCATE_MAKE])
@@ -342,10 +349,6 @@ AC_SUBST([PKG_SHARED_LDLIBFLAGS])
 
 # CUDA Compiler
 #
-# Bring in any configured NVCCFLAGS from the QMake configuration
-CONFIGURE_NVCCFLAGS=" \$(QMAKE_NVCCFLAGS) $CONFIGURE_NVCCFLAGS"
-AC_SUBST([CONFIGURE_NVCCFLAGS])
-#
 # Set PKG_xx_CFLAGS to defaults or any package specific values
 PKG_NVCCANSIFLAG=" \$(NVCC_ANSI_NVCCFLAGS) "
 PKG_CHECK_NVCCFLAGS=" -DRAVL_CHECK "
@@ -366,7 +369,6 @@ AC_SUBST([PKG_GPROF_NVCCFLAGS])
 AC_SUBST([PKG_OPT_NVCCFLAGS])
 AC_SUBST([PKG_PROF_NVCCFLAGS])
 AC_SUBST([PKG_SHARED_NVCCFLAGS])
-AC_SUBST([CONFIGURE_NVCCFLAGS])
 
 
 # Consider the archiver
@@ -434,23 +436,28 @@ then
    trace 3 Defined libraries
    for lib in $KnownLibs
    do
-      eval testwith="\$with_${lib}_tstcd"
-      eval prereq=\$with_${lib}_prq
-      eval lnklibs=\$with_${lib}_lnklibs
-      eval loc=\$with_${lib}_libpath
-      eval hdr=\$with_${lib}_hdr
-      eval inc=\$with_${lib}_inc
-      eval pkgconf=\$with_${lib}_pkgconf
       eval lib_enablement=\$use_${lib} 
       TRACE_INDENT="     "
-      eval virtual=\$with_${lib}_virtual
-      AS_IF([test X$virtual = Xyes],
-            [# Virtual package
-             trace 3 "$lib:Virtual:$prereq:$lib_enablement"
-            ],
-            [trace 3 "$lib:$testwith:$prereq:$lnklibs:$loc:$hdr:$inc:$pkgconf:$lib_enablement"
-            ]
-           )
+      eval check=\$with_${lib}_check
+      case $check in
+         'bespoke' | 'virtual'  )
+                       eval prereq=\$with_${lib}_prq
+                       trace 3 "$lib:$check:$prereq:$lib_enablement"
+                       ;;
+         'pkgconfig' ) eval pkgconf=\$with_${lib}_pkgconf
+                       trace 3 "$lib:$check:$pkgconf:$lib_enablement"
+                       ;;
+         'compile' )   eval testwith="\$with_${lib}_tstcd"
+                       eval prereq=\$with_${lib}_prq
+                       eval lnklibs=\$with_${lib}_lnklibs
+                       eval libpath=\$with_${lib}_libpath
+                       eval hdr=\$with_${lib}_hdr
+                       eval inc=\$with_${lib}_inc
+                       trace 3 "$lib:$check:$testwith:$prereq:$lnklibs:$libpath:$hdr:$inc:$lib_enablement"
+                       ;;
+         * )           trace 1 "Assert - Unrecognised test-type for $lib"
+                       ;;
+      esac
    done
 fi
 
@@ -483,14 +490,21 @@ do
       # Lib not available
       eval "use_${lib}=missing"
       eval "${lib}_CFLAGS="
+      eval "${lib}_CCFLAGS="
       eval "${lib}_LIBS="
+      dnl Extend this section to nullify the relevant Fortran make flags if
+      dnl we ever add Fortran support
    else
       # Inherit QMake configuration settings
       eval "use_${lib}=present"
       QMakeSetting=`cat $QMAKE_CFG | $SED -n "s/^${lib}_CFLAGS=\(.*\)/\1/p"`
       eval "${lib}_CFLAGS=\$QMakeSetting"
+      QMakeSetting=`cat $QMAKE_CFG | $SED -n "s/^${lib}_CCFLAGS=\(.*\)/\1/p"`
+      eval "${lib}_CCFLAGS=\$QMakeSetting"
       QMakeSetting=`cat $QMAKE_CFG | $SED -n "s/^${lib}_LIBS=\(.*\)/\1/p"`
       eval "${lib}_LIBS=\$QMakeSetting"
+      dnl Extend this section to read in the Fortran make flags if we ever
+      dnl add Fortran support
       # We give no consideration to package pre-requisites here. If we inherit
       # from the QMake configuration, we inherit the package with the original
       # pre-requisite package(s). For example, if we inherit libTIFF, we inherit
@@ -511,7 +525,10 @@ do
    then
       eval "use_${lib}=missing"
       eval "${lib}_CFLAGS="
+      eval "${lib}_CCFLAGS="
       eval "${lib}_LIBS="
+      dnl Extend this section to read in the Fortran make flags if we ever
+      dnl add Fortran support
       CheckOverride="$CheckOverride $lib"
       trace 6 Broken lib @<:@$lib@:>@ removed
    fi
@@ -525,23 +542,28 @@ then
    trace 3 Defaulted libraries
    for lib in $KnownLibs
    do
-      eval testwith="\$with_${lib}_tstcd"
-      eval prereq=\$with_${lib}_prq
-      eval lnklibs=\$with_${lib}_lnklibs
-      eval loc=\$with_${lib}_libpath
-      eval hdr=\$with_${lib}_hdr
-      eval inc=\$with_${lib}_inc
-      eval pkgconf=\$with_${lib}_pkgconf
       eval lib_enablement=\$use_${lib} 
       TRACE_INDENT="     "
-      eval virtual=\$with_${lib}_virtual
-      AS_IF([test X$virtual = Xyes],
-            [# Virtual package
-             trace 3 "$lib:Virtual:$prereq:$lib_enablement"
-            ],
-            [trace 3 "$lib:$testwith:$prereq:$lnklibs:$loc:$hdr:$inc:$pkgconf:$lib_enablement"
-            ]
-           )
+      eval check=\$with_${lib}_check
+      case $check in
+         'bespoke' | 'virtual' )
+                       eval prereq=\$with_${lib}_prq
+                       trace 3 "$lib:$check:$prereq:$lib_enablement"
+                       ;;
+         'pkgconfig' ) eval pkgconf=\$with_${lib}_pkgconf
+                       trace 3 "$lib:$check:$pkgconf:$lib_enablement"
+                       ;;
+         'compile' )   eval testwith="\$with_${lib}_tstcd"
+                       eval prereq=\$with_${lib}_prq
+                       eval lnklibs=\$with_${lib}_lnklibs
+                       eval libpath=\$with_${lib}_libpath
+                       eval hdr=\$with_${lib}_hdr
+                       eval inc=\$with_${lib}_inc
+                       trace 3 "$lib:$check:$testwith:$prereq:$lnklibs:$libpath:$hdr:$inc:$lib_enablement"
+                       ;;
+         * )           trace 1 "Assert - Unrecognised test-type for $lib"
+                       ;;
+      esac
    done
 fi
 
@@ -1048,14 +1070,26 @@ then
 fi
 echo >> ./Config.Project.in
 echo >> ./Config.Project.in
-if ( test x$use_CUDA = xpresent )
+if ( test x$use_NVCC = xpresent )
 then
    echo \# CUDA compiler settings >> ./Config.Project.in
    echo >> ./Config.Project.in
    echo \# User specified at configure time >> ./Config.Project.in
-   echo CONFIGURE_NVCCFLAGS=@CONFIGURE_NVCCFLAGS@ >> ./Config.Project.in
+   if ( test "x$CONFIGURE_NVCCFLAGS" = x )
+   then
+      # No NVCCFLAGS specified on the configure, use any from QMake
+      echo CONFIGURE_NVCCFLAGS=\$\(QMAKE_NVCCFLAGS\) >> ./Config.Project.in
+   else
+      echo CONFIGURE_NVCCFLAGS=@CONFIGURE_NVCCFLAGS@ >> ./Config.Project.in
+   fi
    echo >> ./Config.Project.in
    echo \# Settings determined for current combination of C++ and CUDA compilers >> ./Config.Project.in
+   if ( test "x$DEFAULT_NVCC_TARGS" = x )
+   then
+      echo PKG_NVCC_TARGS=\$\(QMAKE_NVCC_TARGS\) >> ./Config.Project.in
+   else
+      echo PKG_NVCC_TARGS=@DEFAULT_NVCC_TARGS@ >> ./Config.Project.in
+   fi
    echo PKG_NVCCANSIFLAG=@PKG_NVCCANSIFLAG@ >> ./Config.Project.in
    echo PKG_CHECK_NVCCFLAGS=@PKG_CHECK_NVCCFLAGS@ >> ./Config.Project.in
    echo PKG_DEBUG_NVCCFLAGS=@PKG_DEBUG_NVCCFLAGS@ >> ./Config.Project.in
@@ -1067,6 +1101,8 @@ then
    echo PKG_SHARED_NVCCFLAGS=@PKG_SHARED_NVCCFLAGS@ >> ./Config.Project.in
    echo >> ./Config.Project.in
    echo >> ./Config.Project.in
+   AC_SUBST([CONFIGURE_NVCCFLAGS])
+   AC_SUBST([DEFAULT_NVCC_TARGS])
 fi
 echo \# Flags for the archiver >> ./Config.Project.in
 echo >> ./Config.Project.in
@@ -1084,7 +1120,7 @@ echo >> ./Config.Project.in
 
 
 # Select if we build Ravl ready to install or runnable from the build area
-echo \# Specify default for embedding paths into Ravl
+echo \# Specify default for embedding paths into Ravl >> ./Config.Project.in
 AC_SUBST([enable_fast_install])
 echo USE_INSTALLED_PATHS=@enable_fast_install@ >> ./Config.Project.in
 echo >> ./Config.Project.in
@@ -1126,8 +1162,8 @@ then
     # Virtual libraries pick up their configuration from their real
     # counterparts. We therefore only need to massage the _LIBS setting here
     # for non-virtual libraries.
-    eval virtual=\$with_${lib}_virtual
-    if ( test x$virtual != xyes )
+    eval check=\$with_${lib}_check
+    if ( test x$check != xvirtual )
     then
       eval lib_enablement=\$use_${lib}
       case $lib_enablement in
@@ -1191,8 +1227,8 @@ then
     # Virtual libraries pick up their configuration from their real
     # counterparts. We therefore only need to massage the _LIBS setting here
     # for non-virtual libraries.
-    eval virtual=\$with_${lib}_virtual
-    if ( test x$virtual != xyes )
+    eval check=\$with_${lib}_check
+    if ( test x$check != xvirtual )
     then
       eval lib_enablement=\$use_${lib}
       case $lib_enablement in
@@ -1265,8 +1301,8 @@ fi
 # libraries
 for lib in $KnownLibs
 do
-  eval virtual=\$with_${lib}_virtual
-  if ( test x$virtual = xyes )
+  eval check=\$with_${lib}_check
+  if ( test x$check = xvirtual )
   then
     eval lib_enablement=\$use_${lib}
     case $lib_enablement in
@@ -1285,45 +1321,99 @@ do
                    TRACE_INDENT="     "
                    trace 3 Checking settings for virtual library $lib
                    cflags=""
+                   expandedcflags=""
+                   ccflags=""
+                   expandedccflags=""
                    libs=""
+                   expandedlibs=""
                    eval prereqs=\$with_${lib}_prq
                    for p in $prereqs
                    do
-                     cflags="$cflags @${p}_CFLAGS@"
-                     libs="$libs @${p}_LIBS@"
+                     eval prereqcflags=\$${p}_CFLAGS
+                     if ( test "X$prereqcflags" != X )
+                     then
+                       cflags="$cflags @${p}_CFLAGS@"
+                       expandedcflags="$expandedcflags $prereqcflags"
+                     fi
+                     eval prereqccflags=\$${p}_CCFLAGS
+                     if ( test "X$prereqccflags" != X )
+                     then
+                       ccflags="$ccflags @${p}_CCFLAGS@"
+                       expandedccflags="$expandedccflags $prereqccflags"
+                     fi
+                     eval prereqlibs=\$${p}_LIBS
+                     if ( test "X$prereqlibs" != X )
+                     then
+                       libs="$libs @${p}_LIBS@"
+                       expandedlibs="$expandedlibs $prereqlibs"
+                     fi
+                     dnl Extend this section to process the Fortran make flags
+                     dnl if we ever add Fortran support
                    done
                    need_newline=no
-                   eval original_cflags=\$${lib}_CFLAGS
-                   if ( test "$original_cflags" != "$cflags" )
+                   if ( test x`$EXPR " $UnconfiguredLibs " : ".* \($lib\) .*"` == "x$lib" )
                    then
-                     TRACE_INDENT="     "
-                     trace 5 Changing CFLAGS from:
-                     TRACE_INDENT="     "
-                     trace 5 $original_cflags
-                     TRACE_INDENT="     "
-                     trace 5 to:
-                     TRACE_INDENT="     "
-                     trace 5 $cflags
-                     echo ${lib}_CFLAGS=$cflags >> Config.Project.in
-                     need_newline=yes
-                   fi
-                   eval original_libs=\$${lib}_LIBS
-                   if ( test "$original_libs" != "$libs" )
-                   then
-                     TRACE_INDENT="     "
-                     trace 5 Changing LIBS from:
-                     TRACE_INDENT="     "
-                     trace 5 $original_libs
-                     TRACE_INDENT="     "
-                     trace 5 to:
-                     TRACE_INDENT="     "
-                     trace 5 $libs
-                     echo ${lib}_LIBS=$libs >> Config.Project.in
-                     need_newline=yes
-                   fi
-                   if ( test $need_newline == yes )
-                   then
-                     echo >> ./Config.Project.in
+                     # We have not directly configured this package, but may
+                     # have impliciltly changed its settings. See if we need
+                     # to output the new settings...
+                     original_cflags=`cat $QMAKE_CFG | $SED -n "s/^${lib}_CFLAGS=\(.*\)/\1/p"`
+                     if ( test "X$original_cflags" != "X$expandedcflags" )
+                     then
+                       TRACE_INDENT="     "
+                       trace 5 Changing CFLAGS from:
+                       TRACE_INDENT="     "
+                       trace 5 $original_cflags
+                       TRACE_INDENT="     "
+                       trace 5 to:
+                       TRACE_INDENT="     "
+                       trace 5 $expandedcflags
+                       echo ${lib}_CFLAGS=$cflags >> Config.Project.in
+                       need_newline=yes
+                     fi
+                     original_ccflags=`cat $QMAKE_CFG | $SED -n "s/^${lib}_CCFLAGS=\(.*\)/\1/p"`
+                     if ( test "X$original_ccflags" != "X$expandedccflags" )
+                     then
+                       TRACE_INDENT="     "
+                       trace 5 Changing CCFLAGS from:
+                       TRACE_INDENT="     "
+                       trace 5 $original_ccflags
+                       TRACE_INDENT="     "
+                       trace 5 to:
+                       TRACE_INDENT="     "
+                       trace 5 $expandedccflags
+                       echo ${lib}_CCFLAGS=$ccflags >> Config.Project.in
+                       need_newline=yes
+                     fi
+                     original_libs=`cat $QMAKE_CFG | $SED -n "s/^${lib}_LIBS=\(.*\)/\1/p"`
+                     if ( test "X$original_libs" != "X$expandedlibs" )
+                     then
+                       TRACE_INDENT="     "
+                       trace 5 Changing LIBS from:
+                       TRACE_INDENT="     "
+                       trace 5 $original_libs
+                       TRACE_INDENT="     "
+                       trace 5 to:
+                       TRACE_INDENT="     "
+                       trace 5 $expandedlibs
+                       echo ${lib}_LIBS=$libs >> Config.Project.in
+                       need_newline=yes
+                     fi
+                     dnl Extend this section to process the Fortran make flags
+                     dnl if we ever add Fortran support
+                     if ( test $need_newline == yes )
+                     then
+                       echo >> ./Config.Project.in
+                     fi
+                   else
+                     # All configured packages have their settings output
+                     # below. We just need to make sure the latest settings
+                     # are copied across from the dependants of the virtual
+                     # package
+                     eval ${lib}_CFLAGS=\$expandedcflags
+                     eval ${lib}_CCFLAGS=\$expandedccflags
+                     eval ${lib}_LIBS=\$expandedlibs
+                     dnl Extend this section to nullify the relevant Fortran
+                     dnl make flags if we ever add Fortran support
                    fi
                    ;;
     esac
@@ -1331,8 +1421,8 @@ do
 done
 
 
-# Now set RESOURCES and output each external library's <Lib>_CFLAGS and 
-# <Lib>_LIBS definition to Config.Project for those libraries the user has
+# Now set RESOURCES and output each external library's <lib>_CFLAGS and 
+# <lib>_LIBS definition to Config.Project for those libraries the user has
 # configured
 #
 echo >> ./Config.Project.in
@@ -1360,8 +1450,25 @@ do
                    # Put the placeholders into Config.Project.in so we record the
                    # flags associated with the libraries that we can use
                    echo ${lib}_CFLAGS=@${lib}_CFLAGS@ >> Config.Project.in
+                   eval ccflags=\$${lib}_CCFLAGS
+                   if ( test "X$ccflags" != X )
+                   then
+                      # Output any CCFLAGS
+                      echo ${lib}_CCFLAGS=@${lib}_CCFLAGS@ >> Config.Project.in
+                   else
+                      # No CCFLAGS - check we don't have any to dis-inherit
+                      QMakeSetting=`cat $QMAKE_CFG | $SED -n "s/^${lib}_CCFLAGS=\(.*\)/\1/p"`
+                      if ( test "X$QMakeSetting" != X )
+                      then
+                         # QMake config provides CCFLAGS so we need to nullify
+                         # the old setting
+                         echo ${lib}_CCFLAGS= >> Config.Project.in
+                      fi
+                   fi
                    echo ${lib}_LIBS=@${lib}_LIBS@ >> Config.Project.in
                    echo >> ./Config.Project.in
+                   dnl Extend this section to write out the Fortran make flags
+                   dnl if we ever add Fortran support
                    ;;
    esac
 done

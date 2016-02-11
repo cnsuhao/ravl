@@ -1,5 +1,5 @@
 dnl This file is part of QMake, Quick Make System
-dnl Copyright (C) 2011-16, University of Surrey
+dnl Copyright (C) 2015-16, University of Surrey
 dnl This code may be redistributed under the terms of the GNU General
 dnl Public License (GPL). See the gpl.licence file for details or
 dnl see http://www.gnu.org/copyleft/gpl.html
@@ -7,11 +7,26 @@ dnl
 dnl file-header-ends-here
 
 
-
-dnl QM_DEFINE_EXTLIB_CC
+dnl QM_DEFINE_EXTLIB_BESPOKE_CC
 dnl
-dnl Macro to define all helper libs that require a manual, compilation, check
-dnl to see if they are available.
+dnl Macro to define an external library that requires bespoke code to check
+dnl for its availability and where the basic existance test is carried out
+dnl via a test compilation.
+dnl
+dnl This macro causes the declaration of the --with-<lib>-pkgconfig and the
+dnl --with-<lib> command-line switches. For a bespoke-check library package,
+dnl the --with-<lib>-pkgconf switch allows the user to over-ride the bespoke
+dnl check and employ a pkg-config file (either one supplied with the package
+dnl or by writing their own pkg-config metafile if one is unavailable for
+dnl the package. The --with-<lib> switch allows the user to disable or
+dnl specifically request the package.
+dnl
+dnl In addition, this macro will declate the --with-<lib>-library and
+dnl --with-<lib>-include
+dnl
+dnl For packages that require a bespoke test, but do not require a compilation
+dnl test (for example, virtual packages) please use the sister macro
+dnl QM_DEFINE_EXTLIB_BESPOKE.
 dnl
 dnl Macro parameters are:
 dnl       p1: QMake name for library. This is used for naming the cmd-line
@@ -43,8 +58,8 @@ dnl Global variables used:
 dnl
 dnl   All variables listed with a <lib> in their name are created with the
 dnl   <lib> being replaced by the QMake name of the package (the name passed
-dnl   into this macro as the first parameter). For example,the LibTIFF package
-dnl   will have variables named LibTIFF_LIBS; with_LibTIFF_hdr; etc.
+dnl   into this macro as the first parameter). For example,the OpenCV package
+dnl   will have variables named use_OpenCV; with_OpenCV; etc.
 dnl
 dnl       with_<lib>_hdr             Name(s) of the library package's headers
 dnl       with_<lib>_lang            Language of the with_<lib>_tstcd linkage
@@ -54,9 +69,10 @@ dnl                                  of the library.
 dnl       with_<lib>_tstcd           Code with which to test that the external
 dnl                                  library will link.
 dnl
-AC_DEFUN([QM_DEFINE_EXTLIB_CC],
+dnl
+AC_DEFUN([QM_DEFINE_EXTLIB_BESPOKE_CC],
          [
-          QM_RESOURCE_BASIC_SWITCHES([$1], [], [compile])
+          QM_RESOURCE_BASIC_SWITCHES([$1],[],[bespoke])
 
           QM_RESOURCE_CC_SWITCHES([$1], [$4])
 
@@ -72,4 +88,5 @@ AC_DEFUN([QM_DEFINE_EXTLIB_CC],
           QM_FINISH_DEFINE([$1])
          ]
         )
+
 

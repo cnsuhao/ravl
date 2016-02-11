@@ -1,5 +1,5 @@
 dnl This file is part of QMake, Quick Make System
-dnl Copyright (C) 2013, University of Surrey
+dnl Copyright (C) 2013-16, University of Surrey
 dnl This code may be redistributed under the terms of the GNU General
 dnl Public License (GPL). See the gpl.licence file for details or
 dnl see http://www.gnu.org/copyleft/gpl.html
@@ -19,6 +19,11 @@ dnl also a dependency of the configure script itself (for example, sed; tr
 dnl or the C compliers are not located by this macro). The dependencies of
 dnl the configure script will have already been processed from a prior 
 dnl execution of the QM_LOCATE_KEY_TOOLS macro.
+dnl
+dnl As the nVidia CUDA compiler (nvcc) may need to be selected based on the
+dnl settings of the various --with_cudaXXX switches, it is not considered
+dnl here. We look for the compiler driver in ithe QM_CK_BESPOKE_CK_LIB macro
+dnl once we know if the user is requesting a specific version of CUDA.
 dnl
 dnl No Macro parameters
 dnl
@@ -40,11 +45,6 @@ dnl                                  the user has requested that QMake use.
 dnl       <CMD>                      Receives the path to the utility <cmd>.
 dnl                                  Can initially be primed by the user to
 dnl                                  force the use of a particular program.
-dnl       CONFIGURE_NVCCFLAGS        Initialised here to hold any NVCCFLAGS
-dnl                                  that the user may have set in their
-dnl                                  environment. This variable is only 
-dnl                                  initialised if the CUDA compiler is
-dnl                                  actually located (or user-specified).
 dnl       InheritCFG                 Specifies if we should use the QMAKE_CFG
 dnl                                  file to bootstrap our configuration
 dnl                                  settings.
@@ -290,34 +290,6 @@ AC_DEFUN([QM_LOCATE_QMAKE_DEPS],
           fi
           QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES MKDIR_P"
 
-          if ( test "x$USER_NVCC" = x )
-          then
-             # User has not specified a CUDA compiler to use, do we have
-             # an existing setting?
-             if ( test "x$InheritCFG" = xyes )
-             then
-                NVCC=`cat $QMAKE_CFG | $SED  -n 's/^NVCC=\(.*\)/\1/p'`
-             fi
-             if ( test "x$NVCC" = x )
-             then
-                # We still do not have a setting, attempt to find one
-                AC_PATH_PROG([NVCC],[nvcc],[missing])
-             fi
-          fi
-          # Do not update QMAKE_DEPENDENCIES as NVCC is an optional feature
-          # of QMake. What we do have to do is re-set NVCC to null if we did
-          # not find the compiler (as it is optional, finding nvcc to be
-          # missing does not error out of configure so the value of NVCC will
-          # get written to the Config.xx file; hence it needs to be null if
-          # we did not find nvcc).
-          if ( test "x$NVCC" = xmissing ) 
-          then
-             NVCC=""
-          else
-             CONFIGURE_NVCCFLAGS=$NVCCFLAGS
-             # Record any supplied NVCCFLAGS
-          fi
-
           if ( test "x$USER_RANLIB" = x )
           then
              # User has not specified a RANLIB program to use, do we have
@@ -350,9 +322,9 @@ AC_DEFUN([QM_LOCATE_QMAKE_DEPS],
                 AC_PROG_YACC
              fi
           fi
-          # As for LEX and NVCC, QMake will downgrade its functionality on
-          # an absence of YACC so we do not flag it as a required depencdency
-          # i.e. we do not add it to QMAKE_DEPENDENCIES
+          # As for LEX, QMake will downgrade its functionality on an absence
+          # of YACC so we do not flag it as a required depencdency i.e. we
+          # do not add it to QMAKE_DEPENDENCIES
 
 
           # GNU standards regard the following safe to call directly but as we
