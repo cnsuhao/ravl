@@ -48,6 +48,11 @@ dnl                                  when compiling with the external library.
 dnl                                  This macro does not set this variable,
 dnl                                  it merely declares it for substitution
 dnl                                  out to the configuration files.
+dnl       <lib>_CCFLAGS              C++ version of the above, <lib>_CFLAGS,
+dnl                                  substitution variable. This macros does
+dnl                                  not actually set this variable, merely
+dnl                                  declares the variable for substitution
+dnl                                  out to the configuration file.
 dnl       <lib>_LIBS                 Substitution variable that receives the
 dnl                                  link line settings needed to link with
 dnl                                  the <lib> package. This info is supplied
@@ -78,7 +83,10 @@ dnl
 AC_DEFUN([QM_FINISH_DEFINE],
          [
           AC_SUBST([$1_CFLAGS])
+          AC_SUBST([$1_CCFLAGS])
           AC_SUBST([$1_LIBS])
+          dnl Add Fortran flags (FCFLAGS etc) here if we ever add Fortran
+          dnl support
 
           KnownLibs=$KnownLibs" "$1
           if ( test X$use_$1 = X )

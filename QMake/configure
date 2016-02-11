@@ -613,168 +613,250 @@ ARC
 SWIG
 EGREP
 NVCC_LIBS
+NVCC_CCFLAGS
 NVCC_CFLAGS
 libffmpeg_LIBS
+libffmpeg_CCFLAGS
 libffmpeg_CFLAGS
 tetgen_LIBS
+tetgen_CCFLAGS
 tetgen_CFLAGS
 Qt4QGLViewer_LIBS
+Qt4QGLViewer_CCFLAGS
 Qt4QGLViewer_CFLAGS
 Qt3QGLViewer_LIBS
+Qt3QGLViewer_CCFLAGS
 Qt3QGLViewer_CFLAGS
 cusparse_LIBS
+cusparse_CCFLAGS
 cusparse_CFLAGS
 cusolver_LIBS
+cusolver_CCFLAGS
 cusolver_CFLAGS
 cudart_LIBS
+cudart_CCFLAGS
 cudart_CFLAGS
 curand_LIBS
+curand_CCFLAGS
 curand_CFLAGS
 cufftw_LIBS
+cufftw_CCFLAGS
 cufftw_CFLAGS
 cufft_LIBS
+cufft_CCFLAGS
 cufft_CFLAGS
 cuda_LIBS
+cuda_CCFLAGS
 cuda_CFLAGS
 cublas_LIBS
+cublas_CCFLAGS
 cublas_CFLAGS
 OpenGL_LIBS
+OpenGL_CCFLAGS
 OpenGL_CFLAGS
 CUDA_LIBS
+CUDA_CCFLAGS
 CUDA_CFLAGS
 Zlib_LIBS
+Zlib_CCFLAGS
 Zlib_CFLAGS
 Yajl_LIBS
+Yajl_CCFLAGS
 Yajl_CFLAGS
 vtkGraphics_LIBS
+vtkGraphics_CCFLAGS
 vtkGraphics_CFLAGS
 vtkFiltering_LIBS
+vtkFiltering_CCFLAGS
 vtkFiltering_CFLAGS
 vtkCommon_LIBS
+vtkCommon_CCFLAGS
 vtkCommon_CFLAGS
 vlfeat_LIBS
+vlfeat_CCFLAGS
 vlfeat_CFLAGS
 UMFPack_LIBS
+UMFPack_CCFLAGS
 UMFPack_CFLAGS
 LibTIFF_LIBS
+LibTIFF_CCFLAGS
 LibTIFF_CFLAGS
 Socket_LIBS
+Socket_CCFLAGS
 Socket_CFLAGS
 posixThreads_LIBS
+posixThreads_CCFLAGS
 posixThreads_CFLAGS
 Math_LIBS
+Math_CCFLAGS
 Math_CFLAGS
 LAPACK_LIBS
+LAPACK_CCFLAGS
 LAPACK_CFLAGS
 JPEG_LIBS
+JPEG_CCFLAGS
 JPEG_CFLAGS
 LibJasper_LIBS
+LibJasper_CCFLAGS
 LibJasper_CFLAGS
 libmkl_LIBS
+libmkl_CCFLAGS
 libmkl_CFLAGS
 GLUT_LIBS
+GLUT_CCFLAGS
 GLUT_CFLAGS
 DynLink_LIBS
+DynLink_CCFLAGS
 DynLink_CFLAGS
 CXSparse_LIBS
+CXSparse_CCFLAGS
 CXSparse_CFLAGS
 blas_LIBS
+blas_CCFLAGS
 blas_CFLAGS
 ZeroMQ_LIBS
+ZeroMQ_CCFLAGS
 ZeroMQ_CFLAGS
 Xmu_LIBS
+Xmu_CCFLAGS
 Xmu_CFLAGS
 x11_LIBS
+x11_CCFLAGS
 x11_CFLAGS
 UUIdTheo_LIBS
+UUIdTheo_CCFLAGS
 UUIdTheo_CFLAGS
 devVideo4Linux2_LIBS
+devVideo4Linux2_CCFLAGS
 devVideo4Linux2_CFLAGS
 RLog_LIBS
+RLog_CCFLAGS
 RLog_CFLAGS
 OpenSceneGraphGTK_LIBS
+OpenSceneGraphGTK_CCFLAGS
 OpenSceneGraphGTK_CFLAGS
 OpenSceneGraph_LIBS
+OpenSceneGraph_CCFLAGS
 OpenSceneGraph_CFLAGS
 libGLU_LIBS
+libGLU_CCFLAGS
 libGLU_CFLAGS
 libGL_LIBS
+libGL_CCFLAGS
 libGL_CFLAGS
 Qt5Xml_LIBS
+Qt5Xml_CCFLAGS
 Qt5Xml_CFLAGS
 Qt5Sql_LIBS
+Qt5Sql_CCFLAGS
 Qt5Sql_CFLAGS
 Qt5OpenGL_LIBS
+Qt5OpenGL_CCFLAGS
 Qt5OpenGL_CFLAGS
 Qt5Network_LIBS
+Qt5Network_CCFLAGS
 Qt5Network_CFLAGS
 Qt5Gui_LIBS
+Qt5Gui_CCFLAGS
 Qt5Gui_CFLAGS
 Qt5Core_LIBS
+Qt5Core_CCFLAGS
 Qt5Core_CFLAGS
 Qt3Support_LIBS
+Qt3Support_CCFLAGS
 Qt3Support_CFLAGS
 QtXml_LIBS
+QtXml_CCFLAGS
 QtXml_CFLAGS
 QtSql_LIBS
+QtSql_CCFLAGS
 QtSql_CFLAGS
 QtOpenGL_LIBS
+QtOpenGL_CCFLAGS
 QtOpenGL_CFLAGS
 QtNetwork_LIBS
+QtNetwork_CCFLAGS
 QtNetwork_CFLAGS
 QtGui_LIBS
+QtGui_CCFLAGS
 QtGui_CFLAGS
 QtCore_LIBS
+QtCore_CCFLAGS
 QtCore_CFLAGS
 Qt3_LIBS
+Qt3_CCFLAGS
 Qt3_CFLAGS
 PulseAudioSimple_LIBS
+PulseAudioSimple_CCFLAGS
 PulseAudioSimple_CFLAGS
 PulseAudio_LIBS
+PulseAudio_CCFLAGS
 PulseAudio_CFLAGS
 PortAudio_LIBS
+PortAudio_CCFLAGS
 PortAudio_CFLAGS
 libPNG_LIBS
+libPNG_CCFLAGS
 libPNG_CFLAGS
 OpenCV_LIBS
+OpenCV_CCFLAGS
 OpenCV_CFLAGS
 Loudmouth_LIBS
+Loudmouth_CCFLAGS
 Loudmouth_CFLAGS
 GTKGLExt_LIBS
+GTKGLExt_CCFLAGS
 GTKGLExt_CFLAGS
 libGTK2_LIBS
+libGTK2_CCFLAGS
 libGTK2_CFLAGS
 LibGnome_LIBS
+LibGnome_CCFLAGS
 LibGnome_CFLAGS
 gthread_LIBS
+gthread_CCFLAGS
 gthread_CFLAGS
 glib_LIBS
+glib_CCFLAGS
 glib_CFLAGS
 libglade2_LIBS
+libglade2_CCFLAGS
 libglade2_CFLAGS
 iksemel_LIBS
+iksemel_CCFLAGS
 iksemel_CFLAGS
 FreeType2_LIBS
+FreeType2_CCFLAGS
 FreeType2_CFLAGS
 FFMPEGUTIL_LIBS
+FFMPEGUTIL_CCFLAGS
 FFMPEGUTIL_CFLAGS
 FFMPEGSWS_LIBS
+FFMPEGSWS_CCFLAGS
 FFMPEGSWS_CFLAGS
 FFMPEGCONT_LIBS
+FFMPEGCONT_CCFLAGS
 FFMPEGCONT_CFLAGS
 FFMPEGCDEC_LIBS
+FFMPEGCDEC_CCFLAGS
 FFMPEGCDEC_CFLAGS
 libDV_LIBS
+libDV_CCFLAGS
 libDV_CFLAGS
 libCurl_LIBS
+libCurl_CCFLAGS
 libCurl_CFLAGS
 avifile_LIBS
+avifile_CCFLAGS
 avifile_CFLAGS
 libAudioFile_LIBS
+libAudioFile_CCFLAGS
 libAudioFile_CFLAGS
 libavc1394_LIBS
+libavc1394_CCFLAGS
 libavc1394_CFLAGS
 libdc1394_LIBS
+libdc1394_CCFLAGS
 libdc1394_CFLAGS
 YFLAGS
 LEX_OUTPUT_ROOT
@@ -8933,6 +9015,7 @@ $as_echo "$as_me: WARNING: --with-libdc1394 set to an unknown option, setting ig
 
 
 
+
           KnownLibs=$KnownLibs" "libdc1394
           if ( test X$use_libdc1394 = X )
           then
@@ -9153,6 +9236,7 @@ fi
              { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-libavc1394 set to an unknown option, setting ignored" >&5
 $as_echo "$as_me: WARNING: --with-libavc1394 set to an unknown option, setting ignored" >&2;}
           fi
+
 
 
 
@@ -9383,6 +9467,7 @@ $as_echo "$as_me: WARNING: --with-libAudioFile set to an unknown option, setting
 
 
 
+
           KnownLibs=$KnownLibs" "libAudioFile
           if ( test X$use_libAudioFile = X )
           then
@@ -9603,6 +9688,7 @@ fi
              { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-avifile set to an unknown option, setting ignored" >&5
 $as_echo "$as_me: WARNING: --with-avifile set to an unknown option, setting ignored" >&2;}
           fi
+
 
 
 
@@ -9833,6 +9919,7 @@ $as_echo "$as_me: WARNING: --with-libCurl set to an unknown option, setting igno
 
 
 
+
           KnownLibs=$KnownLibs" "libCurl
           if ( test X$use_libCurl = X )
           then
@@ -10053,6 +10140,7 @@ fi
              { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-libDV set to an unknown option, setting ignored" >&5
 $as_echo "$as_me: WARNING: --with-libDV set to an unknown option, setting ignored" >&2;}
           fi
+
 
 
 
@@ -10283,6 +10371,7 @@ $as_echo "$as_me: WARNING: --with-FFMPEGCDEC set to an unknown option, setting i
 
 
 
+
           KnownLibs=$KnownLibs" "FFMPEGCDEC
           if ( test X$use_FFMPEGCDEC = X )
           then
@@ -10503,6 +10592,7 @@ fi
              { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-FFMPEGCONT set to an unknown option, setting ignored" >&5
 $as_echo "$as_me: WARNING: --with-FFMPEGCONT set to an unknown option, setting ignored" >&2;}
           fi
+
 
 
 
@@ -10733,6 +10823,7 @@ $as_echo "$as_me: WARNING: --with-FFMPEGSWS set to an unknown option, setting ig
 
 
 
+
           KnownLibs=$KnownLibs" "FFMPEGSWS
           if ( test X$use_FFMPEGSWS = X )
           then
@@ -10953,6 +11044,7 @@ fi
              { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-FFMPEGUTIL set to an unknown option, setting ignored" >&5
 $as_echo "$as_me: WARNING: --with-FFMPEGUTIL set to an unknown option, setting ignored" >&2;}
           fi
+
 
 
 
@@ -11183,6 +11275,7 @@ $as_echo "$as_me: WARNING: --with-FreeType2 set to an unknown option, setting ig
 
 
 
+
           KnownLibs=$KnownLibs" "FreeType2
           if ( test X$use_FreeType2 = X )
           then
@@ -11403,6 +11496,7 @@ fi
              { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-iksemel set to an unknown option, setting ignored" >&5
 $as_echo "$as_me: WARNING: --with-iksemel set to an unknown option, setting ignored" >&2;}
           fi
+
 
 
 
@@ -11633,6 +11727,7 @@ $as_echo "$as_me: WARNING: --with-libglade2 set to an unknown option, setting ig
 
 
 
+
           KnownLibs=$KnownLibs" "libglade2
           if ( test X$use_libglade2 = X )
           then
@@ -11853,6 +11948,7 @@ fi
              { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-glib set to an unknown option, setting ignored" >&5
 $as_echo "$as_me: WARNING: --with-glib set to an unknown option, setting ignored" >&2;}
           fi
+
 
 
 
@@ -12083,6 +12179,7 @@ $as_echo "$as_me: WARNING: --with-gthread set to an unknown option, setting igno
 
 
 
+
           KnownLibs=$KnownLibs" "gthread
           if ( test X$use_gthread = X )
           then
@@ -12303,6 +12400,7 @@ fi
              { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-LibGnome set to an unknown option, setting ignored" >&5
 $as_echo "$as_me: WARNING: --with-LibGnome set to an unknown option, setting ignored" >&2;}
           fi
+
 
 
 
@@ -12533,6 +12631,7 @@ $as_echo "$as_me: WARNING: --with-libGTK2 set to an unknown option, setting igno
 
 
 
+
           KnownLibs=$KnownLibs" "libGTK2
           if ( test X$use_libGTK2 = X )
           then
@@ -12753,6 +12852,7 @@ fi
              { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-GTKGLExt set to an unknown option, setting ignored" >&5
 $as_echo "$as_me: WARNING: --with-GTKGLExt set to an unknown option, setting ignored" >&2;}
           fi
+
 
 
 
@@ -12983,6 +13083,7 @@ $as_echo "$as_me: WARNING: --with-Loudmouth set to an unknown option, setting ig
 
 
 
+
           KnownLibs=$KnownLibs" "Loudmouth
           if ( test X$use_Loudmouth = X )
           then
@@ -13203,6 +13304,7 @@ fi
              { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-OpenCV set to an unknown option, setting ignored" >&5
 $as_echo "$as_me: WARNING: --with-OpenCV set to an unknown option, setting ignored" >&2;}
           fi
+
 
 
 
@@ -13433,6 +13535,7 @@ $as_echo "$as_me: WARNING: --with-libPNG set to an unknown option, setting ignor
 
 
 
+
           KnownLibs=$KnownLibs" "libPNG
           if ( test X$use_libPNG = X )
           then
@@ -13653,6 +13756,7 @@ fi
              { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-PortAudio set to an unknown option, setting ignored" >&5
 $as_echo "$as_me: WARNING: --with-PortAudio set to an unknown option, setting ignored" >&2;}
           fi
+
 
 
 
@@ -13883,6 +13987,7 @@ $as_echo "$as_me: WARNING: --with-PulseAudio set to an unknown option, setting i
 
 
 
+
           KnownLibs=$KnownLibs" "PulseAudio
           if ( test X$use_PulseAudio = X )
           then
@@ -14103,6 +14208,7 @@ fi
              { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-PulseAudioSimple set to an unknown option, setting ignored" >&5
 $as_echo "$as_me: WARNING: --with-PulseAudioSimple set to an unknown option, setting ignored" >&2;}
           fi
+
 
 
 
@@ -14333,6 +14439,7 @@ $as_echo "$as_me: WARNING: --with-Qt3 set to an unknown option, setting ignored"
 
 
 
+
           KnownLibs=$KnownLibs" "Qt3
           if ( test X$use_Qt3 = X )
           then
@@ -14553,6 +14660,7 @@ fi
              { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-QtCore set to an unknown option, setting ignored" >&5
 $as_echo "$as_me: WARNING: --with-QtCore set to an unknown option, setting ignored" >&2;}
           fi
+
 
 
 
@@ -14783,6 +14891,7 @@ $as_echo "$as_me: WARNING: --with-QtGui set to an unknown option, setting ignore
 
 
 
+
           KnownLibs=$KnownLibs" "QtGui
           if ( test X$use_QtGui = X )
           then
@@ -15003,6 +15112,7 @@ fi
              { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-QtNetwork set to an unknown option, setting ignored" >&5
 $as_echo "$as_me: WARNING: --with-QtNetwork set to an unknown option, setting ignored" >&2;}
           fi
+
 
 
 
@@ -15233,6 +15343,7 @@ $as_echo "$as_me: WARNING: --with-QtOpenGL set to an unknown option, setting ign
 
 
 
+
           KnownLibs=$KnownLibs" "QtOpenGL
           if ( test X$use_QtOpenGL = X )
           then
@@ -15453,6 +15564,7 @@ fi
              { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-QtSql set to an unknown option, setting ignored" >&5
 $as_echo "$as_me: WARNING: --with-QtSql set to an unknown option, setting ignored" >&2;}
           fi
+
 
 
 
@@ -15683,6 +15795,7 @@ $as_echo "$as_me: WARNING: --with-QtXml set to an unknown option, setting ignore
 
 
 
+
           KnownLibs=$KnownLibs" "QtXml
           if ( test X$use_QtXml = X )
           then
@@ -15903,6 +16016,7 @@ fi
              { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-Qt3Support set to an unknown option, setting ignored" >&5
 $as_echo "$as_me: WARNING: --with-Qt3Support set to an unknown option, setting ignored" >&2;}
           fi
+
 
 
 
@@ -16133,6 +16247,7 @@ $as_echo "$as_me: WARNING: --with-Qt5Core set to an unknown option, setting igno
 
 
 
+
           KnownLibs=$KnownLibs" "Qt5Core
           if ( test X$use_Qt5Core = X )
           then
@@ -16353,6 +16468,7 @@ fi
              { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-Qt5Gui set to an unknown option, setting ignored" >&5
 $as_echo "$as_me: WARNING: --with-Qt5Gui set to an unknown option, setting ignored" >&2;}
           fi
+
 
 
 
@@ -16583,6 +16699,7 @@ $as_echo "$as_me: WARNING: --with-Qt5Network set to an unknown option, setting i
 
 
 
+
           KnownLibs=$KnownLibs" "Qt5Network
           if ( test X$use_Qt5Network = X )
           then
@@ -16803,6 +16920,7 @@ fi
              { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-Qt5OpenGL set to an unknown option, setting ignored" >&5
 $as_echo "$as_me: WARNING: --with-Qt5OpenGL set to an unknown option, setting ignored" >&2;}
           fi
+
 
 
 
@@ -17033,6 +17151,7 @@ $as_echo "$as_me: WARNING: --with-Qt5Sql set to an unknown option, setting ignor
 
 
 
+
           KnownLibs=$KnownLibs" "Qt5Sql
           if ( test X$use_Qt5Sql = X )
           then
@@ -17253,6 +17372,7 @@ fi
              { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-Qt5Xml set to an unknown option, setting ignored" >&5
 $as_echo "$as_me: WARNING: --with-Qt5Xml set to an unknown option, setting ignored" >&2;}
           fi
+
 
 
 
@@ -17483,6 +17603,7 @@ $as_echo "$as_me: WARNING: --with-libGL set to an unknown option, setting ignore
 
 
 
+
           KnownLibs=$KnownLibs" "libGL
           if ( test X$use_libGL = X )
           then
@@ -17703,6 +17824,7 @@ fi
              { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-libGLU set to an unknown option, setting ignored" >&5
 $as_echo "$as_me: WARNING: --with-libGLU set to an unknown option, setting ignored" >&2;}
           fi
+
 
 
 
@@ -17933,6 +18055,7 @@ $as_echo "$as_me: WARNING: --with-OpenSceneGraph set to an unknown option, setti
 
 
 
+
           KnownLibs=$KnownLibs" "OpenSceneGraph
           if ( test X$use_OpenSceneGraph = X )
           then
@@ -18153,6 +18276,7 @@ fi
              { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-OpenSceneGraphGTK set to an unknown option, setting ignored" >&5
 $as_echo "$as_me: WARNING: --with-OpenSceneGraphGTK set to an unknown option, setting ignored" >&2;}
           fi
+
 
 
 
@@ -18383,6 +18507,7 @@ $as_echo "$as_me: WARNING: --with-RLog set to an unknown option, setting ignored
 
 
 
+
           KnownLibs=$KnownLibs" "RLog
           if ( test X$use_RLog = X )
           then
@@ -18603,6 +18728,7 @@ fi
              { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-devVideo4Linux2 set to an unknown option, setting ignored" >&5
 $as_echo "$as_me: WARNING: --with-devVideo4Linux2 set to an unknown option, setting ignored" >&2;}
           fi
+
 
 
 
@@ -18833,6 +18959,7 @@ $as_echo "$as_me: WARNING: --with-UUIdTheo set to an unknown option, setting ign
 
 
 
+
           KnownLibs=$KnownLibs" "UUIdTheo
           if ( test X$use_UUIdTheo = X )
           then
@@ -19053,6 +19180,7 @@ fi
              { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-x11 set to an unknown option, setting ignored" >&5
 $as_echo "$as_me: WARNING: --with-x11 set to an unknown option, setting ignored" >&2;}
           fi
+
 
 
 
@@ -19283,6 +19411,7 @@ $as_echo "$as_me: WARNING: --with-Xmu set to an unknown option, setting ignored"
 
 
 
+
           KnownLibs=$KnownLibs" "Xmu
           if ( test X$use_Xmu = X )
           then
@@ -19503,6 +19632,7 @@ fi
              { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-ZeroMQ set to an unknown option, setting ignored" >&5
 $as_echo "$as_me: WARNING: --with-ZeroMQ set to an unknown option, setting ignored" >&2;}
           fi
+
 
 
 
@@ -20579,6 +20709,7 @@ $as_echo "$as_me: WARNING: --with-blas-include and --with-blas specify different
 
 
 
+
           KnownLibs=$KnownLibs" "blas
           if ( test X$use_blas = X )
           then
@@ -21650,6 +21781,7 @@ $as_echo "$as_me: WARNING: --with-CXSparse-include and --with-CXSparse specify d
 
 
 
+
           KnownLibs=$KnownLibs" "CXSparse
           if ( test X$use_CXSparse = X )
           then
@@ -22715,6 +22847,7 @@ $as_echo "$as_me: WARNING: --with-DynLink-include and --with-DynLink specify dif
           with_DynLink_hdr=""
           with_DynLink_lang="C
                              "
+
 
 
 
@@ -23793,6 +23926,7 @@ $as_echo "$as_me: WARNING: --with-GLUT-include and --with-GLUT specify different
 
 
 
+
           KnownLibs=$KnownLibs" "GLUT
           if ( test X$use_GLUT = X )
           then
@@ -24866,6 +25000,7 @@ $as_echo "$as_me: WARNING: --with-libmkl-include and --with-libmkl specify diffe
 
 
 
+
           KnownLibs=$KnownLibs" "libmkl
           if ( test X$use_libmkl = X )
           then
@@ -25931,6 +26066,7 @@ $as_echo "$as_me: WARNING: --with-LibJasper-include and --with-LibJasper specify
           with_LibJasper_hdr="jasper/jasper.h"
           with_LibJasper_lang="C
                              "
+
 
 
 
@@ -27009,6 +27145,7 @@ $as_echo "$as_me: WARNING: --with-JPEG-include and --with-JPEG specify different
 
 
 
+
           KnownLibs=$KnownLibs" "JPEG
           if ( test X$use_JPEG = X )
           then
@@ -28074,6 +28211,7 @@ $as_echo "$as_me: WARNING: --with-LAPACK-include and --with-LAPACK specify diffe
           with_LAPACK_hdr=""
           with_LAPACK_lang="C
                              "
+
 
 
 
@@ -29151,6 +29289,7 @@ $as_echo "$as_me: WARNING: --with-Math-include and --with-Math specify different
 
 
 
+
           KnownLibs=$KnownLibs" "Math
           if ( test X$use_Math = X )
           then
@@ -30216,6 +30355,7 @@ $as_echo "$as_me: WARNING: --with-posixThreads-include and --with-posixThreads s
           with_posixThreads_hdr="pthread.h"
           with_posixThreads_lang="C
                              "
+
 
 
 
@@ -31293,6 +31433,7 @@ $as_echo "$as_me: WARNING: --with-Socket-include and --with-Socket specify diffe
 
 
 
+
           KnownLibs=$KnownLibs" "Socket
           if ( test X$use_Socket = X )
           then
@@ -32358,6 +32499,7 @@ $as_echo "$as_me: WARNING: --with-LibTIFF-include and --with-LibTIFF specify dif
           with_LibTIFF_hdr=""
           with_LibTIFF_lang="C
                              "
+
 
 
 
@@ -33436,6 +33578,7 @@ $as_echo "$as_me: WARNING: --with-UMFPack-include and --with-UMFPack specify dif
 
 
 
+
           KnownLibs=$KnownLibs" "UMFPack
           if ( test X$use_UMFPack = X )
           then
@@ -34504,6 +34647,7 @@ $as_echo "$as_me: WARNING: --with-vlfeat-include and --with-vlfeat specify diffe
           with_vlfeat_hdr="sift.h"
           with_vlfeat_lang="C
                              "
+
 
 
 
@@ -35580,6 +35724,7 @@ $as_echo "$as_me: WARNING: --with-vtkCommon-include and --with-vtkCommon specify
 
 
 
+
           KnownLibs=$KnownLibs" "vtkCommon
           if ( test X$use_vtkCommon = X )
           then
@@ -36645,6 +36790,7 @@ $as_echo "$as_me: WARNING: --with-vtkFiltering-include and --with-vtkFiltering s
           with_vtkFiltering_hdr="vtkCellArray.h"
           with_vtkFiltering_lang="C++
                              "
+
 
 
 
@@ -37716,6 +37862,7 @@ $as_echo "$as_me: WARNING: --with-vtkGraphics-include and --with-vtkGraphics spe
           with_vtkGraphics_hdr="vtkDecimatePro.h"
           with_vtkGraphics_lang="C++
                              "
+
 
 
 
@@ -38797,6 +38944,7 @@ $as_echo "$as_me: WARNING: --with-Yajl-include and --with-Yajl specify different
 
 
 
+
           KnownLibs=$KnownLibs" "Yajl
           if ( test X$use_Yajl = X )
           then
@@ -39867,6 +40015,7 @@ $as_echo "$as_me: WARNING: --with-Zlib-include and --with-Zlib specify different
 
 
 
+
           KnownLibs=$KnownLibs" "Zlib
           if ( test X$use_Zlib = X )
           then
@@ -40096,6 +40245,7 @@ $as_echo "$as_me: WARNING: --with-CUDA set to an unknown option, setting ignored
 
 
 
+
           KnownLibs=$KnownLibs" "CUDA
           if ( test X$use_CUDA = X )
           then
@@ -40319,6 +40469,7 @@ fi
              { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-OpenGL set to an unknown option, setting ignored" >&5
 $as_echo "$as_me: WARNING: --with-OpenGL set to an unknown option, setting ignored" >&2;}
           fi
+
 
 
 
@@ -41399,6 +41550,7 @@ $as_echo "$as_me: WARNING: --with-cublas-include and --with-cublas specify diffe
 
 
 
+
           KnownLibs=$KnownLibs" "cublas
           if ( test X$use_cublas = X )
           then
@@ -42467,6 +42619,7 @@ $as_echo "$as_me: WARNING: --with-cuda-include and --with-cuda specify different
           with_cuda_hdr=""
           with_cuda_lang="C
                                      "
+
 
 
 
@@ -43553,6 +43706,7 @@ $as_echo "$as_me: WARNING: --with-cufft-include and --with-cufft specify differe
 
 
 
+
           KnownLibs=$KnownLibs" "cufft
           if ( test X$use_cufft = X )
           then
@@ -44621,6 +44775,7 @@ $as_echo "$as_me: WARNING: --with-cufftw-include and --with-cufftw specify diffe
           with_cufftw_hdr="cufftw.h"
           with_cufftw_lang="C
                                      "
+
 
 
 
@@ -45706,6 +45861,7 @@ $as_echo "$as_me: WARNING: --with-curand-include and --with-curand specify diffe
 
 
 
+
           KnownLibs=$KnownLibs" "curand
           if ( test X$use_curand = X )
           then
@@ -46770,6 +46926,7 @@ $as_echo "$as_me: WARNING: --with-cudart-include and --with-cudart specify diffe
           with_cudart_hdr=""
           with_cudart_lang="C
                                      "
+
 
 
 
@@ -47848,6 +48005,7 @@ $as_echo "$as_me: WARNING: --with-cusolver-include and --with-cusolver specify d
 
 
 
+
           KnownLibs=$KnownLibs" "cusolver
           if ( test X$use_cusolver = X )
           then
@@ -48915,6 +49073,7 @@ $as_echo "$as_me: WARNING: --with-cusparse-include and --with-cusparse specify d
           with_cusparse_hdr="cusparse.h"
           with_cusparse_lang="C
                                      "
+
 
 
 
@@ -49991,6 +50150,7 @@ $as_echo "$as_me: WARNING: --with-Qt3QGLViewer-include and --with-Qt3QGLViewer s
 
 
 
+
           KnownLibs=$KnownLibs" "Qt3QGLViewer
           if ( test X$use_Qt3QGLViewer = X )
           then
@@ -51058,6 +51218,7 @@ $as_echo "$as_me: WARNING: --with-Qt4QGLViewer-include and --with-Qt4QGLViewer s
           with_Qt4QGLViewer_hdr="QGLViewer/qglviewer.h"
           with_Qt4QGLViewer_lang="C++
                                      "
+
 
 
 
@@ -52138,6 +52299,7 @@ $as_echo "$as_me: WARNING: --with-tetgen-include and --with-tetgen specify diffe
 
 
 
+
           KnownLibs=$KnownLibs" "tetgen
           if ( test X$use_tetgen = X )
           then
@@ -52359,6 +52521,7 @@ fi
 
 
 
+
           KnownLibs=$KnownLibs" "libffmpeg
           if ( test X$use_libffmpeg = X )
           then
@@ -52575,6 +52738,7 @@ fi
 
 
           with_NVCC_prq=""
+
 
 
 
@@ -56897,25 +57061,74 @@ do
                    RESOURCES="$RESOURCES $lib"
                    # Put the placeholders into Config.QMake.in so we record the
                    # flags associated with the libraries that we can use
+
                    eval check=\$with_${lib}_check
                    if ( test x$check = xvirtual )
                    then
+                      # For virtual packages, we need to output the settings
+                      # associated with the pre-requisites. If we have a virtual
+                      # package that the user has configured via pkg-config,
+                      # this script will have already changed the check type so
+                      # we do not need to consider that here.
+                      #
+                      # Start with empty definitions
                       cflags=""
+                      ccflags=""
                       libs=""
                       eval prereqs=\$with_${lib}_prq
+                      # For each pre-requisite of the package
                       for p in $prereqs
                       do
-                         cflags="$cflags @${p}_CFLAGS@"
-                         libs="$libs @${p}_LIBS@"
+                         # If any C flags exist for the pre-requisite package
+                         # include those
+                         eval prereqcflags=\$${p}_CFLAGS
+                         if ( test "X$prereqcflags" != X )
+                         then
+                            cflags="$cflags @${p}_CFLAGS@"
+                         fi
+                         # Include any C++ flags from the pre-requisite
+                         eval prereqccflags=\$${p}_CCFLAGS
+                         if ( test "X$prereqccflags" != X )
+                         then
+                            ccflags="$ccflags @${p}_CCFLAGS@"
+                         fi
+                         # Include any library flags from the pre-requisite
+                         eval prereqlibs=\$${p}_LIBS
+                         if ( test "X$prereqlibs" != X )
+                         then
+                            libs="$libs @${p}_LIBS@"
+                         fi
                       done
-                      echo ${lib}_CFLAGS=$cflags >> Config.QMake.in
-                      echo ${lib}_LIBS=$libs >> Config.QMake.in
-                      echo >> ./Config.QMake.in
                    else
-                      echo ${lib}_CFLAGS=@${lib}_CFLAGS@ >> Config.QMake.in
-                      echo ${lib}_LIBS=@${lib}_LIBS@ >> Config.QMake.in
-                      echo >> ./Config.QMake.in
+                      # Always output a CFLAGS setting even if it is null
+                      # <lib>_CFLAGS will already be declared as a substitution
+                      # variable
+                      cflags="@${lib}_CFLAGS@"
+                      # If any C++ flags exist for the package, ensure that
+                      # they output too.
+                      eval ccflags=\$${lib}_CCFLAGS
+                      if ( test "X$ccflags" != X )
+                      then
+                         ccflags="@${lib}_CCFLAGS@"
+                      fi
+                      # Always output a LIBS setting
+                      # <lib>_LIBS will already be declared as a substitution
+                      # variable
+                      libs="@${lib}_LIBS@"
                    fi
+                   # Now actually output the flags
+                   #
+                   # Always output a CFLAGS setting
+                   echo ${lib}_CFLAGS=$cflags >> Config.QMake.in
+                   # If any C++ flags exist for the package, ensure that
+                   # they output too.
+                   if ( test "X$ccflags" != X )
+                   then
+                      echo ${lib}_CCFLAGS=$ccflags >> Config.QMake.in
+                   fi
+                   # Always output a LIBS setting
+                   echo ${lib}_LIBS=$libs >> Config.QMake.in
+                   echo >> ./Config.QMake.in
                    ;;
    esac
 done

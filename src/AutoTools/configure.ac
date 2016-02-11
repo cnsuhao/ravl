@@ -490,14 +490,21 @@ do
       # Lib not available
       eval "use_${lib}=missing"
       eval "${lib}_CFLAGS="
+      eval "${lib}_CCFLAGS="
       eval "${lib}_LIBS="
+      dnl Extend this section to nullify the relevant Fortran make flags if
+      dnl we ever add Fortran support
    else
       # Inherit QMake configuration settings
       eval "use_${lib}=present"
       QMakeSetting=`cat $QMAKE_CFG | $SED -n "s/^${lib}_CFLAGS=\(.*\)/\1/p"`
       eval "${lib}_CFLAGS=\$QMakeSetting"
+      QMakeSetting=`cat $QMAKE_CFG | $SED -n "s/^${lib}_CCFLAGS=\(.*\)/\1/p"`
+      eval "${lib}_CCFLAGS=\$QMakeSetting"
       QMakeSetting=`cat $QMAKE_CFG | $SED -n "s/^${lib}_LIBS=\(.*\)/\1/p"`
       eval "${lib}_LIBS=\$QMakeSetting"
+      dnl Extend this section to read in the Fortran make flags if we ever
+      dnl add Fortran support
       # We give no consideration to package pre-requisites here. If we inherit
       # from the QMake configuration, we inherit the package with the original
       # pre-requisite package(s). For example, if we inherit libTIFF, we inherit
@@ -518,7 +525,10 @@ do
    then
       eval "use_${lib}=missing"
       eval "${lib}_CFLAGS="
+      eval "${lib}_CCFLAGS="
       eval "${lib}_LIBS="
+      dnl Extend this section to read in the Fortran make flags if we ever
+      dnl add Fortran support
       CheckOverride="$CheckOverride $lib"
       trace 6 Broken lib @<:@$lib@:>@ removed
    fi
@@ -1312,6 +1322,8 @@ do
                    trace 3 Checking settings for virtual library $lib
                    cflags=""
                    expandedcflags=""
+                   ccflags=""
+                   expandedccflags=""
                    libs=""
                    expandedlibs=""
                    eval prereqs=\$with_${lib}_prq
@@ -1323,12 +1335,20 @@ do
                        cflags="$cflags @${p}_CFLAGS@"
                        expandedcflags="$expandedcflags $prereqcflags"
                      fi
+                     eval prereqccflags=\$${p}_CCFLAGS
+                     if ( test "X$prereqccflags" != X )
+                     then
+                       ccflags="$ccflags @${p}_CCFLAGS@"
+                       expandedccflags="$expandedccflags $prereqccflags"
+                     fi
                      eval prereqlibs=\$${p}_LIBS
                      if ( test "X$prereqlibs" != X )
                      then
                        libs="$libs @${p}_LIBS@"
                        expandedlibs="$expandedlibs $prereqlibs"
                      fi
+                     dnl Extend this section to process the Fortran make flags
+                     dnl if we ever add Fortran support
                    done
                    need_newline=no
                    if ( test x`$EXPR " $UnconfiguredLibs " : ".* \($lib\) .*"` == "x$lib" )
@@ -1350,6 +1370,20 @@ do
                        echo ${lib}_CFLAGS=$cflags >> Config.Project.in
                        need_newline=yes
                      fi
+                     original_ccflags=`cat $QMAKE_CFG | $SED -n "s/^${lib}_CCFLAGS=\(.*\)/\1/p"`
+                     if ( test "X$original_ccflags" != "X$expandedccflags" )
+                     then
+                       TRACE_INDENT="     "
+                       trace 5 Changing CCFLAGS from:
+                       TRACE_INDENT="     "
+                       trace 5 $original_ccflags
+                       TRACE_INDENT="     "
+                       trace 5 to:
+                       TRACE_INDENT="     "
+                       trace 5 $expandedccflags
+                       echo ${lib}_CCFLAGS=$ccflags >> Config.Project.in
+                       need_newline=yes
+                     fi
                      original_libs=`cat $QMAKE_CFG | $SED -n "s/^${lib}_LIBS=\(.*\)/\1/p"`
                      if ( test "X$original_libs" != "X$expandedlibs" )
                      then
@@ -1364,6 +1398,8 @@ do
                        echo ${lib}_LIBS=$libs >> Config.Project.in
                        need_newline=yes
                      fi
+                     dnl Extend this section to process the Fortran make flags
+                     dnl if we ever add Fortran support
                      if ( test $need_newline == yes )
                      then
                        echo >> ./Config.Project.in
@@ -1374,7 +1410,10 @@ do
                      # are copied across from the dependants of the virtual
                      # package
                      eval ${lib}_CFLAGS=\$expandedcflags
+                     eval ${lib}_CCFLAGS=\$expandedccflags
                      eval ${lib}_LIBS=\$expandedlibs
+                     dnl Extend this section to nullify the relevant Fortran
+                     dnl make flags if we ever add Fortran support
                    fi
                    ;;
     esac
@@ -1411,8 +1450,25 @@ do
                    # Put the placeholders into Config.Project.in so we record the
                    # flags associated with the libraries that we can use
                    echo ${lib}_CFLAGS=@${lib}_CFLAGS@ >> Config.Project.in
+                   eval ccflags=\$${lib}_CCFLAGS
+                   if ( test "X$ccflags" != X )
+                   then
+                      # Output any CCFLAGS
+                      echo ${lib}_CCFLAGS=@${lib}_CCFLAGS@ >> Config.Project.in
+                   else
+                      # No CCFLAGS - check we don't have any to dis-inherit
+                      QMakeSetting=`cat $QMAKE_CFG | $SED -n "s/^${lib}_CCFLAGS=\(.*\)/\1/p"`
+                      if ( test "X$QMakeSetting" != X )
+                      then
+                         # QMake config provides CCFLAGS so we need to nullify
+                         # the old setting
+                         echo ${lib}_CCFLAGS= >> Config.Project.in
+                      fi
+                   fi
                    echo ${lib}_LIBS=@${lib}_LIBS@ >> Config.Project.in
                    echo >> ./Config.Project.in
+                   dnl Extend this section to write out the Fortran make flags
+                   dnl if we ever add Fortran support
                    ;;
    esac
 done

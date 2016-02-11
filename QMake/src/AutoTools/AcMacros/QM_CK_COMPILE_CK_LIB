@@ -129,6 +129,13 @@ dnl                     have an available compiler, configure will completely
 dnl                     fail rather than only fail those elements associated
 dnl                     with the unsupported language.
 dnl
+dnl                     If you enable Fortran here, you also need to enable
+dnl                     the output of the Fortran make flags (FCFLAGS et al)
+dnl                     in the QMake and project configure.ac files. For the
+dnl                     project configure.ac files, the Fortran flags will
+dnl                     also need reading in (from Config.QMake) for the
+dnl                     non-configured external packages.
+dnl
 dnl                             ["Fortran"],       [AC_LANG_PUSH([Fortran])
 dnl                                                 QM_CHECK_CC_LIB([$test_lib],[$failure])
 dnl                                                 AC_LANG_POP([Fortran])
