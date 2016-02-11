@@ -606,6 +606,7 @@ ac_subst_vars='LTLIBOBJS
 LIBOBJS
 RESOURCES
 enable_fast_install
+DEFAULT_NVCC_TARGS
 CONFIGURE_NVCCFLAGS
 USER_UNDEFSYMB
 USER_with_rpath
@@ -56177,6 +56178,11 @@ See \`config.log' for more details" "$LINENO" 5; }
                            else
                               trace 5 CUDA compiler requirements appear to be satisfied.
 
+                              # Initialise variable for identifying what compute
+                              # architectures we can target from the current
+                              # version of CUDA
+                              DEFAULT_NVCC_TARGS=""
+
                               if ( test "x$CUDAver" != x )
                               then
                                  # We have a CUDA version, does it provide pkg-config files?
@@ -56251,6 +56257,89 @@ fi
                                     else
                                        trace 2 Unable to employ pkg-config for CUDA $ImpliedMaj.$ImpliedMin
                                     fi
+
+                                    # Since we recognise a version number, can
+                                    # we select what compute levels to target
+                                    # by default?
+                                    case $ImpliedMaj.$ImpliedMin in
+                                    0.* | 1.* | 2.* )
+                                                  # Just target compute 1.0
+                                                  # This saves us having to
+                                                  # check versioning down to
+                                                  # when each version of
+                                                  # compute 1.X came in and
+                                                  # keeps down the amount of
+                                                  # generated code.
+                                                  DEFAULT_NVCC_TARGS="10"
+                                                  ;;
+                                    3.* )         # 3.0 introduced Fermi
+                                                  # (compute 2.0) support.
+                                                  # Again, we are not going to
+                                                  # go beyond supporting the
+                                                  # headline compute versions
+                                                  # so as to keep the amount
+                                                  # of generated code down. We
+                                                  # will also support previous
+                                                  # architectures
+                                                  DEFAULT_NVCC_TARGS="10 20"
+                                                  ;;
+                                    4.2 )         # This version added Kepler
+                                                  # (compute 3.x) support to
+                                                  # all previous architectures
+                                                  DEFAULT_NVCC_TARGS="10 20 30"
+                                                  ;;
+                                   # Note: 4.2 above 4.* to specialise that ver
+                                    4.* )         # Earlier 4.X versions - no
+                                                  # compute 3.x support, only
+                                                  # default to supporting the
+                                                  # headline architectures.
+                                                  DEFAULT_NVCC_TARGS="10 20"
+                                                  ;;
+                                    5.* | 6.0 )   # Unlike the other versions
+                                                  # we will support compute 3.5
+                                                  # as a seperate option as
+                                                  # some of the CUDA examples
+                                                  # explicitly require it.
+                                                  DEFAULT_NVCC_TARGS="10 20 30 35"
+                                                  ;;
+                                    6.5 )         # This version of CUDA
+                                                  # discontinued compute 1.0
+                                                  # support. Move to 1.1 as
+                                                  # recompence. Also add
+                                                  # support for the newly
+                                                  # supported Maxwell (5.0)
+                                                  # Compute levels 1.2/3 are
+                                                  # still valid, but we are
+                                                  # not defaulting to target
+                                                  # those as are we goint to
+                                                  # target compute level 5.2
+                                                  DEFAULT_NVCC_TARGS="11 20 30 35 50"
+                                                  ;;
+                                    7.* )         # This version of CUDA drops
+                                                  # levels 1.X entirely. We
+                                                  # continue to not target the
+                                                  # interim 2.1, 3.2, 3.7, 5.2
+                                                  # and 5.3 compute levels
+                                                  DEFAULT_NVCC_TARGS="20 30 35 50"
+                                                  ;;
+                                    * )           # As we do not know at what
+                                                  # version various compute
+                                                  # levels will be removed from
+                                                  # support, we cannot properly
+                                                  # infer what to build. We
+                                                  # can, however, attempt to
+                                                  # just drop the oldest and
+                                                  # hope we can update this
+                                                  # script before the next
+                                                  # revision is dropped (will
+                                                  # work if nVidia do drop
+                                                  # just the lowest compute
+                                                  # level next and users do
+                                                  # not hoard old versions of
+                                                  # the configure script).
+                                                  DEFAULT_NVCC_TARGS="30 35 50"
+                                                  ;;
+                                    esac
                                  fi # (end of if recognised CUDA ver)
                               fi # (end of if we have a CUDAver)
 
@@ -57509,6 +57598,12 @@ then
    fi
    echo >> ./Config.Project.in
    echo \# Settings determined for current combination of C++ and CUDA compilers >> ./Config.Project.in
+   if ( test "x$DEFAULT_NVCC_TARGS" = x )
+   then
+      echo PKG_NVCC_TARGS=\$\(QMAKE_NVCC_TARGS\) >> ./Config.Project.in
+   else
+      echo PKG_NVCC_TARGS=@DEFAULT_NVCC_TARGS@ >> ./Config.Project.in
+   fi
    echo PKG_NVCCANSIFLAG=@PKG_NVCCANSIFLAG@ >> ./Config.Project.in
    echo PKG_CHECK_NVCCFLAGS=@PKG_CHECK_NVCCFLAGS@ >> ./Config.Project.in
    echo PKG_DEBUG_NVCCFLAGS=@PKG_DEBUG_NVCCFLAGS@ >> ./Config.Project.in
@@ -57520,6 +57615,7 @@ then
    echo PKG_SHARED_NVCCFLAGS=@PKG_SHARED_NVCCFLAGS@ >> ./Config.Project.in
    echo >> ./Config.Project.in
    echo >> ./Config.Project.in
+
 
 fi
 echo \# Flags for the archiver >> ./Config.Project.in

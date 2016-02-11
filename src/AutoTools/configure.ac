@@ -1074,6 +1074,12 @@ then
    fi
    echo >> ./Config.Project.in
    echo \# Settings determined for current combination of C++ and CUDA compilers >> ./Config.Project.in
+   if ( test "x$DEFAULT_NVCC_TARGS" = x )
+   then
+      echo PKG_NVCC_TARGS=\$\(QMAKE_NVCC_TARGS\) >> ./Config.Project.in
+   else
+      echo PKG_NVCC_TARGS=@DEFAULT_NVCC_TARGS@ >> ./Config.Project.in
+   fi
    echo PKG_NVCCANSIFLAG=@PKG_NVCCANSIFLAG@ >> ./Config.Project.in
    echo PKG_CHECK_NVCCFLAGS=@PKG_CHECK_NVCCFLAGS@ >> ./Config.Project.in
    echo PKG_DEBUG_NVCCFLAGS=@PKG_DEBUG_NVCCFLAGS@ >> ./Config.Project.in
@@ -1086,6 +1092,7 @@ then
    echo >> ./Config.Project.in
    echo >> ./Config.Project.in
    AC_SUBST([CONFIGURE_NVCCFLAGS])
+   AC_SUBST([DEFAULT_NVCC_TARGS])
 fi
 echo \# Flags for the archiver >> ./Config.Project.in
 echo >> ./Config.Project.in

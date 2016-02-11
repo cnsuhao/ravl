@@ -330,10 +330,9 @@ then
    echo >> ./Config.QMake.in
    echo \# User specified at configure time >> ./Config.QMake.in
    echo QMAKE_NVCCFLAGS=@CONFIGURE_NVCCFLAGS@ >> ./Config.QMake.in
-   dnl Declare variable for output as that has not already been done
-   AC_SUBST([CONFIGURE_NVCCFLAGS])
    echo >> ./Config.QMake.in
    echo \# Settings determined for current combination of C++ and CUDA compilers >> ./Config.QMake.in
+   echo QMAKE_NVCC_TARGS=@DEFAULT_NVCC_TARGS@ >> ./Config.QMake.in
    echo NVCC_ANSI_NVCCFLAGS=@NVCC_ANSI_NVCCFLAGS@ >> ./Config.QMake.in
    echo NVCC_DEBUG_NVCCFLAGS=@NVCC_DEBUG_NVCCFLAGS@ >> ./Config.QMake.in
    echo NVCC_GPROF_NVCCFLAGS=@NVCC_GPROF_NVCCFLAGS@ >> ./Config.QMake.in
@@ -344,6 +343,9 @@ then
    echo NVCC_SPECIFIC_NVCCFLAGS=@NVCC_SPECIFIC_NVCCFLAGS@ >> ./Config.QMake.in
    echo >> ./Config.QMake.in
    echo >> ./Config.QMake.in
+   dnl Declare variables for output that have not already been declared
+   AC_SUBST([CONFIGURE_NVCCFLAGS])
+   AC_SUBST([DEFAULT_NVCC_TARGS])
 fi
 echo \# Flags for the archiver >> ./Config.QMake.in
 echo \# >> ./Config.QMake.in

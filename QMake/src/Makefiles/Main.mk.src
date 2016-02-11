@@ -1,5 +1,5 @@
 # This file is part of QMake, Quick Make System
-# Copyright (C) 2001-14, University of Surrey
+# Copyright (C) 2001-16, University of Surrey
 # This code may be redistributed under the terms of the GNU General
 # Public License (GPL). See the gpl.licence file for details or
 # see http://www.gnu.org/copyleft/gpl.html
@@ -848,15 +848,34 @@ $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %.m $(INST_OBJS)/.dir $(INST_DEPEND
 	fi
 
 ifneq ($(strip $(NVCC)),)
+
+  ifeq ($(strip $(filter -arch% \
+                         --gpu-architecture% \
+                         --gpu-name% \
+                         -code% \
+                         --gpu-code% \
+                         -gencode% \
+                         --generate-code%, \
+                                            $(PKG_NVCCFLAGS) $(NVCCFLAGS))), )
+    # NVCCFLAGS contain nothing to set targets - add the defaults
+    ADDED_NVCC_TARGETS=$(foreach T, \
+                                 $(PKG_NVCC_TARGS), \
+                                 -gencode=arch=compute_$(T),code=sm_$(T) \
+                        )
+    ADDED_NVCC_TARGETS+= -gencode=arch=compute_$(lastword $(PKG_NVCC_TARGS)),code=compute_$(lastword $(PKG_NVCC_TARGS)) 
+  else
+    ADDED_NVCC_TARGETS=
+  endif
+
 $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %.cu $(INST_OBJS)/.dir $(INST_DEPEND)/.dir $(QCWD)/defs.mk
 	@echo "--- Compile $(VAR_DISPLAY_NAME) $< "
 	$(SHOWIT)if [ -f $(WORKTMP)/$*.d ] ; then \
 	  $(RM) $(WORKTMP)/$*.d ; \
 	fi
 	@echo "---- Object $< "
-	$(SHOWIT)if $(NVCC) -c $(CPPFLAGS) $(PKG_NVCCFLAGS) $(NVCCFLAGS) $(CINCLUDES) -o $(INST_OBJS)/$*$(OBJEXT) $< ; then \
+	$(SHOWIT)if $(NVCC) -c $(CPPFLAGS) $(ADDED_NVCC_TARGETS) $(PKG_NVCCFLAGS) $(NVCCFLAGS) $(CINCLUDES) -o $(INST_OBJS)/$*$(OBJEXT) $< ; then \
 	  echo "---- Depends $< "; \
-	  if $(NVCC) -M $(CPPFLAGS) $(PKG_NVCCFLAGS) $(NVCCFLAGS) $(CINCLUDES) -o $(WORKTMP)/$*.d $< ; then \
+	  if $(NVCC) -M $(CPPFLAGS) $(ADDED_NVCC_TARGETS) $(PKG_NVCCFLAGS) $(NVCCFLAGS) $(CINCLUDES) -o $(WORKTMP)/$*.d $< ; then \
 	    $(MKDEPUP) ; \
 	  else \
 	    exit 1 ; \
@@ -864,6 +883,7 @@ $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %.cu $(INST_OBJS)/.dir $(INST_DEPEN
 	else \
 	  exit 1 ; \
 	fi
+
 endif
 
 
@@ -1873,7 +1893,7 @@ info:
 	@echo "Link Flags      :" $(PKG_LDFLAGS) $(LDFLAGS)
 	@echo "Includes        :" $(INCLUDES)
 	@echo "Library libs    :" $(EXELIB)
-	@echo "NVCC Flags      :" $(CCPPFLAGS) $(PKG_NVCCFLAGS) $(NVCCFLAGS)
+	@echo "NVCC Flags      :" $(CCPPFLAGS) $(ADDED_NVCC_TARGETS) $(PKG_NVCCFLAGS) $(NVCCFLAGS)
 	@echo "Executable libs :" $(LIBS)
 	@echo "Binary libs     :" $(BINLIBS)
 	@echo "Test libs       :" $(TESTBINLIBS)

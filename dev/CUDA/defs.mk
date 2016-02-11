@@ -10,8 +10,6 @@ PLIB= RavlCUDA
 
 USESLIBS= CUDA RavlCore
 
-USERNVCCFLAGS = -gencode arch=compute_10,code=sm_10 -gencode arch=compute_20,code=sm_20 
-
 MAINS= testRavlCUDA.cc
 
 TESTEXES=
