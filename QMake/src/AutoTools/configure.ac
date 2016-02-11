@@ -324,7 +324,7 @@ echo LINKER_SET_SONAME=@LINKER_SET_SONAME@ >> ./Config.QMake.in
 echo LINKER_UNDEFSYMB=@LINKER_UNDEFSYMB@ >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo >> ./Config.QMake.in
-if ( test x$use_CUDA = xpresent )
+if ( test x$use_NVCC = xpresent )
 then
    echo \# CUDA compiler settings >> ./Config.QMake.in
    echo >> ./Config.QMake.in

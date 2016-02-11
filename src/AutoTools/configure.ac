@@ -1060,7 +1060,7 @@ then
 fi
 echo >> ./Config.Project.in
 echo >> ./Config.Project.in
-if ( test x$use_CUDA = xpresent )
+if ( test x$use_NVCC = xpresent )
 then
    echo \# CUDA compiler settings >> ./Config.Project.in
    echo >> ./Config.Project.in

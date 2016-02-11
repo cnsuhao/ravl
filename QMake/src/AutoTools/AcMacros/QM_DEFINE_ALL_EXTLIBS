@@ -557,6 +557,15 @@ dnl
           dnl    specify Zlib not -lz or z.
           dnl
           dnl                      Name         Pre-requisites
+          QM_DEFINE_VIRTUAL_EXTLIB([CUDA],      [cudart cuda])
+          dnl                                    Must be this way-around so we
+          dnl                                    pick up any -L for cudart
+          dnl                                    before any for cuda as the
+          dnl                                    cuda path may be the stubs
+          dnl                                    directory (if the driver is
+          dnl                                    not currently installed).
+          dnl
+          dnl                      Name         Pre-requisites
           QM_DEFINE_VIRTUAL_EXTLIB([OpenGL],    [libGL libGLU])
 
 
@@ -623,13 +632,103 @@ dnl
           dnl                         .h
           dnl                         Lang
           dnl
-          QM_DEFINE_EXTLIB_BESPOKE_CC([CUDA],
-                                      [cudaMalloc ();],
-                                      [],
-                                      [-lcuda -lcudart],
-                                      [cuda.h],
+          QM_DEFINE_EXTLIB_BESPOKE_CC([cublas],
+                                      [cublasHandle_t handle;
+                                       cublasStatus_t stat;
+                                       stat = cublasCreate(&handle);
+                                      ],
+                                      [NVCC],
+                                      [-lcublas],
+                                      [cublas_v2.h],
                                       [C]
-                             )
+                                     )
+          QM_DEFINE_EXTLIB_BESPOKE_CC([cuda],
+                                      [int deviceCount = 0;
+                                       cuInit(0);
+                                       cuDeviceGetCount(&deviceCount);
+                                      ],
+                                      [NVCC],
+                                      [-lcuda],
+                                      [],
+                                      [C]
+                                     )
+          QM_DEFINE_EXTLIB_BESPOKE_CC([cufft],
+                                      [cufftHandle plan;
+                                       cufftResult stat;
+                                       cufftType type;
+                                       int batch, idist, inembed, istride, n;
+                                       int odist, onembed, ostride, rank;
+                                       stat = cufftPlanMany(&plan, rank, &n,
+                                                            &inembed, istride,
+                                                            idist, &onembed,
+                                                            ostride, odist,
+                                                            type, batch
+                                                           );
+                                      ],
+                                      [NVCC],
+                                      [-lcufft],
+                                      [cufft.h],
+                                      [C]
+                                     )
+          QM_DEFINE_EXTLIB_BESPOKE_CC([cufftw],
+                                      [void *p;
+                                       size_t n;
+                                       p = fftw_malloc(n);
+                                      ],
+                                      [NVCC cufft],
+                                      [-lcufftw],
+                                      [cufftw.h],
+                                      [C]
+                                     )
+          QM_DEFINE_EXTLIB_BESPOKE_CC([curand],
+                                      [/* Host API test */
+                                       curandGenerator_t gen;
+                                       curandCreateGenerator(&gen,
+                                                             CURAND_RNG_PSEUDO_DEFAULT
+                                                            );
+                                       /* Driver API test */
+                                       unsigned long long seed;
+                                       unsigned long long sequence;
+                                       unsigned long long offset;
+                                       curandState_t *state;
+                                       curand_init (seed, sequence, offset, state);
+                                      ],
+                                      [NVCC],
+                                      [-lcurand],
+                                      [curand.h curand_kernel.h],
+                                      [C++] dnl# C++ as otherwise the existance
+                                            dnl# test for curand_kernel.h fails
+                                            dnl# owing to a header file that is
+                                            dnl# included by curand_kernel.h
+                                            dnl# failing to compile under C.
+                                     ) dnl# CUDA 3.2 and above
+          QM_DEFINE_EXTLIB_BESPOKE_CC([cudart],
+                                      [cudaMalloc ();],
+                                      [NVCC],
+                                      [-lcudart],
+                                      [],
+                                      [C]
+                                     )
+          QM_DEFINE_EXTLIB_BESPOKE_CC([cusolver],
+                                      [cusolverRfHandle_t *handle;
+                                       cusolverStatus_t status;
+                                       status = cusolverRfCreate(handle);
+                                      ],
+                                      [NVCC],
+                                      [-lcusolver],
+                                      [cusolverRf.h],
+                                      [C]
+                                     ) dnl# CUDA 7.0 and above
+          QM_DEFINE_EXTLIB_BESPOKE_CC([cusparse],
+                                      [cusparseStatus_t status;
+                                       cusparseHandle_t handle=0;
+                                       status = cusparseCreate(&handle);
+                                      ],
+                                      [NVCC],
+                                      [-lcusparse],
+                                      [cusparse.h],
+                                      [C]
+                                     ) dnl# CUDA 3.2 and above
           QM_DEFINE_EXTLIB_BESPOKE_CC([Qt3QGLViewer],
                                       [QGLViewer V;
                                        V.show();
@@ -699,6 +798,7 @@ dnl
           dnl                      Name,        Pre-requisites
           dnl
           QM_DEFINE_EXTLIB_BESPOKE([libffmpeg], [FFMPEGCDEC FFMPEGCONT FFMPEGSWS FFMPEGUTIL])
+          QM_DEFINE_EXTLIB_BESPOKE([NVCC],      [])
           dnl
           dnl LibFFmpeg.def will need renaming before we can use automatic
           dnl .def file creation

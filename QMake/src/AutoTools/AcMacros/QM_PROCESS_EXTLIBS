@@ -202,9 +202,20 @@ AC_DEFUN([QM_PROCESS_EXTLIBS],
                 then
                    TRACE_INDENT="          "
                    trace 4 Nullifying pre-requisites of $lib
+                   eval with_${lib}_prq=\"\"
                    TRACE_INDENT="               "
                    trace 6 Pre-requisites were $prereq
-                   eval with_${lib}_prq=\"\"
+                   # We use a dependency on NVCC to highlight that a package
+                   # is part of the CUDA suite, so we must not remove this
+                   # information.
+                   for prq in $prereq
+                   do
+                      if ( test $prq = NVCC )
+                      then
+                         # Restore the listing of dependency on NVCC
+                         eval with_${lib}_prq=\"NVCC\"
+                      fi
+                   done
                 fi
              fi
           done

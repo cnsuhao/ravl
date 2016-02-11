@@ -1,3 +1,4 @@
+REQUIRES= CUDA
 
 PACKAGE=Ravl/CUDA
 
@@ -14,5 +15,3 @@ USERNVCCFLAGS = -gencode arch=compute_10,code=sm_10 -gencode arch=compute_20,cod
 MAINS= testRavlCUDA.cc
 
 TESTEXES=
-
-EXTERNALLIBS=CUDABlas.def CUDARand.def 

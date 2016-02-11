@@ -182,12 +182,15 @@ AC_DEFUN([QM_CK_BESPOKE_CK_LIB],
              QM_CK_PREREQ_STATE([$1])
              if ( test "x$process_now" != xno )
              then
-                # Pre-requisites are in place, we can test now...
+                trace 6 Pre-requisites are in place, we can test now...
 
                 # Action the appropriate bespoke code
                 case $test_lib in
-dnl Insert bespoke library checks in this case statement following the pattern:
-dnl                'PkgName' )
+dnl Insert bespoke library checks in this case statement. Please insert your
+dnl code into the case statement in alphabetical order. Your code should follow
+dnl the pattern of one of the existing packages or this example:
+dnl
+dnl                PkgName )
 dnl                        AC_MSG_CHECKING(for $test_lib)
 dnl                        AC_LANG_PUSH([C]) # if test requires compilation
 dnl                                          # of C code (can use C++)
@@ -215,6 +218,92 @@ dnl library be available, the code must also set the variables ${test_lib}_CFLAG
 dnl (to the value of CFLAGS needed to compile with the library package) and
 dnl ${test_lib}_LIBS (to the linker options & library specifications needed to
 dnl link against the library package).
+
+dnl
+dnl         NOTE!
+dnl
+dnl             If adding packages whose name starts with a cu... you MUST add
+dnl             these here before the cu* entry
+dnl
+
+                cu* )
+                           trace 3 Performing compilation test for CUDA package $test_lib
+                           # All packages that begin cu... and depend on NVCC
+                           # are regarded as CUDA packages and are processed
+                           # with this code if they need a compilation check
+                           # to ascertain their availability.
+
+                           dnl# Any packages named cu... that are not CUDA
+                           dnl# packages (and do not depend on NVCC) must have
+                           dnl# their checking code written above this code.
+
+                           # We have already ensured that all of the CUDA
+                           # packages are of a similar revision number (see the
+                           # code for processing NVCC, below). The NVCC code
+                           # will also have already processed the CUDA packages
+                           # if a pkg-config check had been able to be employed
+                           # to dertermine the package availability.
+                           #
+                           # What we are left to do here is perform any
+                           # compilation check to determine the availability
+                           # of any remaining, unprocessed CUDA packages.
+
+                           # First check that we are not here by accident...
+                           # If the package we are testing has a name starting
+                           # with cu.. but does not depend on NVCC, we are here
+                           # by mistake and need to generate an error. We
+                           # already know the package name starts with a cu so
+                           # test the pre-requisites...
+                           eval pkgprq="\$with_${test_lib}_prq"
+                           prq=`echo " $pkgprq " | $SED -n 's/.* NVCC .*/yes/p'`
+                           if ( test "x$prq" != xyes )
+                           then
+                              # package does not depend on NVCC so is not
+                              # a CUDA package and we are here in error
+                              AC_ERROR([Configure is unable to check for library $test_lib])
+                           fi
+
+                           # We should therefore be testing a CUDA package and
+                           # will only actually be here if the package has yet
+                           # to be processed (i.e. we require a compilation
+                           # check).
+                           #
+                           # So lets do the compilation check once we know
+                           # which language we need to use
+                           eval lang="\$with_${test_lib}_lang"
+                           lang=`echo $lang`
+                           # This sets lang from $with_$Lib_lang and strips
+                           # any external spaces
+
+                           trace 6 Language of compilation check for $test_lib is $lang.
+                           dnl Remember, we cannot do an AC_LANG_PUSH($lang)
+                           dnl as we must know the language to use at autoconf
+                           dnl time, not runtime. Do not re-write this section
+                           dnl to optimise out the case statement.
+                           dnl We implement checks for C and C++ both to allow
+                           dnl future C++ test code to go in without need to
+                           dnl modify this section but also as curand needs a
+                           dnl C++ test.
+                           case $lang in
+                              'C' )
+                                     AC_LANG_PUSH([C])
+                                     QM_CHECK_CC_LIB([$test_lib],[])
+                                     AC_LANG_POP([C])
+                                     ;;
+                              'C++' )
+                                     AC_LANG_PUSH([C++])
+                                     QM_CHECK_CC_LIB([$test_lib],[])
+                                     AC_LANG_POP([C++])
+                                     ;;
+                              dnl If we ever extend QMake support to include
+                              dnl Fortran, we will need to expand this case
+                              dnl statement to allow for the CUDA-Fortran
+                              dnl libraries
+                              * )
+                                     AC_ERROR([Unrecognised test language $lang for $pkg])
+                                     ;;
+                           esac
+                           ;;
 
                 'libffmpeg' )
                            # libffmpeg is a virtual package to include all
@@ -742,78 +831,819 @@ dnl link against the library package).
                            fi
                            ;;
 
-                'CUDA' )
-                           # The CUDA packages itself requires a  basic
-                           # compilation test but we need to test for the
-                           # presence of a suitable C++ compiler and the
-                           # nVidia compiler driver program (NVCC).
-                           AC_LANG_PUSH([C])
-                                  dnl We could check with_<lib>_lang here but
-                                  dnl that would require generation of code
-                                  dnl that is un-needed (as we have to generate
-                                  dnl execution paths for all possible languages
-                                  dnl if we do not know the language in use at
-                                  dnl autoconf time). Hence, we hard-code the
-                                  dnl test language, which will obviously need
-                                  dnl a manual change if the author changes the
-                                  dnl QM_DEFINE_EXTLIB_BESPOKE_CC definition.
-                           QM_CHECK_CC_LIB([$test_lib],[])
-                                  dnl Null second parameter prevents generation
-                                  dnl of any error which we will generate below
-                                  dnl if necessary.
-                           AC_LANG_POP([C])
+                'NVCC' )
+                           trace 3 Checking availabilityof NVCC and checking revisions of all CUDA packages
+                           # NVCC is the CUDA compiler-driver program. As part
+                           # of the CUDA suite, this needs to be of a common
+                           # version to the rest of the CUDA packages. For this
+                           # reason, we need to confirm here that all of the
+                           # version numbers for the CUDA packages match. We
+                           # will also try to determine if we can employ a
+                           # pkg-config check to test for availability of the
+                           # CUDA packages.
 
-                           if ( test "x$USER_NVCC" = x )
+                           # If pkg-config can be employed for any CUDA package
+                           # this code will test for the existance of that
+                           # package.
+
+                           trace 4 Post-processing CUDA configuration options
+
+                           # First identify the CUDA packages QMake is aware of. By convention,
+                           # the name of these all start cu... and depend on NVCC. Also by
+                           # convention, the package name should equate to the root of name of
+                           # the pkgconfig file for the CUDA package.
+                           #
+                           trace 5 Identifying CUDA packages
+                           #
+                           # Find the supported packages that start cu...
+                           #
+                           cuPkgs=`echo " $KnownLibs " | \
+                                              $SED -e 's/ @<:@^c@:>@@<:@^ @:>@*/ /g' \
+                                                   -e 's/ c@<:@^u@:>@@<:@^ @:>@*/ /g'`
+                           dnl# sed commands are:
+                           dnl#     s/ [^c][^ ]*/ /g   and s/ c[^u][^ ]*/ /g
+                           # i.e. strip out all the packages that do not begin with a c and
+                           # strip out those that begin with c but do not have u as 2nd char
+                           #
+                           trace 6 Packages beginning with cu are: $cuPkgs
+
+                           # Now confirm which are CUDA packages by checking for dependency
+                           # on NVCC.
+                           #
+                           CUDApkgs=""
+                           trace 6 Checking pre-requisites of cu packages...
+                           for pkg in $cuPkgs
+                           do
+                              eval pkgprq="\$with_${pkg}_prq"
+                              TRACE_INDENT="     "
+                              trace 6 Pre-requisites of $pkg are: $pkgprq
+                              for prq in $pkgprq
+                              do
+                                 if ( test $prq == NVCC )
+                                 then
+                                    CUDApkgs="$pkg $CUDApkgs"
+                                 fi
+                              done
+                           done
+
+                           # We now have a list of known CUDA packages. To determine which of
+                           # these have been been configured by the user, we can construct a
+                           # sed command to extract the CUDA packages from any given list.
+                           #
+                           # We can also discard any CUDA packages that have been explicitly
+                           # disabled.
+                           SEDcmd="h"
+                           for pkg in $CUDApkgs
+                           do
+                              if ( eval test X\$use_$pkg != Xno )
+                              then
+                                SEDcmd="$SEDcmd;g;s/.* $pkg .*/ $pkg /p"
+                              fi
+                           done
+                           trace 6 CUDA package list sed command: $SEDcmd
+                           # SEDcmd now holds a command that will report all non-disabled
+                           # CUDA packages in any given list of packages.
+
+                           # Now we determine the list of CUDA packages that the user has
+                           # explicitly configured (and the list that they have not)
+                           #
+                           cfgCUDA=`echo " $ConfiguredLibs " | $SED -n "$SEDcmd"`
+                           #
+                           # N.B. sed command relies on the leading and trailing space
+                           # around the echoed library lists
+                           #
+                           ucfgCUDA=`echo " $UnconfiguredLibs " | $SED -n "$SEDcmd"`
+                           #
+                           trace 3 Configured CUDA packages: $cfgCUDA
+                           trace 3 Un-configured CUDA packages: $ucfgCUDA
+
+
+                           # Now we can begin to check for consistency in the user settings...
+                           #
+                           # Basically, we need to check the version of CUDA matches between
+                           # all the CUDA packages and the compiler driver.
+                           CUDAver=""
+
+
+                           # Check for version from any user-specified NVCC
+                           if ( test "x$USER_NVCC" != x )
                            then
-                              # User has not specified a CUDA compiler to use, do we have
-                              # an existing setting?
+                              AC_MSG_CHECKING([for nVidia compiler driver])
+                              if ( test ! -x $NVCC  || test -d $NVCC )
+                              then
+                                 AC_MSG_RESULT([no])
+                                 AC_ERROR([NVCC setting does not point to an executable compiler driver])
+                              else
+                                 AC_MSG_RESULT([$NVCC])
+                              fi
+                              # We are looking to extract x.y from the nvcc version string that
+                              # is of the form "... release x.y, Vx.y.z"
+                              dnl# sed command is:
+                              dnl#   's/.* release  *\([0-9][0-9]*\)\.\([0-9][0-9]*\)[, ] *V\1\.\2\.[0-9][0-9]*/\1\.\2/p'
+                              NvccVer=`"$NVCC" --version | $SED -n \
+                    's/.* release  *\(@<:@0-9@:>@@<:@0-9@:>@*\)\.\(@<:@0-9@:>@@<:@0-9@:>@*\)@<:@, @:>@ *V\1\.\2\.@<:@0-9@:>@@<:@0-9@:>@*/\1\.\2/p'`
+                              if ( test -z "$NvccVer" )
+                              then
+                                 AC_WARN([Cannot determine CUDA version from NVCC compiler driver])
+                                 # To allow for a potential future change in the revision number
+                                 # reporting from nvcc, we will assume we have found the compiler
+                                 # driver even though the revision number has not been reported
+                                 # as we would otherwise expect.
+                                 use_NVCC=present
+                              else
+                                 # We seem to have a working NVCC setting, record that
+                                 use_NVCC=present
+                                 # Use the version information to select the CUDA version
+                                 CUDAver=$NvccVer
+                                 TRACE_INDENT="     "
+                                 trace 5 User NVCC setting implies CUDA version $NvccVer
+                                 # Test the version of nvcc against any version implied by the
+                                 # user settings for the individual CUDA packages
+                              fi
+                           else
+                              # No user NVCC setting
                               if ( test "x$InheritCFG" = xyes )
                               then
+                                 trace 2 No user-specified NVCC, checking existing configuration
+                                 # Extract NVCC setting from QMake config file
                                  NVCC=`cat $QMAKE_CFG | $SED  -n 's/^NVCC=\(.*\)/\1/p'`
+                                 if ( test "x$NVCC" != x )
+                                 then
+                                    # Now test what version of CUDA that implies..
+                                    #
+                                    # We are looking to extract x.y from the nvcc version string that
+                                    # is of the form "... release x.y, Vx.y.z"
+                                    dnl# sed command is:
+                                    dnl#   's/.* release  *\([0-9][0-9]*\)\.\([0-9][0-9]*\)[, ] *V\1\.\2\.[0-9][0-9]*/\1\.\2/p'
+                                    NvccVer=`"$NVCC" --version | $SED -n \
+                    's/.* release  *\(@<:@0-9@:>@@<:@0-9@:>@*\)\.\(@<:@0-9@:>@@<:@0-9@:>@*\)@<:@, @:>@ *V\1\.\2\.@<:@0-9@:>@@<:@0-9@:>@*/\1\.\2/p'`
+                                    if ( test -z "$NvccVer" )
+                                    then
+                                       # Unlikely to happen as this command would have worked when
+                                       # the original config was generated. Something is seriously
+                                       # awry so error out.
+                                       AC_ERROR([Cannot determine CUDA version from existing NVCC setting])
+                                    else
+                                       # We seem to have a working NVCC setting, record that
+                                       use_NVCC=present
+                                       # Use the version information to select the CUDA version
+                                       CUDAver=$NvccVer
+                                       TRACE_INDENT="     "
+                                       trace 5 Existing NVCC setting implies CUDA version $NvccVer
+                                    fi
+                                 else
+                                    trace 3 No existing NVCC setting, will look for one later
+                                    NvccVer=""
+                                 fi
+                              else
+                                 # No user setting and not looking at existing config
+                                 trace 3 No user-specified NVCC, will look for one later
+                                 NvccVer=""
                               fi
-                              if ( test "x$NVCC" = x )
-                              then
-                                 # We still do not have a setting, attempt to find one
-                                 AC_PATH_PROG([NVCC],[nvcc],[missing])
-                              fi
-                           fi
-                           if ( test "x$NVCC" = xmissing )
-                           then
-                              # We have to re-set NVCC to null if we did not
-                              # find the compiler driver (as the value of NVCC
-                              # will get written to the Config.xx file; hence
-                              # it needs to be null if we did not find nvcc).
-                              NVCC=""
-                           else
-                              CONFIGURE_NVCCFLAGS=$NVCCFLAGS
-                              # Record any supplied NVCCFLAGS
                            fi
 
-                           # CUDA is a special case as it requires not only the
-                           # appropriate libraries but also the NVidia compiler
-                           # driver (nvcc) and that the C++ compiler be the GNU
-                           # version.  We test the compilers here...
+
+                           trace 2 Consistency checking individual CUDA package settings...
+                           # Consider the user-configured CUDA packages...
+                           #
+                           # We could also use this section as a means to locate nvcc if we
+                           # are yet to locate it. However, this would need some fairly complex
+                           # code so has been omitted (for each CUDA package, we would need to
+                           # check each path implied by the library or include setting; look
+                           # for some or all of path/../bin/nvcc, path/bin/nvcc, path/nvcc and
+                           # path/../nvcc; test that all the located nvcc binaries relate to
+                           # the same binary, including hard or symbolic links; ensure only one
+                           # binary is located across all of the CUDA packages).
+                           #
+                           for pkg in $cfgCUDA
+                           do
+                              TRACE_INDENT="     "
+                              trace 5 Checking $pkg...
+                              eval pcf="\$with_${pkg}_check"
+                              if ( test "x$pcf" = xpkgconfig )
+                              then
+                                 # User has requested the use of a pkgconfig file (via the
+                                 # --with-<lib>-pkgconf switch). Can we determine the CUDA
+                                 # version from this .pc file?
+                                 eval pcf="\$with_${pkg}_pkgconf"
+                                 ThisVer=`$PKG_CONFIG --modversion "$pcf" 2>/dev/null`
+                                 if ( test "x$ThisVer" != x )
+                                 then
+                                    # Record version for integrity check
+                                    eval ${pkg}_version="$ThisVer"
+                                    TRACE_INDENT="          "
+                                    trace 5 $pkg asking to use $pcf implies CUDA $ThisVer
+                                    if ( test "x$CUDAver" != x )
+                                    then
+                                       if ( test "$CUDAver" != "$ThisVer" )
+                                       then
+                                          CUDAver=conflict
+                                       fi
+                                    else
+                                       CUDAver=$ThisVer
+                                    fi
+                                 else
+                                    AC_WARN([Cannot determine CUDA version from --with-${pkg}-pkgconf file \($pcf\)])
+                                    # This could be a fatal error as the pkg-config file is
+                                    # liable to be incorrect in this situation. However, to
+                                    # allow configure to work with a user-created pkg-config
+                                    # file that has no version information but is otherwise
+                                    # userful, we only generate a warning here. If it is an
+                                    # incorrect user-setting, the later check for the library
+                                    # will trap this and error out.
+                                 fi
+                              else
+                                 # Still using compilation check - see if the details for
+                                 # that hint at the CUDA version...
+                                 #
+                                 # Look at each library path component from the
+                                 # --with-<lib>-library setting
+                                 #
+                                 # Strip out any -c..... where c is not an L
+                                 #           any option not starting with a -
+                                 #           drop any leading -L
+                                 # in other words, extract any and all -L paths
+                                 dnl# sed commands are:
+                                 dnl#    's/ \{1\}-[^L][^ ]*/ /g' \
+                                 dnl#    's/ \{1\}[^-][^ ]*/ /g' \
+                                 dnl#    's/ \{1\}-L\([^ ]*\)/ \1 /g'`
+                                 TRACE_INDENT="          "
+                                 trace 5 Checking library paths...
+                                 ImpliedVer=""
+                                 TRACE_INDENT="          "
+                                 libpath=`eval echo \\\$with_${pkg}_libpath`
+                                 trace 6 Full specification is: $libpath
+                                 for dir in `echo " $libpath " | \
+                                                    $SED -e 's/ \{1\}-@<:@^L@:>@@<:@^ @:>@*/ /g' \
+                                                         -e 's/ \{1\}@<:@^-@:>@@<:@^ @:>@*/ /g' \
+                                                         -e 's/ \{1\}-L\(@<:@^ @:>@*\)/ \1 /g'`
+                                 do
+                                    TRACE_INDENT="               "
+                                    trace 6 Processing $dir element...
+                                    # Attempt to extract a version number from the current -L
+                                    # path element ...
+                                    #
+                                    # Look for paths of the form:
+                                    #                ***99.99{.99}{/lib{64}}
+                                    # This will match both the usual Linux form of:
+                                    #             /usr/local/cuda-X.Y
+                                    # and the Mac OSX form of:
+                                    #          /Developer/NVIDIA/CUDA-X.Y
+                                    #
+                                    dnl# sed command is:
+                                    dnl#    's/.*\([0-9]\{1\}\.[0-9]\{1\}\)\(\.[0-9]\{1\}\)*\(\/lib\(64\)\{0,1\}\)\{0,1\}$/\1/p'
+                                    ThisVer=`echo $dir | $SED -n \
+                                      's/.*\(@<:@0-9@:>@\{1\}\.@<:@0-9@:>@\{1\}\)\(\.@<:@0-9@:>@\{1\}\)*\(\/lib\(64\)\{0,1\}\)\{0,1\}$/\1/p'`
+                                    if ( test x"$ThisVer" != x )
+                                    then
+                                       TRACE_INDENT="                   "
+                                       trace 6 Implies version $ThisVer
+                                       if ( test x"$ImpliedVer" != x )
+                                       then
+                                          if ( test "$ImpliedVer" != "$ThisVer" )
+                                          then
+                                             AC_WARN([Cannot infer CUDA version from --with-${pkg}-library settings])
+                                             ImpliedVer="conflict"
+                                             break
+#                                         else
+#                                            # This setting consistent with the previous entry
+                                          fi
+                                       else
+                                          # First version number we have found for this package
+                                          ImpliedVer=$ThisVer
+                                       fi
+                                    else
+                                       TRACE_INDENT="                    "
+                                       trace 6 No usable version number on this component path
+                                    fi
+                                 done
+                                 if ( test "x$ImpliedVer" != x )
+                                 then
+                                    if ( test "$ImpliedVer" != conflict )
+                                    then
+                                       # We have a version inferred from the --with-<lib>-library
+                                       # setting. Record this for integrity check
+                                       eval ${pkg}_version="$ImpliedVer"
+                                       TRACE_INDENT="          "
+                                       trace 5 $pkg library path implies CUDA $ImpliedVer
+                                       if ( test "x$CUDAver" != x )
+                                       then
+                                          if ( test "$CUDAver" != "$ImpliedVer" )
+                                          then
+                                             CUDAver=conflict
+                                          fi
+                                       else
+                                          CUDAver="$ImpliedVer"
+                                       fi
+                                    fi
+                                 else
+                                    AC_WARN([Cannot infer CUDA version from --with-${pkg}-library])
+                                 fi
+
+                                 # Now look at each include path component from the
+                                 # --with-<lib>-include setting
+                                 #
+                                 # Strip out any -c..... where c is not an I
+                                 #           any option not starting with a -
+                                 #           drop any leading -I
+                                 # in other words, extract any and all -I paths
+                                 dnl# sed commands are:
+                                 dnl#    's/ \{1\}-[^I][^ ]*/ /g' \
+                                 dnl#    's/ \{1\}[^-][^ ]*/ /g' \
+                                 dnl#    's/ \{1\}-I\([^ ]*\)/ \1 /g'`
+                                 TRACE_INDENT="          "
+                                 trace 5 Checking include paths...
+                                 ImpliedVer=""
+                                 TRACE_INDENT="          "
+                                 inc=`eval echo \\\$with_${pkg}_inc`
+                                 trace 6 Full specification is: $inc
+                                 for dir in `echo " $inc " | \
+                                                    $SED -e 's/ \{1\}-@<:@^I@:>@@<:@^ @:>@*/ /g' \
+                                                         -e 's/ \{1\}@<:@^-@:>@@<:@^ @:>@*/ /g' \
+                                                         -e 's/ \{1\}-I\(@<:@^ @:>@*\)/ \1 /g'`
+                                 do
+                                    TRACE_INDENT="               "
+                                    trace 6 Processing $dir element...
+                                    # Attempt to extract a version number from the current -I
+                                    # path element ...
+                                    #
+                                    # Look for paths of the form:
+                                    #                ***99.99{.99}{/include}
+                                    # This will match both the usual Linux form of:
+                                    #             /usr/local/cuda-X.Y
+                                    # and the Mac OSX form of:
+                                    #          /Developer/NVIDIA/CUDA-X.Y
+                                    #
+                                    dnl# sed command is:
+                                    dnl#    's/.*\([0-9]\{1\}\.[0-9]\{1\}\)\(\.[0-9]\{1\}\)*\(\/include\)\{0,1\}$/\1/p'
+                                    ThisVer=`echo $dir | $SED -n \
+                                      's/.*\(@<:@0-9@:>@\{1\}\.@<:@0-9@:>@\{1\}\)\(\.@<:@0-9@:>@\{1\}\)*\(\/include\)\{0,1\}$/\1/p'`
+                                    if ( test x"$ThisVer" != x )
+                                    then
+                                       TRACE_INDENT="                   "
+                                       trace 6 Implies version $ThisVer
+                                       if ( test x"$ImpliedVer" != x )
+                                       then
+                                          if ( test "$ImpliedVer" != "$ThisVer" )
+                                          then
+                                             AC_WARN([Cannot infer CUDA version from --with-${pkg}-include settings])
+                                             ImpliedVer="conflict"
+                                             break
+#                                         else
+#                                            # This setting consistent with the previous entry
+                                          fi
+                                       else
+                                          # First version number we have found for this package
+                                          ImpliedVer=$ThisVer
+                                       fi
+                                    else
+                                       TRACE_INDENT="                    "
+                                       trace 6 No usable version number on this component path
+                                    fi
+                                 done
+                                 if ( test "x$ImpliedVer" != x )
+                                 then
+                                    if ( test "$ImpliedVer" != conflict )
+                                    then
+                                       # We have a version inferred from the --with-<lib>-include
+                                       # setting. Does this agree with any version we might have
+                                       # from the --with-<lib>-library setting?
+                                       #
+                                       ThisVer=`eval echo \\\$${pkg}_version`
+                                       if ( test "x$ThisVer" == x || test "x$ThisVer" == "x$ImpliedVer" )
+                                       then
+                                          # Either we obtained no version information from the
+                                          # --with-<lib>-library setting, or it agrees with the
+                                          # one we have inferred from --with-<lib>-include.
+                                          #
+                                          # Record the version inferred from --with-<lib>-include
+                                          # for integrity check amoungst all the CUDA components
+                                          eval ${pkg}_version="$ImpliedVer"
+                                          TRACE_INDENT="          "
+                                          trace 5 $pkg include path implies CUDA $ImpliedVer
+                                          if ( test "x$CUDAver" != x )
+                                          then
+                                             if ( test "$CUDAver" != "$ImpliedVer" )
+                                             then
+                                                CUDAver=conflict
+                                             fi
+                                          else
+                                             CUDAver="$ImpliedVer"
+                                          fi
+                                       else
+                                          AC_ERROR([--with-${pkg}-library and --with-${pkg}-include appear to select differing versions of CUDA])
+                                       fi
+                                    fi
+                                 else
+                                    AC_WARN([Cannot infer CUDA version from --with-${pkg}-include])
+                                 fi
+
+                              fi # (end of no pkgconf processing)
+                           done # Looping over configured packages
+
+                           trace 6 ${CUDAver:+CUDA version }${CUDAver:-No CUDA version} implied from library settings
+
+
+                           # Have we managed to imply the CUDA version from the user-settings?
+                           if ( test "x$CUDAver" != x )
+                           then
+                              # We found some version numbers - did they all match?
+                              if ( test "$CUDAver" = conflict )
+                              then
+                                 # Mismatches found - report these and error out
+
+                                 # First report conflicts with any user-selected nvcc
+                                 if ( test "x$NvccVer" != x )
+                                 then
+                                    # We have a version from either a user-selected nvcc, or an
+                                    # nvcc setting from an existing QMake configuration. Compare
+                                    # that with the versions of the other user-configured
+                                    # packages.
+                                    for pkg in $cfgCUDA
+                                    do
+                                       eval ThisVer=\$${pkg}_version
+                                       if ( test x$ThisVer != x )
+                                       then
+                                          if ( test $NvccVer != $ThisVer )
+                                          then
+                                             AC_WARN([$pkg and the NVCC setting seem to be asking to use different CUDA versions])
+                                          fi
+                                       fi
+                                    done
+                                 fi
+
+                                 # Now check for version consistency over all configured CUDA pkgs
+                                 LeftToCheck=$cfgCUDA
+                                 for pkg in $cfgCUDA
+                                 do
+                                    # Drop current pkg from the list to check against
+                                    LeftToCheck=`echo " $LeftToCheck " | $SED 's/ '$pkg' //g'`
+                                    eval ThisVer=\$${pkg}_version
+                                    if ( test x$ThisVer != x )
+                                    then
+                                       # We have a version number for the current package, test
+                                       # it against any others
+                                       for chk in $LeftToCheck
+                                       do
+                                          eval tmp=\$${chk}_version
+                                          if ( test "x$tmp" != x )
+                                          then
+                                             # We have version number from the comparison package
+                                             if ( test $tmp != $ThisVer )
+                                             then
+                                                AC_WARN([$pkg and $chk seem to be asking to use different CUDA versions])
+                                             fi
+                                          fi
+                                       done
+                                    fi
+                                 done # Integrity check
+
+                                 AC_ERROR([Version inconsistencies amongst CUDA package settings])
+
+                              fi # End of version inconsistency reporting
+                           fi
+
+
+                           if (  test "x$NVCC" = x )
+                           then
+                              # Still not found a viable setting for NVCC, consider $PATH and
+                              # the default CUDA directories...
+                              #
+
+                              if ( test "x$CUDAver" != x )
+                              then
+                                 # We know the CUDA version we are looking for so try to match
+                                 # any nvcc binary to this.
+
+                                 TRACE_INDENT="     "
+                                 trace 3 Looking down \$PATH plus in default CUDA directories
+
+                                 # Version specific CUDA default location, for version X.Y,
+                                 # /usr/local/cuda-X.Y
+                                 #
+                                 CUDAlocations="/usr/local/cuda-$CUDAver/bin"
+
+                                 # OSX has differing default locations (but does sometimes
+                                 # support the standard default paths). Prefer the OSX
+                                 # default paths:
+                                 #
+                                 if ( test x$ARC = xmacosx32 || test x$ARC = xmacosx64 )
+                                 then
+                                    # Additional version specific default CUDA location,
+                                    # /Developer/NVIDIA/CUDA-X.Y
+                                    #
+                                    CUDAlocations="/Developer/NVIDIA/CUDA-$CUDAver/bin$PATH_SEPARATOR$CUDAlocations"
+                                    #
+                                    # Version unspecific default CUDA location
+                                    # /Developer/NVIDIA/CUDA
+                                    #
+                                    CUDAlocations="$CUDAlocations$PATH_SEPARATOR/Developer/NVIDIA/CUDA/bin"
+                                 fi
+
+                                 # Version unspecific default CUDA location
+                                 CUDAlocations="$CUDAlocations$PATH_SEPARATOR/usr/local/cuda/bin"
+
+                                 # Change IFS to split PATH on the element seperator (:)
+                                 save_ifs="$IFS"
+                                 IFS=$PATH_SEPARATOR
+                                 for ThisDir in $PATH$PATH_SEPARATOR$CUDAlocations
+                                 do
+                                    # Immediately reset IFS
+                                    IFS="$save_ifs"
+                                    TRACE_INDENT="          "
+                                    trace 3 Considering $ThisDir/nvcc
+                                    if ( test -x "$ThisDir/nvcc" )
+                                    then
+                                       # Now test if this reports back the expected CUDA
+                                       # version.
+                                       #
+                                       # We are looking to extract x.y from the version string
+                                       # that is of the form "... release x.y, Vx.y.z"
+                                       dnl# sed command is:
+                                       dnl#   's/.* release  *\([0-9][0-9]*\)\.\([0-9][0-9]*\)[, ] *V\1\.\2\.[0-9][0-9]*/\1\.\2/p'
+                                       NvccVer=`"$ThisDir/nvcc" --version | $SED -n \
+                   's/.* release  *\(@<:@0-9@:>@@<:@0-9@:>@*\)\.\(@<:@0-9@:>@@<:@0-9@:>@*\)@<:@, @:>@ *V\1\.\2\.@<:@0-9@:>@@<:@0-9@:>@*/\1\.\2/p'`
+                                       if ( test "x$NvccVer" != x )
+                                       then
+                                          if ( test $NvccVer = $CUDAver )
+                                          then
+                                             trace 2 Found matching CUDA compiler driver
+                                             use_NVCC=present
+                                             NVCC="$ThisDir/nvcc"
+                                             break
+                                          else
+                                             TRACE_INDENT="               "
+                                             trace 6 But version, $NvccVer, does not match
+                                             NvccVer=""
+                                          fi
+                                       fi
+                                    else
+                                       TRACE_INDENT="               "
+                                       trace 6 But this is not an executable
+                                    fi
+                                 done
+                              else
+                                 trace 2 No implied CUDA version just searching for default CUDA compiler driver
+                                 AC_PATH_PROG([NVCC],[nvcc],[missing])
+                                 if ( test "$NVCC" = missing )
+                                 then
+                                    trace 5 No nvcc on the PATH, trying the CUDA default locations
+
+                                    # OSX, as well as sometimes supporting the standard default
+                                    # location, has its own default location. Prefer that.
+                                    if ( test x$ARC = xmacosx32 || test x$ARC = xmacosx64 )
+                                    then
+                                       if ( test -x /Developer/NVIDIA/CUDA/bin/nvcc )
+                                       then
+                                          NVCC=/Developer/NVIDIA/CUDA/bin/nvcc
+                                       else
+                                          if ( test -x /usr/local/cuda/bin/nvcc )
+                                          then
+                                             NVCC=/usr/local/cuda/bin/nvcc
+                                          fi
+                                       fi
+                                    else
+                                       # Non-OSX, standard default location
+                                       if ( test -x /usr/local/cuda/bin/nvcc )
+                                       then
+                                          NVCC=/usr/local/cuda/bin/nvcc
+                                       fi
+                                    fi
+                                 fi
+
+                                 if ( test "$NVCC" = missing )
+                                 then
+                                    # Still have not found the compiler driver
+                                    trace 5 No default CUDA compiler driver found
+                                    NVCC=""
+                                 else
+                                    # Now test what version of CUDA NVCC implies..
+                                    #
+                                    # We are looking to extract x.y from the version string that
+                                    # is of the form "... release x.y, Vx.y.z"
+                                    dnl# sed command is:
+                                    dnl#   's/.* release  *\([0-9][0-9]*\)\.\([0-9][0-9]*\)[, ] *V\1\.\2\.[0-9][0-9]*/\1\.\2/p'
+                                    NvccVer=`"$NVCC" --version | $SED -n \
+                  's/.* release  *\(@<:@0-9@:>@@<:@0-9@:>@*\)\.\(@<:@0-9@:>@@<:@0-9@:>@*\)@<:@, @:>@ *V\1\.\2\.@<:@0-9@:>@@<:@0-9@:>@*/\1\.\2/p'`
+                                    if ( test -z "$NvccVer" )
+                                    then
+                                       AC_WARN([Unable to determine CUDA revision from CUDA compiler driver $NVCC])
+                                       # Either means nvcc has changed the format of version
+                                       # display or we have not actually found the compiler
+                                       # driver.
+                                    else
+                                       trace 5 Found CUDA compiler driver $NVCC for version $NvccVer of CUDA
+                                       CUDAver=$NvccVer
+                                    fi
+                                    use_NVCC=present
+                                 fi
+                              fi # (no CUDA version)
+                           fi # (no NVCC)
+
+
+                           # There are additional concerns for CUDA under OSX on a non-PPC
+                           # machine. We should consider those here if we are looking to enable
+                           # CUDA.
+                           if ( test x$ARC = xmacosx32 || test x$ARC = xmacosx64 )
+                           then
+                              # Certain Intel versions of OSX may have alternative standard
+                              # C++ libraries available. We will need to ensure that the one
+                              # we use matches the one that the CUDA libraries were compiled
+                              # against.
+                              #
+                              # OSX versions of CUDA are compiled to use either libstdc++ or
+                              # libc++ dependent on the version of CUDA:
+                              #
+                              #                CUDA < 7.0 requires libstdc++
+                              #                  CUDA 7.0+ requires libc++
+                              #
+                              # The compiler in use will determine which standard C++ library
+                              # is used by default. If the compiler is clang, libc++ will be
+                              # used. If gcc or llvm-gcc is in use, the libstdc++ library will
+                              # be the default.
+
+                              # Only need to consider this if we have a potentially viable CUDA
+                              # setup and we know the CUDA version (if we do not know the CUDA
+                              # revision we cannot determine which library we need to select and
+                              # can do no remedial work anyway).
+                              if ( test x$NVCC != x && test x$CUDAver != x )
+                              then
+                                 # We have a potentially useful CUDA environment
+                                 #
+                                 # Determine which compiler we are using...
+                                 IsCLANG=`$CXX --version 2>&1 | $SED -n 's/.* clang .*/yes/p'`
+
+                                 # Determine major revision of CUDA
+                                 ImpliedMaj=`echo $CUDAver | $SED -n \
+                          's/.*\(@<:@0-9@:>@@<:@0-9@:>@*\)\.@<:@0-9@:>@@<:@0-9@:>@*\(.@<:@0-9@:>@@<:@0-9@:>@*\)*.*/\1/p'`
+                                 dnl# sed command is:
+                                 dnl#    's/.*\([0-9][0-9]*\)\.[0-9][0-9]*\(.[0-9][0-9]*\)*.*/\1/p'
+
+                                 if ( test x$ImpliedMaj != x && test $ImpliedMaj -lt 7 )
+                                 then
+                                    # CUDA < 7.0 so we may want to force the use of libstdc++
+
+                                    if ( test x$IsCLANG = xyes )
+                                    then
+                                       # Using clang so we will not default to libstdc++
+                                       trace 3 Detected use of clang as C++ compiler
+
+                                       # Has the user requested CUDA?
+                                       if ( test "x$cfgCUDA" = x )
+                                       then
+                                          # No, disable CUDA rather than change default library
+                                          NVCC=""
+                                          # Quick cheat, following section of code disables CUDA
+                                          # in a controlled manner if NVCC is null...
+                                          trace 2 Disabling CUDA as version $CUDAver incompatable with libc++
+                                       else
+                                          # User requested CUDA, change the standard C++ library
+                                          CXX="$CXX --stdlib=libstdc++ "
+                                          trace 2 Forcing use of libstdc++ for compatibility with CUDA $CUDAver
+                                       fi
+                                    fi
+                                 else
+                                    # CUDA 7+ so do we need to force use of libc++ ?
+
+                                    if ( test x$IsCLANG != xyes )
+                                    then
+                                       # Not using clang so we will not default to libc++
+                                       trace 3 Detected we are not using clang for the C++ compiler
+
+                                       # Has the user requested CUDA?
+                                       if ( test "x$cfgCUDA" = x )
+                                       then
+                                          # No, disable CUDA rather than change default library
+                                          NVCC=""
+                                          # Quick cheat, following section of code disables CUDA
+                                          # in a controlled manner if NVCC is null...
+                                          trace 2 Disabling CUDA as version $CUDAver incompatible with libstdc++
+                                       else
+                                          # User requested CUDA, change the standard C++ library
+                                          CXX="$CXX --stdlib=libc++ "
+                                          trace 2 Forcing use of libc++ for compatibility with CUDA $CUDAver
+                                       fi
+                                    fi
+                                 fi
+                              fi
+                           fi
+
+
+                           # We can only consider the individual CUDA libraries if we have a
+                           # viable setting for NVCC and the C++ compiler supports the GNU
+                           # extensions (i.e. if GXX = yes)
                            if ( test x$NVCC = x || test ! -x $NVCC || test x$GXX != xyes )
                            then
-                              case $use_CUDA in
-                                 'check' )   use_CUDA=blocked
-                                             trace 6 Disabling CUDA owing to missing compiler pre-requisites
-                                             ;;
-                                 'needed' )  AC_MSG_FAILURE([CUDA prerequisites not met and CUDA is required for a selected RESOURCE])
-                                             ;;
-                                 'yes' )     AC_MSG_FAILURE([CUDA prerequisites not met])
-                                             ;;
-                                 'no' )      trace 6 CUDA compiler prerequisites not met but we do not require CUDA anyway
-                                             ;;
-                                 'blocked' ) trace 6 CUDA compiler prerequisites not met but CUDA is already blocked
-                                             ;;
-                                 * )         trace 1 "Assert - Should not fall through here"
-                                             ;;
-                              esac
+                              trace 2 CUDA compiler requirements not met - disabling CUDA packages
+                              for pkg in $CUDApkgs
+                              do
+                                 eval State=\$use_$pkg
+                                 case $State in
+                                    'check' )   AS_VAR_SET(use_$pkg, blocked)
+                                                trace 6 Disabling $pkg owing to missing compiler pre-requisites
+                                                ;;
+                                    'yes' )     AC_MSG_FAILURE([CUDA prerequisites not met])
+                                                ;;
+                                    'no' )      trace 6 CUDA compiler prerequisites not met but we do not require $pkg anyway
+                                                ;;
+                                    'needed' )  trace 1 "Assert - Dependency should not have been catalogued yet"
+                                                AC_MSG_FAILURE([CUDA prerequisites not met and $pkg is required for a selected RESOURCE])
+                                                ;;
+                                    'blocked' ) trace 1 "Assert - Blocakge should not have been propagated yet"
+                                                trace 6 CUDA compiler prerequisites not met but $pkg is already blocked
+                                                ;;
+                                    * )         trace 1 "Assert - Should not fall through here"
+                                                ;;
+                                 esac
+                              done
                            else
                               trace 5 CUDA compiler requirements appear to be satisfied.
-                           fi
 
+                              if ( test "x$CUDAver" != x )
+                              then
+                                 # We have a CUDA version, does it provide pkg-config files?
+                                 #
+                                 # Later (6.0 and on) versions of CUDA come with a pkg-config
+                                 # file, see if we can use that for each unconfigured CUDA
+                                 # library.
+                                 #
+                                 # Extract major number from detected CUDA version
+                                 #
+                                 ImpliedMaj=`echo $CUDAver | $SED -n \
+                          's/.*\(@<:@0-9@:>@@<:@0-9@:>@*\)\.@<:@0-9@:>@@<:@0-9@:>@*\(.@<:@0-9@:>@@<:@0-9@:>@*\)*.*/\1/p'`
+                                 dnl# sed command is:
+                                 dnl#    's/.*\([0-9][0-9]*\)\.[0-9][0-9]*\(.[0-9][0-9]*\)*.*/\1/p'
+                                 #
+                                 # Extract minor number from detected CUDA version
+                                 #
+                                 ImpliedMin=`echo $CUDAver | $SED -n \
+                          's/.*@<:@0-9@:>@@<:@0-9@:>@*\.\(@<:@0-9@:>@@<:@0-9@:>@*\)\(.@<:@0-9@:>@@<:@0-9@:>@*\)*.*/\1/p'`
+                                 dnl# sed command is:
+                                 dnl#    's/.*[0-9][0-9]*\.\([0-9][0-9]*\)\(.[0-9][0-9]*\)*.*/\1/p'
+                                 if ( test x$ImpliedMaj != x && test x$ImpliedMin != x )
+                                 then
+                                    # We can make sense of the version number
+                                    # so, can we make use of any pkg-config
+                                    # files
+                                    if ( test $ImpliedMaj -gt 5 )
+                                    then
+                                       trace 2 Switching to pkgconfig for unconfigured CUDA packages...
+                                       # This will only actually effect the
+                                       # QMake configure rather than client
+                                       # projects as, for client projects,
+                                       # configure does not process
+                                       # unconfigured packages. We do not
+                                       # process configured CUDA packages as
+                                       # the user has effectivly settled what
+                                       # they want to use to locate the package
+                                       # (be that pkg-config or a compilation
+                                       # test).
+                                       for pkg in $ucfgCUDA
+                                       do
+                                          TRACE_INDENT="     "
+                                          pcf=$pkg-$ImpliedMaj.$ImpliedMin
+                                          PKG_CHECK_EXISTS([$pcf],
+                                                           [eval with_${pkg}_pkgconf=$pcf
+                                                            eval with_${pkg}_check=pkgconfig
+                                                            trace 5 $pkg set to use $pcf
+                                                            AC_MSG_CHECKING(pkg-config for $pkg)
+                                                            AS_VAR_SET([${pkg}_CFLAGS],
+                                                                       [`$PKG_CONFIG --cflags $pcf 2>/dev/null `]
+                                                                      )
+                                                            AS_VAR_SET([${pkg}_LIBS],
+                                                                       [`$PKG_CONFIG --libs $pcf 2>/dev/null`]
+                                                                      )
+                                                            AC_MSG_RESULT([yes])
+                                                            AS_VAR_SET([use_${pkg}],[present])
+                                                            # CUDA package is
+                                                            # now fully
+                                                            # considered, drop
+                                                            # it from the to do
+                                                            # list.
+                                                            LeftToDo=`echo " $LeftToDo " | $SED "s/ $pkg / /"`
+                                                            RecentlyProcessed="$RecentlyProcessed $pkg"
+                                                           ],
+                                                           [trace 3 no $pcf to use for $pkg
+                                                           ]
+                                                          )
+                                       done
+                                    else
+                                       trace 2 Unable to employ pkg-config for CUDA $ImpliedMaj.$ImpliedMin
+                                    fi
+                                 fi # (end of if recognised CUDA ver)
+                              fi # (end of if we have a CUDAver)
+
+                              # Has the user supplied any NVCCFLAGS?
+                              if ( test "x$NVCCFLAGS" != x )
+                              then
+                                 # Preserve those for output
+                                 CONFIGURE_NVCCFLAGS=$NVCCFLAGS
+                                 trace 5 Preserving NVCCFLAGS \($NVCCFLAGS\)
+                              fi
+
+                           fi # (End of workable CUDA found)
+
+                           trace 2 Finished post-processing CUDA switches
                            ;;
 
                 'Qt3QGLViewer' | 'Qt4QGLViewer' )
