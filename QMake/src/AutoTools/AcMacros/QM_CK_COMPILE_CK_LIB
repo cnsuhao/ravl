@@ -134,7 +134,9 @@ dnl                     the output of the Fortran make flags (FCFLAGS et al)
 dnl                     in the QMake and project configure.ac files. For the
 dnl                     project configure.ac files, the Fortran flags will
 dnl                     also need reading in (from Config.QMake) for the
-dnl                     non-configured external packages.
+dnl                     non-configured external packages. You will also need
+dnl                     to enable Fortran support for the OpenMP check in
+dnl                     the QM_CK_BESPOKE_CK_LIB macro.
 dnl
 dnl                             ["Fortran"],       [AC_LANG_PUSH([Fortran])
 dnl                                                 QM_CHECK_CC_LIB([$test_lib],[$failure])

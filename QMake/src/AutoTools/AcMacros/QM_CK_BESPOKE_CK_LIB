@@ -85,6 +85,50 @@ dnl                                  provide a set of compiler flags for the
 dnl                                  nVidia compiler driver (or flags to be
 dnl                                  used for the regular compiler while
 dnl                                  building CUDA source code).
+dnl       OPENMP_CFLAGS              Created as a substitution variable (a
+dnl                                  variable that gets written out to the
+dnl                                  QMake of project configuration files)
+dnl                                  by use of the AC_OPENMP macro while the
+dnl                                  current language is C. Receives any
+dnl                                  CFLAGS that are required to use the
+dnl                                  OpenMP functionality from a C program.
+dnl                                  NOTE: This variable is different to the
+dnl                                  <lib>_CFLAGS variable associated with
+dnl                                  the QMake resource for OpenMP (the
+dnl                                  variable OpenMP_CFLAGS - not the case
+dnl                                  difference). However, the variables are
+dnl                                  likely to receive the same value once
+dnl                                  configure has been run (we actually copy
+dnl                                  the OPENMP_CFLAGS setting to the QMake
+dnl                                  variable).
+dnl       OPENMP_CXXFLAGS            C++ version of the above, OPENMP_CFLAGS
+dnl                                  variable; declared and initialised when
+dnl                                  using the AC_OPENMP macro while the
+dnl                                  current language is C++. Receives any
+dnl                                  flags needed to compile-in OpenMP under
+dnl                                  C++. Note this variable is not directly
+dnl                                  associated with the QMake resource for
+dnl                                  OpenMP (altough it is used to prime the
+dnl                                  corresponding QMake C++ compiler flags
+dnl                                  variable, OpenMP_CCFLAGS).
+dnl       OPENMP_LIBS                Variable used to allow any OpenMP
+dnl                                  libraries to be included in the QMake
+dnl                                  OpenMP_LIBS variable (if required). At
+dnl                                  present, OpenMP requires no extra
+dnl                                  library to be added to the link line and
+dnl                                  the AC_OPENMP macro does not declare or
+dnl                                  or set this variable. We merely use this
+dnl                                  variable so that should AC_OPENMP be so
+dnl                                  extended in the future, this macro is
+dnl                                  ready to take advantage of any such
+dnl                                  development. Unless a later version of
+dnl                                  autoconf starts to use this variable,
+dnl                                  this variable is liable to be null. Even
+dnl                                  if autoconf moves over to using this
+dnl                                  variable, we will need to carefully
+dnl                                  check that the new functionality is
+dnl                                  compatible with the existing code in
+dnl                                  this macro.
 dnl       QMAKE_CFG                  Holds the location of the configuration
 dnl                                  file for the copy of QMake that is in
 dnl                                  use. Originally primed by calling the
@@ -123,6 +167,20 @@ dnl                                  setting may include -Lpath entries. This
 dnl                                  macros does not set this variable,
 dnl                                  merely declare it for substitution out
 dnl                                  to the configuration file.
+dnl       ac_cv_prog_c_openmp        Primed via the AC_OPENMP macro, this
+dnl                                  variable currently holds the determined
+dnl                                  status of OpenMP under the C compiler
+dnl                                  (whether it is unsupported or needs no
+dnl                                  CFLAGS). As this is an undocumented
+dnl                                  variable in the autoconf interface, we
+dnl                                  need to take care in case the operation
+dnl                                  of this variable changes in the future
+dnl                                  (although the code here has attempted to
+dnl                                  code around any limitation if this
+dnl                                  variable is subsequently dropped by the
+dnl                                  autoconf macro).
+dnl       ac_cv_prog_cxx_openmp      C++ version of the ac_cv_prog_c_openmp
+dnl                                  variable (above). The same caveats apply.
 dnl       process_now                Indicates if we should process the
 dnl                                  library now or delay checking for its
 dnl                                  existance (usually to allow us to find a
@@ -1732,6 +1790,255 @@ dnl
                            fi # (End of workable CUDA found)
 
                            trace 2 Finished post-processing CUDA switches
+                           ;;
+
+                   'OpenMP' )
+                           # Unlike most external packages, OpenMP is highly
+                           # associated with the compiler in use. In fact, it
+                           # may require different switches for each language
+                           # it is available for. Hence, we need to check
+                           # each supported language in turn.
+
+                           AC_LANG_PUSH([C])
+                           AC_OPENMP()
+                           dnl# AC_OPENMP() provides no documented indication
+                           dnl# of if OpenMP is actually available. It returns
+                           dnl# a null value for OPENMP_CFLAGS if OpenMP is not
+                           dnl# available but it also returns this if OpenMP is
+                           dnl# available by default and requires no specific
+                           dnl# flags. Hence, if we have a null OPENMP_CFLAGS
+                           dnl# we need to explicitly test if we actually have
+                           dnl# OpenMP available.
+                           dnl#
+                           dnl# Based on the current implementation (as of
+                           dnl# autoconf 2.69) AC_OPENMP() sets the variable
+                           dnl# ac_cv_prog_c_openmp to indicate the availability
+                           dnl# of OpenMP. We can therefore test this, but as it
+                           dnl# is an undocumented variable, we need to be have
+                           dnl# a fall back in case the macro changes. To this
+                           dnl# end, if we cannot interpret ac_cv_prog_c_openmp
+                           dnl# correctly, we perform a test compilation for
+                           dnl# some OpenMP code.
+
+                           if ( test "X$OPENMP_CFLAGS" != "X" || test "X$ac_cv_prog_c_openmp" = "Xnone needed" )
+                           then
+                              # We know we have OpenMP (for C anyway)
+                              #
+                              # Package name is slightly different between
+                              # QMake and autotools, transfer the determined
+                              # flags
+                              OpenMP_CFLAGS=$OPENMP_CFLAGS
+                              if ( test "X$OPENMP_LIBS" != "X" )
+                              then
+                                 dnl# Currently there is no OPENMP_LIBS
+                                 dnl# variable set by AC_OPENMP() but we
+                                 dnl# attempt to use it in-case the macro
+                                 dnl# introduces it at some future point.
+                                 OpenMP_LIBS=$OPENMP_LIBS
+                              else
+                                 dnl# AC_OPENMP has most likely failed to
+                                 dnl# deliver a working set of linker flags
+                                 dnl# (as it does not consider them) but we
+                                 dnl# need (at least for some compilers) to
+                                 dnl# include the same flag as CFLAGS to allow
+                                 dnl# a successful link. Default to including
+                                 dnl# the CFLAGS as a means of getting a
+                                 dnl# working solution - we will need to
+                                 dnl# code around any platforms we find that
+                                 dnl# fall foul of this approach.
+                                 OpenMP_LIBS=$OPENMP_CFLAGS
+                              fi
+                           else
+                              if ( test "X$ac_cv_prog_c_openmp" = "Xunsupported" )
+                              then
+                                 # We know we have no OpenMP for C.
+                                 # One missing => all missing
+                                 use_OpenMP=missing
+                              else
+                                 # We have no OPENMP_CFLAGS value but do not
+                                 # know if this is because we do not need a
+                                 # CFLAGS setting or if we have no OpenMP
+                                 # support.
+                                 dnl# Should never fall through to this branch
+                                 dnl# unless AC_OPENMP() has changed.
+                                 # See if a test program compiles without any
+                                 # OpenMP flags. If so, we have a usable
+                                 # environment otherwise the null setting
+                                 # indicates OpenMP is unavailable.
+                                 trace 3 Test of OpenMP C environment
+                                 # C test program copied from an autoconf
+                                 # generated configure program:
+                                 #
+                                 #   # Copyright (C) 2001, 2002, 2003, 2004,
+                                 #   #               2005, 2006, 2007, 2008
+                                 #   #        Free Software Foundation, Inc.
+                                 #   #
+                                 #   # This program is free software: you can
+                                 #   # redistribute it and/or modify it under
+                                 #   # the terms of the GNU General Public
+                                 #   # License as published by the Free
+                                 #   # Software Foundation; either version 2,
+                                 #   # or (at your option) any later version.
+                                 #   #
+                                 #   # This program is distributed in the hope
+                                 #   # that it will be useful, but WITHOUT ANY
+                                 #   # WARRANTY; without even the implied
+                                 #   # warranty of MERCHANTABILITY or FITNESS
+                                 #   # FOR A PARTICULAR PURPOSE.  See the GNU
+                                 #   # General Public License for more details.
+                                 #
+                                 AC_LINK_IFELSE([AC_LANG_PROGRAM([@%:@include <omp.h>],
+                                                                 [@%:@ifndef _OPENMP
+ choke me
+@%:@endif
+int main () { return omp_get_num_threads (); }
+                                                                 ]
+                                                                )
+                                                ],
+                                                [OpenMP_CFLAGS=$OPENMP_CFLAGS
+                                                 if ( test "X$OPENMP_LIBS" != "X" )
+                                                 then
+                                                    dnl# Currently there is no
+                                                    dnl# OPENMP_LIBS variable
+                                                    dnl# set by AC_OPENMP() but
+                                                    dnl# we attempt to use it
+                                                    dnl# in-case the macro
+                                                    dnl# introduces it at some
+                                                    dnl# future point.
+                                                    OpenMP_LIBS=$OPENMP_LIBS
+                                                 else
+                                                    dnl# No OPENMP_LIBS setting
+                                                    dnl# as AC_OPENMP has most
+                                                    dnl# likely failed to
+                                                    dnl# deliver a working set
+                                                    dnl# (as it does not
+                                                    dnl# consider them). We do
+                                                    dnl# however, need (at
+                                                    dnl# least for some
+                                                    dnl# compilers) to
+                                                    dnl# include the same flag
+                                                    dnl# as CFLAGS to allow a
+                                                    dnl# successful link. So we
+                                                    dnl# default to including
+                                                    dnl# the CFLAGS as a means
+                                                    dnl# of getting a working
+                                                    dnl# solution - we will
+                                                    dnl# need to code around
+                                                    dnl# any platforms we find
+                                                    dnl# that fall foul of this
+                                                    dnl# approach.
+                                                    OpenMP_LIBS=$OPENMP_CFLAGS
+                                                 fi
+                                                ],
+                                                [use_OpenMP=missing
+                                                ]
+                                               )
+                              fi
+                           fi
+                           AC_LANG_POP([C]) dnl# Balance the AC_LANG_PUSH
+                           if ( test "$use_OpenMP" != missing )
+                           then
+                              # Can only enable OpenMP if it exists for all
+                              # supported languages. If it is not available
+                              # for C there is no need to test C++
+
+                              AC_LANG_PUSH([C++])
+                              AC_OPENMP()
+                              dnl# As per C, AC_OPENMP() does not differentiate
+                              dnl# between a null OPENMP_CXXFLAGS indicating
+                              dnl# that no CCFLAGS are required to activate
+                              dnl# OpenMP or from a null value indicating that
+                              dnl# OpenMP is not available.
+                              dnl#
+                              dnl# Again, as per the check for C, we can use the
+                              dnl# relevant variable (ac_cv_prog_cxx_openmp in
+                              dnl# this case) to determine if we have OpenMP
+                              dnl# but, as this is undocumented, we need to be
+                              dnl# weary in-case the macro changes to a
+                              dnl# implementation.
+
+                              if ( test "X$OPENMP_CXXFLAGS" != "X" || test "X$ac_cv_prog_cxx_openmp" = "Xnone needed" )
+                              then
+                                 # We now know we have OpenMP for C++
+                                 # QMake uses both a slightly different name
+                                 # for the OpenMP resource and a different
+                                 # naming convention for the C++ flags than
+                                 # that used by autoconf. We need to copy
+                                 # across the settings to the correctly named
+                                 # variable.
+                                 OpenMP_CCFLAGS=$OPENMP_CXXFLAGS
+                                 # By rights, we should pick up any OPENMP_LIBS
+                                 # setting here. However, as we have no
+                                 # independant _LIBS setting for C and C++, we
+                                 # are forced to assume the single C-derived
+                                 # setting for _LIBS will be acceptable to the
+                                 # linker in use for C++ code.
+                                 dnl# In addition AC_OPENMP does not currently
+                                 dnl# detect the linker flags anyway.
+                              else
+                                 if ( test "X$ac_cv_prog_cxx_openmp" = "Xunsupported" )
+                                 then
+                                    # We know we have no OpenMP for C++.
+                                    # One missing => all missing
+                                    use_OpenMP=missing
+                                 else
+                                    # Unsure why we have no OPENMP_CXXFLAGS value
+                                    dnl# Maybe AC_OPENMP() has changed?
+                                    # See if a test program compiles without
+                                    # any OpenMP flags. If so, we have a usable
+                                    # environment otherwise the null setting
+                                    # indicates OpenMP is unavailable.
+                                    trace 3 Test of OpenMP C++ environment
+                                    # C++ test program same as that above
+                                    # used for testing the C environment:
+                                    #
+                                    #   # Copyright (C) 2001, 2002, 2003, 2004,
+                                    #   #               2005, 2006, 2007, 2008
+                                    #   #        Free Software Foundation, Inc.
+                                    #
+                                    AC_LINK_IFELSE([AC_LANG_PROGRAM([@%:@include <omp.h>],
+                                                                    [@%:@ifndef _OPENMP
+ choke me
+@%:@endif
+return omp_get_num_threads ();
+                                                                    ]
+                                                                   )
+                                                   ],
+                                                   [OpenMP_CCFLAGS=$OPENMP_CXXFLAGS
+                                                    # By rights, we should pick
+                                                    # up any OPENMP_LIBS setting
+                                                    # here. However, as we have
+                                                    # no independant _LIBS
+                                                    # setting for C and C++; we
+                                                    # are forced to assume the
+                                                    # single, C-derived setting
+                                                    # for _LIBS will be
+                                                    # acceptable to the linker
+                                                    # in use for C++ code.
+                                                    dnl# In addition AC_OPENMP
+                                                    dnl# does not currently
+                                                    dnl# detect the linker
+                                                    dnl# flags anyway.
+                                                   ],
+                                                   [use_OpenMP=missing
+                                                   ]
+                                                  )
+                                 fi
+                              fi
+                              AC_LANG_POP([C++]) dnl# Balance the AC_LANG_PUSH
+
+                              dnl If we ever activate any Fortran {77} support,
+                              dnl we will need to add the appropriate code to
+                              dnl set FFLAGS, etc. here using the same pattern
+                              dnl as per the C and C++ code.
+
+                              if ( test "$use_OpenMP" != missing )
+                              then
+                                 # Can now enable OpenMP as it exists for all
+                                 # languages
+                                 use_OpenMP=present
+                              fi
+                           fi
                            ;;
 
                 'Qt3QGLViewer' | 'Qt4QGLViewer' )

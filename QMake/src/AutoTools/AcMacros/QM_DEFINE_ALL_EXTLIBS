@@ -799,6 +799,7 @@ dnl
           dnl
           QM_DEFINE_EXTLIB_BESPOKE([libffmpeg], [FFMPEGCDEC FFMPEGCONT FFMPEGSWS FFMPEGUTIL])
           QM_DEFINE_EXTLIB_BESPOKE([NVCC],      [])
+          QM_DEFINE_EXTLIB_BESPOKE([OpenMP],    [])
           dnl
           dnl LibFFmpeg.def will need renaming before we can use automatic
           dnl .def file creation

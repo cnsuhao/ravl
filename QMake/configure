@@ -611,7 +611,12 @@ QMAKE_PROJECT_DEST
 SHAREDEXT
 ARC
 SWIG
+OPENMP_CXXFLAGS
+OPENMP_CFLAGS
 EGREP
+OpenMP_LIBS
+OpenMP_CCFLAGS
+OpenMP_CFLAGS
 NVCC_LIBS
 NVCC_CCFLAGS
 NVCC_CFLAGS
@@ -1224,6 +1229,9 @@ with_libffmpeg_pkgconf
 with_libffmpeg
 with_NVCC_pkgconf
 with_NVCC
+with_OpenMP_pkgconf
+with_OpenMP
+enable_openmp
 '
       ac_precious_vars='build_alias
 host_alias
@@ -1880,6 +1888,12 @@ if test -n "$ac_init_help"; then
      short | recursive ) echo "Configuration of QMake 1.7.0:";;
    esac
   cat <<\_ACEOF
+
+Optional Features:
+  --disable-option-checking  ignore unrecognized --enable/--with options
+  --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
+  --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
+  --disable-openmp        do not use OpenMP
 
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
@@ -2696,6 +2710,13 @@ Optional Packages:
 
   --with-NVCC             Enable functionality that relies on the NVCC library
                           [default=check]
+
+  --with-OpenMP-pkgconf   Enable the OpenMP library package via pkg-config and
+                          declare the name by which the OpenMP library package
+                          is known to pkg-config
+
+  --with-OpenMP           Enable functionality that relies on the OpenMP
+                          library [default=check]
 
 
 Some influential environment variables:
@@ -52758,6 +52779,228 @@ fi
 
 
 
+          with_OpenMP_check=bespoke
+          if ( test Xbespoke = Xvirtual )
+          then
+             with_OpenMP_virtual=yes
+          else
+             with_OpenMP_virtual=no
+          fi
+
+          fallback_file=""
+          fallback_path=""
+
+
+# Check whether --with-OpenMP-pkgconf was given.
+if test "${with_OpenMP_pkgconf+set}" = set; then :
+  withval=$with_OpenMP_pkgconf; case $with_OpenMP_pkgconf in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                 trace 4 --with-OpenMP-pkgconf disabling OpenMP
+                                 with_OpenMP_pkgconf=no
+                                 use_OpenMP=no
+                                 ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                 if ( test X != X )
+                                 then
+                                    trace 4 Asking for OpenMP via --with-OpenMP-pkgconf default value [$with_OpenMP_pkgconf]
+                                    with_OpenMP_pkgconf=
+                                    with_OpenMP_check=pkgconfig
+                                    with_OpenMP_virtual=no
+                                    use_OpenMP=yes
+                                 else
+                                    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to enable OpenMP via pkg-config but configure is unaware of the name of the DOTpc metadata file
+See \`config.log' for more details" "$LINENO" 5; }
+                                 fi
+                                 ;;
+                        'c' |'C' | 'ck' | 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                 if ( test X != X )
+                                 then
+                                    trace 4 Will check for OpenMP using --with-OpenMP-pkgconf default value [$with_OpenMP_pkgconf]
+                                    with_OpenMP_pkgconf=
+                                    with_OpenMP_check=pkgconfig
+                                    with_OpenMP_virtual=no
+                                    use_OpenMP=check
+                                 else
+                                    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to check for OpenMP via pkg-config but configure is unaware of the name of the DOTpc metadata file
+See \`config.log' for more details" "$LINENO" 5; }
+                                 fi
+                                 ;;
+                        * )
+                                 trace 4 Asking for OpenMP --with-OpenMP-pkgconf set to [$with_OpenMP_pkgconf]
+                                 with_OpenMP_check=pkgconfig
+                                 with_OpenMP_virtual=no
+                                 use_OpenMP=yes
+                                 ;;
+                       esac
+
+else
+  if ( test X != X )
+                       then
+                          trace 4 No --with-OpenMP-pkgconf specified using default [$with_OpenMP_pkgconf]
+                          with_OpenMP_pkgconf=
+                          with_OpenMP_check=pkgconfig
+                          with_OpenMP_virtual=no
+                       else
+                          trace 4 No --with-OpenMP-pkgconf specified and no default value
+                       fi
+
+
+fi
+
+
+# Check whether --with-OpenMP was given.
+if test "${with_OpenMP+set}" = set; then :
+  withval=$with_OpenMP; case $with_OpenMP in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                 trace 4 --with-OpenMP disabling OpenMP libraries
+                                 if ( test X$use_OpenMP = Xyes )
+                                 then
+                                    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to disable OpenMP by --with-OpenMP but --with-OpenMP-pkgconf has specifically enabled it
+See \`config.log' for more details" "$LINENO" 5; }
+                                 else
+                                    if ( test X$use_OpenMP = Xcheck )
+                                    then
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Disabling OpenMP via --with-OpenMP despite --with-OpenMP-pkconfig having asked to check for it" >&5
+$as_echo "$as_me: WARNING: Disabling OpenMP via --with-OpenMP despite --with-OpenMP-pkconfig having asked to check for it" >&2;}
+                                    fi
+                                    use_OpenMP=no
+                                 fi
+                                 with_OpenMP=no
+                                 ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                 trace 4 --with-OpenMP enabling OpenMP libraries
+                                 if ( test X$use_OpenMP = Xno )
+                                 then
+                                    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to enable OpenMP by --with-OpenMP but --with-OpenMP-pkgconf has specifically disabled it
+See \`config.log' for more details" "$LINENO" 5; }
+                                 else
+                                    if ( test X$use_OpenMP = Xcheck )
+                                    then
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Enabling OpenMP via --with-OpenMP despite --with-OpenMP-pkconfig having asked to check for it" >&5
+$as_echo "$as_me: WARNING: Enabling OpenMP via --with-OpenMP despite --with-OpenMP-pkconfig having asked to check for it" >&2;}
+                                    fi
+                                    use_OpenMP=yes
+                                 fi
+                                 with_OpenMP=yes
+                                 ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                 trace 4 --with-OpenMP checking for OpenMP libraries
+                                 if (test X$use_OpenMP = Xyes )
+                                 then
+                                    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-OpenMP asking to check for the libs but --with-OpenMP-pkgconf has specifically enabled it" >&5
+$as_echo "$as_me: WARNING: --with-OpenMP asking to check for the libs but --with-OpenMP-pkgconf has specifically enabled it" >&2;}
+                                 else
+                                    if ( test X$use_OpenMP = Xno )
+                                    then
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-OpenMP asking to check for the libs but --with-OpenMP-pkgconf has specifically disabled it" >&5
+$as_echo "$as_me: WARNING: --with-OpenMP asking to check for the libs but --with-OpenMP-pkgconf has specifically disabled it" >&2;}
+                                    else
+                                       use_OpenMP=check
+                                    fi
+                                 fi
+                                 with_OpenMP=check
+                                 ;;
+                        * )      # --with-<lib> is not being used as a simple
+                                 # yes/no/check switch - see if this is
+                                 # providing an extra piece of information
+                                 if ( test -d $with_OpenMP )
+                                 then
+                                    # Parameter is a directory path
+                                    fallback_path=$with_OpenMP
+                                    fallback_file=""
+                                    trace 3 with-OpenMP provides a fallback path [$fallback_path]
+                                    use_OpenMP=yes
+                                    with_OpenMP=yes
+                                 else
+                                    fallback_path=`$as_dirname -- $with_OpenMP ||
+$as_expr X$with_OpenMP : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
+	 X$with_OpenMP : 'X\(//\)[^/]' \| \
+	 X$with_OpenMP : 'X\(//\)$' \| \
+	 X$with_OpenMP : 'X\(/\)' \| . 2>/dev/null ||
+$as_echo X$with_OpenMP |
+    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)[^/].*/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\).*/{
+	    s//\1/
+	    q
+	  }
+	  s/.*/./; q'`
+                                    if ( test -d $fallback_path  )
+                                    then
+                                       # strip leading path
+                                       fallback_file=`$EXPR "//$with_OpenMP" : '.*/\([^/]*\)'`
+                                       # portable version of fallback_file=`basename $with_OpenMP`
+                                       if ( test X$with_OpenMP = X$fallback_path/$fallback_file )
+                                       then
+                                          # Parameter is a file path
+                                          trace 3 with-OpenMP provides a fallback path [$fallback_path] and a file [$fallback_file]
+                                          use_OpenMP=yes
+                                          with_OpenMP=yes
+                                       else
+                                          # Somehow dirname($x)/basename($x) != $x
+                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Problem processing --with-OpenMP, parameter ignored" >&5
+$as_echo "$as_me: WARNING: Problem processing --with-OpenMP, parameter ignored" >&2;}
+                                          fallback_path=""
+                                          fallback_file=""
+                                       fi
+                                    else
+                                       # --with-OpenMP=/path/is/not/a/dir/something
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Illegal command-line option for --with-OpenMP, parameter ignored" >&5
+$as_echo "$as_me: WARNING: Illegal command-line option for --with-OpenMP, parameter ignored" >&2;}
+                                       fallback_path=""
+                                       fallback_file=""
+                                    fi
+                                 fi
+                                 ;;
+                       esac
+
+else
+  trace 5 No --with-OpenMP specified
+
+fi
+
+
+
+
+          with_OpenMP_prq=""
+
+
+
+
+
+
+          KnownLibs=$KnownLibs" "OpenMP
+          if ( test X$use_OpenMP = X )
+          then
+             use_OpenMP=check
+             UnconfiguredLibs=$UnconfiguredLibs" "OpenMP
+          else
+             ConfiguredLibs=$ConfiguredLibs" "OpenMP
+          fi
+
+
+
+
+
+
 
 
 
@@ -56016,6 +56259,345 @@ fi
                            fi # (End of workable CUDA found)
 
                            trace 2 Finished post-processing CUDA switches
+                           ;;
+
+                   'OpenMP' )
+                           # Unlike most external packages, OpenMP is highly
+                           # associated with the compiler in use. In fact, it
+                           # may require different switches for each language
+                           # it is available for. Hence, we need to check
+                           # each supported language in turn.
+
+                           ac_ext=c
+ac_cpp='$CPP $CPPFLAGS'
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
+
+
+  OPENMP_CFLAGS=
+  # Check whether --enable-openmp was given.
+if test "${enable_openmp+set}" = set; then :
+  enableval=$enable_openmp;
+fi
+
+  if test "$enable_openmp" != no; then
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $CC option to support OpenMP" >&5
+$as_echo_n "checking for $CC option to support OpenMP... " >&6; }
+if ${ac_cv_prog_c_openmp+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+#ifndef _OPENMP
+ choke me
+#endif
+#include <omp.h>
+int main () { return omp_get_num_threads (); }
+
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  ac_cv_prog_c_openmp='none needed'
+else
+  ac_cv_prog_c_openmp='unsupported'
+	  	  	  	  	  	  	  	  	  	  	  	  	  for ac_option in -fopenmp -xopenmp -openmp -mp -omp -qsmp=omp; do
+	    ac_save_CFLAGS=$CFLAGS
+	    CFLAGS="$CFLAGS $ac_option"
+	    cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+#ifndef _OPENMP
+ choke me
+#endif
+#include <omp.h>
+int main () { return omp_get_num_threads (); }
+
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  ac_cv_prog_c_openmp=$ac_option
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+	    CFLAGS=$ac_save_CFLAGS
+	    if test "$ac_cv_prog_c_openmp" != unsupported; then
+	      break
+	    fi
+	  done
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_prog_c_openmp" >&5
+$as_echo "$ac_cv_prog_c_openmp" >&6; }
+    case $ac_cv_prog_c_openmp in #(
+      "none needed" | unsupported)
+	;; #(
+      *)
+	OPENMP_CFLAGS=$ac_cv_prog_c_openmp ;;
+    esac
+  fi
+
+
+
+                           if ( test "X$OPENMP_CFLAGS" != "X" || test "X$ac_cv_prog_c_openmp" = "Xnone needed" )
+                           then
+                              # We know we have OpenMP (for C anyway)
+                              #
+                              # Package name is slightly different between
+                              # QMake and autotools, transfer the determined
+                              # flags
+                              OpenMP_CFLAGS=$OPENMP_CFLAGS
+                              if ( test "X$OPENMP_LIBS" != "X" )
+                              then
+                                                                                                                                                                     OpenMP_LIBS=$OPENMP_LIBS
+                              else
+                                                                                                                                                                                                                                                                                                                                                                           OpenMP_LIBS=$OPENMP_CFLAGS
+                              fi
+                           else
+                              if ( test "X$ac_cv_prog_c_openmp" = "Xunsupported" )
+                              then
+                                 # We know we have no OpenMP for C.
+                                 # One missing => all missing
+                                 use_OpenMP=missing
+                              else
+                                 # We have no OPENMP_CFLAGS value but do not
+                                 # know if this is because we do not need a
+                                 # CFLAGS setting or if we have no OpenMP
+                                 # support.
+                                                                                                   # See if a test program compiles without any
+                                 # OpenMP flags. If so, we have a usable
+                                 # environment otherwise the null setting
+                                 # indicates OpenMP is unavailable.
+                                 trace 3 Test of OpenMP C environment
+                                 # C test program copied from an autoconf
+                                 # generated configure program:
+                                 #
+                                 #   # Copyright (C) 2001, 2002, 2003, 2004,
+                                 #   #               2005, 2006, 2007, 2008
+                                 #   #        Free Software Foundation, Inc.
+                                 #   #
+                                 #   # This program is free software: you can
+                                 #   # redistribute it and/or modify it under
+                                 #   # the terms of the GNU General Public
+                                 #   # License as published by the Free
+                                 #   # Software Foundation; either version 2,
+                                 #   # or (at your option) any later version.
+                                 #   #
+                                 #   # This program is distributed in the hope
+                                 #   # that it will be useful, but WITHOUT ANY
+                                 #   # WARRANTY; without even the implied
+                                 #   # warranty of MERCHANTABILITY or FITNESS
+                                 #   # FOR A PARTICULAR PURPOSE.  See the GNU
+                                 #   # General Public License for more details.
+                                 #
+                                 cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+#include <omp.h>
+int
+main ()
+{
+#ifndef _OPENMP
+ choke me
+#endif
+int main () { return omp_get_num_threads (); }
+
+
+  ;
+  return 0;
+}
+
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  OpenMP_CFLAGS=$OPENMP_CFLAGS
+                                                 if ( test "X$OPENMP_LIBS" != "X" )
+                                                 then
+                                                                                                                                                                                                                                                                                                                                                                                                                                OpenMP_LIBS=$OPENMP_LIBS
+                                                 else
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    OpenMP_LIBS=$OPENMP_CFLAGS
+                                                 fi
+
+else
+  use_OpenMP=missing
+
+
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+                              fi
+                           fi
+                           ac_ext=c
+ac_cpp='$CPP $CPPFLAGS'
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
+                            if ( test "$use_OpenMP" != missing )
+                           then
+                              # Can only enable OpenMP if it exists for all
+                              # supported languages. If it is not available
+                              # for C there is no need to test C++
+
+                              ac_ext=cpp
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
+
+
+  OPENMP_CXXFLAGS=
+  # Check whether --enable-openmp was given.
+if test "${enable_openmp+set}" = set; then :
+  enableval=$enable_openmp;
+fi
+
+  if test "$enable_openmp" != no; then
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $CXX option to support OpenMP" >&5
+$as_echo_n "checking for $CXX option to support OpenMP... " >&6; }
+if ${ac_cv_prog_cxx_openmp+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+#ifndef _OPENMP
+ choke me
+#endif
+#include <omp.h>
+int main () { return omp_get_num_threads (); }
+
+_ACEOF
+if ac_fn_cxx_try_link "$LINENO"; then :
+  ac_cv_prog_cxx_openmp='none needed'
+else
+  ac_cv_prog_cxx_openmp='unsupported'
+	  	  	  	  	  	  	  	  	  	  	  	  	  for ac_option in -fopenmp -xopenmp -openmp -mp -omp -qsmp=omp; do
+	    ac_save_CXXFLAGS=$CXXFLAGS
+	    CXXFLAGS="$CXXFLAGS $ac_option"
+	    cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+#ifndef _OPENMP
+ choke me
+#endif
+#include <omp.h>
+int main () { return omp_get_num_threads (); }
+
+_ACEOF
+if ac_fn_cxx_try_link "$LINENO"; then :
+  ac_cv_prog_cxx_openmp=$ac_option
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+	    CXXFLAGS=$ac_save_CXXFLAGS
+	    if test "$ac_cv_prog_cxx_openmp" != unsupported; then
+	      break
+	    fi
+	  done
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_prog_cxx_openmp" >&5
+$as_echo "$ac_cv_prog_cxx_openmp" >&6; }
+    case $ac_cv_prog_cxx_openmp in #(
+      "none needed" | unsupported)
+	;; #(
+      *)
+	OPENMP_CXXFLAGS=$ac_cv_prog_cxx_openmp ;;
+    esac
+  fi
+
+
+
+                              if ( test "X$OPENMP_CXXFLAGS" != "X" || test "X$ac_cv_prog_cxx_openmp" = "Xnone needed" )
+                              then
+                                 # We now know we have OpenMP for C++
+                                 # QMake uses both a slightly different name
+                                 # for the OpenMP resource and a different
+                                 # naming convention for the C++ flags than
+                                 # that used by autoconf. We need to copy
+                                 # across the settings to the correctly named
+                                 # variable.
+                                 OpenMP_CCFLAGS=$OPENMP_CXXFLAGS
+                                 # By rights, we should pick up any OPENMP_LIBS
+                                 # setting here. However, as we have no
+                                 # independant _LIBS setting for C and C++, we
+                                 # are forced to assume the single C-derived
+                                 # setting for _LIBS will be acceptable to the
+                                 # linker in use for C++ code.
+                                                                                                else
+                                 if ( test "X$ac_cv_prog_cxx_openmp" = "Xunsupported" )
+                                 then
+                                    # We know we have no OpenMP for C++.
+                                    # One missing => all missing
+                                    use_OpenMP=missing
+                                 else
+                                    # Unsure why we have no OPENMP_CXXFLAGS value
+                                                                        # See if a test program compiles without
+                                    # any OpenMP flags. If so, we have a usable
+                                    # environment otherwise the null setting
+                                    # indicates OpenMP is unavailable.
+                                    trace 3 Test of OpenMP C++ environment
+                                    # C++ test program same as that above
+                                    # used for testing the C environment:
+                                    #
+                                    #   # Copyright (C) 2001, 2002, 2003, 2004,
+                                    #   #               2005, 2006, 2007, 2008
+                                    #   #        Free Software Foundation, Inc.
+                                    #
+                                    cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+#include <omp.h>
+int
+main ()
+{
+#ifndef _OPENMP
+ choke me
+#endif
+return omp_get_num_threads ();
+
+
+  ;
+  return 0;
+}
+
+_ACEOF
+if ac_fn_cxx_try_link "$LINENO"; then :
+  OpenMP_CCFLAGS=$OPENMP_CXXFLAGS
+                                                    # By rights, we should pick
+                                                    # up any OPENMP_LIBS setting
+                                                    # here. However, as we have
+                                                    # no independant _LIBS
+                                                    # setting for C and C++; we
+                                                    # are forced to assume the
+                                                    # single, C-derived setting
+                                                    # for _LIBS will be
+                                                    # acceptable to the linker
+                                                    # in use for C++ code.
+
+else
+  use_OpenMP=missing
+
+
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+                                 fi
+                              fi
+                              ac_ext=c
+ac_cpp='$CPP $CPPFLAGS'
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
+
+
+                              if ( test "$use_OpenMP" != missing )
+                              then
+                                 # Can now enable OpenMP as it exists for all
+                                 # languages
+                                 use_OpenMP=present
+                              fi
+                           fi
                            ;;
 
                 'Qt3QGLViewer' | 'Qt4QGLViewer' )

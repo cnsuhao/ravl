@@ -1,5 +1,5 @@
 # This file is part of RAVL, Recognition And Vision Library 
-# Copyright (C) 2001-15, University of Surrey
+# Copyright (C) 2001-16, University of Surrey
 # This code may be redistributed under the terms of the GNU Lesser
 # General Public License (LGPL). See the lgpl.licence file for details or
 # see http://www.gnu.org/copyleft/lesser.html
@@ -18,5 +18,5 @@ EXTERNALLIBS= CUDA.def GTK.def LibPNG.def posixThreads.def zlib.def \
  vtkCommon.def vtkFiltering.def vtkGraphics.def glib.def gthread.def \
  CXSparse.def Qt3QGLViewer.def Qt4QGLViewer.def Qt3Support.def Xmu.def \
  cublas.def cuda.def cudart.def cufft.def cufftw.def curand.def \
- cusparse.def cusolver.def
+ cusparse.def cusolver.def OpenMP.def
 
