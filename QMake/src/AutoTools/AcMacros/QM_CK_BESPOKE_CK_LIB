@@ -1812,7 +1812,7 @@ dnl
                                        ;;
                       esac
                    else
-                      trace 1 Assert - Unexpected setting for library $test_lib
+                      trace 1 Assert - Unexpected setting for library $test_lib - $result
                    fi
                 fi
 

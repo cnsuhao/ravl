@@ -56773,7 +56773,7 @@ See \`config.log' for more details" "$LINENO" 5; }
                                        ;;
                       esac
                    else
-                      trace 1 Assert - Unexpected setting for library $test_lib
+                      trace 1 Assert - Unexpected setting for library $test_lib - $result
                    fi
                 fi
 
