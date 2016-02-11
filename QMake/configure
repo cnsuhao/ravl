@@ -52846,7 +52846,7 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
           # First, we need to sanitise the pre-requisite lists: if we are
           # using pkg-config for a library, that will deliver the list of
           # libraries needed for that package; we do not therefore need to
-          # consider any known pre-requisites. i
+          # consider any known pre-requisites.
           #
           # So.. nullify the pre-requisites of any external libraries that
           # are being specified via pkg-config
