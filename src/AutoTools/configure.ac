@@ -1120,7 +1120,7 @@ echo >> ./Config.Project.in
 
 
 # Select if we build Ravl ready to install or runnable from the build area
-echo \# Specify default for embedding paths into Ravl
+echo \# Specify default for embedding paths into Ravl >> ./Config.Project.in
 AC_SUBST([enable_fast_install])
 echo USE_INSTALLED_PATHS=@enable_fast_install@ >> ./Config.Project.in
 echo >> ./Config.Project.in
