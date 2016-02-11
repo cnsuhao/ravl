@@ -846,6 +846,12 @@ glib_CFLAGS
 libglade2_LIBS
 libglade2_CCFLAGS
 libglade2_CFLAGS
+ImageMagickXX_LIBS
+ImageMagickXX_CCFLAGS
+ImageMagickXX_CFLAGS
+ImageMagick_LIBS
+ImageMagick_CCFLAGS
+ImageMagick_CFLAGS
 iksemel_LIBS
 iksemel_CCFLAGS
 iksemel_CFLAGS
@@ -1095,6 +1101,10 @@ with_FreeType2_pkgconf
 with_FreeType2
 with_iksemel_pkgconf
 with_iksemel
+with_ImageMagick_pkgconf
+with_ImageMagick
+with_ImageMagickXX_pkgconf
+with_ImageMagickXX
 with_libglade2_pkgconf
 with_libglade2
 with_glib_pkgconf
@@ -2072,6 +2082,22 @@ Optional Packages:
 
   --with-iksemel          Enable functionality that relies on the iksemel
                           library [default=check]
+
+  --with-ImageMagick-pkgconf
+                          Enable the ImageMagick library package via
+                          pkg-config and declare the name by which the
+                          ImageMagick library package is known to pkg-config
+
+  --with-ImageMagick      Enable functionality that relies on the ImageMagick
+                          library [default=check]
+
+  --with-ImageMagickXX-pkgconf
+                          Enable the ImageMagickXX library package via
+                          pkg-config and declare the name by which the
+                          ImageMagickXX library package is known to pkg-config
+
+  --with-ImageMagickXX    Enable functionality that relies on the
+                          ImageMagickXX library [default=check]
 
   --with-libglade2-pkgconf
                           Enable the libglade2 library package via pkg-config
@@ -11898,6 +11924,458 @@ $as_echo "$as_me: WARNING: --with-iksemel set to an unknown option, setting igno
              UnconfiguredLibs=$UnconfiguredLibs" "iksemel
           else
              ConfiguredLibs=$ConfiguredLibs" "iksemel
+          fi
+
+
+
+
+
+
+          with_ImageMagick_check=pkgconfig
+          if ( test Xpkgconfig = Xvirtual )
+          then
+             with_ImageMagick_virtual=yes
+          else
+             with_ImageMagick_virtual=no
+          fi
+
+          fallback_file=""
+          fallback_path=""
+
+
+# Check whether --with-ImageMagick-pkgconf was given.
+if test "${with_ImageMagick_pkgconf+set}" = set; then :
+  withval=$with_ImageMagick_pkgconf; case $with_ImageMagick_pkgconf in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                 trace 4 --with-ImageMagick-pkgconf disabling ImageMagick
+                                 with_ImageMagick_pkgconf=no
+                                 use_ImageMagick=no
+                                 ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                 if ( test XImageMagick != X )
+                                 then
+                                    trace 4 Asking for ImageMagick via --with-ImageMagick-pkgconf default value [$with_ImageMagick_pkgconf]
+                                    with_ImageMagick_pkgconf=ImageMagick
+                                    with_ImageMagick_check=pkgconfig
+                                    with_ImageMagick_virtual=no
+                                    use_ImageMagick=yes
+                                 else
+                                    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to enable ImageMagick via pkg-config but configure is unaware of the name of the DOTpc metadata file
+See \`config.log' for more details" "$LINENO" 5; }
+                                 fi
+                                 ;;
+                        'c' |'C' | 'ck' | 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                 if ( test XImageMagick != X )
+                                 then
+                                    trace 4 Will check for ImageMagick using --with-ImageMagick-pkgconf default value [$with_ImageMagick_pkgconf]
+                                    with_ImageMagick_pkgconf=ImageMagick
+                                    with_ImageMagick_check=pkgconfig
+                                    with_ImageMagick_virtual=no
+                                    use_ImageMagick=check
+                                 else
+                                    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to check for ImageMagick via pkg-config but configure is unaware of the name of the DOTpc metadata file
+See \`config.log' for more details" "$LINENO" 5; }
+                                 fi
+                                 ;;
+                        * )
+                                 trace 4 Asking for ImageMagick --with-ImageMagick-pkgconf set to [$with_ImageMagick_pkgconf]
+                                 with_ImageMagick_check=pkgconfig
+                                 with_ImageMagick_virtual=no
+                                 use_ImageMagick=yes
+                                 ;;
+                       esac
+
+else
+  if ( test XImageMagick != X )
+                       then
+                          trace 4 No --with-ImageMagick-pkgconf specified using default [$with_ImageMagick_pkgconf]
+                          with_ImageMagick_pkgconf=ImageMagick
+                          with_ImageMagick_check=pkgconfig
+                          with_ImageMagick_virtual=no
+                       else
+                          trace 4 No --with-ImageMagick-pkgconf specified and no default value
+                       fi
+
+
+fi
+
+
+# Check whether --with-ImageMagick was given.
+if test "${with_ImageMagick+set}" = set; then :
+  withval=$with_ImageMagick; case $with_ImageMagick in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                 trace 4 --with-ImageMagick disabling ImageMagick libraries
+                                 if ( test X$use_ImageMagick = Xyes )
+                                 then
+                                    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to disable ImageMagick by --with-ImageMagick but --with-ImageMagick-pkgconf has specifically enabled it
+See \`config.log' for more details" "$LINENO" 5; }
+                                 else
+                                    if ( test X$use_ImageMagick = Xcheck )
+                                    then
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Disabling ImageMagick via --with-ImageMagick despite --with-ImageMagick-pkconfig having asked to check for it" >&5
+$as_echo "$as_me: WARNING: Disabling ImageMagick via --with-ImageMagick despite --with-ImageMagick-pkconfig having asked to check for it" >&2;}
+                                    fi
+                                    use_ImageMagick=no
+                                 fi
+                                 with_ImageMagick=no
+                                 ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                 trace 4 --with-ImageMagick enabling ImageMagick libraries
+                                 if ( test X$use_ImageMagick = Xno )
+                                 then
+                                    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to enable ImageMagick by --with-ImageMagick but --with-ImageMagick-pkgconf has specifically disabled it
+See \`config.log' for more details" "$LINENO" 5; }
+                                 else
+                                    if ( test X$use_ImageMagick = Xcheck )
+                                    then
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Enabling ImageMagick via --with-ImageMagick despite --with-ImageMagick-pkconfig having asked to check for it" >&5
+$as_echo "$as_me: WARNING: Enabling ImageMagick via --with-ImageMagick despite --with-ImageMagick-pkconfig having asked to check for it" >&2;}
+                                    fi
+                                    use_ImageMagick=yes
+                                 fi
+                                 with_ImageMagick=yes
+                                 ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                 trace 4 --with-ImageMagick checking for ImageMagick libraries
+                                 if (test X$use_ImageMagick = Xyes )
+                                 then
+                                    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-ImageMagick asking to check for the libs but --with-ImageMagick-pkgconf has specifically enabled it" >&5
+$as_echo "$as_me: WARNING: --with-ImageMagick asking to check for the libs but --with-ImageMagick-pkgconf has specifically enabled it" >&2;}
+                                 else
+                                    if ( test X$use_ImageMagick = Xno )
+                                    then
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-ImageMagick asking to check for the libs but --with-ImageMagick-pkgconf has specifically disabled it" >&5
+$as_echo "$as_me: WARNING: --with-ImageMagick asking to check for the libs but --with-ImageMagick-pkgconf has specifically disabled it" >&2;}
+                                    else
+                                       use_ImageMagick=check
+                                    fi
+                                 fi
+                                 with_ImageMagick=check
+                                 ;;
+                        * )      # --with-<lib> is not being used as a simple
+                                 # yes/no/check switch - see if this is
+                                 # providing an extra piece of information
+                                 if ( test -d $with_ImageMagick )
+                                 then
+                                    # Parameter is a directory path
+                                    fallback_path=$with_ImageMagick
+                                    fallback_file=""
+                                    trace 3 with-ImageMagick provides a fallback path [$fallback_path]
+                                    use_ImageMagick=yes
+                                    with_ImageMagick=yes
+                                 else
+                                    fallback_path=`$as_dirname -- $with_ImageMagick ||
+$as_expr X$with_ImageMagick : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
+	 X$with_ImageMagick : 'X\(//\)[^/]' \| \
+	 X$with_ImageMagick : 'X\(//\)$' \| \
+	 X$with_ImageMagick : 'X\(/\)' \| . 2>/dev/null ||
+$as_echo X$with_ImageMagick |
+    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)[^/].*/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\).*/{
+	    s//\1/
+	    q
+	  }
+	  s/.*/./; q'`
+                                    if ( test -d $fallback_path  )
+                                    then
+                                       # strip leading path
+                                       fallback_file=`$EXPR "//$with_ImageMagick" : '.*/\([^/]*\)'`
+                                       # portable version of fallback_file=`basename $with_ImageMagick`
+                                       if ( test X$with_ImageMagick = X$fallback_path/$fallback_file )
+                                       then
+                                          # Parameter is a file path
+                                          trace 3 with-ImageMagick provides a fallback path [$fallback_path] and a file [$fallback_file]
+                                          use_ImageMagick=yes
+                                          with_ImageMagick=yes
+                                       else
+                                          # Somehow dirname($x)/basename($x) != $x
+                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Problem processing --with-ImageMagick, parameter ignored" >&5
+$as_echo "$as_me: WARNING: Problem processing --with-ImageMagick, parameter ignored" >&2;}
+                                          fallback_path=""
+                                          fallback_file=""
+                                       fi
+                                    else
+                                       # --with-ImageMagick=/path/is/not/a/dir/something
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Illegal command-line option for --with-ImageMagick, parameter ignored" >&5
+$as_echo "$as_me: WARNING: Illegal command-line option for --with-ImageMagick, parameter ignored" >&2;}
+                                       fallback_path=""
+                                       fallback_file=""
+                                    fi
+                                 fi
+                                 ;;
+                       esac
+
+else
+  trace 5 No --with-ImageMagick specified
+
+fi
+
+
+
+          if ( test "$fallback_path/$fallback_file" != / )
+          then
+             # Do not currently support --with_<lib> specifying a .pc path
+             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-ImageMagick set to an unknown option, setting ignored" >&5
+$as_echo "$as_me: WARNING: --with-ImageMagick set to an unknown option, setting ignored" >&2;}
+          fi
+
+
+
+
+
+
+          KnownLibs=$KnownLibs" "ImageMagick
+          if ( test X$use_ImageMagick = X )
+          then
+             use_ImageMagick=check
+             UnconfiguredLibs=$UnconfiguredLibs" "ImageMagick
+          else
+             ConfiguredLibs=$ConfiguredLibs" "ImageMagick
+          fi
+
+
+
+
+
+
+          with_ImageMagickXX_check=pkgconfig
+          if ( test Xpkgconfig = Xvirtual )
+          then
+             with_ImageMagickXX_virtual=yes
+          else
+             with_ImageMagickXX_virtual=no
+          fi
+
+          fallback_file=""
+          fallback_path=""
+
+
+# Check whether --with-ImageMagickXX-pkgconf was given.
+if test "${with_ImageMagickXX_pkgconf+set}" = set; then :
+  withval=$with_ImageMagickXX_pkgconf; case $with_ImageMagickXX_pkgconf in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                 trace 4 --with-ImageMagickXX-pkgconf disabling ImageMagickXX
+                                 with_ImageMagickXX_pkgconf=no
+                                 use_ImageMagickXX=no
+                                 ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                 if ( test XImageMagick++ != X )
+                                 then
+                                    trace 4 Asking for ImageMagickXX via --with-ImageMagickXX-pkgconf default value [$with_ImageMagickXX_pkgconf]
+                                    with_ImageMagickXX_pkgconf=ImageMagick++
+                                    with_ImageMagickXX_check=pkgconfig
+                                    with_ImageMagickXX_virtual=no
+                                    use_ImageMagickXX=yes
+                                 else
+                                    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to enable ImageMagickXX via pkg-config but configure is unaware of the name of the DOTpc metadata file
+See \`config.log' for more details" "$LINENO" 5; }
+                                 fi
+                                 ;;
+                        'c' |'C' | 'ck' | 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                 if ( test XImageMagick++ != X )
+                                 then
+                                    trace 4 Will check for ImageMagickXX using --with-ImageMagickXX-pkgconf default value [$with_ImageMagickXX_pkgconf]
+                                    with_ImageMagickXX_pkgconf=ImageMagick++
+                                    with_ImageMagickXX_check=pkgconfig
+                                    with_ImageMagickXX_virtual=no
+                                    use_ImageMagickXX=check
+                                 else
+                                    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to check for ImageMagickXX via pkg-config but configure is unaware of the name of the DOTpc metadata file
+See \`config.log' for more details" "$LINENO" 5; }
+                                 fi
+                                 ;;
+                        * )
+                                 trace 4 Asking for ImageMagickXX --with-ImageMagickXX-pkgconf set to [$with_ImageMagickXX_pkgconf]
+                                 with_ImageMagickXX_check=pkgconfig
+                                 with_ImageMagickXX_virtual=no
+                                 use_ImageMagickXX=yes
+                                 ;;
+                       esac
+
+else
+  if ( test XImageMagick++ != X )
+                       then
+                          trace 4 No --with-ImageMagickXX-pkgconf specified using default [$with_ImageMagickXX_pkgconf]
+                          with_ImageMagickXX_pkgconf=ImageMagick++
+                          with_ImageMagickXX_check=pkgconfig
+                          with_ImageMagickXX_virtual=no
+                       else
+                          trace 4 No --with-ImageMagickXX-pkgconf specified and no default value
+                       fi
+
+
+fi
+
+
+# Check whether --with-ImageMagickXX was given.
+if test "${with_ImageMagickXX+set}" = set; then :
+  withval=$with_ImageMagickXX; case $with_ImageMagickXX in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                 trace 4 --with-ImageMagickXX disabling ImageMagickXX libraries
+                                 if ( test X$use_ImageMagickXX = Xyes )
+                                 then
+                                    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to disable ImageMagickXX by --with-ImageMagickXX but --with-ImageMagickXX-pkgconf has specifically enabled it
+See \`config.log' for more details" "$LINENO" 5; }
+                                 else
+                                    if ( test X$use_ImageMagickXX = Xcheck )
+                                    then
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Disabling ImageMagickXX via --with-ImageMagickXX despite --with-ImageMagickXX-pkconfig having asked to check for it" >&5
+$as_echo "$as_me: WARNING: Disabling ImageMagickXX via --with-ImageMagickXX despite --with-ImageMagickXX-pkconfig having asked to check for it" >&2;}
+                                    fi
+                                    use_ImageMagickXX=no
+                                 fi
+                                 with_ImageMagickXX=no
+                                 ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                 trace 4 --with-ImageMagickXX enabling ImageMagickXX libraries
+                                 if ( test X$use_ImageMagickXX = Xno )
+                                 then
+                                    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to enable ImageMagickXX by --with-ImageMagickXX but --with-ImageMagickXX-pkgconf has specifically disabled it
+See \`config.log' for more details" "$LINENO" 5; }
+                                 else
+                                    if ( test X$use_ImageMagickXX = Xcheck )
+                                    then
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Enabling ImageMagickXX via --with-ImageMagickXX despite --with-ImageMagickXX-pkconfig having asked to check for it" >&5
+$as_echo "$as_me: WARNING: Enabling ImageMagickXX via --with-ImageMagickXX despite --with-ImageMagickXX-pkconfig having asked to check for it" >&2;}
+                                    fi
+                                    use_ImageMagickXX=yes
+                                 fi
+                                 with_ImageMagickXX=yes
+                                 ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                 trace 4 --with-ImageMagickXX checking for ImageMagickXX libraries
+                                 if (test X$use_ImageMagickXX = Xyes )
+                                 then
+                                    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-ImageMagickXX asking to check for the libs but --with-ImageMagickXX-pkgconf has specifically enabled it" >&5
+$as_echo "$as_me: WARNING: --with-ImageMagickXX asking to check for the libs but --with-ImageMagickXX-pkgconf has specifically enabled it" >&2;}
+                                 else
+                                    if ( test X$use_ImageMagickXX = Xno )
+                                    then
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-ImageMagickXX asking to check for the libs but --with-ImageMagickXX-pkgconf has specifically disabled it" >&5
+$as_echo "$as_me: WARNING: --with-ImageMagickXX asking to check for the libs but --with-ImageMagickXX-pkgconf has specifically disabled it" >&2;}
+                                    else
+                                       use_ImageMagickXX=check
+                                    fi
+                                 fi
+                                 with_ImageMagickXX=check
+                                 ;;
+                        * )      # --with-<lib> is not being used as a simple
+                                 # yes/no/check switch - see if this is
+                                 # providing an extra piece of information
+                                 if ( test -d $with_ImageMagickXX )
+                                 then
+                                    # Parameter is a directory path
+                                    fallback_path=$with_ImageMagickXX
+                                    fallback_file=""
+                                    trace 3 with-ImageMagickXX provides a fallback path [$fallback_path]
+                                    use_ImageMagickXX=yes
+                                    with_ImageMagickXX=yes
+                                 else
+                                    fallback_path=`$as_dirname -- $with_ImageMagickXX ||
+$as_expr X$with_ImageMagickXX : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
+	 X$with_ImageMagickXX : 'X\(//\)[^/]' \| \
+	 X$with_ImageMagickXX : 'X\(//\)$' \| \
+	 X$with_ImageMagickXX : 'X\(/\)' \| . 2>/dev/null ||
+$as_echo X$with_ImageMagickXX |
+    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)[^/].*/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\).*/{
+	    s//\1/
+	    q
+	  }
+	  s/.*/./; q'`
+                                    if ( test -d $fallback_path  )
+                                    then
+                                       # strip leading path
+                                       fallback_file=`$EXPR "//$with_ImageMagickXX" : '.*/\([^/]*\)'`
+                                       # portable version of fallback_file=`basename $with_ImageMagickXX`
+                                       if ( test X$with_ImageMagickXX = X$fallback_path/$fallback_file )
+                                       then
+                                          # Parameter is a file path
+                                          trace 3 with-ImageMagickXX provides a fallback path [$fallback_path] and a file [$fallback_file]
+                                          use_ImageMagickXX=yes
+                                          with_ImageMagickXX=yes
+                                       else
+                                          # Somehow dirname($x)/basename($x) != $x
+                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Problem processing --with-ImageMagickXX, parameter ignored" >&5
+$as_echo "$as_me: WARNING: Problem processing --with-ImageMagickXX, parameter ignored" >&2;}
+                                          fallback_path=""
+                                          fallback_file=""
+                                       fi
+                                    else
+                                       # --with-ImageMagickXX=/path/is/not/a/dir/something
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Illegal command-line option for --with-ImageMagickXX, parameter ignored" >&5
+$as_echo "$as_me: WARNING: Illegal command-line option for --with-ImageMagickXX, parameter ignored" >&2;}
+                                       fallback_path=""
+                                       fallback_file=""
+                                    fi
+                                 fi
+                                 ;;
+                       esac
+
+else
+  trace 5 No --with-ImageMagickXX specified
+
+fi
+
+
+
+          if ( test "$fallback_path/$fallback_file" != / )
+          then
+             # Do not currently support --with_<lib> specifying a .pc path
+             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-ImageMagickXX set to an unknown option, setting ignored" >&5
+$as_echo "$as_me: WARNING: --with-ImageMagickXX set to an unknown option, setting ignored" >&2;}
+          fi
+
+
+
+
+
+
+          KnownLibs=$KnownLibs" "ImageMagickXX
+          if ( test X$use_ImageMagickXX = X )
+          then
+             use_ImageMagickXX=check
+             UnconfiguredLibs=$UnconfiguredLibs" "ImageMagickXX
+          else
+             ConfiguredLibs=$ConfiguredLibs" "ImageMagickXX
           fi
 
 
