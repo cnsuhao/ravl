@@ -349,10 +349,6 @@ AC_SUBST([PKG_SHARED_LDLIBFLAGS])
 
 # CUDA Compiler
 #
-# Bring in any configured NVCCFLAGS from the QMake configuration
-CONFIGURE_NVCCFLAGS=" \$(QMAKE_NVCCFLAGS) $CONFIGURE_NVCCFLAGS"
-AC_SUBST([CONFIGURE_NVCCFLAGS])
-#
 # Set PKG_xx_CFLAGS to defaults or any package specific values
 PKG_NVCCANSIFLAG=" \$(NVCC_ANSI_NVCCFLAGS) "
 PKG_CHECK_NVCCFLAGS=" -DRAVL_CHECK "
@@ -373,7 +369,6 @@ AC_SUBST([PKG_GPROF_NVCCFLAGS])
 AC_SUBST([PKG_OPT_NVCCFLAGS])
 AC_SUBST([PKG_PROF_NVCCFLAGS])
 AC_SUBST([PKG_SHARED_NVCCFLAGS])
-AC_SUBST([CONFIGURE_NVCCFLAGS])
 
 
 # Consider the archiver
@@ -1070,7 +1065,13 @@ then
    echo \# CUDA compiler settings >> ./Config.Project.in
    echo >> ./Config.Project.in
    echo \# User specified at configure time >> ./Config.Project.in
-   echo CONFIGURE_NVCCFLAGS=@CONFIGURE_NVCCFLAGS@ >> ./Config.Project.in
+   if ( test "x$CONFIGURE_NVCCFLAGS" = x )
+   then
+      # No NVCCFLAGS specified on the configure, use any from QMake
+      echo CONFIGURE_NVCCFLAGS=\$\(QMAKE_NVCCFLAGS\) >> ./Config.Project.in
+   else
+      echo CONFIGURE_NVCCFLAGS=@CONFIGURE_NVCCFLAGS@ >> ./Config.Project.in
+   fi
    echo >> ./Config.Project.in
    echo \# Settings determined for current combination of C++ and CUDA compilers >> ./Config.Project.in
    echo PKG_NVCCANSIFLAG=@PKG_NVCCANSIFLAG@ >> ./Config.Project.in
@@ -1084,6 +1085,7 @@ then
    echo PKG_SHARED_NVCCFLAGS=@PKG_SHARED_NVCCFLAGS@ >> ./Config.Project.in
    echo >> ./Config.Project.in
    echo >> ./Config.Project.in
+   AC_SUBST([CONFIGURE_NVCCFLAGS])
 fi
 echo \# Flags for the archiver >> ./Config.Project.in
 echo >> ./Config.Project.in

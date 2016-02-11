@@ -606,6 +606,7 @@ ac_subst_vars='LTLIBOBJS
 LIBOBJS
 RESOURCES
 enable_fast_install
+CONFIGURE_NVCCFLAGS
 USER_UNDEFSYMB
 USER_with_rpath
 USER_LIBPATHSWITCH
@@ -791,7 +792,6 @@ PKG_DEFAULT_NVCCFLAGS
 PKG_DEBUG_NVCCFLAGS
 PKG_CHECK_NVCCFLAGS
 PKG_NVCCANSIFLAG
-CONFIGURE_NVCCFLAGS
 PKG_SHARED_LDLIBFLAGS
 PKG_PROF_LDLIBFLAGS
 PKG_OPT_LDLIBFLAGS
@@ -8835,10 +8835,6 @@ fi
 
 # CUDA Compiler
 #
-# Bring in any configured NVCCFLAGS from the QMake configuration
-CONFIGURE_NVCCFLAGS=" \$(QMAKE_NVCCFLAGS) $CONFIGURE_NVCCFLAGS"
-
-#
 # Set PKG_xx_CFLAGS to defaults or any package specific values
 PKG_NVCCANSIFLAG=" \$(NVCC_ANSI_NVCCFLAGS) "
 PKG_CHECK_NVCCFLAGS=" -DRAVL_CHECK "
@@ -8849,7 +8845,6 @@ PKG_GPROF_NVCCFLAGS=" \$(NVCC_GPROF_NVCCFLAGS) "
 PKG_OPT_NVCCFLAGS=" \$(NVCC_OPT_NVCCFLAGS) "
 PKG_PROF_NVCCFLAGS=" \$(NVCC_PROF_NVCCFLAGS) "
 PKG_SHARED_NVCCFLAGS=" \$(NVCC_SHARED_NVCCFLAGS) "
-
 
 
 
@@ -48376,7 +48371,13 @@ then
    echo \# CUDA compiler settings >> ./Config.Project.in
    echo >> ./Config.Project.in
    echo \# User specified at configure time >> ./Config.Project.in
-   echo CONFIGURE_NVCCFLAGS=@CONFIGURE_NVCCFLAGS@ >> ./Config.Project.in
+   if ( test "x$CONFIGURE_NVCCFLAGS" = x )
+   then
+      # No NVCCFLAGS specified on the configure, use any from QMake
+      echo CONFIGURE_NVCCFLAGS=\$\(QMAKE_NVCCFLAGS\) >> ./Config.Project.in
+   else
+      echo CONFIGURE_NVCCFLAGS=@CONFIGURE_NVCCFLAGS@ >> ./Config.Project.in
+   fi
    echo >> ./Config.Project.in
    echo \# Settings determined for current combination of C++ and CUDA compilers >> ./Config.Project.in
    echo PKG_NVCCANSIFLAG=@PKG_NVCCANSIFLAG@ >> ./Config.Project.in
@@ -48390,6 +48391,7 @@ then
    echo PKG_SHARED_NVCCFLAGS=@PKG_SHARED_NVCCFLAGS@ >> ./Config.Project.in
    echo >> ./Config.Project.in
    echo >> ./Config.Project.in
+
 fi
 echo \# Flags for the archiver >> ./Config.Project.in
 echo >> ./Config.Project.in
