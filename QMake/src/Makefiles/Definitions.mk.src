@@ -57,6 +57,9 @@ else
   -include $(PROJECT_OUT)/Config.Project
 endif
 
+ifndef INSTALL
+  INSTALL=$(QMAKE_UTILS)/install-sh
+endif
 
 ifndef QCWD
  QCWD :=$(shell $(GET_CWD))#

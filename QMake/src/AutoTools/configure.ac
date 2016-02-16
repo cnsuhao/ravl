@@ -233,7 +233,15 @@ echo CXXCPP=@CXXCPP@ >> ./Config.QMake.in
 echo EXPR=@EXPR@ >> ./Config.QMake.in
 echo GET_CWD=@GET_CWD@ >> ./Config.QMake.in
 echo GREP=@GREP@ >> ./Config.QMake.in
-echo INSTALL=@INSTALL@ >> ./Config.QMake.in
+# A null INSTALL means QMake will sort one out for itself so if we do not know
+# of an installer, we should not set INSTALL in the config file.
+if ( test "x$INSTALL" != x )
+then
+  echo INSTALL=$INSTALL >> ./Config.QMake.in
+  # Not using @-enclosed substitution variable as the configure substitution
+  # logic is hard-coded to use ac_INSTALL not INSTALL and we may have altered
+  # the value held in INSTALL
+fi
 echo INSTALL_DATA=@INSTALL_DATA@ >> ./Config.QMake.in
 echo INSTALL_PROGRAM=@INSTALL_PROGRAM@ >> ./Config.QMake.in
 echo LD=@LD@ >> ./Config.QMake.in
@@ -241,7 +249,10 @@ echo LEX=@LEX@ >> ./Config.QMake.in
 echo LEXLIB=@LEXLIB@ >> ./Config.QMake.in
 echo LN_S=@LN_S@ >> ./Config.QMake.in
 echo MAKE=@MAKE@ >> ./Config.QMake.in
-echo MKDIR_P=@MKDIR_P@ >> ./Config.QMake.in
+echo MKDIR_P=$MKDIR_P >> ./Config.QMake.in
+# Not using @-enclosed substitution variable as the configure substitution
+# logic is hard-coded to use ac_MKDIR_P not MKDIR_P and we may have altered
+# the value held in MKDIR_P
 echo NVCC=@NVCC@ >> ./Config.QMake.in
 echo PERL=@PERL@ >> ./Config.QMake.in
 echo PKG_CONFIG=@PKG_CONFIG@ >> ./Config.QMake.in

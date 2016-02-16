@@ -7916,6 +7916,26 @@ fi
           QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES CHOWN"
 
 
+          if ( test `echo x$INSTALL | $AWK '{ print $1 }'` = "x$srcdir/install-sh" )
+          then
+             # INSTALL is pointing to the fall-back file in the QMake source
+             # directory. This will cease to work if the user removes the
+             # source following a successful install and will also be useless
+             # if configure was envoked with a relative path. To fix this, We
+             # need to nullify the setting and let QMake install install-sh
+             # and select it as necessary
+             INSTALL=
+             # In this instance, we do not want to regard INSTALL as being a
+             # pre-requisite of QMake. (i.e. there is no need to error if the
+             # setting is null)
+          else
+             # INSTALL is either set to the path to a system-installed program
+             # or not found at all. Either way, we need to regard it as a
+             # dependency and error if it is not a usable setting (we should
+             # never actually get a null value as we should have always found
+             # the install-sh as a fallback).
+             QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES INSTALL"
+          fi
           if ( test "x$USER_INSTALL" = x )
           then
              # User has not specified a INSTALL program to use, do we have
@@ -7976,7 +7996,7 @@ fi
                 fi
              fi
           fi
-          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES INSTALL INSTALL_DATA INSTALL_PROGRAM INSTALL_SCRIPT"
+          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES INSTALL_DATA INSTALL_PROGRAM INSTALL_SCRIPT"
 
 
           if ( test "x$USER_LEX" = x )
@@ -8031,11 +8051,31 @@ fi
              if ( test "x$InheritCFG" = xyes )
              then
                 OriginalSetting=`cat $QMAKE_CFG | $SED  -n 's/^MKDIR_P=\(.*\)/\1/p'`
-                if ( test "x$OriginalSetting" != x )
+             else
+                OriginalSetting=""
+             fi
+             if ( test "x$OriginalSetting" != x )
+             then
+                MKDIR_P=$OriginalSetting
+                # Prefer any original setting over the value set from the
+                # AC_MKDIR_P macro
+             else
+                # No user-setting or prior setting to use, so we take the value
+                # determined by configure. However, we must first ensure that
+                # this is a fully viable setting. If there is no mkdir -p
+                # available, configure will have selected to use the instal-sh
+                # script in the QMake source directory. Using this script will
+                # cease to work if the user removes the QMake source following
+                # a successful install. If configure was also invoked with a
+                # relative path, this fallback is also liable to be accessed
+                # via a relative path which will be useless when running make
+                # outside of the QMake directory. To correct all of this, in
+                # this situation, we set MKDIR_P to use the INSTALL setting
+                # as the -d option performs the required directory creation
+                # function.
+                if ( test `echo x$MKDIR_P | $AWK '{ print $1 }'` = "x$srcdir/install-sh" )
                 then
-                   MKDIR_P=$OriginalSetting
-                   # Prefer any original setting over the value set from the
-                   # AC_MKDIR_P macro
+                   MKDIR_P="\${INSTALL} -d "
                 fi
              fi
           fi
@@ -57935,7 +57975,15 @@ echo CXXCPP=@CXXCPP@ >> ./Config.QMake.in
 echo EXPR=@EXPR@ >> ./Config.QMake.in
 echo GET_CWD=@GET_CWD@ >> ./Config.QMake.in
 echo GREP=@GREP@ >> ./Config.QMake.in
-echo INSTALL=@INSTALL@ >> ./Config.QMake.in
+# A null INSTALL means QMake will sort one out for itself so if we do not know
+# of an installer, we should not set INSTALL in the config file.
+if ( test "x$INSTALL" != x )
+then
+  echo INSTALL=$INSTALL >> ./Config.QMake.in
+  # Not using @-enclosed substitution variable as the configure substitution
+  # logic is hard-coded to use ac_INSTALL not INSTALL and we may have altered
+  # the value held in INSTALL
+fi
 echo INSTALL_DATA=@INSTALL_DATA@ >> ./Config.QMake.in
 echo INSTALL_PROGRAM=@INSTALL_PROGRAM@ >> ./Config.QMake.in
 echo LD=@LD@ >> ./Config.QMake.in
@@ -57943,7 +57991,10 @@ echo LEX=@LEX@ >> ./Config.QMake.in
 echo LEXLIB=@LEXLIB@ >> ./Config.QMake.in
 echo LN_S=@LN_S@ >> ./Config.QMake.in
 echo MAKE=@MAKE@ >> ./Config.QMake.in
-echo MKDIR_P=@MKDIR_P@ >> ./Config.QMake.in
+echo MKDIR_P=$MKDIR_P >> ./Config.QMake.in
+# Not using @-enclosed substitution variable as the configure substitution
+# logic is hard-coded to use ac_MKDIR_P not MKDIR_P and we may have altered
+# the value held in MKDIR_P
 echo NVCC=@NVCC@ >> ./Config.QMake.in
 echo PERL=@PERL@ >> ./Config.QMake.in
 echo PKG_CONFIG=@PKG_CONFIG@ >> ./Config.QMake.in
