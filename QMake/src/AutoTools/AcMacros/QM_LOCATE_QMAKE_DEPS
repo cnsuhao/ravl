@@ -157,7 +157,11 @@ AC_DEFUN([QM_LOCATE_QMAKE_DEPS],
           dnl owing to how the macro AC_PROG_INSTALL is expanded. When control
           dnl reaches this point, the AC_PROG_INSTALL macro will have already
           dnl been expanded and executed. This occurs regardless of where we
-          dnl place the macro call in this code.
+          dnl place the macro call in this section of code. The AC_PROG_INSTALL
+          dnl macro will have actually been expanded immediately after the
+          dnl expansion of the AC_REQUIRE at the start of this macro (so the
+          dnl USER_INSTALL variable will truely reflect if the user supplied
+          dnl  any priming value).
           AC_PROG_INSTALL
           if ( test "x$USER_INSTALL" = x )
           then
@@ -224,6 +228,8 @@ AC_DEFUN([QM_LOCATE_QMAKE_DEPS],
           dnl As per AC_PROG_INSTALL, AC_PROG_LEX will already have been
           dnl executed when we reach this point. Hence we use a similar
           dnl modified method of initialising the LEX and LEXLIB variables.
+          dnl Again, because of the AC_REQUIRE, USER_LEX will have been
+          dnl correctly set prior to the AC_PROG_LEX code being executed.
           AC_PROG_LEX
           if ( test "x$USER_LEX" = x )
           then
@@ -271,7 +277,10 @@ AC_DEFUN([QM_LOCATE_QMAKE_DEPS],
 
           dnl Again, AC_PROG_MKDIR_P is a macro that expands otuside of this
           dnl macro and will have been run by the time control reaches this
-          dnl code. We use the same work around as for INSTALL and LEX.
+          dnl code. We use the same work around as for INSTALL and LEX. As
+          dnl for both LEX and INSTALL, USER_MKDIR_P will correctly hold any
+          dnl user-setting (the AC_REQUIRE at the top of this macro ensuring
+          dnl correct order of execution).
           AC_PROG_MKDIR_P
           if ( test "x$USER_MKDIR_P" = x )
           then
