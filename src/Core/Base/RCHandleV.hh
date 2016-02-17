@@ -22,7 +22,7 @@
 #include <iostream.h>
 #endif
 
-#define RAVL_VIRTUALCONSTRUCTOR(strm,targType) VCLoad(strm,(targType *) 0)
+#define RAVL_VIRTUALCONSTRUCTOR(strm,targType) RavlN::VCLoad(strm,(targType *) 0)
 
 namespace RavlN {
   class RCAbstractC;
