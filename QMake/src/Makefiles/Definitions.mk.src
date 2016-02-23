@@ -134,10 +134,6 @@ else
   endif
 endif
 
-ifndef PACKAGE
- PACKAGE=local
-endif
-
 ifdef QMAKE_INFO
   SHOWIT = 
 else
@@ -157,7 +153,11 @@ endif
 PACKAGE:=$(strip $(PACKAGE))#
 
 ifndef PLIB
+ ifeq ($(PACKAGE),)
+  BASENAME:=$(PROJECT_DIR)/local/None#
+ else
   BASENAME:=$(PROJECT_DIR)/$(PACKAGE)/None#
+ endif
 else
   BASENAME:=/$(PLIB)#
 endif
@@ -309,19 +309,23 @@ INST_BIN=$(ROOTDIR)/bin/utils/$(VAR)$(SHARED_LIB_POSTFIX)$(SINGLE_POSTFIX)/bin
 INST_GENBIN=$(ROOTDIR)/bin# Machine independent scripts.
 INST_INCLUDE:=$(ROOTDIR)/include
 
-INST_DEPEND=$(INST_ADMIN)/$(ARC)/depend$(PROJECT_DIR)/$(PACKAGE)$(BASENAME)
-# Path is invarient for VAR, SHAREDBUILD and WITH_SINGLE; the name of the
-# dependency file changes.
+ifeq ($(PACKAGE),)
+ INST_DEPEND=$(INST_ADMIN)/$(ARC)/depend$(PROJECT_DIR)/local/$(BASENAME)
+ # Path is invarient for VAR, SHAREDBUILD and WITH_SINGLE; the name of the
+ # dependency file changes.
 
-ifeq ($(PACKAGE),local)
-INST_HEADER:=$(INST_INCLUDE)$(PROJECT_DIR)
-INST_HEADERSYM:=$(INST_ADMIN)$(PROJECT_DIR)/syminc
+ INST_HEADER:=$(INST_INCLUDE)$(PROJECT_DIR)
+ INST_HEADERSYM:=$(INST_ADMIN)$(PROJECT_DIR)/syminc
+ INST_HEADERCERT:=$(INST_ADMIN)/Cert$(PROJECT_DIR)/local
 else
-INST_HEADER:=$(INST_INCLUDE)$(PROJECT_DIR)/$(PACKAGE)
-INST_HEADERSYM:=$(INST_ADMIN)/syminc$(PROJECT_DIR)/$(PACKAGE)
-endif
+ INST_DEPEND=$(INST_ADMIN)/$(ARC)/depend$(PROJECT_DIR)/$(PACKAGE)$(BASENAME)
+ # Path is invarient for VAR, SHAREDBUILD and WITH_SINGLE; the name of the
+ # dependency file changes.
 
-INST_HEADERCERT:=$(INST_ADMIN)/Cert$(PROJECT_DIR)/$(PACKAGE)
+ INST_HEADER:=$(INST_INCLUDE)$(PROJECT_DIR)/$(PACKAGE)
+ INST_HEADERSYM:=$(INST_ADMIN)/syminc$(PROJECT_DIR)/$(PACKAGE)
+ INST_HEADERCERT:=$(INST_ADMIN)/Cert$(PROJECT_DIR)/$(PACKAGE)
+endif
 
 # Java classes
 
@@ -343,9 +347,15 @@ DEF_INC = -I. -I$(INST_LIBDEF) -I$(INSTALLHOME)/lib$(PROJECT_DIR)/libdep  $(pats
 ############################
 # Some targets.
 
-# Published dependancy flag.
-TARG_DEPFLAG=$(INST_ADMIN)/$(ARC)/depend$(PROJECT_DIR)/$(PACKAGE)$(BASENAME)/.depend
-TARG_HDRFLAG=$(INST_ADMIN)/$(ARC)/depend$(PROJECT_DIR)/$(PACKAGE)$(BASENAME)/.header
+ifeq ($(PACKAGE),)
+ # Published dependancy flag.
+ TARG_DEPFLAG=$(INST_ADMIN)/$(ARC)/depend$(PROJECT_DIR)/local$(BASENAME)/.depend
+ TARG_HDRFLAG=$(INST_ADMIN)/$(ARC)/depend$(PROJECT_DIR)/local$(BASENAME)/.header
+else
+ # Published dependancy flag.
+ TARG_DEPFLAG=$(INST_ADMIN)/$(ARC)/depend$(PROJECT_DIR)/$(PACKAGE)$(BASENAME)/.depend
+ TARG_HDRFLAG=$(INST_ADMIN)/$(ARC)/depend$(PROJECT_DIR)/$(PACKAGE)$(BASENAME)/.header
+endif
 
 ##############################
 # Make setup
