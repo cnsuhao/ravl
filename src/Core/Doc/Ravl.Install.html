@@ -38,7 +38,7 @@
     installed.</p>
 
     
-    <h2>Installing the RAVL library and applications</h2> 
+    <h2>Disk space requirements</h2> 
 
     <p> The amount of disk space required to build RAVL will vary depending
     both on the amount of extra functionality that gets built into RAVL
@@ -46,9 +46,45 @@
     in use. We suggest that you budget for a requirement of around 10G of disk
     space.</p>
 
-    <p> The following procedure will build the RAVL libraries. First download
-    the latest source archive. As of this document, the current release is
-    version 1.1.7 of RAVL and is available
+    <h2>Obtaining the RAVL source</h2> 
+
+    <p> The RAVL source code is freely available either directly from the
+<a href=http://sourceforge.net/p/ravl/ravl>RAVL Git repository</a>
+    hosted on 
+<a href=http://sourceforge.net>SourceForge</a>
+    or as a tar archive of the latest formal release in the
+<a href=http://sourceforge.net/projects/ravl/files/RAVL>RAVL distribution area</a>
+    . The Git repository has the advantage of making available any RAVL
+    enhancments that were made after the most recent formal release.</p>
+
+    <h3>Obtaining the latest RAVL source from the Git repository</h3>
+
+    <p>To download the RAVL source code from the Git repository, you will need
+    to have the <a href=http://git-scm.com>Git</a> toolset installed on your
+    computer. You will then be able to clone a copy of the repository to your
+    computer and checkout an appropriate copy of the RAVL source code.</p>
+
+    <p> On cloning the RAVL repository to your machine, you will immediately
+    have the very latest version of RAVL available. However, this may be an
+    untested developmental copy of the source code. We suggest that you
+    checkout the tested_nightly branch as this reflects the copy of the source
+    that has been most recently tested.</p>
+
+    <p> To download and checkout the most recent tested version of RAVL please
+    execute the following commands where you wish to install the RAVL source:
+    </p>
+    <pre>
+    <kbd>git clone git://git.code.sf.net/p/ravl/ravl ravl</kbd>
+    <kbd>cd ravl</kbd>
+    <kbd>git checkout tested_nightly</kbd>
+    </pre>
+
+    <h3>Obtaining the RAVL tar archive</h3>
+
+    <p>The RAVL source code is also available on sourceforge as a tar archive.
+    The RAVL tar archive contains the source-code of the most recent formal
+    release of RAVL. As of this document, the current release version is 1.1.7
+    and is available
 <a href=http://sourceforge.net/projects/ravl/files/RAVL/1.1/RAVL-1.1.7.tgz/download>here</a>
     . The
 <a href=http://sourceforge.net/projects/ravl/files/RAVL>RAVL distribution area on sourceforge</a>
@@ -58,10 +94,21 @@
     name of the tar archive in the following procedure will need to be changed
     to reflect this.</p>
 
-    <p>Once you have downloaded the source archive, execute the following:</p>
+    <p>To extract the RAVL source from the distribution tar archive, please
+    execute the following</p>
     <pre>
     <kbd>tar -xvzf ./RAVL-1.1.7.tgz</kbd>
     <kbd>cd ravl</kbd>
+    </pre>
+
+    <h2>Building and installing RAVL</h2>
+
+    <p>If you have followed the above procedure for obtaining and installing
+    the RAVL source code (either from the git repository or the tar archive),
+    you should find yourself in the top-level "ravl" directory of the
+    source-tree. You may then execute the following commands to build and
+    install the RAVL libraries and applications:</p>
+    <pre>
     <kbd>./configure </kbd>
     <kbd>make </kbd>
     <kbd>sudo make install</kbd>
@@ -227,7 +274,7 @@ into the directory user's local HOME.</p>
     <address><a href="mailto:w.christmas@surrey.ac.uk">Bill Christmas</a></address>
 <!-- Created: Fri Dec 23 09:31:09 GMT 2005 -->
 <!-- hhmts start -->
-Last modified: Wed Nov 12 11:47:29 GMT 2014
+Last modified: Fri Mar 04 11:12:37 GMT 2016
 <!-- hhmts end -->
   </body>
 </html>
