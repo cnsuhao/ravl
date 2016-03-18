@@ -23,7 +23,7 @@ dnl
 dnl This macro is intended for those bespoke packages that are tested for by
 dnl pkg-config or are virtual packages. For those bespoke packages that will
 dnl require a compilation test, please use the QM_DEFINE_EXTLIB_BESPOKE_CC
-dnl version of this macro as this will additionally declate the appropriate
+dnl version of this macro as this will additionally declare the appropriate
 dnl --with-<lib>-library and --with-<lib>-include switches as well as allowing
 dnl the definition of the library to preform the link against.
 dnl
@@ -45,7 +45,7 @@ dnl   into this macro as the first parameter). For example,the OpenCV package
 dnl   will have variables named use_OpenCV; with_OpenCV; etc.
 dnl
 dnl       with_<lib>_prq             Space separated list of pre-requisites
-dnl                                  of the library.
+dnl                                  of the external library package, <lib>.
 dnl
 dnl
 AC_DEFUN([QM_DEFINE_EXTLIB_BESPOKE],

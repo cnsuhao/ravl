@@ -16,7 +16,7 @@ dnl
 dnl No macro parameters
 dnl
 dnl No global variables used (directly, see individual macro documentation for
-dnl those variables employed by the macros uesd here):
+dnl those variables employed by the macros used here):
 dnl
 AC_DEFUN([QM_DEFINE_ALL_EXTLIBS],
          [
@@ -109,11 +109,11 @@ AC_DEFUN([QM_DEFINE_ALL_EXTLIBS],
           dnl    a little more set up - such as any library where we need to
           dnl    test for a C++ class; or the Math library where some compilers
           dnl    perform extra prototype checking on those functions.
-          dnl  3 Space separated list of dependancies of the library. Specify
-          dnl    the QMake name of the library - e.g. for dependancies on Zlib
+          dnl  3 Space separated list of dependencies of the library. Specify
+          dnl    the QMake name of the library - e.g. for dependencies on Zlib
           dnl    specify Zlib not -lz or z.
           dnl    *** N.B. ***
-          dnl         Dependancies on libraries reliant on pkg-config for their
+          dnl         Dependencies on libraries reliant on pkg-config for their
           dnl         location are not supported. I.E. if library A depends on
           dnl         library B, library B must be specified here as a manual
           dnl         check if library A is also specified as a manual check.
@@ -121,7 +121,7 @@ AC_DEFUN([QM_DEFINE_ALL_EXTLIBS],
           dnl  4 Link line entry for the library (in -lXXXX form) needed to
           dnl    compile against the library package <Lib>. For library
           dnl    packages that vary the names of the libraries required, this
-          dnl    may be a set of alternative lists seperated by a pipe symbol.
+          dnl    may be a set of alternative lists separated by a pipe symbol.
           dnl    For example, the Socket library package uses the setting
           dnl    " | -lsocket | -lsocket -lnsl " as the socket() function may
           dnl    be available in the default libraries (no additional library
@@ -129,9 +129,9 @@ AC_DEFUN([QM_DEFINE_ALL_EXTLIBS],
           dnl    list); in the socket library itself; or in a socket library
           dnl    that also depends on libnsl.
           dnl  5 Name(s) of header files needed to use the library (only really
-          dnl    need to provide one for a specimin test unless it is know that
+          dnl    need to provide one for a specimen test unless it is know that
           dnl    sub-sets of the header files are regularly seen in the wild).
-          dnl    If specifying multiple headers, provide a space seperated list.
+          dnl    If specifying multiple headers, provide a space separated list.
           dnl  6 Language in which the test code is written. This is usually the
           dnl    same language as the API for the external library. Currently
           dnl    only C and C++ are supported languages for this setting.
@@ -151,7 +151,7 @@ AC_DEFUN([QM_DEFINE_ALL_EXTLIBS],
                               [C]
                              )
           dnl# Define BLAS support. This is a bit of a bodge as we should be
-          dnl# testing for more Fortran functionality/configurataion here than
+          dnl# testing for more Fortran functionality/configuration here than
           dnl# we currently do. The problem with performing that testing is that
           dnl# the required autotools macros would mandate a Fortran compiler be
           dnl# present even when LAPACK support is omitted.
@@ -251,7 +251,7 @@ AC_DEFUN([QM_DEFINE_ALL_EXTLIBS],
           dnl# more involved Fortran testing (and utilising the extra checking
           dnl# that should have been carried out for the BLAS library). However,
           dnl# to prevent the requirement of a Fortran compiler, even if we are
-          dnl# not builing LAPACK into any client project, we do not do the
+          dnl# not building LAPACK into any client project, we do not do the
           dnl# extra testing.
           dnl
           dnl                 Name,
@@ -340,7 +340,7 @@ dnl
                               [C]
                              )
           dnl# Of the libraries declared here: colamd; cxsparse and amd are
-          dnl# really all seperate artihmetic pacakges and could be implemented
+          dnl# really all separate arithmetic packages and could be implemented
           dnl# as QMake resources in their own right.
           dnl#
           dnl# N.B. UMFPack may not always have been built to require all the
@@ -546,7 +546,7 @@ dnl
           
           dnl Virtual Pkgs
           dnl
-          dnl These packages merely depend on the existance of all of their
+          dnl These packages merely depend on the existence of all of their
           dnl pre-requisites.
           dnl
           dnl The parameters are:
@@ -554,8 +554,8 @@ dnl
           dnl  1 QMake name for library. The name used for RESOURCES and also
           dnl    for LIB_CFLAGS, LIB_LIBS, etc. used in Config.XX and the .def
           dnl    files.
-          dnl  2 Space separated list of dependancies of the library. Specify
-          dnl    the QMake name of the library - e.g. for dependancies on Zlib
+          dnl  2 Space separated list of dependencies of the library. Specify
+          dnl    the QMake name of the library - e.g. for dependencies on Zlib
           dnl    specify Zlib not -lz or z.
           dnl
           dnl                      Name         Pre-requisites
@@ -576,13 +576,13 @@ dnl
           dnl All packages declared here need to have their bespoke check
           dnl added to the case statement in the QM_CK_BESPOKE_CK_LIB macro.
           dnl
-          dnl There are two forms of bespoke poackage, those that will require
+          dnl There are two forms of bespoke package, those that will require
           dnl a compilation check to determine if they exist and those that do
           dnl not (usually virtual packages that require some extra testing
-          dnl over and above the mere existance of their pre-requisites). Both
+          dnl over and above the mere existence of their pre-requisites). Both
           dnl forms are processed by the same (QM_CK_BESPOKE_CK_LIB) macro but
           dnl each form has its own definition (to cause the appropriate
-          dnl command-line swithces to be defined).
+          dnl command-line switches to be defined).
           dnl
           dnl Those packages that require a compilation check as well as a
           dnl bespoke check are declared using the QM_DEFINE_EXTLIB_BESPOKE_CC
@@ -597,11 +597,11 @@ dnl
           dnl    a little more set up - such as any library where we need to
           dnl    test for a C++ class; or the Math library where some compilers
           dnl    perform extra prototype checking on those functions.
-          dnl  3 Space separated list of dependancies of the library. Specify
-          dnl    the QMake name of the library - e.g. for dependancies on Zlib
+          dnl  3 Space separated list of dependencies of the library. Specify
+          dnl    the QMake name of the library - e.g. for dependencies on Zlib
           dnl    specify Zlib not -lz or z.
           dnl    *** N.B. ***
-          dnl         Dependancies on libraries reliant on pkg-config for their
+          dnl         Dependencies on libraries reliant on pkg-config for their
           dnl         location are not supported. I.E. if library A depends on
           dnl         library B, library B must be specified here as a manual
           dnl         check if library A is also specified as a manual check.
@@ -609,7 +609,7 @@ dnl
           dnl  4 Link line entry for the library (in -lXXXX form) needed to
           dnl    compile against the library package <Lib>. For library
           dnl    packages that vary the names of the libraries required, this
-          dnl    may be a set of alternative lists seperated by a pipe symbol.
+          dnl    may be a set of alternative lists separated by a pipe symbol.
           dnl    For example, the Socket library package uses the setting
           dnl    " | -lsocket | -lsocket -lnsl " as the socket() function may
           dnl    be available in the default libraries (no additional library
@@ -617,9 +617,9 @@ dnl
           dnl    list); in the socket library itself; or in a socket library
           dnl    that also depends on libnsl.
           dnl  5 Name(s) of header files needed to use the library (only really
-          dnl    need to provide one for a specimin test unless it is know that
+          dnl    need to provide one for a specimen test unless it is know that
           dnl    sub-sets of the header files are regularly seen in the wild).
-          dnl    If specifying multiple headers, provide a space seperated list.
+          dnl    If specifying multiple headers, provide a space separated list.
           dnl  6 Language in which the test code is written. This is usually the
           dnl    same language as the API for the external library. Currently
           dnl    only C and C++ are supported languages for this setting.
@@ -790,8 +790,8 @@ dnl
           dnl  1 QMake name for library. The name used for RESOURCES and also
           dnl    for LIB_CFLAGS, LIB_LIBS, etc. used in Config.XX and the .def
           dnl    files.
-          dnl  2 Space separated list of dependancies of the library. Specify
-          dnl    the QMake name of the library - e.g. for dependancies on Zlib
+          dnl  2 Space separated list of dependencies of the library. Specify
+          dnl    the QMake name of the library - e.g. for dependencies on Zlib
           dnl    specify Zlib not -lz or z.
           dnl
           dnl These parameters mirror those of the definition macro for a

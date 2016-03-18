@@ -11,7 +11,7 @@ dnl QM_RESOURCE_BASIC_SWITCHES
 dnl
 dnl
 dnl Macro to define and process all of the command-line switches associated
-dnl with a particular external RESOURCE.
+dnl with a particular external resource.
 dnl
 dnl This macro will declare the --with-<lib>-pkgconf switch that allows the
 dnl user to explicitly set the pkg-config control file to use to check for
@@ -23,18 +23,18 @@ dnl allows the user to select whether or not the external library should be
 dnl employed. This command-line switch will support a Yes/No (upper, lower
 dnl and sentence case accepted; plus Y,N) to explicitly en/dis-able use of
 dnl the library; or 'check' (C, Ck, or Check etc.) to ask to utilise the
-dnl library if it is available (the default option). For RESOURCEs that
-dnl require a compilation check to test their existance, the --with-<lib>
+dnl library if it is available (the default option). For RESOURCES that
+dnl require a compilation check to test their existence, the --with-<lib>
 dnl switch will also accept a setting of either <directory-path> or
 dnl <directory-path>/<filename>. In this mode, <directory-path> will be
 dnl taken to be the location of both the packages header files and the
 dnl package library files. The optional <filename> component will be taken
 dnl to be the name of the library file to be compiled with. This allows
 dnl the user to specify this information using one switch when the library
-dnl and include files redisde in the same directory. However, as the files
-dnl are usually not co-located, this feature is of less pratical value.
+dnl and include files reside in the same directory. However, as the files
+dnl are usually not co-located, this feature is of less practical value.
 dnl
-dnl In creating the command-line swtiches, the associated text for --help
+dnl In creating the command-line switches, the associated text for --help
 dnl is also declared here.
 dnl
 dnl Macro parameters are:
@@ -64,6 +64,9 @@ dnl               virtual      - external library is a virtual set of
 dnl                              libraries that is implicitly available
 dnl                              if all of the precursor libraries are
 dnl                              available.
+dnl           For any test-type, if the user provides a --with-<lib>-pkgconf
+dnl           setting, this will automatically force the test-type to be of
+dnl           pkgconfig.
 dnl
 dnl Global variables used:
 dnl
@@ -72,20 +75,22 @@ dnl   <lib> being replaced by the QMake name of the package (the name passed
 dnl   into this macro as the first parameter). For example,the OpenCV package
 dnl   will have variables named with_OpenCV; with_OpenCV; etc.
 dnl
-dnl       fallback_file              Initiallised in this macro, this variable
+dnl       fallback_file              Initialised in this macro, this variable
 dnl                                  is used for extracting any file component
 dnl                                  from the --with-<lib> switch for possible
 dnl                                  use if required to provide name details
 dnl                                  for one of the other cmd-line options.
-dnl       fallback_path              Initiallised in this macro, this variable
+dnl       fallback_path              Initialised in this macro, this variable
 dnl                                  is used for extracting any directory path
 dnl                                  component from the --with-<lib> switch
 dnl                                  for possible use if required to provide
 dnl                                  a directory path for one of the other
 dnl                                  cmd-line options.
-dnl       use_<lib>                  Flag specifying useage of library,
-dnl                                  primed initially by --with-<lib> or
-dnl                                  as part of a dependancy check.
+dnl       use_<lib>                  Flag specifying usage of the library.
+dnl                                  Initially primed from the command line
+dnl                                  settings, this will be updated to
+dnl                                  reflect the availability of the library
+dnl                                  <lib>.
 dnl       with_<lib>                 Value of similarly named cmd-line switch
 dnl                                  Enables (actually requires) the use of
 dnl                                  the particular library. For compilation
@@ -95,7 +100,7 @@ dnl                                  the package library and the location of
 dnl                                  the package header files (ideal if both
 dnl                                  file types reside in the same directory).
 dnl       with_<lib>_check           Flag specifying the type of test needed
-dnl                                  to check for the existance of the
+dnl                                  to check for the existence of the
 dnl                                  external library:
 dnl                                    bespoke      - test for the external
 dnl                                                   library has been written

@@ -30,7 +30,7 @@ dnl
 dnl   All variables listed with a <lib> in their name are created with the
 dnl   <lib> being replaced by the QMake name of the package (the name passed
 dnl   into this macro as the first parameter). For example,the OpenCV package
-dnl   will have variables named use_OpenCV; with_OpenCV; etc.
+dnl   will have variables named use_OpenCV; with_OpenCV_prq; etc.
 dnl
 dnl       fallback_file              This variable holds any file component
 dnl                                  supplied via the --with-<lib> switch for
@@ -50,7 +50,7 @@ dnl                                  virtual packages; any such setting will
 dnl                                  be ignored and a warning message will
 dnl                                  be issued.
 dnl       with_<lib>_prq             Space separated list of pre-requisites
-dnl                                  of the library
+dnl                                  of the external library package <lib>.
 dnl
 dnl
 AC_DEFUN([QM_DEFINE_VIRTUAL_EXTLIB],

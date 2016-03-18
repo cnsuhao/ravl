@@ -52,7 +52,7 @@ AC_CANONICAL_HOST
 
 
 dnl It would be good to enable the following code, however _AC_... aren't 
-dnl generally available macros and may dissappear/change in differing versions
+dnl generally available macros and may disappear/change in differing versions
 dnl of autotools so its best not to rely on them. If only there was a supported
 dnl means of doing this.. (you can check for the preprocessor (as we do, above)
 dnl but not all of the calls that _AC_INCLUDES_DEFAULT_REQUIREMENTS expands to
@@ -335,6 +335,7 @@ echo LINKER_SET_SONAME=@LINKER_SET_SONAME@ >> ./Config.QMake.in
 echo LINKER_UNDEFSYMB=@LINKER_UNDEFSYMB@ >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo >> ./Config.QMake.in
+# Only write out NVCC flags if we have found the compiler driver
 if ( test x$use_NVCC = xpresent )
 then
    echo \# CUDA compiler settings >> ./Config.QMake.in

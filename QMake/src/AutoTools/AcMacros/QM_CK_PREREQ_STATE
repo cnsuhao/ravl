@@ -1,5 +1,5 @@
 dnl This file is part of QMake, Quick Make System
-dnl Copyright (C) 2015, University of Surrey
+dnl Copyright (C) 2015-16, University of Surrey
 dnl This code may be redistributed under the terms of the GNU General
 dnl Public License (GPL). See the gpl.licence file for details or
 dnl see http://www.gnu.org/copyleft/gpl.html
@@ -26,30 +26,29 @@ dnl Global variables used:
 dnl
 dnl   All variables listed with a <lib> in their name exist for each library
 dnl   that has been declared (via a QM_DEFINE_EXTLIB_[CP]C) with the <lib>
-dnl   being replaced by the RESOURCE name of the package. For example,
+dnl   being replaced by the resource name of the package. For example,
 dnl   the OpenCV package will have variables named with_OpenCV_prq;
 dnl   use_OpenCV; etc. Similarly, libGTK2 has variables use_libGTK2;
 dnl   with_libGTK2_prq; etc.
 dnl
-dnl       LeftToDo                   List of the external libs that remain to
-dnl                                  be processed. As the compilation check
-dnl                                  packages should be processed last, this
-dnl                                  variable is analogous to the list of
-dnl                                  compile check libs that remain to be
-dnl                                  tested. This macro deletes <lib> from
-dnl                                  this list if it can determine if <lib>
-dnl                                  is available for use.
-dnl       RecentlyProcessed          Keeps track of the recently located libs.
-dnl                                  This macro adds <lib> to this list if it
-dnl                                  can determine whether or not the package
-dnl                                  is available.
+dnl       LeftToDo                   List of the external RESOURCES that are
+dnl                                  left to be processed. This macro deletes
+dnl                                  the resource from this list if it can
+dnl                                  determine whether or not the resource is
+dnl                                  available for use.
+dnl       RecentlyProcessed          Keeps track of the recently located
+dnl                                  RESOURCES. This macro adds the resource
+dnl                                  to this list if it can determine whether
+dnl                                  or not the resource is available for use.
 dnl       process_now                Initialised by this macro to signal if the
 dnl                                  library package is ready for its
 dnl                                  availability check or if we should delay
 dnl                                  the check (usually to allow us to find a
 dnl                                  pre-requisite first).
-dnl       SED                        Standard substitution variable pointing
-dnl                                  to the UNIX sed command.
+dnl       SED                        Holds the name of the executable to carry
+dnl                                  out stream editing. This will already
+dnl                                  have been primed by a prior call to the
+dnl                                  macro QM_LOCATE_KEY_TOOLS.
 dnl       TRACE_INDENT               Variable used for indenting trace debug
 dnl                                  messages (when DBG is set). The current
 dnl                                  convention in this script is to employ
@@ -57,21 +56,19 @@ dnl                                  an indent of 5 spaces per level of
 dnl                                  nesting in the code i.e. set the var to
 dnl                                  "     " for the first for loop, set it
 dnl                                  to "          " for the second, etc.
-dnl       with_<lib>_prq             Holds the list of prerequisite libraries
-dnl                                  that external library <lib> is dependant
-dnl                                  on.
-dnl       use_<lib>                  Flag specifying useage of library,
-dnl                                  initially primed from the command line
+dnl       with_<lib>_prq             Space separated list of pre-requisites
+dnl                                  of the external library.
+dnl       use_<lib>                  Flag specifying usage of the resource. 
+dnl                                  Initially primed from the command line
 dnl                                  settings, this will be updated to
-dnl                                  reflect the availability of the library
-dnl                                  <lib>
+dnl                                  reflect the availability of the resource.
 dnl
 dnl   The following are all interim variables used within this macro:
 dnl
 dnl     dependant; dependant_state; prereqs; prq; prq_state
 dnl
 AC_DEFUN([QM_CK_PREREQ_STATE],
-         [trace 5 Checking the status of the prerequisites of $1
+         [trace 5 Checking the status of the pre-requisites of $1
           dependant=$1
           dnl Use intermediate variable to circumvent any issues over macro
           dnl substitution when we need to use {$dependant} in the code
@@ -145,14 +142,14 @@ AC_DEFUN([QM_CK_PREREQ_STATE],
                                  ;;
                    * )           case $dependant_state in
                                     check )  TRACE_INDENT="          "
-                                             trace 1 Assert - unrecognised state for prerequisite $prq, disabling $dependant
+                                             trace 1 Assert - unrecognised state for pre-requisite $prq, disabling $dependant
                                              eval use_${dependant}=blocked
                                              LeftToDo=`echo " $LeftToDo " | $SED "s/ $dependant / /"`
                                              RecentlyProcessed="$RecentlyProcessed $dependant"
                                              process_now=no
                                              break
                                              ;;
-                                    needed ) AC_MSG_FAILURE([Library $dependant is a prerequisite of a selected library but is unavailable due to a indeterminate pre-requisite state])
+                                    needed ) AC_MSG_FAILURE([Library $dependant is a pre-requisite of a selected library but is unavailable due to a indeterminate pre-requisite state])
                                              ;;
                                     yes )    AC_MSG_FAILURE([Required library $dependant is unavailable due to a indeterminate pre-requisite state])
                                              ;;

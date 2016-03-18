@@ -1,5 +1,5 @@
 dnl This file is part of QMake, Quick Make System
-dnl Copyright (C) 2011-15, University of Surrey
+dnl Copyright (C) 2011-16, University of Surrey
 dnl This code may be redistributed under the terms of the GNU General
 dnl Public License (GPL). See the gpl.licence file for details or
 dnl see http://www.gnu.org/copyleft/gpl.html
@@ -27,7 +27,7 @@ dnl Global variables used:
 dnl
 dnl   All variables listed with a <lib> in their name exist for each library
 dnl   that has been declared (via a QM_DEFINE_EXTLIB_[CP]C) with the <lib>
-dnl   being replaced by the RESOURCE name of the package. For example,
+dnl   being replaced by the resource name of the package. For example,
 dnl   the OpenCV package will have variables named with_OpenCV_prq; 
 dnl   use_OpenCV; etc. Similarly, libGTK2 has variables use_libGTK2; 
 dnl   with_libGTK2_prq; etc.
@@ -54,8 +54,10 @@ dnl       process_now                Indicates if we should process the
 dnl                                  library now or delay checking for its
 dnl                                  existance (usually to allow us to find a
 dnl                                  pre-requisite first).
-dnl       SED                        Standard substitution variable pointing
-dnl                                  to the UNIX sed command.
+dnl       SED                        Holds the name of the executable to carry
+dnl                                  out stream editing. This will already
+dnl                                  have been primed by a prior call to the
+dnl                                  macro QM_LOCATE_KEY_TOOLS.
 dnl       TRACE_INDENT               Variable used for indenting trace debug
 dnl                                  messages (when DBG is set). The current
 dnl                                  convention in this script is to employ
@@ -63,7 +65,7 @@ dnl                                  an indent of 5 spaces per level of
 dnl                                  nesting in the code i.e. set the var to
 dnl                                  "     " for the first for loop, set it
 dnl                                  to "          " for the second, etc.
-dnl       use_<lib>                  Flag specifying useage of library, 
+dnl       use_<lib>                  Flag specifying usage of library, 
 dnl                                  initially primed from the command line
 dnl                                  settings, this will be updated to
 dnl                                  reflect the availability of the library
@@ -90,7 +92,7 @@ AC_DEFUN([QM_CK_COMPILE_CK_LIB],
                  AS_IF([test "x$process_now" != xno],
                        [AS_CASE([$test_enablement],
                                 [check],  [failure=""],
-                                [needed], [failure="Library $test_lib is unavailable and a prerequisite of a selected library"],
+                                [needed], [failure="Library $test_lib is unavailable and a pre-requisite of a selected library"],
                                 [yes],    [failure="Required library $test_lib is unavailable"],
                                 [trace 1 "Assert - Should never fall through here"]
                                )
@@ -168,7 +170,7 @@ dnl
                        ]
                       ) dnl End of process_now code
                 ], dnl End of test_enablement = check|needed|yes code
-                [# We do not need to check for existance of this library; trace why
+                [# We do not need to check for existence of this library; trace why
                  case $test_enablement in
                     'no' )      TRACE_INDENT="     "
                                 trace 6 $test_lib is disabled, not checking for existance

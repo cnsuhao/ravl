@@ -11,13 +11,13 @@ dnl file-header-ends-here
 dnl QM_RESOURCE_CC_SWITCHES
 dnl
 dnl Macro to define and process the command-line switches associated with a
-dnl particular external RESOURCE that requires a compilation-check to see if
+dnl particular external resource that requires a compilation-check to see if
 dnl it is available.
 dnl
 dnl This macro declares the --with-<lib>-library and --with-<lib>-include
 dnl command-line switches (and their help text). These two switches declare
 dnl where the relevant support files from the external library reside (the
-dnl library and header files respectivly). The --with-<lib>-include setting
+dnl library and header files respectively). The --with-<lib>-include setting
 dnl must point to a directory while the --with-<lib>-library setting may just
 dnl be the library's name (minus an extension, with or without the lib prefix);
 dnl a path to the containing directory; or both in the form 'path/name'. This
@@ -27,7 +27,7 @@ dnl and --with-<lib>-include switches should the library and header files
 dnl reside in the same directory.
 dnl
 dnl This macro does not create or process the --with-<lib>-pkgconf or the
-dnl --with-<lib> command-line switches associated with the RESOURCE. For
+dnl --with-<lib> command-line switches associated with the resource. For
 dnl these, please use the QM_RESOURCE_BASIC_SWITCHES macro.
 dnl
 dnl Macro parameters are:
@@ -40,7 +40,7 @@ dnl           in the relevant .def file and Config.Project
 dnl       p2: Name(s) of the library as specified on the link line i.e. in
 dnl           -lXXXX -lYYYY form. For library packages that vary the names
 dnl           of the libraries required, this may be a set of alternative
-dnl           lists seperated by a pipe symbol (|).
+dnl           lists separated by a pipe symbol (|).
 dnl
 dnl Global variables used:
 dnl
@@ -51,8 +51,10 @@ dnl   will have variables named use_OpenCV; with_OpenCV; etc.
 dnl
 dnl       EXPR                       Standard substitution variable pointing
 dnl                                  to the UNIX expr command.
-dnl       SED                        Standard substitution variable pointing
-dnl                                  to the UNIX sed command.
+dnl       SED                        Holds the name of the executable to carry
+dnl                                  out stream editing. This will already
+dnl                                  have been primed by a prior call to the
+dnl                                  macro QM_LOCATE_KEY_TOOLS.
 dnl       fallback_file              This variable holds any file component
 dnl                                  supplied via the --with-<lib> switch for
 dnl                                  possible use, if required, to provide
@@ -62,14 +64,16 @@ dnl                                  switch.
 dnl       fallback_path              This variable holds any directory path
 dnl                                  component supplied via the --with-<lib>
 dnl                                  switch for possible use if required to
-dnl                                  provide a commond directory location for
+dnl                                  provide a common directory location for
 dnl                                  both the --with-<lib>-include and the
 dnl                                  --with-<lib>-library command-line options
-dnl       use_<lib>                  Flag specifying useage of library,
-dnl                                  primed initially by --with-<lib> or
-dnl                                  as part of a dependancy check.
+dnl       use_<lib>                  Flag specifying usge of the library,
+dnl                                  initially primed from the command line
+dnl                                  settings, this will be updated to
+dnl                                  reflect the availability of the library
+dnl                                  <lib>
 dnl       with_<lib>_check           Flag specifying the type of test needed
-dnl                                  to check for the existance of the
+dnl                                  to check for the existence of the
 dnl                                  external library:
 dnl                                    bespoke      - test for the external
 dnl                                                   library has been written
@@ -93,17 +97,25 @@ dnl                                  For any test-type, if the user provides
 dnl                                  a --with-<lib>-pkgconf setting, this will
 dnl                                  automatically force the test-type to be
 dnl                                  pkgconfig.
-dnl       with_<lib>_inc             Path to the library's headers
+dnl       with_<lib>_inc             Path (in pre-processor -I/x/y/z form) to
+dnl                                  the library's headers. Variable may
+dnl                                  actually include other, non-path related,
+dnl                                  pre-processor settings.
 dnl       with_<lib>_include         Value of similarly named cmd-line switch
 dnl                                  Specifies where the header files for the
 dnl                                  library reside.
-dnl       with_<lib>_libpath         Path to the location of the library
+dnl       with_<lib>_libpath         Path (in linker -L/x/y/z form) to the
+dnl                                  location of the library files needed to
+dnl                                  compile with the external library
+dnl                                  package <lib>. Variable may actually
+dnl                                  include other, non-path related, linker
+dnl                                  settings.
 dnl       with_<lib>_lnklibs         List of the library files (in -lXXXX
 dnl                                  form) needed to compile with library
 dnl                                  package <lib>. For library packages that
 dnl                                  vary the names of the libraries required,
 dnl                                  this may be a set of alternative lists
-dnl                                  seperated by a pipe symbol (|). As an
+dnl                                  separated by a pipe symbol (|). As an
 dnl                                  example, the Socket package offers the
 dnl                                  setting " | -lsocket | -lsocket -lnsl "
 dnl                                  as the socket() function may be available
@@ -117,8 +129,10 @@ dnl                                  Specifies where the library file of the
 dnl                                  library resides. Can be used to alter
 dnl                                  the name of the library to be used.
 dnl       with_<lib>_pkgconf         Value of similarly named cmd-line switch
-dnl                                  Specifies what name pkg-config will know
-dnl                                  the library as.
+dnl                                  Allows the user to employ a pkg-config
+dnl                                  file rather than relying on the
+dnl                                  compilation check to ascertain if the
+dnl                                  external library is present.
 dnl
 dnl   The following are all intermediate variables used in processing the
 dnl   command-line options:
@@ -386,7 +400,7 @@ AC_DEFUN([QM_RESOURCE_CC_SWITCHES],
                                        then
                                           # Can never be here because of
                                           # --with-<lib>-pkgconf so we do not
-                                          # need to check for any incompatable
+                                          # need to check for any incompatible
                                           # settings
                                           with_$1_include=check
                                        else
@@ -564,7 +578,7 @@ AC_DEFUN([QM_RESOURCE_CC_SWITCHES],
                                           # to continue in the same vein.
                                           # However, as -l/full/path is not
                                           # supported, we have to revert to
-                                          # the seperate specifiers.
+                                          # the separate specifiers.
                                           TRACE_INDENT="     "
                                           trace 6 Adding @<:@-L$path@:>@ to library path
                                           with_$1_libpath="$with_$1_libpath$with_$1_lnklibs-L$path "
