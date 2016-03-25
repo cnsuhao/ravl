@@ -1,6 +1,6 @@
 dnl#JFi:ToDo-Check for ver 5 of Perl as a requirement
 dnl#JFi:ToDo-Change --with-<lib>=path to imply $path/lib and $path/include
-dnl#JFi:ToDo-Extend --with-<lib>[-{library,include}] to allow multipe entries
+dnl#JFi:ToDo-Extend --with-<lib>[-{library,include}] to allow multiple entries
 dnl#JFi:ToDo-Maybe use AC_CONFIG_SRCDIR([include/ccmath/ccmath.h])
 dnl#JFi:ToDo-Investigate position of 32 v 64 bit lib paths
 dnl#JFi:ToDo-Investigate position of shared v static pkg-config results
@@ -75,7 +75,7 @@ QM_LOCATE_KEY_TOOLS
 
    
 # Locate other tools needed to run QMake (as a means of procesing any user
-# settings rather than requirment - QMake will already be aware of them).
+# settings rather than requirement - QMake will already be aware of them).
 QM_LOCATE_QMAKE_DEPS
 
 
@@ -584,7 +584,7 @@ then
 fi
 
 
-# Now start checking for the existance of all we need or can use
+# Now start checking for the existence of all we need or can use
 
 trace 2 Checking for necessary dependancies
 
@@ -1070,6 +1070,7 @@ then
 fi
 echo >> ./Config.Project.in
 echo >> ./Config.Project.in
+# Only write out the NVCC flags if we have found the compiler driver
 if ( test x$use_NVCC = xpresent )
 then
    echo \# CUDA compiler settings >> ./Config.Project.in
@@ -1354,7 +1355,7 @@ do
                    if ( test x`$EXPR " $UnconfiguredLibs " : ".* \($lib\) .*"` == "x$lib" )
                    then
                      # We have not directly configured this package, but may
-                     # have impliciltly changed its settings. See if we need
+                     # have implicitly changed its settings. See if we need
                      # to output the new settings...
                      original_cflags=`cat $QMAKE_CFG | $SED -n "s/^${lib}_CFLAGS=\(.*\)/\1/p"`
                      if ( test "X$original_cflags" != "X$expandedcflags" )
@@ -1558,7 +1559,7 @@ then
    Xsolaris* )  # No specific options set here (all platform specific items come
                 # from the toolset so are set earlier in this script). This is
                 # really here just as a place-holder and to note  that the code
-                # relies on the compiler appropriatly setting the relevant 
+                # relies on the compiler appropriately setting the relevant
                 # defines from the list:__sun; __SUNPRO_CC; __sparc_v9; __sparc
                 # __sol2_7__ & __sol2_9__. If this is no longer the case, modify
                 # Ravl as needed or manually define the relevant switch.
@@ -1638,7 +1639,7 @@ then
    # We could have applied this logic if we are not resetting RESOURCES (i.e.
    # when we are only adding extra resources to those configured in at the
    # QMake configuration stage). However, this would make items specifically
-   # configured at the project level subject to any subsiquent reconfiguration
+   # configured at the project level subject to any subsequent reconfiguration
    # of QMake which is probably not what the use would require.
    RESOURCES=`echo "$QMAKE_RESOURCES $RESOURCES" | sed "s/  */ /g"`
    # Set final value for RESOURCES removing any multiple spaces

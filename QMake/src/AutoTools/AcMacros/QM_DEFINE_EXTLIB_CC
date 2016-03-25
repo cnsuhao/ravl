@@ -26,12 +26,12 @@ dnl           declared by the external library. However, some libraries need
 dnl           a little more set up - such as any library where we need to
 dnl           test for a C++ class; or the Math library where some compilers
 dnl           perform extra prototype checking on those functions.
-dnl       p3: Name of all prerequisite libraries that this one depends on
+dnl       p3: Name of all pre-requisite libraries that this one depends on
 dnl           Specify as a space-separated list of QMake names
 dnl       p4: Name(s) of the library as specified on the link line i.e. in
 dnl           -lXXXX -lYYYY form. For library packages that vary the names
 dnl           of the libraries required, this may be a set of alternative
-dnl           lists seperated by a pipe symbol (|).
+dnl           lists separated by a pipe symbol (|).
 dnl       p5: Name of any header files provided by the library package. It is
 dnl           usually sufficient to only test for one file unless it is known
 dnl           that incomplete subsets of the header files are regularly found
@@ -50,7 +50,7 @@ dnl       with_<lib>_hdr             Name(s) of the library package's headers
 dnl       with_<lib>_lang            Language of the with_<lib>_tstcd linkage
 dnl                                  test code.
 dnl       with_<lib>_prq             Space separated list of pre-requisites
-dnl                                  of the library.
+dnl                                  of the external library package, <lib>.
 dnl       with_<lib>_tstcd           Code with which to test that the external
 dnl                                  library will link.
 dnl
@@ -63,7 +63,7 @@ AC_DEFUN([QM_DEFINE_EXTLIB_CC],
           with_$1_tstcd='$2'
           dnl# The single quotes are to prevent any expansion of the supplied
           dnl# code (particularly the * of any pointer definitions).
-          dnl# This does not prevent the dollar-2 expanding as this is an M4
+          dnl# This does not prevent the dollar-2 expanding as this is an m4
           dnl# macro parameter and not a shell variable.
           with_$1_prq="$3"
           with_$1_hdr="$5"

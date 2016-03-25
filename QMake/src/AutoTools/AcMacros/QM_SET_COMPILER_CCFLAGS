@@ -17,9 +17,11 @@ dnl No macro parameters
 dnl
 dnl Global variables used:
 dnl
-dnl       CXX                        Holds the path to the C++ compiler in
-dnl                                  use. May be updated to include extra
-dnl                                  global compiler options. 
+dnl       AWK                        Contains the path to the Awk utility.
+dnl                                  Can initially be primed by the user to
+dnl                                  force the use of a particular program.
+dnl                                  Regarded as a key tool as it is used
+dnl                                  by configure itself.
 dnl       COMPILER_ANSI_CCFLAGS    } { Receive the compiler specific flags
 dnl       COMPILER_DEBUG_CCFLAGS   } { for setting the appropriate mode of
 dnl       COMPILER_GPROF_CCFLAGS   } { compiler operation required by QMake.
@@ -57,6 +59,12 @@ dnl                                  output substitution into the configure
 dnl                                  settings file. Holds any user-supplied
 dnl                                  CCFLAGS, originally primed in the macro
 dnl                                  QM_LOCATE_KEY_TOOLS.
+dnl       CXX                        Holds the path to the C++ compiler in
+dnl                                  use. May be updated to include extra
+dnl                                  global compiler options.
+dnl       CXX_VERSION              } { Receives the version information for
+dnl       CXX_MAJOR                } { the current C++ compiler.
+dnl       CXX_MINOR                }
 dnl       GXX                        Flag, originally set by AC_PROG_CXX
 dnl                                  indicating if a GNU C++ compiler is in
 dnl                                  use. Set to yes for a GNU compiler.
@@ -66,7 +74,7 @@ dnl       NVCC_GPROF_NVCCFLAGS    } { with the current C++ compiler. Setting
 dnl       NVCC_NON_OPT_NVCCFLAGS  } { for each variable is from the sister
 dnl       NVCC_OPT_NVCCFLAGS      } { COMPILER_xxx_CCFLAGS variable with any
 dnl       NVCC_PROF_NVCCFLAGS     } { flags that the CUDA compiler driver
-dnl       NVCC_SHARED_NVCCFLAGS   } { cannot cope with being preffixed with
+dnl       NVCC_SHARED_NVCCFLAGS   } { cannot cope with being prefixed with
 dnl       NVCC_SPECIFIC_NVCCFLAGS } { a -Xcompiler directive. This macro
 dnl                                 { declares all of these variables for
 dnl                                 { output to the configuration files.
@@ -110,7 +118,7 @@ AC_DEFUN([QM_SET_COMPILER_CCFLAGS],
              # full optimised flags (see below).
              #
              # While using fno-math-errno breaks full standards compliance, it
-             # is used to give us a consistant environment across platforms as
+             # is used to give us a consistent environment across platforms as
              # the math library on OSX never actually sets errno anyway. There
              # is no point in setting this switch globally (i.e. in {C}CFLAGS
              # rather than _OPT_C{C}FLAGS) as it is not actually used by g++
@@ -201,7 +209,7 @@ AC_DEFUN([QM_SET_COMPILER_CCFLAGS],
               Xirix* )    trace 3 Setting CCFLAGS we have previously used under Irix
                           CXX=$CXX" -n32 -J4 -mp -LANG:ansi-for-init-scope=on "
                           # Not sure why this originally was done this way rather than
-                          # use CCFLAGS, but assume there was a reason and propogate the
+                          # use CCFLAGS, but assume there was a reason and propagate the
                           # method
                           COMPILER_ANSI_CCFLAGS=" -ansi "
                           COMPILER_DEBUG_CCFLAGS=""
@@ -254,7 +262,7 @@ AC_DEFUN([QM_SET_COMPILER_CCFLAGS],
 
           dnl Allow output of CUDA compiler specific settings
           dnl Note: These will be null if we do not have a GNU C++ compiler
-          dnl       at that is a prerequisite of CUDA support.
+          dnl       at that is a pre-requisite of CUDA support.
           AC_SUBST([NVCC_ANSI_NVCCFLAGS])
           AC_SUBST([NVCC_DEBUG_NVCCFLAGS])
           AC_SUBST([NVCC_GPROF_NVCCFLAGS])

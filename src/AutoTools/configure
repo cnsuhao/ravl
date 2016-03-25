@@ -2845,7 +2845,7 @@ Some influential environment variables:
   MKDIR_P     Command to create a directory even if some of its parents do not
               initially exist
   NVCC        Path to the CUDA compiler
-  PAGER       Path to the utility for interactive pagewise file browsing
+  PAGER       Path to the utility for interactive page-wise file browsing
   PERL        Path to the PERL interpreter
   RANLIB      Path to any indexing utility that may be required when building
               static archives
@@ -4059,8 +4059,8 @@ case $host_os in *\ *) host_os=`echo "$host_os" | sed 's/ /-/g'`;; esac
           fi
 
 
-          # Any CCACHE environment variable is processd along with the
-          # commandline switch (see QM_LOCATE_QMAKE_DEPS)
+          # Any CCACHE environment variable is processed along with the
+          # command-line switch (see QM_LOCATE_QMAKE_DEPS)
 
                     if ( test "x$CCPP" != x )
           then
@@ -4197,7 +4197,7 @@ case $host_os in *\ *) host_os=`echo "$host_os" | sed 's/ /-/g'`;; esac
           then
              # User has supplied their own setting, record this
              USER_NVCC=$NVCC
-             # As NVCC is a QMake RESOURCE, we need to flag that the user has
+             # As NVCC is a QMake resource, we need to flag that the user has
              # actually configured the setting (so we will check all the CUDA
              # packages)
              use_NVCC=check
@@ -6867,7 +6867,7 @@ $as_echo_n "checking which ld is used by $CC... " >&6; }
                    while test X`$EXPR X$LD : 'X\(.*/\.\./\.*\)'` != X
                    do
                       LD=`echo $LD | $SED -e "s%///*%/%g" -e "s%/*[^/][^/]*/\.\./%/%" -e "s%^/*\.\./%/%"`
-                      # Above sed command uses % as the seperator
+                      # Above sed command uses % as the separator
                       # The expressions, in turn,
                       #   + strip multiple /s down to a single /
                       #   + convert XXX/dir/../YYY  into XXX/YYY
@@ -7110,7 +7110,7 @@ See \`config.log' for more details" "$LINENO" 5; }
 
 
 # Locate other tools needed to run QMake (as a means of procesing any user
-# settings rather than requirment - QMake will already be aware of them).
+# settings rather than requirement - QMake will already be aware of them).
 # Find a good install program.  We prefer a C program (faster),
 # so one script is as good as another.  But avoid the broken or
 # incompatible versions:
@@ -7588,7 +7588,7 @@ fi
              # INSTALL is pointing to the fall-back file in the QMake source
              # directory. This will cease to work if the user removes the
              # source following a successful install and will also be useless
-             # if configure was envoked with a relative path. To fix this, We
+             # if configure was invoked with a relative path. To fix this, We
              # need to nullify the setting and let QMake install install-sh
              # and select it as necessary
              INSTALL=
@@ -7914,7 +7914,7 @@ test -n "$YACC" || YACC="yacc"
              fi
           fi
           # As for LEX, QMake will downgrade its functionality on an absence
-          # of YACC so we do not flag it as a required depencdency i.e. we
+          # of YACC so we do not flag it as a required dependency i.e. we
           # do not add it to QMAKE_DEPENDENCIES
 
 
@@ -8585,7 +8585,7 @@ then
              # full optimised flags (see below).
              #
              # While using fno-math-errno breaks full standards compliance, it
-             # is used to give us a consistant environment across platforms as
+             # is used to give us a consistent environment across platforms as
              # the math library on OSX never actually sets errno anyway. There
              # is no point in setting this switch globally (i.e. in CFLAGS
              # rather than _OPT_CFLAGS) as it is not actually used by gcc if
@@ -8749,7 +8749,7 @@ then
              # full optimised flags (see below).
              #
              # While using fno-math-errno breaks full standards compliance, it
-             # is used to give us a consistant environment across platforms as
+             # is used to give us a consistent environment across platforms as
              # the math library on OSX never actually sets errno anyway. There
              # is no point in setting this switch globally (i.e. in {C}CFLAGS
              # rather than _OPT_C{C}FLAGS) as it is not actually used by g++
@@ -8828,7 +8828,7 @@ then
               Xirix* )    trace 3 Setting CCFLAGS we have previously used under Irix
                           CXX=$CXX" -n32 -J4 -mp -LANG:ansi-for-init-scope=on "
                           # Not sure why this originally was done this way rather than
-                          # use CCFLAGS, but assume there was a reason and propogate the
+                          # use CCFLAGS, but assume there was a reason and propagate the
                           # method
                           COMPILER_ANSI_CCFLAGS=" -ansi "
                           COMPILER_DEBUG_CCFLAGS=""
@@ -8945,8 +8945,9 @@ then
              LINKER_UNDEFSYMB=" -u#"
           else
              trace 3 We do not have a GNU linker
-             # Try native flags we have used before or default to what works for GNU
-                                                                                                                                                            case X$host_os in
+             # Try native flags we have used before or default to what works
+             # for the GNU linker.
+                                                                                                                                                                                                   case X$host_os in
               Xcygwin )   trace 3 Setting LDFLAGS we have previously used under cygwin
                           LINKER_SPECIFIC_LDFLAGS=
                           LINKER_SHARED_LDFLAGS=" -Wl,-export-dynamic "
@@ -9221,13 +9222,15 @@ then
              MAKE_SPECIFIC_MAKEFLAGS=" --no-print-directory -r"
              MAKE_SPECIFIC_PARALLEL="--jobs \$(PROCS)"
           else
-             # Potential to add further options here for particular versions of make
-             # However, at the moment we just have a standard option for all
+             # Potential to add further options here for particular versions
+             # of make. However, at the moment we just have a standard option
+             # for all other flavours.
              MAKE_SPECIFIC_MAKEFLAGS=" -r "
              MAKE_SPECIFIC_PARALLEL=""
           fi
 
-          # User-provided MAKEFLAGS will be recorded as QMAKE_MAKEFLAGS in Config.QMake
+          # User-provided MAKEFLAGS will be recorded as QMAKE_MAKEFLAGS in
+          # Config.QMake
 
 
 
@@ -21086,7 +21089,7 @@ $as_echo "$as_me: WARNING: Asking to check for blas via --with-blas-include but 
                                        then
                                           # Can never be here because of
                                           # --with-<lib>-pkgconf so we do not
-                                          # need to check for any incompatable
+                                          # need to check for any incompatible
                                           # settings
                                           with_blas_include=check
                                        else
@@ -21310,7 +21313,7 @@ $as_echo "$as_me: WARNING: -l$lib" >&2;}
                                           # to continue in the same vein.
                                           # However, as -l/full/path is not
                                           # supported, we have to revert to
-                                          # the seperate specifiers.
+                                          # the separate specifiers.
                                           TRACE_INDENT="     "
                                           trace 6 Adding [-L$path] to library path
                                           with_blas_libpath="$with_blas_libpath$with_blas_lnklibs-L$path "
@@ -22157,7 +22160,7 @@ $as_echo "$as_me: WARNING: Asking to check for CXSparse via --with-CXSparse-incl
                                        then
                                           # Can never be here because of
                                           # --with-<lib>-pkgconf so we do not
-                                          # need to check for any incompatable
+                                          # need to check for any incompatible
                                           # settings
                                           with_CXSparse_include=check
                                        else
@@ -22381,7 +22384,7 @@ $as_echo "$as_me: WARNING: -l$lib" >&2;}
                                           # to continue in the same vein.
                                           # However, as -l/full/path is not
                                           # supported, we have to revert to
-                                          # the seperate specifiers.
+                                          # the separate specifiers.
                                           TRACE_INDENT="     "
                                           trace 6 Adding [-L$path] to library path
                                           with_CXSparse_libpath="$with_CXSparse_libpath$with_CXSparse_lnklibs-L$path "
@@ -23229,7 +23232,7 @@ $as_echo "$as_me: WARNING: Asking to check for DynLink via --with-DynLink-includ
                                        then
                                           # Can never be here because of
                                           # --with-<lib>-pkgconf so we do not
-                                          # need to check for any incompatable
+                                          # need to check for any incompatible
                                           # settings
                                           with_DynLink_include=check
                                        else
@@ -23453,7 +23456,7 @@ $as_echo "$as_me: WARNING: -l$lib" >&2;}
                                           # to continue in the same vein.
                                           # However, as -l/full/path is not
                                           # supported, we have to revert to
-                                          # the seperate specifiers.
+                                          # the separate specifiers.
                                           TRACE_INDENT="     "
                                           trace 6 Adding [-L$path] to library path
                                           with_DynLink_libpath="$with_DynLink_libpath$with_DynLink_lnklibs-L$path "
@@ -24300,7 +24303,7 @@ $as_echo "$as_me: WARNING: Asking to check for GLUT via --with-GLUT-include but 
                                        then
                                           # Can never be here because of
                                           # --with-<lib>-pkgconf so we do not
-                                          # need to check for any incompatable
+                                          # need to check for any incompatible
                                           # settings
                                           with_GLUT_include=check
                                        else
@@ -24524,7 +24527,7 @@ $as_echo "$as_me: WARNING: -l$lib" >&2;}
                                           # to continue in the same vein.
                                           # However, as -l/full/path is not
                                           # supported, we have to revert to
-                                          # the seperate specifiers.
+                                          # the separate specifiers.
                                           TRACE_INDENT="     "
                                           trace 6 Adding [-L$path] to library path
                                           with_GLUT_libpath="$with_GLUT_libpath$with_GLUT_lnklibs-L$path "
@@ -25374,7 +25377,7 @@ $as_echo "$as_me: WARNING: Asking to check for libmkl via --with-libmkl-include 
                                        then
                                           # Can never be here because of
                                           # --with-<lib>-pkgconf so we do not
-                                          # need to check for any incompatable
+                                          # need to check for any incompatible
                                           # settings
                                           with_libmkl_include=check
                                        else
@@ -25598,7 +25601,7 @@ $as_echo "$as_me: WARNING: -l$lib" >&2;}
                                           # to continue in the same vein.
                                           # However, as -l/full/path is not
                                           # supported, we have to revert to
-                                          # the seperate specifiers.
+                                          # the separate specifiers.
                                           TRACE_INDENT="     "
                                           trace 6 Adding [-L$path] to library path
                                           with_libmkl_libpath="$with_libmkl_libpath$with_libmkl_lnklibs-L$path "
@@ -26448,7 +26451,7 @@ $as_echo "$as_me: WARNING: Asking to check for LibJasper via --with-LibJasper-in
                                        then
                                           # Can never be here because of
                                           # --with-<lib>-pkgconf so we do not
-                                          # need to check for any incompatable
+                                          # need to check for any incompatible
                                           # settings
                                           with_LibJasper_include=check
                                        else
@@ -26672,7 +26675,7 @@ $as_echo "$as_me: WARNING: -l$lib" >&2;}
                                           # to continue in the same vein.
                                           # However, as -l/full/path is not
                                           # supported, we have to revert to
-                                          # the seperate specifiers.
+                                          # the separate specifiers.
                                           TRACE_INDENT="     "
                                           trace 6 Adding [-L$path] to library path
                                           with_LibJasper_libpath="$with_LibJasper_libpath$with_LibJasper_lnklibs-L$path "
@@ -27519,7 +27522,7 @@ $as_echo "$as_me: WARNING: Asking to check for JPEG via --with-JPEG-include but 
                                        then
                                           # Can never be here because of
                                           # --with-<lib>-pkgconf so we do not
-                                          # need to check for any incompatable
+                                          # need to check for any incompatible
                                           # settings
                                           with_JPEG_include=check
                                        else
@@ -27743,7 +27746,7 @@ $as_echo "$as_me: WARNING: -l$lib" >&2;}
                                           # to continue in the same vein.
                                           # However, as -l/full/path is not
                                           # supported, we have to revert to
-                                          # the seperate specifiers.
+                                          # the separate specifiers.
                                           TRACE_INDENT="     "
                                           trace 6 Adding [-L$path] to library path
                                           with_JPEG_libpath="$with_JPEG_libpath$with_JPEG_lnklibs-L$path "
@@ -28593,7 +28596,7 @@ $as_echo "$as_me: WARNING: Asking to check for LAPACK via --with-LAPACK-include 
                                        then
                                           # Can never be here because of
                                           # --with-<lib>-pkgconf so we do not
-                                          # need to check for any incompatable
+                                          # need to check for any incompatible
                                           # settings
                                           with_LAPACK_include=check
                                        else
@@ -28817,7 +28820,7 @@ $as_echo "$as_me: WARNING: -l$lib" >&2;}
                                           # to continue in the same vein.
                                           # However, as -l/full/path is not
                                           # supported, we have to revert to
-                                          # the seperate specifiers.
+                                          # the separate specifiers.
                                           TRACE_INDENT="     "
                                           trace 6 Adding [-L$path] to library path
                                           with_LAPACK_libpath="$with_LAPACK_libpath$with_LAPACK_lnklibs-L$path "
@@ -29664,7 +29667,7 @@ $as_echo "$as_me: WARNING: Asking to check for Math via --with-Math-include but 
                                        then
                                           # Can never be here because of
                                           # --with-<lib>-pkgconf so we do not
-                                          # need to check for any incompatable
+                                          # need to check for any incompatible
                                           # settings
                                           with_Math_include=check
                                        else
@@ -29888,7 +29891,7 @@ $as_echo "$as_me: WARNING: -l$lib" >&2;}
                                           # to continue in the same vein.
                                           # However, as -l/full/path is not
                                           # supported, we have to revert to
-                                          # the seperate specifiers.
+                                          # the separate specifiers.
                                           TRACE_INDENT="     "
                                           trace 6 Adding [-L$path] to library path
                                           with_Math_libpath="$with_Math_libpath$with_Math_lnklibs-L$path "
@@ -30737,7 +30740,7 @@ $as_echo "$as_me: WARNING: Asking to check for posixThreads via --with-posixThre
                                        then
                                           # Can never be here because of
                                           # --with-<lib>-pkgconf so we do not
-                                          # need to check for any incompatable
+                                          # need to check for any incompatible
                                           # settings
                                           with_posixThreads_include=check
                                        else
@@ -30961,7 +30964,7 @@ $as_echo "$as_me: WARNING: -l$lib" >&2;}
                                           # to continue in the same vein.
                                           # However, as -l/full/path is not
                                           # supported, we have to revert to
-                                          # the seperate specifiers.
+                                          # the separate specifiers.
                                           TRACE_INDENT="     "
                                           trace 6 Adding [-L$path] to library path
                                           with_posixThreads_libpath="$with_posixThreads_libpath$with_posixThreads_lnklibs-L$path "
@@ -31808,7 +31811,7 @@ $as_echo "$as_me: WARNING: Asking to check for Socket via --with-Socket-include 
                                        then
                                           # Can never be here because of
                                           # --with-<lib>-pkgconf so we do not
-                                          # need to check for any incompatable
+                                          # need to check for any incompatible
                                           # settings
                                           with_Socket_include=check
                                        else
@@ -32032,7 +32035,7 @@ $as_echo "$as_me: WARNING: -l$lib" >&2;}
                                           # to continue in the same vein.
                                           # However, as -l/full/path is not
                                           # supported, we have to revert to
-                                          # the seperate specifiers.
+                                          # the separate specifiers.
                                           TRACE_INDENT="     "
                                           trace 6 Adding [-L$path] to library path
                                           with_Socket_libpath="$with_Socket_libpath$with_Socket_lnklibs-L$path "
@@ -32881,7 +32884,7 @@ $as_echo "$as_me: WARNING: Asking to check for LibTIFF via --with-LibTIFF-includ
                                        then
                                           # Can never be here because of
                                           # --with-<lib>-pkgconf so we do not
-                                          # need to check for any incompatable
+                                          # need to check for any incompatible
                                           # settings
                                           with_LibTIFF_include=check
                                        else
@@ -33105,7 +33108,7 @@ $as_echo "$as_me: WARNING: -l$lib" >&2;}
                                           # to continue in the same vein.
                                           # However, as -l/full/path is not
                                           # supported, we have to revert to
-                                          # the seperate specifiers.
+                                          # the separate specifiers.
                                           TRACE_INDENT="     "
                                           trace 6 Adding [-L$path] to library path
                                           with_LibTIFF_libpath="$with_LibTIFF_libpath$with_LibTIFF_lnklibs-L$path "
@@ -33952,7 +33955,7 @@ $as_echo "$as_me: WARNING: Asking to check for UMFPack via --with-UMFPack-includ
                                        then
                                           # Can never be here because of
                                           # --with-<lib>-pkgconf so we do not
-                                          # need to check for any incompatable
+                                          # need to check for any incompatible
                                           # settings
                                           with_UMFPack_include=check
                                        else
@@ -34176,7 +34179,7 @@ $as_echo "$as_me: WARNING: -l$lib" >&2;}
                                           # to continue in the same vein.
                                           # However, as -l/full/path is not
                                           # supported, we have to revert to
-                                          # the seperate specifiers.
+                                          # the separate specifiers.
                                           TRACE_INDENT="     "
                                           trace 6 Adding [-L$path] to library path
                                           with_UMFPack_libpath="$with_UMFPack_libpath$with_UMFPack_lnklibs-L$path "
@@ -35027,7 +35030,7 @@ $as_echo "$as_me: WARNING: Asking to check for vlfeat via --with-vlfeat-include 
                                        then
                                           # Can never be here because of
                                           # --with-<lib>-pkgconf so we do not
-                                          # need to check for any incompatable
+                                          # need to check for any incompatible
                                           # settings
                                           with_vlfeat_include=check
                                        else
@@ -35251,7 +35254,7 @@ $as_echo "$as_me: WARNING: -l$lib" >&2;}
                                           # to continue in the same vein.
                                           # However, as -l/full/path is not
                                           # supported, we have to revert to
-                                          # the seperate specifiers.
+                                          # the separate specifiers.
                                           TRACE_INDENT="     "
                                           trace 6 Adding [-L$path] to library path
                                           with_vlfeat_libpath="$with_vlfeat_libpath$with_vlfeat_lnklibs-L$path "
@@ -36101,7 +36104,7 @@ $as_echo "$as_me: WARNING: Asking to check for vtkCommon via --with-vtkCommon-in
                                        then
                                           # Can never be here because of
                                           # --with-<lib>-pkgconf so we do not
-                                          # need to check for any incompatable
+                                          # need to check for any incompatible
                                           # settings
                                           with_vtkCommon_include=check
                                        else
@@ -36325,7 +36328,7 @@ $as_echo "$as_me: WARNING: -l$lib" >&2;}
                                           # to continue in the same vein.
                                           # However, as -l/full/path is not
                                           # supported, we have to revert to
-                                          # the seperate specifiers.
+                                          # the separate specifiers.
                                           TRACE_INDENT="     "
                                           trace 6 Adding [-L$path] to library path
                                           with_vtkCommon_libpath="$with_vtkCommon_libpath$with_vtkCommon_lnklibs-L$path "
@@ -37172,7 +37175,7 @@ $as_echo "$as_me: WARNING: Asking to check for vtkFiltering via --with-vtkFilter
                                        then
                                           # Can never be here because of
                                           # --with-<lib>-pkgconf so we do not
-                                          # need to check for any incompatable
+                                          # need to check for any incompatible
                                           # settings
                                           with_vtkFiltering_include=check
                                        else
@@ -37396,7 +37399,7 @@ $as_echo "$as_me: WARNING: -l$lib" >&2;}
                                           # to continue in the same vein.
                                           # However, as -l/full/path is not
                                           # supported, we have to revert to
-                                          # the seperate specifiers.
+                                          # the separate specifiers.
                                           TRACE_INDENT="     "
                                           trace 6 Adding [-L$path] to library path
                                           with_vtkFiltering_libpath="$with_vtkFiltering_libpath$with_vtkFiltering_lnklibs-L$path "
@@ -38244,7 +38247,7 @@ $as_echo "$as_me: WARNING: Asking to check for vtkGraphics via --with-vtkGraphic
                                        then
                                           # Can never be here because of
                                           # --with-<lib>-pkgconf so we do not
-                                          # need to check for any incompatable
+                                          # need to check for any incompatible
                                           # settings
                                           with_vtkGraphics_include=check
                                        else
@@ -38468,7 +38471,7 @@ $as_echo "$as_me: WARNING: -l$lib" >&2;}
                                           # to continue in the same vein.
                                           # However, as -l/full/path is not
                                           # supported, we have to revert to
-                                          # the seperate specifiers.
+                                          # the separate specifiers.
                                           TRACE_INDENT="     "
                                           trace 6 Adding [-L$path] to library path
                                           with_vtkGraphics_libpath="$with_vtkGraphics_libpath$with_vtkGraphics_lnklibs-L$path "
@@ -39316,7 +39319,7 @@ $as_echo "$as_me: WARNING: Asking to check for Yajl via --with-Yajl-include but 
                                        then
                                           # Can never be here because of
                                           # --with-<lib>-pkgconf so we do not
-                                          # need to check for any incompatable
+                                          # need to check for any incompatible
                                           # settings
                                           with_Yajl_include=check
                                        else
@@ -39540,7 +39543,7 @@ $as_echo "$as_me: WARNING: -l$lib" >&2;}
                                           # to continue in the same vein.
                                           # However, as -l/full/path is not
                                           # supported, we have to revert to
-                                          # the seperate specifiers.
+                                          # the separate specifiers.
                                           TRACE_INDENT="     "
                                           trace 6 Adding [-L$path] to library path
                                           with_Yajl_libpath="$with_Yajl_libpath$with_Yajl_lnklibs-L$path "
@@ -40392,7 +40395,7 @@ $as_echo "$as_me: WARNING: Asking to check for Zlib via --with-Zlib-include but 
                                        then
                                           # Can never be here because of
                                           # --with-<lib>-pkgconf so we do not
-                                          # need to check for any incompatable
+                                          # need to check for any incompatible
                                           # settings
                                           with_Zlib_include=check
                                        else
@@ -40616,7 +40619,7 @@ $as_echo "$as_me: WARNING: -l$lib" >&2;}
                                           # to continue in the same vein.
                                           # However, as -l/full/path is not
                                           # supported, we have to revert to
-                                          # the seperate specifiers.
+                                          # the separate specifiers.
                                           TRACE_INDENT="     "
                                           trace 6 Adding [-L$path] to library path
                                           with_Zlib_libpath="$with_Zlib_libpath$with_Zlib_lnklibs-L$path "
@@ -41924,7 +41927,7 @@ $as_echo "$as_me: WARNING: Asking to check for cublas via --with-cublas-include 
                                        then
                                           # Can never be here because of
                                           # --with-<lib>-pkgconf so we do not
-                                          # need to check for any incompatable
+                                          # need to check for any incompatible
                                           # settings
                                           with_cublas_include=check
                                        else
@@ -42148,7 +42151,7 @@ $as_echo "$as_me: WARNING: -l$lib" >&2;}
                                           # to continue in the same vein.
                                           # However, as -l/full/path is not
                                           # supported, we have to revert to
-                                          # the seperate specifiers.
+                                          # the separate specifiers.
                                           TRACE_INDENT="     "
                                           trace 6 Adding [-L$path] to library path
                                           with_cublas_libpath="$with_cublas_libpath$with_cublas_lnklibs-L$path "
@@ -42998,7 +43001,7 @@ $as_echo "$as_me: WARNING: Asking to check for cuda via --with-cuda-include but 
                                        then
                                           # Can never be here because of
                                           # --with-<lib>-pkgconf so we do not
-                                          # need to check for any incompatable
+                                          # need to check for any incompatible
                                           # settings
                                           with_cuda_include=check
                                        else
@@ -43222,7 +43225,7 @@ $as_echo "$as_me: WARNING: -l$lib" >&2;}
                                           # to continue in the same vein.
                                           # However, as -l/full/path is not
                                           # supported, we have to revert to
-                                          # the seperate specifiers.
+                                          # the separate specifiers.
                                           TRACE_INDENT="     "
                                           trace 6 Adding [-L$path] to library path
                                           with_cuda_libpath="$with_cuda_libpath$with_cuda_lnklibs-L$path "
@@ -44072,7 +44075,7 @@ $as_echo "$as_me: WARNING: Asking to check for cufft via --with-cufft-include bu
                                        then
                                           # Can never be here because of
                                           # --with-<lib>-pkgconf so we do not
-                                          # need to check for any incompatable
+                                          # need to check for any incompatible
                                           # settings
                                           with_cufft_include=check
                                        else
@@ -44296,7 +44299,7 @@ $as_echo "$as_me: WARNING: -l$lib" >&2;}
                                           # to continue in the same vein.
                                           # However, as -l/full/path is not
                                           # supported, we have to revert to
-                                          # the seperate specifiers.
+                                          # the separate specifiers.
                                           TRACE_INDENT="     "
                                           trace 6 Adding [-L$path] to library path
                                           with_cufft_libpath="$with_cufft_libpath$with_cufft_lnklibs-L$path "
@@ -45154,7 +45157,7 @@ $as_echo "$as_me: WARNING: Asking to check for cufftw via --with-cufftw-include 
                                        then
                                           # Can never be here because of
                                           # --with-<lib>-pkgconf so we do not
-                                          # need to check for any incompatable
+                                          # need to check for any incompatible
                                           # settings
                                           with_cufftw_include=check
                                        else
@@ -45378,7 +45381,7 @@ $as_echo "$as_me: WARNING: -l$lib" >&2;}
                                           # to continue in the same vein.
                                           # However, as -l/full/path is not
                                           # supported, we have to revert to
-                                          # the seperate specifiers.
+                                          # the separate specifiers.
                                           TRACE_INDENT="     "
                                           trace 6 Adding [-L$path] to library path
                                           with_cufftw_libpath="$with_cufftw_libpath$with_cufftw_lnklibs-L$path "
@@ -46228,7 +46231,7 @@ $as_echo "$as_me: WARNING: Asking to check for curand via --with-curand-include 
                                        then
                                           # Can never be here because of
                                           # --with-<lib>-pkgconf so we do not
-                                          # need to check for any incompatable
+                                          # need to check for any incompatible
                                           # settings
                                           with_curand_include=check
                                        else
@@ -46452,7 +46455,7 @@ $as_echo "$as_me: WARNING: -l$lib" >&2;}
                                           # to continue in the same vein.
                                           # However, as -l/full/path is not
                                           # supported, we have to revert to
-                                          # the seperate specifiers.
+                                          # the separate specifiers.
                                           TRACE_INDENT="     "
                                           trace 6 Adding [-L$path] to library path
                                           with_curand_libpath="$with_curand_libpath$with_curand_lnklibs-L$path "
@@ -47308,7 +47311,7 @@ $as_echo "$as_me: WARNING: Asking to check for cudart via --with-cudart-include 
                                        then
                                           # Can never be here because of
                                           # --with-<lib>-pkgconf so we do not
-                                          # need to check for any incompatable
+                                          # need to check for any incompatible
                                           # settings
                                           with_cudart_include=check
                                        else
@@ -47532,7 +47535,7 @@ $as_echo "$as_me: WARNING: -l$lib" >&2;}
                                           # to continue in the same vein.
                                           # However, as -l/full/path is not
                                           # supported, we have to revert to
-                                          # the seperate specifiers.
+                                          # the separate specifiers.
                                           TRACE_INDENT="     "
                                           trace 6 Adding [-L$path] to library path
                                           with_cudart_libpath="$with_cudart_libpath$with_cudart_lnklibs-L$path "
@@ -48379,7 +48382,7 @@ $as_echo "$as_me: WARNING: Asking to check for cusolver via --with-cusolver-incl
                                        then
                                           # Can never be here because of
                                           # --with-<lib>-pkgconf so we do not
-                                          # need to check for any incompatable
+                                          # need to check for any incompatible
                                           # settings
                                           with_cusolver_include=check
                                        else
@@ -48603,7 +48606,7 @@ $as_echo "$as_me: WARNING: -l$lib" >&2;}
                                           # to continue in the same vein.
                                           # However, as -l/full/path is not
                                           # supported, we have to revert to
-                                          # the seperate specifiers.
+                                          # the separate specifiers.
                                           TRACE_INDENT="     "
                                           trace 6 Adding [-L$path] to library path
                                           with_cusolver_libpath="$with_cusolver_libpath$with_cusolver_lnklibs-L$path "
@@ -49452,7 +49455,7 @@ $as_echo "$as_me: WARNING: Asking to check for cusparse via --with-cusparse-incl
                                        then
                                           # Can never be here because of
                                           # --with-<lib>-pkgconf so we do not
-                                          # need to check for any incompatable
+                                          # need to check for any incompatible
                                           # settings
                                           with_cusparse_include=check
                                        else
@@ -49676,7 +49679,7 @@ $as_echo "$as_me: WARNING: -l$lib" >&2;}
                                           # to continue in the same vein.
                                           # However, as -l/full/path is not
                                           # supported, we have to revert to
-                                          # the seperate specifiers.
+                                          # the separate specifiers.
                                           TRACE_INDENT="     "
                                           trace 6 Adding [-L$path] to library path
                                           with_cusparse_libpath="$with_cusparse_libpath$with_cusparse_lnklibs-L$path "
@@ -50525,7 +50528,7 @@ $as_echo "$as_me: WARNING: Asking to check for Qt3QGLViewer via --with-Qt3QGLVie
                                        then
                                           # Can never be here because of
                                           # --with-<lib>-pkgconf so we do not
-                                          # need to check for any incompatable
+                                          # need to check for any incompatible
                                           # settings
                                           with_Qt3QGLViewer_include=check
                                        else
@@ -50749,7 +50752,7 @@ $as_echo "$as_me: WARNING: -l$lib" >&2;}
                                           # to continue in the same vein.
                                           # However, as -l/full/path is not
                                           # supported, we have to revert to
-                                          # the seperate specifiers.
+                                          # the separate specifiers.
                                           TRACE_INDENT="     "
                                           trace 6 Adding [-L$path] to library path
                                           with_Qt3QGLViewer_libpath="$with_Qt3QGLViewer_libpath$with_Qt3QGLViewer_lnklibs-L$path "
@@ -51598,7 +51601,7 @@ $as_echo "$as_me: WARNING: Asking to check for Qt4QGLViewer via --with-Qt4QGLVie
                                        then
                                           # Can never be here because of
                                           # --with-<lib>-pkgconf so we do not
-                                          # need to check for any incompatable
+                                          # need to check for any incompatible
                                           # settings
                                           with_Qt4QGLViewer_include=check
                                        else
@@ -51822,7 +51825,7 @@ $as_echo "$as_me: WARNING: -l$lib" >&2;}
                                           # to continue in the same vein.
                                           # However, as -l/full/path is not
                                           # supported, we have to revert to
-                                          # the seperate specifiers.
+                                          # the separate specifiers.
                                           TRACE_INDENT="     "
                                           trace 6 Adding [-L$path] to library path
                                           with_Qt4QGLViewer_libpath="$with_Qt4QGLViewer_libpath$with_Qt4QGLViewer_lnklibs-L$path "
@@ -52671,7 +52674,7 @@ $as_echo "$as_me: WARNING: Asking to check for tetgen via --with-tetgen-include 
                                        then
                                           # Can never be here because of
                                           # --with-<lib>-pkgconf so we do not
-                                          # need to check for any incompatable
+                                          # need to check for any incompatible
                                           # settings
                                           with_tetgen_include=check
                                        else
@@ -52895,7 +52898,7 @@ $as_echo "$as_me: WARNING: -l$lib" >&2;}
                                           # to continue in the same vein.
                                           # However, as -l/full/path is not
                                           # supported, we have to revert to
-                                          # the seperate specifiers.
+                                          # the separate specifiers.
                                           TRACE_INDENT="     "
                                           trace 6 Adding [-L$path] to library path
                                           with_tetgen_libpath="$with_tetgen_libpath$with_tetgen_lnklibs-L$path "
@@ -54266,7 +54269,7 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
              done
           fi
 
-          # Expand the librarys'pre-requisites to include the pre-requisites
+          # Expand the library's pre-requisites to include the pre-requisites
           # for the  pre-requisites, etc.
           #
           # First, we need to sanitise the pre-requisite lists: if we are
@@ -54316,7 +54319,7 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
           # pre-requisites. Repeat this process until we make no further
           # changes.
           change_made=true
-          trace 2 Propogate pre-requisites back through libraries
+          trace 2 Propagate pre-requisites back through libraries
           while $change_made
           do
              TRACE_INDENT="     "
@@ -54330,7 +54333,7 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
                 for prql in $prereq
                 do
                    TRACE_INDENT="               "
-                   trace 4 Adding prerequisites of $prql
+                   trace 4 Adding pre-requisites of $prql
                    eval prereqs_prql=\$with_${prql}_prq
                    for to_add in $prereqs_prql
                    do
@@ -54370,7 +54373,7 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
           # disable libraries that are pre-requisites of enabled libraries
           #
           # Method: Consider each library in turn and look at its direct
-          # pre-requisites. Repeat the process to propogate up any blockages.
+          # pre-requisites. Repeat the process to propagate up any blockages.
           # When we change nothing on a pass, we should be finished.
           # Repeat pass logic is a hangover from an earlier implementation,
           # it should now not be needed (as we've moved to full expansion of
@@ -54416,7 +54419,7 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
                              case $prql_enablement in
                              'blocked' )          { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Library $lib is required by a specifically enabled library but a specifically disabled library prevents its prerequisite library $prql from being used
+as_fn_error $? "Library $lib is required by a specifically enabled library but a specifically disabled library prevents its pre-requisite library $prql from being used
 See \`config.log' for more details" "$LINENO" 5; }
                                         ;;
                              'check' )            eval "use_${prql}=needed"
@@ -54553,7 +54556,7 @@ $as_echo "yes" >&6; }
 else
   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Library $lib is unavailable and a prerequisite of a selected library
+as_fn_error $? "Library $lib is unavailable and a pre-requisite of a selected library
 See \`config.log' for more details" "$LINENO" 5; }
 
 
@@ -54604,13 +54607,13 @@ fi
                                   eval "use_${lib}=present"
                                   # Assume present if wanted (as something
                                   # virtual can hardly be missing) but note
-                                  # that abscence of prerequisites can later
+                                  # that absence of pre-requisites can later
                                   # cause the library to become regarded as
                                   # missing.
                                   ;;
                      'no' )       ;;
                      'blocked' )  ;;
-                     * )          trace 1 "Assert - Should never fall through here"
+                     * )          trace 1 "Unrecognised status ($lib_enablement) for pkgconfig package $lib"
                                   ;;
                   esac
                   eval prereq="\$with_${lib}_prq"
@@ -54637,7 +54640,7 @@ fi
           #
           trace 2 Test availability of compilation-check or bespoke external libraries
 
-          # These checks need to take into account packages requireing other
+          # These checks need to take into account packages requiring other
           # packages that are not currently assessed as to their availability.
           # To achieve this, we belay checking any library that does not
           # currently have all of its pre-requisites available. We therefore
@@ -54663,7 +54666,7 @@ fi
   # We need to check if this lib exists
                  #
                  # First check the state of the pre-requisites of the library
-                 trace 5 Checking the status of the prerequisites of $lib
+                 trace 5 Checking the status of the pre-requisites of $lib
           dependant=$lib
 
           eval dependant_state="\$use_${dependant}"
@@ -54753,7 +54756,7 @@ See \`config.log' for more details" "$LINENO" 5; }
                                  ;;
                    * )           case $dependant_state in
                                     check )  TRACE_INDENT="          "
-                                             trace 1 Assert - unrecognised state for prerequisite $prq, disabling $dependant
+                                             trace 1 Assert - unrecognised state for pre-requisite $prq, disabling $dependant
                                              eval use_${dependant}=blocked
                                              LeftToDo=`echo " $LeftToDo " | $SED "s/ $dependant / /"`
                                              RecentlyProcessed="$RecentlyProcessed $dependant"
@@ -54762,7 +54765,7 @@ See \`config.log' for more details" "$LINENO" 5; }
                                              ;;
                                     needed ) { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Library $dependant is a prerequisite of a selected library but is unavailable due to a indeterminate pre-requisite state
+as_fn_error $? "Library $dependant is a pre-requisite of a selected library but is unavailable due to a indeterminate pre-requisite state
 See \`config.log' for more details" "$LINENO" 5; }
                                              ;;
                                     yes )    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
@@ -54782,7 +54785,7 @@ See \`config.log' for more details" "$LINENO" 5; }
   check) :
     failure="" ;; #(
   needed) :
-    failure="Library $test_lib is unavailable and a prerequisite of a selected library" ;; #(
+    failure="Library $test_lib is unavailable and a pre-requisite of a selected library" ;; #(
   yes) :
     failure="Required library $test_lib is unavailable" ;; #(
   *) :
@@ -54884,8 +54887,8 @@ fi
 
              eval lib_sets=\"\$with_${fix_expan}_lnklibs\"
 
-             # with_<Lib>_lnklibs is either a single set of libraries we need
-             # to attempt to link with or, possibly, a | seperated list of
+             # with_<lib>_lnklibs is either a single set of libraries we need
+             # to attempt to link with or, possibly, a | separated list of
              # multiple sets libraries we need to try.
              #
              # Change IFS to split on the set seperator (|) and loop over the
@@ -55067,8 +55070,8 @@ fi
 
              eval lib_sets=\"\$with_${fix_expan}_lnklibs\"
 
-             # with_<Lib>_lnklibs is either a single set of libraries we need
-             # to attempt to link with or, possibly, a | seperated list of
+             # with_<lib>_lnklibs is either a single set of libraries we need
+             # to attempt to link with or, possibly, a | separated list of
              # multiple sets libraries we need to try.
              #
              # Change IFS to split on the set seperator (|) and loop over the
@@ -55174,7 +55177,7 @@ esac
 
 fi
 else
-                  # We do not need to check for existance of this library; trace why
+                  # We do not need to check for existence of this library; trace why
                  case $test_enablement in
                     'no' )      TRACE_INDENT="     "
                                 trace 6 $test_lib is disabled, not checking for existance
@@ -55206,7 +55209,7 @@ fi
              # We need to check if this lib exists
              #
              # First check the state of the pre-requisites of the library
-             trace 5 Checking the status of the prerequisites of $lib
+             trace 5 Checking the status of the pre-requisites of $lib
           dependant=$lib
 
           eval dependant_state="\$use_${dependant}"
@@ -55296,7 +55299,7 @@ See \`config.log' for more details" "$LINENO" 5; }
                                  ;;
                    * )           case $dependant_state in
                                     check )  TRACE_INDENT="          "
-                                             trace 1 Assert - unrecognised state for prerequisite $prq, disabling $dependant
+                                             trace 1 Assert - unrecognised state for pre-requisite $prq, disabling $dependant
                                              eval use_${dependant}=blocked
                                              LeftToDo=`echo " $LeftToDo " | $SED "s/ $dependant / /"`
                                              RecentlyProcessed="$RecentlyProcessed $dependant"
@@ -55305,7 +55308,7 @@ See \`config.log' for more details" "$LINENO" 5; }
                                              ;;
                                     needed ) { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Library $dependant is a prerequisite of a selected library but is unavailable due to a indeterminate pre-requisite state
+as_fn_error $? "Library $dependant is a pre-requisite of a selected library but is unavailable due to a indeterminate pre-requisite state
 See \`config.log' for more details" "$LINENO" 5; }
                                              ;;
                                     yes )    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
@@ -55341,7 +55344,7 @@ See \`config.log' for more details" "$LINENO" 5; }
                            # code for processing NVCC, below). The NVCC code
                            # will also have already processed the CUDA packages
                            # if a pkg-config check had been able to be employed
-                           # to dertermine the package availability.
+                           # to determine the package availability.
                            #
                            # What we are left to do here is perform any
                            # compilation check to determine the availability
@@ -55466,8 +55469,8 @@ fi
 
              eval lib_sets=\"\$with_${fix_expan}_lnklibs\"
 
-             # with_<Lib>_lnklibs is either a single set of libraries we need
-             # to attempt to link with or, possibly, a | seperated list of
+             # with_<lib>_lnklibs is either a single set of libraries we need
+             # to attempt to link with or, possibly, a | separated list of
              # multiple sets libraries we need to try.
              #
              # Change IFS to split on the set seperator (|) and loop over the
@@ -55649,8 +55652,8 @@ fi
 
              eval lib_sets=\"\$with_${fix_expan}_lnklibs\"
 
-             # with_<Lib>_lnklibs is either a single set of libraries we need
-             # to attempt to link with or, possibly, a | seperated list of
+             # with_<lib>_lnklibs is either a single set of libraries we need
+             # to attempt to link with or, possibly, a | separated list of
              # multiple sets libraries we need to try.
              #
              # Change IFS to split on the set seperator (|) and loop over the
@@ -56556,7 +56559,7 @@ $as_echo "$as_me: WARNING: Cannot determine CUDA version from --with-${pkg}-pkgc
                                     # liable to be incorrect in this situation. However, to
                                     # allow configure to work with a user-created pkg-config
                                     # file that has no version information but is otherwise
-                                    # userful, we only generate a warning here. If it is an
+                                    # useful, we only generate a warning here. If it is an
                                     # incorrect user-setting, the later check for the library
                                     # will trap this and error out.
                                  fi
@@ -56845,7 +56848,7 @@ $as_echo "$as_me: WARNING: $pkg and $chk seem to be asking to use different CUDA
                                  # Version unspecific default CUDA location
                                  CUDAlocations="$CUDAlocations$PATH_SEPARATOR/usr/local/cuda/bin"
 
-                                 # Change IFS to split PATH on the element seperator (:)
+                                 # Change IFS to split PATH on the element separator (:)
                                  save_ifs="$IFS"
                                  IFS=$PATH_SEPARATOR
                                  for ThisDir in $PATH$PATH_SEPARATOR$CUDAlocations
@@ -57081,19 +57084,19 @@ $as_echo "$as_me: WARNING: Unable to determine CUDA revision from CUDA compiler 
                                                 ;;
                                     'yes' )     { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "CUDA prerequisites not met
+as_fn_error $? "CUDA pre-requisites not met
 See \`config.log' for more details" "$LINENO" 5; }
                                                 ;;
-                                    'no' )      trace 6 CUDA compiler prerequisites not met but we do not require $pkg anyway
+                                    'no' )      trace 6 CUDA compiler pre-requisites not met but we do not require $pkg anyway
                                                 ;;
                                     'needed' )  trace 1 "Assert - Dependency should not have been catalogued yet"
                                                 { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "CUDA prerequisites not met and $pkg is required for a selected RESOURCE
+as_fn_error $? "CUDA pre-requisites not met and $pkg is required for a selected resource
 See \`config.log' for more details" "$LINENO" 5; }
                                                 ;;
-                                    'blocked' ) trace 1 "Assert - Blocakge should not have been propagated yet"
-                                                trace 6 CUDA compiler prerequisites not met but $pkg is already blocked
+                                    'blocked' ) trace 1 "Assert - Blockage should not have been propagated yet"
+                                                trace 6 CUDA compiler pre-requisites not met but $pkg is already blocked
                                                 ;;
                                     * )         trace 1 "Assert - Should not fall through here"
                                                 ;;
@@ -57136,9 +57139,9 @@ See \`config.log' for more details" "$LINENO" 5; }
                                        # QMake configure rather than client
                                        # projects as, for client projects,
                                        # configure does not process
-                                       # unconfigured packages. We do not
+                                       # un-configured packages. We do not
                                        # process configured CUDA packages as
-                                       # the user has effectivly settled what
+                                       # the user has effectively settled what
                                        # they want to use to locate the package
                                        # (be that pkg-config or a compilation
                                        # test).
@@ -57221,7 +57224,7 @@ fi
                                                   ;;
                                     5.* | 6.0 )   # Unlike the other versions
                                                   # we will support compute 3.5
-                                                  # as a seperate option as
+                                                  # as a separate option as
                                                   # some of the CUDA examples
                                                   # explicitly require it.
                                                   DEFAULT_NVCC_TARGS="10 20 30 35"
@@ -57229,14 +57232,14 @@ fi
                                     6.5 )         # This version of CUDA
                                                   # discontinued compute 1.0
                                                   # support. Move to 1.1 as
-                                                  # recompence. Also add
+                                                  # recompense. Also add
                                                   # support for the newly
                                                   # supported Maxwell (5.0)
                                                   # Compute levels 1.2/3 are
                                                   # still valid, but we are
                                                   # not defaulting to target
-                                                  # those as are we goint to
-                                                  # target compute level 5.2
+                                                  # those as we are also not
+                                                  # going to target level 5.2
                                                   DEFAULT_NVCC_TARGS="11 20 30 35 50"
                                                   ;;
                                     7.* )         # This version of CUDA drops
@@ -57540,7 +57543,7 @@ $as_echo "$ac_cv_prog_cxx_openmp" >&6; }
                                  OpenMP_CCFLAGS=$OPENMP_CXXFLAGS
                                  # By rights, we should pick up any OPENMP_LIBS
                                  # setting here. However, as we have no
-                                 # independant _LIBS setting for C and C++, we
+                                 # independent _LIBS setting for C and C++, we
                                  # are forced to assume the single C-derived
                                  # setting for _LIBS will be acceptable to the
                                  # linker in use for C++ code.
@@ -57586,7 +57589,7 @@ if ac_fn_cxx_try_link "$LINENO"; then :
                                                     # By rights, we should pick
                                                     # up any OPENMP_LIBS setting
                                                     # here. However, as we have
-                                                    # no independant _LIBS
+                                                    # no independent _LIBS
                                                     # setting for C and C++; we
                                                     # are forced to assume the
                                                     # single, C-derived setting
@@ -57716,8 +57719,8 @@ fi
 
              eval lib_sets=\"\$with_${fix_expan}_lnklibs\"
 
-             # with_<Lib>_lnklibs is either a single set of libraries we need
-             # to attempt to link with or, possibly, a | seperated list of
+             # with_<lib>_lnklibs is either a single set of libraries we need
+             # to attempt to link with or, possibly, a | separated list of
              # multiple sets libraries we need to try.
              #
              # Change IFS to split on the set seperator (|) and loop over the
@@ -57914,8 +57917,8 @@ fi
 
              eval lib_sets=\"\$with_${fix_expan}_lnklibs\"
 
-             # with_<Lib>_lnklibs is either a single set of libraries we need
-             # to attempt to link with or, possibly, a | seperated list of
+             # with_<lib>_lnklibs is either a single set of libraries we need
+             # to attempt to link with or, possibly, a | separated list of
              # multiple sets libraries we need to try.
              #
              # Change IFS to split on the set seperator (|) and loop over the
@@ -58026,7 +58029,7 @@ See \`config.log' for more details" "$LINENO" 5; }
                                        ;;
                          'needed' )    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Library $test_lib is not available and a prerequisite of a selected library
+as_fn_error $? "Library $test_lib is not available and a pre-requisite of a selected library
 See \`config.log' for more details" "$LINENO" 5; }
                                        ;;
                          'yes' )       { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
@@ -58051,12 +58054,12 @@ See \`config.log' for more details" "$LINENO" 5; }
              fi
           else
              # test_enablement != check|needed|yes
-             # => We do not need to check for existance of this library
+             # => We do not need to check for existence of this library
              #
              # Trace why
              case $test_enablement in
                 'no' )      TRACE_INDENT="     "
-                            trace 6 $test_lib is disabled, not checking for existance
+                            trace 6 $test_lib is disabled, not checking for existence
                             ;;
                 'blocked' ) TRACE_INDENT="     "
                             trace 6 $test_lib is blocked by a pre-requisite
@@ -58090,7 +58093,7 @@ See \`config.log' for more details" "$LINENO" 5; }
                                                  ;;
                                     'needed' )   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Should not be assessing the availability of prerequisite $check library $lib at this point
+as_fn_error $? "Should not be assessing the availability of pre-requisite $check library $lib at this point
 See \`config.log' for more details" "$LINENO" 5; }
                                                  ;;
                                     * )          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Should not be assessing the availability of $check library $lib at this point" >&5
@@ -58113,7 +58116,7 @@ See \`config.log' for more details" "$LINENO" 5; }
                                                  ;;
                                     'needed' )   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "Cannot determine test required for prerequisite library $lib
+as_fn_error $? "Cannot determine test required for pre-requisite library $lib
 See \`config.log' for more details" "$LINENO" 5; }
                                                  ;;
                                     * )          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Cannot determine test required for library $lib" >&5
@@ -58142,17 +58145,17 @@ See \`config.log' for more details" "$LINENO" 5; }
 
 
 
-          # Now propogate which libraries are blocked by their prerequisites
+          # Now propagate which libraries are blocked by their pre-requisites
           # not being present. To do this, repeatedly pass until we get no
           # more alterations. As per the code for finding blockages on the
           # command line (see above), the repeated passes should no longer be
           # required. However, "if it ain't broke...."
           #
           # Note: We do not need to generate any errors here when we find a
-          # library that is blocked by missing prerequisites. This is because
+          # library that is blocked by missing pre-requisites. This is because
           # any such errors will  have been generated (where necessary) in
           # the code checking for the individual libraries. (The error is
-          # generated when the prerequisite library is found to be missing as
+          # generated when the pre-requisite library is found to be missing as
           # it knows it is required for another library)
           #
           # This section is really just for virtual packages, those packages
@@ -58245,7 +58248,7 @@ then
    fi
 
 
-# Now start checking for the existance of all we need or can use
+# Now start checking for the existence of all we need or can use
 
 trace 2 Checking for necessary dependancies
 
@@ -58847,6 +58850,7 @@ then
 fi
 echo >> ./Config.Project.in
 echo >> ./Config.Project.in
+# Only write out the NVCC flags if we have found the compiler driver
 if ( test x$use_NVCC = xpresent )
 then
    echo \# CUDA compiler settings >> ./Config.Project.in
@@ -59125,7 +59129,7 @@ do
                    if ( test x`$EXPR " $UnconfiguredLibs " : ".* \($lib\) .*"` == "x$lib" )
                    then
                      # We have not directly configured this package, but may
-                     # have impliciltly changed its settings. See if we need
+                     # have implicitly changed its settings. See if we need
                      # to output the new settings...
                      original_cflags=`cat $QMAKE_CFG | $SED -n "s/^${lib}_CFLAGS=\(.*\)/\1/p"`
                      if ( test "X$original_cflags" != "X$expandedcflags" )
@@ -59315,7 +59319,7 @@ then
    Xsolaris* )  # No specific options set here (all platform specific items come
                 # from the toolset so are set earlier in this script). This is
                 # really here just as a place-holder and to note  that the code
-                # relies on the compiler appropriatly setting the relevant
+                # relies on the compiler appropriately setting the relevant
                 # defines from the list:__sun; __SUNPRO_CC; __sparc_v9; __sparc
                 # __sol2_7__ & __sol2_9__. If this is no longer the case, modify
                 # Ravl as needed or manually define the relevant switch.
@@ -59394,7 +59398,7 @@ then
    # We could have applied this logic if we are not resetting RESOURCES (i.e.
    # when we are only adding extra resources to those configured in at the
    # QMake configuration stage). However, this would make items specifically
-   # configured at the project level subject to any subsiquent reconfiguration
+   # configured at the project level subject to any subsequent reconfiguration
    # of QMake which is probably not what the use would require.
    RESOURCES=`echo "$QMAKE_RESOURCES $RESOURCES" | sed "s/  */ /g"`
    # Set final value for RESOURCES removing any multiple spaces

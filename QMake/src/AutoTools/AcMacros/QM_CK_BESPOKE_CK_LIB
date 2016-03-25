@@ -28,7 +28,7 @@ dnl Global variables used:
 dnl
 dnl   All variables listed with a <lib> in their name exist for each library
 dnl   that has been declared (via a QM_DEFINE_EXTLIB_[CP]C) with the <lib>
-dnl   being replaced by the RESOURCE name of the package. For example,
+dnl   being replaced by the resource name of the package. For example,
 dnl   the OpenCV package will have variables named with_OpenCV_prq;
 dnl   use_OpenCV; etc. Similarly, libGTK2 has variables use_libGTK2;
 dnl   with_libGTK2_prq; etc.
@@ -65,14 +65,11 @@ dnl                                  the GNU compiler (or GNU-compatible).
 dnl       InheritCFG                 Specifies if we should use the QMAKE_CFG
 dnl                                  file to bootstrap our configuration
 dnl                                  settings.
-dnl       LeftToDo                   List of the external libs that remain to
-dnl                                  be processed. As the compilation check
-dnl                                  packages should be processed last, this
-dnl                                  variable is analogous to the list of
-dnl                                  compile check libs that remain to be
-dnl                                  tested. This macro deletes <lib> from
-dnl                                  this list if it can determine if <lib>
-dnl                                  is available for use.
+dnl       LeftToDo                   List of the external RESOURCES that are
+dnl                                  left to be processed. This macro deletes
+dnl                                  any resource from this list if it can
+dnl                                  successfully determine whether or not the
+dnl                                  resource is available for use.
 dnl       NVCC                       Holds the path to the CUDA compiler
 dnl                                  driver. Can initially be primed by the
 dnl                                  user to force the use of a particular
@@ -95,7 +92,7 @@ dnl                                  OpenMP functionality from a C program.
 dnl                                  NOTE: This variable is different to the
 dnl                                  <lib>_CFLAGS variable associated with
 dnl                                  the QMake resource for OpenMP (the
-dnl                                  variable OpenMP_CFLAGS - not the case
+dnl                                  variable OpenMP_CFLAGS - note the case
 dnl                                  difference). However, the variables are
 dnl                                  likely to receive the same value once
 dnl                                  configure has been run (we actually copy
@@ -133,12 +130,14 @@ dnl       QMAKE_CFG                  Holds the location of the configuration
 dnl                                  file for the copy of QMake that is in
 dnl                                  use. Originally primed by calling the
 dnl                                  QM_LOCATE_QMAKE macro.
-dnl       RecentlyProcessed          Keeps track of the recently located libs.
-dnl                                  This macro adds <lib> to this list if it
-dnl                                  can determine whether or not the package
-dnl                                  is available.
-dnl       SED                        Standard substitution variable pointing
-dnl                                  to the UNIX sed command.
+dnl       RecentlyProcessed          Keeps track of the recently located
+dnl                                  external RESOURCES. This macro adds the
+dnl                                  resource to this list if it can determine
+dnl                                  whether or not the package is available.
+dnl       SED                        Holds the name of the executable to carry
+dnl                                  out stream editing. This will already
+dnl                                  have been primed by a prior call to the
+dnl                                  macro QM_LOCATE_KEY_TOOLS.
 dnl       TRACE_INDENT               Variable used for indenting trace debug
 dnl                                  messages (when DBG is set). The current
 dnl                                  convention in this script is to employ
@@ -183,15 +182,15 @@ dnl       ac_cv_prog_cxx_openmp      C++ version of the ac_cv_prog_c_openmp
 dnl                                  variable (above). The same caveats apply.
 dnl       process_now                Indicates if we should process the
 dnl                                  library now or delay checking for its
-dnl                                  existance (usually to allow us to find a
+dnl                                  existence (usually to allow us to find a
 dnl                                  pre-requisite first).
-dnl       use_<lib>                  Flag specifying useage of library,
+dnl       use_<lib>                  Flag specifying usage of library,
 dnl                                  initially primed from the command line
 dnl                                  settings, this will be updated to
 dnl                                  reflect the availability of the library
 dnl                                  <lib>
 dnl       with_<lib>_check           Flag specifying the type of test needed
-dnl                                  to check for the existance of the
+dnl                                  to check for the existence of the
 dnl                                  external library:
 dnl                                    bespoke      - test for the external
 dnl                                                   library has been written
@@ -216,9 +215,18 @@ dnl                                  For any test-type, if the user provides
 dnl                                  a --with-<lib>-pkgconf setting, this will
 dnl                                  automatically force the test-type to be
 dnl                                  pkgconfig.
-dnl       with_<lib>_prq             Holds the list of prerequisite libraries
-dnl                                  that external library <lib> is dependant
-dnl                                  on.
+dnl       with_<lib>_inc             Path (in pre-processor -I/x/y/z form) to
+dnl                                  the library's headers. Variable may
+dnl                                  actually include other, non-path related,
+dnl                                  pre-processor settings.
+dnl       with_<lib>_libpath         Path (in linker -L/x/y/z form) to the
+dnl                                  location of the library files needed to
+dnl                                  compile with the external library
+dnl                                  package <lib>. Variable may actually
+dnl                                  include other, non-path related, linker
+dnl                                  settings.
+dnl       with_<lib>_prq             Space separated list of pre-requisites
+dnl                                  of the external library package <lib>.
 dnl
 dnl   The following are all interim variables used within this macro:
 dnl
@@ -271,7 +279,7 @@ dnl                        ;;
 dnl with the ...... representing the checking code.
 dnl
 dnl The code supplied must set use_${test_lib} to present (if the external library
-dnl is available) or missing (if the library is not avilable). Should the
+dnl is available) or missing (if the library is not available). Should the
 dnl library be available, the code must also set the variables ${test_lib}_CFLAGS
 dnl (to the value of CFLAGS needed to compile with the library package) and
 dnl ${test_lib}_LIBS (to the linker options & library specifications needed to
@@ -300,7 +308,7 @@ dnl
                            # code for processing NVCC, below). The NVCC code
                            # will also have already processed the CUDA packages
                            # if a pkg-config check had been able to be employed
-                           # to dertermine the package availability.
+                           # to determine the package availability.
                            #
                            # What we are left to do here is perform any
                            # compilation check to determine the availability
@@ -1106,7 +1114,7 @@ dnl
                                     # liable to be incorrect in this situation. However, to
                                     # allow configure to work with a user-created pkg-config
                                     # file that has no version information but is otherwise
-                                    # userful, we only generate a warning here. If it is an
+                                    # useful, we only generate a warning here. If it is an
                                     # incorrect user-setting, the later check for the library
                                     # will trap this and error out.
                                  fi
@@ -1401,7 +1409,7 @@ dnl
                                  # Version unspecific default CUDA location
                                  CUDAlocations="$CUDAlocations$PATH_SEPARATOR/usr/local/cuda/bin"
 
-                                 # Change IFS to split PATH on the element seperator (:)
+                                 # Change IFS to split PATH on the element separator (:)
                                  save_ifs="$IFS"
                                  IFS=$PATH_SEPARATOR
                                  for ThisDir in $PATH$PATH_SEPARATOR$CUDAlocations
@@ -1600,15 +1608,15 @@ dnl
                                     'check' )   AS_VAR_SET(use_$pkg, blocked)
                                                 trace 6 Disabling $pkg owing to missing compiler pre-requisites
                                                 ;;
-                                    'yes' )     AC_MSG_FAILURE([CUDA prerequisites not met])
+                                    'yes' )     AC_MSG_FAILURE([CUDA pre-requisites not met])
                                                 ;;
-                                    'no' )      trace 6 CUDA compiler prerequisites not met but we do not require $pkg anyway
+                                    'no' )      trace 6 CUDA compiler pre-requisites not met but we do not require $pkg anyway
                                                 ;;
                                     'needed' )  trace 1 "Assert - Dependency should not have been catalogued yet"
-                                                AC_MSG_FAILURE([CUDA prerequisites not met and $pkg is required for a selected RESOURCE])
+                                                AC_MSG_FAILURE([CUDA pre-requisites not met and $pkg is required for a selected resource])
                                                 ;;
-                                    'blocked' ) trace 1 "Assert - Blocakge should not have been propagated yet"
-                                                trace 6 CUDA compiler prerequisites not met but $pkg is already blocked
+                                    'blocked' ) trace 1 "Assert - Blockage should not have been propagated yet"
+                                                trace 6 CUDA compiler pre-requisites not met but $pkg is already blocked
                                                 ;;
                                     * )         trace 1 "Assert - Should not fall through here"
                                                 ;;
@@ -1655,9 +1663,9 @@ dnl
                                        # QMake configure rather than client
                                        # projects as, for client projects,
                                        # configure does not process
-                                       # unconfigured packages. We do not
+                                       # un-configured packages. We do not
                                        # process configured CUDA packages as
-                                       # the user has effectivly settled what
+                                       # the user has effectively settled what
                                        # they want to use to locate the package
                                        # (be that pkg-config or a compilation
                                        # test).
@@ -1733,7 +1741,7 @@ dnl
                                                   ;;
                                     5.* | 6.0 )   # Unlike the other versions
                                                   # we will support compute 3.5
-                                                  # as a seperate option as
+                                                  # as a separate option as
                                                   # some of the CUDA examples
                                                   # explicitly require it.
                                                   DEFAULT_NVCC_TARGS="10 20 30 35"
@@ -1741,14 +1749,14 @@ dnl
                                     6.5 )         # This version of CUDA
                                                   # discontinued compute 1.0
                                                   # support. Move to 1.1 as
-                                                  # recompence. Also add
+                                                  # recompense. Also add
                                                   # support for the newly
                                                   # supported Maxwell (5.0)
                                                   # Compute levels 1.2/3 are
                                                   # still valid, but we are
                                                   # not defaulting to target
-                                                  # those as are we goint to
-                                                  # target compute level 5.2
+                                                  # those as we are also not
+                                                  # going to target level 5.2
                                                   DEFAULT_NVCC_TARGS="11 20 30 35 50"
                                                   ;;
                                     7.* )         # This version of CUDA drops
@@ -1969,7 +1977,7 @@ int main () { return omp_get_num_threads (); }
                                  OpenMP_CCFLAGS=$OPENMP_CXXFLAGS
                                  # By rights, we should pick up any OPENMP_LIBS
                                  # setting here. However, as we have no
-                                 # independant _LIBS setting for C and C++, we
+                                 # independent _LIBS setting for C and C++, we
                                  # are forced to assume the single C-derived
                                  # setting for _LIBS will be acceptable to the
                                  # linker in use for C++ code.
@@ -2008,7 +2016,7 @@ return omp_get_num_threads ();
                                                     # By rights, we should pick
                                                     # up any OPENMP_LIBS setting
                                                     # here. However, as we have
-                                                    # no independant _LIBS
+                                                    # no independent _LIBS
                                                     # setting for C and C++; we
                                                     # are forced to assume the
                                                     # single, C-derived setting
@@ -2113,7 +2121,7 @@ return omp_get_num_threads ();
                       case $test_enablement in
                          'check' )     # No error required
                                        ;;
-                         'needed' )    AC_MSG_FAILURE([Library $test_lib is not available and a prerequisite of a selected library])
+                         'needed' )    AC_MSG_FAILURE([Library $test_lib is not available and a pre-requisite of a selected library])
                                        ;;
                          'yes' )       AC_MSG_FAILURE([Required library $test_lib is not available])
                                        ;;
@@ -2135,12 +2143,12 @@ return omp_get_num_threads ();
 
           else
              # test_enablement != check|needed|yes
-             # => We do not need to check for existance of this library
+             # => We do not need to check for existence of this library
              #
              # Trace why
              case $test_enablement in
                 'no' )      TRACE_INDENT="     "
-                            trace 6 $test_lib is disabled, not checking for existance
+                            trace 6 $test_lib is disabled, not checking for existence
                             ;;
                 'blocked' ) TRACE_INDENT="     "
                             trace 6 $test_lib is blocked by a pre-requisite
