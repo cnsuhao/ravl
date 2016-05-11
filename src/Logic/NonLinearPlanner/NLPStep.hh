@@ -23,6 +23,7 @@ namespace RavlLogicN {
   {
   public:
     NLPStepC()
+      : confidence(0)
     {}
     //: Default constructor.
     

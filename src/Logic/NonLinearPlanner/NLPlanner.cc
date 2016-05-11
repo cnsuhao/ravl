@@ -36,7 +36,7 @@ namespace RavlLogicN {
       bs.Empty();
       MinTermC postCond = it->PostCondition();
       RavlAssert(postCond.IsValid());
-      //cerr << "Compairing " << postCond << " Goal=" << goal << "\n";
+      //cerr << "Comparing " << postCond << " Goal=" << goal << "\n";
       if(postCond.Covers(goal,bs)) {
 	NLPStepC newstep;
 	it->Substitute(bs,newstep);
@@ -52,19 +52,23 @@ namespace RavlLogicN {
   // Default constructor.
   
   NLPlannerBodyC::NLPlannerBodyC() 
-    : allocCondID(1),
+    : planCount(0),
+      allocCondID(1),
       maxSearch(-1),
       limSearch(-1),
-      curSearch(0)
+      curSearch(0),
+      bestSize(0)
   { RavlAssert(0); }
 
   //: Default constructor.
   
   NLPlannerBodyC::NLPlannerBodyC(const DListC<NLPStepC> &steps) 
-    : allocCondID(1),
+    : planCount(0),
+      allocCondID(1),
       maxSearch(-1),
       limSearch(-1),
-      curSearch(0)
+      curSearch(0),
+      bestSize(0)
   {
     DListC<NLPStepC> xSteps(steps);
     MinTermC tmp;
@@ -92,7 +96,7 @@ namespace RavlLogicN {
   bool NLPlannerBodyC::NewPlan(const StateC &start,const MinTermC &goal) {
     // Generate MinTerm reflecting all thats asserted in state,
     // this does NOT include negations.
-    // Anything not assert in the inital state is assumed to be
+    // Anything not assert in the initial state is assumed to be
     // false by the planner.
     // FIXME :- A better way of doing this.
     //          Make start state special ??
@@ -169,7 +173,7 @@ namespace RavlLogicN {
       }
     }
     if(!IsComplete() && plans.IsEmpty()) {
-      ONDEBUG(cerr << "NLPlannerBodyC::CompletePlan(), plans exausted. \n");
+      ONDEBUG(cerr << "NLPlannerBodyC::CompletePlan(), plans exhausted. \n");
     }
     return IsComplete();
   }
@@ -198,7 +202,7 @@ namespace RavlLogicN {
     for(DLIterC<NLPStepC> it(listSteps(goal,full));it;it++) {
       BindSetC bs;
       if(it->PostCondition().Covers(goal,bs)) {
-	cerr << "Binds=" << bs << "\n";
+	std::cerr << "Binds=" << bs << "\n";
 	NLPStepC newStep;
 	it->Substitute(bs,newStep);
 	ret += newStep;

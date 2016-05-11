@@ -93,10 +93,10 @@ int main(int argc,char **argv)
   // Print a list of results.
   
   if(!plan.IsValid()) {
-    cerr << "Unable to complete plan. \n";
+    std::cerr << "Unable to complete plan. \n";
     return 1;
   }
-  cerr << "Plan=" << plan << "\n";
+  std::cerr << "Plan=" << plan << "\n";
   return 0;
 }
 
