@@ -16,6 +16,11 @@
 #include "Ravl/Option.hh"
 #include "Ravl/OS/NetStream.hh"
 #include "Ravl/OS/Date.hh"
+#include "Ravl/OS/SocketAddr.hh"
+#include "Ravl/SysLog.hh"
+#include <netinet/in.h>
+#include <netinet/tcp.h>
+#include <arpa/inet.h>
 
 using namespace RavlN;
 
@@ -26,8 +31,20 @@ int main(int nargs,char **argv) {
   bool server = opt.Boolean("s",false,"Server. ");
   bool buffer = opt.Boolean("b",false,"Buffer. ");
   bool listen = opt.Boolean("l",false,"Listen to stream. ");
+  StringC hostByName = opt.String("lh","","Lookup host address");
   opt.Check();
   
+  if(!hostByName.IsEmpty()) {
+    struct sockaddr_in sin;
+    if(!GetHostByName(hostByName.c_str(),sin)){
+      RavlError("Failed to lookup '%s' ",hostByName.c_str());
+      return 1;
+    }
+    const char *name = inet_ntoa(((sockaddr_in &)sin).sin_addr); // Convert to a dot notation string.
+    RavlDebug("Address for '%s' is %s ",hostByName.c_str(),name);
+    return 0;
+  }
+
   cerr << "Setting up.\n";
   if(listen) {
     cerr << "Listening... \n";
