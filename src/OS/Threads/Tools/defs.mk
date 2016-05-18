@@ -10,6 +10,8 @@
 
 DESCRIPTION=Threading tools
 
+ANSIFLAG=-std=c++11
+
 PACKAGE=Ravl/Threads
 
 HEADERS=MessageQueue.hh LaunchThread.hh TickerTrigger.hh \
