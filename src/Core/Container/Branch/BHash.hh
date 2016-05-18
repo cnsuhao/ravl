@@ -63,7 +63,7 @@ namespace RavlN {
     //: Default constructor.
 
     BHashC(const BHashC<KeyT,DataT> &oth)
-      : table(oth.table.Copy()),
+      : table(oth.table),
 	entries(oth.entries)
     {}
     //: Copy constructor.
@@ -184,8 +184,12 @@ namespace RavlN {
   
   template<class KeyT,class DataT>
   bool BHashC<KeyT,DataT>::Insert(const KeyT &key,const DataT &data) {
-    if(table.Size() == 0) // Need to initialise the table ?
+    if(table.Size() == 0) { // Need to initialise the table ?
       table = SArray1dC<BListC<BHashEntryC<KeyT,DataT> > > (7); // How to best choose the initial size ?
+    } else {
+      if(table.Buffer().BodyPtr()->References() > 1)
+        table = table.Copy();
+    }
     table[StdHash(key) % table.Size()].InsFirst(BHashEntryC<KeyT,DataT>(key,data) );
     entries++;
     return true;
@@ -193,8 +197,12 @@ namespace RavlN {
   
   template<class KeyT,class DataT>
   DataT &BHashC<KeyT,DataT>::InsertRef(const KeyT &key,const DataT &data) {
-    if(table.Size() == 0) // Need to initialise the table ?
+    if(table.Size() == 0) { // Need to initialise the table ?
       table = SArray1dC<BListC<BHashEntryC<KeyT,DataT> > > (7); // How to best choose the initial size ?
+    } else {
+      if(table.Buffer().BodyPtr()->References() > 1)
+        table = table.Copy();
+    }
     BListC<BHashEntryC<KeyT,DataT> > &list = table[StdHash(key) % table.Size()];
     list.InsFirst(BHashEntryC<KeyT,DataT>(key,data) );    
     entries++;
