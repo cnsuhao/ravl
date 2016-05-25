@@ -78,7 +78,8 @@ namespace RavlN {
     : UnixStreamIOC(-1,g_defaultTimeout,g_defaultTimeout,false),
       server(nserver),
       addr(0),
-      m_addrReuse(false)
+      m_addrReuse(false),
+      m_quiet(false)
   {
     int at = name.index(':');
     if(at < 0) {
@@ -97,11 +98,12 @@ namespace RavlN {
 
   //: Open socket.
 
-  SocketBodyC::SocketBodyC(StringC name,UIntT portno,bool nserver)
+  SocketBodyC::SocketBodyC(StringC name,UIntT portno,bool nserver,bool quiet)
     : UnixStreamIOC(-1,g_defaultTimeout,g_defaultTimeout),
       server(nserver),
       addr(0),
-      m_addrReuse(false)
+      m_addrReuse(false),
+      m_quiet(quiet)
   {
     ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "Opening connection '" << name << "' port " << portno << " ");
     if(server)
@@ -117,7 +119,8 @@ namespace RavlN {
     : UnixStreamIOC(nfd,g_defaultTimeout,g_defaultTimeout),
       server(nserver),
       addr(naddr),
-      m_addrReuse(false)
+      m_addrReuse(false),
+      m_quiet(false)
   {
     ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "SocketBodyC::SocketBodyC(), fd = " << m_fd );
   }
@@ -264,8 +267,10 @@ namespace RavlN {
     sin.sin_port = htons(portNo);
     ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "Binding name. ");
     if(bind(m_fd,(struct sockaddr*)&sin, sizeof(sockaddr)) < 0) {
-      RavlSysLog(SYSLOG_DEBUG) << "Bind failed. errno=" << errno << " ";
-      RavlSysLog(SYSLOG_DEBUG) << "Error:" << strerror(errno);
+      if(!m_quiet) {
+        RavlSysLog(SYSLOG_DEBUG) << "Bind failed. errno=" << errno << " ";
+        RavlSysLog(SYSLOG_DEBUG) << "Error:" << strerror(errno);
+      }
       Close();
       return -1;
     }
@@ -320,8 +325,8 @@ namespace RavlN {
 	// Recoverable error ?
       } while(errno == EAGAIN || errno == EINTR) ;
       char errStrBuff[256];
-      strerror_r(errno,errStrBuff,256);
-      RavlError("ERROR: Failed to accept connection. errno=%d  %s ",errno,errStrBuff);
+      const char *errStrPtr = strerror_r(errno,errStrBuff,256);
+      RavlError("ERROR: Failed to accept connection. errno=%d  %s ",errno,errStrPtr);
       delete [] (char *) cn_addr;
     } while(block);
     return SocketC();
