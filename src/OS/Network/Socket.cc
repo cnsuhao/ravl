@@ -325,7 +325,12 @@ namespace RavlN {
 	// Recoverable error ?
       } while(errno == EAGAIN || errno == EINTR) ;
       char errStrBuff[256];
+#if RAVL_OS_MACOSX
+      strerror_r(errno,errStrBuff,256);
+      const char *errStrPtr = errStrBuff;
+#else
       const char *errStrPtr = strerror_r(errno,errStrBuff,256);
+#endif
       RavlError("ERROR: Failed to accept connection. errno=%d  %s ",errno,errStrPtr);
       delete [] (char *) cn_addr;
     } while(block);
