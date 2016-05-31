@@ -8,7 +8,9 @@
 #include "Ravl/Image/Image.hh"
 #include "Ravl/Image/RealRGBValue.hh"
 #include "Ravl/IO.hh"
+
 #include "opencv2/opencv.hpp"
+
 //! lib=RavlOpenCV
 
 using namespace RavlN;
@@ -26,7 +28,8 @@ int main()
   // convert it to an OpenCV Mat
   IplImage* im1 = 0;
   std::cout << "RAVL 2 CV: " << RavlImage2IplImage(src, im1) << std::endl;
-  Mat mat1(im1);
+
+  Mat mat1=cvarrToMat(im1);
   Mat mat2;
 
   // filter it

@@ -46,7 +46,7 @@ namespace RavlN {
     // host name or its ip (dotted numbers) address and port is the
     // number of the port to use.
 
-    SocketBodyC(StringC name,UIntT portno,bool server = false);
+    SocketBodyC(StringC name,UIntT portno,bool server = false,bool quiet = false);
     //: Open socket.
 
     SocketBodyC(struct sockaddr *addr,int nfd,bool server = false);
@@ -105,6 +105,7 @@ namespace RavlN {
     bool server;
     struct sockaddr *addr; // Allocated as a char array.
     bool m_addrReuse;
+    bool m_quiet;
   };
 
 
@@ -129,8 +130,8 @@ namespace RavlN {
     // host name or its ip (dotted numbers) address and port is the
     // number of the port to use.
 
-    SocketC(StringC host,UIntT portno,bool server = false)
-      : RCHandleC<SocketBodyC>(*new SocketBodyC(host,portno,server))
+    SocketC(StringC host,UIntT portno,bool server = false,bool quiet = false)
+      : RCHandleC<SocketBodyC>(*new SocketBodyC(host,portno,server,quiet))
     {}
     //: Open socket.
     // 'host' is the host name to connect to or its ip address (dotted numbers)

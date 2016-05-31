@@ -1,0 +1,2170 @@
+dnl This file is part of QMake, Quick Make System
+dnl Copyright (C) 2015-16, University of Surrey
+dnl This code may be redistributed under the terms of the GNU General
+dnl Public License (GPL). See the gpl.licence file for details or
+dnl see http://www.gnu.org/copyleft/gpl.html
+dnl
+dnl file-header-ends-here
+
+
+dnl QM_CK_BESPOKE_CK_LIB
+dnl
+dnl Macro to attempt to check if the specified external library package exists
+dnl on the system. This macro is for libraries specified as requiring a
+dnl bespoke check rather than being specified via pkg-config or requiring a
+dnl standard compilation check. The bespoke code should be provided as a
+dnl case block in the appropriate case statement in this macro.
+dnl
+dnl All libraries to be checked must have previously been declared via either
+dnl the QM_DEFINE_EXTIB_BESPOKE or the QM_DEFINE_EXTIB_BESPOKE_CC macro. Any
+dnl package that is quantified as being either present or absent will be
+dnl removed from the global variable LeftToDo At the same time, a quantified
+dnl package will be added to the list held by the RecentlyProcessed variable.
+dnl
+dnl Macro parameters are:
+dnl       p1: QMake name for the external package to be tested
+dnl
+dnl Global variables used:
+dnl
+dnl   All variables listed with a <lib> in their name exist for each library
+dnl   that has been declared (via a QM_DEFINE_EXTLIB_[CP]C) with the <lib>
+dnl   being replaced by the resource name of the package. For example,
+dnl   the OpenCV package will have variables named with_OpenCV_prq;
+dnl   use_OpenCV; etc. Similarly, libGTK2 has variables use_libGTK2;
+dnl   with_libGTK2_prq; etc.
+dnl
+dnl       CDC_HDR                } { Receives the type of header file layout
+dnl       FMT_HDR                } { in use for the particular sub-package of
+dnl       SWS_HDR                } { FFMPEG. Will be set to old; new; either
+dnl       UTIL_HDR               } { or notfound dependant on the available
+dnl                                { versions of the sub-packages. If all 4
+dnl                                { packages are available, a consistent
+dnl                                { grouping will be preferred (either all
+dnl                                { old or all new), with the new layout
+dnl                                { being preferred if either is available
+dnl                                { for all 4.
+dnl       CONFIGURE_NVCCFLAGS        Initialised here to hold any NVCCFLAGS
+dnl                                  that the user may have set in their
+dnl                                  environment. This variable is only
+dnl                                  initialised if the CUDA compiler is
+dnl                                  actually located (or user-specified).
+dnl       DBG                        Variable that holds the current trace
+dnl                                  level as requested by the user. Requires
+dnl                                  the inclusion of the debug function
+dnl                                  "trace" in any code calling this macro.
+dnl                                  A suitable trace function is defined in
+dnl                                  the QMake AcMacros/QM_Debug_fn file.
+dnl       FFMPEG_HDR_FMT             Receives the consistent layout, if it
+dnl                                  exists, of the individual FFMPEG header
+dnl                                  files. If a set of 4 consistent hdr sets
+dnl                                  is not present, this variable will be
+dnl                                  set to broken and the libffmpeg virtual
+dnl                                  package will be disabled.
+dnl       GXX                        Variable indicates if our C++ compile is
+dnl                                  the GNU compiler (or GNU-compatible).
+dnl       InheritCFG                 Specifies if we should use the QMAKE_CFG
+dnl                                  file to bootstrap our configuration
+dnl                                  settings.
+dnl       LeftToDo                   List of the external RESOURCES that are
+dnl                                  left to be processed. This macro deletes
+dnl                                  any resource from this list if it can
+dnl                                  successfully determine whether or not the
+dnl                                  resource is available for use.
+dnl       NVCC                       Holds the path to the CUDA compiler
+dnl                                  driver. Can initially be primed by the
+dnl                                  user to force the use of a particular
+dnl                                  program. May be updated by the
+dnl                                  configure script to include extra
+dnl                                  global compiler options.
+dnl       NVCCFLAGS                  More an environment variable than a
+dnl                                  script variable. Allows the user to
+dnl                                  provide a set of compiler flags for the
+dnl                                  nVidia compiler driver (or flags to be
+dnl                                  used for the regular compiler while
+dnl                                  building CUDA source code).
+dnl       OPENMP_CFLAGS              Created as a substitution variable (a
+dnl                                  variable that gets written out to the
+dnl                                  QMake of project configuration files)
+dnl                                  by use of the AC_OPENMP macro while the
+dnl                                  current language is C. Receives any
+dnl                                  CFLAGS that are required to use the
+dnl                                  OpenMP functionality from a C program.
+dnl                                  NOTE: This variable is different to the
+dnl                                  <lib>_CFLAGS variable associated with
+dnl                                  the QMake resource for OpenMP (the
+dnl                                  variable OpenMP_CFLAGS - note the case
+dnl                                  difference). However, the variables are
+dnl                                  likely to receive the same value once
+dnl                                  configure has been run (we actually copy
+dnl                                  the OPENMP_CFLAGS setting to the QMake
+dnl                                  variable).
+dnl       OPENMP_CXXFLAGS            C++ version of the above, OPENMP_CFLAGS
+dnl                                  variable; declared and initialised when
+dnl                                  using the AC_OPENMP macro while the
+dnl                                  current language is C++. Receives any
+dnl                                  flags needed to compile-in OpenMP under
+dnl                                  C++. Note this variable is not directly
+dnl                                  associated with the QMake resource for
+dnl                                  OpenMP (altough it is used to prime the
+dnl                                  corresponding QMake C++ compiler flags
+dnl                                  variable, OpenMP_CCFLAGS).
+dnl       OPENMP_LIBS                Variable used to allow any OpenMP
+dnl                                  libraries to be included in the QMake
+dnl                                  OpenMP_LIBS variable (if required). At
+dnl                                  present, OpenMP requires no extra
+dnl                                  library to be added to the link line and
+dnl                                  the AC_OPENMP macro does not declare or
+dnl                                  or set this variable. We merely use this
+dnl                                  variable so that should AC_OPENMP be so
+dnl                                  extended in the future, this macro is
+dnl                                  ready to take advantage of any such
+dnl                                  development. Unless a later version of
+dnl                                  autoconf starts to use this variable,
+dnl                                  this variable is liable to be null. Even
+dnl                                  if autoconf moves over to using this
+dnl                                  variable, we will need to carefully
+dnl                                  check that the new functionality is
+dnl                                  compatible with the existing code in
+dnl                                  this macro.
+dnl       QMAKE_CFG                  Holds the location of the configuration
+dnl                                  file for the copy of QMake that is in
+dnl                                  use. Originally primed by calling the
+dnl                                  QM_LOCATE_QMAKE macro.
+dnl       RecentlyProcessed          Keeps track of the recently located
+dnl                                  external RESOURCES. This macro adds the
+dnl                                  resource to this list if it can determine
+dnl                                  whether or not the package is available.
+dnl       SED                        Holds the name of the executable to carry
+dnl                                  out stream editing. This will already
+dnl                                  have been primed by a prior call to the
+dnl                                  macro QM_LOCATE_KEY_TOOLS.
+dnl       TRACE_INDENT               Variable used for indenting trace debug
+dnl                                  messages (when DBG is set). The current
+dnl                                  convention in this script is to employ
+dnl                                  an indent of 5 spaces per level of
+dnl                                  nesting in the code i.e. set the var to
+dnl                                  "     " for the first for loop, set it
+dnl                                  to "          " for the second, etc.
+dnl       USER_NVCC                  Records any user-specified setting for
+dnl                                  the NVCC variable which specifies the
+dnl                                  CUDA compiler driver program.
+dnl       <lib>_CFLAGS               Substitution variable (variable that is
+dnl                                  output to the configuration file for the
+dnl                                  (QMake) client project (i.e. to the
+dnl                                  Config.Project file) that receives the
+dnl                                  CFLAGS required when compiling with the
+dnl                                  external library. This macros does not
+dnl                                  set this variable, merely declare it for
+dnl                                  substitution out to the configuration
+dnl                                  file.
+dnl       <lib>_LIBS                 Substitution variable that receives the
+dnl                                  link line settings needed to link with
+dnl                                  the <lib> package. This info is supplied
+dnl                                  as on the link line itself  i.e. library
+dnl                                  names are specified in -lX form and the
+dnl                                  setting may include -Lpath entries. This
+dnl                                  macros does not set this variable,
+dnl                                  merely declare it for substitution out
+dnl                                  to the configuration file.
+dnl       ac_cv_prog_c_openmp        Primed via the AC_OPENMP macro, this
+dnl                                  variable currently holds the determined
+dnl                                  status of OpenMP under the C compiler
+dnl                                  (whether it is unsupported or needs no
+dnl                                  CFLAGS). As this is an undocumented
+dnl                                  variable in the autoconf interface, we
+dnl                                  need to take care in case the operation
+dnl                                  of this variable changes in the future
+dnl                                  (although the code here has attempted to
+dnl                                  code around any limitation if this
+dnl                                  variable is subsequently dropped by the
+dnl                                  autoconf macro).
+dnl       ac_cv_prog_cxx_openmp      C++ version of the ac_cv_prog_c_openmp
+dnl                                  variable (above). The same caveats apply.
+dnl       process_now                Indicates if we should process the
+dnl                                  library now or delay checking for its
+dnl                                  existence (usually to allow us to find a
+dnl                                  pre-requisite first).
+dnl       use_<lib>                  Flag specifying usage of library,
+dnl                                  initially primed from the command line
+dnl                                  settings, this will be updated to
+dnl                                  reflect the availability of the library
+dnl                                  <lib>
+dnl       with_<lib>_check           Flag specifying the type of test needed
+dnl                                  to check for the existence of the
+dnl                                  external library:
+dnl                                    bespoke      - test for the external
+dnl                                                   library has been written
+dnl                                                   in bespoke code located
+dnl                                                   towards the start of the
+dnl                                                   macro QM_PROCESS_EXTLIBS.
+dnl                                    compile      - test for the external
+dnl                                                   library involves a test
+dnl                                                   compilation to see if
+dnl                                                   the library is available.
+dnl                                    pkgconfig    - test for the external
+dnl                                                   library using pkg-config.
+dnl                                    virtual      - external library is a
+dnl                                                   virtual set of libraries
+dnl                                                   that is implicitly
+dnl                                                   available if all of the
+dnl                                                   precursor libraries are
+dnl                                                   available.
+dnl                                  Initialised by the QM_DEFINE_EXTLIB_CC or
+dnl                                  QM_DEFINE_EXTLIB_GENERIC macros.
+dnl                                  For any test-type, if the user provides
+dnl                                  a --with-<lib>-pkgconf setting, this will
+dnl                                  automatically force the test-type to be
+dnl                                  pkgconfig.
+dnl       with_<lib>_inc             Path (in pre-processor -I/x/y/z form) to
+dnl                                  the library's headers. Variable may
+dnl                                  actually include other, non-path related,
+dnl                                  pre-processor settings.
+dnl       with_<lib>_libpath         Path (in linker -L/x/y/z form) to the
+dnl                                  location of the library files needed to
+dnl                                  compile with the external library
+dnl                                  package <lib>. Variable may actually
+dnl                                  include other, non-path related, linker
+dnl                                  settings.
+dnl       with_<lib>_prq             Space separated list of pre-requisites
+dnl                                  of the external library package <lib>.
+dnl
+dnl   The following are all interim variables used within this macro:
+dnl
+dnl       h; path; prereq; result; test_lib; test_enablement
+dnl
+AC_DEFUN([QM_CK_BESPOKE_CK_LIB],
+         [trace 5 Seeing if we can do the bespoke check for $1
+          test_lib=$1
+          dnl Use intermediate variable to circumvent any issues over macro
+          dnl substitution when we need to use {$test_lib} in the code
+
+          eval test_enablement=\$use_${test_lib}
+
+          if ( test "$test_enablement" == check -o  "$test_enablement" == needed -o  "$test_enablement" == yes )
+          then
+             # We need to check if this lib exists
+             #
+             # First check the state of the pre-requisites of the library
+             QM_CK_PREREQ_STATE([$1])
+             if ( test "x$process_now" != xno )
+             then
+                trace 6 Pre-requisites are in place, we can test now...
+
+                # Action the appropriate bespoke code
+                case $test_lib in
+dnl Insert bespoke library checks in this case statement. Please insert your
+dnl code into the case statement in alphabetical order. Your code should follow
+dnl the pattern of one of the existing packages or this example:
+dnl
+dnl                PkgName )
+dnl                        AC_MSG_CHECKING(for $test_lib)
+dnl                        AC_LANG_PUSH([C]) # if test requires compilation
+dnl                                          # of C code (can use C++)
+dnl                        .........
+dnl                        AC_LANG_POP([C]) # Balance any AC_LANG_PUSH used
+dnl                                         # above (C++ if appropriate)
+dnl                        if ( test $found = yes )
+dnl                        then
+dnl                           AC_MSG_RESULT([yes])
+dnl                           eval use_${test_lib}=present
+dnl                           eval ${test_lib}_CFLAGS= # As determined
+dnl                           eval ${test_lib}_LIBS=   # "      "
+dnl                        else
+dnl                           AC_MSG_RESULT([no])
+dnl                           eval use_${test_lib}=missing
+dnl                           # The output of any suitable errors is handled
+dnl                           # below
+dnl                        fi
+dnl                        ;;
+dnl with the ...... representing the checking code.
+dnl
+dnl The code supplied must set use_${test_lib} to present (if the external library
+dnl is available) or missing (if the library is not available). Should the
+dnl library be available, the code must also set the variables ${test_lib}_CFLAGS
+dnl (to the value of CFLAGS needed to compile with the library package) and
+dnl ${test_lib}_LIBS (to the linker options & library specifications needed to
+dnl link against the library package).
+
+dnl
+dnl         NOTE!
+dnl
+dnl             If adding packages whose name starts with a cu... you MUST add
+dnl             these here before the cu* entry
+dnl
+
+                cu* )
+                           trace 3 Performing compilation test for CUDA package $test_lib
+                           # All packages that begin cu... and depend on NVCC
+                           # are regarded as CUDA packages and are processed
+                           # with this code if they need a compilation check
+                           # to ascertain their availability.
+
+                           dnl# Any packages named cu... that are not CUDA
+                           dnl# packages (and do not depend on NVCC) must have
+                           dnl# their checking code written above this code.
+
+                           # We have already ensured that all of the CUDA
+                           # packages are of a similar revision number (see the
+                           # code for processing NVCC, below). The NVCC code
+                           # will also have already processed the CUDA packages
+                           # if a pkg-config check had been able to be employed
+                           # to determine the package availability.
+                           #
+                           # What we are left to do here is perform any
+                           # compilation check to determine the availability
+                           # of any remaining, unprocessed CUDA packages.
+
+                           # First check that we are not here by accident...
+                           # If the package we are testing has a name starting
+                           # with cu.. but does not depend on NVCC, we are here
+                           # by mistake and need to generate an error. We
+                           # already know the package name starts with a cu so
+                           # test the pre-requisites...
+                           eval pkgprq="\$with_${test_lib}_prq"
+                           prq=`echo " $pkgprq " | $SED -n 's/.* NVCC .*/yes/p'`
+                           if ( test "x$prq" != xyes )
+                           then
+                              # package does not depend on NVCC so is not
+                              # a CUDA package and we are here in error
+                              AC_ERROR([Configure is unable to check for library $test_lib])
+                           fi
+
+                           # We should therefore be testing a CUDA package and
+                           # will only actually be here if the package has yet
+                           # to be processed (i.e. we require a compilation
+                           # check).
+                           #
+                           # So lets do the compilation check once we know
+                           # which language we need to use
+                           eval lang="\$with_${test_lib}_lang"
+                           lang=`echo $lang`
+                           # This sets lang from $with_$Lib_lang and strips
+                           # any external spaces
+
+                           trace 6 Language of compilation check for $test_lib is $lang.
+                           dnl Remember, we cannot do an AC_LANG_PUSH($lang)
+                           dnl as we must know the language to use at autoconf
+                           dnl time, not runtime. Do not re-write this section
+                           dnl to optimise out the case statement.
+                           dnl We implement checks for C and C++ both to allow
+                           dnl future C++ test code to go in without need to
+                           dnl modify this section but also as curand needs a
+                           dnl C++ test.
+                           case $lang in
+                              'C' )
+                                     AC_LANG_PUSH([C])
+                                     QM_CHECK_CC_LIB([$test_lib],[])
+                                     AC_LANG_POP([C])
+                                     ;;
+                              'C++' )
+                                     AC_LANG_PUSH([C++])
+                                     QM_CHECK_CC_LIB([$test_lib],[])
+                                     AC_LANG_POP([C++])
+                                     ;;
+                              dnl If we ever extend QMake support to include
+                              dnl Fortran, we will need to expand this case
+                              dnl statement to allow for the CUDA-Fortran
+                              dnl libraries
+                              * )
+                                     AC_ERROR([Unrecognised test language $lang for $pkg])
+                                     ;;
+                           esac
+                           ;;
+
+                'libffmpeg' )
+                           # libffmpeg is a virtual package to include all
+                           # of the FFMPEG/libAV packages. As such, it is a
+                           # special case as besides setting up the virtual
+                           # package, we also need to ensure a consistent
+                           # set of dependant packages (all of a compatible
+                           # version).
+                           #
+                           # By the time we reach here, we already know that
+                           # a version of all of the FFMPEG/libAV packages
+                           # exist. We now need to ensure version consistency
+                           # across the dependencies.
+                           #
+                           # At one point in its development; 25/2/8, FFMPEG
+                           # changed the location of its header files. Sadly,
+                           # this was not done with an accompanying revision
+                           # bump. At best, revisioning seems to be:
+                           #
+                           #      Old layout   Could be either   New Layout
+                           # libavcodec
+                           #        51.50.0        51.50.1        51.51.0
+                           # libavformat
+                           #        52.6.0         52.7.0         52.8.0
+                           # libavutil
+                           #        49.5.0         49.6.0         49.7.0
+                           # libswscale
+                           #      no guarentee      0.5.0          0.5.1
+                           #
+                           # We therefore need to manually identify which
+                           # header layout we have. The old layout saw the
+                           # header files located under a single directory
+                           # (/usr/include/ffmpeg directory), newer revisions
+                           # put the headers in component specific dirs.
+                           #
+                           # In order to allow any client (of QMake) to use
+                           # the individual sub-packages we need to be able to
+                           # flag that the client should utilise the correct
+                           # pathname for the relevant headers. We do this by
+                           # checking to see whether we have the old or new
+                           # layout of the header files for each of the sub
+                           # packages. We then add the FFMPEG_OLD_HDR flag to
+                           # the CFLAGS for those sub-packages using the old
+                           # header layout.
+                           #
+                           # For clients that use all for four sub-packages
+                           # as a single entity we also need to check for
+                           # consistency across the packages.
+                           #
+                           # First look for the codec header files...
+                           CDC_HDR=notfound
+                           if ( test $use_FFMPEGCDEC = 'present' )
+                           then
+                              trace 5 Processing FFMPEGCDEC_CFLAGS @<:@$FFMPEGCDEC_CFLAGS@:>@ to determine header layout
+                              for h in $FFMPEGCDEC_CFLAGS
+                              do
+                                 # for each part of the CFLAGS, look for a
+                                 # -Ipath entry and extract the path
+                                 path=`echo $h | $SED -n 's/-I\([[^ ]]*\).*/\1/p'`
+                                 if ( test -n "$path" )
+                                 then
+                                    TRACE_INDENT="     "
+                                    trace 5 Looking for headers under $path
+                                    if ( test -f $path/libavcodec/avcodec.h )
+                                    then
+                                       # This is the newer location
+                                       TRACE_INDENT="          "
+                                       trace 5 New layout found
+                                       if ( test $CDC_HDR = notfound )
+                                       then
+                                          CDC_HDR=new
+                                       else
+                                          if ( test $CDC_HDR = old )
+                                          then
+                                             CDC_HDR=either
+                                          fi
+                                       fi
+                                    else
+                                       if ( test -f $path/avcodec.h )
+                                       then
+                                          TRACE_INDENT="          "
+                                          trace 5 Old layout found
+                                          if ( test $CDC_HDR = notfound )
+                                          then
+                                             CDC_HDR=old
+                                          else
+                                             if ( test $CDC_HDR = new )
+                                             then
+                                                CDC_HDR=either
+                                             fi
+                                          fi
+                                       else
+                                          TRACE_INDENT="          "
+                                          trace 5 No match found
+                                       fi
+                                    fi
+                                 else
+                                    TRACE_INDENT="     "
+                                    trace 6 Discarding $h component of CFLAGS
+                                 fi
+                              done
+
+                              if ( test $CDC_HDR = notfound )
+                              then
+                                 # Headers are not in a directory specified
+                                 # by CFLAGS check the default locations for,
+                                 # firstly, the new layout; then the old.
+                                 TRACE_INDENT="     "
+                                 trace 5 Headers not found using CFLAGS now checking standard dirs
+                                 AC_CHECK_HEADER([libavcodec/avcodec.h],
+                                                 [AC_CHECK_HEADER([avcodec.h],
+                                                                  [CDC_HDR=either],
+                                                                  [CDC_HDR=new],
+                                                                  [AC_INCLUDES_DEFAULT]
+                                                                 )
+                                                 ],
+                                                 [AC_CHECK_HEADER([avcodec.h],
+                                                                  [CDC_HDR=old],
+                                                                  [CDC_HDR=notfound],
+                                                                  [AC_INCLUDES_DEFAULT]
+                                                                 )
+                                                 ],
+                                                 [AC_INCLUDES_DEFAULT]
+                                                )
+                              fi
+                              trace 4 FFMPEGCDEC headers are $CDC_HDR
+                           fi
+
+                           # Now look for the container...
+                           FMT_HDR=notfound
+                           if ( test $use_FFMPEGCONT = 'present' )
+                           then
+                              trace 5 Processing FFMPEGCONT_CFLAGS @<:@$FFMPEGCONT_CFLAGS@:>@ to determine header layout
+                              for h in $FFMPEGCONT_CFLAGS
+                              do
+                                 # for each part of the CFLAGS, look for a
+                                 # -Ipath entry and extract the path
+                                 path=`echo $h | $SED -n 's/-I\([[^ ]]*\).*/\1/p'`
+                                 if ( test -n "$path" )
+                                 then
+                                    TRACE_INDENT="     "
+                                    trace 5 Looking for headers under $path
+                                    if ( test -f $path/libavformat/avformat.h )
+                                    then
+                                       # This is the newer location
+                                       TRACE_INDENT="          "
+                                       trace 5 New layout found
+                                       if ( test $FMT_HDR = notfound )
+                                       then
+                                          FMT_HDR=new
+                                       else
+                                          if ( test $FMT_HDR = old )
+                                          then
+                                             FMT_HDR=either
+                                          fi
+                                       fi
+                                    else
+                                       if ( test -f $path/avformat.h )
+                                       then
+                                          TRACE_INDENT="          "
+                                          trace 5 Old layout found
+                                          if ( test $FMT_HDR = notfound )
+                                          then
+                                             FMT_HDR=old
+                                          else
+                                             if ( test $FMT_HDR = new )
+                                             then
+                                                FMT_HDR=either
+                                             fi
+                                          fi
+                                       else
+                                          TRACE_INDENT="          "
+                                          trace 5 No match found
+                                       fi
+                                    fi
+                                 else
+                                    TRACE_INDENT="     "
+                                    trace 6 Discarding $h component of CFLAGS
+                                 fi
+                              done
+
+                              if ( test $FMT_HDR = notfound )
+                              then
+                                 # Headers are not in a directory specified
+                                 # by CFLAGS check the default locations for,
+                                 # firstly, the new layout; then the old.
+                                 TRACE_INDENT="     "
+                                 trace 5 Headers not found using CFLAGS now checking standard dirs
+                                 AC_CHECK_HEADER([libavformat/avformat.h],
+                                                 [AC_CHECK_HEADER([avformat.h],
+                                                                  [FMT_HDR=either],
+                                                                  [FMT_HDR=new],
+                                                                  [AC_INCLUDES_DEFAULT]
+                                                                 )
+                                                 ],
+                                                 [AC_CHECK_HEADER([avformat.h],
+                                                                  [FMT_HDR=old],
+                                                                  [FMT_HDR=notfound],
+                                                                  [AC_INCLUDES_DEFAULT]
+                                                                 )
+                                                 ],
+                                                 [AC_INCLUDES_DEFAULT]
+                                                )
+                              fi
+                              trace 4 FFMPEGCONT headers are $FMT_HDR
+                           fi
+
+                           # Turn our attention to the utilities...
+                           UTIL_HDR=notfound
+                           if ( test $use_FFMPEGUTIL = 'present' )
+                           then
+                              trace 5 Processing FFMPEGUTIL_CFLAGS @<:@$FFMPEGUTIL_CFLAGS@:>@ to determine header layout
+                              for h in $FFMPEGUTIL_CFLAGS
+                              do
+                                 # for each part of the CFLAGS, look for a
+                                 # -Ipath entry and extract the path
+                                 path=`echo $h | $SED -n 's/-I\([[^ ]]*\).*/\1/p'`
+                                 if ( test -n "$path" )
+                                 then
+                                    TRACE_INDENT="     "
+                                    trace 5 Looking for headers under $path
+                                    if ( test -f $path/libavutil/avutil.h )
+                                    then
+                                       # This is the newer location
+                                       TRACE_INDENT="          "
+                                       trace 5 New layout found
+                                       if ( test $UTIL_HDR = notfound )
+                                       then
+                                          UTIL_HDR=new
+                                       else
+                                          if ( test $UTIL_HDR = old )
+                                          then
+                                             UTIL_HDR=either
+                                          fi
+                                       fi
+                                    else
+                                       if ( test -f $path/avutil.h )
+                                       then
+                                          TRACE_INDENT="          "
+                                          trace 5 Old layout found
+                                          if ( test $UTIL_HDR = notnound )
+                                          then
+                                             UTIL_HDR=old
+                                          else
+                                             if ( test $UTIL_HDR = new )
+                                             then
+                                                UTIL_HDR=either
+                                             fi
+                                          fi
+                                       else
+                                          TRACE_INDENT="          "
+                                          trace 5 No match found
+                                       fi
+                                    fi
+                                 else
+                                    TRACE_INDENT="     "
+                                    trace 6 Discarding $h component of CFLAGS
+                                 fi
+                              done
+
+                              if ( test $UTIL_HDR = notfound )
+                              then
+                                 # Headers are not in a directory specified
+                                 # by CFLAGS check the default locations for,
+                                 # firstly, the new layout; then the old.
+                                 TRACE_INDENT="     "
+                                 trace 5 Headers not found using CFLAGS now checking standard dirs
+                                 AC_CHECK_HEADER([libavutil/avutil.h],
+                                                 [AC_CHECK_HEADER([avutil.h],
+                                                                  [UTIL_HDR=either],
+                                                                  [UTIL_HDR=new],
+                                                                  [AC_INCLUDES_DEFAULT]
+                                                                 )
+                                                 ],
+                                                 [AC_CHECK_HEADER([avutil.h],
+                                                                  [UTIL_HDR=old],
+                                                                  [UTIL_HDR=notfound],
+                                                                  [AC_INCLUDES_DEFAULT]
+                                                                 )
+                                                 ],
+                                                 [AC_INCLUDES_DEFAULT]
+                                                )
+                              fi
+                              trace 4 FFMPEGUTIL headers are $UTIL_HDR
+                           fi
+
+                           # Finally, continue on to the s/w Scaling...
+                           SWS_HDR=notfound
+                           if ( test $use_FFMPEGSWS = 'present' )
+                           then
+                              trace 5 Processing FFMPEGCDEC_CFLAGS @<:@$FFMPEGCDEC_CFLAGS@:>@ to determine header layout
+                              for h in $FFMPEGSWS_CFLAGS
+                              do
+                                 # for each part of the CFLAGS, look for a
+                                 # -Ipath entry and extract the path
+                                 path=`echo $h | $SED -n 's/-I\([[^ ]]*\).*/\1/p'`
+                                 if ( test -n "$path" )
+                                 then
+                                    TRACE_INDENT="     "
+                                    trace 5 Looking for headers under $path
+                                    if ( test -f $path/libswscale/swscale.h )
+                                    then
+                                       # This is the newer location
+                                       TRACE_INDENT="          "
+                                       trace 5 New layout found
+                                       if ( test $SWS_HDR = notfound )
+                                       then
+                                          SWS_HDR=new
+                                       else
+                                          if ( test $SWS_HDR = old )
+                                          then
+                                             SWS_HDR=either
+                                          fi
+                                       fi
+                                    else
+                                       if ( test -f $path/swscale.h )
+                                       then
+                                          TRACE_INDENT="          "
+                                          trace 5 Old layout found
+                                          if ( test $SWS_HDR = notfound )
+                                          then
+                                             SWS_HDR=old
+                                          else
+                                             if ( test $SWS_HDR = new )
+                                             then
+                                                SWS_HDR=either
+                                             fi
+                                          fi
+                                       else
+                                          TRACE_INDENT="          "
+                                          trace 5 No match found
+                                       fi
+                                    fi
+                                 else
+                                    TRACE_INDENT="     "
+                                    trace 6 Discarding $h component of CFLAGS
+                                 fi
+                              done
+
+                              if ( test $SWS_HDR = notfound )
+                              then
+                                 # Headers are not in a directory specified
+                                 # by CFLAGS check the default locations for,
+                                 # firstly, the new layout; then the old.
+                                 TRACE_INDENT="     "
+                                 trace 5 Headers not found using CFLAGS now checking standard dirs
+                                 AC_CHECK_HEADER([libswscale/swscale.h],
+                                                 [AC_CHECK_HEADER([swscale.h],
+                                                                  [SWS_HDR=either],
+                                                                  [SWS_HDR=new],
+                                                                  [AC_INCLUDES_DEFAULT]
+                                                                 )
+                                                 ],
+                                                 [AC_CHECK_HEADER([swscale.h],
+                                                                  [SWS_HDR=old],
+                                                                  [SWS_HDR=notfound],
+                                                                  [AC_INCLUDES_DEFAULT]
+                                                                 )
+                                                 ],
+                                                 [AC_INCLUDES_DEFAULT]
+                                                )
+                              fi
+                              trace 4 FFMPEGSWS headers are $SWS_HDR
+                           fi
+
+                           # We should now know the header revision type for
+                           # each of the sub-packages. We now have to check
+                           # for a consistent set of either all old-layout
+                           # header files or all new-layout files.
+                           #
+                           FFMPEG_HDR_FMT=notfound
+
+                           # Ensure the codec and container are in step
+                           if ( test $CDC_HDR = either )
+                           then
+                              FFMPEG_HDR_FMT=$FMT_HDR
+                           else
+                              if ( test $FMT_HDR = either )
+                              then
+                                 FFMPEG_HDR_FMT=$CDC_FMT
+                              else
+                                 if ( test $CDC_HDR != $FMT_HDR )
+                                 then
+                                    FFMPEG_HDR_FMT=broken
+                                    trace 5 FFMPEG Headers are inconsistent as the codec and container are different layouts
+                                 else
+                                    FFMPEG_HDR_FMT=$FMT_HDR
+                                 fi
+                              fi
+                           fi
+
+                           # Check UTIL matches the other headers
+                           if ( test $FFMPEG_HDR_FMT = either )
+                           then
+                              FFMPEG_HDR_FMT = $UTIL_HDR
+                           else
+                              if ( test $FFMPEG_HDR_FMT != $UTIL_HDR )
+                              then
+                                 if ( test $UTIL_HDR != either )
+                                 then
+                                    trace 5 FFMPEG Headers are inconsistent as the utils headers differ from the codec and container layout
+                                    FFMPEG_HDR_FMT=broken
+                                 fi
+                              fi
+                           fi
+
+                           # Check SWS matches the other headers
+                           if ( test $FFMPEG_HDR_FMT = either )
+                           then
+                              FFMPEG_HDR_FMT = $SWS_HDR
+                           else
+                              if ( test $FFMPEG_HDR_FMT != $SWS_HDR )
+                              then
+                                 if ( test $SWS_HDR != either )
+                                 then
+                                    trace 5 FFMPEG Headers are inconsistent as the swscaling headers differ the other components
+                                    FFMPEG_HDR_FMT=broken
+                                 fi
+                              fi
+                           fi
+
+                           # If either format is acceptable, force use of the
+                           # newer layout
+                           if ( test $FFMPEG_HDR_FMT = either )
+                           then
+                              FFMPEG_HDR_FMT = new
+                              if ( test $use_libffmpeg != no )
+                              then
+                                 use_libffmpeg=present
+                              fi
+                           else
+                              if ( test $FFMPEG_HDR_FMT = broken )
+                              then
+                                 if ( test $use_libffmpeg = yes )
+                                 then
+                                    AC_MSG_FAILURE([Required library libffmpeg has inconsistent headers])
+                                 else
+                                    if ( test $use_libffmpeg != no )
+                                    then
+                                       trace 4 Inconsistent FFMPEG headers block libffmpeg
+                                       use_libffmpeg=blocked
+                                    fi
+                                 fi
+                              else
+                                 if ( test $FFMPEG_HDR_FMT = notfound )
+                                 then
+                                    # We only actually hit this code if none
+                                    # of the sub-packages' header files are
+                                    # found during our layout revision checks.
+                                    # If one or more are found but some are
+                                    # missing, the variable $FFMPEG_HDR_FMT
+                                    # will be set to 'Broken'.
+                                    if ( test $use_libffmpeg = yes )
+                                    then
+                                       AC_MSG_FAILURE([Required library libffmpeg has missing headers])
+                                    else
+                                       if ( test $use_libffmpeg != no )
+                                       then
+                                          trace 4 Missing FFMPEG headers block libffmpeg
+                                          use_libffmpeg=blocked
+                                       fi
+                                    fi
+                                 else
+                                    if ( test $use_libffmpeg != no )
+                                    then
+                                       use_libffmpeg=present
+                                    fi
+                                 fi
+                              fi
+                           fi
+                           #
+                           trace 3 FFMPEG header analysis
+                           TRACE_INDENT="     "
+                           trace 3 Codec:$CDC_HDR
+                           TRACE_INDENT="     "
+                           trace 3 Container:$FMT_HDR
+                           TRACE_INDENT="     "
+                           trace 3 Utils:$UTIL_HDR
+                           TRACE_INDENT="     "
+                           trace 3 s/w scaling:$SWS_HDR
+                           TRACE_INDENT="     "
+                           trace 3 Overall:$FFMPEG_HDR_FMT
+                           #
+                           # Now look to add -DFFMPEG_OLD_HDR if appropriate.
+                           #
+                           # First fold any sub-packages, that have both
+                           # layout revisions, to use the layout common
+                           # between the remaining sub-packages. We will
+                           # only do this if we have all four sub-packages
+                           # and they agree on the layout to use. If all
+                           # sub-packages are present in both forms,
+                           # FFMPEG_HDR_FMT will already have been set to
+                           # prefer the new layout.
+                           if ( test $FFMPEG_HDR_FMT != notfound -a $FFMPEG_HDR_FMT = broken )
+                           then
+                              # Force all sub-packages to the common layout
+                              CDC_HDR=$FFMPEG_HDR_FMT
+                              FMT_HDR=$FFMPEG_HDR_FMT
+                              UTIL_HDR=$FFMPEG_HDR_FMT
+                              SWS_HDR=$FFMPEG_HDR_FMT
+                           fi
+                           # Now actually append to CFLAGS if using the old layout
+                           if ( test $CDC_HDR = old )
+                           then
+                              FFMPEGCDEC_CFLAGS=$FFMPEGCDEC_CFLAGS" -DFFMPEG_OLD_HDR "
+                           fi
+                           if ( test $FMT_HDR = old )
+                           then
+                              FFMPEGCONT_CFLAGS=$FFMPEGCONT_CFLAGS" -DFFMPEG_OLD_HDR "
+                           fi
+                           if ( test $UTIL_HDR = old )
+                           then
+                              FFMPEGUTIL_CFLAGS=$FFMPEGUTIL_CFLAGS" -DFFMPEG_OLD_HDR "
+                           fi
+                           if ( test $SWS_HDR = old )
+                           then
+                              FFMPEGSWS_CFLAGS=$FFMPEGSWS_CFLAGS" -DFFMPEG_OLD_HDR "
+                           fi
+                           # If libffmpeg is available, flag it as a virtual
+                           # package to ensure it is correctly written to the
+                           # configure files
+                           if ( test $use_libffmpeg = present)
+                           then
+                              with_libffmpeg_check=virtual
+                           fi
+                           ;;
+
+                'NVCC' )
+                           trace 3 Checking availabilityof NVCC and checking revisions of all CUDA packages
+                           # NVCC is the CUDA compiler-driver program. As part
+                           # of the CUDA suite, this needs to be of a common
+                           # version to the rest of the CUDA packages. For this
+                           # reason, we need to confirm here that all of the
+                           # version numbers for the CUDA packages match. We
+                           # will also try to determine if we can employ a
+                           # pkg-config check to test for availability of the
+                           # CUDA packages.
+
+                           # If pkg-config can be employed for any CUDA package
+                           # this code will test for the existance of that
+                           # package.
+
+                           trace 4 Post-processing CUDA configuration options
+
+                           # First identify the CUDA packages QMake is aware of. By convention,
+                           # the name of these all start cu... and depend on NVCC. Also by
+                           # convention, the package name should equate to the root of name of
+                           # the pkgconfig file for the CUDA package.
+                           #
+                           trace 5 Identifying CUDA packages
+                           #
+                           # Find the supported packages that start cu...
+                           #
+                           cuPkgs=`echo " $KnownLibs " | \
+                                              $SED -e 's/ @<:@^c@:>@@<:@^ @:>@*/ /g' \
+                                                   -e 's/ c@<:@^u@:>@@<:@^ @:>@*/ /g'`
+                           dnl# sed commands are:
+                           dnl#     s/ [^c][^ ]*/ /g   and s/ c[^u][^ ]*/ /g
+                           # i.e. strip out all the packages that do not begin with a c and
+                           # strip out those that begin with c but do not have u as 2nd char
+                           #
+                           trace 6 Packages beginning with cu are: $cuPkgs
+
+                           # Now confirm which are CUDA packages by checking for dependency
+                           # on NVCC.
+                           #
+                           CUDApkgs=""
+                           trace 6 Checking pre-requisites of cu packages...
+                           for pkg in $cuPkgs
+                           do
+                              eval pkgprq="\$with_${pkg}_prq"
+                              TRACE_INDENT="     "
+                              trace 6 Pre-requisites of $pkg are: $pkgprq
+                              for prq in $pkgprq
+                              do
+                                 if ( test $prq == NVCC )
+                                 then
+                                    CUDApkgs="$pkg $CUDApkgs"
+                                 fi
+                              done
+                           done
+
+                           # We now have a list of known CUDA packages. To determine which of
+                           # these have been been configured by the user, we can construct a
+                           # sed command to extract the CUDA packages from any given list.
+                           #
+                           # We can also discard any CUDA packages that have been explicitly
+                           # disabled.
+                           SEDcmd="h"
+                           for pkg in $CUDApkgs
+                           do
+                              if ( eval test X\$use_$pkg != Xno )
+                              then
+                                SEDcmd="$SEDcmd;g;s/.* $pkg .*/ $pkg /p"
+                              fi
+                           done
+                           trace 6 CUDA package list sed command: $SEDcmd
+                           # SEDcmd now holds a command that will report all non-disabled
+                           # CUDA packages in any given list of packages.
+
+                           # Now we determine the list of CUDA packages that the user has
+                           # explicitly configured (and the list that they have not)
+                           #
+                           cfgCUDA=`echo " $ConfiguredLibs " | $SED -n "$SEDcmd"`
+                           #
+                           # N.B. sed command relies on the leading and trailing space
+                           # around the echoed library lists
+                           #
+                           ucfgCUDA=`echo " $UnconfiguredLibs " | $SED -n "$SEDcmd"`
+                           #
+                           trace 3 Configured CUDA packages: $cfgCUDA
+                           trace 3 Un-configured CUDA packages: $ucfgCUDA
+
+
+                           # Now we can begin to check for consistency in the user settings...
+                           #
+                           # Basically, we need to check the version of CUDA matches between
+                           # all the CUDA packages and the compiler driver.
+                           CUDAver=""
+
+
+                           # Check for version from any user-specified NVCC
+                           if ( test "x$USER_NVCC" != x )
+                           then
+                              AC_MSG_CHECKING([for nVidia compiler driver])
+                              if ( test ! -x $NVCC  || test -d $NVCC )
+                              then
+                                 AC_MSG_RESULT([no])
+                                 AC_ERROR([NVCC setting does not point to an executable compiler driver])
+                              else
+                                 AC_MSG_RESULT([$NVCC])
+                              fi
+                              # We are looking to extract x.y from the nvcc version string that
+                              # is of the form "... release x.y, Vx.y.z"
+                              dnl# sed command is:
+                              dnl#   's/.* release  *\([0-9][0-9]*\)\.\([0-9][0-9]*\)[, ] *V\1\.\2\.[0-9][0-9]*/\1\.\2/p'
+                              NvccVer=`"$NVCC" --version | $SED -n \
+                    's/.* release  *\(@<:@0-9@:>@@<:@0-9@:>@*\)\.\(@<:@0-9@:>@@<:@0-9@:>@*\)@<:@, @:>@ *V\1\.\2\.@<:@0-9@:>@@<:@0-9@:>@*/\1\.\2/p'`
+                              if ( test -z "$NvccVer" )
+                              then
+                                 AC_WARN([Cannot determine CUDA version from NVCC compiler driver])
+                                 # To allow for a potential future change in the revision number
+                                 # reporting from nvcc, we will assume we have found the compiler
+                                 # driver even though the revision number has not been reported
+                                 # as we would otherwise expect.
+                                 use_NVCC=present
+                              else
+                                 # We seem to have a working NVCC setting, record that
+                                 use_NVCC=present
+                                 # Use the version information to select the CUDA version
+                                 CUDAver=$NvccVer
+                                 TRACE_INDENT="     "
+                                 trace 5 User NVCC setting implies CUDA version $NvccVer
+                                 # Test the version of nvcc against any version implied by the
+                                 # user settings for the individual CUDA packages
+                              fi
+                           else
+                              # No user NVCC setting
+                              if ( test "x$InheritCFG" = xyes )
+                              then
+                                 trace 2 No user-specified NVCC, checking existing configuration
+                                 # Extract NVCC setting from QMake config file
+                                 NVCC=`cat $QMAKE_CFG | $SED  -n 's/^NVCC=\(.*\)/\1/p'`
+                                 if ( test "x$NVCC" != x )
+                                 then
+                                    # Now test what version of CUDA that implies..
+                                    #
+                                    # We are looking to extract x.y from the nvcc version string that
+                                    # is of the form "... release x.y, Vx.y.z"
+                                    dnl# sed command is:
+                                    dnl#   's/.* release  *\([0-9][0-9]*\)\.\([0-9][0-9]*\)[, ] *V\1\.\2\.[0-9][0-9]*/\1\.\2/p'
+                                    NvccVer=`"$NVCC" --version | $SED -n \
+                    's/.* release  *\(@<:@0-9@:>@@<:@0-9@:>@*\)\.\(@<:@0-9@:>@@<:@0-9@:>@*\)@<:@, @:>@ *V\1\.\2\.@<:@0-9@:>@@<:@0-9@:>@*/\1\.\2/p'`
+                                    if ( test -z "$NvccVer" )
+                                    then
+                                       # Unlikely to happen as this command would have worked when
+                                       # the original config was generated. Something is seriously
+                                       # awry so error out.
+                                       AC_ERROR([Cannot determine CUDA version from existing NVCC setting])
+                                    else
+                                       # We seem to have a working NVCC setting, record that
+                                       use_NVCC=present
+                                       # Use the version information to select the CUDA version
+                                       CUDAver=$NvccVer
+                                       TRACE_INDENT="     "
+                                       trace 5 Existing NVCC setting implies CUDA version $NvccVer
+                                    fi
+                                 else
+                                    trace 3 No existing NVCC setting, will look for one later
+                                    NvccVer=""
+                                 fi
+                              else
+                                 # No user setting and not looking at existing config
+                                 trace 3 No user-specified NVCC, will look for one later
+                                 NvccVer=""
+                              fi
+                           fi
+
+
+                           trace 2 Consistency checking individual CUDA package settings...
+                           # Consider the user-configured CUDA packages...
+                           #
+                           # We could also use this section as a means to locate nvcc if we
+                           # are yet to locate it. However, this would need some fairly complex
+                           # code so has been omitted (for each CUDA package, we would need to
+                           # check each path implied by the library or include setting; look
+                           # for some or all of path/../bin/nvcc, path/bin/nvcc, path/nvcc and
+                           # path/../nvcc; test that all the located nvcc binaries relate to
+                           # the same binary, including hard or symbolic links; ensure only one
+                           # binary is located across all of the CUDA packages).
+                           #
+                           for pkg in $cfgCUDA
+                           do
+                              TRACE_INDENT="     "
+                              trace 5 Checking $pkg...
+                              eval pcf="\$with_${pkg}_check"
+                              if ( test "x$pcf" = xpkgconfig )
+                              then
+                                 # User has requested the use of a pkgconfig file (via the
+                                 # --with-<lib>-pkgconf switch). Can we determine the CUDA
+                                 # version from this .pc file?
+                                 eval pcf="\$with_${pkg}_pkgconf"
+                                 ThisVer=`$PKG_CONFIG --modversion "$pcf" 2>/dev/null`
+                                 if ( test "x$ThisVer" != x )
+                                 then
+                                    # Record version for integrity check
+                                    eval ${pkg}_version="$ThisVer"
+                                    TRACE_INDENT="          "
+                                    trace 5 $pkg asking to use $pcf implies CUDA $ThisVer
+                                    if ( test "x$CUDAver" != x )
+                                    then
+                                       if ( test "$CUDAver" != "$ThisVer" )
+                                       then
+                                          CUDAver=conflict
+                                       fi
+                                    else
+                                       CUDAver=$ThisVer
+                                    fi
+                                 else
+                                    AC_WARN([Cannot determine CUDA version from --with-${pkg}-pkgconf file \($pcf\)])
+                                    # This could be a fatal error as the pkg-config file is
+                                    # liable to be incorrect in this situation. However, to
+                                    # allow configure to work with a user-created pkg-config
+                                    # file that has no version information but is otherwise
+                                    # useful, we only generate a warning here. If it is an
+                                    # incorrect user-setting, the later check for the library
+                                    # will trap this and error out.
+                                 fi
+                              else
+                                 # Still using compilation check - see if the details for
+                                 # that hint at the CUDA version...
+                                 #
+                                 # Look at each library path component from the
+                                 # --with-<lib>-library setting
+                                 #
+                                 # Strip out any -c..... where c is not an L
+                                 #           any option not starting with a -
+                                 #           drop any leading -L
+                                 # in other words, extract any and all -L paths
+                                 dnl# sed commands are:
+                                 dnl#    's/ \{1\}-[^L][^ ]*/ /g' \
+                                 dnl#    's/ \{1\}[^-][^ ]*/ /g' \
+                                 dnl#    's/ \{1\}-L\([^ ]*\)/ \1 /g'`
+                                 TRACE_INDENT="          "
+                                 trace 5 Checking library paths...
+                                 ImpliedVer=""
+                                 TRACE_INDENT="          "
+                                 libpath=`eval echo \\\$with_${pkg}_libpath`
+                                 trace 6 Full specification is: $libpath
+                                 for dir in `echo " $libpath " | \
+                                                    $SED -e 's/ \{1\}-@<:@^L@:>@@<:@^ @:>@*/ /g' \
+                                                         -e 's/ \{1\}@<:@^-@:>@@<:@^ @:>@*/ /g' \
+                                                         -e 's/ \{1\}-L\(@<:@^ @:>@*\)/ \1 /g'`
+                                 do
+                                    TRACE_INDENT="               "
+                                    trace 6 Processing $dir element...
+                                    # Attempt to extract a version number from the current -L
+                                    # path element ...
+                                    #
+                                    # Look for paths of the form:
+                                    #                ***99.99{.99}{/lib{64}}
+                                    # This will match both the usual Linux form of:
+                                    #             /usr/local/cuda-X.Y
+                                    # and the Mac OSX form of:
+                                    #          /Developer/NVIDIA/CUDA-X.Y
+                                    #
+                                    dnl# sed command is:
+                                    dnl#    's/.*\([0-9]\{1\}\.[0-9]\{1\}\)\(\.[0-9]\{1\}\)*\(\/lib\(64\)\{0,1\}\)\{0,1\}$/\1/p'
+                                    ThisVer=`echo $dir | $SED -n \
+                                      's/.*\(@<:@0-9@:>@\{1\}\.@<:@0-9@:>@\{1\}\)\(\.@<:@0-9@:>@\{1\}\)*\(\/lib\(64\)\{0,1\}\)\{0,1\}$/\1/p'`
+                                    if ( test x"$ThisVer" != x )
+                                    then
+                                       TRACE_INDENT="                   "
+                                       trace 6 Implies version $ThisVer
+                                       if ( test x"$ImpliedVer" != x )
+                                       then
+                                          if ( test "$ImpliedVer" != "$ThisVer" )
+                                          then
+                                             AC_WARN([Cannot infer CUDA version from --with-${pkg}-library settings])
+                                             ImpliedVer="conflict"
+                                             break
+#                                         else
+#                                            # This setting consistent with the previous entry
+                                          fi
+                                       else
+                                          # First version number we have found for this package
+                                          ImpliedVer=$ThisVer
+                                       fi
+                                    else
+                                       TRACE_INDENT="                    "
+                                       trace 6 No usable version number on this component path
+                                    fi
+                                 done
+                                 if ( test "x$ImpliedVer" != x )
+                                 then
+                                    if ( test "$ImpliedVer" != conflict )
+                                    then
+                                       # We have a version inferred from the --with-<lib>-library
+                                       # setting. Record this for integrity check
+                                       eval ${pkg}_version="$ImpliedVer"
+                                       TRACE_INDENT="          "
+                                       trace 5 $pkg library path implies CUDA $ImpliedVer
+                                       if ( test "x$CUDAver" != x )
+                                       then
+                                          if ( test "$CUDAver" != "$ImpliedVer" )
+                                          then
+                                             CUDAver=conflict
+                                          fi
+                                       else
+                                          CUDAver="$ImpliedVer"
+                                       fi
+                                    fi
+                                 else
+                                    AC_WARN([Cannot infer CUDA version from --with-${pkg}-library])
+                                 fi
+
+                                 # Now look at each include path component from the
+                                 # --with-<lib>-include setting
+                                 #
+                                 # Strip out any -c..... where c is not an I
+                                 #           any option not starting with a -
+                                 #           drop any leading -I
+                                 # in other words, extract any and all -I paths
+                                 dnl# sed commands are:
+                                 dnl#    's/ \{1\}-[^I][^ ]*/ /g' \
+                                 dnl#    's/ \{1\}[^-][^ ]*/ /g' \
+                                 dnl#    's/ \{1\}-I\([^ ]*\)/ \1 /g'`
+                                 TRACE_INDENT="          "
+                                 trace 5 Checking include paths...
+                                 ImpliedVer=""
+                                 TRACE_INDENT="          "
+                                 inc=`eval echo \\\$with_${pkg}_inc`
+                                 trace 6 Full specification is: $inc
+                                 for dir in `echo " $inc " | \
+                                                    $SED -e 's/ \{1\}-@<:@^I@:>@@<:@^ @:>@*/ /g' \
+                                                         -e 's/ \{1\}@<:@^-@:>@@<:@^ @:>@*/ /g' \
+                                                         -e 's/ \{1\}-I\(@<:@^ @:>@*\)/ \1 /g'`
+                                 do
+                                    TRACE_INDENT="               "
+                                    trace 6 Processing $dir element...
+                                    # Attempt to extract a version number from the current -I
+                                    # path element ...
+                                    #
+                                    # Look for paths of the form:
+                                    #                ***99.99{.99}{/include}
+                                    # This will match both the usual Linux form of:
+                                    #             /usr/local/cuda-X.Y
+                                    # and the Mac OSX form of:
+                                    #          /Developer/NVIDIA/CUDA-X.Y
+                                    #
+                                    dnl# sed command is:
+                                    dnl#    's/.*\([0-9]\{1\}\.[0-9]\{1\}\)\(\.[0-9]\{1\}\)*\(\/include\)\{0,1\}$/\1/p'
+                                    ThisVer=`echo $dir | $SED -n \
+                                      's/.*\(@<:@0-9@:>@\{1\}\.@<:@0-9@:>@\{1\}\)\(\.@<:@0-9@:>@\{1\}\)*\(\/include\)\{0,1\}$/\1/p'`
+                                    if ( test x"$ThisVer" != x )
+                                    then
+                                       TRACE_INDENT="                   "
+                                       trace 6 Implies version $ThisVer
+                                       if ( test x"$ImpliedVer" != x )
+                                       then
+                                          if ( test "$ImpliedVer" != "$ThisVer" )
+                                          then
+                                             AC_WARN([Cannot infer CUDA version from --with-${pkg}-include settings])
+                                             ImpliedVer="conflict"
+                                             break
+#                                         else
+#                                            # This setting consistent with the previous entry
+                                          fi
+                                       else
+                                          # First version number we have found for this package
+                                          ImpliedVer=$ThisVer
+                                       fi
+                                    else
+                                       TRACE_INDENT="                    "
+                                       trace 6 No usable version number on this component path
+                                    fi
+                                 done
+                                 if ( test "x$ImpliedVer" != x )
+                                 then
+                                    if ( test "$ImpliedVer" != conflict )
+                                    then
+                                       # We have a version inferred from the --with-<lib>-include
+                                       # setting. Does this agree with any version we might have
+                                       # from the --with-<lib>-library setting?
+                                       #
+                                       ThisVer=`eval echo \\\$${pkg}_version`
+                                       if ( test "x$ThisVer" == x || test "x$ThisVer" == "x$ImpliedVer" )
+                                       then
+                                          # Either we obtained no version information from the
+                                          # --with-<lib>-library setting, or it agrees with the
+                                          # one we have inferred from --with-<lib>-include.
+                                          #
+                                          # Record the version inferred from --with-<lib>-include
+                                          # for integrity check amoungst all the CUDA components
+                                          eval ${pkg}_version="$ImpliedVer"
+                                          TRACE_INDENT="          "
+                                          trace 5 $pkg include path implies CUDA $ImpliedVer
+                                          if ( test "x$CUDAver" != x )
+                                          then
+                                             if ( test "$CUDAver" != "$ImpliedVer" )
+                                             then
+                                                CUDAver=conflict
+                                             fi
+                                          else
+                                             CUDAver="$ImpliedVer"
+                                          fi
+                                       else
+                                          AC_ERROR([--with-${pkg}-library and --with-${pkg}-include appear to select differing versions of CUDA])
+                                       fi
+                                    fi
+                                 else
+                                    AC_WARN([Cannot infer CUDA version from --with-${pkg}-include])
+                                 fi
+
+                              fi # (end of no pkgconf processing)
+                           done # Looping over configured packages
+
+                           trace 6 ${CUDAver:+CUDA version }${CUDAver:-No CUDA version} implied from library settings
+
+
+                           # Have we managed to imply the CUDA version from the user-settings?
+                           if ( test "x$CUDAver" != x )
+                           then
+                              # We found some version numbers - did they all match?
+                              if ( test "$CUDAver" = conflict )
+                              then
+                                 # Mismatches found - report these and error out
+
+                                 # First report conflicts with any user-selected nvcc
+                                 if ( test "x$NvccVer" != x )
+                                 then
+                                    # We have a version from either a user-selected nvcc, or an
+                                    # nvcc setting from an existing QMake configuration. Compare
+                                    # that with the versions of the other user-configured
+                                    # packages.
+                                    for pkg in $cfgCUDA
+                                    do
+                                       eval ThisVer=\$${pkg}_version
+                                       if ( test x$ThisVer != x )
+                                       then
+                                          if ( test $NvccVer != $ThisVer )
+                                          then
+                                             AC_WARN([$pkg and the NVCC setting seem to be asking to use different CUDA versions])
+                                          fi
+                                       fi
+                                    done
+                                 fi
+
+                                 # Now check for version consistency over all configured CUDA pkgs
+                                 LeftToCheck=$cfgCUDA
+                                 for pkg in $cfgCUDA
+                                 do
+                                    # Drop current pkg from the list to check against
+                                    LeftToCheck=`echo " $LeftToCheck " | $SED 's/ '$pkg' //g'`
+                                    eval ThisVer=\$${pkg}_version
+                                    if ( test x$ThisVer != x )
+                                    then
+                                       # We have a version number for the current package, test
+                                       # it against any others
+                                       for chk in $LeftToCheck
+                                       do
+                                          eval tmp=\$${chk}_version
+                                          if ( test "x$tmp" != x )
+                                          then
+                                             # We have version number from the comparison package
+                                             if ( test $tmp != $ThisVer )
+                                             then
+                                                AC_WARN([$pkg and $chk seem to be asking to use different CUDA versions])
+                                             fi
+                                          fi
+                                       done
+                                    fi
+                                 done # Integrity check
+
+                                 AC_ERROR([Version inconsistencies amongst CUDA package settings])
+
+                              fi # End of version inconsistency reporting
+                           fi
+
+
+                           if (  test "x$NVCC" = x )
+                           then
+                              # Still not found a viable setting for NVCC, consider $PATH and
+                              # the default CUDA directories...
+                              #
+
+                              if ( test "x$CUDAver" != x )
+                              then
+                                 # We know the CUDA version we are looking for so try to match
+                                 # any nvcc binary to this.
+
+                                 TRACE_INDENT="     "
+                                 trace 3 Looking down \$PATH plus in default CUDA directories
+
+                                 # Version specific CUDA default location, for version X.Y,
+                                 # /usr/local/cuda-X.Y
+                                 #
+                                 CUDAlocations="/usr/local/cuda-$CUDAver/bin"
+
+                                 # OSX has differing default locations (but does sometimes
+                                 # support the standard default paths). Prefer the OSX
+                                 # default paths:
+                                 #
+                                 if ( test x$ARC = xmacosx32 || test x$ARC = xmacosx64 )
+                                 then
+                                    # Additional version specific default CUDA location,
+                                    # /Developer/NVIDIA/CUDA-X.Y
+                                    #
+                                    CUDAlocations="/Developer/NVIDIA/CUDA-$CUDAver/bin$PATH_SEPARATOR$CUDAlocations"
+                                    #
+                                    # Version unspecific default CUDA location
+                                    # /Developer/NVIDIA/CUDA
+                                    #
+                                    CUDAlocations="$CUDAlocations$PATH_SEPARATOR/Developer/NVIDIA/CUDA/bin"
+                                 fi
+
+                                 # Version unspecific default CUDA location
+                                 CUDAlocations="$CUDAlocations$PATH_SEPARATOR/usr/local/cuda/bin"
+
+                                 # Change IFS to split PATH on the element separator (:)
+                                 save_ifs="$IFS"
+                                 IFS=$PATH_SEPARATOR
+                                 for ThisDir in $PATH$PATH_SEPARATOR$CUDAlocations
+                                 do
+                                    # Immediately reset IFS
+                                    IFS="$save_ifs"
+                                    TRACE_INDENT="          "
+                                    trace 3 Considering $ThisDir/nvcc
+                                    if ( test -x "$ThisDir/nvcc" )
+                                    then
+                                       # Now test if this reports back the expected CUDA
+                                       # version.
+                                       #
+                                       # We are looking to extract x.y from the version string
+                                       # that is of the form "... release x.y, Vx.y.z"
+                                       dnl# sed command is:
+                                       dnl#   's/.* release  *\([0-9][0-9]*\)\.\([0-9][0-9]*\)[, ] *V\1\.\2\.[0-9][0-9]*/\1\.\2/p'
+                                       NvccVer=`"$ThisDir/nvcc" --version | $SED -n \
+                   's/.* release  *\(@<:@0-9@:>@@<:@0-9@:>@*\)\.\(@<:@0-9@:>@@<:@0-9@:>@*\)@<:@, @:>@ *V\1\.\2\.@<:@0-9@:>@@<:@0-9@:>@*/\1\.\2/p'`
+                                       if ( test "x$NvccVer" != x )
+                                       then
+                                          if ( test $NvccVer = $CUDAver )
+                                          then
+                                             trace 2 Found matching CUDA compiler driver
+                                             use_NVCC=present
+                                             NVCC="$ThisDir/nvcc"
+                                             break
+                                          else
+                                             TRACE_INDENT="               "
+                                             trace 6 But version, $NvccVer, does not match
+                                             NvccVer=""
+                                          fi
+                                       fi
+                                    else
+                                       TRACE_INDENT="               "
+                                       trace 6 But this is not an executable
+                                    fi
+                                 done
+                              else
+                                 trace 2 No implied CUDA version just searching for default CUDA compiler driver
+                                 AC_PATH_PROG([NVCC],[nvcc],[missing])
+                                 if ( test "$NVCC" = missing )
+                                 then
+                                    trace 5 No nvcc on the PATH, trying the CUDA default locations
+
+                                    # OSX, as well as sometimes supporting the standard default
+                                    # location, has its own default location. Prefer that.
+                                    if ( test x$ARC = xmacosx32 || test x$ARC = xmacosx64 )
+                                    then
+                                       if ( test -x /Developer/NVIDIA/CUDA/bin/nvcc )
+                                       then
+                                          NVCC=/Developer/NVIDIA/CUDA/bin/nvcc
+                                       else
+                                          if ( test -x /usr/local/cuda/bin/nvcc )
+                                          then
+                                             NVCC=/usr/local/cuda/bin/nvcc
+                                          fi
+                                       fi
+                                    else
+                                       # Non-OSX, standard default location
+                                       if ( test -x /usr/local/cuda/bin/nvcc )
+                                       then
+                                          NVCC=/usr/local/cuda/bin/nvcc
+                                       fi
+                                    fi
+                                 fi
+
+                                 if ( test "$NVCC" = missing )
+                                 then
+                                    # Still have not found the compiler driver
+                                    trace 5 No default CUDA compiler driver found
+                                    NVCC=""
+                                 else
+                                    # Now test what version of CUDA NVCC implies..
+                                    #
+                                    # We are looking to extract x.y from the version string that
+                                    # is of the form "... release x.y, Vx.y.z"
+                                    dnl# sed command is:
+                                    dnl#   's/.* release  *\([0-9][0-9]*\)\.\([0-9][0-9]*\)[, ] *V\1\.\2\.[0-9][0-9]*/\1\.\2/p'
+                                    NvccVer=`"$NVCC" --version | $SED -n \
+                  's/.* release  *\(@<:@0-9@:>@@<:@0-9@:>@*\)\.\(@<:@0-9@:>@@<:@0-9@:>@*\)@<:@, @:>@ *V\1\.\2\.@<:@0-9@:>@@<:@0-9@:>@*/\1\.\2/p'`
+                                    if ( test -z "$NvccVer" )
+                                    then
+                                       AC_WARN([Unable to determine CUDA revision from CUDA compiler driver $NVCC])
+                                       # Either means nvcc has changed the format of version
+                                       # display or we have not actually found the compiler
+                                       # driver.
+                                    else
+                                       trace 5 Found CUDA compiler driver $NVCC for version $NvccVer of CUDA
+                                       CUDAver=$NvccVer
+                                    fi
+                                    use_NVCC=present
+                                 fi
+                              fi # (no CUDA version)
+                           fi # (no NVCC)
+
+
+                           # There are additional concerns for CUDA under OSX on a non-PPC
+                           # machine. We should consider those here if we are looking to enable
+                           # CUDA.
+                           if ( test x$ARC = xmacosx32 || test x$ARC = xmacosx64 )
+                           then
+                              # Certain Intel versions of OSX may have alternative standard
+                              # C++ libraries available. We will need to ensure that the one
+                              # we use matches the one that the CUDA libraries were compiled
+                              # against.
+                              #
+                              # OSX versions of CUDA are compiled to use either libstdc++ or
+                              # libc++ dependent on the version of CUDA:
+                              #
+                              #                CUDA < 7.0 requires libstdc++
+                              #                  CUDA 7.0+ requires libc++
+                              #
+                              # The compiler in use will determine which standard C++ library
+                              # is used by default. If the compiler is clang, libc++ will be
+                              # used. If gcc or llvm-gcc is in use, the libstdc++ library will
+                              # be the default.
+
+                              # Only need to consider this if we have a potentially viable CUDA
+                              # setup and we know the CUDA version (if we do not know the CUDA
+                              # revision we cannot determine which library we need to select and
+                              # can do no remedial work anyway).
+                              if ( test x$NVCC != x && test x$CUDAver != x )
+                              then
+                                 # We have a potentially useful CUDA environment
+                                 #
+                                 # Determine which compiler we are using...
+                                 IsCLANG=`$CXX --version 2>&1 | $SED -n 's/.* clang .*/yes/p'`
+
+                                 # Determine major revision of CUDA
+                                 ImpliedMaj=`echo $CUDAver | $SED -n \
+                          's/.*\(@<:@0-9@:>@@<:@0-9@:>@*\)\.@<:@0-9@:>@@<:@0-9@:>@*\(.@<:@0-9@:>@@<:@0-9@:>@*\)*.*/\1/p'`
+                                 dnl# sed command is:
+                                 dnl#    's/.*\([0-9][0-9]*\)\.[0-9][0-9]*\(.[0-9][0-9]*\)*.*/\1/p'
+
+                                 if ( test x$ImpliedMaj != x && test $ImpliedMaj -lt 7 )
+                                 then
+                                    # CUDA < 7.0 so we may want to force the use of libstdc++
+
+                                    if ( test x$IsCLANG = xyes )
+                                    then
+                                       # Using clang so we will not default to libstdc++
+                                       trace 3 Detected use of clang as C++ compiler
+
+                                       # Has the user requested CUDA?
+                                       if ( test "x$cfgCUDA" = x )
+                                       then
+                                          # No, disable CUDA rather than change default library
+                                          NVCC=""
+                                          # Quick cheat, following section of code disables CUDA
+                                          # in a controlled manner if NVCC is null...
+                                          trace 2 Disabling CUDA as version $CUDAver incompatable with libc++
+                                       else
+                                          # User requested CUDA, change the standard C++ library
+                                          CXX="$CXX --stdlib=libstdc++ "
+                                          trace 2 Forcing use of libstdc++ for compatibility with CUDA $CUDAver
+                                       fi
+                                    fi
+                                 else
+                                    # CUDA 7+ so do we need to force use of libc++ ?
+
+                                    if ( test x$IsCLANG != xyes )
+                                    then
+                                       # Not using clang so we will not default to libc++
+                                       trace 3 Detected we are not using clang for the C++ compiler
+
+                                       # Has the user requested CUDA?
+                                       if ( test "x$cfgCUDA" = x )
+                                       then
+                                          # No, disable CUDA rather than change default library
+                                          NVCC=""
+                                          # Quick cheat, following section of code disables CUDA
+                                          # in a controlled manner if NVCC is null...
+                                          trace 2 Disabling CUDA as version $CUDAver incompatible with libstdc++
+                                       else
+                                          # User requested CUDA, change the standard C++ library
+                                          CXX="$CXX --stdlib=libc++ "
+                                          trace 2 Forcing use of libc++ for compatibility with CUDA $CUDAver
+                                       fi
+                                    fi
+                                 fi
+                              fi
+                           fi
+
+
+                           # We can only consider the individual CUDA libraries if we have a
+                           # viable setting for NVCC and the C++ compiler supports the GNU
+                           # extensions (i.e. if GXX = yes)
+                           if ( test x$NVCC = x || test ! -x $NVCC || test x$GXX != xyes )
+                           then
+                              trace 2 CUDA compiler requirements not met - disabling CUDA packages
+                              for pkg in $CUDApkgs
+                              do
+                                 eval State=\$use_$pkg
+                                 case $State in
+                                    'check' )   AS_VAR_SET(use_$pkg, blocked)
+                                                trace 6 Disabling $pkg owing to missing compiler pre-requisites
+                                                ;;
+                                    'yes' )     AC_MSG_FAILURE([CUDA pre-requisites not met])
+                                                ;;
+                                    'no' )      trace 6 CUDA compiler pre-requisites not met but we do not require $pkg anyway
+                                                ;;
+                                    'needed' )  trace 1 "Assert - Dependency should not have been catalogued yet"
+                                                AC_MSG_FAILURE([CUDA pre-requisites not met and $pkg is required for a selected resource])
+                                                ;;
+                                    'blocked' ) trace 1 "Assert - Blockage should not have been propagated yet"
+                                                trace 6 CUDA compiler pre-requisites not met but $pkg is already blocked
+                                                ;;
+                                    * )         trace 1 "Assert - Should not fall through here"
+                                                ;;
+                                 esac
+                              done
+                           else
+                              trace 5 CUDA compiler requirements appear to be satisfied.
+
+                              # Initialise variable for identifying what compute
+                              # architectures we can target from the current
+                              # version of CUDA
+                              DEFAULT_NVCC_TARGS=""
+
+                              if ( test "x$CUDAver" != x )
+                              then
+                                 # We have a CUDA version, does it provide pkg-config files?
+                                 #
+                                 # Later (6.0 and on) versions of CUDA come with a pkg-config
+                                 # file, see if we can use that for each unconfigured CUDA
+                                 # library.
+                                 #
+                                 # Extract major number from detected CUDA version
+                                 #
+                                 ImpliedMaj=`echo $CUDAver | $SED -n \
+                          's/.*\(@<:@0-9@:>@@<:@0-9@:>@*\)\.@<:@0-9@:>@@<:@0-9@:>@*\(.@<:@0-9@:>@@<:@0-9@:>@*\)*.*/\1/p'`
+                                 dnl# sed command is:
+                                 dnl#    's/.*\([0-9][0-9]*\)\.[0-9][0-9]*\(.[0-9][0-9]*\)*.*/\1/p'
+                                 #
+                                 # Extract minor number from detected CUDA version
+                                 #
+                                 ImpliedMin=`echo $CUDAver | $SED -n \
+                          's/.*@<:@0-9@:>@@<:@0-9@:>@*\.\(@<:@0-9@:>@@<:@0-9@:>@*\)\(.@<:@0-9@:>@@<:@0-9@:>@*\)*.*/\1/p'`
+                                 dnl# sed command is:
+                                 dnl#    's/.*[0-9][0-9]*\.\([0-9][0-9]*\)\(.[0-9][0-9]*\)*.*/\1/p'
+                                 if ( test x$ImpliedMaj != x && test x$ImpliedMin != x )
+                                 then
+                                    # We can make sense of the version number
+                                    # so, can we make use of any pkg-config
+                                    # files
+                                    if ( test $ImpliedMaj -gt 5 )
+                                    then
+                                       trace 2 Switching to pkgconfig for unconfigured CUDA packages...
+                                       # This will only actually effect the
+                                       # QMake configure rather than client
+                                       # projects as, for client projects,
+                                       # configure does not process
+                                       # un-configured packages. We do not
+                                       # process configured CUDA packages as
+                                       # the user has effectively settled what
+                                       # they want to use to locate the package
+                                       # (be that pkg-config or a compilation
+                                       # test).
+                                       for pkg in $ucfgCUDA
+                                       do
+                                          TRACE_INDENT="     "
+                                          pcf=$pkg-$ImpliedMaj.$ImpliedMin
+                                          PKG_CHECK_EXISTS([$pcf],
+                                                           [eval with_${pkg}_pkgconf=$pcf
+                                                            eval with_${pkg}_check=pkgconfig
+                                                            trace 5 $pkg set to use $pcf
+                                                            AC_MSG_CHECKING(pkg-config for $pkg)
+                                                            AS_VAR_SET([${pkg}_CFLAGS],
+                                                                       [`$PKG_CONFIG --cflags $pcf 2>/dev/null `]
+                                                                      )
+                                                            AS_VAR_SET([${pkg}_LIBS],
+                                                                       [`$PKG_CONFIG --libs $pcf 2>/dev/null`]
+                                                                      )
+                                                            AC_MSG_RESULT([yes])
+                                                            AS_VAR_SET([use_${pkg}],[present])
+                                                            # CUDA package is
+                                                            # now fully
+                                                            # considered, drop
+                                                            # it from the to do
+                                                            # list.
+                                                            LeftToDo=`echo " $LeftToDo " | $SED "s/ $pkg / /"`
+                                                            RecentlyProcessed="$RecentlyProcessed $pkg"
+                                                           ],
+                                                           [trace 3 no $pcf to use for $pkg
+                                                           ]
+                                                          )
+                                       done
+                                    else
+                                       trace 2 Unable to employ pkg-config for CUDA $ImpliedMaj.$ImpliedMin
+                                    fi
+
+                                    # Since we recognise a version number, can
+                                    # we select what compute levels to target
+                                    # by default?
+                                    case $ImpliedMaj.$ImpliedMin in
+                                    0.* | 1.* | 2.* )
+                                                  # Just target compute 1.0
+                                                  # This saves us having to
+                                                  # check versioning down to
+                                                  # when each version of
+                                                  # compute 1.X came in and
+                                                  # keeps down the amount of
+                                                  # generated code.
+                                                  DEFAULT_NVCC_TARGS="10"
+                                                  ;;
+                                    3.* )         # 3.0 introduced Fermi
+                                                  # (compute 2.0) support.
+                                                  # Again, we are not going to
+                                                  # go beyond supporting the
+                                                  # headline compute versions
+                                                  # so as to keep the amount
+                                                  # of generated code down. We
+                                                  # will also support previous
+                                                  # architectures
+                                                  DEFAULT_NVCC_TARGS="10 20"
+                                                  ;;
+                                    4.2 )         # This version added Kepler
+                                                  # (compute 3.x) support to
+                                                  # all previous architectures
+                                                  DEFAULT_NVCC_TARGS="10 20 30"
+                                                  ;;
+                                   # Note: 4.2 above 4.* to specialise that ver
+                                    4.* )         # Earlier 4.X versions - no
+                                                  # compute 3.x support, only
+                                                  # default to supporting the
+                                                  # headline architectures.
+                                                  DEFAULT_NVCC_TARGS="10 20"
+                                                  ;;
+                                    5.* | 6.0 )   # Unlike the other versions
+                                                  # we will support compute 3.5
+                                                  # as a separate option as
+                                                  # some of the CUDA examples
+                                                  # explicitly require it.
+                                                  DEFAULT_NVCC_TARGS="10 20 30 35"
+                                                  ;;
+                                    6.5 )         # This version of CUDA
+                                                  # discontinued compute 1.0
+                                                  # support. Move to 1.1 as
+                                                  # recompense. Also add
+                                                  # support for the newly
+                                                  # supported Maxwell (5.0)
+                                                  # Compute levels 1.2/3 are
+                                                  # still valid, but we are
+                                                  # not defaulting to target
+                                                  # those as we are also not
+                                                  # going to target level 5.2
+                                                  DEFAULT_NVCC_TARGS="11 20 30 35 50"
+                                                  ;;
+                                    7.* )         # This version of CUDA drops
+                                                  # levels 1.X entirely. We
+                                                  # continue to not target the
+                                                  # interim 2.1, 3.2, 3.7, 5.2
+                                                  # and 5.3 compute levels
+                                                  DEFAULT_NVCC_TARGS="20 30 35 50"
+                                                  ;;
+                                    * )           # As we do not know at what
+                                                  # version various compute
+                                                  # levels will be removed from
+                                                  # support, we cannot properly
+                                                  # infer what to build. We
+                                                  # can, however, attempt to
+                                                  # just drop the oldest and
+                                                  # hope we can update this
+                                                  # script before the next
+                                                  # revision is dropped (will
+                                                  # work if nVidia do drop
+                                                  # just the lowest compute
+                                                  # level next and users do
+                                                  # not hoard old versions of
+                                                  # the configure script).
+                                                  DEFAULT_NVCC_TARGS="30 35 50"
+                                                  ;;
+                                    esac
+                                 fi # (end of if recognised CUDA ver)
+                              fi # (end of if we have a CUDAver)
+
+                              # Has the user supplied any NVCCFLAGS?
+                              if ( test "x$NVCCFLAGS" != x )
+                              then
+                                 # Preserve those for output
+                                 CONFIGURE_NVCCFLAGS=$NVCCFLAGS
+                                 trace 5 Preserving NVCCFLAGS \($NVCCFLAGS\)
+                              fi
+
+                           fi # (End of workable CUDA found)
+
+                           trace 2 Finished post-processing CUDA switches
+                           ;;
+
+                   'OpenMP' )
+                           # Unlike most external packages, OpenMP is highly
+                           # associated with the compiler in use. In fact, it
+                           # may require different switches for each language
+                           # it is available for. Hence, we need to check
+                           # each supported language in turn.
+
+                           AC_LANG_PUSH([C])
+                           AC_OPENMP()
+                           dnl# AC_OPENMP() provides no documented indication
+                           dnl# of if OpenMP is actually available. It returns
+                           dnl# a null value for OPENMP_CFLAGS if OpenMP is not
+                           dnl# available but it also returns this if OpenMP is
+                           dnl# available by default and requires no specific
+                           dnl# flags. Hence, if we have a null OPENMP_CFLAGS
+                           dnl# we need to explicitly test if we actually have
+                           dnl# OpenMP available.
+                           dnl#
+                           dnl# Based on the current implementation (as of
+                           dnl# autoconf 2.69) AC_OPENMP() sets the variable
+                           dnl# ac_cv_prog_c_openmp to indicate the availability
+                           dnl# of OpenMP. We can therefore test this, but as it
+                           dnl# is an undocumented variable, we need to be have
+                           dnl# a fall back in case the macro changes. To this
+                           dnl# end, if we cannot interpret ac_cv_prog_c_openmp
+                           dnl# correctly, we perform a test compilation for
+                           dnl# some OpenMP code.
+
+                           if ( test "X$OPENMP_CFLAGS" != "X" || test "X$ac_cv_prog_c_openmp" = "Xnone needed" )
+                           then
+                              # We know we have OpenMP (for C anyway)
+                              #
+                              # Package name is slightly different between
+                              # QMake and autotools, transfer the determined
+                              # flags
+                              OpenMP_CFLAGS=$OPENMP_CFLAGS
+                              if ( test "X$OPENMP_LIBS" != "X" )
+                              then
+                                 dnl# Currently there is no OPENMP_LIBS
+                                 dnl# variable set by AC_OPENMP() but we
+                                 dnl# attempt to use it in-case the macro
+                                 dnl# introduces it at some future point.
+                                 OpenMP_LIBS=$OPENMP_LIBS
+                              else
+                                 dnl# AC_OPENMP has most likely failed to
+                                 dnl# deliver a working set of linker flags
+                                 dnl# (as it does not consider them) but we
+                                 dnl# need (at least for some compilers) to
+                                 dnl# include the same flag as CFLAGS to allow
+                                 dnl# a successful link. Default to including
+                                 dnl# the CFLAGS as a means of getting a
+                                 dnl# working solution - we will need to
+                                 dnl# code around any platforms we find that
+                                 dnl# fall foul of this approach.
+                                 OpenMP_LIBS=$OPENMP_CFLAGS
+                              fi
+                           else
+                              if ( test "X$ac_cv_prog_c_openmp" = "Xunsupported" )
+                              then
+                                 # We know we have no OpenMP for C.
+                                 # One missing => all missing
+                                 use_OpenMP=missing
+                              else
+                                 # We have no OPENMP_CFLAGS value but do not
+                                 # know if this is because we do not need a
+                                 # CFLAGS setting or if we have no OpenMP
+                                 # support.
+                                 dnl# Should never fall through to this branch
+                                 dnl# unless AC_OPENMP() has changed.
+                                 # See if a test program compiles without any
+                                 # OpenMP flags. If so, we have a usable
+                                 # environment otherwise the null setting
+                                 # indicates OpenMP is unavailable.
+                                 trace 3 Test of OpenMP C environment
+                                 # C test program copied from an autoconf
+                                 # generated configure program:
+                                 #
+                                 #   # Copyright (C) 2001, 2002, 2003, 2004,
+                                 #   #               2005, 2006, 2007, 2008
+                                 #   #        Free Software Foundation, Inc.
+                                 #   #
+                                 #   # This program is free software: you can
+                                 #   # redistribute it and/or modify it under
+                                 #   # the terms of the GNU General Public
+                                 #   # License as published by the Free
+                                 #   # Software Foundation; either version 2,
+                                 #   # or (at your option) any later version.
+                                 #   #
+                                 #   # This program is distributed in the hope
+                                 #   # that it will be useful, but WITHOUT ANY
+                                 #   # WARRANTY; without even the implied
+                                 #   # warranty of MERCHANTABILITY or FITNESS
+                                 #   # FOR A PARTICULAR PURPOSE.  See the GNU
+                                 #   # General Public License for more details.
+                                 #
+                                 AC_LINK_IFELSE([AC_LANG_PROGRAM([@%:@include <omp.h>],
+                                                                 [@%:@ifndef _OPENMP
+ choke me
+@%:@endif
+int main () { return omp_get_num_threads (); }
+                                                                 ]
+                                                                )
+                                                ],
+                                                [OpenMP_CFLAGS=$OPENMP_CFLAGS
+                                                 if ( test "X$OPENMP_LIBS" != "X" )
+                                                 then
+                                                    dnl# Currently there is no
+                                                    dnl# OPENMP_LIBS variable
+                                                    dnl# set by AC_OPENMP() but
+                                                    dnl# we attempt to use it
+                                                    dnl# in-case the macro
+                                                    dnl# introduces it at some
+                                                    dnl# future point.
+                                                    OpenMP_LIBS=$OPENMP_LIBS
+                                                 else
+                                                    dnl# No OPENMP_LIBS setting
+                                                    dnl# as AC_OPENMP has most
+                                                    dnl# likely failed to
+                                                    dnl# deliver a working set
+                                                    dnl# (as it does not
+                                                    dnl# consider them). We do
+                                                    dnl# however, need (at
+                                                    dnl# least for some
+                                                    dnl# compilers) to
+                                                    dnl# include the same flag
+                                                    dnl# as CFLAGS to allow a
+                                                    dnl# successful link. So we
+                                                    dnl# default to including
+                                                    dnl# the CFLAGS as a means
+                                                    dnl# of getting a working
+                                                    dnl# solution - we will
+                                                    dnl# need to code around
+                                                    dnl# any platforms we find
+                                                    dnl# that fall foul of this
+                                                    dnl# approach.
+                                                    OpenMP_LIBS=$OPENMP_CFLAGS
+                                                 fi
+                                                ],
+                                                [use_OpenMP=missing
+                                                ]
+                                               )
+                              fi
+                           fi
+                           AC_LANG_POP([C]) dnl# Balance the AC_LANG_PUSH
+                           if ( test "$use_OpenMP" != missing )
+                           then
+                              # Can only enable OpenMP if it exists for all
+                              # supported languages. If it is not available
+                              # for C there is no need to test C++
+
+                              AC_LANG_PUSH([C++])
+                              AC_OPENMP()
+                              dnl# As per C, AC_OPENMP() does not differentiate
+                              dnl# between a null OPENMP_CXXFLAGS indicating
+                              dnl# that no CCFLAGS are required to activate
+                              dnl# OpenMP or from a null value indicating that
+                              dnl# OpenMP is not available.
+                              dnl#
+                              dnl# Again, as per the check for C, we can use the
+                              dnl# relevant variable (ac_cv_prog_cxx_openmp in
+                              dnl# this case) to determine if we have OpenMP
+                              dnl# but, as this is undocumented, we need to be
+                              dnl# weary in-case the macro changes to a
+                              dnl# implementation.
+
+                              if ( test "X$OPENMP_CXXFLAGS" != "X" || test "X$ac_cv_prog_cxx_openmp" = "Xnone needed" )
+                              then
+                                 # We now know we have OpenMP for C++
+                                 # QMake uses both a slightly different name
+                                 # for the OpenMP resource and a different
+                                 # naming convention for the C++ flags than
+                                 # that used by autoconf. We need to copy
+                                 # across the settings to the correctly named
+                                 # variable.
+                                 OpenMP_CCFLAGS=$OPENMP_CXXFLAGS
+                                 # By rights, we should pick up any OPENMP_LIBS
+                                 # setting here. However, as we have no
+                                 # independent _LIBS setting for C and C++, we
+                                 # are forced to assume the single C-derived
+                                 # setting for _LIBS will be acceptable to the
+                                 # linker in use for C++ code.
+                                 dnl# In addition AC_OPENMP does not currently
+                                 dnl# detect the linker flags anyway.
+                              else
+                                 if ( test "X$ac_cv_prog_cxx_openmp" = "Xunsupported" )
+                                 then
+                                    # We know we have no OpenMP for C++.
+                                    # One missing => all missing
+                                    use_OpenMP=missing
+                                 else
+                                    # Unsure why we have no OPENMP_CXXFLAGS value
+                                    dnl# Maybe AC_OPENMP() has changed?
+                                    # See if a test program compiles without
+                                    # any OpenMP flags. If so, we have a usable
+                                    # environment otherwise the null setting
+                                    # indicates OpenMP is unavailable.
+                                    trace 3 Test of OpenMP C++ environment
+                                    # C++ test program same as that above
+                                    # used for testing the C environment:
+                                    #
+                                    #   # Copyright (C) 2001, 2002, 2003, 2004,
+                                    #   #               2005, 2006, 2007, 2008
+                                    #   #        Free Software Foundation, Inc.
+                                    #
+                                    AC_LINK_IFELSE([AC_LANG_PROGRAM([@%:@include <omp.h>],
+                                                                    [@%:@ifndef _OPENMP
+ choke me
+@%:@endif
+return omp_get_num_threads ();
+                                                                    ]
+                                                                   )
+                                                   ],
+                                                   [OpenMP_CCFLAGS=$OPENMP_CXXFLAGS
+                                                    # By rights, we should pick
+                                                    # up any OPENMP_LIBS setting
+                                                    # here. However, as we have
+                                                    # no independent _LIBS
+                                                    # setting for C and C++; we
+                                                    # are forced to assume the
+                                                    # single, C-derived setting
+                                                    # for _LIBS will be
+                                                    # acceptable to the linker
+                                                    # in use for C++ code.
+                                                    dnl# In addition AC_OPENMP
+                                                    dnl# does not currently
+                                                    dnl# detect the linker
+                                                    dnl# flags anyway.
+                                                   ],
+                                                   [use_OpenMP=missing
+                                                   ]
+                                                  )
+                                 fi
+                              fi
+                              AC_LANG_POP([C++]) dnl# Balance the AC_LANG_PUSH
+
+                              dnl If we ever activate any Fortran {77} support,
+                              dnl we will need to add the appropriate code to
+                              dnl set FFLAGS, etc. here using the same pattern
+                              dnl as per the C and C++ code.
+
+                              if ( test "$use_OpenMP" != missing )
+                              then
+                                 # Can now enable OpenMP as it exists for all
+                                 # languages
+                                 use_OpenMP=present
+                              fi
+                           fi
+                           ;;
+
+                'Qt3QGLViewer' | 'Qt4QGLViewer' )
+                           # The Qt QGLViewer packages are basic compilation
+                           # tests but we need to reset the cache variable
+                           # maintinaed by autoconf to record the qglviewer.h
+                           # header file (since this file name is shared
+                           # between the Qt 3 and 4 versions, we do not want
+                           # the second package using the cached value from
+                           # the first incarnation).
+                           AC_LANG_PUSH([C++])
+                                  dnl Both packages employ a C++ test program;
+                                  dnl we could check with_<lib>_lang here but
+                                  dnl that would require generation of code
+                                  dnl that is un-needed (as we have to generate
+                                  dnl execution paths for all possible languages
+                                  dnl if we do not know the language in use at
+                                  dnl autoconf time). Hence, we hard-code the
+                                  dnl test language, which will obviously need
+                                  dnl a manual change if the author changes the
+                                  dnl QM_DEFINE_EXTLIB_BESPOKE_CC definition.
+                           QM_CHECK_CC_LIB([$test_lib],[])
+                                  dnl Null second parameter prevents generation
+                                  dnl of any error which we will generate below
+                                  dnl if necessary.
+                           AC_LANG_POP([C++])
+                           # Reset the header file cache variable
+                           unset ac_cv_header_QGLViewer_qglviewer_h
+                           ;;
+
+                'tetgen' )
+                           # Certain versions of TetGen rely on a pre-processor
+                           # -DTETLIBRARY flag. Ensure we have that.
+                           existing=`echo "X $with_tetgen_inc " | $SED -n 's/.* -DTETLIBRARY .*/yes/p'`
+                           if ( test X$existing != Xyes )
+                           then
+                              with_tetgen_inc="$with_tetgen_inc -DTETLIBRARY"
+                           fi
+                           # By rights, this should be implemented on CPPFLAGS
+                           # but as QMake does not currently support a
+                           # mechanism for processing these flags for a package
+                           # we are stuck with using CFLAGS until such time as
+                           # the requisite development is undertaken.
+                           AC_LANG_PUSH([C++])
+                                  dnl This package employs a C++ test program;
+                                  dnl we could check with_<lib>_lang here but
+                                  dnl that would require generation of code
+                                  dnl that is un-needed (as we have to generate
+                                  dnl execution paths for all possible languages
+                                  dnl if we do not know the language in use at
+                                  dnl autoconf time). Hence, we hard-code the
+                                  dnl test language, which will obviously need
+                                  dnl a manual change if the author changes the
+                                  dnl QM_DEFINE_EXTLIB_BESPOKE_CC definition.
+                           QM_CHECK_CC_LIB([$test_lib],[])
+                                  dnl Null second parameter prevents generation
+                                  dnl of any error which we will generate below
+                                  dnl if necessary.
+                           AC_LANG_POP([C++])
+                           ;;
+
+                       * ) AC_MSG_FAILURE([Configure is unaware of how to check for library $test_lib])
+                           ;;
+                esac
+
+                # Generate any required errors
+                eval result=\$use_${test_lib}
+                if ( test x$result != xpresent )
+                then
+                   if ( test x$result = xmissing )
+                   then
+                      case $test_enablement in
+                         'check' )     # No error required
+                                       ;;
+                         'needed' )    AC_MSG_FAILURE([Library $test_lib is not available and a pre-requisite of a selected library])
+                                       ;;
+                         'yes' )       AC_MSG_FAILURE([Required library $test_lib is not available])
+                                       ;;
+                      esac
+                   else
+                      trace 1 Assert - Unexpected setting for library $test_lib - $result
+                   fi
+                fi
+
+                eval prereq="\$with_${test_lib}_prq"
+                TRACE_INDENT="     "
+                trace 3 $lib:bespoke:$prereq:$result
+
+                # Library now fully considered, drop it from the to do list
+                LeftToDo=`echo " $LeftToDo " | $SED "s/ $test_lib / /"`
+                RecentlyProcessed="$RecentlyProcessed $test_lib"
+
+             fi dnl End of process_now code
+
+          else
+             # test_enablement != check|needed|yes
+             # => We do not need to check for existence of this library
+             #
+             # Trace why
+             case $test_enablement in
+                'no' )      TRACE_INDENT="     "
+                            trace 6 $test_lib is disabled, not checking for existence
+                            ;;
+                'blocked' ) TRACE_INDENT="     "
+                            trace 6 $test_lib is blocked by a pre-requisite
+                            ;;
+                * )         TRACE_INDENT="     "
+                            trace 1 "Assert - curious test_enablement"
+                            ;;
+             esac
+
+             # No longer need to process library
+             LeftToDo=`echo " $LeftToDo " | $SED "s/ $test_lib / /"`
+             RecentlyProcessed="$RecentlyProcessed $test_lib"
+          fi
+
+          # Strip unnecessary spaces from LeftToDo
+          LeftToDo=`echo " $LeftToDo " | $SED "s/  */ /g;s/^ //;s/ $//"`
+
+         ]
+        )

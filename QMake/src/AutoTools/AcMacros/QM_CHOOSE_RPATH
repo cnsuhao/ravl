@@ -1,5 +1,5 @@
 dnl This file is part of QMake, Quick Make System
-dnl Copyright (C) 2011, University of Surrey
+dnl Copyright (C) 2011-16, University of Surrey
 dnl This code may be redistributed under the terms of the GNU General
 dnl Public License (GPL). See the gpl.licence file for details or
 dnl see http://www.gnu.org/copyleft/gpl.html
@@ -13,7 +13,7 @@ dnl
 dnl Macro to allow user selection over the inclusion of paths to linked
 dnl libraries when creating a binary or other library. Creates the cmd-line
 dnl switch --with-rpath which is a simple Yes/No switch (usual abbreviation
-dnl andcase rules apply) that enables or disables this functionality. The
+dnl and case rules apply) that enables or disables this functionality. The
 dnl default is to enable the rpath functionality.
 dnl
 dnl No macro parameters
@@ -28,7 +28,7 @@ dnl                                  is a simple switch that takes a Y or N
 dnl                                  as its value.
 dnl       USR_with_rpath             Used to indicate if the user explicitly
 dnl                                  caused with_rpath to be set, or if it
-dnl                                  was subsiquently defaulted (variable
+dnl                                  was subsequently defaulted (variable
 dnl                                  will only be set if the user specified
 dnl                                  the with_rpath setting).
 dnl

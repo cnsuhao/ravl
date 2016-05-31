@@ -1,5 +1,5 @@
 dnl This file is part of QMake, Quick Make System
-dnl Copyright (C) 2011-14, University of Surrey
+dnl Copyright (C) 2011-16, University of Surrey
 dnl This code may be redistributed under the terms of the GNU General
 dnl Public License (GPL). See the gpl.licence file for details or
 dnl see http://www.gnu.org/copyleft/gpl.html
@@ -17,9 +17,17 @@ dnl No macro parameters
 dnl
 dnl Global variables used:
 dnl
+dnl       AWK                        Contains the path to the Awk utility.
+dnl                                  Can initially be primed by the user to
+dnl                                  force the use of a particular program.
+dnl                                  Regarded as a key tool as it is used
+dnl                                  by configure itself.
 dnl       CC                         Holds the path to the C compiler in
 dnl                                  use. May be updated to include extra
 dnl                                  global compiler options. 
+dnl       CC_VERSION               } { Receives the version information for
+dnl       CC_MAJOR                 } { the current C++ compiler.
+dnl       CC_MINOR                 }
 dnl       COMPILER_ANSI_CFLAGS     } { Receive the compiler specific flags
 dnl       COMPILER_DEBUG_CFLAGS    } { for setting the appropriate mode of
 dnl       COMPILER_GPROF_CFLAGS    } { compiler operation required by QMake.
@@ -78,6 +86,8 @@ AC_DEFUN([QM_SET_COMPILER_CFLAGS],
           if ( test x$GCC = xyes )
           then
              trace 3 We have a GNU C Compiler
+             # Or something masquerading as one (e.g. CLang)
+
              COMPILER_ANSI_CFLAGS=" -ansi "
              COMPILER_DEBUG_CFLAGS=" -g "
              COMPILER_GPROF_CFLAGS=" -pg "
@@ -89,7 +99,7 @@ AC_DEFUN([QM_SET_COMPILER_CFLAGS],
              # full optimised flags (see below).
              #
              # While using fno-math-errno breaks full standards compliance, it
-             # is used to give us a consistant environment across platforms as
+             # is used to give us a consistent environment across platforms as
              # the math library on OSX never actually sets errno anyway. There
              # is no point in setting this switch globally (i.e. in CFLAGS
              # rather than _OPT_CFLAGS) as it is not actually used by gcc if

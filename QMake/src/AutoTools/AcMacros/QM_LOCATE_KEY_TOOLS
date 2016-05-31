@@ -1,5 +1,5 @@
 dnl This file is part of QMake, Quick Make System
-dnl Copyright (C) 2011-13, University of Surrey
+dnl Copyright (C) 2011-16, University of Surrey
 dnl This code may be redistributed under the terms of the GNU General
 dnl Public License (GPL). See the gpl.licence file for details or
 dnl see http://www.gnu.org/copyleft/gpl.html
@@ -55,9 +55,10 @@ dnl                                  variable by the macro.
 dnl       CONFIGURE_CCFLAGS          Receives any user supplied CCFLAGS
 dnl                                  to preserve them so they may be used
 dnl                                  by QMake for all builds.
-dnl       QMAKE_CFG                  Primed (by calling the QM_LOCATE_QMAKE
-dnl                                  macro) with the location of QMake's
-dnl                                  configuration file.
+dnl       QMAKE_CFG                  Holds the location of the configuration
+dnl                                  file for the copy of QMake that is in
+dnl                                  use. Originally primed by calling the
+dnl                                  QM_LOCATE_QMAKE macro.
 dnl       InheritCFG                 Specifies if we should use the QMAKE_CFG
 dnl                                  file to bootstrap our configuration
 dnl                                  settings.
@@ -69,7 +70,7 @@ dnl                                  existing Config.QMake file; or indeed,
 dnl                                  it may remain unset. Its value, Y or N,
 dnl                                  indicates if the user has requested the
 dnl                                  path to external libraries be included
-dnl                                  in the runtime serachlist of any shared 
+dnl                                  in the runtime searchlist of any shared 
 dnl                                  binary produced by QMake.
 dnl       GNU_MAKE                   Indicates if the make utility in use is
 dnl                                  a GNU version (simple yes no setting).
@@ -169,9 +170,9 @@ AC_DEFUN([QM_LOCATE_KEY_TOOLS],
                     CC=`cat $QMAKE_CFG | $SED -n 's/^CC=\(.*\)/\1/p'`
                  fi
                  dnl We also need to call AC_PROG_CC as that initialises
-                 dnl several prerequisites of configure's operation. However,
-                 dnl we cannot call it here as the prerequisite code will get
-                 dnl generated soley in this branch of the AS_IF (even if we
+                 dnl several pre-requisites of configure's operation. However,
+                 dnl we cannot call it here as the pre-requisite code will get
+                 dnl generated solely in this branch of the AS_IF (even if we
                  dnl also call AC_PROG_CC in the else branch).
 
                  if ( test x$CPP = x )
@@ -295,7 +296,7 @@ dnl    ELSE
           fi
   
           dnl Call routines to locate compilers etc. This is as much to
-          dnl initialise the prerequisites of later configure tests as to
+          dnl initialise the pre-requisites of later configure tests as to
           dnl find the compiler themselves (as we should already know where
           dnl they are if we are using an existing QMake installation or if
           dnl the user has supplied their path).

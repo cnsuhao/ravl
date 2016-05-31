@@ -112,6 +112,17 @@ namespace RavlN {
     var = (var * (rn) + (delta*(value - mean)))/n;
   }
 
+  //: Add another sample, discounting all previous samples by 'discount'
+  void WeightedMeanVarianceC::AddWeightedExponentialDecay(RealT discount,RealT value,RealT weight)
+  {
+    n *= discount;
+    RealT rn = n;
+    n += weight;
+    RealT delta = weight * (value - mean);
+    mean += delta/n;
+    var = (var * rn + (delta*(value - mean)))/n;
+  }
+
   //: Value of the gauss distribution at x.
   
   RealT WeightedMeanVarianceC::Gauss(RealT x) const {

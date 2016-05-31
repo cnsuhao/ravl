@@ -11,7 +11,6 @@
 //! date="16/12/1996"
 //! docentry="Ravl.API.Logic.Planning"
 //! userlevel=Develop
-//! rcsid="$Id$"
 //! file="Ravl/Logic/NonLinearPlanner/NLPAgenda.hh"
 //! lib=RavlLogicNLP
 
@@ -30,7 +29,7 @@ namespace RavlLogicN {
       : OpenGoalCount(0) 
     {}
     //: Default constructor.
-    // Creats an empty agenda.
+    // Creates an empty agenda.
     
     void Insert(const NLPAgendaThreatC &Item)
     { threats.InsFirst(Item); }

@@ -1,6 +1,6 @@
 # @configure_input@
 # This file is part of QMake, Quick Make System
-# Copyright (C) 2011-13, University of Surrey
+# Copyright (C) 2011-16, University of Surrey
 # This code may be redistributed under the terms of the GNU General
 # Public License (GPL). See the gpl.licence file for details or
 # see http://www.gnu.org/copyleft/gpl.html
@@ -46,6 +46,15 @@ endif
 # Location of the QMake source
 ifndef $(SRC)
   SRC=@abs_srcdir@/src
+endif
+
+# Fallback value for the installer - used if configure could not find install.
+# This makefile will fallback to using install-sh from the QMake source tree.
+# QMake itself will fallback to using a copy that this makefile will install.
+# For either, if INSTALL is set (located by configure), that will be used in
+# preference.
+ifndef INSTALL
+  INSTALL=@abs_srcdir@/install-sh
 endif
 
 
@@ -218,7 +227,7 @@ $(foreach makefile,$(ALL_MAKEFILES),$(eval $(call MAKE_MAKEFILE,$(makefile))))
 
 # Stage Utils
 #      - Copy scripts across and build compiled binaries into the staging area
-StageUtils: $(STAGING)/bin BuildUtils StagePerl StageShScripts
+StageUtils: $(STAGING)/bin BuildUtils StageInstaller StagePerl StageShScripts
 	@:
 
 
@@ -232,6 +241,16 @@ $(STAGING)/bin/%: $(SRC)/Utils/%.c | $(STAGING)/bin
 
 $(STAGING)/bin/%: $(SRC)/Utils/%.cc | $(STAGING)/bin
 	$(CXX) $(CCPPFLAGS) $(CCFLAGS) $(INCLUDES) $? -o $@
+
+
+
+
+# Stage installer script
+StageInstaller: $(STAGING)/bin $(STAGING)/bin/install-sh
+	@:
+
+$(STAGING)/bin/install-sh: @abs_srcdir@/install-sh | $(STAGING)/bin
+	$(INSTALL_PROGRAM) $< $@
 
 
 
@@ -422,14 +441,17 @@ UinsMakefiles:
 
 
 # Install the QMake executables
-InstallUtils: InstallBuiltUtils InstallPerl InstallScripts
+InstallUtils: InstallBuiltUtils InstallInstaller InstallPerl InstallScripts
 	@:
 
 UinsUtils:
 	$(if $(COMPILED_UTILS) $(PERL_UTILS) $(SHELL_UTILS),$(RM) -f $(patsubst %,$(DESTDIR)$(bindir)/%,$(COMPILED_UTILS) $(PERL_UTILS) $(SHELL_UTILS)),@:)
-
+	$(RM) -f $(DESTDIR)$(bindir)/install-sh
 
 InstallBuiltUtils: $(DESTDIR)$(bindir) $(patsubst %,$(DESTDIR)$(bindir)/%,$(COMPILED_UTILS))
+	@:
+
+InstallInstaller: $(DESTDIR)$(bindir) $(DESTDIR)$(bindir)/install-sh
 	@:
 
 InstallPerl: $(DESTDIR)$(bindir) $(patsubst %,$(DESTDIR)$(bindir)/%,$(PERL_UTILS))
@@ -523,11 +545,11 @@ UinsPkgConf:
 
 .PHONY: BuildUtils default info install InstallAB InstallABConfig \
  InstallABProgs InstallBuiltUtils InstallConfig InstallDefaults \
- InstallMakefiles InstallPerl InstallPkgConf InstallPreCheck InstallScripts \
- InstallSupport InstallUtils ProcessMakefiles StageAB StageDefaults StagePerl \
- StagePkgConf StageQMake StageShScripts StageSupport StageUtils uninstall \
- UinsAB UinsABConfig UinsABProgs UinsConfig UinsDefaults UinsMakefiles \
- UinsPkgConf UinsSupport UinsUtils
+ InstallInstaller InstallMakefiles InstallPerl InstallPkgConf InstallPreCheck \
+ InstallScripts InstallSupport InstallUtils ProcessMakefiles StageAB \
+ StageDefaults StageInstaller StagePerl StagePkgConf StageQMake StageShScripts \
+ StageSupport StageUtils uninstall UinsAB UinsABConfig UinsABProgs UinsConfig \
+ UinsDefaults UinsMakefiles UinsPkgConf UinsSupport UinsUtils
 
 
 # Basic debug information
@@ -576,6 +598,9 @@ info:
 	@echo
 	@echo Support shell scripts:
 	@echo "    [ $(SUPPORT_SCRIPTS) ]"
+	@echo
+	@echo INSTALL program
+	@echo "    [ $(INSTALL) ]"
 	@echo
 	@echo GNU standard installation variables:
 	@echo "    DESTDIR         [ $(DESTDIR) ]"

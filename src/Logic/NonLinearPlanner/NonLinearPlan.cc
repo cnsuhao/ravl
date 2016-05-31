@@ -52,8 +52,8 @@ namespace RavlLogicN {
   // Destructor.
 
   NonLinearPlanBodyC::~NonLinearPlanBodyC() {
-    ONDEBUG(cerr << "NonLinearPlanBodyC::~NonLinearPlanBodyC(), Called.\n");
-    agenda.Empty();   // Only realy needed for debuging.
+    ONDEBUG(std::cerr << "NonLinearPlanBodyC::~NonLinearPlanBodyC(), Called.\n");
+    agenda.Empty();   // Only really needed for debugging.
   }
   
   ///////////////////////////
@@ -78,10 +78,10 @@ namespace RavlLogicN {
     NLPStepNodeT CurNode(plan,plan.InsNode(step));
     RavlAssert(IsValid(CurNode));
     steps++;
-    ONDEBUG(cerr << "NonLinearPlanBodyC::InsStep() " << PlanID() << " Inserting step '" << step.Name() << "' (" << CurNode.Hash() << ") (NoSteps:" << steps <<") \n");
+    ONDEBUG(std::cerr << "NonLinearPlanBodyC::InsStep() " << PlanID() << " Inserting step '" << step.Name() << "' (" << CurNode.Hash() << ") (NoSteps:" << steps <<") \n");
     // Update database of post/pre conditions.
     for(MinTermIterC it(step.PreCondition());it;it++) {
-      ONDEBUG(cerr << "Adding open condition '" << *it << "'\n");
+      ONDEBUG(std::cerr << "Adding open condition '" << *it << "'\n");
       if(!PostOpenCond(CurNode,MinTermC(it.Data(),it.IsNegated()))) {
 	// This occurs if there's no way to resolve an Open Condition created
 	// by new "Step".  There's no point in considering this plan further.

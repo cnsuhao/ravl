@@ -57,6 +57,28 @@ system either by manually declaring where the RAVL library and header files
 have been installed or, if their build tool supports it, by directing it to
 use the pkg-config utility which RAVL now supports.
 
+When using QMake to build projects that use RAVL, the new single library will
+automatically be used. Regardless of whether or not a SHAREDBUILD=1 build is
+being undertaken, QMake will now link to the libRavl.so single, shared library
+when building project binaries. It is possible to ask QMake to use the
+original "Multi" RAVL libraries (libRavlExtImgIO; libRavlCore; etc.) by using
+the setting USE_SINGLE_Ravl=0 on your qm command; e.g.:
+   
+         qm USE_SINGLE_Ravl=0 opt
+
+would build an optimised version of your application that was linked against
+the RAVL "Multi" libraries, much as for earlier revisions of RAVL. In order to
+use the Multi libraries, they must have first been installed. By default only
+the single RAVL library is built and installed by the RAVL INSTALL procedure.
+To make the Multi libraries available, the installer must additionally perform
+the following procedure after the normal INSTALL process:
+
+         make optshared opt
+         make installoptsharedlib installopt
+
+this will build and then install the Multi libraries in both shared and static
+form.
+ 
 
 LICENSE
 -------

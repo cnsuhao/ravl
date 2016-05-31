@@ -716,8 +716,8 @@ namespace RavlN {
     // Inserts one node to the graph. Returns the node iterator. 
     
     inline GraphEdgeBaseC InsEdge(GraphNodeBaseC & fromNode, GraphNodeBaseC & toNode)
-     { return InsEdge(fromNode, toNode); }
-    // Inserts one egde to the graph. Returns the edge iterator. 
+     { return Body().InsEdge(fromNode, toNode); }
+    // Inserts one edge to the graph. Returns the edge iterator.
     
     // Access to the parts of the graph
     // --------------------------------

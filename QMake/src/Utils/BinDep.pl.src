@@ -88,7 +88,7 @@ sub PrintHelp {
       $targLibs{$libName} = $fullPath;
       next ;
     }
-    if(/\A-[WRLuIOvVgrpB][^ ]*/ )  { # Ignore these.
+    if(/\A-[WfRLuIOvVgrpB][^ ]*/ )  { # Ignore these.
       next ;
     }
     if(/\A[^-][^ ]*/) { # Ingore direct dependancy on object files

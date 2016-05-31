@@ -1,5 +1,5 @@
 dnl This file is part of QMake, Quick Make System
-dnl Copyright (C) 2011, University of Surrey
+dnl Copyright (C) 2011-16, University of Surrey
 dnl This code may be redistributed under the terms of the GNU General
 dnl Public License (GPL). See the gpl.licence file for details or
 dnl see http://www.gnu.org/copyleft/gpl.html
@@ -15,7 +15,7 @@ dnl working directory. Creates the cmd-line switch --with-pawd which allows
 dnl the user to prefer pawd over pwd as the utility used to return the 
 dnl current directory. The switch accepts a simple Yes/No (usual case and
 dnl abbreviation rules apply) that enables or disables the use of pawd; it
-dnl also accpets check (Check, ck, C, etc.) to use pawd if it is to be found
+dnl also accepts check (Check, ck, C, etc.) to use pawd if it is to be found
 dnl on the searchlist and finally, the switch can also accept the pathname of
 dnl pawd (or any other similar command) to be used in preference to pwd. 
 dnl There is no default setting for this macro so calling programs that need
@@ -37,7 +37,7 @@ dnl Global variables used:
 dnl
 dnl       with_pawd                  Value of similarly named cmd-line switch
 dnl                                  Selects whether or not pawd is used in
-dnl                                  preference to pwd. Alternativly, the
+dnl                                  preference to pwd. Alternatively, the
 dnl                                  switch may be used to specify the path
 dnl                                  of any similar command to be used in
 dnl                                  place of pwd.

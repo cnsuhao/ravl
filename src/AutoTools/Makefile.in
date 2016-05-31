@@ -1,6 +1,6 @@
 # @configure_input@
 # This file is part of RAVL, Recognition And Vision Library
-# Copyright (C) 2011-14, University of Surrey
+# Copyright (C) 2011-16, University of Surrey
 # This code may be redistributed under the terms of the GNU General
 # Public License (GPL). See the gpl.licence file for details or
 # see http://www.gnu.org/copyleft/gpl.html
@@ -28,6 +28,11 @@ include $(PROJECT_OUT)/Config.Project
 
 # Include project specific installation targets
 include $(PROJECT_OUT)/Targets.Project
+
+# Make sure we have a value for INSTALL
+ifndef INSTALL
+  INSTALL=$(WORKING_QMAKE_BIN)/install-sh
+endif
 
 # RAVL Makefile and default flags for QMake and RAVL itself
 

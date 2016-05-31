@@ -1,8 +1,0 @@
-ifndef CUDABLAS_DEF
-CUDABLAS_DEF=1
-
-include CUDA.def
-
-EXELIB :=  -lcublas  $(EXELIB)
-
-endif

@@ -14,7 +14,6 @@
 //! lib=RavlLogicNLP
 //! docentry="Ravl.API.Logic.Planning"
 //! example=exNonlinearPlanner.cc
-//! rcsid="$Id$"
 
 #include "Ravl/Logic/BMinTermListIndex.hh"
 #include "Ravl/BList.hh"
@@ -24,11 +23,6 @@
 #include "Ravl/Logic/NLPAgenda.hh"
 #include "Ravl/Logic/NLPTypes.hh"
 #include "Ravl/Calls.hh"
-
-//#include "Ravl/Logic/LBindLst.hh"
-//#include "Ravl/Logic/PlanLinear.hh"
-//#include "Ravl/Logic/ModelStep.hh"
-//#include "Ravl/Logic2/BBindLst.hh"
 
 namespace RavlLogicN {
   
@@ -113,14 +107,14 @@ namespace RavlLogicN {
     
     inline bool IsValid(const NLPStepNodeT &Oth) const 
     { return plan.IsValid(Oth.ID()); }
-    //: Check the handle is valid. (For debuging. )
+    //: Check the handle is valid. (For debugging. )
     
     inline bool IsValid() const 
     { return plan.IsValid(); }
     //: Check plan is valid.
     
     bool IsUsefullNewStep(const NLPStepC &mt,const NLPStepNodeT &sn) const;
-    //: Test if is usefull to add postcondition to this plan.
+    //: Test if is useful to add postcondition to this plan.
     // Use to filter out the addition of useless steps.<p>
     // sn is the step which has the open goal that caused mt to be considered
     
@@ -131,11 +125,11 @@ namespace RavlLogicN {
     //: List steps with the given postcondition.
     // GoalCond :- Condition that must be meet by Step,
     // FullCond :- 'Wish list' of conditions that also will be needed.
-    // Heuristic ordering of steps, place the most likly to
-    // be usefull first.
+    // Heuristic ordering of steps, place the most likely to
+    // be useful first.
     
     void DoDBCheck();
-    //: Debuging checks. 
+    //: debugging checks.
   
   protected:
     bool PostOpenCond(NLPStepNodeT &AStep,const MinTermC &OpenCond);
@@ -166,7 +160,7 @@ namespace RavlLogicN {
     
   private:  
     IntT planID;
-    //: Only really used to help in debuging.
+    //: Only really used to help in debugging.
   
     BDAGraphC<NLPStepC,NLPCausalLinkC> plan;
     //: Graph of states.
@@ -223,7 +217,7 @@ namespace RavlLogicN {
 		   const CallFunc2C<MinTermC&,MinTermC&,DListC<NLPStepC> > &listSteps)
       : RCHandleC<NonLinearPlanBodyC>(*new NonLinearPlanBodyC(initalCond,goalCond,listSteps))
     {}
-    //: Create a new plan with the given inital and goal condition.
+    //: Create a new plan with the given initial and goal condition.
     // initalCond - Initial condition.
     // goalCond   - Goal condition
     // listSteps  - Method for finding new steps for plan.
@@ -238,7 +232,7 @@ namespace RavlLogicN {
     
     inline bool Init(const MinTermC &Start,const MinTermC &Goal)
     { return Body().Init(Start,Goal); }
-    //: Initalise plan.
+    //: Initialise plan.
   
     inline NLPStepNodeT InsStep(const NLPStepC &Step,const MinTermC &Goal)
     { return Body().InsStep(Step,Goal); }
@@ -262,7 +256,7 @@ namespace RavlLogicN {
 
     inline bool IsUsefullNewStep(const NLPStepC &mt,const NLPStepNodeT &sn) const
     { return Body().IsUsefullNewStep(mt,sn); }
-    //: Test if is usefull to add postcondition to this plan.
+    //: Test if is useful to add postcondition to this plan.
     // Use to filter out the addition of useless steps.
   
     inline bool IsComplete() const 
@@ -308,11 +302,11 @@ namespace RavlLogicN {
   
     inline bool IsValid(const NLPStepNodeT &Oth) const
     { return Body().IsValid(Oth); }
-    //: Check the handle is valid. (For debuging. )
+    //: Check the handle is valid. (For debugging. )
   
     inline void DoDBCheck()
     { Body().DoDBCheck(); }
-    //: Debuging checks. 
+    //: debugging checks.
     
     inline IntT Steps() const 
     { return Body().Steps(); }
@@ -323,8 +317,8 @@ namespace RavlLogicN {
     //: Get a list of steps that will meet 'goalCond'.
     // GoalCond :- Condition that must be meet by Step,
     // FullCond :- 'Wish list' of conditions that also will be needed.
-    // Heuristic ordering of steps, place the most likly to
-    // be usefull first.
+    // Heuristic ordering of steps, place the most likely to
+    // be useful first.
     
     CallFunc2C<MinTermC&,MinTermC&,DListC<NLPStepC> > &ListSteps()
     { return Body().ListSteps(); }

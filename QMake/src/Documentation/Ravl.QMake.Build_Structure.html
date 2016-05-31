@@ -9,45 +9,96 @@ page describes its structure.  The structure is based on the linux standard file
 system.
 <p>
 <table BORDER="1" CELLPADDING="4" CELLSPACING="0">
-<tr><td><b> $PROJECT_OUT/bin                                     </b><td> Receives scripts and compiled programs. Compiled programs
-                                                                          are implemented via a symbolic link to the most recently
-                                                                          built binary for a particular program. If the last build
-                                                                          was a <code>qm opt</code>, the binaries linked to in the
-                                                                          bin directory will be the optimised versions. If the next
-                                                                          build undertaken is a <code>qm check</code>, the links
-                                                                          will be replaced with links to the the check binaries. The
-                                                                          actual binary files will reside in the relevant sub-dir.
-                                                                          (see below). This directory should appear on your PATH
-                                                                          executable searchlist.</tr>
-<tr><td><b> $PROJECT_OUT/bin/utils/$VAR{/shared}/bin             </b><td> Receives compiled programs for the specific build type
-                                                                          (VAR=opt, debug, check, etc. Optional extra shared directory
-                                                                          level for programs linked against shared libraries).</tr>
-<tr><td><b> $PROJECT_OUT/include/$PROJECT{/$PACKAGE}             </b><td> Receives the header files for the project (with an optional
-                                                                          package level sub-directory).</tr>
-<tr><td><b> $PROJECT_OUT/lib/$ARC/$VAR{/shared}/                 </b><td> Receives compiled libraries for the relevant build type
-                                                                          (VAR=opt, debug, check, etc. Optional extra shared sub-dir
-                                                                          for programs linked against shared libraries).</tr>
-<tr><td><b> $PROJECT_OUT/lib/$ARC/obj                            </b><td> Receives object files needed for building static binaries</tr>
-<tr><td><b> $PROJECT_OUT/lib/libdep                              </b><td> Library dependancy files</tr>
-<tr><td><b> $PROJECT_OUT/lib/libdep/$PLIB.def                    </b><td> Library dependancy file for library PLIB</tr>
-<tr><td><b> $PROJECT_OUT/lib/pkgconf                             </b><td> Receives any pkgconfig meta file for the project</tr>
-<tr><td><b> $PROJECT_OUT/QMake                                   </b><td> Receives a copy of QMake if one is being built for installation</tr>
-<tr><td><b> $PROJECT_OUT/share/doc                               </b><td> Receives the project documentation produced by the
-                                                                          <a href=Ravl.Documentation.html>CxxDoc Documentation System</a></tr>
-<tr><td><b> $PROJECT_OUT/share/QMake                             </b><td> Receives a working copy of QMake with which to build Ravl
-                                                                          if there is not currently a version of QMake installed on the
-                                                                          system.</tr>
-<tr><td><b> $PROJECT_OUT/test/$VAR{/shared}/bin                  </b><td> Receives compiled test programs for the relevant build type
-                                                                          (VAR=opt, debug, check, etc. Optional extra shared sub-dir
-                                                                          for programs linked against shared libraries).</tr>
-<tr><td><b> $PROJECT_OUT/test/$VAR{/shared}/log                  </b><td> Receives the output log files from the relevant test programs.
-                                                                          As usual, VAR=opt, debug, check, etc. and the optional extra
-                                                                          shared sub-directory is for programs linked against shared
-                                                                          libraries.</tr>
-<tr><td><b> $PROJECT_OUT/transient                               </b><td> Receives transient files from the build process. These files
-                                                                          may be deleted once the project has been fully built. However,
-                                                                          removal of these files will incur extra work should a 
-                                                                          subsequent build be required.</tr>
+<tr><td><b> $PROJECT_OUT/bin</b>
+    <td> Receives scripts and compiled programs. Compiled programs
+         are implemented via a symbolic link to the most recently
+         built binary for a particular program. If the last build
+         was a <code>qm opt</code>, the binaries linked to in the
+         bin directory will be the optimised versions. If the next
+         build undertaken is a <code>qm check</code>, the links
+         will be replaced with links to the the check binaries. The
+         actual binary files will reside in the relevant sub-dir.
+         (see below). This directory should appear on your PATH
+         executable searchlist.
+</tr>
+
+<tr><td><b> $PROJECT_OUT/bin/utils/$VAR{/shared{/single.X{.Y}}}/bin</b>
+    <td> Receives compiled programs for the specific build type
+         (VAR=opt, debug, check, etc. Optional shared directory
+         level for programs linked against shared libraries. Futher
+         optional directory level for binaries linked against
+         particular single shared libraries - the .X .Y suffixes
+         indicate the single libraries used to build the binary,
+         appending the name of each single library that has been used).
+</tr>
+
+<tr><td><b> $PROJECT_OUT/include/$PROJECT{/$PACKAGE}</b>
+    <td> Receives the header files for the project (with an optional
+         package level sub-directory).
+</tr>
+
+<tr><td><b> $PROJECT_OUT/lib/$ARC/$VAR{/shared{/single}}/</b>
+    <td> Receives compiled libraries for the relevant build type
+         (VAR=opt, debug, check, etc. Optional extra shared sub-dir
+         for programs linked against shared libraries and a further
+         extra single directory level for single shared libraries
+         (<a href=Ravl.QMake.Defs.html#SINGLESO>SINGLESO</a>)). Unlike
+         executables, there is only ever one single directory for all
+         of the single libraries.
+).
+</tr>
+
+<tr><td><b> $PROJECT_OUT/lib/$ARC/obj</b>
+    <td> Receives object files needed for building static binaries
+</tr>
+
+<tr><td><b> $PROJECT_OUT/lib/libdep</b>
+    <td> Library dependancy files
+</tr>
+
+<tr><td><b> $PROJECT_OUT/lib/libdep/$PLIB.def</b>
+    <td> Library dependancy file for library PLIB
+</tr>
+
+<tr><td><b> $PROJECT_OUT/lib/pkgconf</b>
+    <td> Receives any pkgconfig meta file for the project
+</tr>
+
+<tr><td><b> $PROJECT_OUT/QMake</b>
+    <td> Receives a copy of QMake if one is being built for installation
+</tr>
+
+<tr><td><b> $PROJECT_OUT/share/doc</b>
+    <td> Receives the project documentation produced by the
+         <a href=Ravl.Documentation.html>CxxDoc Documentation System</a>
+</tr>
+
+<tr><td><b> $PROJECT_OUT/share/QMake</b>
+    <td> Receives a working copy of QMake with which to build Ravl
+         if there is not currently a version of QMake installed on the
+         system.
+</tr>
+
+<tr><td><b> $PROJECT_OUT/test/$VAR{/shared{/single.X{.Y}}}/bin</b>
+    <td> Receives compiled test programs for the relevant build type
+         (VAR=opt, debug, check, etc. Optional extra shared sub-dir
+         for programs linked against shared libraries, optional further
+         layer for tests linked against specific single libraries).
+</tr>
+
+<tr><td><b> $PROJECT_OUT/test/$VAR{/shared{/single.X{.Y}}}/log</b>
+    <td> Receives the output log files from the relevant test programs.
+         As usual, VAR=opt, debug, check, etc. the optional extra shared
+         and single.X{.Y} sub-directories are for test programs linked
+         against shared and single-shared libraries.
+</tr>
+
+<tr><td><b> $PROJECT_OUT/transient</b>
+    <td> Receives transient files from the build process. These files
+         may be deleted once the project has been fully built. However,
+         removal of these files will incur extra work should a 
+         subsequent build be required.
+</tr>
 </table>
   </body>
 </html>

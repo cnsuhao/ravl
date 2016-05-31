@@ -11,7 +11,6 @@
 //! date="16/12/1996"
 //! docentry="Ravl.API.Logic.Planning"
 //! userlevel=Develop
-//! rcsid="$Id$"
 //! file="Ravl/Logic/NonLinearPlanner/NLPTypes.hh"
 //! lib=RavlLogicNLP
 

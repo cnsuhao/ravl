@@ -45,7 +45,7 @@ namespace RavlN {
        m_timedQueue(false),
        m_wakeScheduled(false)
     {
-      factory.UseComponent("ZmqContext",m_zmqContext);
+      factory.UseComponent("ZmqContext",m_zmqContext,false,typeid(RavlN::ZmqN::ContextC));
       Init();
     }
 

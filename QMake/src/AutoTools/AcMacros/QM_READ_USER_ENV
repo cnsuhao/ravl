@@ -1,5 +1,5 @@
 dnl This file is part of QMake, Quick Make System
-dnl Copyright (C) 2013, University of Surrey
+dnl Copyright (C) 2013-16, University of Surrey
 dnl This code may be redistributed under the terms of the GNU General
 dnl Public License (GPL). See the gpl.licence file for details or
 dnl see http://www.gnu.org/copyleft/gpl.html
@@ -28,6 +28,11 @@ dnl   variable exists for each external program considered by this macro. For
 dnl   instance, the support for the touch utility inspires both a TOUCH and
 dnl   a USER_TOUCH global variable.
 dnl
+dnl   All variables listed with a <res> in their name are created with the
+dnl   <res> being replaced by the QMake name of the resource. For example,
+dnl   the OpenCV package will have variables named use_OpenCV; with_OpenCV;
+dnl   etc.
+dnl
 dnl       <CMD>                      Holds the path to the associated external 
 dnl                                  utility. Will be initially primed with
 dnl                                  any setting that the user has requested.
@@ -37,6 +42,11 @@ dnl                                  of where the configure script finds the
 dnl                                  utility. This variable is used whenever
 dnl                                  the utility needs to be used by either the
 dnl                                  configure script or QMake.
+dnl       use_<res>                  Flag specifying usage of the resource,
+dnl                                  initially primed from the command line
+dnl                                  settings, this will be updated to
+dnl                                  reflect the availability of the library
+dnl                                  <res>
 dnl       USER_<CMD>                 Receives any particular setting for <cmd>
 dnl                                  that the user has explicitly requested.
 dnl                                  This variable is used to both preserve the
@@ -60,18 +70,19 @@ AC_DEFUN([QM_READ_USER_ENV],
           dnl#
           dnl# If the variable you are adding is defaulted by a particular
           dnl# macro that macro must also be added to the list of
-          dnl# postrequisite macros declared AC_BEFORE. If possible, the
+          dnl# post-requisite macros declared AC_BEFORE. If possible, the
           dnl# specified macro should also be amended to AC_REQUIRE this
           dnl# macro. You will still need to call the initialising macro
           dnl# but must ensure that it is always called after this macro
           dnl# has been executed.
           dnl#
 
-          dnl# List of postrequisite macros that should never be called prior
+          dnl# List of post-requisite macros that should never be called prior
           dnl# to execution of this one.
           dnl#
           AC_BEFORE([QM_READ_USER_ENV, QM_LOCATE_KEY_TOOLS])
-          dnl# Macros called from QM_LOCATE_KEY_TOOLS that are thus postrequisites
+          dnl# Macros called from QM_LOCATE_KEY_TOOLS that are thus
+          dnl# post-requisites.
                     AC_BEFORE([QM_READ_USER_ENV, PKG_PROG_PKG_CONFIG])
                     AC_BEFORE([QM_READ_USER_ENV, AC_PROG_SED])
                     AC_BEFORE([QM_READ_USER_ENV, AC_PROG_AWK])
@@ -82,13 +93,14 @@ AC_DEFUN([QM_READ_USER_ENV],
                     AC_BEFORE([QM_READ_USER_ENV, AC_PROG_GREP])
                     AC_BEFORE([QM_READ_USER_ENV, QM_LOCATE_LD])
                     AC_BEFORE([QM_READ_USER_ENV, QM_LOCATE_MAKE])
-          dnl# Macros that are postrequisites of QM_LOCATE_KEY_TOOLS
+          dnl# Macros that are post-requisites of QM_LOCATE_KEY_TOOLS.
                     AC_BEFORE([QM_READ_USER_ENV, QM_SET_COMPILER_CCFLAGS])
                     AC_BEFORE([QM_READ_USER_ENV, QM_SET_COMPILER_CFLAGS])
-                    dnl# And the postrequisite of both of these macros
+                    dnl# And the post-requisite of both of these macros
                               AC_BEFORE([QM_READ_USER_ENV, QM_PROCESS_EXTLIBS])
           AC_BEFORE([QM_READ_USER_ENV, QM_LOCATE_QMAKE_DEPS])
-          dnl# Macros called from QM_LOCATE_QMAKE_DEPS that are thus postrequisites
+          dnl# Macros called from QM_LOCATE_QMAKE_DEPS that are thus
+          dnl# post-requisites.
                     AC_BEFORE([QM_READ_USER_ENV, AC_PROG_INSTALL])
                     AC_BEFORE([QM_READ_USER_ENV, AC_PROG_LEX])
                     AC_BEFORE([QM_READ_USER_ENV, AC_PROG_MKDIR_P])
@@ -118,8 +130,8 @@ AC_DEFUN([QM_READ_USER_ENV],
           fi
 
           AC_ARG_VAR([CCACHE],[Path to the ccache program for caching output of the compilation process])
-          # Any CCACHE environment variable is processd along with the 
-          # commandline switch (see QM_LOCATE_QMAKE_DEPS)
+          # Any CCACHE environment variable is processed along with the 
+          # command-line switch (see QM_LOCATE_QMAKE_DEPS)
 
           dnl No need for a AC_ARG_VAR as CCPP automatically defined
           if ( test "x$CCPP" != x )
@@ -259,9 +271,13 @@ AC_DEFUN([QM_READ_USER_ENV],
           then
              # User has supplied their own setting, record this
              USER_NVCC=$NVCC
+             # As NVCC is a QMake resource, we need to flag that the user has
+             # actually configured the setting (so we will check all the CUDA
+             # packages)
+             use_NVCC=check
           fi
 
-          AC_ARG_VAR([PAGER],[Path to the utility for interactive pagewise file browsing])
+          AC_ARG_VAR([PAGER],[Path to the utility for interactive page-wise file browsing])
           if ( test "x$PAGER" != x )
           then
              # User has supplied their own setting, record this

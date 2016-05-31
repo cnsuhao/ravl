@@ -89,12 +89,12 @@ namespace RavlLogicN {
     
 
     void DoDBCheck(NonLinearPlanBodyC &aPlan);
-    // Debuging checks.
+    // Debugging checks.
     
     void DoDBCheck(NonLinearPlanC aPlan) { 
       //DoDBCheck(aPlan.Body()); 
     }
-    // Debuging checks.
+    // Debugging checks.
     
   private:
     //DPModelC<LiteralC,StateC,MinTermC,MinTermC> model;

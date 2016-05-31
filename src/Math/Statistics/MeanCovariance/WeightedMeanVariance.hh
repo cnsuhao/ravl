@@ -78,6 +78,9 @@ namespace RavlN {
     void AddWeighted(RealT value,RealT weight);
     //: Add another sample with the given weight
 
+    void AddWeightedExponentialDecay(RealT discount,RealT value,RealT weight);
+    //: Add another sample, discounting all previous samples by 'discount'
+
     RealT Gauss(RealT x) const;
     //: Value of the normal (Gaussian) distribution at x, using this mean and variance.
     

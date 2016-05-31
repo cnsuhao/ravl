@@ -1,5 +1,5 @@
 dnl This file is part of QMake, Quick Make System
-dnl Copyright (C) 2013, University of Surrey
+dnl Copyright (C) 2013-16, University of Surrey
 dnl This code may be redistributed under the terms of the GNU General
 dnl Public License (GPL). See the gpl.licence file for details or
 dnl see http://www.gnu.org/copyleft/gpl.html
@@ -19,6 +19,11 @@ dnl also a dependency of the configure script itself (for example, sed; tr
 dnl or the C compliers are not located by this macro). The dependencies of
 dnl the configure script will have already been processed from a prior 
 dnl execution of the QM_LOCATE_KEY_TOOLS macro.
+dnl
+dnl As the nVidia CUDA compiler (nvcc) may need to be selected based on the
+dnl settings of the various --with_cudaXXX switches, it is not considered
+dnl here. We look for the compiler driver in ithe QM_CK_BESPOKE_CK_LIB macro
+dnl once we know if the user is requesting a specific version of CUDA.
 dnl
 dnl No Macro parameters
 dnl
@@ -40,17 +45,13 @@ dnl                                  the user has requested that QMake use.
 dnl       <CMD>                      Receives the path to the utility <cmd>.
 dnl                                  Can initially be primed by the user to
 dnl                                  force the use of a particular program.
-dnl       CONFIGURE_NVCCFLAGS        Initialised here to hold any NVCCFLAGS
-dnl                                  that the user may have set in their
-dnl                                  environment. This variable is only 
-dnl                                  initialised if the CUDA compiler is
-dnl                                  actually located (or user-specified).
 dnl       InheritCFG                 Specifies if we should use the QMAKE_CFG
 dnl                                  file to bootstrap our configuration
 dnl                                  settings.
-dnl       QMAKE_CFG                  Already primed (by the QM_LOCATE_QMAKE
-dnl                                  macro) with the location of QMake's
-dnl                                  configuration file.
+dnl       QMAKE_CFG                  Holds the location of the configuration
+dnl                                  file for the copy of QMake that is in
+dnl                                  use. Originally primed by calling the
+dnl                                  QM_LOCATE_QMAKE macro.
 dnl       QMAKE_DEPENDENCIES         Builds up into a list of all the required
 dnl                                  utilities processed by this macro.
 dnl       SED                        Holds the name of the executable to carry
@@ -58,7 +59,7 @@ dnl                                  out stream editing. This will already
 dnl                                  have been primed by a prior call to the
 dnl                                  macro QM_LOCATE_KEY_TOOLS.
 dnl       use_ccache                 Receives whether the user wishes to use
-dnl                                  the ccache utility to cache the outout of
+dnl                                  the ccache utility to cache the output of
 dnl                                  the build process.
 dnl       USER_<CMD>                 Holds any user specified configuration
 dnl                                  for the utility <cmd>.
@@ -157,8 +158,32 @@ AC_DEFUN([QM_LOCATE_QMAKE_DEPS],
           dnl owing to how the macro AC_PROG_INSTALL is expanded. When control
           dnl reaches this point, the AC_PROG_INSTALL macro will have already
           dnl been expanded and executed. This occurs regardless of where we
-          dnl place the macro call in this code.
+          dnl place the macro call in this section of code. The AC_PROG_INSTALL
+          dnl macro will have actually been expanded immediately after the
+          dnl expansion of the AC_REQUIRE at the start of this macro (so the
+          dnl USER_INSTALL variable will truly reflect if the user supplied
+          dnl  any priming value).
           AC_PROG_INSTALL
+          if ( test `echo x$INSTALL | $AWK '{ print @S|@1 }'` = "x$srcdir/install-sh" )
+          then
+             # INSTALL is pointing to the fall-back file in the QMake source
+             # directory. This will cease to work if the user removes the
+             # source following a successful install and will also be useless
+             # if configure was invoked with a relative path. To fix this, We
+             # need to nullify the setting and let QMake install install-sh
+             # and select it as necessary
+             INSTALL=
+             # In this instance, we do not want to regard INSTALL as being a
+             # pre-requisite of QMake. (i.e. there is no need to error if the
+             # setting is null)
+          else
+             # INSTALL is either set to the path to a system-installed program
+             # or not found at all. Either way, we need to regard it as a
+             # dependency and error if it is not a usable setting (we should
+             # never actually get a null value as we should have always found
+             # the install-sh as a fallback).
+             QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES INSTALL"
+          fi
           if ( test "x$USER_INSTALL" = x )
           then
              # User has not specified a INSTALL program to use, do we have
@@ -219,11 +244,13 @@ AC_DEFUN([QM_LOCATE_QMAKE_DEPS],
                 fi
              fi
           fi
-          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES INSTALL INSTALL_DATA INSTALL_PROGRAM INSTALL_SCRIPT"
+          QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES INSTALL_DATA INSTALL_PROGRAM INSTALL_SCRIPT"
 
           dnl As per AC_PROG_INSTALL, AC_PROG_LEX will already have been
           dnl executed when we reach this point. Hence we use a similar
           dnl modified method of initialising the LEX and LEXLIB variables.
+          dnl Again, because of the AC_REQUIRE, USER_LEX will have been
+          dnl correctly set prior to the AC_PROG_LEX code being executed.
           AC_PROG_LEX
           if ( test "x$USER_LEX" = x )
           then
@@ -271,7 +298,10 @@ AC_DEFUN([QM_LOCATE_QMAKE_DEPS],
 
           dnl Again, AC_PROG_MKDIR_P is a macro that expands otuside of this
           dnl macro and will have been run by the time control reaches this
-          dnl code. We use the same work around as for INSTALL and LEX.
+          dnl code. We use the same work around as for INSTALL and LEX. As
+          dnl for both LEX and INSTALL, USER_MKDIR_P will correctly hold any
+          dnl user-setting (the AC_REQUIRE at the top of this macro ensuring
+          dnl correct order of execution).
           AC_PROG_MKDIR_P
           if ( test "x$USER_MKDIR_P" = x )
           then
@@ -280,43 +310,35 @@ AC_DEFUN([QM_LOCATE_QMAKE_DEPS],
              if ( test "x$InheritCFG" = xyes )
              then
                 OriginalSetting=`cat $QMAKE_CFG | $SED  -n 's/^MKDIR_P=\(.*\)/\1/p'`
-                if ( test "x$OriginalSetting" != x )
+             else
+                OriginalSetting=""
+             fi
+             if ( test "x$OriginalSetting" != x )
+             then
+                MKDIR_P=$OriginalSetting
+                # Prefer any original setting over the value set from the
+                # AC_MKDIR_P macro
+             else
+                # No user-setting or prior setting to use, so we take the value
+                # determined by configure. However, we must first ensure that
+                # this is a fully viable setting. If there is no mkdir -p
+                # available, configure will have selected to use the instal-sh
+                # script in the QMake source directory. Using this script will
+                # cease to work if the user removes the QMake source following
+                # a successful install. If configure was also invoked with a
+                # relative path, this fallback is also liable to be accessed
+                # via a relative path which will be useless when running make
+                # outside of the QMake directory. To correct all of this, in
+                # this situation, we set MKDIR_P to use the INSTALL setting
+                # as the -d option performs the required directory creation
+                # function.
+                if ( test `echo x$MKDIR_P | $AWK '{ print @S|@1 }'` = "x$srcdir/install-sh" )
                 then
-                   MKDIR_P=$OriginalSetting
-                   # Prefer any original setting over the value set from the
-                   # AC_MKDIR_P macro
+                   MKDIR_P="\${INSTALL} -d "
                 fi
              fi
           fi
           QMAKE_DEPENDENCIES="$QMAKE_DEPENDENCIES MKDIR_P"
-
-          if ( test "x$USER_NVCC" = x )
-          then
-             # User has not specified a CUDA compiler to use, do we have
-             # an existing setting?
-             if ( test "x$InheritCFG" = xyes )
-             then
-                NVCC=`cat $QMAKE_CFG | $SED  -n 's/^NVCC=\(.*\)/\1/p'`
-             fi
-             if ( test "x$NVCC" = x )
-             then
-                # We still do not have a setting, attempt to find one
-                AC_PATH_PROG([NVCC],[nvcc],[missing])
-             fi
-          fi
-          # Do not update QMAKE_DEPENDENCIES as NVCC is an optional feature
-          # of QMake. What we do have to do is re-set NVCC to null if we did
-          # not find the compiler (as it is optional, finding nvcc to be
-          # missing does not error out of configure so the value of NVCC will
-          # get written to the Config.xx file; hence it needs to be null if
-          # we did not find nvcc).
-          if ( test "x$NVCC" = xmissing ) 
-          then
-             NVCC=""
-          else
-             CONFIGURE_NVCCFLAGS=$NVCCFLAGS
-             # Record any supplied NVCCFLAGS
-          fi
 
           if ( test "x$USER_RANLIB" = x )
           then
@@ -350,9 +372,9 @@ AC_DEFUN([QM_LOCATE_QMAKE_DEPS],
                 AC_PROG_YACC
              fi
           fi
-          # As for LEX and NVCC, QMake will downgrade its functionality on
-          # an absence of YACC so we do not flag it as a required depencdency
-          # i.e. we do not add it to QMAKE_DEPENDENCIES
+          # As for LEX, QMake will downgrade its functionality on an absence
+          # of YACC so we do not flag it as a required dependency i.e. we
+          # do not add it to QMAKE_DEPENDENCIES
 
 
           # GNU standards regard the following safe to call directly but as we

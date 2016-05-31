@@ -1,0 +1,92 @@
+dnl This file is part of QMake, Quick Make System
+dnl Copyright (C) 2015-16, University of Surrey
+dnl This code may be redistributed under the terms of the GNU General
+dnl Public License (GPL). See the gpl.licence file for details or
+dnl see http://www.gnu.org/copyleft/gpl.html
+dnl
+dnl file-header-ends-here
+
+
+dnl QM_DEFINE_EXTLIB_BESPOKE_CC
+dnl
+dnl Macro to define an external library that requires bespoke code to check
+dnl for its availability and where the basic existence test is carried out
+dnl via a test compilation.
+dnl
+dnl This macro causes the declaration of the --with-<lib>-pkgconfig and the
+dnl --with-<lib> command-line switches. For a bespoke-check library package,
+dnl the --with-<lib>-pkgconf switch allows the user to over-ride the bespoke
+dnl check and employ a pkg-config file (either one supplied with the package
+dnl or by writing their own pkg-config metafile if one is unavailable for
+dnl the package. The --with-<lib> switch allows the user to disable or
+dnl specifically request the package.
+dnl
+dnl In addition, this macro will declate the --with-<lib>-library and
+dnl --with-<lib>-include
+dnl
+dnl For packages that require a bespoke test, but do not require a compilation
+dnl test (for example, virtual packages) please use the sister macro
+dnl QM_DEFINE_EXTLIB_BESPOKE.
+dnl
+dnl Macro parameters are:
+dnl       p1: QMake name for library. This is used for naming the cmd-line
+dnl           switch (LIB => --with-LIB, --with-LIB-include, etc.). It
+dnl           should be the name QMake expects the RESOURCES string to take
+dnl           to enable the library's functionality in the client project. It
+dnl           will also be the name used for the LIB_CFLAGS and LIB_LIBS used
+dnl           in the relevant .def file and Config.Project
+dnl       p2: Fragment of code to verify that the library can be successfully
+dnl           linked to. Usually this is just a single call to a function
+dnl           declared by the external library. However, some libraries need
+dnl           a little more set up - such as any library where we need to
+dnl           test for a C++ class; or the Math library where some compilers
+dnl           perform extra prototype checking on those functions.
+dnl       p3: Name of all pre-requisite libraries that this one depends on
+dnl           Specify as a space-separated list of QMake names
+dnl       p4: Name(s) of the library as specified on the link line i.e. in
+dnl           -lXXXX -lYYYY form. For library packages that vary the names
+dnl           of the libraries required, this may be a set of alternative
+dnl           lists separated by a pipe symbol (|).
+dnl       p5: Name of any header files provided by the library package. It is
+dnl           usually sufficient to only test for one file unless it is known
+dnl           that incomplete subsets of the header files are regularly found
+dnl       p6: Language in which to perform the test compilation/link. This is
+dnl           usually the language of the API of the external library.
+dnl           Currently only C and C++ are supported languages for this setting
+dnl
+dnl Global variables used:
+dnl
+dnl   All variables listed with a <lib> in their name are created with the
+dnl   <lib> being replaced by the QMake name of the package (the name passed
+dnl   into this macro as the first parameter). For example,the OpenCV package
+dnl   will have variables named use_OpenCV; with_OpenCV_prq; etc.
+dnl
+dnl       with_<lib>_hdr             Name(s) of the library package's headers
+dnl       with_<lib>_lang            Language of the with_<lib>_tstcd linkage
+dnl                                  test code.
+dnl       with_<lib>_prq             Space separated list of pre-requisites
+dnl                                  of the external library package, <lib>.
+dnl       with_<lib>_tstcd           Code with which to test that the external
+dnl                                  library will link.
+dnl
+dnl
+AC_DEFUN([QM_DEFINE_EXTLIB_BESPOKE_CC],
+         [
+          QM_RESOURCE_BASIC_SWITCHES([$1],[],[bespoke])
+
+          QM_RESOURCE_CC_SWITCHES([$1], [$4])
+
+          with_$1_tstcd='$2'
+          dnl# The single quotes are to prevent any expansion of the supplied
+          dnl# code (particularly the * of any pointer definitions).
+          dnl# This does not prevent the dollar-2 expanding as this is an m4
+          dnl# macro parameter and not a shell variable.
+          with_$1_prq="$3"
+          with_$1_hdr="$5"
+          with_$1_lang="$6"
+
+          QM_FINISH_DEFINE([$1])
+         ]
+        )
+
+

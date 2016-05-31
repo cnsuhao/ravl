@@ -40,7 +40,7 @@ int main(int nargs,char **argv) {
     lst.InsLast(3);
     
     if(!NetPortOpen(address)) {
-      cerr << "Failed to open netPortManager. \n";
+      std::cerr << "Failed to open netPortManager. \n";
       return __LINE__;
     }
     
@@ -49,10 +49,10 @@ int main(int nargs,char **argv) {
     
     // Export the stream 'op' as test1
     if(!NetExport(portName,op)) {
-      cerr << "Failed to export '" << portName << "' \n";
+      std::cerr << "Failed to export '" << portName << "' \n";
       return __LINE__;
     }
-    cerr << "Server open, waiting for connections. (Use Ctrl-C to exit.)\n";
+    std::cerr << "Server open, waiting for connections. (Use Ctrl-C to exit.)\n";
     while(1)
       Sleep(20); // Don't exit, wait for the client of connect!
   } else {
@@ -69,7 +69,7 @@ int main(int nargs,char **argv) {
     
     isp >> DPOContainer(lst2);
     
-    cout << "Read data :" << lst2 << "\n";
+    std::cout << "Read data :" << lst2 << "\n";
     isp.Invalidate();
   }
   if(wait)

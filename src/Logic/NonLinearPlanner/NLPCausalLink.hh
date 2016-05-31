@@ -20,8 +20,8 @@ namespace RavlLogicN {
   
   //! userlevel=Advanced
   //: Information stored in a causal link.
-  // Links may be use to indicat either cause or be pure
-  // ordering contraints.
+  // Links may be use to indicate either cause or be pure
+  // ordering constraints.
   
   class NLPCausalLinkC 
   {
@@ -29,7 +29,7 @@ namespace RavlLogicN {
     inline NLPCausalLinkC()
     {}
     //: Default, Constructor.
-    // If no conidition is set the link is used for
+    // If no condition is set the link is used for
     // ordering of actions only.
     
     inline NLPCausalLinkC(const MinTermC &cond)
