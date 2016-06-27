@@ -346,21 +346,21 @@ int main(int argc,char **argv)
 }
 
 
-template class Signal1C<IntT>;
-template class Signal1BodyC<IntT>;
+template class RavlN::Signal1C<IntT>;
+template class RavlN::Signal1BodyC<IntT>;
 
-template class Signal2C<IntT,RealT>;
-template class Signal2BodyC<IntT,RealT>;
-template class Signal2FuncBodyC<IntT,RealT>;
-template class Signal2FuncC<IntT,RealT>;
-template class SignalConnector2BodyC<IntT,RealT>;
-template class Signal2MethodC<IntT,RealT,Signal0C>;
-template class SignalInterConnect2C<IntT,RealT>;
+template class RavlN::Signal2C<IntT,RealT>;
+template class RavlN::Signal2BodyC<IntT,RealT>;
+template class RavlN::Signal2FuncBodyC<IntT,RealT>;
+template class RavlN::Signal2FuncC<IntT,RealT>;
+template class RavlN::SignalConnector2BodyC<IntT,RealT>;
+template class RavlN::Signal2MethodC<IntT,RealT,Signal0C>;
+template class RavlN::SignalInterConnect2C<IntT,RealT>;
 
-template class Signal3C<IntT,RealT,UIntT>;
-template class Signal3BodyC<IntT,RealT,UIntT>;
-template class Signal3FuncBodyC<IntT,RealT,UIntT>;
-template class Signal3FuncC<IntT,RealT,UIntT>;
-template class SignalConnector3BodyC<IntT,RealT,UIntT>;
-template class Signal3MethodC<IntT,RealT,UIntT,Signal0C>;
-template class SignalInterConnect3C<IntT,RealT,UIntT>;
+template class RavlN::Signal3C<IntT,RealT,UIntT>;
+template class RavlN::Signal3BodyC<IntT,RealT,UIntT>;
+template class RavlN::Signal3FuncBodyC<IntT,RealT,UIntT>;
+template class RavlN::Signal3FuncC<IntT,RealT,UIntT>;
+template class RavlN::SignalConnector3BodyC<IntT,RealT,UIntT>;
+template class RavlN::Signal3MethodC<IntT,RealT,UIntT,Signal0C>;
+template class RavlN::SignalInterConnect3C<IntT,RealT,UIntT>;
