@@ -55,6 +55,23 @@ PKG_SHARED_CFLAGS=$(COMPILER_SHARED_CFLAGS)
 PKG_CANSIFLAG=$(COMPILER_ANSI_CFLAGS)
 # Drop $(COMPILER_ANSI_CFLAGS) if your source is not in ANSI C
 
+# Allow use of any C standards that the compiler supports
+# We leave the relevant PKG_ variable unset if the compiler does not support
+# the particular standard so that QMake may distinguish between the standard
+# needing no compiler flag (the variable is set but null) and not being
+# available (variable is not set at all).
+ifdef COMPILER_C90_CFLAGS
+  PKG_C90_CFLAGS=$(COMPILER_C90_CFLAGS)
+endif
+ifdef COMPILER_C95_CFLAGS
+  PKG_C95_CFLAGS=$(COMPILER_C95_CFLAGS)
+endif
+ifdef COMPILER_C99_CFLAGS
+  PKG_C99_CFLAGS=$(COMPILER_C99_CFLAGS)
+endif
+ifdef COMPILER_C11_CFLAGS
+  PKG_C11_CFLAGS=$(COMPILER_C11_CFLAGS)
+endif
 
 # Default settings for compiling C++
 #
@@ -72,6 +89,28 @@ PKG_PROF_CCFLAGS=$(COMPILER_PROF_CCFLAGS)
 PKG_SHARED_CCFLAGS=$(COMPILER_SHARED_CCFLAGS)
 PKG_CCANSIFLAG=$(COMPILER_ANSI_CCFLAGS)
 # Drop $(COMPILER_ANSI_CCFLAGS) if your source is not in ANSI C++
+
+# Allow use of any C++ standards that the compiler supports
+# We leave the relevant PKG_ variable unset if the compiler does not support
+# the particular standard so that QMake may distinguish between the standard
+# needing no compiler flag (the variable is set but null) and not being
+# available (variable is not set at all).
+ifdef COMPILER_CC98_CCFLAGS
+  PKG_CC98_CCFLAGS=$(COMPILER_CC98_CCFLAGS)
+  PKG_CC98_NVCCFLAGS=$(NVCC_CC98_NVCCFLAGS)
+endif
+ifdef COMPILER_CC03_CCFLAGS
+  PKG_CC03_CCFLAGS=$(COMPILER_CC03_CCFLAGS)
+  PKG_CC03_NVCCFLAGS=$(NVCC_CC03_NVCCFLAGS)
+endif
+ifdef COMPILER_CC11_CCFLAGS
+  PKG_CC11_CCFLAGS=$(COMPILER_CC11_CCFLAGS)
+  PKG_CC11_NVCCFLAGS=$(NVCC_CC11_NVCCFLAGS)
+endif
+ifdef COMPILER_CC14_CCFLAGS
+  PKG_CC14_CCFLAGS=$(COMPILER_CC14_CCFLAGS)
+  PKG_CC14_NVCCFLAGS=$(NVCC_CC14_NVCCFLAGS)
+endif
 
 
 # Default settings for linker (when linking binaries)

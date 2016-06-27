@@ -17,37 +17,39 @@ dnl No macro parameters
 dnl
 dnl Global variables used:
 dnl
-dnl       AWK                        Contains the path to the Awk utility.
-dnl                                  Can initially be primed by the user to
-dnl                                  force the use of a particular program.
-dnl                                  Regarded as a key tool as it is used
-dnl                                  by configure itself.
+dnl       Actual_CC                  Holds the identified type of the compiler
+dnl                                  if it is a GNU-compatible version.
 dnl       CC                         Holds the path to the C compiler in
 dnl                                  use. May be updated to include extra
 dnl                                  global compiler options. 
 dnl       CC_VERSION               } { Receives the version information for
-dnl       CC_MAJOR                 } { the current C++ compiler.
-dnl       CC_MINOR                 }
+dnl       CC_MAJOR                 } { the current C compiler. For a GNU
+dnl       CXX_MINOR                } { compatible compiler, these variables
+dnl                                  { are actually initialised by the macro
+dnl                                  { QM_ID_GNU_COMPILER called from here.
 dnl       COMPILER_ANSI_CFLAGS     } { Receive the compiler specific flags
-dnl       COMPILER_DEBUG_CFLAGS    } { for setting the appropriate mode of
-dnl       COMPILER_GPROF_CFLAGS    } { compiler operation required by QMake.
-dnl       COMPILER_NON_OPT_CFLAGS  } {  .._ANSI_.. is used for compiling
-dnl       COMPILER_OPT_CFLAGS      } { ANSI-C source code; .._DEBUG_.. to
-dnl       COMPILER_PROF_CFLAGS     } { include debug info; .._GPROF_.. for
-dnl       COMPILER_SHARED_CFLAGS   } { compiling code that can be analysed
-dnl                                } { by the gprof utility (.._PROF_.. by
-dnl                                } { the prof utility) and .._SHARED_..
-dnl                                  { to compiled shared objects. With the
-dnl                                  { exception of the .._NON_OPT_.. flag,
-dnl                                  { all of these flags drive the default
-dnl                                  { value of the appropriately named
-dnl                                  { PKG_... flag (which is the actual
-dnl                                  { variable used in the QMake makefiles).
-dnl                                  { .._NON_OPT_.. is appended to the
-dnl                                  { PKG_DEFAULT... flags used for the
-dnl                                  { non-optimised builds. All of these
-dnl                                  { variables are primed based on the
-dnl                                  { compiler in use and declare the
+dnl       COMPILER_C90_CFLAGS      } {  .._ANSI_.. is used for compiling
+dnl       COMPILER_C95_CFLAGS      } { ANSI-C source code;  the .._Cnn_..
+dnl       COMPILER_C99_CFLAGS      } { flags select compiler compatability
+dnl       COMPILER_C11_CFLAGS      } { with the appropriate C standard
+dnl       COMPILER_DEBUG_CFLAGS    } { (these variables are only ever set
+dnl       COMPILER_GPROF_CFLAGS    } { if the particular standard is
+dnl       COMPILER_NON_OPT_CFLAGS  } { supported by the compiler in use);
+dnl       COMPILER_OPT_CFLAGS      } {.._DEBUG_.. to include debug info;
+dnl       COMPILER_PROF_CFLAGS     } { .._GPROF_.. for compiling code that
+dnl       COMPILER_SHARED_CFLAGS   } { can be analysed by the gprof utility
+dnl                                  { (.._PROF_.. by the prof utility) and
+dnl                                  { .._SHARED_.. to compiled shared
+dnl                                  { objects. With the exception of the
+dnl                                  { .._NON_OPT_.. flag, all of these flags
+dnl                                  { drive the default value of the
+dnl                                  { appropriately named PKG_... flag (which
+dnl                                  { is the actual variable used in the
+dnl                                  { QMake makefiles). .._NON_OPT_.. is
+dnl                                  { appended to the PKG_DEFAULT... flags
+dnl                                  { used for the non-optimised builds. All
+dnl                                  { of these variables are primed based on
+dnl                                  { the compiler in use and declare the
 dnl                                  { variable for output to the config.X
 dnl                                  { configuration file.
 dnl       COMPILER_SPECIFIC_CFLAGS   Receive any compiler specific flags
@@ -68,6 +70,11 @@ dnl                                  QM_LOCATE_KEY_TOOLS.
 dnl       GCC                        Flag, originally set by AC_PROG_CC
 dnl                                  indicating if a GNU C compiler is in
 dnl                                  use. Set to yes for a GNU compiler.
+dnl       RESOURCES                  Holds the list of QMake RESOURCES that
+dnl                                  are available for use. Primed by this
+dnl                                  macro to include those C standards that
+dnl                                  are supported by the C compiler that is
+dnl                                  in use.
 dnl
 AC_DEFUN([QM_SET_COMPILER_CFLAGS],
          [trace 2 Set compiler specific CFLAGS
@@ -83,12 +90,163 @@ AC_DEFUN([QM_SET_COMPILER_CFLAGS],
           dnl# QM_LOCATE_KEY_TOOLS has already been called.
           AC_REQUIRE([QM_LOCATE_KEY_TOOLS])
           
+          # This whole section should probably be re-written on the basis of
+          # test compiling appropriate source with the known compiler switches
+          # rather than checking the version of the compiler. Implementation
+          # would be something similar to the existing AC_PROG_CC_C89 and 
+          # AC_PROG_CC_C99 macros (which we are not using primarily as they
+          # force GNU extensions on and we would still have to test for AMD1
+          # support anyway).
+          #
+
           if ( test x$GCC = xyes )
           then
              trace 3 We have a GNU C Compiler
-             # Or something masquerading as one (e.g. CLang)
+             # Or something masquerading as one (e.g. Clang)
+             QM_ID_GNU_COMPILER([CC])
+             dnl# This will indicate the real identity of the GNU-compatible in
+             dnl# the Actual_CC variable and prime CC_VERSION; CC_MAJOR and
+             dnl# CC_MINOR with the revision number.
+
+             # Now start to set the compiler flags...
 
              COMPILER_ANSI_CFLAGS=" -ansi "
+             # Dependant on compiler this switch is liable to select C89/90; 
+             # C99 or C11; etc. For this reason it is best for the user to use
+             # the C_STD switches in QMake rather than the older QMake ANSIFLAG
+             # system.
+
+             # Support for other C standards (and the switches to enable them)
+             # depends on the version of the compiler in use
+             #
+             # For the GNU compatible compilers, we still  need to consider
+             # if we want to force the compiler into -pedantic mode. At
+             # present, we are taking the approach that this functionality
+             # is more for getting code to compile rather than a mechanism
+             # for developing fully compliant code and so, do not add the
+             # switch.
+
+             case $Actual_CC in
+                GNU | Unknown )   # Unknown compiler assumed gcc 5.0 compatible
+
+                                  if ( test $CC_MAJOR -lt 3 )
+                                  then
+                                     # Standard switch -fstd before revision 3
+                                     # of the compiler. No documentation for
+                                     # early versions of the compiler so we are
+                                     # just assuming -fstd=c89 will be ok
+                                     # across the board.
+                                     COMPILER_C90_CFLAGS=" -fstd=c89 "
+                                     RESOURCES="$RESOURCES C90"
+                                     COMPILER_C95_CFLAGS=" -fstd=iso9899:199409 "
+                                     RESOURCES="$RESOURCES C95"
+                                     # Compiler only supports interim version
+                                     # of C99
+                                     COMPILER_C99_CFLAGS=" -fstd=c9x "
+                                     RESOURCES="$RESOURCES C99"
+                                     # This glosses over the fact that full
+                                     # compliance was not available in the
+                                     # compiler (e.g. C99 inline was not
+                                     # properly implemented until gcc 4.3).
+                                  else # => Version 3 on
+                                     # Full support for C89/90, AMD1 and C99
+                                     # Now employ -std switch
+                                     COMPILER_C90_CFLAGS=" -std=c89 "
+                                     RESOURCES="$RESOURCES C90"
+                                     COMPILER_C95_CFLAGS=" -std=iso9899:199409 "
+                                     RESOURCES="$RESOURCES C95"
+                                     # Again, we do not get full C99
+                                     # compliance until gcc 4.3 but we
+                                     # take what is available.
+                                     COMPILER_C99_CFLAGS=" -std=c99 "
+                                     RESOURCES="$RESOURCES C99"
+                     
+                                     if ( test $CC_MAJOR -eq 4 )
+                                     then
+                                        if ( test $CC_MINOR -eq 6 )
+                                        then
+                                           # 4.6 had support for transitional
+                                           # C1x standard - enable that.
+                                           COMPILER_C11_CFLAGS=" -std=c1x "
+                                           RESOURCES="$RESOURCES C11"
+                                        else
+                                           if ( test $CC_MINOR -gt 6 )
+                                           then
+                                              # 4.7 and above supports C11
+                                              COMPILER_C11_CFLAGS=" -std=c11 "
+                                              RESOURCES="$RESOURCES C11"
+                                           fi
+                                        fi
+                                     else # => Version 3.X or 5.X and above
+                                        if ( test $CC_MAJOR -gt 4 )
+                                        then
+                                           # 5 and above include C11 support
+                                           COMPILER_C11_CFLAGS=" -std=c11 "
+                                           RESOURCES="$RESOURCES C11"
+                                        fi
+                                     fi
+                                  fi
+                                  ;;
+                Clang )
+                                  # C90 through C99 supported from first viable
+                                  # version; no documentation available when
+                                  # individual switches/stadards became
+                                  # available, assume always so but only flag
+                                  # support via RESOURCES once we are sure they
+                                  # were fully available.
+                                  COMPILER_C90_CFLAGS=" -std=c89 "
+                                  COMPILER_C95_CFLAGS=" -std=c94 "
+                                  COMPILER_C99_CFLAGS=" -std=c99 "
+
+                                  if ( test $CC_MAJOR -eq 2 )
+                                  then
+                                     if ( test $CC_MINOR -gt 5 )
+                                     then
+                                        # Regarded as production quality
+                                        # from revision 2.6 on (and included
+                                        # as part of LVM from that point).
+                                        RESOURCES="$RESOURCES C90"
+                                        RESOURCES="$RESOURCES C95"
+                                        RESOURCES="$RESOURCES C99"
+                                   # else # => Version 2.0 to 2.5
+                                        # Compiler not regarded as production
+                                        # quality, do not flag any standard as
+                                        # being an available RESOURCE.
+                                     fi
+                                  else # Version != 2.X
+                                     if ( test $CC_MAJOR -gt 2 )
+                                     then
+                                        # Post 2.X C90 through C99 fully
+                                        # supported so flag as such.
+                                        RESOURCES="$RESOURCES C90"
+                                        RESOURCES="$RESOURCES C95"
+                                        RESOURCES="$RESOURCES C99"
+                                        if ( test $CC_VERSION = 3.0 )
+                                        then
+                                           # 3.0 has partial support for C11 (for
+                                           # instance, missing anonymous structs
+                                           # and anonymous unions). Enable the
+                                           # selection of the appropriate mode,
+                                           # but do not announce support via
+                                           # RESOURCES
+                                           COMPILER_C11_CFLAGS=" -std=c1x "
+                                        else # => Version > 3.0
+                                           # Full C11 support
+                                           COMPILER_C11_CFLAGS=" -std=c11 "
+                                           RESOURCES="$RESOURCES C11"
+                                        fi
+                                   # else # => Version < 2.X
+                                        # Compiler not regarded as production
+                                        # quality, do not flag any standard as
+                                        # being an available RESOURCE.
+                                     fi
+                                  fi
+                                  ;;
+                * )               trace 1 Unprocessed C compiler type
+                                  ;;
+             esac
+
+
              COMPILER_DEBUG_CFLAGS=" -g "
              COMPILER_GPROF_CFLAGS=" -pg "
 
@@ -111,11 +269,7 @@ AC_DEFUN([QM_SET_COMPILER_CFLAGS],
              # strict-aliasing enabled by optimised builds has been known to
              # sometimes cause gcc 4.x (x<7) to produce incorrect code (even
              # where the aliasing rules are followed). So we turn it off...
-             dnl Using @S|@ glyph to prevent expansion of $1/2/3 as macro arg
-             CC_VERSION=`$CC -v 2>&1 | $GREP 'gcc version' | $AWK '{ print @S|@3 }'`
-             CC_MAJOR=`echo $CC_VERSION | $AWK -F. '{ print @S|@1 }'`
-             CC_MINOR=`echo $CC_VERSION | $AWK -F. '{ print @S|@2 }'`
-             if ( test X$CC_MAJOR = X4 )
+             if (( test $Actual_CC = GNU ) && ( test X$CC_MAJOR = X4 ))
              then
                 if (( test X$CC_MINOR != X ) && ( test $CC_MINOR -gt 6 ))
                 then
@@ -151,10 +305,19 @@ AC_DEFUN([QM_SET_COMPILER_CFLAGS],
              case X$host_os in
               Xirix* )    trace 3 Setting CFLAGS we have previously used under Irix
                           CC=$CC" -n32 -J4 -mp "
-                          # Not sure why this originally was done this way rather than
-                          # use CFLAGS, but assume there was a reason and propogate the
-                          # method
+                          # Not sure why this originally was done this way
+                          # rather than use CFLAGS, but assume there was a
+                          # reason and propogate the method
                           COMPILER_ANSI_CFLAGS=" -ansi "
+                          # Source for AutoConf AC_PROG_CC_C89 macro suggests
+                          # default operation may be C89 mode (no handling of
+                          # a separate switch). Source of that macro also 
+                          # suggests the C99 switch is -c99. As we have no
+                          # documentation or test environment to determine the
+                          # compiler versions these behaviours apply to, we 
+                          # have left this QMake functionality unimplemented
+                          # for this compiler and left the CFLAGS as per those
+                          # we have historically used on this platform.
                           COMPILER_DEBUG_CFLAGS=""
                           COMPILER_GPROF_CFLAGS=""
                           COMPILER_NON_OPT_CFLAGS=""
@@ -164,7 +327,102 @@ AC_DEFUN([QM_SET_COMPILER_CFLAGS],
                           COMPILER_SPECIFIC_CFLAGS=" -mips4 -r1000 "
                           ;;
               Xsolaris* ) trace 3 Setting CFLAGS we have previously used on Solaris
+                          # Allegedly the following setting has been used in
+                          # anger on this platform (based on the original Ravl
+                          # config.solaris). However, there is no entry in the
+                          # contemporary Solaris compiler documentation for
+                          # this switch. For pre-Studio 8, the appropriate
+                          # switch would likely be -Xa (allows K&R and C90).
+                          # This is the default mode for these compilers so not
+                          # supplying it should have no downside. -Xc sets
+                          # strict compliance mode (non-compliant K&R regarded
+                          # as illegal). See the discussion/code below for
+                          # other revisions of the compiler. Post Studio 12.4
+                          # (compiler 5.13) -ansi has been supported.
                           COMPILER_ANSI_CFLAGS=" -ansi "
+                          # Below have not been tested in anger...
+                          #
+                          # To process this correctly, we will need to test the
+                          # compiler version when determining which settings to
+                          # employ; however, this requires further research as
+                          # we do not know the exact output of the version
+                          # string. We also only currently know the switches 
+                          # for the following versions of the compiler suite:
+                          #
+                          #                  Studio 10   5.6
+                          #                  Studio 11 (or 10?) 5.7/8
+                          #                  Studio 12.3 5.12
+                          #                  Studio 12.4 5.13
+                          #                  Studio 12.5 5.14
+                          #
+                          # Hence all this is written in pseudo code.
+                          #
+                          # In addition, it is suggested in the AutoTools
+                          # source that using -xc99 forces all modules to make
+                          # C library calls with C99 semantics even if only 1
+                          # module is compiled in C99 mode. From the source of
+                          # the AC_PROG_CC_C99 macor (Autoconf 2.69):
+                          #
+                          #    cc's -xc99 option uses linker magic to
+                          #    define the external symbol __xpg4 as if
+                          #    by "int __xpg4 = 1;", which enables C99
+                          #    behavior for C library functions.  This
+                          #    is not wanted here, because it means
+                          #    that a single module compiled with -xc99
+                          #    alters C runtime behavior for the entire
+                          #    program, not for just the module.  Instead,
+                          #    define the (private) symbol _STDC_C99,
+                          #    which suppresses a bogus failure in
+                          #    <stdbool.h>.
+                          #
+                          # Full discussion about this can be read:
+                          #
+                          # http://lists.gnu.org/archive/html/autoconf/2010-12/msg00059.html
+                          #
+                          # At present, we have not verified if this applies
+                          # to all revisions of the compiler or to the -std
+                          # switch.
+                          #
+                          # if Studio <8 
+                          # then
+                          #   COMPILER_C90_CFLAGS=" "
+                          #   # No option required - default is C90
+                          #   # No other standard versions supported - leave all
+                          #   # other CFLAGS variables un-set and QMake will try
+                          #   # and make the best of it
+                          # else
+                          #   if $MAJOR < 5 -o ( $MAJOR = 5 -a $MINOR < 13 )
+                          #   then
+                          #     # Compiler < 5.13, Studio < 12.4
+                          #     # Defaults to C99, no -std switch
+                          #     COMPILER_C90_CFLAGS=" -xc99=none "
+                          #     RESOURCES="$RESOURCES C90"
+                          #
+                          #     # No know support for C95 standard - not seting
+                          #     # the appropriate CFLAGS will cause QMake to take
+                          #     # account of this and try and work with the
+                          #     # closest available standard while issuing a
+                          #     # warning for any code attempting to employ this
+                          #     # version of the standard.
+                          #
+                          #     COMPILER_C99_CFLAGS=" "
+                          #     RESOURCES="$RESOURCES C99"
+                          #     # No option required
+                          #     # Note: Studio 8 provides incomplete C99 support
+                          #
+                          #     # No C11 support - leave CFLAGS variable unset so
+                          #     # QMake will try and make the best of it
+                          #   else
+                          #     # Compiler >= 5.13, Studio >= 12.4
+                                COMPILER_C90_CFLAGS=" -std=c89 "
+                                RESOURCES="$RESOURCES C90"
+                                COMPILER_C99_CFLAGS=" -std=c99 "
+                                RESOURCES="$RESOURCES C99"
+                                COMPILER_C11_CFLAGS=" -std=c11 "
+                                RESOURCES="$RESOURCES C11"
+                          #   endif 
+                          # endif 
+
                           COMPILER_DEBUG_CFLAGS=""
                           COMPILER_GPROF_CFLAGS=" -pg "
                           COMPILER_NON_OPT_CFLAGS=""
@@ -192,7 +450,14 @@ AC_DEFUN([QM_SET_COMPILER_CFLAGS],
           # any user-provided CFLAGS will be recorded in Config.QMake as QMAKE_CFLAGS
 
           # Allow output of compiler specific settings
+
+          # C standards related
           AC_SUBST([COMPILER_ANSI_CFLAGS])
+          AC_SUBST([COMPILER_C90_CFLAGS])
+          AC_SUBST([COMPILER_C95_CFLAGS])
+          AC_SUBST([COMPILER_C99_CFLAGS])
+          AC_SUBST([COMPILER_C11_CFLAGS])
+
           AC_SUBST([COMPILER_DEBUG_CFLAGS])
           AC_SUBST([COMPILER_GPROF_CFLAGS])
           AC_SUBST([COMPILER_NON_OPT_CFLAGS])

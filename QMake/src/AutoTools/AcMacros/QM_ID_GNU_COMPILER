@@ -1,0 +1,176 @@
+dnl This file is part of QMake, Quick Make System
+dnl Copyright (C) 2016, University of Surrey
+dnl This code may be redistributed under the terms of the GNU General
+dnl Public License (GPL). See the gpl.licence file for details or
+dnl see http://www.gnu.org/copyleft/gpl.html
+dnl
+dnl file-header-ends-here
+
+
+  
+dnl QM_ID_GNU_COMPILER
+dnl
+dnl Macro to fully identify a GNU-compatible compiler
+dnl
+dnl Macro parameters are:
+dnl       p1: Type of compiler that we are attempting to identify: CC for the
+dnl           C compiler; CXX for C++.
+dnl
+dnl Global variables used:
+dnl
+dnl       Actual_CC                  If we are identifying a C compiler this
+dnl                                  variable will receive the identified type
+dnl                                  of the compiler
+dnl       Actual_CXX                 If we are identifying a C++ compiler this
+dnl                                  variable will receive the identified type
+dnl                                  of the compiler
+dnl       AWK                        Contains the path to the Awk utility.
+dnl                                  Can initially be primed by the user to
+dnl                                  force the use of a particular program.
+dnl                                  Regarded as a key tool as it is used
+dnl                                  by configure itself.
+dnl       CC                         Holds the path to the C compiler in use.
+dnl       CC_VERSION               } { If we are identifying a C compiler these
+dnl       CC_MAJOR                 } { variables will receive the version 
+dnl       CC_MINOR                 } { information for the current C compiler
+dnl                                  { in use.
+dnl       CXX                        Holds the path to the C++ compiler in use.
+dnl       CXX_VERSION              } { If we are identifying a C++ compiler
+dnl       CXX_MAJOR                } { these variables will receive the version 
+dnl       CXX_MINOR                } { information for the current C++ compiler
+dnl                                  { in use.
+dnl       SED                        Holds the name of the executable to carry
+dnl                                  out stream editing. This will already
+dnl                                  have been primed by a prior call to the
+dnl                                  macro QM_LOCATE_KEY_TOOLS.
+dnl
+AC_DEFUN([QM_ID_GNU_COMPILER],
+         [trace 2 Identify the GNU-compatible $1 compiler
+
+          dnl# This macro should never be called unless QM_LOCATE_KEY_TOOLS 
+          dnl# has already been called.
+          AC_REQUIRE([QM_LOCATE_KEY_TOOLS])
+          
+          dnl# Using @<:@ glyph to represent [ and @:>@ to represent ] to
+          dnl# prevent expansion as autoconf grouping markers.
+          $1_VERSION=`$$1 -v 2>&1 | $SED -n 's/.*gcc version \(@<:@0-9@:>@@<:@0-9@:>@*\.@<:@0-9@:>@@<:@0-9@:>@*\)@<:@^0-9@:>@.*/\1/p'`
+          if ( test X$$1_VERSION != X )
+          then
+             trace 3 We have a GNU Compiler
+             # We may end up here if we are using the Intel compiler (since
+             # they are alledged to output a GNU format version string). That
+             # may or may not require further processing (manipulation of the
+             # version number to equate the Intel revisions to the version of
+             # the GNU compiler that it equates to).
+             Actual_$1=GNU
+             dnl# Using @S|@ glyph to prevent expansion of $1/2 as macro arg
+             $1_MAJOR=`echo $$1_VERSION | $AWK -F. '{ print @S|@1 }'`
+             $1_MINOR=`echo $$1_VERSION | $AWK -F. '{ print @S|@2 }'`
+          else
+             # Now check for Clang (best approach is to look for any
+             # supplied LVM version number)
+             # We have to look for Apple versions separately as these have
+             # different versioning to the main Clang revisions
+             dnl# Using @<:@ glyph to represent [ and @:>@ to represent ] to
+             dnl# prevent expansion as autoconf grouping markers.
+             $1_VERSION=`$$1 -v 2>&1 | $SED -n 's/Apple .*based on LVM \(@<:@0-9@:>@@<:@0-9@:>@*\.@<:@0-9@:>@@<:@0-9@:>@*\)@<:@^0-9@:>@.*/\1/p'`
+             if ( test X$$1_VERSION != X )
+             then
+                trace 3 We have an earlier Apple Clang compiler \(pre XCode 7\)
+                # Manipulate Apple LVM version into one representative of the
+                # equivalent native code from which it is derived (Apple
+                # versions are often taken of development source before the
+                # finalisation of the particular LVM revision).
+                # Unless stated, all of these mappings are based on an
+                # assumption that the Apple source is a pre-release cut of the
+                # development source for that LVM version - hence we use the
+                # release number of the previous version.
+                case $$1_VERSION in
+                2.9 ) $1_MAJOR=2
+                      $1_MINOR=8
+                      $1_VERSION=2.8
+                      # Based on release notice for the SVN tag
+                      ;;
+                3.0 ) $1_MAJOR=2
+                      $1_MINOR=9
+                      $1_VERSION=2.9
+                      ;;
+                3.1 ) $1_MAJOR=3
+                      $1_MINOR=0
+                      $1_VERSION=3.0
+                      ;;
+                3.2 ) $1_MAJOR=3
+                      $1_MINOR=1
+                      $1_VERSION=3.1
+                      ;;
+                3.3 ) $1_MAJOR=3
+                      $1_MINOR=2
+                      $1_VERSION=3.2
+                      ;;
+                3.4 ) $1_MAJOR=3
+                      $1_MINOR=3
+                      $1_VERSION=3.3
+                      ;;
+                3.5 ) $1_MAJOR=3
+                      $1_MINOR=4
+                      $1_VERSION=3.4
+                      ;;
+                3.6 ) $1_MAJOR=3
+                      $1_MINOR=5
+                      $1_VERSION=3.5
+                      ;;
+                * )   AC_MSG_FAILURE([Unable to determine underlying version of LVM])
+                      # Will not be a new version number (as these are
+                      # historic versions) so liable to be an error.
+                      ;;
+                esac
+                Actual_$1=Clang
+             else
+                dnl# Using @<:@ glyph to represent [ and @:>@ to represent ] to
+                dnl# prevent expansion as autoconf grouping markers.
+                $1_VERSION=`$$1 -v 2>&1 | $SED -n 's/Apple LLVM version \(@<:@0-9@:>@@<:@0-9@:>@*\.@<:@0-9@:>@@<:@0-9@:>@*\)@<:@^0-9@:>@.*/\1/p'`
+                if ( test X$$1_VERSION != X )
+                then
+                   trace 3 We have a later Apple Clang compiler \(post XCode 6.X\)
+                   # Again, we need to moderate the version number to map it
+                   # onto the equivalent native LLVM version.
+                   # As per earlier Apple revisions, these maapings are largely
+                   # assumptions as no firm documentation is available.
+                   case $$1_VERSION in
+                   7.0 | 7.1 | 7.2 )    $1_MAJOR=3
+                                        $1_MINOR=7
+                                        $1_VERSION=3.7
+                                        ;;
+                   * )                  AC_MSG_WARN([Unable to determine underlying version of LVM - assuming 3.7])
+                                        # Warning rather than an error as most
+                                        # liable cause is a new version number.
+                                        $1_MAJOR=3
+                                        $1_MINOR=7
+                                        $1_VERSION=3.7
+                                        ;;
+                   esac
+                   Actual_$1=Clang
+                else
+                   # Check for Clang on a non-Apple platform
+                   dnl# Using @<:@ glyph to represent [ and @:>@ to represent ] to
+                   dnl# prevent expansion as autoconf grouping markers.
+                   $1_VERSION=`$$1 -v 2>&1 | $SED -n 's/.*based on LLVM \(@<:@0-9@:>@@<:@0-9@:>@*\.@<:@0-9@:>@@<:@0-9@:>@*\)@<:@^0-9@:>@.*/\1/p'`
+                   if ( test X$$1_VERSION != X )
+                   then
+                      trace 3 We have Clang as the compiler
+                      Actual_$1=Clang
+                      dnl# Using @S|@ glyph to prevent expansion of $1/2 as macro arg
+                      $1_MAJOR=`echo $$1_VERSION | $AWK -F. '{ print @S|@1 }'`
+                      $1_MINOR=`echo $$1_VERSION | $AWK -F. '{ print @S|@2 }'`
+                   else
+                      AC_MSG_WARN([Unable to recognise GNU compatible compiler - assuming full GNU 5.0 compatability])
+                      $1_MAJOR=5
+                      $1_MINOR=0
+                      $1_VERSION=5.0
+                      Actual_$1=Unknown
+                   fi
+                fi
+             fi
+          fi
+         ]
+        )
