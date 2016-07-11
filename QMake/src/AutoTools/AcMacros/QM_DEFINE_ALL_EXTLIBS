@@ -186,11 +186,61 @@ AC_DEFUN([QM_DEFINE_ALL_EXTLIBS],
                               [suitesparse/cs.h],
                               [C]
                              )
+          QM_DEFINE_EXTLIB_CC([DevIL],
+                              [ilInit();
+                               iluInit();
+                              ],
+                              [],
+                              [-lILU -lIL],
+                              [IL/il.h
+                               IL/ilu.h
+                              ],
+                              [C]
+                             )
+          dnl Above checks for basic DevIL support - image loading and
+          dnl processing. We could potentially split this into two seperate
+          dnl RESOURCES. DevIL as a whole will depend on multiple image support
+          dnl libraries, the likely list is:
+          dnl        LibJasper, JPEG, lcms, MNG, libPNG, LibTIFF (=> ZLib)
+          dnl the actual list will depend on compiled instance of the library.
+          dnl To prevent false negatives (for example, disabling DevIL support
+          dnl because lcms support is unavailable even if DevIL has been built
+          dnl to not use the external lcms library), we do not explicitly check
+          dnl dependencies here (just rely on an implicit check if the test
+          dnl program compiles).
+          QM_DEFINE_EXTLIB_CC([DevIL_OpenGL],
+                              [ilInit();
+                               iluInit();
+                               ilutRenderer(ILUT_OPENGL);
+                              ],
+                              [DevIL],
+                              [-lILUT],
+                              [IL/ilut.h],
+                              [C]
+                             )
+          dnl Check for DevIL OpenGL output functionality
+          dnl Potential to add RESOURCES for ALLEGRO and WIN32 support
+          dnl All notes associated with the base DevIL RESOURCE apply.
+          dnl
+          dnl                 Name,
+          dnl                 Test Code,
+          dnl                 Deps,
+          dnl                 -l,
+          dnl                 .h
+          dnl                 Lang
+          dnl 
           QM_DEFINE_EXTLIB_CC([DynLink],
                               [dlopen ();],
                               [],
                               [ | -ldl],
                               [],
+                              [C]
+                             )
+          QM_DEFINE_EXTLIB_CC([GLEW],
+                              [GLenum err = glewInit();],
+                              [],
+                              [-lGLEW],
+                              [GL/glew.h],
                               [C]
                              )
           QM_DEFINE_EXTLIB_CC([GLUT],
@@ -322,6 +372,18 @@ dnl
                               [sys/socket.h],
                               [C]
                              )
+          QM_DEFINE_EXTLIB_CC([SIFTGPU],
+                              [SiftGPU sift;
+                               sift.CreateContextGL();
+                              ],
+                              [],
+                              [-lsiftgpu],
+                              [stddef.h
+                               SiftGPU.h],
+                              [C++]
+                             )
+          dnl Need to include sttdef.h to fix problem with SiftGPU.h otherwise
+          dnl not defining size_t which causes a compilation failure.
           QM_DEFINE_EXTLIB_CC([LibTIFF],
                               [TIFFGetVersion ();],
                               [Zlib],
