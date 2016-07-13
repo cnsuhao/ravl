@@ -251,7 +251,7 @@ LINKTESTLIBS := $(EXEML) $(EXELIB)
 # Restore EXELIB to be library libs preceeded by the mustlinks
 EXELIB := $(LIBLIBS)
  
-.PRECIOUS : %$(CXXEXT) %$(CHXXEXT) %$(CEXT) %$(CHEXT) %.tcc %.icc %.def %.tab.cc %.yy.cc %_$(ARC)_wrap.cc %.m %.mm
+.PRECIOUS : %$(CXXEXT) %$(CHXXEXT) %$(CEXT) %$(CHEXT) %.tcc %.icc %.def %.tab.cc %.yy.cc %_$(ARC)_wrap.cc %.m %.mm %.cu
 
 ############################
 # Misc setup
@@ -307,12 +307,33 @@ ifeq ($(SUPPORT_OK),yes)
   TARG_HDRCERTS=
  endif
 #$(INST_DEPEND)/%.java.d
- TARG_EXE := $(patsubst %$(CEXT),$(INST_BIN)/%$(EXEEXT), $(patsubst %$(CXXEXT),$(INST_BIN)/%$(EXEEXT),$(patsubst %.mm,$(INST_BIN)/%$(EXEEXT),$(filter-out %.java,$(MAINS)))))
- TARG_LINKS=$(patsubst $(INST_BIN)/%,$(ROOTDIR)/bin/%, $(TARG_EXE))
- TARG_PUREEXE := $(patsubst %$(CEXT),$(INST_BIN)/pure_%$(EXEEXT), $(patsubst %$(CXXEXT),$(INST_BIN)/pure_%$(EXEEXT),$(patsubst %.mm,$(INST_BIN)/pure_%$(EXEEXT),$(filter-out %.java,$(MAINS)))))
- TARG_EXEOBJS=$(patsubst %$(CEXT),$(INST_OBJS)/%$(OBJEXT),$(patsubst %$(CXXEXT),$(INST_OBJS)/%$(OBJEXT),$(filter-out %.java,$(MAINS))))
- TARG_TESTEXE := $(patsubst %$(CEXT),$(INST_TESTBIN)/%$(EXEEXT), $(patsubst %$(CXXEXT),$(INST_TESTBIN)/%$(EXEEXT),$(TESTEXES)))
- TARG_TESTEXEOBJS=$(patsubst %$(CEXT),$(INST_OBJS)/%$(OBJEXT),$(patsubst %$(CXXEXT),$(INST_OBJS)/%$(OBJEXT),$(TESTEXES)))
+ TARG_EXE := $(patsubst %$(CEXT), $(INST_BIN)/%$(EXEEXT), \
+             $(patsubst %$(CXXEXT), $(INST_BIN)/%$(EXEEXT), \
+             $(patsubst %.cu, $(INST_BIN)/%$(EXEEXT), \
+             $(patsubst %.mm, $(INST_BIN)/%$(EXEEXT),\
+             $(filter-out %.java, $(MAINS))))))
+
+ TARG_LINKS = $(patsubst $(INST_BIN)/%,$(ROOTDIR)/bin/%, $(TARG_EXE))
+
+ TARG_PUREEXE := $(patsubst %$(CEXT), $(INST_BIN)/pure_%$(EXEEXT), \
+                 $(patsubst %$(CXXEXT), $(INST_BIN)/pure_%$(EXEEXT), \
+                 $(patsubst %.cu, $(INST_BIN)/pure_%$(EXEEXT), \
+                 $(patsubst %.mm, $(INST_BIN)/pure_%$(EXEEXT), \
+                 $(filter-out %.java, $(MAINS))))))
+
+ TARG_EXEOBJS = $(patsubst %$(CEXT), $(INST_OBJS)/%$(OBJEXT), \
+                $(patsubst %$(CXXEXT), $(INST_OBJS)/%$(OBJEXT), \
+                $(patsubst %.cu, $(INST_OBJS)/%$(OBJEXT), \
+                $(filter-out %.java, $(MAINS)))))
+
+ TARG_TESTEXE := $(patsubst %$(CEXT), $(INST_TESTBIN)/%$(EXEEXT), \
+                 $(patsubst %$(CXXEXT), $(INST_TESTBIN)/%$(EXEEXT), \
+                 $(patsubst %.cu, $(INST_BIN)/%$(EXEEXT), $(TESTEXES))))
+
+ TARG_TESTEXEOBJS = $(patsubst %$(CEXT), $(INST_OBJS)/%$(OBJEXT), \
+                    $(patsubst %$(CXXEXT), $(INST_OBJS)/%$(OBJEXT), \
+                    $(patsubst %.cu, $(INST_OBJS)/%$(OBJEXT), $(TESTEXES))))
+
  ifndef NOEXEBUILD
   TARG_DEPEND:= $(patsubst %$(CXXAUXEXT),$(INST_DEPEND)/%.d, \
 	       $(patsubst %$(CEXT),$(INST_DEPEND)/%.d, \
