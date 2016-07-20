@@ -97,42 +97,183 @@ endif
 # Directories used in making.
 
 
-# Select required ANSI setting
-#
-# Global over-ride (for effecting both the C and the C++ compilers and the 
-# CUDA compiler driver) is by ANSIFLAG; individual over-rides are: CANSIFLAG
-# for the C compiler; CCANSIFLAG for the C++ compiler; and NVCCANSIFLAG for
-# the CUDA compiler driver.
-#
-ifdef CANSIFLAG
-  PKG_GLOBAL_CFLAGS+=$(CANSIFLAG)
-else
-  ifdef ANSIFLAG
-    PKG_GLOBAL_CFLAGS+=$(ANSIFLAG)
+#############################################################################
+
+# C Standard support
+
+# Following details the C standards QMake will attempt to support (subject to
+# a suitable compiler). If any employed compiler does not support the requisite
+# standard, QMake will have been configured to attempt to use either an earlier
+# standard or any existing interim support but will generate a warning here.
+# Using the fallback may or may not allow correct compilation of the package.
+
+C90=c89 C89 c90 C90
+# Original ANSI C standard (ratified in 1989, published in 1990). We could also
+# consider allowing c94 and c96 to identify this standard (from the Technical
+# Corrigenda published in those years) but this would pose a problem as c94 then
+# becomes ambiguous with the amended standard of Sept 1994.
+# Any compiler is liable to only support the most recent amended version of the
+# standard (i.e. as of the Technical Corrigenda published in 1996 rather than
+# the original form).
+
+C95=c94 C94 c95 C95 AMD AMD1
+# Amended standard ("AMD1") published in 1995
+
+C99=c99 C99
+# Third version  published in 1999 and as amended in 2001; 2004 and 2007. Any
+# compiler (assuming it does not pre-date the amendments!) is liable to support
+# the most recent form of the standard rather than the original 1999 text.
+
+C11=c11 C11
+# Fouth version of the C standard
+
+# We will also allow the user to request no particular standard be selected by
+# setting C_STD to None. This will utilise the default dialect supported by the
+# particular compiler in use.
+
+ifdef C_STD
+  ifneq (,$(filter $(C90), $(C_STD)))
+    ifndef PKG_C90_CFLAGS
+      $(warning Selecting C standard unsupported by compiler - will use compiler default)
+    else
+      PKG_GLOBAL_CFLAGS+=$(PKG_C90_CFLAGS)
+    endif
   else
-    PKG_GLOBAL_CFLAGS+=$(PKG_CANSIFLAG)
+    ifneq (,$(filter $(C95), $(C_STD)))
+      ifndef PKG_C95_CFLAGS
+        $(warning Selecting C standard unsupported by compiler - will use compiler default)
+      else
+        PKG_GLOBAL_CFLAGS+=$(PKG_C95_CFLAGS)
+      endif
+    else
+      ifneq (,$(filter $(C99), $(C_STD)))
+        ifndef PKG_C99_CFLAGS
+          $(warning Selecting C standard unsupported by compiler - will use compiler default)
+        else
+          PKG_GLOBAL_CFLAGS+=$(PKG_C99_CFLAGS)
+        endif
+      else
+        ifneq (,$(filter $(C11), $(C_STD)))
+          ifndef PKG_C11_CFLAGS
+            $(warning Selecting C standard unsupported by compiler - will use compiler default)
+          else
+            PKG_GLOBAL_CFLAGS+=$(PKG_C11_CFLAGS)
+          endif
+        else
+          # Allow a setting of None, etc. to leave standard selection up to the
+          # compiler, otherwise warn we have not recognised the setting.
+          ifeq (,$(filter none None NONE, $(C_STD)))
+            $(warning Unrecognised C standard requested - will use compiler default)
+          endif
+        endif
+      endif
+    endif
+  endif
+else
+  # No standard selected via C_STD, try the former ANSI flag-based settings
+  ifdef CANSIFLAG
+    PKG_GLOBAL_CFLAGS+=$(CANSIFLAG)
+  else
+    ifdef ANSIFLAG
+      PKG_GLOBAL_CFLAGS+=$(ANSIFLAG)
+    else
+      PKG_GLOBAL_CFLAGS+=$(PKG_CANSIFLAG)
+    endif
+  endif 
+endif
+
+#############################################################################
+
+# C++ Standard support
+
+# Following details the C++ standards QMake will attempt to support (subject to
+# a suitable compiler). If any employed compiler does not support the requisite
+# standard, QMake will have been configured to attempt to use either an earlier
+# standard or any existing interim support but will generate a warning here.
+# Using the fallback may or may not allow correct compilation of the package.
+
+CXX98=cxx98 CXX98
+# Original ISO standard
+
+CXX03=cxx03 CXX03 cxx3 CXX3
+# Amendment of original standard published 2003
+
+CXX11=cxx11 CXX11
+# Revised standard published 2011
+
+CXX14=cxx14 CXX14
+# Standard published 2014
+
+# We will also allow the user to request no particular standard be selected by
+# setting CXX_STD to None. This will utilise the default dialect supported by
+# the particular compiler in use.
+
+ifdef CXX_STD
+  ifneq (,$(filter $(CXX98), $(CXX_STD)))
+    ifndef PKG_CC98_CCFLAGS
+      $(warning Selecting C++ standard unsupported by compiler - will use compiler default)
+    else
+      PKG_GLOBAL_CCFLAGS+=$(PKG_CC98_CCFLAGS)
+      PKG_GLOBAL_NVCCFLAGS+=$(PKG_CC98_NVCCFLAGS)
+    endif
+  else
+    ifneq (,$(filter $(CXX03), $(CXX_STD)))
+      ifndef PKG_CC03_CCFLAGS
+        $(warning Selecting C++ standard unsupported by compiler - will use compiler default)
+      else
+        PKG_GLOBAL_CCFLAGS+=$(PKG_CC03_CCFLAGS)
+        PKG_GLOBAL_NVCCFLAGS+=$(PKG_CC03_NVCCFLAGS)
+      endif
+    else
+      ifneq (,$(filter $(CXX11), $(CXX_STD)))
+        ifndef PKG_CC11_CCFLAGS
+          $(warning Selecting C++ standard unsupported by compiler - will use compiler default)
+        else
+          PKG_GLOBAL_CCFLAGS+=$(PKG_CC11_CCFLAGS)
+          PKG_GLOBAL_NVCCFLAGS+=$(PKG_CC11_NVCCFLAGS)
+        endif
+      else
+        ifneq (,$(filter $(CXX14), $(CXX_STD)))
+          ifndef PKG_CC14_CCFLAGS
+            $(warning Selecting C++ standard unsupported by compiler - will use compiler default)
+          else
+            PKG_GLOBAL_CCFLAGS+=$(PKG_CC14_CCFLAGS)
+            PKG_GLOBAL_NVCCFLAGS+=$(PKG_CC14_NVCCFLAGS)
+          endif
+        else
+          # Allow a setting of None, etc. to leave standard selection up to the
+          # compiler, otherwise warn we have not recognised the setting.
+          ifeq (,$(filter none None NONE, $(CXX_STD)))
+            $(warning Unrecognised C++ standard requested - will use compiler default)
+          endif
+        endif
+      endif
+    endif
+  endif
+else
+  # No standard selected via CXX_STD, try the former ANSI flag-based settings
+  ifdef CCANSIFLAG
+    PKG_GLOBAL_CCFLAGS+=$(CCANSIFLAG)
+  else
+    ifdef ANSIFLAG
+      PKG_GLOBAL_CCFLAGS+=$(ANSIFLAG)
+    else
+      PKG_GLOBAL_CCFLAGS+=$(PKG_CCANSIFLAG)
+    endif
+  endif 
+
+  ifdef NVCCANSIFLAG
+    PKG_GLOBAL_NVCCFLAGS+=$(NVCCANSIFLAG)
+  else
+    ifdef ANSIFLAG
+      PKG_GLOBAL_NVCCFLAGS+=$(ANSIFLAG)
+    else
+      PKG_GLOBAL_NVCCFLAGS+=$(PKG_NVCCANSIFLAG)
+    endif
   endif
 endif
 
-ifdef CCANSIFLAG
-  PKG_GLOBAL_CCFLAGS+=$(CCANSIFLAG)
-else
-  ifdef ANSIFLAG
-    PKG_GLOBAL_CCFLAGS+=$(ANSIFLAG)
-  else
-    PKG_GLOBAL_CCFLAGS+=$(PKG_CCANSIFLAG)
-  endif
-endif
-
-ifdef NVCCANSIFLAG
-  PKG_GLOBAL_NVCCFLAGS+=$(NVCCANSIFLAG)
-else
-  ifdef ANSIFLAG
-    PKG_GLOBAL_NVCCFLAGS+=$(ANSIFLAG)
-  else
-    PKG_GLOBAL_NVCCFLAGS+=$(PKG_NVCCANSIFLAG)
-  endif
-endif
+#############################################################################
 
 ifdef QMAKE_INFO
   SHOWIT = 

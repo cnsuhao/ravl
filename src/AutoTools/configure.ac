@@ -51,6 +51,7 @@ m4_include([../../QMake/src/AutoTools/AcMacros/QM_SET_ARC])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_SET_ARCHIVER_ARFLAGS])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_SET_COMPILER_CFLAGS])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_SET_COMPILER_CCFLAGS])
+m4_include([../../QMake/src/AutoTools/AcMacros/QM_ID_GNU_COMPILER])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_SET_LINKER_LDFLAGS])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_SET_MAKE_MAKEFLAGS])
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_SET_SHAREDEXT])
@@ -733,6 +734,26 @@ then
   echo CC=@USER_CC@ >> ./Config.Project.in
   echo >> ./Config.Project.in
   echo COMPILER_ANSI_CFLAGS=@COMPILER_ANSI_CFLAGS@ >> ./Config.Project.in
+  # Only output the standards flags if the variable has explicitly been set (this
+  # allows QMake to distinguish between the standard needing no compiler flag (the
+  # variable is set but null) and not being available (variable is not set at
+  # all).
+  if ( test "X${COMPILER_C90_CFLAGS-Unset}" != XUnset )
+  then
+     echo COMPILER_C90_CFLAGS=@COMPILER_C90_CFLAGS@ >> ./Config.Project.in
+  fi
+  if ( test "X${COMPILER_C95_CFLAGS-Unset}" != XUnset )
+  then
+     echo COMPILER_C95_CFLAGS=@COMPILER_C95_CFLAGS@ >> ./Config.Project.in
+  fi
+  if ( test "X${COMPILER_C99_CFLAGS-Unset}" != XUnset )
+  then
+     echo COMPILER_C99_CFLAGS=@COMPILER_C99_CFLAGS@ >> ./Config.Project.in
+  fi
+  if ( test "X${COMPILER_C11_CFLAGS-Unset}" != XUnset )
+  then
+     echo COMPILER_C11_CFLAGS=@COMPILER_C11_CFLAGS@ >> ./Config.Project.in
+  fi
   echo COMPILER_DEBUG_CFLAGS=@COMPILER_DEBUG_CFLAGS@ >> ./Config.Project.in
   echo COMPILER_GPROF_CFLAGS=@COMPILER_GPROF_CFLAGS@ >> ./Config.Project.in
   echo COMPILER_NON_OPT_CFLAGS=@COMPILER_NON_OPT_CFLAGS@ >> ./Config.Project.in
@@ -779,6 +800,26 @@ then
   echo CXX=@USER_CXX@ >> ./Config.Project.in
   echo >> ./Config.Project.in
   echo COMPILER_ANSI_CCFLAGS=@COMPILER_ANSI_CCFLAGS@ >> ./Config.Project.in
+  # Only output the standards flags if the variable has explicitly been set (this
+  # allows QMake to distinguish between the standard needing no compiler flag (the
+  # variable is set but null) and not being available (variable is not set at
+  # all).
+  if ( test "X${COMPILER_CC98_CCFLAGS-Unset}" != XUnset )
+  then
+     echo COMPILER_CC98_CCFLAGS=@COMPILER_CC98_CCFLAGS@ >> ./Config.Project.in
+  fi
+  if ( test "X${COMPILER_CC03_CCFLAGS-Unset}" != XUnset )
+  then
+     echo COMPILER_CC03_CCFLAGS=@COMPILER_CC03_CCFLAGS@ >> ./Config.Project.in
+  fi
+  if ( test "X${COMPILER_CC11_CCFLAGS-Unset}" != XUnset )
+  then
+     echo COMPILER_CC11_CCFLAGS=@COMPILER_CC11_CCFLAGS@ >> ./Config.Project.in
+  fi
+  if ( test "X${COMPILER_CC14_CCFLAGS-Unset}" != XUnset )
+  then
+     echo COMPILER_CC14_CCFLAGS=@COMPILER_CC14_CCFLAGS@ >> ./Config.Project.in
+  fi
   echo COMPILER_DEBUG_CCFLAGS=@COMPILER_DEBUG_CCFLAGS@ >> ./Config.Project.in
   echo COMPILER_GPROF_CCFLAGS=@COMPILER_GPROF_CCFLAGS@ >> ./Config.Project.in
   echo COMPILER_NON_OPT_CCFLAGS=@COMPILER_NON_OPT_CCFLAGS@ >> ./Config.Project.in
@@ -996,6 +1037,47 @@ echo >> ./Config.Project.in
 echo \# ANSI switch settings >> ./Config.Project.in
 echo PKG_CANSIFLAG=@PKG_CANSIFLAG@ >> ./Config.Project.in
 echo >> ./Config.Project.in
+echo \# Individual C standard switches >> ./Config.Project.in
+if ( test X$PKG_C90_CFLAGS != X )
+then
+  # Explicit override from user - reflect this in Config.Project
+  echo PKG_C90_CFLAGS=$PKG_C90_CFLAGS >> ./Config.Project.in
+else
+  echo "ifdef COMPILER_C90_CFLAGS" >> ./Config.Project.in
+  echo "  PKG_C90_CFLAGS=\$(COMPILER_C90_CFLAGS)" >> ./Config.Project.in
+  echo endif >> ./Config.Project.in
+fi
+echo >> ./Config.Project.in
+if ( test X$PKG_C95_CFLAGS != X )
+then
+  # Explicit override from user - reflect this in Config.Project
+  echo PKG_C95_CFLAGS=$PKG_C95_CFLAGS >> ./Config.Project.in
+else
+  echo "ifdef COMPILER_C95_CFLAGS" >> ./Config.Project.in
+  echo "  PKG_C95_CFLAGS=\$(COMPILER_C95_CFLAGS)" >> ./Config.Project.in
+  echo endif >> ./Config.Project.in
+fi
+echo >> ./Config.Project.in
+if ( test X$PKG_C99_CFLAGS != X )
+then
+  # Explicit override from user - reflect this in Config.Project
+  echo PKG_C99_CFLAGS=$PKG_C99_CFLAGS >> ./Config.Project.in
+else
+  echo "ifdef COMPILER_C99_CFLAGS" >> ./Config.Project.in
+  echo "  PKG_C99_CFLAGS=\$(COMPILER_C99_CFLAGS)" >> ./Config.Project.in
+  echo endif >> ./Config.Project.in
+fi
+echo >> ./Config.Project.in
+if ( test X$PKG_C11_CFLAGS != X )
+then
+  # Explicit override from user - reflect this in Config.Project
+  echo PKG_C11_CFLAGS=$PKG_C11_CFLAGS >> ./Config.Project.in
+else
+  echo "ifdef COMPILER_C11_CFLAGS" >> ./Config.Project.in
+  echo "  PKG_C11_CFLAGS=\$(COMPILER_C11_CFLAGS)" >> ./Config.Project.in
+  echo endif >> ./Config.Project.in
+fi
+echo >> ./Config.Project.in
 echo >> ./Config.Project.in
 echo \# Flags for the C++ compiler >> ./Config.Project.in
 echo >> ./Config.Project.in
@@ -1014,6 +1096,47 @@ echo PKG_SHARED_CCFLAGS=@PKG_SHARED_CCFLAGS@ >> ./Config.Project.in
 echo >> ./Config.Project.in
 echo \# ANSI switch settings >> ./Config.Project.in
 echo PKG_CCANSIFLAG=@PKG_CCANSIFLAG@ >> ./Config.Project.in
+echo >> ./Config.Project.in
+echo \# Individual C+ standard switches >> ./Config.Project.in
+if ( test X$PKG_CC98_CCFLAGS != X )
+then
+  # Explicit override from user - reflect this in Config.Project
+  echo PKG_CC98_CCFLAGS=$PKG_CC98_CCFLAGS >> ./Config.Project.in
+else
+  echo "ifdef COMPILER_CC98_CCFLAGS" >> ./Config.Project.in
+  echo "  PKG_CC98_CCFLAGS=\$(COMPILER_CC98_CCFLAGS)" >> ./Config.Project.in
+  echo endif >> ./Config.Project.in
+fi
+echo >> ./Config.Project.in
+if ( test X$PKG_CC03_CCFLAGS != X )
+then
+  # Explicit override from user - reflect this in Config.Project
+  echo PKG_CC03_CCFLAGS=$PKG_CC03_CCFLAGS >> ./Config.Project.in
+else
+  echo "ifdef COMPILER_CC03_CCFLAGS" >> ./Config.Project.in
+  echo "  PKG_CC03_CCFLAGS=\$(COMPILER_CC03_CCFLAGS)" >> ./Config.Project.in
+  echo endif >> ./Config.Project.in
+fi
+echo >> ./Config.Project.in
+if ( test X$PKG_CC11_CCFLAGS != X )
+then
+  # Explicit override from user - reflect this in Config.Project
+  echo PKG_CC11_CCFLAGS=$PKG_CC11_CCFLAGS >> ./Config.Project.in
+else
+  echo "ifdef COMPILER_CC11_CCFLAGS" >> ./Config.Project.in
+  echo "  PKG_CC11_CCFLAGS=\$(COMPILER_CC11_CCFLAGS)" >> ./Config.Project.in
+  echo endif >> ./Config.Project.in
+fi
+echo >> ./Config.Project.in
+if ( test X$PKG_CC14_CCFLAGS != X )
+then
+  # Explicit override from user - reflect this in Config.Project
+  echo PKG_CC14_CCFLAGS=$PKG_CC14_CCFLAGS >> ./Config.Project.in
+else
+  echo "ifdef COMPILER_CC14_CCFLAGS" >> ./Config.Project.in
+  echo "  PKG_CC14_CCFLAGS=\$(COMPILER_CC14_CCFLAGS)" >> ./Config.Project.in
+  echo endif >> ./Config.Project.in
+fi
 echo >> ./Config.Project.in
 echo >> ./Config.Project.in
 echo \# Flags for the linker >> ./Config.Project.in

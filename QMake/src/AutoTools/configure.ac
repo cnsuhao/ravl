@@ -39,6 +39,7 @@ m4_include([./AcMacros/QM_SET_ARC])
 m4_include([./AcMacros/QM_SET_ARCHIVER_ARFLAGS])
 m4_include([./AcMacros/QM_SET_COMPILER_CFLAGS])
 m4_include([./AcMacros/QM_SET_COMPILER_CCFLAGS])
+m4_include([./AcMacros/QM_ID_GNU_COMPILER])
 m4_include([./AcMacros/QM_SET_LINKER_LDFLAGS])
 m4_include([./AcMacros/QM_SET_MAKE_MAKEFLAGS])
 m4_include([./AcMacros/QM_SET_SHAREDEXT])
@@ -287,6 +288,26 @@ echo QMAKE_CFLAGS=@CONFIGURE_CFLAGS@ >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo \# QMake compiler settings >> ./Config.QMake.in
 echo COMPILER_ANSI_CFLAGS=@COMPILER_ANSI_CFLAGS@ >> ./Config.QMake.in
+# Only output the standards flags if the variable has explicitly been set (this
+# allows QMake to distinguish between the standard needing no compiler flag (the
+# variable is set but null) and not being available (variable is not set at
+# all).
+if ( test "X${COMPILER_C90_CFLAGS-Unset}" != XUnset )
+then
+   echo COMPILER_C90_CFLAGS=@COMPILER_C90_CFLAGS@ >> ./Config.QMake.in
+fi
+if ( test "X${COMPILER_C95_CFLAGS-Unset}" != XUnset )
+then
+   echo COMPILER_C95_CFLAGS=@COMPILER_C95_CFLAGS@ >> ./Config.QMake.in
+fi
+if ( test "X${COMPILER_C99_CFLAGS-Unset}" != XUnset )
+then
+   echo COMPILER_C99_CFLAGS=@COMPILER_C99_CFLAGS@ >> ./Config.QMake.in
+fi
+if ( test "X${COMPILER_C11_CFLAGS-Unset}" != XUnset )
+then
+   echo COMPILER_C11_CFLAGS=@COMPILER_C11_CFLAGS@ >> ./Config.QMake.in
+fi
 echo COMPILER_DEBUG_CFLAGS=@COMPILER_DEBUG_CFLAGS@ >> ./Config.QMake.in
 echo COMPILER_GPROF_CFLAGS=@COMPILER_GPROF_CFLAGS@ >> ./Config.QMake.in
 echo COMPILER_NON_OPT_CFLAGS=@COMPILER_NON_OPT_CFLAGS@ >> ./Config.QMake.in
@@ -302,6 +323,26 @@ echo QMAKE_CCFLAGS=@CONFIGURE_CCFLAGS@ >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo \# QMake compiler settings >> ./Config.QMake.in
 echo COMPILER_ANSI_CCFLAGS=@COMPILER_ANSI_CCFLAGS@ >> ./Config.QMake.in
+# Only output the standards flags if the variable has explicitly been set (this
+# allows QMake to distinguish between the standard needing no compiler flag (the
+# variable is set but null) and not being available (variable is not set at
+# all).
+if ( test "X${COMPILER_CC98_CCFLAGS-Unset}" != XUnset )
+then
+   echo COMPILER_CC98_CCFLAGS=@COMPILER_CC98_CCFLAGS@ >> ./Config.QMake.in
+fi
+if ( test "X${COMPILER_CC03_CCFLAGS-Unset}" != XUnset )
+then
+   echo COMPILER_CC03_CCFLAGS=@COMPILER_CC03_CCFLAGS@ >> ./Config.QMake.in
+fi
+if ( test "X${COMPILER_CC11_CCFLAGS-Unset}" != XUnset )
+then
+   echo COMPILER_CC11_CCFLAGS=@COMPILER_CC11_CCFLAGS@ >> ./Config.QMake.in
+fi
+if ( test "X${COMPILER_CC14_CCFLAGS-Unset}" != XUnset )
+then
+   echo COMPILER_CC14_CCFLAGS=@COMPILER_CC14_CCFLAGS@ >> ./Config.QMake.in
+fi
 echo COMPILER_DEBUG_CCFLAGS=@COMPILER_DEBUG_CCFLAGS@ >> ./Config.QMake.in
 echo COMPILER_GPROF_CCFLAGS=@COMPILER_GPROF_CCFLAGS@ >> ./Config.QMake.in
 echo COMPILER_NON_OPT_CCFLAGS=@COMPILER_NON_OPT_CCFLAGS@ >> ./Config.QMake.in
@@ -346,6 +387,10 @@ then
    echo \# Settings determined for current combination of C++ and CUDA compilers >> ./Config.QMake.in
    echo QMAKE_NVCC_TARGS=@DEFAULT_NVCC_TARGS@ >> ./Config.QMake.in
    echo NVCC_ANSI_NVCCFLAGS=@NVCC_ANSI_NVCCFLAGS@ >> ./Config.QMake.in
+   echo NVCC_CC98_NVCCFLAGS=@NVCC_CC98_NVCCFLAGS@ >> ./Config.QMake.in
+   echo NVCC_CC03_NVCCFLAGS=@NVCC_CC03_NVCCFLAGS@ >> ./Config.QMake.in
+   echo NVCC_CC11_NVCCFLAGS=@NVCC_CC11_NVCCFLAGS@ >> ./Config.QMake.in
+   echo NVCC_CC14_NVCCFLAGS=@NVCC_CC14_NVCCFLAGS@ >> ./Config.QMake.in
    echo NVCC_DEBUG_NVCCFLAGS=@NVCC_DEBUG_NVCCFLAGS@ >> ./Config.QMake.in
    echo NVCC_GPROF_NVCCFLAGS=@NVCC_GPROF_NVCCFLAGS@ >> ./Config.QMake.in
    echo NVCC_NON_OPT_NVCCFLAGS=@NVCC_NON_OPT_NVCCFLAGS@ >> ./Config.QMake.in
