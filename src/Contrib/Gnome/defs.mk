@@ -26,5 +26,5 @@ USESLIBS=RavlGUI LibGnome
 
 EXAMPLES=exGnome.cc
 
-EXTRA_RULES=$(QCWD)/RootDir.mk
+EXTRA_RULES=RootDir.mk
 
