@@ -197,10 +197,10 @@ namespace RavlConstN {
   // internal nan.
   
   //! userlevel=Normal
-  const float nanFloat = (float)(u_nan.f);
+  const float nanFloat RAVL_GNUEXT(__attribute__((unused))) = (float)(u_nan.f) ;
   //: Floating point not a number.
   
-  const double nanReal = (double) nanFloat;
+  const double nanReal RAVL_GNUEXT(__attribute__((unused))) = (double) nanFloat ;
   //: Real not a number.
   
   //! userlevel=Develop
@@ -208,10 +208,10 @@ namespace RavlConstN {
   // internal infinity.
   
   //! userlevel=Normal
-  const float infFloat = (float)(u_inf.f);
+  const float infFloat  RAVL_GNUEXT(__attribute__((unused))) = (float)(u_inf.f) ;
   //: Floating point infinity.
   
-  const double infReal = (double) infFloat;
+  const double infReal RAVL_GNUEXT(__attribute__((unused))) = (double) infFloat ;
   //: Real infinity.
   
 #else
