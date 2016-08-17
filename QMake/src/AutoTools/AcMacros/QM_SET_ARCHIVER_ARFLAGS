@@ -48,7 +48,7 @@ AC_DEFUN([QM_SET_ARCHIVER_ARFLAGS],
           dnl script, not here.
           dnl
 
-          AR_SPECIFIC_ARFLAGS=ruc
+          AR_SPECIFIC_ARFLAGS=rUuc
           AC_SUBST([AR_SPECIFIC_ARFLAGS])
          ]
         )
