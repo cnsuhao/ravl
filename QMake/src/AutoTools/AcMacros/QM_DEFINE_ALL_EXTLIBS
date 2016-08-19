@@ -440,7 +440,15 @@ dnl
                               ],
                               [Math],
                               [-lvl],
-                              [vl/sift.h],
+                              [vl/sift.h], dnl# Test for sift.h as that is what
+                                           dnl# was being used by the original
+                                           dnl# code this check was implemented
+                                           dnl# for. Additionally, checking for
+                                           dnl# sift.h flags up if the version
+                                           dnl# of vlfeat has been strangled to
+                                           dnl# omit any potentially patent
+                                           dnl# encumbered code (as on Debian
+                                           dnl# derived Linux distributions).
                               [C]
                              )
 dnl#ToDo#          QM_DEFINE_EXTLIB_CC([vtkCharts],

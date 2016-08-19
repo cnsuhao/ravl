@@ -40790,7 +40790,7 @@ $as_echo "$as_me: WARNING: --with-vlfeat-include and --with-vlfeat specify diffe
                               '
                                                   with_vlfeat_prq="Math"
           with_vlfeat_hdr="vl/sift.h"
-          with_vlfeat_lang="C
+          with_vlfeat_lang="                                                                                                                                                                                                                                                                                                                                                                                      C
                              "
 
 
