@@ -379,6 +379,13 @@ ifeq ($(SUPPORT_OK),yes)
  TARG_AUXFILES = $(patsubst %,$(INST_AUX)/%,$(AUXFILES))
  TARG_EXTERNALLIBS= $(patsubst %,$(INST_LIBDEF)/%,$(EXTERNALLIBS))
 
+ ifdef CMAKELIB
+   TARG_CMAKELIB = $(INST_CMAKE)/Find$(CMAKELIB).cmake
+ else
+   TARG_CMAKELIB = 
+ endif
+ 
+
  SINGLESO_NOPREFIX = $(strip $(patsubst $(SINGLESO),,$(patsubst lib%,%,$(SINGLESO))))
  # Name of SINGLESO with the lib prefix stripped off.
  # Certain source code does use a setting of SINGLESO without the lib prefix,
@@ -483,6 +490,7 @@ else # SUPPORT_OK != yes
  TARG_NESTED=
  TARG_SCRIPT=
  OBJS_DEPEND=
+ TARG_CMAKELIB =
 endif
 
 ###############################
@@ -745,7 +753,7 @@ $(TARG_HDRSYMS) : $(INST_HEADERSYM)/% : % $(INST_HEADERSYM)/.dir
 
 #	$(TOUCH) -r $< $(INST_HEADER)/$(@F) ; \
 
-build_aux: $(TARG_AUXFILES) $(TARG_EXTERNALLIBS)
+build_aux: $(TARG_AUXFILES) $(TARG_EXTERNALLIBS) $(TARG_CMAKELIB)
 
 ifndef AUXINSTALL
   AUXINSTALL=$(CP)
@@ -1901,6 +1909,26 @@ ifdef TARG_PKGCONFIG
 
 endif 
 #  of ifdef TARG_PKGCONFIG
+
+
+# Build a cmake file.
+$(INST_CMAKE)/Find%.cmake: $(ROOTDIR)/lib/cmake/.dir \
+                                  defs.mk \
+                                  $(QMAKE_MAKEFILES)/Main.mk
+	$(SHOWIT)echo "--- Writing cmake file $(CMAKELIB) to $(INST_CMAKE)" ; \
+	echo > $@ ; \
+	echo "# Generated import file by Ravl QMake " >> $@ ; \
+	echo "# $(PROJECT_NAME) $(patsubst %,% package, $(PACKAGE_NAME)) $(*F) library " >> $@ ;\
+	echo "set($(*F)_FOUND true) " >> $@; \
+	echo "set($(*F)_LIBRARIES $(LIBLIBS)) " >> $@; \
+	echo "set($(*F)_INCLUDE_DIRS $(ROOTDIR)/include) " >> $@; \
+	echo "LINK_DIRECTORIES($(INST_LIB)) " >> $@ ;
+
+#	
+#	echo "set($(*F)_INCLUDES $(ROOTDIR)/include) " >> $@; \
+#	echo "LINK_LIBRARIES($(LIBLIBS)) " >> $@ ;\
+#	echo "INCLUDE_DIRECTORIES() " >> $@ ; 
+
 
 ###########################
 # general diagnostic information

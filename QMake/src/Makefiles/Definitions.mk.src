@@ -93,6 +93,9 @@ endif
 ifdef AUXFILES
 AUXFILES:=$(strip $(AUXFILES))#
 endif
+ifdef CMAKELIB
+CMAKELIB:=$(strip $(CMAKELIB))#
+endif
 
 # Directories used in making.
 
@@ -449,6 +452,7 @@ INST_LIBDEF=$(ROOTDIR)/lib$(PROJECT_DIR)/libdep
 INST_BIN=$(ROOTDIR)/bin/utils/$(VAR)$(SHARED_LIB_POSTFIX)$(SINGLE_POSTFIX)/bin
 INST_GENBIN=$(ROOTDIR)/bin# Machine independent scripts.
 INST_INCLUDE:=$(ROOTDIR)/include
+INST_CMAKE=$(ROOTDIR)/lib$(PROJECT_DIR)/cmake
 
 ifeq ($(PACKAGE),)
  INST_DEPEND=$(INST_ADMIN)/$(ARC)/depend$(PROJECT_DIR)/local/$(BASENAME)
@@ -646,7 +650,7 @@ else
 endif
 
 
-# Set flags for dependancy production
+# Set flags for dependency production
 
 MKDEPFLAGS=-MM
 AMKDEPFLAGS = -Wp,-MMD,$(WORKTMP)/$*.d

@@ -54,7 +54,8 @@
                   <li><a href="#MAKEPKGCONFIG">MAKEPKGCONFIG</A>
                   <li><a href="#SINGLESO">SINGLESO</A>
                   <li><a href="#SUMMARY_LIB">SUMMARY_LIB</A>
-                </ul>
+                  <li><a href="#CMAKELIB">CMAKELIB</A>
+                   </ul>
               <li><a href="#platform">Platform support</A>
                 <ul>
                   <li><a href="#SUPPORT_ONLY">SUPPORT_ONLY</A>
@@ -590,6 +591,44 @@ from the current PLIB.</p>
 </DD>
 </LI>
 
+<LI><DT><A NAME="CMAKELIB"></A><B>CMAKELIB</B></DT> 
+
+<DD><p> This tells QMake the name of the library to create for use with CMake. Support is
+  preliminary at this stage and suggestions for improvements are welcome. 
+  The Find files are simple at the moment and does not remove duplicate library references. 
+  For the moment it is recommended you link one library with all you require from a QMake 
+  project, and then include it where needed.
+  <p>
+  Currently the CMake file uses the build type used by QMake in that directory.  
+  <p>
+   
+  The created file is placed in the directory '$PROJECT_OUT/lib/cmake' . 
+</p>
+  Following is an example of how you would link 'myprogram' in cmake with a RAVL library.
+  
+  In a directory containing a USESLIBS for all the required libraries, add the following to the 'defs.mk'
+     <p>
+  <code>
+   CMAKELIB=xyz
+  </code>
+     <p>
+  
+  When this is compiled a Findxyz.cmake file will be generated. If this file is on cmake's
+  search path you can then use 'find_package' to link a program or library in cmake. as seen in the following fragment from a CMakeLists.txt.
+  <p>
+  <code>
+   set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "(YOUR-PROJECT-OUT)/lib/cmake")
+   <br>
+   find_package (xyz REQUIRED)
+   <br>
+   include_directories(xyz_INCLUDE_DIRS})
+   <br>
+   target_link_libraries(myprogram xyz_LIBRARIES})
+  </code>  
+
+</DD>
+</LI>
+
 </UL>
 
 
@@ -832,8 +871,7 @@ ANSI compatibility. </p>
 <p>Note that the default QMake behaviour is to set strict ANSI compatibility.
 So if for example you want C99 compatibility, which conflicts with ANSI C, you
 would have to do it like this:</p><code><pre>
-    CFLAGS += -std=c99
-    ANSIFLAG=
+    ANSIFLAG= -std=c99
 </pre></code>
 </DD></LI>
 </UL>
