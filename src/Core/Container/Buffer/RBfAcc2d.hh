@@ -193,6 +193,9 @@ namespace RavlN {
     // will break this assumption.  This method is provided to allow operations
     // like deinterlacing image to be done without copying large amounts of memory.
 
+    size_t Hash() const;
+    //: Generate a hash value for the buffer.
+
   protected:
     IndexRangeC rng2;
   };
@@ -201,6 +204,15 @@ namespace RavlN {
   void RangeBufferAccess2dC<DataT>::Fill(const DataT &d) {
     for(BufferAccess2dIterC<DataT> it(*this,rng2);it;it++)
       *it = d;
+  }
+
+  template<class DataT>
+  size_t RangeBufferAccess2dC<DataT>::Hash() const
+  {
+    size_t ret = StdHash(rng2);
+    for(BufferAccess2dIterC<DataT> it(*this,rng2);it;it++)
+      ret += StdHash(*it);
+    return ret;
   }
 
   template <class DataT>

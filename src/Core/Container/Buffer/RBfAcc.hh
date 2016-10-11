@@ -302,6 +302,8 @@ namespace RavlN {
     { return ReferenceElm() + (range.Max().V()+1); }
     //: Access end
 
+    size_t Hash() const;
+    //: Generate a hash value for the buffer.
   protected:
     
     // Copy
@@ -524,6 +526,20 @@ namespace RavlN {
       *end = tmp;
     }
   }
+
+  template<class DataT>
+  size_t RangeBufferAccessC<DataT>::Hash() const
+  {
+    size_t ret = IMin() + 997 * IMax();
+    DataT *at = &((*this)[IMin()]);
+    const DataT *end = &((*this)[IMax()]);
+    DataT tmp;
+    for(;at < end;at++) {
+      ret += StdHash(*at);
+    }
+    return ret;
+  }
+
 
   template<class DataT>
   RangeBufferAccessC<DataT> RangeBufferAccessC<DataT>::BufferFrom(IndexC first) {
