@@ -7,6 +7,8 @@
 #! rcsid="$Id: defs.mk 7842 2010-09-24 08:35:20Z alexkostin $"
 #! file="Ravl/OS/Misc/defs.mk"
 
+ANSIFLAG=
+
 PACKAGE=Ravl/OS
 
 DESCRIPTION=Interfaces for serial devices
