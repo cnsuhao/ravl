@@ -227,6 +227,12 @@ dnl                                  include other, non-path related, linker
 dnl                                  settings.
 dnl       with_<lib>_prq             Space separated list of pre-requisites
 dnl                                  of the external library package <lib>.
+dnl       UnconfiguredLibs           Holds a space separated list of all the
+dnl                                  external RESOURCES that have not been
+dnl                                  explicitly configured by the user. This
+dnl                                  macro appends the resource name to the
+dnl                                  variable if the user has supplied no
+dnl                                  command-line option for the library.
 dnl
 dnl   The following are all interim variables used within this macro:
 dnl

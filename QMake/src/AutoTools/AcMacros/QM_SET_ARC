@@ -40,8 +40,8 @@ AC_DEFUN([QM_SET_ARC],
                        ;;
            Xarm )      ARC=arm
                        # Unlikely to ever encounter this as an OS, most 
-                       # likely to find arm as a linux cpu type (should 
-                       # process that as a variation of linux). This is only
+                       # likely to find arm as a Linux cpu type (should
+                       # process that as a variation of Linux). This is only
                        # here as this is what we used to do
                        ;;
            Xcygwin )   ARC=cygwin

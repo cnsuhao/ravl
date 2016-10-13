@@ -296,7 +296,7 @@ AC_DEFUN([QM_LOCATE_QMAKE_DEPS],
              LEX=""
           fi
 
-          dnl Again, AC_PROG_MKDIR_P is a macro that expands otuside of this
+          dnl Again, AC_PROG_MKDIR_P is a macro that expands outside of this
           dnl macro and will have been run by the time control reaches this
           dnl code. We use the same work around as for INSTALL and LEX. As
           dnl for both LEX and INSTALL, USER_MKDIR_P will correctly hold any

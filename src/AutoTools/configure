@@ -8792,8 +8792,8 @@ $as_echo "$as_me: WARNING: Unable to determine underlying version of LVM - assum
                                             CC_MAJOR=`echo $CC_VERSION | $AWK -F. '{ print $1 }'`
                       CC_MINOR=`echo $CC_VERSION | $AWK -F. '{ print $2 }'`
                    else
-                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Unable to recognise GNU compatible compiler - assuming full GNU 5.0 compatability" >&5
-$as_echo "$as_me: WARNING: Unable to recognise GNU compatible compiler - assuming full GNU 5.0 compatability" >&2;}
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Unable to recognise GNU compatible compiler - assuming full GNU 5.0 compatibility" >&5
+$as_echo "$as_me: WARNING: Unable to recognise GNU compatible compiler - assuming full GNU 5.0 compatibility" >&2;}
                       CC_MAJOR=5
                       CC_MINOR=0
                       CC_VERSION=5.0
@@ -9321,8 +9321,8 @@ $as_echo "$as_me: WARNING: Unable to determine underlying version of LVM - assum
                                             CXX_MAJOR=`echo $CXX_VERSION | $AWK -F. '{ print $1 }'`
                       CXX_MINOR=`echo $CXX_VERSION | $AWK -F. '{ print $2 }'`
                    else
-                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Unable to recognise GNU compatible compiler - assuming full GNU 5.0 compatability" >&5
-$as_echo "$as_me: WARNING: Unable to recognise GNU compatible compiler - assuming full GNU 5.0 compatability" >&2;}
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Unable to recognise GNU compatible compiler - assuming full GNU 5.0 compatibility" >&5
+$as_echo "$as_me: WARNING: Unable to recognise GNU compatible compiler - assuming full GNU 5.0 compatibility" >&2;}
                       CXX_MAJOR=5
                       CXX_MINOR=0
                       CXX_VERSION=5.0

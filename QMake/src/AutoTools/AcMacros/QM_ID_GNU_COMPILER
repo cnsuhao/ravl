@@ -163,7 +163,7 @@ AC_DEFUN([QM_ID_GNU_COMPILER],
                       $1_MAJOR=`echo $$1_VERSION | $AWK -F. '{ print @S|@1 }'`
                       $1_MINOR=`echo $$1_VERSION | $AWK -F. '{ print @S|@2 }'`
                    else
-                      AC_MSG_WARN([Unable to recognise GNU compatible compiler - assuming full GNU 5.0 compatability])
+                      AC_MSG_WARN([Unable to recognise GNU compatible compiler - assuming full GNU 5.0 compatibility])
                       $1_MAJOR=5
                       $1_MINOR=0
                       $1_VERSION=5.0

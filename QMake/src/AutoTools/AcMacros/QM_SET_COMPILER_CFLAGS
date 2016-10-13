@@ -30,7 +30,7 @@ dnl                                  { QM_ID_GNU_COMPILER called from here.
 dnl       COMPILER_ANSI_CFLAGS     } { Receive the compiler specific flags
 dnl       COMPILER_C90_CFLAGS      } {  .._ANSI_.. is used for compiling
 dnl       COMPILER_C95_CFLAGS      } { ANSI-C source code;  the .._Cnn_..
-dnl       COMPILER_C99_CFLAGS      } { flags select compiler compatability
+dnl       COMPILER_C99_CFLAGS      } { flags select compiler compatibility
 dnl       COMPILER_C11_CFLAGS      } { with the appropriate C standard
 dnl       COMPILER_DEBUG_CFLAGS    } { (these variables are only ever set
 dnl       COMPILER_GPROF_CFLAGS    } { if the particular standard is
