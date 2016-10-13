@@ -312,6 +312,13 @@ AC_DEFUN([QM_READ_USER_ENV],
              USER_RM=$RM
           fi
 
+          AC_ARG_VAR([SED],[Path to the stream editor utility])
+          if ( test "x$SED" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_SED=$SED
+          fi
+
           AC_ARG_VAR([SORT],[Path to the utility for file sorting])
           if ( test "x$SORT" != x )
           then

@@ -950,7 +950,6 @@ NeededQMake
 WORKING_QMAKE_BIN
 WORKING_QMAKE_DATA
 QMAKE_CONFIGFILES
-SED
 PKG_CONFIG
 XARGS
 YACC
@@ -958,6 +957,7 @@ TR
 TOUCH
 SYNC
 SORT
+SED
 RM
 RANLIB
 PERL
@@ -1310,6 +1310,7 @@ PAGER
 PERL
 RANLIB
 RM
+SED
 SORT
 SYNC
 TOUCH
@@ -2874,6 +2875,7 @@ Some influential environment variables:
   RANLIB      Path to any indexing utility that may be required when building
               static archives
   RM          Path to the utility for deleting a file
+  SED         Path to the stream editor utility
   SORT        Path to the utility for file sorting
   SYNC        Path to the command for forcing a flush of output to disk
   TOUCH       Path to the utility for changing the date of a file
@@ -4264,6 +4266,13 @@ case $host_os in *\ *) host_os=`echo "$host_os" | sed 's/ /-/g'`;; esac
           then
              # User has supplied their own setting, record this
              USER_RM=$RM
+          fi
+
+
+          if ( test "x$SED" != x )
+          then
+             # User has supplied their own setting, record this
+             USER_SED=$SED
           fi
 
 
