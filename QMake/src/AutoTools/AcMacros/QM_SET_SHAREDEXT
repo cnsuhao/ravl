@@ -1,5 +1,5 @@
 dnl This file is part of QMake, Quick Make System
-dnl Copyright (C) 2014, University of Surrey
+dnl Copyright (C) 2014-16, University of Surrey
 dnl This code may be redistributed under the terms of the GNU General
 dnl Public License (GPL). See the gpl.licence file for details or
 dnl see http://www.gnu.org/copyleft/gpl.html
@@ -17,8 +17,8 @@ dnl No macro parameters.
 dnl
 dnl Global variables used:
 dnl
-dnl       ARC                        Holds the name of the architecture we
-dnl                                  are currently targetting. Used to
+dnl       ARC                        Holds the QMake identifying string for
+dnl                                  the platform in use.
 dnl                                  determine what SHAREDEXT should be.
 dnl       SHAREDEXT                  Receives the file extension to append
 dnl                                  to any shared library name. This value
