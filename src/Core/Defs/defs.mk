@@ -19,5 +19,6 @@ EXTERNALLIBS= CUDA.def GTK.def LibPNG.def posixThreads.def zlib.def \
  CXSparse.def Qt3QGLViewer.def Qt4QGLViewer.def Qt3Support.def Xmu.def \
  cublas.def cuda.def cudart.def cufft.def cufftw.def curand.def \
  cusparse.def cusolver.def OpenMP.def ImageMagick.def ImageMagickXX.def \
- DevIL.def DevIL_OPENGL.def GLEW.def SIFTGPU.def
+ DevIL.def DevIL_OPENGL.def GLEW.def SIFTGPU.def fftw3.def fftw3f.def \
+ fftw3l.def fftw3q.def
 

@@ -851,6 +851,18 @@ iksemel_CFLAGS
 FreeType2_LIBS
 FreeType2_CCFLAGS
 FreeType2_CFLAGS
+fftw3q_LIBS
+fftw3q_CCFLAGS
+fftw3q_CFLAGS
+fftw3l_LIBS
+fftw3l_CCFLAGS
+fftw3l_CFLAGS
+fftw3_LIBS
+fftw3_CCFLAGS
+fftw3_CFLAGS
+fftw3f_LIBS
+fftw3f_CCFLAGS
+fftw3f_CFLAGS
 FFMPEGUTIL_LIBS
 FFMPEGUTIL_CCFLAGS
 FFMPEGUTIL_CFLAGS
@@ -1055,6 +1067,14 @@ with_FFMPEGSWS_pkgconf
 with_FFMPEGSWS
 with_FFMPEGUTIL_pkgconf
 with_FFMPEGUTIL
+with_fftw3f_pkgconf
+with_fftw3f
+with_fftw3_pkgconf
+with_fftw3
+with_fftw3l_pkgconf
+with_fftw3l
+with_fftw3q_pkgconf
+with_fftw3q
 with_FreeType2_pkgconf
 with_FreeType2
 with_iksemel_pkgconf
@@ -2036,6 +2056,34 @@ Optional Packages:
                           package is known to pkg-config
 
   --with-FFMPEGUTIL       Enable functionality that relies on the FFMPEGUTIL
+                          library [default=check]
+
+  --with-fftw3f-pkgconf   Enable the fftw3f library package via pkg-config and
+                          declare the name by which the fftw3f library package
+                          is known to pkg-config
+
+  --with-fftw3f           Enable functionality that relies on the fftw3f
+                          library [default=check]
+
+  --with-fftw3-pkgconf    Enable the fftw3 library package via pkg-config and
+                          declare the name by which the fftw3 library package
+                          is known to pkg-config
+
+  --with-fftw3            Enable functionality that relies on the fftw3
+                          library [default=check]
+
+  --with-fftw3l-pkgconf   Enable the fftw3l library package via pkg-config and
+                          declare the name by which the fftw3l library package
+                          is known to pkg-config
+
+  --with-fftw3l           Enable functionality that relies on the fftw3l
+                          library [default=check]
+
+  --with-fftw3q-pkgconf   Enable the fftw3q library package via pkg-config and
+                          declare the name by which the fftw3q library package
+                          is known to pkg-config
+
+  --with-fftw3q           Enable functionality that relies on the fftw3q
                           library [default=check]
 
   --with-FreeType2-pkgconf
@@ -12097,6 +12145,910 @@ $as_echo "$as_me: WARNING: --with-FFMPEGUTIL set to an unknown option, setting i
              UnconfiguredLibs=$UnconfiguredLibs" "FFMPEGUTIL
           else
              ConfiguredLibs=$ConfiguredLibs" "FFMPEGUTIL
+          fi
+
+
+
+
+
+
+          with_fftw3f_check=pkgconfig
+          if ( test Xpkgconfig = Xvirtual )
+          then
+             with_fftw3f_virtual=yes
+          else
+             with_fftw3f_virtual=no
+          fi
+
+          fallback_file=""
+          fallback_path=""
+
+
+# Check whether --with-fftw3f-pkgconf was given.
+if test "${with_fftw3f_pkgconf+set}" = set; then :
+  withval=$with_fftw3f_pkgconf; case $with_fftw3f_pkgconf in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                 trace 4 --with-fftw3f-pkgconf disabling fftw3f
+                                 with_fftw3f_pkgconf=no
+                                 use_fftw3f=no
+                                 ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                 if ( test Xfftw3f != X )
+                                 then
+                                    trace 4 Asking for fftw3f via --with-fftw3f-pkgconf default value [$with_fftw3f_pkgconf]
+                                    with_fftw3f_pkgconf=fftw3f
+                                    with_fftw3f_check=pkgconfig
+                                    with_fftw3f_virtual=no
+                                    use_fftw3f=yes
+                                 else
+                                    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to enable fftw3f via pkg-config but configure is unaware of the name of the DOTpc metadata file
+See \`config.log' for more details" "$LINENO" 5; }
+                                 fi
+                                 ;;
+                        'c' |'C' | 'ck' | 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                 if ( test Xfftw3f != X )
+                                 then
+                                    trace 4 Will check for fftw3f using --with-fftw3f-pkgconf default value [$with_fftw3f_pkgconf]
+                                    with_fftw3f_pkgconf=fftw3f
+                                    with_fftw3f_check=pkgconfig
+                                    with_fftw3f_virtual=no
+                                    use_fftw3f=check
+                                 else
+                                    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to check for fftw3f via pkg-config but configure is unaware of the name of the DOTpc metadata file
+See \`config.log' for more details" "$LINENO" 5; }
+                                 fi
+                                 ;;
+                        * )
+                                 trace 4 Asking for fftw3f --with-fftw3f-pkgconf set to [$with_fftw3f_pkgconf]
+                                 with_fftw3f_check=pkgconfig
+                                 with_fftw3f_virtual=no
+                                 use_fftw3f=yes
+                                 ;;
+                       esac
+
+else
+  if ( test Xfftw3f != X )
+                       then
+                          trace 4 No --with-fftw3f-pkgconf specified using default [$with_fftw3f_pkgconf]
+                          with_fftw3f_pkgconf=fftw3f
+                          with_fftw3f_check=pkgconfig
+                          with_fftw3f_virtual=no
+                       else
+                          trace 4 No --with-fftw3f-pkgconf specified and no default value
+                       fi
+
+
+fi
+
+
+# Check whether --with-fftw3f was given.
+if test "${with_fftw3f+set}" = set; then :
+  withval=$with_fftw3f; case $with_fftw3f in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                 trace 4 --with-fftw3f disabling fftw3f libraries
+                                 if ( test X$use_fftw3f = Xyes )
+                                 then
+                                    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to disable fftw3f by --with-fftw3f but --with-fftw3f-pkgconf has specifically enabled it
+See \`config.log' for more details" "$LINENO" 5; }
+                                 else
+                                    if ( test X$use_fftw3f = Xcheck )
+                                    then
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Disabling fftw3f via --with-fftw3f despite --with-fftw3f-pkconfig having asked to check for it" >&5
+$as_echo "$as_me: WARNING: Disabling fftw3f via --with-fftw3f despite --with-fftw3f-pkconfig having asked to check for it" >&2;}
+                                    fi
+                                    use_fftw3f=no
+                                 fi
+                                 with_fftw3f=no
+                                 ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                 trace 4 --with-fftw3f enabling fftw3f libraries
+                                 if ( test X$use_fftw3f = Xno )
+                                 then
+                                    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to enable fftw3f by --with-fftw3f but --with-fftw3f-pkgconf has specifically disabled it
+See \`config.log' for more details" "$LINENO" 5; }
+                                 else
+                                    if ( test X$use_fftw3f = Xcheck )
+                                    then
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Enabling fftw3f via --with-fftw3f despite --with-fftw3f-pkconfig having asked to check for it" >&5
+$as_echo "$as_me: WARNING: Enabling fftw3f via --with-fftw3f despite --with-fftw3f-pkconfig having asked to check for it" >&2;}
+                                    fi
+                                    use_fftw3f=yes
+                                 fi
+                                 with_fftw3f=yes
+                                 ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                 trace 4 --with-fftw3f checking for fftw3f libraries
+                                 if (test X$use_fftw3f = Xyes )
+                                 then
+                                    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-fftw3f asking to check for the libs but --with-fftw3f-pkgconf has specifically enabled it" >&5
+$as_echo "$as_me: WARNING: --with-fftw3f asking to check for the libs but --with-fftw3f-pkgconf has specifically enabled it" >&2;}
+                                 else
+                                    if ( test X$use_fftw3f = Xno )
+                                    then
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-fftw3f asking to check for the libs but --with-fftw3f-pkgconf has specifically disabled it" >&5
+$as_echo "$as_me: WARNING: --with-fftw3f asking to check for the libs but --with-fftw3f-pkgconf has specifically disabled it" >&2;}
+                                    else
+                                       use_fftw3f=check
+                                    fi
+                                 fi
+                                 with_fftw3f=check
+                                 ;;
+                        * )      # --with-<lib> is not being used as a simple
+                                 # yes/no/check switch - see if this is
+                                 # providing an extra piece of information
+                                 if ( test -d $with_fftw3f )
+                                 then
+                                    # Parameter is a directory path
+                                    fallback_path=$with_fftw3f
+                                    fallback_file=""
+                                    trace 3 with-fftw3f provides a fallback path [$fallback_path]
+                                    use_fftw3f=yes
+                                    with_fftw3f=yes
+                                 else
+                                    fallback_path=`$as_dirname -- $with_fftw3f ||
+$as_expr X$with_fftw3f : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
+	 X$with_fftw3f : 'X\(//\)[^/]' \| \
+	 X$with_fftw3f : 'X\(//\)$' \| \
+	 X$with_fftw3f : 'X\(/\)' \| . 2>/dev/null ||
+$as_echo X$with_fftw3f |
+    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)[^/].*/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\).*/{
+	    s//\1/
+	    q
+	  }
+	  s/.*/./; q'`
+                                    if ( test -d $fallback_path  )
+                                    then
+                                       # strip leading path
+                                       fallback_file=`$EXPR "//$with_fftw3f" : '.*/\([^/]*\)'`
+                                       # portable version of fallback_file=`basename $with_fftw3f`
+                                       if ( test X$with_fftw3f = X$fallback_path/$fallback_file )
+                                       then
+                                          # Parameter is a file path
+                                          trace 3 with-fftw3f provides a fallback path [$fallback_path] and a file [$fallback_file]
+                                          use_fftw3f=yes
+                                          with_fftw3f=yes
+                                       else
+                                          # Somehow dirname($x)/basename($x) != $x
+                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Problem processing --with-fftw3f, parameter ignored" >&5
+$as_echo "$as_me: WARNING: Problem processing --with-fftw3f, parameter ignored" >&2;}
+                                          fallback_path=""
+                                          fallback_file=""
+                                       fi
+                                    else
+                                       # --with-fftw3f=/path/is/not/a/dir/something
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Illegal command-line option for --with-fftw3f, parameter ignored" >&5
+$as_echo "$as_me: WARNING: Illegal command-line option for --with-fftw3f, parameter ignored" >&2;}
+                                       fallback_path=""
+                                       fallback_file=""
+                                    fi
+                                 fi
+                                 ;;
+                       esac
+
+else
+  trace 5 No --with-fftw3f specified
+
+fi
+
+
+
+          if ( test "$fallback_path/$fallback_file" != / )
+          then
+             # Do not currently support --with_<lib> specifying a .pc path
+             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-fftw3f set to an unknown option, setting ignored" >&5
+$as_echo "$as_me: WARNING: --with-fftw3f set to an unknown option, setting ignored" >&2;}
+          fi
+
+
+
+
+
+
+          KnownLibs=$KnownLibs" "fftw3f
+          if ( test X$use_fftw3f = X )
+          then
+             use_fftw3f=check
+             UnconfiguredLibs=$UnconfiguredLibs" "fftw3f
+          else
+             ConfiguredLibs=$ConfiguredLibs" "fftw3f
+          fi
+
+
+
+
+
+
+          with_fftw3_check=pkgconfig
+          if ( test Xpkgconfig = Xvirtual )
+          then
+             with_fftw3_virtual=yes
+          else
+             with_fftw3_virtual=no
+          fi
+
+          fallback_file=""
+          fallback_path=""
+
+
+# Check whether --with-fftw3-pkgconf was given.
+if test "${with_fftw3_pkgconf+set}" = set; then :
+  withval=$with_fftw3_pkgconf; case $with_fftw3_pkgconf in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                 trace 4 --with-fftw3-pkgconf disabling fftw3
+                                 with_fftw3_pkgconf=no
+                                 use_fftw3=no
+                                 ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                 if ( test Xfftw3 != X )
+                                 then
+                                    trace 4 Asking for fftw3 via --with-fftw3-pkgconf default value [$with_fftw3_pkgconf]
+                                    with_fftw3_pkgconf=fftw3
+                                    with_fftw3_check=pkgconfig
+                                    with_fftw3_virtual=no
+                                    use_fftw3=yes
+                                 else
+                                    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to enable fftw3 via pkg-config but configure is unaware of the name of the DOTpc metadata file
+See \`config.log' for more details" "$LINENO" 5; }
+                                 fi
+                                 ;;
+                        'c' |'C' | 'ck' | 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                 if ( test Xfftw3 != X )
+                                 then
+                                    trace 4 Will check for fftw3 using --with-fftw3-pkgconf default value [$with_fftw3_pkgconf]
+                                    with_fftw3_pkgconf=fftw3
+                                    with_fftw3_check=pkgconfig
+                                    with_fftw3_virtual=no
+                                    use_fftw3=check
+                                 else
+                                    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to check for fftw3 via pkg-config but configure is unaware of the name of the DOTpc metadata file
+See \`config.log' for more details" "$LINENO" 5; }
+                                 fi
+                                 ;;
+                        * )
+                                 trace 4 Asking for fftw3 --with-fftw3-pkgconf set to [$with_fftw3_pkgconf]
+                                 with_fftw3_check=pkgconfig
+                                 with_fftw3_virtual=no
+                                 use_fftw3=yes
+                                 ;;
+                       esac
+
+else
+  if ( test Xfftw3 != X )
+                       then
+                          trace 4 No --with-fftw3-pkgconf specified using default [$with_fftw3_pkgconf]
+                          with_fftw3_pkgconf=fftw3
+                          with_fftw3_check=pkgconfig
+                          with_fftw3_virtual=no
+                       else
+                          trace 4 No --with-fftw3-pkgconf specified and no default value
+                       fi
+
+
+fi
+
+
+# Check whether --with-fftw3 was given.
+if test "${with_fftw3+set}" = set; then :
+  withval=$with_fftw3; case $with_fftw3 in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                 trace 4 --with-fftw3 disabling fftw3 libraries
+                                 if ( test X$use_fftw3 = Xyes )
+                                 then
+                                    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to disable fftw3 by --with-fftw3 but --with-fftw3-pkgconf has specifically enabled it
+See \`config.log' for more details" "$LINENO" 5; }
+                                 else
+                                    if ( test X$use_fftw3 = Xcheck )
+                                    then
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Disabling fftw3 via --with-fftw3 despite --with-fftw3-pkconfig having asked to check for it" >&5
+$as_echo "$as_me: WARNING: Disabling fftw3 via --with-fftw3 despite --with-fftw3-pkconfig having asked to check for it" >&2;}
+                                    fi
+                                    use_fftw3=no
+                                 fi
+                                 with_fftw3=no
+                                 ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                 trace 4 --with-fftw3 enabling fftw3 libraries
+                                 if ( test X$use_fftw3 = Xno )
+                                 then
+                                    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to enable fftw3 by --with-fftw3 but --with-fftw3-pkgconf has specifically disabled it
+See \`config.log' for more details" "$LINENO" 5; }
+                                 else
+                                    if ( test X$use_fftw3 = Xcheck )
+                                    then
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Enabling fftw3 via --with-fftw3 despite --with-fftw3-pkconfig having asked to check for it" >&5
+$as_echo "$as_me: WARNING: Enabling fftw3 via --with-fftw3 despite --with-fftw3-pkconfig having asked to check for it" >&2;}
+                                    fi
+                                    use_fftw3=yes
+                                 fi
+                                 with_fftw3=yes
+                                 ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                 trace 4 --with-fftw3 checking for fftw3 libraries
+                                 if (test X$use_fftw3 = Xyes )
+                                 then
+                                    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-fftw3 asking to check for the libs but --with-fftw3-pkgconf has specifically enabled it" >&5
+$as_echo "$as_me: WARNING: --with-fftw3 asking to check for the libs but --with-fftw3-pkgconf has specifically enabled it" >&2;}
+                                 else
+                                    if ( test X$use_fftw3 = Xno )
+                                    then
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-fftw3 asking to check for the libs but --with-fftw3-pkgconf has specifically disabled it" >&5
+$as_echo "$as_me: WARNING: --with-fftw3 asking to check for the libs but --with-fftw3-pkgconf has specifically disabled it" >&2;}
+                                    else
+                                       use_fftw3=check
+                                    fi
+                                 fi
+                                 with_fftw3=check
+                                 ;;
+                        * )      # --with-<lib> is not being used as a simple
+                                 # yes/no/check switch - see if this is
+                                 # providing an extra piece of information
+                                 if ( test -d $with_fftw3 )
+                                 then
+                                    # Parameter is a directory path
+                                    fallback_path=$with_fftw3
+                                    fallback_file=""
+                                    trace 3 with-fftw3 provides a fallback path [$fallback_path]
+                                    use_fftw3=yes
+                                    with_fftw3=yes
+                                 else
+                                    fallback_path=`$as_dirname -- $with_fftw3 ||
+$as_expr X$with_fftw3 : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
+	 X$with_fftw3 : 'X\(//\)[^/]' \| \
+	 X$with_fftw3 : 'X\(//\)$' \| \
+	 X$with_fftw3 : 'X\(/\)' \| . 2>/dev/null ||
+$as_echo X$with_fftw3 |
+    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)[^/].*/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\).*/{
+	    s//\1/
+	    q
+	  }
+	  s/.*/./; q'`
+                                    if ( test -d $fallback_path  )
+                                    then
+                                       # strip leading path
+                                       fallback_file=`$EXPR "//$with_fftw3" : '.*/\([^/]*\)'`
+                                       # portable version of fallback_file=`basename $with_fftw3`
+                                       if ( test X$with_fftw3 = X$fallback_path/$fallback_file )
+                                       then
+                                          # Parameter is a file path
+                                          trace 3 with-fftw3 provides a fallback path [$fallback_path] and a file [$fallback_file]
+                                          use_fftw3=yes
+                                          with_fftw3=yes
+                                       else
+                                          # Somehow dirname($x)/basename($x) != $x
+                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Problem processing --with-fftw3, parameter ignored" >&5
+$as_echo "$as_me: WARNING: Problem processing --with-fftw3, parameter ignored" >&2;}
+                                          fallback_path=""
+                                          fallback_file=""
+                                       fi
+                                    else
+                                       # --with-fftw3=/path/is/not/a/dir/something
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Illegal command-line option for --with-fftw3, parameter ignored" >&5
+$as_echo "$as_me: WARNING: Illegal command-line option for --with-fftw3, parameter ignored" >&2;}
+                                       fallback_path=""
+                                       fallback_file=""
+                                    fi
+                                 fi
+                                 ;;
+                       esac
+
+else
+  trace 5 No --with-fftw3 specified
+
+fi
+
+
+
+          if ( test "$fallback_path/$fallback_file" != / )
+          then
+             # Do not currently support --with_<lib> specifying a .pc path
+             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-fftw3 set to an unknown option, setting ignored" >&5
+$as_echo "$as_me: WARNING: --with-fftw3 set to an unknown option, setting ignored" >&2;}
+          fi
+
+
+
+
+
+
+          KnownLibs=$KnownLibs" "fftw3
+          if ( test X$use_fftw3 = X )
+          then
+             use_fftw3=check
+             UnconfiguredLibs=$UnconfiguredLibs" "fftw3
+          else
+             ConfiguredLibs=$ConfiguredLibs" "fftw3
+          fi
+
+
+
+
+
+
+          with_fftw3l_check=pkgconfig
+          if ( test Xpkgconfig = Xvirtual )
+          then
+             with_fftw3l_virtual=yes
+          else
+             with_fftw3l_virtual=no
+          fi
+
+          fallback_file=""
+          fallback_path=""
+
+
+# Check whether --with-fftw3l-pkgconf was given.
+if test "${with_fftw3l_pkgconf+set}" = set; then :
+  withval=$with_fftw3l_pkgconf; case $with_fftw3l_pkgconf in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                 trace 4 --with-fftw3l-pkgconf disabling fftw3l
+                                 with_fftw3l_pkgconf=no
+                                 use_fftw3l=no
+                                 ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                 if ( test Xfftw3l != X )
+                                 then
+                                    trace 4 Asking for fftw3l via --with-fftw3l-pkgconf default value [$with_fftw3l_pkgconf]
+                                    with_fftw3l_pkgconf=fftw3l
+                                    with_fftw3l_check=pkgconfig
+                                    with_fftw3l_virtual=no
+                                    use_fftw3l=yes
+                                 else
+                                    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to enable fftw3l via pkg-config but configure is unaware of the name of the DOTpc metadata file
+See \`config.log' for more details" "$LINENO" 5; }
+                                 fi
+                                 ;;
+                        'c' |'C' | 'ck' | 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                 if ( test Xfftw3l != X )
+                                 then
+                                    trace 4 Will check for fftw3l using --with-fftw3l-pkgconf default value [$with_fftw3l_pkgconf]
+                                    with_fftw3l_pkgconf=fftw3l
+                                    with_fftw3l_check=pkgconfig
+                                    with_fftw3l_virtual=no
+                                    use_fftw3l=check
+                                 else
+                                    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to check for fftw3l via pkg-config but configure is unaware of the name of the DOTpc metadata file
+See \`config.log' for more details" "$LINENO" 5; }
+                                 fi
+                                 ;;
+                        * )
+                                 trace 4 Asking for fftw3l --with-fftw3l-pkgconf set to [$with_fftw3l_pkgconf]
+                                 with_fftw3l_check=pkgconfig
+                                 with_fftw3l_virtual=no
+                                 use_fftw3l=yes
+                                 ;;
+                       esac
+
+else
+  if ( test Xfftw3l != X )
+                       then
+                          trace 4 No --with-fftw3l-pkgconf specified using default [$with_fftw3l_pkgconf]
+                          with_fftw3l_pkgconf=fftw3l
+                          with_fftw3l_check=pkgconfig
+                          with_fftw3l_virtual=no
+                       else
+                          trace 4 No --with-fftw3l-pkgconf specified and no default value
+                       fi
+
+
+fi
+
+
+# Check whether --with-fftw3l was given.
+if test "${with_fftw3l+set}" = set; then :
+  withval=$with_fftw3l; case $with_fftw3l in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                 trace 4 --with-fftw3l disabling fftw3l libraries
+                                 if ( test X$use_fftw3l = Xyes )
+                                 then
+                                    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to disable fftw3l by --with-fftw3l but --with-fftw3l-pkgconf has specifically enabled it
+See \`config.log' for more details" "$LINENO" 5; }
+                                 else
+                                    if ( test X$use_fftw3l = Xcheck )
+                                    then
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Disabling fftw3l via --with-fftw3l despite --with-fftw3l-pkconfig having asked to check for it" >&5
+$as_echo "$as_me: WARNING: Disabling fftw3l via --with-fftw3l despite --with-fftw3l-pkconfig having asked to check for it" >&2;}
+                                    fi
+                                    use_fftw3l=no
+                                 fi
+                                 with_fftw3l=no
+                                 ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                 trace 4 --with-fftw3l enabling fftw3l libraries
+                                 if ( test X$use_fftw3l = Xno )
+                                 then
+                                    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to enable fftw3l by --with-fftw3l but --with-fftw3l-pkgconf has specifically disabled it
+See \`config.log' for more details" "$LINENO" 5; }
+                                 else
+                                    if ( test X$use_fftw3l = Xcheck )
+                                    then
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Enabling fftw3l via --with-fftw3l despite --with-fftw3l-pkconfig having asked to check for it" >&5
+$as_echo "$as_me: WARNING: Enabling fftw3l via --with-fftw3l despite --with-fftw3l-pkconfig having asked to check for it" >&2;}
+                                    fi
+                                    use_fftw3l=yes
+                                 fi
+                                 with_fftw3l=yes
+                                 ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                 trace 4 --with-fftw3l checking for fftw3l libraries
+                                 if (test X$use_fftw3l = Xyes )
+                                 then
+                                    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-fftw3l asking to check for the libs but --with-fftw3l-pkgconf has specifically enabled it" >&5
+$as_echo "$as_me: WARNING: --with-fftw3l asking to check for the libs but --with-fftw3l-pkgconf has specifically enabled it" >&2;}
+                                 else
+                                    if ( test X$use_fftw3l = Xno )
+                                    then
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-fftw3l asking to check for the libs but --with-fftw3l-pkgconf has specifically disabled it" >&5
+$as_echo "$as_me: WARNING: --with-fftw3l asking to check for the libs but --with-fftw3l-pkgconf has specifically disabled it" >&2;}
+                                    else
+                                       use_fftw3l=check
+                                    fi
+                                 fi
+                                 with_fftw3l=check
+                                 ;;
+                        * )      # --with-<lib> is not being used as a simple
+                                 # yes/no/check switch - see if this is
+                                 # providing an extra piece of information
+                                 if ( test -d $with_fftw3l )
+                                 then
+                                    # Parameter is a directory path
+                                    fallback_path=$with_fftw3l
+                                    fallback_file=""
+                                    trace 3 with-fftw3l provides a fallback path [$fallback_path]
+                                    use_fftw3l=yes
+                                    with_fftw3l=yes
+                                 else
+                                    fallback_path=`$as_dirname -- $with_fftw3l ||
+$as_expr X$with_fftw3l : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
+	 X$with_fftw3l : 'X\(//\)[^/]' \| \
+	 X$with_fftw3l : 'X\(//\)$' \| \
+	 X$with_fftw3l : 'X\(/\)' \| . 2>/dev/null ||
+$as_echo X$with_fftw3l |
+    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)[^/].*/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\).*/{
+	    s//\1/
+	    q
+	  }
+	  s/.*/./; q'`
+                                    if ( test -d $fallback_path  )
+                                    then
+                                       # strip leading path
+                                       fallback_file=`$EXPR "//$with_fftw3l" : '.*/\([^/]*\)'`
+                                       # portable version of fallback_file=`basename $with_fftw3l`
+                                       if ( test X$with_fftw3l = X$fallback_path/$fallback_file )
+                                       then
+                                          # Parameter is a file path
+                                          trace 3 with-fftw3l provides a fallback path [$fallback_path] and a file [$fallback_file]
+                                          use_fftw3l=yes
+                                          with_fftw3l=yes
+                                       else
+                                          # Somehow dirname($x)/basename($x) != $x
+                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Problem processing --with-fftw3l, parameter ignored" >&5
+$as_echo "$as_me: WARNING: Problem processing --with-fftw3l, parameter ignored" >&2;}
+                                          fallback_path=""
+                                          fallback_file=""
+                                       fi
+                                    else
+                                       # --with-fftw3l=/path/is/not/a/dir/something
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Illegal command-line option for --with-fftw3l, parameter ignored" >&5
+$as_echo "$as_me: WARNING: Illegal command-line option for --with-fftw3l, parameter ignored" >&2;}
+                                       fallback_path=""
+                                       fallback_file=""
+                                    fi
+                                 fi
+                                 ;;
+                       esac
+
+else
+  trace 5 No --with-fftw3l specified
+
+fi
+
+
+
+          if ( test "$fallback_path/$fallback_file" != / )
+          then
+             # Do not currently support --with_<lib> specifying a .pc path
+             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-fftw3l set to an unknown option, setting ignored" >&5
+$as_echo "$as_me: WARNING: --with-fftw3l set to an unknown option, setting ignored" >&2;}
+          fi
+
+
+
+
+
+
+          KnownLibs=$KnownLibs" "fftw3l
+          if ( test X$use_fftw3l = X )
+          then
+             use_fftw3l=check
+             UnconfiguredLibs=$UnconfiguredLibs" "fftw3l
+          else
+             ConfiguredLibs=$ConfiguredLibs" "fftw3l
+          fi
+
+
+
+
+
+
+          with_fftw3q_check=pkgconfig
+          if ( test Xpkgconfig = Xvirtual )
+          then
+             with_fftw3q_virtual=yes
+          else
+             with_fftw3q_virtual=no
+          fi
+
+          fallback_file=""
+          fallback_path=""
+
+
+# Check whether --with-fftw3q-pkgconf was given.
+if test "${with_fftw3q_pkgconf+set}" = set; then :
+  withval=$with_fftw3q_pkgconf; case $with_fftw3q_pkgconf in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                 trace 4 --with-fftw3q-pkgconf disabling fftw3q
+                                 with_fftw3q_pkgconf=no
+                                 use_fftw3q=no
+                                 ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                 if ( test Xfftw3q != X )
+                                 then
+                                    trace 4 Asking for fftw3q via --with-fftw3q-pkgconf default value [$with_fftw3q_pkgconf]
+                                    with_fftw3q_pkgconf=fftw3q
+                                    with_fftw3q_check=pkgconfig
+                                    with_fftw3q_virtual=no
+                                    use_fftw3q=yes
+                                 else
+                                    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to enable fftw3q via pkg-config but configure is unaware of the name of the DOTpc metadata file
+See \`config.log' for more details" "$LINENO" 5; }
+                                 fi
+                                 ;;
+                        'c' |'C' | 'ck' | 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                 if ( test Xfftw3q != X )
+                                 then
+                                    trace 4 Will check for fftw3q using --with-fftw3q-pkgconf default value [$with_fftw3q_pkgconf]
+                                    with_fftw3q_pkgconf=fftw3q
+                                    with_fftw3q_check=pkgconfig
+                                    with_fftw3q_virtual=no
+                                    use_fftw3q=check
+                                 else
+                                    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to check for fftw3q via pkg-config but configure is unaware of the name of the DOTpc metadata file
+See \`config.log' for more details" "$LINENO" 5; }
+                                 fi
+                                 ;;
+                        * )
+                                 trace 4 Asking for fftw3q --with-fftw3q-pkgconf set to [$with_fftw3q_pkgconf]
+                                 with_fftw3q_check=pkgconfig
+                                 with_fftw3q_virtual=no
+                                 use_fftw3q=yes
+                                 ;;
+                       esac
+
+else
+  if ( test Xfftw3q != X )
+                       then
+                          trace 4 No --with-fftw3q-pkgconf specified using default [$with_fftw3q_pkgconf]
+                          with_fftw3q_pkgconf=fftw3q
+                          with_fftw3q_check=pkgconfig
+                          with_fftw3q_virtual=no
+                       else
+                          trace 4 No --with-fftw3q-pkgconf specified and no default value
+                       fi
+
+
+fi
+
+
+# Check whether --with-fftw3q was given.
+if test "${with_fftw3q+set}" = set; then :
+  withval=$with_fftw3q; case $with_fftw3q in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                 trace 4 --with-fftw3q disabling fftw3q libraries
+                                 if ( test X$use_fftw3q = Xyes )
+                                 then
+                                    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to disable fftw3q by --with-fftw3q but --with-fftw3q-pkgconf has specifically enabled it
+See \`config.log' for more details" "$LINENO" 5; }
+                                 else
+                                    if ( test X$use_fftw3q = Xcheck )
+                                    then
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Disabling fftw3q via --with-fftw3q despite --with-fftw3q-pkconfig having asked to check for it" >&5
+$as_echo "$as_me: WARNING: Disabling fftw3q via --with-fftw3q despite --with-fftw3q-pkconfig having asked to check for it" >&2;}
+                                    fi
+                                    use_fftw3q=no
+                                 fi
+                                 with_fftw3q=no
+                                 ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                 trace 4 --with-fftw3q enabling fftw3q libraries
+                                 if ( test X$use_fftw3q = Xno )
+                                 then
+                                    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Asking to enable fftw3q by --with-fftw3q but --with-fftw3q-pkgconf has specifically disabled it
+See \`config.log' for more details" "$LINENO" 5; }
+                                 else
+                                    if ( test X$use_fftw3q = Xcheck )
+                                    then
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Enabling fftw3q via --with-fftw3q despite --with-fftw3q-pkconfig having asked to check for it" >&5
+$as_echo "$as_me: WARNING: Enabling fftw3q via --with-fftw3q despite --with-fftw3q-pkconfig having asked to check for it" >&2;}
+                                    fi
+                                    use_fftw3q=yes
+                                 fi
+                                 with_fftw3q=yes
+                                 ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                 trace 4 --with-fftw3q checking for fftw3q libraries
+                                 if (test X$use_fftw3q = Xyes )
+                                 then
+                                    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-fftw3q asking to check for the libs but --with-fftw3q-pkgconf has specifically enabled it" >&5
+$as_echo "$as_me: WARNING: --with-fftw3q asking to check for the libs but --with-fftw3q-pkgconf has specifically enabled it" >&2;}
+                                 else
+                                    if ( test X$use_fftw3q = Xno )
+                                    then
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-fftw3q asking to check for the libs but --with-fftw3q-pkgconf has specifically disabled it" >&5
+$as_echo "$as_me: WARNING: --with-fftw3q asking to check for the libs but --with-fftw3q-pkgconf has specifically disabled it" >&2;}
+                                    else
+                                       use_fftw3q=check
+                                    fi
+                                 fi
+                                 with_fftw3q=check
+                                 ;;
+                        * )      # --with-<lib> is not being used as a simple
+                                 # yes/no/check switch - see if this is
+                                 # providing an extra piece of information
+                                 if ( test -d $with_fftw3q )
+                                 then
+                                    # Parameter is a directory path
+                                    fallback_path=$with_fftw3q
+                                    fallback_file=""
+                                    trace 3 with-fftw3q provides a fallback path [$fallback_path]
+                                    use_fftw3q=yes
+                                    with_fftw3q=yes
+                                 else
+                                    fallback_path=`$as_dirname -- $with_fftw3q ||
+$as_expr X$with_fftw3q : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
+	 X$with_fftw3q : 'X\(//\)[^/]' \| \
+	 X$with_fftw3q : 'X\(//\)$' \| \
+	 X$with_fftw3q : 'X\(/\)' \| . 2>/dev/null ||
+$as_echo X$with_fftw3q |
+    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)[^/].*/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\).*/{
+	    s//\1/
+	    q
+	  }
+	  s/.*/./; q'`
+                                    if ( test -d $fallback_path  )
+                                    then
+                                       # strip leading path
+                                       fallback_file=`$EXPR "//$with_fftw3q" : '.*/\([^/]*\)'`
+                                       # portable version of fallback_file=`basename $with_fftw3q`
+                                       if ( test X$with_fftw3q = X$fallback_path/$fallback_file )
+                                       then
+                                          # Parameter is a file path
+                                          trace 3 with-fftw3q provides a fallback path [$fallback_path] and a file [$fallback_file]
+                                          use_fftw3q=yes
+                                          with_fftw3q=yes
+                                       else
+                                          # Somehow dirname($x)/basename($x) != $x
+                                          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Problem processing --with-fftw3q, parameter ignored" >&5
+$as_echo "$as_me: WARNING: Problem processing --with-fftw3q, parameter ignored" >&2;}
+                                          fallback_path=""
+                                          fallback_file=""
+                                       fi
+                                    else
+                                       # --with-fftw3q=/path/is/not/a/dir/something
+                                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Illegal command-line option for --with-fftw3q, parameter ignored" >&5
+$as_echo "$as_me: WARNING: Illegal command-line option for --with-fftw3q, parameter ignored" >&2;}
+                                       fallback_path=""
+                                       fallback_file=""
+                                    fi
+                                 fi
+                                 ;;
+                       esac
+
+else
+  trace 5 No --with-fftw3q specified
+
+fi
+
+
+
+          if ( test "$fallback_path/$fallback_file" != / )
+          then
+             # Do not currently support --with_<lib> specifying a .pc path
+             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-fftw3q set to an unknown option, setting ignored" >&5
+$as_echo "$as_me: WARNING: --with-fftw3q set to an unknown option, setting ignored" >&2;}
+          fi
+
+
+
+
+
+
+          KnownLibs=$KnownLibs" "fftw3q
+          if ( test X$use_fftw3q = X )
+          then
+             use_fftw3q=check
+             UnconfiguredLibs=$UnconfiguredLibs" "fftw3q
+          else
+             ConfiguredLibs=$ConfiguredLibs" "fftw3q
           fi
 
 
