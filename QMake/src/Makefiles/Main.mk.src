@@ -380,7 +380,11 @@ ifeq ($(SUPPORT_OK),yes)
  TARG_EXTERNALLIBS= $(patsubst %,$(INST_LIBDEF)/%,$(EXTERNALLIBS))
 
  ifdef CMAKELIB
-   TARG_CMAKELIB = $(INST_CMAKE)/Find$(CMAKELIB).cmake
+   ifdef NOINCDEFS
+     TARG_CMAKELIB = 
+   else
+     TARG_CMAKELIB = $(INST_CMAKE)/Find$(CMAKELIB).cmake
+   endif
  else
    TARG_CMAKELIB = 
  endif
