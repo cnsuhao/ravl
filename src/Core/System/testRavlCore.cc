@@ -774,7 +774,7 @@ int testIndexRangeSet()
     SArray1dC<bool> done(maxRange);
     done.Fill(false);
     for(int i = 0;i < 100;i++) {
-      IndexC ind = RandomInt() % maxRange;
+      IndexC ind = (int) RandomInt() % maxRange;
       done[ind] = true;
       //RavlDebug("Adding %d ",ind.V());
 
