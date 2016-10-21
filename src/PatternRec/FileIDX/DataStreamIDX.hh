@@ -15,6 +15,7 @@
 #include "Ravl/SArray1d.hh"
 #include "Ravl/TVector.hh"
 #include "Ravl/Stream.hh"
+#include "Ravl/BinStream.hh"
 
 namespace RavlN { namespace ION {
 
