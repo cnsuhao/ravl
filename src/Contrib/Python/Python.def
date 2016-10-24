@@ -5,14 +5,19 @@
 # see http://www.gnu.org/copyleft/lesser.html
 # file-header-ends-here
 
-$(error Python not currently supported)
+#$(error Python not currently supported)
 
 ifndef PYTHON_DEF
-
   PYTHON_DEF=1
 
-  EXELIB := $(LibPython_LIBS) $(EXELIB)
+  ifndef LibPython_LIBS
+    LibPython_LIBS = $(shell python2.7-config --ldflags)
+  endif
+  ifndef LibPython_CPFLAGS
+    LibPython_CFLAGS = $(shell python2.7-config --includes)
+  endif
 
+  EXELIB := $(LibPython_LIBS) $(EXELIB)
   INCLUDES += $(LibPython_CFLAGS)
 
 endif
