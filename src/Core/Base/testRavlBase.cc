@@ -593,7 +593,7 @@ int testQuickSort() {
 }
 
 int testUUId() {
-  UUIdC v1(0x0123456789ABCDEF,0xFEDCBA9876543210);
+  UUIdC v1(0x0123456789ABCDEFULL,0xFEDCBA9876543210ULL);
   StringC str = v1.Text();
   //std::cout << "Value=" << str << "\n";
   UUIdC v2;

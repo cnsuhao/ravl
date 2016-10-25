@@ -42,6 +42,20 @@ AC_DEFUN([QM_DEFINE_ALL_EXTLIBS],
           QM_DEFINE_EXTLIB_PC([FFMPEGCONT],       [libavformat])
           QM_DEFINE_EXTLIB_PC([FFMPEGSWS],        [libswscale])
           QM_DEFINE_EXTLIB_PC([FFMPEGUTIL],       [libavutil])
+          dnl
+          dnl Fast Fourier Transforms libraries.
+          dnl
+          QM_DEFINE_EXTLIB_PC([fftw3f],           [fftw3f])
+          dnl    Single precision
+          QM_DEFINE_EXTLIB_PC([fftw3],            [fftw3])
+          dnl    Double precision
+          QM_DEFINE_EXTLIB_PC([fftw3l],           [fftw3l])
+          dnl    Long precision
+          QM_DEFINE_EXTLIB_PC([fftw3q],           [fftw3q])
+          dnl    Quad precision
+          dnl
+          dnl                 Name,               pkg-config
+          dnl
           QM_DEFINE_EXTLIB_PC([FreeType2],        [freetype2])
           QM_DEFINE_EXTLIB_PC([iksemel],          [iksemel])
           QM_DEFINE_EXTLIB_PC([ImageMagick],      [ImageMagick])
@@ -440,7 +454,15 @@ dnl
                               ],
                               [Math],
                               [-lvl],
-                              [sift.h],
+                              [vl/sift.h], dnl# Test for sift.h as that is what
+                                           dnl# was being used by the original
+                                           dnl# code this check was implemented
+                                           dnl# for. Additionally, checking for
+                                           dnl# sift.h flags up if the version
+                                           dnl# of vlfeat has been strangled to
+                                           dnl# omit any potentially patent
+                                           dnl# encumbered code (as on Debian
+                                           dnl# derived Linux distributions).
                               [C]
                              )
 dnl#ToDo#          QM_DEFINE_EXTLIB_CC([vtkCharts],

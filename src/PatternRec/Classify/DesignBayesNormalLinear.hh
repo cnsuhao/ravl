@@ -100,11 +100,11 @@ namespace RavlN {
     //: Body ptr constructor.
     
      DesignBayesNormalLinearBodyC &Body()
-    { return static_cast<DesignBayesNormalLinearBodyC &>(DesignBayesNormalLinearC::Body()); }
+    { return static_cast<DesignBayesNormalLinearBodyC &>(DesignClassifierSupervisedC::Body()); }
     //: Access body.
     
     const DesignBayesNormalLinearBodyC &Body() const
-    { return static_cast<const DesignBayesNormalLinearBodyC &>(DesignBayesNormalLinearC::Body()); }
+    { return static_cast<const DesignBayesNormalLinearBodyC &>(DesignClassifierSupervisedC::Body()); }
     //: Access body.
 
   public:

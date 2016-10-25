@@ -24,7 +24,7 @@ dnl       COMPILER_CC98_CCFLAGS    } { for setting the appropriate mode of
 dnl       COMPILER_CC03_CCFLAGS    } { compiler operation required by QMake.
 dnl       COMPILER_CC11_CCFLAGS    } {  .._ANSI_.. is used for compiling
 dnl       COMPILER_CC14_CCFLAGS    } { ANSI-C++ source code; the .._CCnn_..
-dnl       COMPILER_DEBUG_CCFLAGS   } { flags select compiler compatability
+dnl       COMPILER_DEBUG_CCFLAGS   } { flags select compiler compatibility
 dnl       COMPILER_GPROF_CCFLAGS   } { with the appropriate C++ standard
 dnl       COMPILER_NON_OPT_CCFLAGS } { (these variables are only ever set
 dnl       COMPILER_OPT_CCFLAGS     } { if the particular standard is

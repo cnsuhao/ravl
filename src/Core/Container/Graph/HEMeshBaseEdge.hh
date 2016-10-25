@@ -309,7 +309,7 @@ namespace RavlN {
     //: Access vertex this edge goes to
     
     HEMeshBaseVertexC SourceVertex() const 
-    { return Prev().SourceVertex(); }
+    { return Prev().Vertex(); }
     //: Access vertex this edge comes from.
     
     SizeT Hash() const

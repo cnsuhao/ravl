@@ -62,5 +62,5 @@ AUXFILES=ravlgdb.py
 
 AUXDIR=share/RAVL/gdb
 
-EXTRA_RULES=$(QCWD)/RootDir.mk
+EXTRA_RULES=RootDir.mk
 

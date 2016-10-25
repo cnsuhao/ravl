@@ -13,6 +13,7 @@
 #include "Ravl/HSet.hh"
 #include "Ravl/StringList.hh"
 #include "Ravl/Resource.hh"
+#include "Ravl/SysLog.hh"
 #include <stdlib.h>
 
 #define DODEBUG 0
@@ -113,6 +114,7 @@ namespace RavlN {
       ONDEBUG(std::cerr << "Found! \n");
       return true;
     }
+    //RavlDebug("Failed to find xml file '%s' ",theFilename.c_str());
     ONDEBUG(std::cerr << "Not found! \n");
     return false;
   }
@@ -145,12 +147,14 @@ namespace RavlN {
   //: Construct from a name and an attribute table.
 
   XMLTreeBodyC::XMLTreeBodyC(BinIStreamC &strm)
-  : HashTreeBodyC<StringC, RCHashC<StringC, StringC> >(strm)
+  : HashTreeBodyC<StringC, RCHashC<StringC, StringC> >(strm),
+    isPI(false)
   { strm >> isPI >> name >> children; }
   //: Binary stream constructor.
 
   XMLTreeBodyC::XMLTreeBodyC(std::istream &strm)
-  : HashTreeBodyC<StringC, RCHashC<StringC, StringC> >(strm)
+  : HashTreeBodyC<StringC, RCHashC<StringC, StringC> >(strm),
+    isPI(false)
   { strm >> isPI >> name >> children; }
   //: Text stream constructor.
 
@@ -335,7 +339,7 @@ namespace RavlN {
     
     // Check for recursive includes.
     if(doneFiles[xi_href]) {	
-      RavlIssueWarning(StringC("Recursive include of file='" + xi_href +"'"));
+      RavlWarning(StringC("Recursive include of file '" + xi_href +"'"));
       return false;
     }
     doneFiles += xi_href;
@@ -350,7 +354,7 @@ namespace RavlN {
 	IStreamC inFile;
         if(!loader->OpenFile(xi_href,parentFilename,inFile)) {
 	  if(!ProcessIncludeFallback(subtree,doneFiles,parentFilename,loader)) {
-	    RavlIssueWarning(StringC("Failed to open file='" + xi_href +"'"));
+	    RavlWarning(StringC("Failed to open file '" + xi_href +"'"));
 	    return false;
 	  }
 	  return true;
@@ -362,7 +366,7 @@ namespace RavlN {
       }
       
       if(xi_parse!="xml") {
-	RavlIssueWarning(StringC("Unexpected value for parse='" + xi_parse +"'"));
+	RavlIssueWarning(StringC("Unexpected value for parse '" + xi_parse +"'"));
 	return false;
       }
     }
@@ -375,7 +379,7 @@ namespace RavlN {
       ONDEBUG(std::cerr << "Load of include file failed, falling back. ");
       
       if(!ProcessIncludeFallback(subtree,doneFiles,parentFilename,loader)) {
-	RavlIssueWarning(StringC("Failed to open file='" + xi_href +"' from '" + parentFilename + "' "));
+	RavlWarning(StringC("Failed to open file '" + xi_href +"' from '" + parentFilename + "' "));
         doneFiles -= xi_href;
 	return false;
       }
@@ -385,7 +389,7 @@ namespace RavlN {
     XMLIStreamC newStream(newIStream);
     XMLTreeC newTree(true);
     if(!newTree.Read(newStream,doneFiles,loader)) {
-      RavlIssueWarning(StringC("Failed to open file='" + newStream.Name() +"'. "));
+      RavlWarning(StringC("Failed to open file '" + newStream.Name() +"'. "));
       // Assume error has already been reported.
       return false;
     }
@@ -398,7 +402,7 @@ namespace RavlN {
     if(subtree.Data().Lookup("xpointer",xi_xpointer)) {
       DListC<XMLTreeC> children;
       if(!newTree.FollowPath(xi_xpointer,children)) {
-        RavlIssueWarning(StringC("Failed to follow xpointer in file '" + xi_href +"' with path '" + xi_xpointer + "' "));
+        RavlWarning(StringC("Failed to follow xpointer in file '" + xi_href +"' with path '" + xi_xpointer + "' "));
 	return false;
       }
       for(DLIterC<XMLTreeC> it(children);it;it++) 
@@ -416,7 +420,7 @@ namespace RavlN {
     return true;
   }
 
-  //: Look for fallback
+  //: Look for fall back
   
   bool XMLTreeBodyC::ProcessIncludeFallback(XMLTreeC &subtree,
                                             HSetC<StringC> &doneFiles,
@@ -427,7 +431,7 @@ namespace RavlN {
       return false;
     XMLTreeC childTree = subtree.Children().First();
     if(childTree.Name() != "xi:fallback") {
-      RavlIssueWarning(StringC("Unexpected xi:include child, '" + childTree.Name() +"'"));
+      RavlWarning(StringC("Unexpected xi:include child, '" + childTree.Name() +"'"));
       return false;
     }
     if(!ProcessInclude(childTree,doneFiles,parentFilename,loader)) {
@@ -490,7 +494,7 @@ namespace RavlN {
 	continue;
       }
       
-      RavlIssueWarning(StringC("Unsuppored axis specifier='" + axis +"'"));
+      RavlWarning(StringC("Unsupported axis specifier='" + axis +"'"));
       
       return false;
     }

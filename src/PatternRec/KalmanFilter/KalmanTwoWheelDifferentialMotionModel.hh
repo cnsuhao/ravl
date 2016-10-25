@@ -80,12 +80,12 @@ namespace RavlN {
     {}
     //: Body ptr constructor
     
-    inline KalmanTwoWheelDifferentialMotionModelC &Body()
-    { return dynamic_cast<KalmanTwoWheelDifferentialMotionModelC &>(FunctionC::Body()); }
+    inline KalmanTwoWheelDifferentialMotionModelBodyC &Body()
+    { return dynamic_cast<KalmanTwoWheelDifferentialMotionModelBodyC &>(FunctionC::Body()); }
     //: Access body
     
-    inline const KalmanTwoWheelDifferentialMotionModelC& Body() const
-    { return dynamic_cast<const KalmanTwoWheelDifferentialMotionModelC &>(FunctionC::Body()); }
+    inline const KalmanTwoWheelDifferentialMotionModelBodyC& Body() const
+    { return dynamic_cast<const KalmanTwoWheelDifferentialMotionModelBodyC &>(FunctionC::Body()); }
     //: Access body (for constant handle)
 		  
   public:

@@ -610,7 +610,7 @@ namespace RavlN {;
     m_masterConfigFilename = configFile;    
     m_configRoot = XMLTreeC(true);
     if(!m_configRoot.ReadFile(configFile,loader)) {
-      RavlError("Failed to load config file. '%s' ",configFile.chars());
+      RavlError("Failed to load config file '%s' ",configFile.chars());
       m_setupClean = false;
       return false;
     }

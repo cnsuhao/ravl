@@ -1,9 +1,8 @@
 dnl This file is part of QMake, Quick Make System
-dnl Copyright (C) 2011, University of Surrey
+dnl Copyright (C) 2011-16, University of Surrey
 dnl This code may be redistributed under the terms of the GNU General
 dnl Public License (GPL). See the gpl.licence file for details or
 dnl see http://www.gnu.org/copyleft/gpl.html
-dnl
 dnl file-header-ends-here
 
 
@@ -16,6 +15,15 @@ dnl No macro parameters
 dnl
 dnl Global variables used:
 dnl
+dnl       ac_status                  Interim variable holding the return
+dnl                                  status of the previous external (to
+dnl                                  the configure script) command.
+dnl       arflags                    Interim variable holding the archiver
+dnl                                  flags under test.
+dnl       AR                         Holds the path to the object library
+dnl                                  archiving utility. Can initially be
+dnl                                  primed by the user to force the use of
+dnl                                  a particular program.
 dnl       AR_SPECIFIC_ARFLAGS        Receives the specific ARFLAGS needed for
 dnl                                  QMake to drive the archiver in use. This
 dnl                                  variable is declared for substitution
@@ -24,6 +32,18 @@ dnl                                  provides the default value for priming
 dnl                                  the PKG_ARFLAGS makefile variable which
 dnl                                  is the switch actually employed in the
 dnl                                  QMake makefiles.
+dnl       GoodSoln                   Interim variable that receives any flags
+dnl                                  that successfully allow the archiver to
+dnl                                  operate in non-deterministic mode.
+dnl       LIBS                       Holds the current list of libraries
+dnl                                  needed to compile with a program.
+dnl       preserve_LIBS              Used to maintain the original setting of
+dnl                                  the LIBS variable over a test compilation.
+dnl       OBJEXT                     Holds the extension suffix indicating
+dnl                                  that a file is an object file.
+dnl       SlowSoln                   Interim variable that receives any flags
+dnl                                  that successfully allow the archiver to
+dnl                                  operate in non-deterministic mode.
 dnl
 AC_DEFUN([QM_SET_ARCHIVER_ARFLAGS],
          [trace 2 Set archiver specific ARFLAGS
@@ -32,12 +52,6 @@ AC_DEFUN([QM_SET_ARCHIVER_ARFLAGS],
           dnl If redesigning this macro, bear in mind that no user specified
           dnl ARFLAGS are allowed owing to the nature of how ar works, such
           dnl flags would most likely break the build.
-          dnl
-          dnl Currently we do not know of any differing flags dependant on
-          dnl the particular implementation of the tool in use. If this
-          dnl situation changes, the following standard caveat must be
-          dnl maintained in this code, especially if we ever have to test
-          dnl the platform or OS in use:
           dnl
           dnl DO NOT PUT PLATFORM SPECIFICS HERE. If your platform has a
           dnl non-standard ar that takes completely different flags then
@@ -48,7 +62,245 @@ AC_DEFUN([QM_SET_ARCHIVER_ARFLAGS],
           dnl script, not here.
           dnl
 
+          # Set default settings for using the archiver. We may subsequently
+          # refine these as the current platform dictates - see below...
           AR_SPECIFIC_ARFLAGS=ruc
+
+          # Ensure the archiver is operating in non-deterministic mode.
+          AC_MSG_CHECKING([deterministicty of archiver])
+          #
+          # To verify this, we create a library containing a single object
+          # file; attempt to add an object file with an earlier timestamp and
+          # test which object file is present in the final library. If the
+          # latest object is not in the library, we attempt to find a switch
+          # to alter the behaviour of the archiver.
+          #
+          # First off, let us set up some test objects...
+          #
+          AC_COMPILE_IFELSE([AC_LANG_SOURCE([[int TestFunction(void)
+                                              {
+                                                 return 1;
+                                              }
+                                            ]]
+                                           )
+                            ],
+                            [# First test program compiled successfully, move
+                             # it aside...
+                             AC_TRY_COMMAND([mv conftest.$OBJEXT conftest.$OBJEXT.1])
+                             if test 0 -ne "$ac_status"
+                             then
+                                # This is likely to be either a disk space or
+                                # permissions problem.
+                                AC_MSG_FAILURE([Unexpected failure at stage 2 inspecting deterministicity of archiver])
+                             fi
+                             AC_COMPILE_IFELSE([AC_LANG_SOURCE([[int TestFunction(void)
+                                                                 {
+                                                                    return 2;
+                                                                 }
+                                                               ]]
+                                                              )
+                                               ],
+                                               [# Second test program compiled
+                                                # successfully, now we can start
+                                                # the actual test...
+                                                #
+                                                GoodSoln="Not found"
+                                                SlowSoln="Not found"
+                                                # Try the archiver without any
+                                                # extra switch settings first;
+                                                # followed by all the possible
+                                                # appropriate switches that we
+                                                # know about
+                                                for arflags in "$AR_SPECIFIC_ARFLAGS" "$AR_SPECIFIC_ARFLAGS -U "
+                                                do
+                                                   # Remove any existing copy
+                                                   # of the test library file.
+                                                   if ( test -e libconftest.a )
+                                                   then
+                                                      AC_TRY_COMMAND([rm libconftest.a])
+                                                      if test 0 -ne "$ac_status"
+                                                      then
+                                                         # Unlikely scenario,
+                                                         # might be an issue of
+                                                         # permissions if it
+                                                         # happens on the first
+                                                         # iteration of the do
+                                                         # loop.
+                                                         AC_MSG_FAILURE([Unexpected failure at stage 4 inspecting deterministicity of $AR $arflags])
+                                                      fi
+                                                   fi
+                                                   # Actually create the library
+                                                   # with the second (newer)
+                                                   # object file.
+                                                   AC_TRY_COMMAND([$AR $arflags libconftest.a conftest.$OBJEXT])
+                                                   if test 0 -eq "$ac_status"
+                                                   then
+                                                      # Successfully created the
+                                                      # test library so preserve
+                                                      # the second (newer)
+                                                      # object file.
+                                                      AC_TRY_COMMAND([mv conftest.$OBJEXT  conftest.$OBJEXT.2])
+                                                      if test 0 -ne "$ac_status"
+                                                      then
+                                                         # Only ever likely to
+                                                         # reach here if we run
+                                                         # out of disk space.
+                                                         AC_MSG_FAILURE([Unexpected failure at stage 6 inspecting deterministicity of $AR $arflags])
+                                                      fi
+                                                      # Bring the first (older)
+                                                      # object file back
+                                                      AC_TRY_COMMAND([mv conftest.$OBJEXT.1 conftest.$OBJEXT])
+                                                      if test 0 -ne "$ac_status"
+                                                      then
+                                                         # This is only ever
+                                                         # likely to happen if
+                                                         # we hit an independant
+                                                         # system issue.
+                                                         AC_MSG_FAILURE([Unexpected failure at stage 7 inspecting deterministicity of $AR $arflags])
+                                                      fi
+                                                      # Attempt to add the older
+                                                      # object to the library. The
+                                                      # archiver should leave the
+                                                      # newer object in the library.
+                                                      AC_TRY_COMMAND([$AR $arflags libconftest.a conftest.$OBJEXT])
+                                                      if test 0 -eq "$ac_status"
+                                                      then
+                                                         # Archiver successfully
+                                                         # ran, now preserve the
+                                                         # older object file
+                                                         AC_TRY_COMMAND([mv conftest.$OBJEXT conftest.$OBJEXT.1])
+                                                         if test 0 -ne "$ac_status"
+                                                         then
+                                                            # Only ever likely to
+                                                            # reach here if we run
+                                                            # out of disk space.
+                                                            AC_MSG_FAILURE([Unexpected failure at stage 8s inspecting deterministicity of $AR $arflags])
+                                                         fi
+                                                         # Now to determine
+                                                         # which object file is
+                                                         # actually in the
+                                                         # library.
+                                                         #
+                                                         # Ensure we do not
+                                                         # corrupt the LIBS
+                                                         # setting
+                                                         preserve_LIBS=$LIBS
+                                                         LIBS="$LIBS ./libconftest.a"
+                                                         AC_LINK_IFELSE([AC_LANG_PROGRAM([extern int TestFunction(void);],[return TestFunction();])],
+                                                                        [# Successfully created the
+                                                                         # test program, restore the
+                                                                         # LIBS setting
+                                                                         LIBS=$preserve_LIBS
+                                                                         # and run the test program
+                                                                         # to determine which object
+                                                                         # is in the library.
+                                                                         AC_TRY_COMMAND([./conftest$EXEEXT])
+                                                                         case $ac_status in
+                                                                            1)  # Older obj
+                                                                                SlowSoln="$arflags"
+                                                                                ;;
+                                                                            2)  # Newer obj
+                                                                                GoodSoln="$arflags"
+                                                                                break
+                                                                                ;;
+                                                                            *)  # Unexpected
+                                                                                AC_MSG_FAILURE([Test program inspecting deterministicity of $AR $arflags failed to run correctly])
+                                                                                ;;
+                                                                         esac
+
+
+                                                                        ],
+                                                                        [# Failed to create test program
+                                                                         AC_MSG_FAILURE([Unable to create test program inspecting deterministicity of $AR $arflags])
+                                                                        ]
+                                                                       )
+                                                      else
+                                                         # Archiver failed 
+                                                         # adding old object:
+                                                         # switch is not viable
+                                                         # Preserve the old
+                                                         # object file
+                                                         AC_TRY_COMMAND([mv conftest.$OBJEXT conftest.$OBJEXT.1])
+                                                         if test 0 -ne "$ac_status"
+                                                         then
+                                                            # Only ever likely to
+                                                            # reach here if we run
+                                                            # out of disk space.
+                                                            AC_MSG_FAILURE([Unexpected failure at stage 8f inspecting deterministicity of $AR $arflags])
+                                                         fi
+                                                      fi
+                                                      # Post test clean-up...
+                                                      #
+                                                      # Bring back the newer
+                                                      # object file
+                                                      AC_TRY_COMMAND([mv conftest.$OBJEXT.2 conftest.$OBJEXT])
+                                                      if test 0 -ne "$ac_status"
+                                                      then
+                                                         # Only ever likely to
+                                                         # reach here if we run
+                                                         # out of disk space.
+                                                         AC_MSG_FAILURE([Unexpected failure at stage 11 inspecting deterministicity of $AR $arflags])
+                                                      fi
+                                                   else # initial creation of library failed
+                                                      if ( test X"$arflags" = X"$AR_SPECIFIC_ARFLAGS" )
+                                                      then
+                                                         # We expect this to
+                                                         # always work with
+                                                         # the default flags;
+                                                         # if it does not, we
+                                                         # are basically stuck
+                                                         AC_MSG_FAILURE([Unable to operate the archiver])
+#                                                     else
+#                                                        # It seems the archiver
+#                                                        # will not work with
+#                                                        # this set of flags so
+#                                                        # we will continue with
+#                                                        # any further flags we
+#                                                        # know...
+                                                      fi
+                                                   fi
+                                                done
+                                                # Finished testing, did we find
+                                                # a solution?
+                                                if ( test X"$GoodSoln" != "XNot found" )
+                                                then
+                                                   # We found a good solution
+                                                   # (a non-deterministic
+                                                   # environment for the
+                                                   # archiver).
+                                                   AR_SPECIFIC_ARFLAGS="$GoodSoln"
+                                                   AC_MSG_RESULT([non-deterministic])
+                                                else
+                                                   if ( test X"$SlowSoln" != "XNot found" )
+                                                   then
+                                                      # We found a slow solution
+                                                      # (we could only get the
+                                                      # archiver to work in a
+                                                      # deterministic manner).
+                                                      AR_SPECIFIC_ARFLAGS="$SlowSoln"
+                                                      AC_MSG_RESULT([deterministic])
+                                                   else
+                                                      AC_MSG_FAILURE([Unable to run the archiver in an acceptable manner])
+                                                   fi
+                                                fi
+                                               ],
+                                               [# Unlikely to be here for a
+                                                # test issue as this code is
+                                                # the same as the previous
+                                                # compilation. This is almost
+                                                # certainly a (possibly
+                                                # transient) system problem.
+                                                AC_MSG_FAILURE([Unexpected failure at stage 3 inspecting deterministicity of archiver])
+                                               ]
+                                              )
+                            ],
+                            [# Should never reach here unless the test code is
+                             # broken for our particular platform or we get a
+                             # system problem such as running out of disk space.
+                             AC_MSG_FAILURE([Unexpected failure at stage 1 inspecting deterministicity of archiver])
+                            ]
+                           )
+
           AC_SUBST([AR_SPECIFIC_ARFLAGS])
          ]
         )

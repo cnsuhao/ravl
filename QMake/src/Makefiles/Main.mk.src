@@ -251,7 +251,7 @@ LINKTESTLIBS := $(EXEML) $(EXELIB)
 # Restore EXELIB to be library libs preceeded by the mustlinks
 EXELIB := $(LIBLIBS)
  
-.PRECIOUS : %$(CXXEXT) %$(CHXXEXT) %$(CEXT) %$(CHEXT) %.tcc %.icc %.def %.tab.cc %.yy.cc %_$(ARC)_wrap.cc %.m %.mm
+.PRECIOUS : %$(CXXEXT) %$(CHXXEXT) %$(CEXT) %$(CHEXT) %.tcc %.icc %.def %.tab.cc %.yy.cc %_$(ARC)_wrap.cc %.m %.mm %.cu
 
 ############################
 # Misc setup
@@ -307,12 +307,33 @@ ifeq ($(SUPPORT_OK),yes)
   TARG_HDRCERTS=
  endif
 #$(INST_DEPEND)/%.java.d
- TARG_EXE := $(patsubst %$(CEXT),$(INST_BIN)/%$(EXEEXT), $(patsubst %$(CXXEXT),$(INST_BIN)/%$(EXEEXT),$(patsubst %.mm,$(INST_BIN)/%$(EXEEXT),$(filter-out %.java,$(MAINS)))))
- TARG_LINKS=$(patsubst $(INST_BIN)/%,$(ROOTDIR)/bin/%, $(TARG_EXE))
- TARG_PUREEXE := $(patsubst %$(CEXT),$(INST_BIN)/pure_%$(EXEEXT), $(patsubst %$(CXXEXT),$(INST_BIN)/pure_%$(EXEEXT),$(patsubst %.mm,$(INST_BIN)/pure_%$(EXEEXT),$(filter-out %.java,$(MAINS)))))
- TARG_EXEOBJS=$(patsubst %$(CEXT),$(INST_OBJS)/%$(OBJEXT),$(patsubst %$(CXXEXT),$(INST_OBJS)/%$(OBJEXT),$(filter-out %.java,$(MAINS))))
- TARG_TESTEXE := $(patsubst %$(CEXT),$(INST_TESTBIN)/%$(EXEEXT), $(patsubst %$(CXXEXT),$(INST_TESTBIN)/%$(EXEEXT),$(TESTEXES)))
- TARG_TESTEXEOBJS=$(patsubst %$(CEXT),$(INST_OBJS)/%$(OBJEXT),$(patsubst %$(CXXEXT),$(INST_OBJS)/%$(OBJEXT),$(TESTEXES)))
+ TARG_EXE := $(patsubst %$(CEXT), $(INST_BIN)/%$(EXEEXT), \
+             $(patsubst %$(CXXEXT), $(INST_BIN)/%$(EXEEXT), \
+             $(patsubst %.cu, $(INST_BIN)/%$(EXEEXT), \
+             $(patsubst %.mm, $(INST_BIN)/%$(EXEEXT),\
+             $(filter-out %.java, $(MAINS))))))
+
+ TARG_LINKS = $(patsubst $(INST_BIN)/%,$(ROOTDIR)/bin/%, $(TARG_EXE))
+
+ TARG_PUREEXE := $(patsubst %$(CEXT), $(INST_BIN)/pure_%$(EXEEXT), \
+                 $(patsubst %$(CXXEXT), $(INST_BIN)/pure_%$(EXEEXT), \
+                 $(patsubst %.cu, $(INST_BIN)/pure_%$(EXEEXT), \
+                 $(patsubst %.mm, $(INST_BIN)/pure_%$(EXEEXT), \
+                 $(filter-out %.java, $(MAINS))))))
+
+ TARG_EXEOBJS = $(patsubst %$(CEXT), $(INST_OBJS)/%$(OBJEXT), \
+                $(patsubst %$(CXXEXT), $(INST_OBJS)/%$(OBJEXT), \
+                $(patsubst %.cu, $(INST_OBJS)/%$(OBJEXT), \
+                $(filter-out %.java, $(MAINS)))))
+
+ TARG_TESTEXE := $(patsubst %$(CEXT), $(INST_TESTBIN)/%$(EXEEXT), \
+                 $(patsubst %$(CXXEXT), $(INST_TESTBIN)/%$(EXEEXT), \
+                 $(patsubst %.cu, $(INST_BIN)/%$(EXEEXT), $(TESTEXES))))
+
+ TARG_TESTEXEOBJS = $(patsubst %$(CEXT), $(INST_OBJS)/%$(OBJEXT), \
+                    $(patsubst %$(CXXEXT), $(INST_OBJS)/%$(OBJEXT), \
+                    $(patsubst %.cu, $(INST_OBJS)/%$(OBJEXT), $(TESTEXES))))
+
  ifndef NOEXEBUILD
   TARG_DEPEND:= $(patsubst %$(CXXAUXEXT),$(INST_DEPEND)/%.d, \
 	       $(patsubst %$(CEXT),$(INST_DEPEND)/%.d, \
@@ -329,12 +350,14 @@ ifeq ($(SUPPORT_OK),yes)
                $(patsubst %$(CXXEXT),$(INST_DEPEND)/%.d, \
                $(patsubst %.m,$(INST_DEPEND)/%.d, \
                $(patsubst %.mm,$(INST_DEPEND)/%.d, \
-	       $(patsubst %.java,$(INST_DEPEND)/%.java.d,$(MAINS) ))))) \
+               $(patsubst %.cu,$(INST_DEPEND)/%.d, \
+	       $(patsubst %.java,$(INST_DEPEND)/%.java.d,$(MAINS) )))))) \
                $(patsubst %$(CEXT),$(INST_DEPEND)/%.$(VAR)$(BINDEP_SHARED_INFIX)$(BINDEP_SINGLE_POSTFIX).bin.d,  \
                $(patsubst %$(CXXEXT),$(INST_DEPEND)/%.$(VAR)$(BINDEP_SHARED_INFIX)$(BINDEP_SINGLE_POSTFIX).bin.d, \
                $(patsubst %.m,$(INST_DEPEND)/%.$(VAR)$(BINDEP_SHARED_INFIX)$(BINDEP_SINGLE_POSTFIX).bin.d,  \
                $(patsubst %$.mm,$(INST_DEPEND)/%.$(VAR)$(BINDEP_SHARED_INFIX)$(BINDEP_SINGLE_POSTFIX).bin.d, \
-               $(filter-out %.java,$(MAINS)))))) $(INST_DEPEND)/.dir
+               $(patsubst %$.cu,$(INST_DEPEND)/%.$(VAR)$(BINDEP_SHARED_INFIX)$(BINDEP_SINGLE_POSTFIX).bin.d, \
+               $(filter-out %.java,$(MAINS))))))) $(INST_DEPEND)/.dir
  else
   TARG_DEPEND:= $(patsubst %$(CXXAUXEXT),$(INST_DEPEND)/%.d, \
 	       $(patsubst %$(CEXT),$(INST_DEPEND)/%.d, \
@@ -355,6 +378,17 @@ ifeq ($(SUPPORT_OK),yes)
  OBJS_DEPEND = $(patsubst %$(CEXT),$$(INST_OBJS)/%$(OBJEXT),$(patsubst %$(CXXEXT),$$(INST_OBJS)/%$(OBJEXT) ,$(patsubst %.mm,$$(INST_OBJS)/%$(OBJEXT) ,$(SOURCES) $(MUSTLINK))))
  TARG_AUXFILES = $(patsubst %,$(INST_AUX)/%,$(AUXFILES))
  TARG_EXTERNALLIBS= $(patsubst %,$(INST_LIBDEF)/%,$(EXTERNALLIBS))
+
+ ifdef CMAKELIB
+   ifdef NOINCDEFS
+     TARG_CMAKELIB = 
+   else
+     TARG_CMAKELIB = $(INST_CMAKE)/Find$(CMAKELIB).cmake
+   endif
+ else
+   TARG_CMAKELIB = 
+ endif
+ 
 
  SINGLESO_NOPREFIX = $(strip $(patsubst $(SINGLESO),,$(patsubst lib%,%,$(SINGLESO))))
  # Name of SINGLESO with the lib prefix stripped off.
@@ -460,6 +494,7 @@ else # SUPPORT_OK != yes
  TARG_NESTED=
  TARG_SCRIPT=
  OBJS_DEPEND=
+ TARG_CMAKELIB =
 endif
 
 ###############################
@@ -722,7 +757,7 @@ $(TARG_HDRSYMS) : $(INST_HEADERSYM)/% : % $(INST_HEADERSYM)/.dir
 
 #	$(TOUCH) -r $< $(INST_HEADER)/$(@F) ; \
 
-build_aux: $(TARG_AUXFILES) $(TARG_EXTERNALLIBS)
+build_aux: $(TARG_AUXFILES) $(TARG_EXTERNALLIBS) $(TARG_CMAKELIB)
 
 ifndef AUXINSTALL
   AUXINSTALL=$(CP)
@@ -1878,6 +1913,26 @@ ifdef TARG_PKGCONFIG
 
 endif 
 #  of ifdef TARG_PKGCONFIG
+
+
+# Build a cmake file.
+$(INST_CMAKE)/Find%.cmake: $(ROOTDIR)/lib/cmake/.dir \
+                                  defs.mk \
+                                  $(QMAKE_MAKEFILES)/Main.mk
+	$(SHOWIT)echo "--- Writing cmake file $(CMAKELIB) to $(INST_CMAKE)" ; \
+	echo > $@ ; \
+	echo "# Generated import file by Ravl QMake " >> $@ ; \
+	echo "# $(PROJECT_NAME) $(patsubst %,% package, $(PACKAGE_NAME)) $(*F) library " >> $@ ;\
+	echo "set($(*F)_FOUND true) " >> $@; \
+	echo "set($(*F)_LIBRARIES $(LIBLIBS)) " >> $@; \
+	echo "set($(*F)_INCLUDE_DIRS $(ROOTDIR)/include) " >> $@; \
+	echo "LINK_DIRECTORIES($(INST_LIB)) " >> $@ ;
+
+#	
+#	echo "set($(*F)_INCLUDES $(ROOTDIR)/include) " >> $@; \
+#	echo "LINK_LIBRARIES($(LIBLIBS)) " >> $@ ;\
+#	echo "INCLUDE_DIRECTORIES() " >> $@ ; 
+
 
 ###########################
 # general diagnostic information

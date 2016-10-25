@@ -51,7 +51,7 @@ namespace RavlN {
     virtual IntT PutArray(const SArray1dC<InT> &src) {
       SArray1dC<OutT> dest(src.Size());
 #ifdef NDEBUG
-      ApplyArray(src,dest);
+      this->ApplyArray(src,dest);
 #else
       RavlAssert((UIntT) this->ApplyArray(src,dest) == src.Size()); // This is only used when asserts are enabled.
 #endif

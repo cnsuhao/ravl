@@ -117,17 +117,17 @@ namespace RavlN {
     //: Constructor
     // Creates a buffer containing 'nsize' items.
     
-  protected:
-    BufferC(BufferBodyC<DataT> &bod)
-      : RCHandleVC<BufferBodyC<DataT> >(bod)
-    {}
-    //: Body constructor
-    
     explicit BufferC(const BufferBodyC<DataT> *bod)
       : RCHandleVC<BufferBodyC<DataT> >(bod)
     {}
     //: Body constructor
     
+    BufferC(BufferBodyC<DataT> &bod)
+      : RCHandleVC<BufferBodyC<DataT> >(bod)
+    {}
+    //: Body constructor
+  protected:
+
     BufferBodyC<DataT> &Body()
     { return RCHandleC<BufferBodyC<DataT> >::Body(); }
     //: Access body.

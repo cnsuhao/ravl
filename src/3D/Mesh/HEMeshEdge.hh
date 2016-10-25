@@ -266,7 +266,7 @@ namespace Ravl3DN {
     //: Access vertex this edge goes to
     
     HEMeshVertexC SourceVertex() const 
-    { return Prev().SourceVertex(); }
+    { return Prev().Vertex(); }
     //: Access vertex this edge comes from.
     
     UIntT Hash() const{ 

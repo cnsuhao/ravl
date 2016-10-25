@@ -202,7 +202,7 @@ namespace RavlN {
 	return ret;
       read(&c,1);
       if(is().gcount() != 1)
-	break;
+	return ret;
       const char *d = delim;
       for(;*d != 0 && (*d != c);d++) ;
       if(*d != 0)
