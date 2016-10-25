@@ -10191,7 +10191,366 @@ then
 
 
 
+          # Set default settings for using the archiver. We may subsequently
+          # refine these as the current platform dictates - see below...
           AR_SPECIFIC_ARFLAGS=ruc
+
+          # Ensure the archiver is operating in non-deterministic mode.
+          { $as_echo "$as_me:${as_lineno-$LINENO}: checking deterministicty of archiver" >&5
+$as_echo_n "checking deterministicty of archiver... " >&6; }
+          #
+          # To verify this, we create a library containing a single object
+          # file; attempt to add an object file with an earlier timestamp and
+          # test which object file is present in the final library. If the
+          # latest object is not in the library, we attempt to find a switch
+          # to alter the behaviour of the archiver.
+          #
+          # First off, let us set up some test objects...
+          #
+          cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+int TestFunction(void)
+                                              {
+                                                 return 1;
+                                              }
+
+
+
+_ACEOF
+if ac_fn_c_try_compile "$LINENO"; then :
+  # First test program compiled successfully, move
+                             # it aside...
+                             { ac_try='mv conftest.$OBJEXT conftest.$OBJEXT.1'
+  { { eval echo "\"\$as_me\":${as_lineno-$LINENO}: \"$ac_try\""; } >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; }
+                             if test 0 -ne "$ac_status"
+                             then
+                                # This is likely to be either a disk space or
+                                # permissions problem.
+                                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Unexpected failure at stage 2 inspecting deterministicity of archiver
+See \`config.log' for more details" "$LINENO" 5; }
+                             fi
+                             cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+int TestFunction(void)
+                                                                 {
+                                                                    return 2;
+                                                                 }
+
+
+
+_ACEOF
+if ac_fn_c_try_compile "$LINENO"; then :
+  # Second test program compiled
+                                                # successfully, now we can start
+                                                # the actual test...
+                                                #
+                                                GoodSoln="Not found"
+                                                SlowSoln="Not found"
+                                                # Try the archiver without any
+                                                # extra switch settings first;
+                                                # followed by all the possible
+                                                # appropriate switches that we
+                                                # know about
+                                                for arflags in "$AR_SPECIFIC_ARFLAGS" "$AR_SPECIFIC_ARFLAGS -U "
+                                                do
+                                                   # Remove any existing copy
+                                                   # of the test library file.
+                                                   if ( test -e libconftest.a )
+                                                   then
+                                                      { ac_try='rm libconftest.a'
+  { { eval echo "\"\$as_me\":${as_lineno-$LINENO}: \"$ac_try\""; } >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; }
+                                                      if test 0 -ne "$ac_status"
+                                                      then
+                                                         # Unlikely scenario,
+                                                         # might be an issue of
+                                                         # permissions if it
+                                                         # happens on the first
+                                                         # iteration of the do
+                                                         # loop.
+                                                         { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Unexpected failure at stage 4 inspecting deterministicity of $AR $arflags
+See \`config.log' for more details" "$LINENO" 5; }
+                                                      fi
+                                                   fi
+                                                   # Actually create the library
+                                                   # with the second (newer)
+                                                   # object file.
+                                                   { ac_try='$AR $arflags libconftest.a conftest.$OBJEXT'
+  { { eval echo "\"\$as_me\":${as_lineno-$LINENO}: \"$ac_try\""; } >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; }
+                                                   if test 0 -eq "$ac_status"
+                                                   then
+                                                      # Successfully created the
+                                                      # test library so preserve
+                                                      # the second (newer)
+                                                      # object file.
+                                                      { ac_try='mv conftest.$OBJEXT  conftest.$OBJEXT.2'
+  { { eval echo "\"\$as_me\":${as_lineno-$LINENO}: \"$ac_try\""; } >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; }
+                                                      if test 0 -ne "$ac_status"
+                                                      then
+                                                         # Only ever likely to
+                                                         # reach here if we run
+                                                         # out of disk space.
+                                                         { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Unexpected failure at stage 6 inspecting deterministicity of $AR $arflags
+See \`config.log' for more details" "$LINENO" 5; }
+                                                      fi
+                                                      # Bring the first (older)
+                                                      # object file back
+                                                      { ac_try='mv conftest.$OBJEXT.1 conftest.$OBJEXT'
+  { { eval echo "\"\$as_me\":${as_lineno-$LINENO}: \"$ac_try\""; } >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; }
+                                                      if test 0 -ne "$ac_status"
+                                                      then
+                                                         # This is only ever
+                                                         # likely to happen if
+                                                         # we hit an independant
+                                                         # system issue.
+                                                         { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Unexpected failure at stage 7 inspecting deterministicity of $AR $arflags
+See \`config.log' for more details" "$LINENO" 5; }
+                                                      fi
+                                                      # Attempt to add the older
+                                                      # object to the library. The
+                                                      # archiver should leave the
+                                                      # newer object in the library.
+                                                      { ac_try='$AR $arflags libconftest.a conftest.$OBJEXT'
+  { { eval echo "\"\$as_me\":${as_lineno-$LINENO}: \"$ac_try\""; } >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; }
+                                                      if test 0 -eq "$ac_status"
+                                                      then
+                                                         # Archiver successfully
+                                                         # ran, now preserve the
+                                                         # older object file
+                                                         { ac_try='mv conftest.$OBJEXT conftest.$OBJEXT.1'
+  { { eval echo "\"\$as_me\":${as_lineno-$LINENO}: \"$ac_try\""; } >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; }
+                                                         if test 0 -ne "$ac_status"
+                                                         then
+                                                            # Only ever likely to
+                                                            # reach here if we run
+                                                            # out of disk space.
+                                                            { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Unexpected failure at stage 8s inspecting deterministicity of $AR $arflags
+See \`config.log' for more details" "$LINENO" 5; }
+                                                         fi
+                                                         # Now to determine
+                                                         # which object file is
+                                                         # actually in the
+                                                         # library.
+                                                         #
+                                                         # Ensure we do not
+                                                         # corrupt the LIBS
+                                                         # setting
+                                                         preserve_LIBS=$LIBS
+                                                         LIBS="$LIBS ./libconftest.a"
+                                                         cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+extern int TestFunction(void);
+int
+main ()
+{
+return TestFunction();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  # Successfully created the
+                                                                         # test program, restore the
+                                                                         # LIBS setting
+                                                                         LIBS=$preserve_LIBS
+                                                                         # and run the test program
+                                                                         # to determine which object
+                                                                         # is in the library.
+                                                                         { ac_try='./conftest$EXEEXT'
+  { { eval echo "\"\$as_me\":${as_lineno-$LINENO}: \"$ac_try\""; } >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; }
+                                                                         case $ac_status in
+                                                                            1)  # Older obj
+                                                                                SlowSoln="$arflags"
+                                                                                ;;
+                                                                            2)  # Newer obj
+                                                                                GoodSoln="$arflags"
+                                                                                break
+                                                                                ;;
+                                                                            *)  # Unexpected
+                                                                                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Test program inspecting deterministicity of $AR $arflags failed to run correctly
+See \`config.log' for more details" "$LINENO" 5; }
+                                                                                ;;
+                                                                         esac
+
+
+
+else
+  # Failed to create test program
+                                                                         { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Unable to create test program inspecting deterministicity of $AR $arflags
+See \`config.log' for more details" "$LINENO" 5; }
+
+
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+                                                      else
+                                                         # Archiver failed
+                                                         # adding old object:
+                                                         # switch is not viable
+                                                         # Preserve the old
+                                                         # object file
+                                                         { ac_try='mv conftest.$OBJEXT conftest.$OBJEXT.1'
+  { { eval echo "\"\$as_me\":${as_lineno-$LINENO}: \"$ac_try\""; } >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; }
+                                                         if test 0 -ne "$ac_status"
+                                                         then
+                                                            # Only ever likely to
+                                                            # reach here if we run
+                                                            # out of disk space.
+                                                            { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Unexpected failure at stage 8f inspecting deterministicity of $AR $arflags
+See \`config.log' for more details" "$LINENO" 5; }
+                                                         fi
+                                                      fi
+                                                      # Post test clean-up...
+                                                      #
+                                                      # Bring back the newer
+                                                      # object file
+                                                      { ac_try='mv conftest.$OBJEXT.2 conftest.$OBJEXT'
+  { { eval echo "\"\$as_me\":${as_lineno-$LINENO}: \"$ac_try\""; } >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; }
+                                                      if test 0 -ne "$ac_status"
+                                                      then
+                                                         # Only ever likely to
+                                                         # reach here if we run
+                                                         # out of disk space.
+                                                         { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Unexpected failure at stage 11 inspecting deterministicity of $AR $arflags
+See \`config.log' for more details" "$LINENO" 5; }
+                                                      fi
+                                                   else # initial creation of library failed
+                                                      if ( test X"$arflags" = X"$AR_SPECIFIC_ARFLAGS" )
+                                                      then
+                                                         # We expect this to
+                                                         # always work with
+                                                         # the default flags;
+                                                         # if it does not, we
+                                                         # are basically stuck
+                                                         { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Unable to operate the archiver
+See \`config.log' for more details" "$LINENO" 5; }
+#                                                     else
+#                                                        # It seems the archiver
+#                                                        # will not work with
+#                                                        # this set of flags so
+#                                                        # we will continue with
+#                                                        # any further flags we
+#                                                        # know...
+                                                      fi
+                                                   fi
+                                                done
+                                                # Finished testing, did we find
+                                                # a solution?
+                                                if ( test X"$GoodSoln" != "XNot found" )
+                                                then
+                                                   # We found a good solution
+                                                   # (a non-deterministic
+                                                   # environment for the
+                                                   # archiver).
+                                                   AR_SPECIFIC_ARFLAGS="$GoodSoln"
+                                                   { $as_echo "$as_me:${as_lineno-$LINENO}: result: non-deterministic" >&5
+$as_echo "non-deterministic" >&6; }
+                                                else
+                                                   if ( test X"$SlowSoln" != "XNot found" )
+                                                   then
+                                                      # We found a slow solution
+                                                      # (we could only get the
+                                                      # archiver to work in a
+                                                      # deterministic manner).
+                                                      AR_SPECIFIC_ARFLAGS="$SlowSoln"
+                                                      { $as_echo "$as_me:${as_lineno-$LINENO}: result: deterministic" >&5
+$as_echo "deterministic" >&6; }
+                                                   else
+                                                      { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Unable to run the archiver in an acceptable manner
+See \`config.log' for more details" "$LINENO" 5; }
+                                                   fi
+                                                fi
+
+else
+  # Unlikely to be here for a
+                                                # test issue as this code is
+                                                # the same as the previous
+                                                # compilation. This is almost
+                                                # certainly a (possibly
+                                                # transient) system problem.
+                                                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Unexpected failure at stage 3 inspecting deterministicity of archiver
+See \`config.log' for more details" "$LINENO" 5; }
+
+
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+
+else
+  # Should never reach here unless the test code is
+                             # broken for our particular platform or we get a
+                             # system problem such as running out of disk space.
+                             { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Unexpected failure at stage 1 inspecting deterministicity of archiver
+See \`config.log' for more details" "$LINENO" 5; }
+
+
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+
 
 
 
