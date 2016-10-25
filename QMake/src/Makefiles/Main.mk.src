@@ -1924,8 +1924,11 @@ $(INST_CMAKE)/Find%.cmake: $(ROOTDIR)/lib/cmake/.dir \
 	echo "# Generated import file by Ravl QMake " >> $@ ; \
 	echo "# $(PROJECT_NAME) $(patsubst %,% package, $(PACKAGE_NAME)) $(*F) library " >> $@ ;\
 	echo "set($(*F)_FOUND true) " >> $@; \
-	echo "set($(*F)_LIBRARIES $(LIBLIBS)) " >> $@; \
 	echo "set($(*F)_INCLUDE_DIRS $(ROOTDIR)/include) " >> $@; \
+	echo -n "set($(*F)_LIBRARIES  " >> $@; \
+	$(BINDEP) $(PKG_LDFLAGS) $(LDFLAGS) -T$(INST_LIB)/lib$(PLIB)$(LIBEXT) $(BINLIBS) >> $@ ; \
+	echo  ") " >> $@; \
+#	echo "set($(*F)_LIBLINK $(LIBLIBS)) " >> $@; \
 	echo "LINK_DIRECTORIES($(INST_LIB)) " >> $@ ;
 
 #	
