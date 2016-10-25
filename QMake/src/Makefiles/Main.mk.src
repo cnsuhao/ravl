@@ -763,7 +763,7 @@ ifndef AUXINSTALL
   AUXINSTALL=$(CP)
 endif
 
-$(TARG_AUXFILES) : $(INST_AUX)/% : % $(INST_AUX)/.dir
+$(TARG_AUXFILES) : $(INST_AUX)/% : % $(INST_AUX)/.dir prebuildstep
 	$(SHOWIT)echo "--- Install aux file $(@F)" ; \
 	if [ -f $(INST_AUX)/$(@F) ] ; then \
 	  $(CHMOD) +w $(INST_AUX)/$(@F) ; \
