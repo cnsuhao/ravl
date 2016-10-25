@@ -54,6 +54,10 @@ dnl       LIB_CPPFLAGS               Interim variable used to build up the
 dnl                                  CPPFLAGS to be used when testing for the
 dnl                                  header files associated with the library
 dnl                                  package being tested.
+dnl       LIBS                       Holds the current list of libraries
+dnl                                  needed to compile with a program.
+dnl       preserve_LIBS              Used to maintain the original setting of
+dnl                                  the LIBS variable over a test compilation.
 dnl       LDFLAGS                    Linker flags, temporarily re-assigned
 dnl                                  during this macro as part of the testing
 dnl                                  process.
