@@ -378,7 +378,7 @@ namespace RavlImageN {
     jpeg_create_compress(&cinfo);
     
     InitO(fout);
-    RavlDebug("JPEG write codec initialised ok. ");
+    //RavlDebug("JPEG write codec initialised ok. ");
     initalised = true;
   }
   
