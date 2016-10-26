@@ -52,11 +52,15 @@ namespace RavlImageN {
     //: Access buffer size.
     
   protected:
-    
     bool initalised;
     my_error_mgr jerr;
     unsigned char *buffer;
-  };
+
+  private:
+    DPImageIOJPegBaseC(const DPImageIOJPegBaseC &);
+    //: Constructor.
+
+};
   
   class DPImageIOJPegIBaseC;
 
@@ -251,11 +255,11 @@ namespace RavlImageN {
     // Establish the setjmp return context for my_error_exit to use.
     if (setjmp(jerr.setjmp_buffer)) {
       // If we get here, the JPEG code has signaled an error.
-      std::cerr << "DPIImageJPegBodyC<PixelT>::Read(), WARNING: Error reading image. \n";
+      RavlError("JPEG, Error reading image. ");
       return false;
     }
     
-    jpeg_read_header(&cinfo, true);    
+    jpeg_read_header(&cinfo, TRUE);
     
     if(!SetupFormat(typeid(PixelT))) // Setup decompression.
       return false; /* Don't know pixel type... */
@@ -314,7 +318,7 @@ namespace RavlImageN {
   template<class PixelT>
   bool DPOImageJPegBodyC<PixelT>::Put(const ImageC<PixelT> &dat) {
     if(!initalised) {
-      std::cerr << "DPOImageJPegBodyC<PixelT>::Write(), Not initalised. \n";
+      RavlError("JPEG Internal error: codec not initialised. ");
       return false;
     }
     if(!fout.good())
@@ -340,7 +344,7 @@ namespace RavlImageN {
     
     // Establish the setjmp return context for my_error_exit to use.
     if (setjmp(jerr.setjmp_buffer)) {
-      std::cerr << "DPOImageJPegBodyC<PixelT>::Write(), Error found. \n";
+      RavlError("JPEG, Error writing file. ");
       // If we get here, the JPEG code has signaled an error.
       return false;
     }
@@ -354,9 +358,9 @@ namespace RavlImageN {
       return false; /* Don't know pixel type... */
     
     jpeg_set_defaults(&cinfo);
-    jpeg_set_quality(&cinfo, compression, true /* limit to baseline-JPEG values */);
+    jpeg_set_quality(&cinfo, compression, TRUE /* limit to baseline-JPEG values */);
     
-    jpeg_start_compress(&cinfo, true);
+    jpeg_start_compress(&cinfo, TRUE);
     
     const IndexC LCol = buff.LCol();
     IndexC crow = buff.TRow();

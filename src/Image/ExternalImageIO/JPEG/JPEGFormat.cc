@@ -33,7 +33,10 @@ namespace RavlImageN {
   //: Constructor.
   
   FileFormatJPEGBodyC::FileFormatJPEGBodyC()
-    : FileFormatBodyC("jpeg","JPEG rgb colour images.")
+    : FileFormatBodyC("jpeg","JPEG rgb colour images."),
+      compression(75),
+      pri(0),
+      asSequence(false)
   {}
   
   //: Constructor.

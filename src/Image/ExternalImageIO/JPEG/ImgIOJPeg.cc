@@ -25,6 +25,7 @@ extern "C" {
 
 #include "Ravl/Image/ImgIOJPegB.hh"
 #include "Ravl/Image/ByteYUVValue.hh"
+#include "Ravl/SysLog.hh"
 
 namespace RavlImageN {
   
@@ -39,7 +40,9 @@ namespace RavlImageN {
     
     /* Always display the message. */
     /* We could postpone this until after returning, if we chose. */
-    //(*cinfo->err->output_message) (cinfo);
+    char buffer[512];
+    (*cinfo->err->format_message)(cinfo, buffer);
+    RavlError("JPEG Error: %s ",buffer);
     
     /* Return control to the setjmp point */
     longjmp(myerr->setjmp_buffer, 1);
@@ -82,7 +85,7 @@ namespace RavlImageN {
       ERREXIT(cinfo, JERR_FILE_WRITE);
     dest->pub.next_output_byte = dest->buffer;
     dest->pub.free_in_buffer = obj.BufferSize();
-    return true;
+    return TRUE;
     
   }
   
@@ -127,7 +130,7 @@ namespace RavlImageN {
     
     /* We reset the empty-input-file flag for each image,
      * but we don't clear the input buffer.
-     * This is correct behavior for reading a series of images from one source.
+     * This is correct behaviour for reading a series of images from one source.
      */
     src->start_of_file = true;
   }
@@ -167,7 +170,7 @@ namespace RavlImageN {
     src->pub.bytes_in_buffer = nbytes;
     src->start_of_file = false;
     
-    return true;
+    return TRUE;
   }
 
   //	Skip num_bytes worth of data.  The buffer pointer and count should
@@ -218,9 +221,15 @@ namespace RavlImageN {
     buffer = new unsigned char [defaultBufferSize];
   }
   
+  DPImageIOJPegBaseC::DPImageIOJPegBaseC(const DPImageIOJPegBaseC &)
+  : initalised(false),
+    buffer(0)
+  { RavlIssueError("Disabled copy constructor called."); }
+
   //: Destructor.
   
   DPImageIOJPegBaseC::~DPImageIOJPegBaseC() {
+    initalised = false;
     if(buffer != 0)
       delete [] buffer;
     buffer = 0;
@@ -255,10 +264,10 @@ namespace RavlImageN {
     
     /* Establish the setjmp return context for my_error_exit to use. */
     if (setjmp(jerr.setjmp_buffer)) {
-      /* If we get here, the JPEG code has signaled an error.
+      /* If we get here, the JPEG code has signalled an error.
        * We need to clean up the JPEG object, close the input file, and return.
        */
-      std::cerr << "DPImageIOJPegIBaseC::DPImageIOJPegIBaseC(), Error initialising decompressor. \n";
+      RavlError("Failed to initialise codec. ");
       jpeg_destroy_decompress(&cinfo);
       initalised = false;
       return ;
@@ -270,6 +279,7 @@ namespace RavlImageN {
     /* Now we can initialize the JPEG decompression object. */
     
     InitI(fin);  
+    RavlDebug("Initialised %p ",(void *) this);
     initalised = true;
   }
   
@@ -280,7 +290,7 @@ namespace RavlImageN {
       // Establish the setjmp return context for my_error_exit to use.
       if (setjmp(jerr.setjmp_buffer)) {
 	// If we get here, the JPEG code has signaled an error.
-	std::cerr << "DPImageIOJPegIBaseC::~DPImageIOJPegIBaseC(), Error destorying decompressor. \n";
+	RavlError("Failed to destroy decompressor. ");
 	return ;
       }
       /* This is an important step since it will release a good deal of memory. */
@@ -357,16 +367,18 @@ namespace RavlImageN {
     // Establish the setjmp return context for my_error_exit to use.
     
     if (setjmp(jerr.setjmp_buffer)) {
-      /* If we get here, the JPEG code has signaled an error.
+      /* If we get here, the JPEG code has signalled an error.
        * We need to clean up the JPEG object, close the input file, and return.
        */
+      RavlError("Error initialising jpeg library. ");
       jpeg_destroy_compress(&cinfo);
       return ;
     }
     
     jpeg_create_compress(&cinfo);
     
-    InitO(fout);  
+    InitO(fout);
+    RavlDebug("JPEG write codec initialised ok. ");
     initalised = true;
   }
   
@@ -377,7 +389,7 @@ namespace RavlImageN {
     if(initalised) {
       // Establish the setjmp return context for my_error_exit to use.
       if (setjmp(jerr.setjmp_buffer)) {
-	// If we get here, the JPEG code has signaled an error.
+	// If we get here, the JPEG code has signalled an error.
 	return ;
       }
       jpeg_destroy_compress(&cinfo);
