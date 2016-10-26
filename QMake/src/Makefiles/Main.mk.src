@@ -1217,8 +1217,13 @@ $(TARG_PUREEXE) : $(INST_BIN)/pure_%$(EXEEXT) : $(INST_OBJS)/%$(OBJEXT) $(EXTRAO
 	$(SHOWIT)echo "--- Purify $(@F)  ( $(INST_BIN)/$(@F) ) " ; \
 	purify -g++ -best-effort $(CXX) $(PKG_LDFLAGS) $(LDFLAGS) $(INST_OBJS)/$*$(OBJEXT) $(EXTRAOBJS) $(BINLIBS) -o $(INST_BIN)/$(@F)$(EXEEXT) ;
 
+
+# Note: Setting the LD_LIBRARY_PATH environment variable while linking seems to effect the paths added to the executable.
+# it is better to clear it before calling the linker as the paths passed on the command line are then better respected.
+
 $(TARG_EXE) : $(INST_BIN)/%$(EXEEXT) : $(INST_OBJS)/%$(OBJEXT) $(EXTRAOBJS) $(TARG_LIBS) $(INST_BIN)/.dir $(TARG_HDRCERTS)
 	$(SHOWIT)echo "--- Linking $(VAR_DISPLAY_NAME) $(@F) ( $(INST_BIN)/$*$(EXEEXT) ) " ; \
+	export LD_LIBRARY_PATH="" ; \
 	if [ -f $(INST_BIN)/$(@F) ] ; then \
 	  $(CHMOD) +w $(INST_BIN)/$(@F)$(EXEEXT) ; \
 	fi ; \
@@ -1925,10 +1930,10 @@ $(INST_CMAKE)/Find%.cmake: $(ROOTDIR)/lib/cmake/.dir \
 	echo "# $(PROJECT_NAME) $(patsubst %,% package, $(PACKAGE_NAME)) $(*F) library " >> $@ ;\
 	echo "set($(*F)_FOUND true) " >> $@; \
 	echo "set($(*F)_INCLUDE_DIRS $(ROOTDIR)/include) " >> $@; \
-	echo -n "set($(*F)_LIBRARIES  " >> $@; \
+	echo -n "set($(*F)_LIBLIST  " >> $@; \
 	$(BINDEP) $(PKG_LDFLAGS) $(LDFLAGS) -T$(INST_LIB)/lib$(PLIB)$(LIBEXT) $(BINLIBS) >> $@ ; \
 	echo  ") " >> $@; \
-#	echo "set($(*F)_LIBLINK $(LIBLIBS)) " >> $@; \
+	echo "set($(*F)_LIBRARIES $(LIBLIBS)) " >> $@; \
 	echo "LINK_DIRECTORIES($(INST_LIB)) " >> $@ ;
 
 #	
