@@ -61,21 +61,21 @@ int main(int argc, char **argv)
       return -1;
     }
   
-	  // Build the arguments list
-	  PythonObjectC name = python.NewObject();
-	  name.BuildString("your-name-here");
-    
-	  DListC<PythonObjectC> argList;
-	  argList.InsLast(name);
-	  PythonObjectC args = python.NewObject();
-	  args.BuildTuple(argList);
-  
-	  // Call the example function and display the results
-	  std::cerr << "#### Calling 'ravlexample.myprint(" << name.String() << ")'" << std::endl;
-	  PythonObjectC res = python.Call("ravlexample", "myprint", args);
-	  if (res.IsValid())
-	  {
-	    if (res.IsString())
+    // Build the arguments list
+    PythonObjectC name = python.NewObject();
+    name.BuildString("your-name-here");
+
+    DListC<PythonObjectC> argList;
+    argList.InsLast(name);
+    PythonObjectC args = python.NewObject();
+    args.BuildTuple(argList);
+
+    // Call the example function and display the results
+    std::cerr << "#### Calling 'ravlexample.myprint(" << name.String() << ")'" << std::endl;
+    PythonObjectC res = python.Call("ravlexample", "myprint", args);
+    if (res.IsValid())
+    {
+      if (res.IsString())
       {
 	      std::cerr << "## Result(string): " << res.String() << std::endl;
       }
