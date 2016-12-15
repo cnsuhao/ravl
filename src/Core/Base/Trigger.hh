@@ -18,6 +18,7 @@
 
 #include "Ravl/RCHandleV.hh"
 
+
 namespace RavlN {
   //! userlevel=Develop
   typedef void (*VoidFuncPtrT)();
@@ -53,14 +54,14 @@ namespace RavlN {
     {}
     //: Default constructor.
     // Creates an invalid handle.
-    
-  protected:
-    TriggerC(TriggerBodyC &bod) 
+
+    TriggerC(const TriggerBodyC *bod)
       : RCHandleVC<TriggerBodyC>(bod)
     {}
     //: Body constructor.
-    
-    TriggerC(const TriggerBodyC *bod) 
+
+  protected:
+    TriggerC(TriggerBodyC &bod) 
       : RCHandleVC<TriggerBodyC>(bod)
     {}
     //: Body constructor.
@@ -83,6 +84,7 @@ namespace RavlN {
     //: Invoke the method.
     
   };
+
 
 
 }

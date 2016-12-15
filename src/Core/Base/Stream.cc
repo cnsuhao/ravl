@@ -5,7 +5,6 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 ////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! lib=RavlCore
 //! file="Ravl/Core/Base/Stream.cc"
 
@@ -417,7 +416,7 @@ namespace RavlN {
       // This keeps behaviour consistant with the behavour of ifstream of files that failed to open.
       ifstream *ifstrm = 0;
       fmode |= ios::binary;
-      Init(ifstrm = new ifstream(filename,static_cast<std::ios_base::openmode>(fmode)),filename);
+      Init(ifstrm = new ifstream(filename.c_str(),static_cast<std::ios_base::openmode>(fmode)),filename);
       in = ifstrm;
     }
 #else

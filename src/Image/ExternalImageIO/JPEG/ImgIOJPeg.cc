@@ -279,7 +279,7 @@ namespace RavlImageN {
     /* Now we can initialize the JPEG decompression object. */
     
     InitI(fin);  
-    RavlDebug("Initialised %p ",(void *) this);
+    //RavlDebug("Initialised %p ",(void *) this);
     initalised = true;
   }
   
