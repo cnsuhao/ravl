@@ -28,7 +28,7 @@ namespace RavlN {
   // The Polygon2dC class is a representation of a polygon in 2 dimensional
   // space. A polygon is the region of a plane bounded by a finite collection
   // of line segments forming a simple closed curve. <p>
-  // Ref.: -  O'Rourke,J.: Computatinal geometry in C;
+  // Ref.: -  O'Rourke,J.: Computational geometry in C;
   //          Cambridge University Press, 1994, p. 1 <p>
   
   class Polygon2dC
