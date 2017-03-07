@@ -101,7 +101,7 @@ namespace RavlN {
     //: Return the direction of the line.
 
     Vector2dC Normal() const
-    { return Vector2dC(point[1][1]-point[0][1],point[1][0]-point[0][0]); }
+    { return Vector2dC(point[1][1]-point[0][1],point[0][0]-point[1][0]); }
     //: Returns the normal of the line.
     
     Vector2dC UnitNormal() const
