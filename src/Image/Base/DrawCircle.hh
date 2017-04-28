@@ -39,13 +39,13 @@ namespace RavlImageN {
 
   template<class DataT>
   void DrawCircle(Array2dC<DataT> &dat,const DataT &value,const Point2dC &center,float radius,bool filled) {
-    if(radius < 2) { // Very small ?
+    if(radius <= 1.0) { // Very small ?
       Index2dC at = center;
       if(dat.Frame().Contains(at))
         dat[at] = value;
       return ;
     }
-    RealT step = RavlConstN::pi/(radius);
+    RealT step = RavlConstN::pi/(radius+2.0);
     Polygon2dC poly;
     Circle2dC circle(center,radius);
     for(RealT a = 0;a < 2*RavlConstN::pi;a += step)
