@@ -18,7 +18,7 @@
 namespace RavlN {
   
   //! userlevel=Normal
-  //: A 2d curve consisting of straigh line segments.
+  //: A 2d curve consisting of straight line segments.
   
   class PolyLine2dC 
     : public PointSet2dC
