@@ -213,7 +213,13 @@ namespace RavlN {
     const DataT &Last() const
     { return data[Size()-1]; }
     //: Access last element in the collection.
-    
+
+    DataT GetLast() {
+      RavlAssert(n > 0);
+      return data[n--];
+    }
+    //: Get the last item from the collection and remove it.
+
     DataT &First()
     { return data[0]; }
     //: Access first element in the collection.
@@ -449,6 +455,10 @@ namespace RavlN {
     DataT &Last()
     { return Body().Last(); }
     //: Access last element in the collection.
+
+    DataT GetLast()
+    { return Body().GetLast(); }
+    //: Get the last item from the collection and remove it.
 
     const DataT &Last() const
     { return Body().Last(); }
