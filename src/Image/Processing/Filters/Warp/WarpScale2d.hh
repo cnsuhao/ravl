@@ -75,6 +75,8 @@ namespace RavlImageN {
       Point2dC pnt = rowStart;
 
       IntT fx = Floor(pnt[0]); // Row
+      IntT fxp1 = fx + 1;
+      if(fxp1 >= img.Rows()) fxp1 = fx;
       RealT u = pnt[0] - fx;
       if(u < 1e-5) {
         do {
@@ -101,7 +103,7 @@ namespace RavlImageN {
           RealT t = pnt[1] - fy;
           if(t < 1e-5) {
             const InT* pixel1 = &(img)[fx][fy];
-            const InT* pixel2 = &(img)[fx+1][fy];
+            const InT* pixel2 = &(img)[fxp1][fy];
             *it = OutT((pixel1[0] * onemu) +
                         (pixel2[0] * u));
             pnt[1] += scale[1];
@@ -110,7 +112,7 @@ namespace RavlImageN {
 
             //printf("x:%g  y:%g  fx:%i  fy:%i\n", pnt[0], pnt[1], fx, fy);
             const InT* pixel1 = &(img)[fx][fy];
-            const InT* pixel2 = &(img)[fx+1][fy];
+            const InT* pixel2 = &(img)[fxp1][fy];
             *it = OutT((pixel1[0] * (onemt*onemu)) +
                         (pixel1[1] * (t*onemu)) +
                         (pixel2[0] * (onemt*u)) +
