@@ -49,6 +49,13 @@ namespace RavlImageN {
     //: Default constructor.
     // creates an undefined YUV pixel.
 
+    RealYUVValueC(const YUVValueC<float> &oth)
+      : YUVValueC<RealT>(oth.Y(),oth.U(),oth.V())
+      {}
+    //: Default constructor.
+    // creates an undefined YUV pixel.
+
+
   };
 
 }
