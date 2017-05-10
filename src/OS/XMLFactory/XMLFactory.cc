@@ -287,8 +287,11 @@ namespace RavlN {;
         // Do we know how to build the type?
         StringC reqType = RavlN::TypeName(defaultType);
         //std::cerr << "Setting default type for node=" <<reqType << "\n";
-        if(XMLFactoryC::Type2Factory().IsElm(reqType))
+        if(XMLFactoryC::Type2Factory().IsElm(reqType)) {
           child->XMLNode().Data()["typename"] = reqType;
+        } else {
+          RavlWarning("Don't know how to make default type '%s' ",reqType.c_str());
+        }
       }
     }
     if(!child->Component().IsValid()) {
