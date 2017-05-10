@@ -216,7 +216,7 @@ namespace RavlN {
 
     DataT GetLast() {
       RavlAssert(n > 0);
-      return data[n--];
+      return data[--n];
     }
     //: Get the last item from the collection and remove it.
 
