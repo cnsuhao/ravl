@@ -283,7 +283,7 @@ namespace RavlN {;
     
     // FIXME:- Do we want to use the default type ?
     if(child->XMLNode().IsValid()) {
-      if(!child->XMLNode().Data().IsElm("typename")) {
+      if(!child->XMLNode().Data().IsElm("typename") && defaultType != typeid(void)) {
         // Do we know how to build the type?
         StringC reqType = RavlN::TypeName(defaultType);
         //std::cerr << "Setting default type for node=" <<reqType << "\n";
