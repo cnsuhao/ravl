@@ -249,7 +249,7 @@ namespace RavlN {
 
   template<class T>
   BlkQueueC<T>::BlkQueueC(const BlkQueueC<T> &other)
-    : blkSize(other.blkSize)
+    : blkSize(other.blkSize < 0 ? - other.blkSize: other.blkSize)
   {
     Init();
     for(BlkQueueIterC<T> it(other);it;it.Next())
