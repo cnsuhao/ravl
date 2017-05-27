@@ -41,10 +41,10 @@ namespace RavlImageN {
   extern const IntT *RGBcYUV_uvgLookup;
   
   inline void ByteYUV2RGB(ByteT y,SByteT u,SByteT v,ByteRGBValueC &pix) {
-    register IntT iy = (IntT) y;
-    register IntT iu = (IntT) u;
-    register IntT rv = (IntT) v;
-    register IntT tmp;
+    IntT iy = (IntT) y;
+    IntT iu = (IntT) u;
+    IntT rv = (IntT) v;
+    IntT tmp;
     tmp = iy + RGBcYUV_vrLookup[v];
     if(RAVL_EXPECT(tmp < 0,0)) tmp = 0;
     if(RAVL_EXPECT(tmp > 255,0)) tmp = 255;
@@ -63,13 +63,13 @@ namespace RavlImageN {
   //: Convert byte YUV values to byte RGB value.
   
   inline void ByteYUV2RGB2(ByteT y1,ByteT y2,SByteT u,SByteT v,ByteRGBValueC &pix1,ByteRGBValueC &pix2) {
-    register IntT iy1 = (IntT) y1;
-    register IntT iy2 = (IntT) y2;
-    register IntT iu = (IntT) u;
-    register IntT iv = (IntT) v;
+    IntT iy1 = (IntT) y1;
+    IntT iy2 = (IntT) y2;
+    IntT iu = (IntT) u;
+    IntT iv = (IntT) v;
     
-    register IntT tmp;
-    register IntT vr = RGBcYUV_vrLookup[iv];
+    IntT tmp;
+    IntT vr = RGBcYUV_vrLookup[iv];
     tmp = iy1 + vr;
     if(RAVL_EXPECT(tmp < 0,0)) tmp = 0;
     if(RAVL_EXPECT(tmp > 255,0)) tmp = 255;
@@ -80,7 +80,7 @@ namespace RavlImageN {
     if(RAVL_EXPECT(tmp > 255,0)) tmp = 255;
     pix2[0] = (ByteT) tmp;
     
-    register IntT uvg = RGBcYUV_uvgLookup[iu + 256 * iv];
+    IntT uvg = RGBcYUV_uvgLookup[iu + 256 * iv];
     
     tmp = iy1 + uvg;
     if(RAVL_EXPECT(tmp < 0,0)) tmp = 0;
@@ -92,7 +92,7 @@ namespace RavlImageN {
     if(RAVL_EXPECT(tmp > 255,0)) tmp = 255;
     pix2[1] = (ByteT) tmp;
     
-    register IntT ub = RGBcYUV_ubLookup[iu];
+    IntT ub = RGBcYUV_ubLookup[iu];
     
     tmp = iy1 + ub;
     if(RAVL_EXPECT(tmp < 0,0)) tmp = 0;
