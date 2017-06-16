@@ -96,6 +96,7 @@ namespace RavlN {
 
       //! Change period of event.
       // Returns true if event is found and has been updated.
+      // A period of zero or less will schedule event on idle.
       // This will take effect after the event is next run.
       bool ChangePeriod(UIntT eventId, float period);
 

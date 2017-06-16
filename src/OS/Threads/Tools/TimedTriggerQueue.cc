@@ -92,6 +92,8 @@ namespace RavlN
 
   //: Schedule event for running periodically.
   UIntT TimedTriggerQueueBodyC::SchedulePeriodic(const TriggerC &se,float period) {
+    if(period == 0)
+      return ScheduleIdle(se);
     return Schedule(period,se,period);
   }
 
@@ -175,6 +177,7 @@ namespace RavlN
       UIntT eventNo = 0;
       bool onIdle = false;
       if(retTime > 0.00001) {
+        // Tackle any idle work ?
         if(m_onIdle.size() <= 0)
           break;
         m_idlePlace++;
@@ -203,8 +206,10 @@ namespace RavlN
         }
       } else {
         // Reschedule periodic functions.
-        DateC at = now + entry.Data2();
-        schedule.Insert(at,eventNo);
+        if(entry.Data2() > 0) {
+          DateC at = now + entry.Data2();
+          schedule.Insert(at,eventNo);
+        }
       }
       holdLock.Unlock(); // Unlock before invoke the event, in case it wants to add another.
       if(ne.IsValid()) { // Check if event has been cancelled.
@@ -241,6 +246,8 @@ namespace RavlN
       ONDEBUG(else std::cerr << "Event cancelled. \n");
       holdLock.Lock();
     }
+    if(!m_onIdle.empty())
+      retTime = 0;
     holdLock.Unlock();
     return retTime;
   }
@@ -273,7 +280,16 @@ namespace RavlN
     Tuple2C<TriggerC,float> *eventEntry = events.Lookup(eventID);
     if(eventEntry == 0)
       return false;
+    if(eventEntry->Data2() <= 0) {
+      for(auto at = m_onIdle.begin();at != m_onIdle.end();++at) {
+        if(*at == eventID) {
+          m_onIdle.erase(at);
+          break;
+        }
+      }
+    }
     eventEntry->Data1().Invalidate(); // Cancel event.
+
     return true;
   }
 
@@ -284,7 +300,26 @@ namespace RavlN
     Tuple2C<TriggerC,float> *eventEntry = events.Lookup(eventId);
     if(eventEntry == 0)
       return false;
+    if(eventEntry->Data2() <= 0) {
+      if(period <= 0)
+        return true; // Don't need to do anything.
+      for(auto at = m_onIdle.begin();at != m_onIdle.end();++at) {
+        if(*at == eventId) {
+          m_onIdle.erase(at);
+          break;
+        }
+      }
+    }
+    // Need to schedule ?
+    if(eventEntry->Data2() == 0 && period > 0)
+    {
+      RavlN::DateC at = RavlN::DateC::NowUTC() + period;
+      schedule.Insert(at,eventId);
+    }
+
     eventEntry->Data2() = period;
+    if(period <= 0)
+      m_onIdle.push_back(eventId);
     return true;
   }
 

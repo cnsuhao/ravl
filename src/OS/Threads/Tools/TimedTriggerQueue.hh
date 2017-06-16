@@ -80,6 +80,7 @@ namespace RavlN
 
     bool ChangePeriod(UIntT eventId, float period);
     //: Change period of event.
+    // If 0 period is given the event will be run on idle.
     // Returns true if event is found and has been updated.
     // This will take effect after the event is next run.
 
@@ -222,6 +223,7 @@ namespace RavlN
     //: Change period of event.
     // Returns true if event is found and has been updated.
     // This will take effect after the event is next run.
+    // If a 0 period is given the event will be run on idle.
 
     friend class TimedTriggerQueueBodyC;
   };

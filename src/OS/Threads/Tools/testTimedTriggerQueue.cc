@@ -14,6 +14,9 @@
 
 #include "Ravl/Threads/TimedTriggerQueue.hh"
 #include "Ravl/Random.hh"
+#include "Ravl/UnitTest.hh"
+#include "Ravl/Calls.hh"
+#include "Ravl/SysLog.hh"
 #include <math.h>
 
 using namespace RavlN;
@@ -32,7 +35,18 @@ bool MarkTime(int &i) {
 }
 
 
+int testTiming();
+int testPeriodChange();
+
 int main()
+{
+  //RAVL_RUN_TEST(testTiming());
+  RAVL_RUN_TEST(testPeriodChange());
+  return 0;
+}
+
+
+int testTiming()
 {
   std::cerr << "Running test... \n";
   TimedTriggerQueueC eventQueue(true);
@@ -50,7 +64,7 @@ int main()
 #endif
     {
       requestedTime[i] = DateC::NowUTC() + Random1()*g_timePeriod;
-      eventQueue.Schedule(requestedTime[i],Trigger(MarkTime,i));
+      eventQueue.Schedule(requestedTime[i],Trigger(&MarkTime,i));
     }
   }
   Sleep(g_timePeriod + maxTimerError*10.0);  // Wait for all events to take place.
@@ -66,3 +80,53 @@ int main()
   return 0; 
 }
 
+bool ChangeTime(int *theEventId,TimedTriggerQueueC *queue) {
+  static int state = 0;
+  static DateC lastCall = RavlN::DateC::NowUTC();
+  DateC now = RavlN::DateC::NowUTC();
+  RavlDebug(" %d at %f ",state,(now - lastCall).Double());
+  lastCall = now;
+  switch(state) {
+    case 0:
+      queue->ChangePeriod(*theEventId,1.0);
+      break;
+    case 1:
+      queue->ChangePeriod(*theEventId,2.0);
+      break;
+    case 2:
+      break;
+    case 3:
+      queue->ChangePeriod(*theEventId,0.0);
+      break;
+    case 4:
+      break;
+    case 5:
+      queue->ChangePeriod(*theEventId,1.0);
+      break;
+    case 6:
+      break;
+    case 7:
+      break;
+    default:
+      *theEventId = 0;
+      break;
+  }
+  state++;
+  return true;
+}
+
+int testPeriodChange()
+{
+  TimedTriggerQueueC eventQueue(true);
+  int theEventId = 0;
+  theEventId = eventQueue.SchedulePeriodic(Trigger(&ChangeTime,&theEventId,&eventQueue),0.1);
+  DateC start = DateC::NowUTC();
+  while(theEventId != 0) {
+    Sleep(0.2);
+    if((DateC::NowUTC() - start).Double() > 10) {
+      std::cerr << "Test failed.\n";
+      return 1; //
+    }
+  }
+  return 0;
+}
