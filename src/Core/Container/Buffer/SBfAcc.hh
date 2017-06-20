@@ -268,6 +268,10 @@ namespace RavlN {
     { return DataStart() + sz; }
     //: Access end
 
+    inline SizeT size() const
+    { return sz; }
+    //: Returns the number of elements of the array. c++ std compatible
+
   protected:
     
     // Copy
