@@ -48,7 +48,7 @@ namespace RavlN {  namespace GeneticN {
     //! Generate a new problem in the domain.
     virtual bool GenerateNewProblem();
 
-    //! Evaluate the fit
+    //! Evaluate the fitness
     virtual bool Evaluate(RCWrapAbstractC &obj,float &score) = 0;
 
     //! Handle to this class.

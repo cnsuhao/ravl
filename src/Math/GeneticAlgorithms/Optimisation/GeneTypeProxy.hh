@@ -15,7 +15,7 @@
 namespace RavlN { namespace GeneticN {
 
    //! Gene type which is refere's to another
-   //! type via the palette
+   //! type via the palate
 
    class GeneTypeProxyC
     : public GeneTypeC

@@ -69,7 +69,10 @@ namespace RavlN { namespace GeneticN {
 
     //! Access gene palette.
     GenePaletteC &GenePalette()
-    { return *m_genePalette; }
+    {
+      RavlAssert(m_genePalette.IsValid());
+      return *m_genePalette;
+    }
 
     //! Get the current best genome and its score.
     bool GetBestGenome(GenomeC::RefT &genome,float &score);
@@ -77,6 +80,13 @@ namespace RavlN { namespace GeneticN {
     //! Set the root gene type.
     void SetRootGeneType(const GeneTypeC &rootGeneType)
     { m_rootGeneType = &rootGeneType; }
+
+    //! Access root gene type
+    const GeneTypeC &RootGeneType() const
+    {
+      RavlAssert(m_rootGeneType.IsValid());
+      return *m_rootGeneType;
+    }
 
     //! Handle to optimiser
     typedef SmartPtrC<GeneticOptimiserC> RefT;
