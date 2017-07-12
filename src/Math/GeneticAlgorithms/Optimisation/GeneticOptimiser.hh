@@ -81,6 +81,10 @@ namespace RavlN { namespace GeneticN {
     void SetRootGeneType(const GeneTypeC &rootGeneType)
     { m_rootGeneType = &rootGeneType; }
 
+    //! Do we have a root gene type?
+    bool HaveRootGeneType() const
+    { return m_rootGeneType.IsValid(); }
+
     //! Access root gene type
     const GeneTypeC &RootGeneType() const
     {
