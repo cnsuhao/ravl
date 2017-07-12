@@ -165,16 +165,26 @@ AC_DEFUN([QM_SET_COMPILER_CFLAGS],
                                      then
                                         if ( test $CC_MINOR -eq 6 )
                                         then
-                                           # 4.6 had support for transitional
-                                           # C1x standard - enable that.
+                                           # gcc 4.6 had support for the
+                                           # transitional C1x standard - enable
+                                           # that but do not record it as a
+                                           # resource
                                            COMPILER_C11_CFLAGS=" -std=c1x "
-                                           RESOURCES="$RESOURCES C11"
                                         else
                                            if ( test $CC_MINOR -gt 6 )
                                            then
-                                              # 4.7 and above supports C11
+                                              # 4.7 and above provide increasing
+                                              # support for C11 (on the c11
+                                              # switch)
                                               COMPILER_C11_CFLAGS=" -std=c11 "
-                                              RESOURCES="$RESOURCES C11"
+
+                                              if ( test $CC_MINOR -eq 9 )
+                                              then
+                                                 # Only get full C11 support at
+                                                 # gcc 4.9 so only regard C11 as
+                                                 # a resource at this point
+                                                 RESOURCES="$RESOURCES C11"
+                                              fi
                                            fi
                                         fi
                                      else # => Version 3.X or 5.X and above

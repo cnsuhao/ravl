@@ -221,6 +221,23 @@ AC_DEFUN([QM_SET_COMPILER_CCFLAGS],
                                               # Protect nvcc from -std switch
                                               NVCC_CC03_NVCCFLAGS=" -Xcompiler -std=c++98 "
                                               RESOURCES="$RESOURCES CXX03"
+
+                                              # Incomplete or experimental C++11
+                                              # support for g++ 4.3 through 4.7
+                                              # Enable support but do not flag it
+                                              # as an available resource
+                                              if ( test $CXX_MINOR -lt 7 )
+                                              then
+                                                 # Experimental C++11 support on
+                                                 # c++0x switch for g++ 4.3 - 4.6
+                                                 COMPILER_CC11_CCFLAGS=" -std=c++0x "
+                                                 NVCC_CC11_NVCCFLAGS=" -Xcompiler -std=c++0x "
+                                              else
+                                                 # Incomplete C++11 support on
+                                                 # c++11 switch in g++ 4.7
+                                                 COMPILER_CC11_CCFLAGS=" -std=c++11 "
+                                                 NVCC_CC11_NVCCFLAGS=" -Xcompiler -std=c++11 "
+                                              fi
                                            else # => Version 4.8 or 4.9
                                               # C++ 03 switch and C++ 11 support
                                               # Protect nvcc from -std switch for
@@ -234,10 +251,10 @@ AC_DEFUN([QM_SET_COMPILER_CCFLAGS],
                                               RESOURCES="$RESOURCES CXX11"
 
                                               # Also provides incomplete C ++14
-                                              # support which we will enable.
+                                              # support which we will enable but
+                                              # mot flag as a resource
                                               COMPILER_CC14_CCFLAGS=" -std=c++1y "
                                               NVCC_CC14_NVCCFLAGS=" -Xcompiler -std=c++1y "
-                                              RESOURCES="$RESOURCES CXX14"
                                            fi
                                       # else # => Version 4.0 - 4.2
                                            # No additional settings for these
@@ -357,18 +374,21 @@ AC_DEFUN([QM_SET_COMPILER_CCFLAGS],
                                                  COMPILER_CC14_CCFLAGS=" -std=c++14 "
                                                  NVCC_CC14_NVCCFLAGS=" -Xcompiler -std=c++14 "
                                                  RESOURCES="$RESOURCES CXX14"
-                                              else # => Version = 3.4
-                                                 # 3.4 supports all bar the final
-                                                 # changes made to the draft
-                                                 # C++14 standard (but uses the
-                                                 # draft form of the -std flag).
-                                                 # As no major parts of the
-                                                 # final standard are missing,
-                                                 # regard C++14 as an available
-                                                 # RESOURCE.
-                                                 COMPILER_CC14_CCFLAGS=" -std=c++1y "
-                                                 NVCC_CC14_NVCCFLAGS=" -Xcompiler -std=c++1y "
-                                                 RESOURCES="$RESOURCES CXX14"
+                                              else # => Version = 3.3 or 3.4
+                                                 if ( test $CXX_MINOR -eq 4 )
+                                                 then
+                                                    # 3.4 supports all bar the
+                                                    # final changes made to the
+                                                    # draft C++14 standard (but
+                                                    # uses the draft form of the
+                                                    # -std flag). As no major
+                                                    # parts of the standard are
+                                                    # missing, regard C++14 as
+                                                    # an available RESOURCE.
+                                                    COMPILER_CC14_CCFLAGS=" -std=c++1y "
+                                                    NVCC_CC14_NVCCFLAGS=" -Xcompiler -std=c++1y "
+                                                    RESOURCES="$RESOURCES CXX14"
+                                                 fi
                                               fi
                                            else # => Version 3.0, 3.1 or 3.2
                                               # A great deal of C++11 support
