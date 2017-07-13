@@ -336,10 +336,11 @@ namespace RavlN {
     struct itimerval t;
     t.it_interval.tv_sec = 0;
     t.it_interval.tv_usec = 0;
-    t.it_value.tv_usec = (int) ((RealT) rtime * 1000000) % 1000000;
+    t.it_value.tv_usec = (int) ((RealT) (rtime - floor(rtime)) * 1000000.0) ;
     t.it_value.tv_sec = (int) ((RealT) rtime);
     if(setitimer((virt) ? ITIMER_VIRTUAL : ITIMER_REAL,&t,0) != 0) {
-      perror("DeadLineTimerC::Reset(), Failed to set timer. \n");
+      std::cerr << "Failed to set the time to " << rtime << " seconds " << t.it_value.tv_sec << " " << t.it_value.tv_usec << "\n";
+      perror("DeadLineTimerC::Reset(), Failed to set timer to \n");
       return false;
     }
     return true;
