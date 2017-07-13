@@ -167,9 +167,9 @@ namespace RavlN {
     // Send output to file 'out', if redirectStderr is true send
     // stderr there too. 
 
-   ChildOSProcessC(StringListC args, bool useStdOut=false, bool useStdErr=false, bool useStdIn=false);
-   //: Start a child process.
-   // where the first arg is the name of the program to run.
+    ChildOSProcessC(StringListC args, bool useStdOut=false, bool useStdErr=false, bool useStdIn=false);
+    //: Start a child process.
+    // where the first arg is the name of the program to run.
     
   protected:
     ChildOSProcessBodyC &Body() 
@@ -229,7 +229,7 @@ namespace RavlN {
     { return Body().ExitCode(); }
     //: Get exit code.
     // Return the exit code of the program, if the program
-    // failed to exit normaly this is set to the signal number
+    // failed to exit normally this is set to the signal number
     // which ended the program. This variable is only valid if
     // program has exited.
     
@@ -237,7 +237,7 @@ namespace RavlN {
     { return Body().Terminate(maxDelay); }
     //: Close the processes politely but firmly.
     // This first sends a SIGQUIT, then after maxDelay if the process
-    // hasn't exited in sends a SIGTERM.  It will wait upto another maxDelay seconds
+    // hasn't exited in sends a SIGTERM.  It will wait up to another maxDelay seconds
     // if the process doesn't terminate, then return false if failed true if
     // terminated.
   };

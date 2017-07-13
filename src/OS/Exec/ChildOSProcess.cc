@@ -76,7 +76,8 @@ ChildOSProcessC::ChildOSProcessC(StringC cmd,bool useStdOut,bool useStdErr,bool 
   ChildOSProcessBodyC::ChildOSProcessBodyC()
     : OSProcessBodyC(-1),
       running(false),
-      exitok(false)
+      exitok(false),
+      exitcode(-1)
   {}
   
   //: Start a child process.
@@ -84,7 +85,8 @@ ChildOSProcessC::ChildOSProcessC(StringC cmd,bool useStdOut,bool useStdErr,bool 
   ChildOSProcessBodyC::ChildOSProcessBodyC(StringC cmd,FilenameC out,bool redirectStderr,bool useStdIn)
     : OSProcessBodyC(-1),
       running(false),
-      exitok(false)
+      exitok(false),
+      exitcode(-1)
   {
     StringListC strlst(cmd);
     Run(strlst,out,redirectStderr,useStdIn);
@@ -95,7 +97,8 @@ ChildOSProcessC::ChildOSProcessC(StringC cmd,bool useStdOut,bool useStdErr,bool 
   ChildOSProcessBodyC::ChildOSProcessBodyC(StringC cmd,bool useStdOut,bool useStdErr,bool useStdIn)
     : OSProcessBodyC(-1),
       running(false),
-      exitok(false)
+      exitok(false),
+      exitcode(-1)
   {
     StringListC strlst(cmd);
     Run(strlst,useStdOut,useStdErr,useStdIn);
@@ -107,7 +110,8 @@ ChildOSProcessC::ChildOSProcessC(StringC cmd,bool useStdOut,bool useStdErr,bool 
   ChildOSProcessBodyC::ChildOSProcessBodyC(StringListC args,bool useStdOut,bool useStdErr,bool useStdIn)
     : OSProcessBodyC(-1),
       running(false),
-      exitok(false)
+      exitok(false),
+      exitcode(-1)
   {
     Run(args,useStdOut,useStdErr,useStdIn);
   }
