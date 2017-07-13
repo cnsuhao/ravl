@@ -81,7 +81,10 @@ namespace RavlN { namespace GeneticN {
 
   //! Load form a binary stream
   GeneTypeFloatGaussC::GeneTypeFloatGaussC(BinIStreamC &strm)
-   : GeneTypeFloatC(strm)
+   : GeneTypeFloatC(strm),
+     m_width(0),
+     m_offset(0),
+     m_foldMode(FoldNone)
   {
     ByteT version = 0;
     strm >> version;
@@ -92,7 +95,10 @@ namespace RavlN { namespace GeneticN {
 
   //! Load form a binary stream
   GeneTypeFloatGaussC::GeneTypeFloatGaussC(std::istream &strm)
-   : GeneTypeFloatC(strm)
+   : GeneTypeFloatC(strm),
+     m_width(0),
+     m_offset(0),
+     m_foldMode(FoldNone)
   {
     RavlAssertMsg(0,"not implemented");
   }

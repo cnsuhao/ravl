@@ -14,7 +14,7 @@ HEADERS=GeneType.hh Genome.hh GeneticOptimiser.hh \
  GeneTypeWeightedMeta.hh GeneTypeFloatGauss.hh \
  EvaluateFitness.hh EvaluateFitnessFunc.hh \
  GenePalette.hh GeneFactory.hh GeneTypeProxy.hh \
- GeneticOptimiserCheckPoint.hh GeneTypeBool.hh \
+ GeneticOptimiserCheckPoint.hh GeneTypeBool.hh  GeneTypeFloatExp.hh \
  GeneTypeClassDirect.hh GeneTypeClassDirectCall.hh GeneTypeArray.hh
 
 SOURCES=GeneType.cc Genome.cc GeneticOptimiser.cc \
@@ -23,7 +23,7 @@ SOURCES=GeneType.cc Genome.cc GeneticOptimiser.cc \
  Gene2ClassGenerator.cc \
  EvaluateFitness.cc EvaluateFitnessFunc.cc \
  GenePalette.cc GeneFactory.cc GeneTypeProxy.cc \
- GeneticOptimiserCheckPoint.cc GeneTypeBool.cc \
+ GeneticOptimiserCheckPoint.cc GeneTypeBool.cc GeneTypeFloatExp.cc \
  GeneTypeClassDirect.cc GeneTypeClassDirectCall.cc GeneTypeArray.cc
 
 MAINS= 

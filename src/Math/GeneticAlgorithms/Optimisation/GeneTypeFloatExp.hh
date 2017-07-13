@@ -4,8 +4,8 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-#ifndef RAVL_GENETIC_GeneTypeFloatGauss_HH
-#define RAVL_GENETIC_GeneTypeFloatGauss_HH 1
+#ifndef RAVL_GENETIC_GeneTypeFloatExp_HH
+#define RAVL_GENETIC_GeneTypeFloatExp_HH 1
 //! lib=RavlGeneticOptimisation
 //! author=Charles Galambos
 //! docentry=Ravl.API.Math.Genetic.Optimisation
@@ -15,26 +15,25 @@
 namespace RavlN { namespace GeneticN {
 
 
-  //! Float value generated with a Gaussian distribution
+  //! Float value generated with a exponential distribution
 
-  class GeneTypeFloatGaussC
+  class GeneTypeFloatExpC
     : public GeneTypeFloatC
   {
   public:
-    enum FoldModeT { FoldNone,FoldUp,FoldDown };
 
     //! Factory constructor
-    GeneTypeFloatGaussC(const XMLFactoryContextC &factory);
+    GeneTypeFloatExpC(const XMLFactoryContextC &factory);
 
     //! Constructor
     //! width is in standard deviations.
-    GeneTypeFloatGaussC(const std::string &name,float min,float max,float width,float offset,FoldModeT foldMode);
+    GeneTypeFloatExpC(const std::string &name,float min,float max,float inc);
 
     //! Load form a binary stream
-    GeneTypeFloatGaussC(BinIStreamC &strm);
+    GeneTypeFloatExpC(BinIStreamC &strm);
 
     //! Load form a binary stream
-    GeneTypeFloatGaussC(std::istream &strm);
+    GeneTypeFloatExpC(std::istream &strm);
 
     //! Save to binary stream
     virtual bool Save(BinOStreamC &strm) const;
@@ -45,28 +44,16 @@ namespace RavlN { namespace GeneticN {
     //! Generate a new value
     virtual void RandomValue(GenePaletteC &palette,float &value) const;
 
-    //! Access width
-    float Width() const
-    { return m_width; }
-
-    //! Access offset
-    float Offset() const
-    { return m_offset; }
-
-    //! Access fold mode.
-    FoldModeT FoldMode() const
-    { return m_foldMode; }
+    //! Mutate a gene
+    virtual bool Mutate(GenePaletteC &palette,float fraction,bool mustChange,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const;
 
     // Reference to this gene.
-    typedef RavlN::SmartPtrC<GeneTypeFloatGaussC> RefT;
+    typedef RavlN::SmartPtrC<GeneTypeFloatExpC> RefT;
 
     // Const reference to this gene.
-    typedef RavlN::SmartPtrC<const GeneTypeFloatGaussC> ConstRefT;
+    typedef RavlN::SmartPtrC<const GeneTypeFloatExpC> ConstRefT;
 
   protected:
-    float m_width ;
-    float m_offset;
-    FoldModeT m_foldMode;
   };
 }}
 

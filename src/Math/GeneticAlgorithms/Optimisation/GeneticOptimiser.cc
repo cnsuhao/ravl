@@ -211,7 +211,7 @@ namespace RavlN { namespace GeneticN {
         }
         RavlAssert(m_rootGeneType.IsValid());
         RavlDebug("Generating start population %u ",numKeep);
-        for(unsigned i = 0;i < numKeep;i++) {
+        for(unsigned i = m_startPopulation.size();i < numKeep;i++) {
           GeneC::RefT newGene;
           m_rootGeneType->Random(*m_genePalette,newGene);
           m_startPopulation.push_back(new GenomeC(*newGene));

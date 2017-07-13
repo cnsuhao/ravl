@@ -65,7 +65,12 @@ namespace RavlN { namespace GeneticN {
     if(maxCount >= 0) {
       RavlInfo("Found checkpoint file '%s', loading it into the optimiser. ",maxFilename.data());
       m_count = maxCount + 1;
-      if(!m_optimiser->LoadPopulation(maxFilename)) {
+      StringC theFilename;
+      if(dir.IsEmpty())
+        theFilename = maxFilename;
+      else
+        theFilename = dir + '/' + maxFilename;
+      if(!m_optimiser->LoadPopulation(theFilename)) {
         RavlError("Failed to load previous checkpoint '%s' ",maxFilename.data());
         throw RavlN::ExceptionOperationFailedC("Failed to load previous checkpoint. ");
       }
