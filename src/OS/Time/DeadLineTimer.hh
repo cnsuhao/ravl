@@ -84,7 +84,7 @@ namespace RavlN {
     // deadline timers that can be active at any time. 
     // <p>
     // This isn't a trivial routine, it involves several
-    // system calles, and alot of mucking about.  Avoid
+    // system calls, and much mucking about.  Avoid
     // calling it excessively.
     
     inline volatile const bool &IsTimeUp() const { return timesUp; }

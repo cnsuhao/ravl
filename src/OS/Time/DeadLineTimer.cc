@@ -312,7 +312,7 @@ namespace RavlN {
       return false;
     }
     lock.Unlock();
-    // Because differnt threads can have different signal vectors
+    // Because different threads can have different signal vectors
     // its safer to set this every time.
     
 #if USE_SIGACTION
