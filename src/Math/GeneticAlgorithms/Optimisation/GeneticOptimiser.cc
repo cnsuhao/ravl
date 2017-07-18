@@ -226,6 +226,10 @@ namespace RavlN { namespace GeneticN {
     if(m_randomiseDomain)
       resetScores = true;
 
+    if(m_randomiseDomain) {
+      m_evaluateFitness->GenerateNewProblem();
+    }
+
     // Select genomes to be used as seeds for the next generation.
     unsigned numKeep = Floor(m_populationSize * m_keepFraction);
     if(numKeep >= m_populationSize)
@@ -343,9 +347,6 @@ namespace RavlN { namespace GeneticN {
     MutexLockC lock(m_access);
     //std::swap(m_workQueue,pop);
     m_workQueue = pop;
-    if(m_randomiseDomain) {
-      m_evaluateFitness->GenerateNewProblem();
-    }
     m_atWorkQueue = 0;
     lock.Unlock();
     if(m_threads == 1) {
