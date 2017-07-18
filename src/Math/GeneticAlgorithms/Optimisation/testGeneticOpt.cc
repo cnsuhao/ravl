@@ -17,6 +17,9 @@
 #include "Ravl/Genetic/GeneTypeFloatGauss.hh"
 #include "Ravl/Genetic/GeneTypeBool.hh"
 #include "Ravl/Genetic/GeneFactory.hh"
+#include "Ravl/Genetic/PopulationState.hh"
+#include "Ravl/Genetic/EvaluateFitness.hh"
+
 #include "Ravl/VirtualConstructor.hh"
 #include "Ravl/UnitTest.hh"
 #include "Ravl/SysLog.hh"
@@ -32,13 +35,15 @@ int testGeneTypeEnumIO();
 int testGeneTypeMetaIO();
 int testGeneTypeWeightedMetaIO();
 int testGeneTypeListIO();
+int testPopulationStateIO();
+int testFitnessFunctionIO();
 int testGeneTypeShare();
 
 int main(int nargs,char **argv)
 {
 
   RavlN::SysLogOpen("testGeneticOpt",false,true,false,-1,true);
-
+#if 1
   RAVL_RUN_TEST(testGeneIntIO());
   RAVL_RUN_TEST(testGeneFloatIO());
   RAVL_RUN_TEST(testGeneFloatGaussIO());
@@ -50,6 +55,8 @@ int main(int nargs,char **argv)
   RAVL_RUN_TEST(testGeneTypeListIO());
   RAVL_RUN_TEST(testGeneTypeShare());
   RAVL_RUN_TEST(testGenomeIO());
+#endif
+  RAVL_RUN_TEST(testPopulationStateIO());
 
   RavlInfo("Test completed ok. ");
   return 0;
@@ -391,6 +398,28 @@ int testGenomeIO()
 
   RAVL_TEST_EQUALS(genome->Age(),genomeReconstructed->Age());
   RAVL_TEST_EQUALS(genome->RootGene().Type().Name(),geneType->Name());
+
+  return 0;
+}
+
+int testPopulationStateIO()
+{
+  using RavlN::GeneticN::PopulationStateC;
+  PopulationStateC::RefT pop = new PopulationStateC();
+  PopulationStateC::RefT popRL;
+  if(!TestBinStreamIO(pop,popRL))
+    return __LINE__;
+
+  return 0;
+}
+
+int testFitnessFunctionIO()
+{
+  using RavlN::GeneticN::PopulationStateC;
+  PopulationStateC::RefT pop = new PopulationStateC();
+  PopulationStateC::RefT popRL;
+  if(!TestBinStreamIO(pop,popRL))
+    return __LINE__;
 
   return 0;
 }

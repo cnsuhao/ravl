@@ -32,6 +32,10 @@ namespace RavlN {  namespace GeneticN {
      : m_func(func)
     {}
 
+    //! Is this fitness IO capable ?
+    virtual bool CanSave() const
+    { return false; }
+
     //! Copy me.
     virtual RavlN::RCBodyVC &Copy() const
     { return *new EvaluateFitnessFuncC(*this); }
@@ -41,7 +45,7 @@ namespace RavlN {  namespace GeneticN {
     { return typeid(DataT); }
 
     //! Evaluate the fit
-    virtual bool Evaluate(RCWrapAbstractC &obj,float &score)
+    virtual bool Evaluate(int generation,RCWrapAbstractC &obj,float &score)
     {
       RavlN::RCWrapC<DataT> wrap(obj,true);
       if(!wrap.IsValid()) {

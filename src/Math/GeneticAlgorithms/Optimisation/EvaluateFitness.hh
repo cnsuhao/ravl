@@ -39,6 +39,21 @@ namespace RavlN {  namespace GeneticN {
     //! Factory constructor
     EvaluateFitnessC(const XMLFactoryContextC &factory);
 
+    //! Load form a binary stream
+    EvaluateFitnessC(BinIStreamC &strm);
+
+    //! Load form a binary stream
+    EvaluateFitnessC(std::istream &strm);
+
+    //! Save to binary stream
+    virtual bool Save(BinOStreamC &strm) const;
+
+    //! Save to binary stream
+    virtual bool Save(std::ostream &strm) const;
+
+    //! Is this fitness IO capable ?
+    virtual bool CanSave() const;
+
     //! Copy me.
     virtual RCBodyVC &Copy() const = 0;
 
@@ -49,7 +64,7 @@ namespace RavlN {  namespace GeneticN {
     virtual bool GenerateNewProblem();
 
     //! Evaluate the fitness
-    virtual bool Evaluate(RCWrapAbstractC &obj,float &score) = 0;
+    virtual bool Evaluate(int generation,RCWrapAbstractC &obj,float &score) = 0;
 
     //! Handle to this class.
     typedef RavlN::SmartOwnerPtrC<EvaluateFitnessC> RefT;

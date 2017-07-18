@@ -10,6 +10,7 @@
 
 #include "Ravl/Genetic/GeneticOptimiser.hh"
 #include "Ravl/Genetic/GeneFactory.hh"
+#include "Ravl/Genetic/PopulationState.hh"
 #include "Ravl/XMLFactoryRegister.hh"
 #include "Ravl/Threads/LaunchThread.hh"
 #include "Ravl/CallMethodPtrs.hh"
@@ -30,7 +31,8 @@ namespace RavlN { namespace GeneticN {
 
 
   GeneticOptimiserC::GeneticOptimiserC(const XMLFactoryContextC &factory)
-   : m_mutationRate(static_cast<float>(factory.AttributeReal("mutationRate",0.2))),
+   : m_generation(0),
+     m_mutationRate(static_cast<float>(factory.AttributeReal("mutationRate",0.2))),
      m_cross2mutationRatio(static_cast<float>(factory.AttributeReal("cross2mutationRatio",0.2))),
      m_keepFraction(static_cast<float>(factory.AttributeReal("keepFraction",0.3))),
      m_randomFraction(factory.AttributeReal("randomFraction",0.01)),
@@ -79,7 +81,11 @@ namespace RavlN { namespace GeneticN {
     MutexLockC lock(m_access);
     lock.Unlock();
 
-    for(unsigned i = 0;i < m_numGenerations;i++) {
+    int startGen = 0;
+    if(!m_population.empty())
+      startGen = m_population.rbegin()->second->Generation() + 1;
+
+    for(unsigned i = startGen;i < m_numGenerations;i++) {
       float bestScore = 0;
       lock.Lock();
       if(!m_population.empty())
@@ -121,18 +127,50 @@ namespace RavlN { namespace GeneticN {
   //! Save population to file
   bool GeneticOptimiserC::SavePopulation(const StringC &filename) const
   {
+    SArray1dC<RavlN::Tuple2C<float,GenomeC::RefT> > seeds;
     SArray1dC<RavlN::Tuple2C<float,GenomeC::RefT> > population;
-    ExtractPopulation(population);
-    return RavlN::Save(filename,population,"abs",true);
+
+    RavlN::MutexLockC lock(m_access);
+    {
+      seeds = SArray1dC<RavlN::Tuple2C<float,GenomeC::RefT> >(m_currentSeeds.Size());
+      for(unsigned i = 0;i < m_currentSeeds.Size();i++)
+        seeds[i] = RavlN::Tuple2C<float,GenomeC::RefT>(0,m_currentSeeds[i]);
+    }
+    {
+      population = SArray1dC<RavlN::Tuple2C<float,GenomeC::RefT> >(m_population.size());
+      unsigned i = 0;
+      // Note: this saves worst to best, just in case you were thinking of truncating the list...
+      for(std::multimap<float,GenomeC::RefT>::const_iterator it(m_population.begin());it != m_population.end();it++,i++)
+      {
+        population[i] = RavlN::Tuple2C<float,GenomeC::RefT>(it->first,it->second);
+      }
+      RavlAssert(i == population.Size());
+    }
+
+    PopulationStateC::RefT state = new PopulationStateC(m_generation,seeds,population);
+    if(m_evaluateFitness.IsValid() && m_evaluateFitness->CanSave())
+      state->SetFitnessFunction(m_evaluateFitness);
+    return RavlN::Save(filename,state,"abs",true);
   }
 
   //! Save population to file
   bool GeneticOptimiserC::LoadPopulation(const StringC &filename)
   {
-    SArray1dC<RavlN::Tuple2C<float,GenomeC::RefT> > population;
-    if(!RavlN::Load(filename,population))
+    PopulationStateC::RefT state;
+    if(!RavlN::Load(filename,state))
       return false;
-    AddPopulation(population);
+    const SArray1dC<RavlN::Tuple2C<float,GenomeC::RefT> > &theSeeds =  state->Seeds();
+    RavlN::SArray1dC<GenomeC::RefT> seeds(theSeeds.Size());
+    for(int i = 0;i < theSeeds.Size();i++)
+      seeds[i] = theSeeds[i].Data2();
+    MutexLockC lock(m_access);
+    m_currentSeeds.Append(seeds);
+    if(m_generation <= state->Generation())
+      m_generation = state->Generation()+1;
+    if(state->FitnessFunction().IsValid())
+      m_evaluateFitness = state->FitnessFunction();
+    lock.Unlock();
+    AddPopulation(state->Population());
     return true;
   }
 
@@ -150,8 +188,7 @@ namespace RavlN { namespace GeneticN {
     population = SArray1dC<RavlN::Tuple2C<float,GenomeC::RefT> >(arraySize);
     unsigned i = 0;
     // Note: this saves worst to best, just in case you were thinking of truncating the list...
-    for(std::multimap<float,GenomeC::RefT>::const_iterator it(m_population.begin());it != m_population.end();it++,i++)
-    {
+    for(std::multimap<float,GenomeC::RefT>::const_iterator it(m_population.begin());it != m_population.end();it++,i++) {
       population[i] = RavlN::Tuple2C<float,GenomeC::RefT>(it->first,it->second);
     }
     RavlAssert(i == arraySize);
@@ -335,7 +372,7 @@ namespace RavlN { namespace GeneticN {
     GenePaletteC::RefT palette = m_genePalette.Copy();
     lock.Unlock();
 
-    //RavlInfo("Palette has %u proxies. ",(unsigned) palette->ProxyMap().Size());
+    //RavlInfo("Palate has %u proxies. ",(unsigned) palette->ProxyMap().Size());
     while(1) {
       UIntT candidate;
       lock.Lock();
@@ -357,10 +394,11 @@ namespace RavlN { namespace GeneticN {
   }
 
   //! Evaluate a single genome
-  bool GeneticOptimiserC::Evaluate(EvaluateFitnessC &evaluator,
-                                   const GenomeC &genome,
-                                   GenePaletteC &palette,
-                                   float &score)
+  bool GeneticOptimiserC::Evaluate(
+      EvaluateFitnessC &evaluator,
+      const GenomeC &genome,
+      GenePaletteC &palette,
+      float &score)
   {
     GeneFactoryC factory(genome,palette);
     score = 0;
@@ -371,7 +409,7 @@ namespace RavlN { namespace GeneticN {
       factory.Get(anObj,evaluator.ObjectType());
       if(m_createOnly)
         return false;
-      if(!evaluator.Evaluate(anObj,score))
+      if(!evaluator.Evaluate(genome.Generation(),anObj,score))
         return false;
 #if RAVL_CATCH_EXCEPTIONS
     } catch(std::exception &ex) {
