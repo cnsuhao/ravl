@@ -456,9 +456,32 @@ namespace RavlN {
       int ret = zmq_setsockopt (m_socket,ZMQ_IDENTITY,identity.c_str(),identity.size());
       if(ret != 0) {
         RavlError("Failed to set identity to %s : %s ",identity.c_str(),zmq_strerror (zmq_errno ()));
-        throw ExceptionOperationFailedC("Unsubscribe failed. ");
+        throw ExceptionOperationFailedC("SetIdentity failed. ");
       }
     }
+
+    //! Set send timeout.  -ve values will cause it to block forever.
+    void SocketC::SetSendTimeout(float seconds)
+    {
+      int timeOut = seconds * 1000.0;
+      int ret = zmq_setsockopt (m_socket,ZMQ_SNDTIMEO,&timeOut,sizeof(timeOut));
+      if(ret != 0) {
+        RavlError("Failed to set send timeout to %f : %s ",seconds,zmq_strerror (zmq_errno ()));
+        throw ExceptionOperationFailedC("SetSendTimeout failed. ");
+      }
+    }
+
+    //! Set receive timeout.  -ve values will cause it to block forever.
+    void SocketC::SetReceiveTimeout(float seconds)
+    {
+      int timeOut = seconds * 1000.0;
+      int ret = zmq_setsockopt (m_socket,ZMQ_RCVTIMEO,&timeOut,sizeof(timeOut));
+      if(ret != 0) {
+        RavlError("Failed to set receive timeout to %f : %s ",seconds,zmq_strerror (zmq_errno ()));
+        throw ExceptionOperationFailedC("SetReceiveTimeout failed. ");
+      }
+    }
+
 
     //! Send a message
     bool SocketC::Send(const SArray1dC<char> &msg,BlockT block,int *errValue) {
@@ -499,6 +522,12 @@ namespace RavlN {
 
     //! Receive a message.
     bool SocketC::Recieve(SArray1dC<char> &msg,BlockT block)
+    {
+      return Receive(msg,block);
+    }
+
+    //! Receive a message.
+    bool SocketC::Receive(SArray1dC<char> &msg,BlockT block)
     {
       int64_t more = 0;
       int ret;

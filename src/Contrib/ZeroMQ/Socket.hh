@@ -116,6 +116,12 @@ namespace RavlN {
       //! Set mandatory flag for router.
       void SetRouterMandatory(bool enable);
 
+      //! Set send timeout.  -ve values will cause it to block forever.
+      void SetSendTimeout(float seconds);
+
+      //! Set receive timeout.  -ve values will cause it to block forever.
+      void SetReceiveTimeout(float seconds);
+
       //! Send a message
       bool Send(const MessageC &msg,BlockT block = ZSB_BLOCK,int *errValue = 0);
 
@@ -129,7 +135,11 @@ namespace RavlN {
       bool Send(const SArray1dC<char> &msg,BlockT block = ZSB_BLOCK,int *errValue = 0);
 
       //! Receive a message.
+      //! Obsolete.
       bool Recieve(SArray1dC<char> &msg,BlockT block = ZSB_BLOCK);
+
+      //! Receive a message.
+      bool Receive(SArray1dC<char> &msg,BlockT block = ZSB_BLOCK);
 
       //! Send a arbitrary class
       template<typename DataT>
