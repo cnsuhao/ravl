@@ -50,7 +50,7 @@ namespace RavlN {
 
     RealT Area2() const;
     // Returns twice the signed area of this polygon.
-    // Ref.: -  O'Rourke,J.: Computatinal geometry in C;
+    // Ref.: -  O'Rourke,J.: Computational geometry in C;
     //          Cambridge University Press, 1994, pp. 20-26
     //!deprecated: Use Area instead
 
@@ -67,13 +67,13 @@ namespace RavlN {
     // Returns true if (a, b) is a proper internal or external (if allowExternal is true)
     // diagonal of this polygon. The edges incident to 'a' and 'b'
     // are ignored.
-    // Ref.: -  O'Rourke,J.: Computatinal geometry in C;
+    // Ref.: -  O'Rourke,J.: Computational geometry in C;
     //          Cambridge University Press, 1994, pp. 35-36
   
     bool IsInCone(const DLIterC<Point2dC> & a, const DLIterC<Point2dC> & b) const;
     // Returns true iff the diagonal (a,b) is strictly internal
-    // to this polygon in the neighborhood of the 'a' endpoint.
-    // Ref.: -  O'Rourke,J.: Computatinal geometry in C;
+    // to this polygon in the neighbourhood of the 'a' endpoint.
+    // Ref.: -  O'Rourke,J.: Computational geometry in C;
     //          Cambridge University Press, 1994, pp. 37-38
 
     Polygon2dC ClipByConvex(const Polygon2dC &oth) const;
@@ -124,10 +124,10 @@ namespace RavlN {
     //!return: 0= Not overlapping 1=If the two polygons are identical.
     
     Polygon2dC Approx(RealT distLimit) const;
-    //: Generate an approximation to the given polygon within the given euclidean distance limit.
+    //: Generate an approximation to the given polygon within the given Euclidean distance limit.
     // The approximation is computed by finding the furthest point from the start, and then
     // the furthest point from that point. The two line segments are then approximated by searching for the
-    // furthest point from the line defined by the two end points and if it is further than the distance limit 
+    // furthest point from the line defined by the two end points and if it is further than the distance limit
     // adding it to the approximation. The procedure is then repeated for each of the segments either side
     // of furthest point.
     
