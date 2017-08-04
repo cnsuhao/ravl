@@ -46,6 +46,22 @@ namespace RavlN { namespace GeneticN {
         AddComponent(it->Name().data(),*geneType);
       }
     }
+    XMLFactoryContextC attributeContext;
+    if(factory.ChildContext("Attributes",attributeContext)) {
+      // Get all the string attributes.
+      for(RavlN::HashIterC<StringC,StringC> it(attributeContext.INode().XMLNode().Attributes());it;it++) {
+        attributeContext.UseAttribute(it.Key());
+        SetAttribute(it.Key(),it.Data());
+      }
+      // Anything more complex too.
+      // FIXME: I've not tested retrieving values. There maybe RCWrapAbstractC / RCAbstract conversion issues.
+
+      for(RavlN::DLIterC<XMLTreeC> it(attributeContext.Children());it;it++) {
+        RCWrapAbstractC data;
+        if(factory.UseChildComponent(it->Name(),data))
+          SetAttribute(it->Name(),data);
+      }
+    }
   }
 
   // Constructor
