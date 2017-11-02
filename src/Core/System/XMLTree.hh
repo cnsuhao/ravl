@@ -130,6 +130,10 @@ namespace RavlN {
     //: lookup child in tree.
     // Returns true and updates parameter 'child' if child is found.
     
+    bool ChildContent(const StringC &key,StringC &value) const;
+    //: Get the content of a child if it exists.
+    // Return true if value found.
+
     const RCHashC<StringC,StringC> & Attributes() const
     { return this->Data(); }
     //: Access table of attributes
@@ -350,6 +354,11 @@ namespace RavlN {
     //: lookup child in tree.
     // Returns true and updates parameter 'child' if child is found.
     
+    bool ChildContent(const StringC &key,StringC &value) const
+    { return Body().ChildContent(key,value); }
+    //: Get the content of a child if it exists.
+    // Return true if value found.
+
     const RCHashC<StringC,StringC> & Attributes() const
     { return Body().Attributes(); }
     //: Access table of attributes as strings

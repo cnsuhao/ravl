@@ -536,6 +536,18 @@ namespace RavlN {
     return const_cast<XMLTreeBodyC*>(this)->HashTreeBodyC<StringC,RCHashC<StringC,StringC> >::Child(key,child);
   }
 
+  //: Get the content of a child if it exists.
+  // Return true if value found.
+
+  bool XMLTreeBodyC::ChildContent(const StringC &key,StringC &value) const {
+    XMLTreeC child;
+    if(!Child(key,child))
+      return false;
+    value = child.Content();
+    return true;
+  }
+
+
   //: Indents the XML listing
 
   std::ostream &XMLTreeBodyC::Indent(std::ostream &out,int level) {
