@@ -372,7 +372,8 @@ namespace RavlN {
     //: Stream constructor.
     
     DPPortC(const DPPortC &oth)
-      : DPEntityC(oth)
+      : DPEntityC(oth),
+        AttributeCtrlC()
     {}
     //: Copy constructor.
     

@@ -44,7 +44,8 @@ namespace RavlN {
     { ravl_atomic_set(&owners,0); }
     //: Binary stream constructor
     
-    RCLayerBodyC(const RCLayerBodyC &)
+    RCLayerBodyC(const RCLayerBodyC &x)
+     : RCBodyVC(x)
     { ravl_atomic_set(&owners,0); }
     //: Copy constructor
 
