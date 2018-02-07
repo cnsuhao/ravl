@@ -2,6 +2,7 @@
 #include "Ravl/Array1dIter.hh"
 #include "Ravl/OS/Date.hh"
 #include "Ravl/IO.hh"
+#include "Ravl/SysLog.hh"
 //! lib=RavlGnuPlot
 
 namespace RavlGUIN {
@@ -151,7 +152,12 @@ namespace RavlGUIN {
 
     //: Run gnuplot
     StringC com = "gnuplot " + tmpGnu;
-    system(com);
+    int sysRet = system(com);
+    bool ok = true;
+    if(sysRet < 0) {
+      RavlError("Failed to call gnuplot. ");
+      ok = false;
+    }
     Sleep(1.0); // give it time to run
     //: Then remove tmp files
     if (!tmpGnu.Remove()) {
@@ -163,7 +169,7 @@ namespace RavlGUIN {
         return false;
     }
     //: return success
-    return true;
+    return ok;
   }
 
   bool GnuPlotC::MultiPlot(const StringC & outfile) const
@@ -262,7 +268,12 @@ namespace RavlGUIN {
 
     //: Run gnuplot
     StringC com = "gnuplot " + tmpGnu;
-    system(com);
+    int sysRet = system(com);
+    bool ok= true;
+    if(sysRet < 0) {
+      RavlError("Failed to call gnuplot.");
+      ok= false;
+    }
     Sleep(1.0); // give it time to run...
 
     //: Then remove tmp files
@@ -282,7 +293,7 @@ namespace RavlGUIN {
     }
 
     //: return success
-    return true;
+    return ok;
   }
 
   void GnuPlotC::Terminal(const StringC &term)

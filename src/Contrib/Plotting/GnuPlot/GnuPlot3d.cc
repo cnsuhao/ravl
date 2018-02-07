@@ -4,6 +4,7 @@
 #include "Ravl/IO.hh"
 #include "Ravl/OS/ChildOSProcess.hh"
 #include "Ravl/OS/Date.hh"
+#include "Ravl/SysLog.hh"
 
 namespace RavlGUIN {
 
@@ -90,7 +91,11 @@ namespace RavlGUIN {
 
     //: Run gnuplot
     StringC com = "gnuplot " + main;
-    system(com);
+    int ret = system(com);
+    if(ret < 0) {
+      RavlError("Failed to call gnuplot.");
+    }
+
     Sleep(1);
 
     //: Then remove tmp files
