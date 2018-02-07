@@ -39,13 +39,13 @@ namespace RavlN {
     // "variationPreserved" is amount of variation to attempt to preserve in reduced set.
     // 0 -> None; 1 -> All; >1 (truncated to int) -> Size of set preserved.
     
-    DesignFuncLDABodyC(istream &strm);
+    DesignFuncLDABodyC(std::istream &strm);
     //: Load from stream.
     
     DesignFuncLDABodyC(BinIStreamC &strm);
     //: Load from binary stream.
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
     
     virtual bool Save (BinOStreamC &out) const;

@@ -39,7 +39,7 @@ namespace RavlN {
   
   //: Load from stream.
   
-  DesignFuncLDABodyC::DesignFuncLDABodyC(istream &strm) 
+  DesignFuncLDABodyC::DesignFuncLDABodyC(std::istream &strm)
     : DesignFuncReduceBodyC(strm),
       forceHimDim(false),
       classSamp(0)
