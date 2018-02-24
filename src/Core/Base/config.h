@@ -352,6 +352,13 @@
   #define RAVL_API
 #endif /* RAVL_DLL */
 
+/* Fix for threading primitives on Mac OSX */
+#ifdef __APPLE__
+#ifndef _DARWIN_C_SOURCE
+#define _DARWIN_C_SOURCE
+#endif
+#endif
+
 /* Throwable classes must always be visible on GCC in all binaries */
 #if RAVL_OS_WIN32
   #define RAVL_EXCEPTIONAPI(api) api
