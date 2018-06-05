@@ -1642,6 +1642,7 @@ ifdef TARG_DEFS
 
  # Recipe for the common ending of the two .def files.
  $(LOCALTMP)/libdep/%.def.tail: $(LOCALTMP)/libdep/.dir \
+                                defs.mk \
                                 $(QMAKE_MAKEFILES)/Main.mk
 	$(if $(QMAKE_INFO), @echo "--- Creating $(@F)")
 	$(SHOWIT)if [ -f $@ ] ; then \
